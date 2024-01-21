@@ -1,0 +1,24 @@
+.block-head {
+    flex-direction: row-reverse;
+}
+
+.flex-left {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 5px;
+}
+
+.weightmenttable.table > :not(caption) > * > * {
+    padding:0;
+   
+}
+.marginbottom0.table{
+ margin-bottom: 0rem !important;
+}
+.totalweight.table {
+       font-size: 60px;
+      color:#b50606;
+      background: rgb(248, 248, 249, 1);
+      font-weight:bold; 
+      text-align: center;
+}

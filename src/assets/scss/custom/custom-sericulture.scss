@@ -1,0 +1,28 @@
+// custom styles from 7Crore
+// @media (min-width: 992px)
+// [data-navbar-collapse=lg]
+.nk-nav-sub {
+  max-height: calc(100vh - 12rem) !important;
+}
+
+.card-header {
+  color: #fff;
+  background-color: #0f6cbe;
+}
+
+.modal-header {
+  background-color: #0f6cbe;
+  margin: -1px -1px 0px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.modal-title {
+  color: #fff;
+}
+
+// Sweet Alert style overriding
+.swal2-popup {
+  padding: 0px !important;
+  width: 20em !important;
+}
+
