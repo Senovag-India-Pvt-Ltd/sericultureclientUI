@@ -223,6 +223,8 @@ function Weighment() {
       });
   };
 
+  console.log("tableWeightData",tableWeightData);
+
   const submitConfirm = async () => {
     // debugger
     try {
@@ -338,7 +340,7 @@ function Weighment() {
         if (
           data.noOfCrates <= 0 ||
           data.allottedLotId == "" ||
-          counter >= parseInt(data.noOfCrates)
+          counter >= parseInt(data.noOfCrates)-1
         ) {
           setCanContinue(false);
           console.log("cannot continue with weighment");
@@ -412,6 +414,8 @@ function Weighment() {
 
   if (counter == parseInt(data.noOfCrates)) {
     if (totalNetPrice > weigh.reelerCurrentBalance) {
+      // console.log("Reeler don't have enough money");
+      getCrateDetails();
     } else {
       console.log("hello Weight");
     }
