@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Card, Row, Col } from "react-bootstrap";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
-import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData";
-import axios from "axios";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
+import api from "../../services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TrainerPageView() {
   const styles = {
@@ -35,7 +34,7 @@ function TrainerPageView() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL2 + `trSchedule/get-join/${id}`)
       .then((response) => {
         setTrTrainer(response.data.content);
@@ -63,13 +62,13 @@ function TrainerPageView() {
 
   const [trDetailsList, setTrDetailsList] = useState([]);
   const getTrDetailsList = () => {
-    axios
-      .get(baseURL2 + `trTrainee/get-by-trSchedule-id-join/${id}`)
+    api
+      .get(baseURL2 + `trTrainee/get-by-tr-schedule-id-join/${id}`)
       .then((response) => {
-        setTrDetailsList(response.data.content.trTraineeId);
+        setTrDetailsList(response.data.content.trTrainee);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setTrDetailsList([]);
         // editError(message);
       });
@@ -120,7 +119,7 @@ function TrainerPageView() {
         <Card.Header>Training Schedule Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
-              <Col lg="4">
+              <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                   <tr>
@@ -128,8 +127,18 @@ function TrainerPageView() {
                       <td>{trTrainer.trScheduleId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Trainer Name:</td>
-                      <td>{trTrainer.trName}</td>
+                      <td style={styles.ctstyle}> Stake Holder Type:</td>
+                      <td>
+                        {trTrainer.trStakeholderType === 1
+                          ? 'Training For Internal Stake Holders'
+                          : trTrainer.trStakeholderType === 2
+                          ? 'Training For External Stake Holders'
+                          : 'Other'}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>User Name:</td>
+                      <td>{trTrainer.username}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Institute Name:</td>
@@ -191,12 +200,16 @@ function TrainerPageView() {
             {trDetailsList && trDetailsList.length>0?(trDetailsList.map((trDetails)=>(
                   <Row className="g-gs">
                   {console.log(trDetails.trTraineeId)}
-              <Col lg="4">
+              <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> ID:</td>
                       <td>{trDetails.trTraineeId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Schedule ID:</td>
+                      <td>{trDetails.trScheduleId}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Training Trainee Name:</td>

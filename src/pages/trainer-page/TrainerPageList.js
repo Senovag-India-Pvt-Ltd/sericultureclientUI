@@ -1,14 +1,13 @@
 import { Card, Button,Col,Row,Form  } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import { createTheme } from 'react-data-table-component';
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
-import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../services/auth/api";
@@ -27,8 +26,7 @@ function TrainerPageList() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "mobileNumber",
-    
+    searchBy: "username",
   });
 
   const handleInputs = (e) => {
@@ -37,25 +35,25 @@ function TrainerPageList() {
     setData({ ...data, [name]: value });
   };
 
-   // Search
-   const search = (e) => {
+  // Search
+  const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "mobileNumber") {
-      joinColumn = "trTrainee.mobileNumber";
+    if (data.searchBy === "username") {
+      joinColumn = "userMaster.username";
     }
-    if (data.searchBy === "trTraineeName") {
-      joinColumn = "trTrainee.mobileNumber";
+    if (data.searchBy === "trScheduleId") {
+      joinColumn = "trSchedule.trScheduleId";
     }
     // console.log(joinColumn);
     api
-      .post(baseURL2 + `trTrainee/search`, {
+      .post(baseURL2 + `trSchedule/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
       }, {
         headers: _header,
       })
       .then((response) => {
-        setListData(response.data.content.trTrainee);
+        setListData(response.data.content.trSchedule);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -69,15 +67,21 @@ function TrainerPageList() {
       });
   };
 
+  const [trScheduleList, setTrScheduleListData] = useState({
+    userMasterId: localStorage.getItem("userMasterId"),
+  });
 
-  const getList = () => {
-    setLoading(true);
+  const getList = (e) => {
+    // setLoading(true);
     api
-      .get(baseURL2 + `trTrainee/list-with-join`, _params)
+      .post(baseURL2 + `trSchedule/get-by-user-master-id`,{userMasterId:e})
       .then((response) => {
-        setListData(response.data.content.trTrainee);
+        setListData(response.data.content.trSchedule);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
+        if (response.data.content.error) {
+          setListData([]);
+        }
       })
       .catch((err) => {
         setListData({});
@@ -86,29 +90,10 @@ function TrainerPageList() {
   };
 
   useEffect(() => {
-    getList();
-  }, [page]);
-
-  // const [vbListData, setVbListData] = useState({});
-
-  // const getVbList = () => {
-  //   setLoading(true);
-  //   axios
-  //     .get(baseURL2 + `reeler/list-with-join`, _params)
-  //     .then((response) => {
-  //       setVbListData(response.data.content.reeler);
-  //       setTotalRows(response.data.content.totalItems);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setVbListData({});
-  //       setLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getVbList();
-  // }, [page]);
+    if (trScheduleList.userMasterId) {
+      getList(trScheduleList.userMasterId);
+    }
+  }, [trScheduleList.userMasterId]);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -138,7 +123,7 @@ function TrainerPageList() {
     }).then((result) => {
       if (result.value) {
         api
-          .delete(baseURL2 + `trTrainee/delete/${_id}`)
+          .delete(baseURL2 + `trSchedule/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -221,7 +206,7 @@ function TrainerPageList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.trTraineeId)}
+            onClick={() => handleView(row.trScheduleId)}
           >
             View
           </Button>
@@ -229,14 +214,14 @@ function TrainerPageList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.trTraineeId)}
+            onClick={() => handleEdit(row.trScheduleId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.trTraineeId)}
+            onClick={() => deleteConfirm(row.trScheduleId)}
             className="ms-2"
           >
             Delete
@@ -247,44 +232,33 @@ function TrainerPageList() {
       hide: "md",
     },
     {
-      name: "Trainee/Official Name",
-      selector: (row) => row.trTraineeName,
-      cell: (row) => <span>{row.trTraineeName}</span>,
+      name: "User Name",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
-      selector: (row) => row.mobileNumber,
-      cell: (row) => <span>{row.mobileNumber}</span>,
+      name: "Training Institution Name",
+      selector: (row) => row.trInstitutionMasterName,
+      cell: (row) => <span>{row.trInstitutionMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
-      sortable: true,
-      hide: "md",
+        name: "Training Group Name",
+        selector: (row) => row.trGroupMasterName,
+        cell: (row) => <span>{row.trGroupMasterName}</span>,
+        sortable: true,
+        hide: "md",
     },
     {
-      name: "Gender",
-      selector: (row) => row.gender,
-      cell: (row) => <span>{row.gender === 1
-        ? 'Male'
-        : row.gender === 2
-        ? 'Female'
-        : 'Other'}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Place",
-      selector: (row) => row.place,
-      cell: (row) => <span>{row.place}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Training Program Name",
+        selector: (row) => row.trProgramMasterName,
+        cell: (row) => <span>{row.trProgramMasterName}</span>,
+        sortable: true,
+        hide: "md",
+    },      
   ];
 
   return (
@@ -298,7 +272,7 @@ function TrainerPageList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainer-page"
+                  to="#"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -307,7 +281,7 @@ function TrainerPageList() {
               </li>
               <li>
                 <Link
-                  to="/trainer-page"
+                  to="#"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -335,8 +309,8 @@ function TrainerPageList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="mobileNumber">Mobile Number</option>
-                      <option value="trTraineeName"> Trainee Name</option>
+                      <option value="username">User Name</option>
+                      <option value="trScheduleId">Training Schedule</option>
                       
                     </Form.Select>
                   </div>
