@@ -727,9 +727,16 @@ function StakeHolderRegister() {
     const { name } = e.target;
     let value = e.target.value;
     
-    if (name === "farmerBankIfscCode" && value.length > 11) {
-      value = value.slice(0, 11);
-  }
+    // if (name === "farmerBankIfscCode" && value.length > 11) {
+    //   value = value.slice(0, 11);
+    // }
+    if (name === "farmerBankIfscCode" && (value.length < 11 || value.length > 11) ) {
+        e.target.classList.add("is-invalid");
+    } else {
+        e.target.classList.remove("is-invalid");
+        e.target.classList.add("is-valid");
+    }
+
     setBank({ ...bank, [name]: value });
   };
 
@@ -2695,7 +2702,7 @@ function StakeHolderRegister() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
                           </div>
                       </Form.Group>
