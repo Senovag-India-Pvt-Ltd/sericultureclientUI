@@ -24,24 +24,48 @@ function TalukEdit() {
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
+  const [validated, setValidated] = useState(false);
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
     api
-      .post(baseURL + `taluk/edit`, data, {
-        headers: _header,
-      })
+      .post(baseURL + `taluk/edit`, data)
       .then((response) => {
         if(response.data.content.error){
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              talukName: "",
+              stateId: "",
+              districtId: "",
+              talukNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
-        updateError(message);
-        setData({});
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        updateError();
       });
+      setValidated(true);
+    }
   };
+
+  const clear = () =>{
+    setData({
+      talukName: "",
+      stateId: "",
+      districtId: "",
+      talukNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -114,7 +138,7 @@ function TalukEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/taluk-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -128,7 +152,7 @@ function TalukEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/taluk-list"));
+    }).then(() => navigate("#"));
   };
   return (
     <Layout title="Taluk">
@@ -193,7 +217,7 @@ function TalukEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Taluk Name is required
+                       State Name is required
                       </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -280,9 +304,9 @@ function TalukEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/taluk-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

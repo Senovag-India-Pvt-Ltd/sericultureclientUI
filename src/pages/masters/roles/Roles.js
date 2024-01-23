@@ -42,22 +42,32 @@ function Roles() {
           saveError();
           }else{
             saveSuccess();
+            setData({
+              roleName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      roleName: "",
+    })
+  }
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/roles-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = () => {
@@ -104,32 +114,6 @@ function Roles() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            {/* <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                 
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="fid">FRUITS ID / AADHAAR NUMBER</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="fid"
-                          type="text"
-                          placeholder="FRUITS ID / AADHAAR NUMBER"
-                        />
-                      </div>
-                    </Form.Group>
-
-                  </Col>
-
-                  <Col lg="6">
-
-
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card> */}
 
             <Card>
               <Card.Body>
@@ -182,9 +166,9 @@ function Roles() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/roles-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

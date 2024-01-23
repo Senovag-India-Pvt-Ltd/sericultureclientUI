@@ -45,15 +45,26 @@ function SubsidyDetails() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              subsidyName: "",
+              subsidyNameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      subsidyName: "",
+      subsidyNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -61,7 +72,7 @@ function SubsidyDetails() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/subsidy-details-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -164,9 +175,9 @@ function SubsidyDetails() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/subsidy-details-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

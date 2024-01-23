@@ -44,15 +44,26 @@ function SilkWormVarietyEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              silkWormVarietyName: "",
+              silkWormVarietyNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      silkWormVarietyName: "",
+      silkWormVarietyNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -81,7 +92,7 @@ function SilkWormVarietyEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/silk-worm-variety-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -95,7 +106,7 @@ function SilkWormVarietyEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/silk-worm-variety-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -197,12 +208,9 @@ function SilkWormVarietyEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/silk-worm-variety-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -46,15 +46,26 @@ function PlantationType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              plantationTypeName: "",
+              plantationTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      plantationTypeName: "",
+      plantationTypeNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -62,7 +73,7 @@ function PlantationType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/plantation-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -169,9 +180,9 @@ function PlantationType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/plantation-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

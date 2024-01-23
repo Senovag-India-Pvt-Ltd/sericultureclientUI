@@ -71,7 +71,7 @@ function Education() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/education-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({

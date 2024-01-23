@@ -43,15 +43,26 @@ function State() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              stateName: "",
+              stateNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      stateName: "",
+      stateNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -59,7 +70,7 @@ function State() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/state-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -164,9 +175,9 @@ function State() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/state-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

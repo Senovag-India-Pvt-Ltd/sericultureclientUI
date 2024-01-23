@@ -42,15 +42,32 @@ function MarketTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              marketTypeMasterName: "",
+              reelerFee: "",
+              farmerFee: "",
+              traderFee: "",
+              marketTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      marketTypeMasterName: "",
+      reelerFee: "",
+      farmerFee: "",
+      traderFee: "",
+      marketTypeNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -79,7 +96,7 @@ function MarketTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/market-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -93,7 +110,7 @@ function MarketTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/market-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -256,9 +273,9 @@ function MarketTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/market-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

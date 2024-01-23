@@ -52,16 +52,49 @@ function TrainingDeputationTrackerEdit() {
       api
         .post(baseURL + `trainingDeputationTracker/edit`, data)
         .then((response) => {
-          updateSuccess();
+          if(response.data.content.error){
+            updateError(response.data.content.error_description);
+            }else{
+            updateSuccess();
+            setData({
+              officialName: "",
+              designationId: "",
+              officialAddress: "",
+              mobileNumber: "",
+              deputedInstituteId: "",
+              deputedFromDate: "",
+              deputedToDate: "",
+              trProgramMasterId: "",
+              trCourseMasterId: "",
+              deputedAttended:"",
+              deputedRemarks:"",
+            });
+            setValidated(false);
+          }
         })
         .catch((err) => {
-          const message = err.response.data.errorMessages[0].message[0].message;
-          updateError(message);
-          setData({});
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
         });
         setValidated(true);
       }
     };
+
+    const clear = () =>{
+      setData({
+        officialName: "",
+        designationId: "",
+        officialAddress: "",
+        mobileNumber: "",
+        deputedInstituteId: "",
+        deputedFromDate: "",
+        deputedToDate: "",
+        trProgramMasterId: "",
+        trCourseMasterId: "",
+        deputedAttended:"",
+        deputedRemarks:"",
+      })
+    }
   
     //   to get data from api
     const getIdList = () => {
@@ -164,13 +197,13 @@ function TrainingDeputationTrackerEdit() {
         icon: "success",
         title: "Updated successfully",
         // text: "You clicked the button!",
-      }).then(() => navigate("/training-deputation-tracker-list"));
+      }).then(() => navigate("#"));
     };
     const updateError = (message) => {
       Swal.fire({
         icon: "error",
         title: message,
-        text: "Something went wrong!",
+        text: message,
       });
     };
     const editError = (message) => {
@@ -178,7 +211,7 @@ function TrainingDeputationTrackerEdit() {
         icon: "error",
         title: message,
         text: "Something went wrong!",
-      }).then(() => navigate("/training-deputation-tracker-list"));
+      }).then(() => navigate("#"));
     };
   
     return (
@@ -213,7 +246,7 @@ function TrainingDeputationTrackerEdit() {
           </Block.HeadBetween>
         </Block.Head>
   
-        <Block className="mt-n4">
+        <Block className="mt-n5">
           {/* <Form action="#"> */}
           <Form noValidate validated={validated} onSubmit={postData}>
             <Row className="g-3 ">
@@ -226,7 +259,7 @@ function TrainingDeputationTrackerEdit() {
                   ) : (
                     <Row className="g-gs">
                       <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n3">
                       <Form.Label htmlFor="official Name">Name Of the Official<span className="text-danger">*</span></Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -245,7 +278,7 @@ function TrainingDeputationTrackerEdit() {
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Designation<span className="text-danger">*</span>
                             </Form.Label>
@@ -277,7 +310,7 @@ function TrainingDeputationTrackerEdit() {
 
                           <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Deputed to Institute Name and Details<span className="text-danger">*</span>
@@ -310,7 +343,7 @@ function TrainingDeputationTrackerEdit() {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Training Program<span className="text-danger">*</span>
@@ -343,7 +376,7 @@ function TrainingDeputationTrackerEdit() {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Training Course<span className="text-danger">*</span>
@@ -376,7 +409,7 @@ function TrainingDeputationTrackerEdit() {
 
 
                           <Col lg="6">
-                          <Form.Group className="form-group">
+                          <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="trDuration">
                             Official Address
                             </Form.Label>
@@ -394,7 +427,7 @@ function TrainingDeputationTrackerEdit() {
                         </Col>
                 
                 <Col lg="6">
-                 <Form.Group className="form-group">
+                 <Form.Group className="form-group mt-n3">
                     <Form.Label htmlFor="trDuration">
                     Mobile Number
                     </Form.Label>
@@ -412,7 +445,7 @@ function TrainingDeputationTrackerEdit() {
                 </Col>
 
                 <Col lg="6">
-                <Form.Group className="form-group">
+                <Form.Group className="form-group mt-n3">
                         <Form.Label>Training Attended</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -430,7 +463,7 @@ function TrainingDeputationTrackerEdit() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n3">
                       <Form.Label htmlFor="trNoOfParticipant">
                       Remarks
                       </Form.Label>
@@ -448,7 +481,7 @@ function TrainingDeputationTrackerEdit() {
                   </Col>
 
                   <Col lg='6'>          
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>Training Period Start Date</Form.Label>
                         <Row>
                           <Col lg="6">
@@ -504,12 +537,9 @@ function TrainingDeputationTrackerEdit() {
                     </Button>
                   </li>
                   <li>
-                    <Link
-                      to="/training-deputation-tracker-list"
-                      className="btn btn-secondary border-0"
-                    >
-                      Cancel
-                    </Link>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                   </li>
                 </ul>
               </div>

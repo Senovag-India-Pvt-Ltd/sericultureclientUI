@@ -41,15 +41,25 @@ function Source() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              sourceMasterName: "",
+              sourceNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+  const clear = () =>{
+    setData({
+      sourceMasterName: "",
+      sourceNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -57,7 +67,7 @@ function Source() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/source-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -158,9 +168,9 @@ function Source() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/source-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

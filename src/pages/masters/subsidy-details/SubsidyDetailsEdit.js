@@ -47,15 +47,26 @@ function SubsidyDetailsEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              subsidyName: "",
+              subsidyNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      subsidyName: "",
+      subsidyNameInKannada: "",  
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -86,7 +97,7 @@ function SubsidyDetailsEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/subsidy-details-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -100,7 +111,7 @@ function SubsidyDetailsEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/subsidy-details-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -200,12 +211,9 @@ function SubsidyDetailsEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/subsidy-details-list"
-                    className="btn btn-secondary border-0"
-                  >
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

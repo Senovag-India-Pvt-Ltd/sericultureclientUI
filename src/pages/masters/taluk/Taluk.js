@@ -30,7 +30,7 @@ function Taluk() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const form = event.currentTarget;
+  const form = event.currentTarget;
   if (form.checkValidity() === false) {
     event.preventDefault();
     event.stopPropagation();
@@ -45,15 +45,30 @@ function Taluk() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              talukName: "",
+              stateId: "",
+              districtId: "",
+              talukNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      talukName: "",
+      stateId: "",
+      districtId: "",
+      talukNameInKannada: "",
+    })
+  }
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -104,7 +119,7 @@ function Taluk() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/taluk-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -174,7 +189,7 @@ function Taluk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Taluk Name is required
+                        State Name is required
                       </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -261,9 +276,9 @@ function Taluk() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/taluk-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
