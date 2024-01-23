@@ -29,7 +29,7 @@ function Weighment() {
   const [tareWeight, setTareWeight] = useState(0.0);
   const [counter, setCounter] = useState(0);
 
-  const [canContinue, setCanContinue] = useState(true);
+  const [canContinue, setCanContinue] = useState(false);
 
   const [data, setData] = useState({
     allottedLotId: "",
@@ -146,6 +146,20 @@ function Weighment() {
       icon: "warning",
       title: "Weighment Completed",
       text: `Total amount Debited is ${amount} for Lot ${lot}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setData({
+          allottedLotId: "",
+          noOfCrates: "0",
+        });
+        setTableWeightData([]);
+        setTotalWeight(0);
+        setTotalNetWeight(0);
+        setTareWeight(0);
+        setCounter(0);
+        // setLotNumber("");
+        printTriplet();
+      }
     });
   };
 
@@ -198,14 +212,9 @@ function Weighment() {
         // debugger;
         console.log(response.data.content);
         if (response.data.content) {
-          setTableWeightData([]);
-          setTotalWeight(0);
-          setTotalNetWeight(0);
-          setLotNumber("");
-          printTriplet();
           submitSuccess(
             response.data.content.totalAmountDebited,
-            response.data.content.totalAmountDebited
+            response.data.content.allottedLotId
           );
         } else {
           submitError(response.data.errorMessages);
@@ -223,7 +232,7 @@ function Weighment() {
       });
   };
 
-  console.log("tableWeightData",tableWeightData);
+  console.log("tableWeightData", tableWeightData);
 
   const submitConfirm = async () => {
     // debugger
@@ -293,6 +302,66 @@ function Weighment() {
     //   }
     // });
   };
+
+  // const lastSubmitConfirm = async () => {
+  //   // return window.confirm("Are you sure?");
+  //   debugger
+  //   try {
+  //     const result = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "Insufficient balance, Do you want to continue with the Weighment?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Yes, Continue!",
+  //     });
+  //     debugger;
+  //     if (result.isConfirmed) {
+  //       debugger;
+  //       onSubmitting();
+  //     } else {
+  //       console.log("Confirmation canceled");
+  //       // setData((prev) => ({ ...prev, allottedLotId: "" }));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during submitConfirm:", error);
+  //     Swal.fire("Error", "An error occurred", "error");
+  //   }
+  // };
+
+  const lastSubmitConfirm = async () => {
+    // return window.confirm("Are you sure?");
+    debugger;
+    try {
+      // return Swal.fire({
+      //   title: "Are you sure?",
+      //   text: "Insufficient balance, Do you want to continue with the Weighment?",
+      //   icon: "warning",
+      //   showCancelButton: true,
+      //   confirmButtonText: "Yes, Continue!",
+      // }).then((result)=>{
+      //   if (result.isConfirmed) {
+      //     debugger;
+      //     onSubmitting();
+      //   } else {
+      //     console.log("Confirmation canceled");
+      //     // setData((prev) => ({ ...prev, allottedLotId: "" }));
+      //   }
+      // })
+      const isConfirmed = window.confirm(
+        "Insufficient Balance,Do you want to continue with the Weighment?"
+      );
+      debugger;
+      if (isConfirmed) {
+        onSubmitting();
+      } else {
+        console.log("Confirmation canceled");
+      }
+    } catch (error) {
+      console.error("Error during submitConfirm:", error);
+      Swal.fire("Error", "An error occurred", "error");
+    }
+  };
+
   // useEffect(() => {
 
   //   console.log( lastWeight  );
@@ -311,44 +380,186 @@ function Weighment() {
   //   };
   // }, [lastWeight]); // myState is specified as a dependency
 
+  // useEffect(() => {
+  //   const handleKeyDown = async (event) => {
+  //     if (event.key === "Enter") {
+  //       // Handle the Enter key press here
+  //       //{data.noOfCrates} - {counter}
+  //       // If condition to continue with weighing
+  //       if (data.allottedLotId == "") {
+  //         alert("Please Enter Lot No");
+  //         setCanContinue(false);
+  //       }
+  //       if (data.noOfCrates <= 0) {
+  //         alert("Please Enter No of Crates");
+  //         setCanContinue(false);
+  //       }
+  //       // debugger;
+  //       if (counter >= parseInt(data.noOfCrates)-1) {
+  //         setCanContinue(false);
+  //         // alert("You already completed the weighment with crates");
+  //         // document.removeEventListener("keydown", handleKeyDown);
+  //         // await submitConfirm();
+
+  //         onSubmitting();
+  //         // printTriplet();
+  //       }
+
+  //       // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
+  //       if (
+  //         data.noOfCrates <= 0 ||
+  //         data.allottedLotId == "" ||
+  //         counter >= parseInt(data.noOfCrates)-1
+  //       ) {
+  //         setCanContinue(false);
+  //         console.log("cannot continue with weighment");
+  //       } else {
+  //         setCanContinue(true);
+  //       }
+
+  //       if (canContinue) {
+  //         let prabhu = weighStream.toString();
+
+  //         const lastWeightString = prabhu.substring(
+  //           prabhu.lastIndexOf("kg") - 8,
+  //           prabhu.lastIndexOf("kg") - 1
+  //         );
+
+  //         setLastWeight(lastWeightString);
+
+  //         const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
+  //         const totalWeightFloat = lastWeightFloat + totalWeight;
+
+  //         setTotalWeight(totalWeightFloat);
+
+  //         // calculate set total net weight
+  //         // const totalNetWeightFloat =
+  //         //   lastWeightFloat - tareWeight + totalNetWeight;
+
+  //         const totalNetWeightFloat =
+  //           lastWeightFloat - tareWeight + totalNetWeight < 0
+  //             ? 0
+  //             : lastWeightFloat - tareWeight + totalNetWeight;
+
+  //         setTotalNetWeight(totalNetWeightFloat);
+
+  //         const weightObj = {
+  //           grossWeight: lastWeightFloat,
+  //           netWeight:
+  //             lastWeightFloat >= tareWeight ? lastWeightFloat - tareWeight : 0,
+  //           crateNumber: data.noOfCrates,
+  //         };
+  //         setTableWeightData((prevState) => [...prevState, weightObj]);
+
+  //         const formattedTotalPrice = totalWeightFloat * pricePerKg;
+  //         console.log(pricePerKg);
+  //         console.log(formattedTotalPrice);
+
+  //         setTotalPrice(formattedTotalPrice);
+
+  //         // calculate total net cocoon net weight total price
+  //         const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
+  //         // setTotalNetPrice(formattedTotalNetPrice);
+  //         setTotalNetPrice(10);
+
+  //         if (counter <= parseInt(data.noOfCrates)-1) {
+  //           setCounter(counter + 1);
+  //         }
+
+  //         setWeighStream("");
+  //       }
+  //     }
+  //   };
+
+  //   // console.log(tableWeightData);
+
+  //   // Attach the event listener when the component mounts
+  //   document.addEventListener("keydown", handleKeyDown);
+
+  //   // Detach the event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // });
+
   useEffect(() => {
+    let canContinue1 = false;
     const handleKeyDown = async (event) => {
       if (event.key === "Enter") {
+        debugger;
         // Handle the Enter key press here
         //{data.noOfCrates} - {counter}
         // If condition to continue with weighing
-        if (data.allottedLotId == "") {
-          alert("Please Enter Lot No");
-          setCanContinue(false);
+        if (data.allottedLotId == "" || data.noOfCrates <= 0) {
+          debugger;
+          if (data.allottedLotId == "") {
+            alert("Please Enter Lot No");
+            setCanContinue(false);
+            canContinue1 = false;
+          }
+          if (data.noOfCrates <= 0) {
+            alert("Please Enter No of Crates");
+            setCanContinue(false);
+            canContinue1 = false;
+          }
         }
-        if (data.noOfCrates <= 0) {
-          alert("Please Enter No of Crates");
-          setCanContinue(false);
-        }
-        // debugger;
-        if (counter >= parseInt(data.noOfCrates)-1) {
-          setCanContinue(false);
-          // alert("You already completed the weighment with crates");
-          // document.removeEventListener("keydown", handleKeyDown);
-          // await submitConfirm();
 
-          onSubmitting();
-          // printTriplet();
+        // debugger;
+        // if (counter >= parseInt(data.noOfCrates)-1) {
+        //   setCanContinue(false);
+        //   // alert("You already completed the weighment with crates");
+        //   // document.removeEventListener("keydown", handleKeyDown);
+        //   // await submitConfirm();
+
+        //   onSubmitting();
+        //   // printTriplet();
+        // }
+        console.log("counter", counter);
+        console.log("noOfCrate", parseInt(data.noOfCrates));
+        if (
+          counter === parseInt(data.noOfCrates) ||
+          data.allottedLotId === ""
+        ) {
+          // debugger;
+          if (parseInt(data.noOfCrates) === 0) {
+            alert("Please Enter No of Crates");
+            setCanContinue(false);
+            canContinue1 = false;
+          } else if (data.allottedLotId === "") {
+            alert("Please Enter Lot Number");
+            setCanContinue(false);
+            canContinue1 = false;
+          } else if (totalNetPrice > weigh.reelerCurrentBalance) {
+            // console.log("Reeler don't have enough money");
+            // getCrateDetails();
+            debugger;
+            await lastSubmitConfirm();
+          } else {
+            console.log("hello Weight");
+            setCanContinue(false);
+            canContinue1 = false;
+            onSubmitting();
+          }
+        } else {
+          canContinue1 = true;
         }
 
         // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
-        if (
-          data.noOfCrates <= 0 ||
-          data.allottedLotId == "" ||
-          counter >= parseInt(data.noOfCrates)-1
-        ) {
-          setCanContinue(false);
-          console.log("cannot continue with weighment");
-        } else {
-          setCanContinue(true);
-        }
+        // if (
+        //   data.noOfCrates <= 0 ||
+        //   data.allottedLotId == "" ||
+        //   counter >= parseInt(data.noOfCrates) - 1
+        // ) {
+        //   debugger;
+        //   setCanContinue(false);
+        //   canContinue1 = false;
+        //   console.log("cannot continue with weighment");
+        // } else {
+        //   setCanContinue(true);
+        //   canContinue1 = true;
+        // }
 
-        if (canContinue) {
+        if (canContinue1) {
           let prabhu = weighStream.toString();
 
           const lastWeightString = prabhu.substring(
@@ -391,8 +602,10 @@ function Weighment() {
           // calculate total net cocoon net weight total price
           const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
           setTotalNetPrice(formattedTotalNetPrice);
+          // setTotalNetPrice(10);
 
-          if (counter <= parseInt(data.noOfCrates)-1) {
+          if (counter <= parseInt(data.noOfCrates) - 1) {
+            debugger;
             setCounter(counter + 1);
           }
 
@@ -412,14 +625,15 @@ function Weighment() {
     };
   });
 
-  if (counter == parseInt(data.noOfCrates)) {
-    if (totalNetPrice > weigh.reelerCurrentBalance) {
-      // console.log("Reeler don't have enough money");
-      getCrateDetails();
-    } else {
-      console.log("hello Weight");
-    }
-  }
+  // if (counter == parseInt(data.noOfCrates)) {
+  //   if (totalNetPrice > weigh.reelerCurrentBalance) {
+  //     // console.log("Reeler don't have enough money");
+  //     // getCrateDetails();
+  //     lastSubmitConfirm();
+  //   } else {
+  //     console.log("hello Weight");
+  //   }
+  // }
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -889,7 +1103,7 @@ function Weighment() {
                         <tbody>
                           {tableWeightData.map(
                             (row, index) =>
-                          // debugger
+                              // debugger
                               index + 1 !== data.noOfCrates && (
                                 <tr key={index}>
                                   <td style={styles.xxsmall}>

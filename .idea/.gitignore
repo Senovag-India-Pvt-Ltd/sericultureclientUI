@@ -1,12 +1,3 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-
-misc.xml
-modules.xml
-sericulture-ui.iml
-vcs.xml
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -20,7 +11,7 @@ vcs.xml
 # production
 /build
 
-# misc
+# misc 
 .DS_Store
 .env.local
 .env.development.local
@@ -30,3 +21,14 @@ vcs.xml
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Default ignored files
+/shelf/
+/workspace.xml
+
+misc.xml
+modules.xml
+sericulture-ui.iml
+vcs.xml
+
+
