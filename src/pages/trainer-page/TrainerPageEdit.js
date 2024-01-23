@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+// import axios from "axios";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
 
@@ -20,7 +20,9 @@ function TrainerPageEdit() {
   const [loading, setLoading] = useState(false);
 
   // Trainee Details 
+  
   const [trDetails, setTrDetails] = useState({
+    trScheduleId: "",
     trTraineeName: "",
     designationId: "",
     trOfficeId: "",
@@ -35,24 +37,25 @@ function TrainerPageEdit() {
     preTestScore: "",
     postTestScore: "",
     percentageImproved: "",
+  
   });
 
-  const [validated, setValidated] = useState(false);
+const [validated, setValidated] = useState(false);
 const [validatedTrDetails, setValidatedTrDetails] = useState(false);
 const [validatedTrDetailsEdit, setValidatedTrDetailsEdit] = useState(false);
 
 const [trDetailsList, setTrDetailsList] = useState([]);
 
 const getTrDetailsList = () => {
-    axios
-      .get(baseURL2 + `trTrainee/get-by-trSchedule-id-join/${id}`)
+    api
+      .get(baseURL2 + `trTrainee/get-by-tr-schedule-id-join/${id}`)
       .then((response) => {
-        setTrDetailsList(response.data.content.trTrainee);
+        setTrDetailsList(response.data.content.trSchedule);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setTrDetailsList([]);
-        editError(message);
+        // editError(message);
       });
   };
 
@@ -63,10 +66,10 @@ const handleShowModal = () => setShowModal(true);
 const handleCloseModal = () => setShowModal(false);
 
 const handleAdd = (event) => {
-    const withTrScheduleId = {
-      ...trDetails,
-      trScheduleId: id,
-    };
+    // const withTrScheduleId = {
+    //   ...trDetails,
+    //   trScheduleId: id,
+    // };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -74,79 +77,9 @@ const handleAdd = (event) => {
       setValidatedTrDetails(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-    api
-      .post(baseURL2 + `trTrainee/add`, withTrScheduleId, {
-        headers: _header,
-      })
-      .then((response) => {
-        getTrDetailsList();
-        setShowModal(false);
-      })
-      .catch((err) => {
-        getTrDetailsList();
-        // saveError();
-      });
-      setValidatedTrDetails(true);
-    }
-  };
-
-  const handleDelete = (i) => {
-    axios
-      .delete(baseURL2 + `trTrainee/delete/${i}`)
-      .then((response) => {
-        getTrDetailsList();
-      })
-      .catch((err) => {
-        getTrDetailsList();
-      });
-  };
-
-   //   const [vb, setVb] = useState({});
-   const handleTrGet = (i) => {
-    api
-      .get(baseURL2 + `trTrainee/get/${i}`)
-      .then((response) => {
-        setTrDetails(response.data.content);
-        setShowModal2(true);
-      })
-      .catch((err) => {
-        setTrDetails({});
-      });
-  };
-
-  const handleEdit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidatedTrDetailsEdit(true);
-    } else {
-      event.preventDefault();
-    api
-      .post(baseURL2 + `trTrainee/edit`, trDetails, {
-        headers: _header,
-      })
-      .then((response) => {
-        getTrDetailsList();
-        setShowModal2(false);
-      })
-      .catch((err) => {
-        getTrDetailsList();
-      });
-      setValidatedTrDetailsEdit(true);
-    }
-  };
-
-  const handleTrainerInputs = (e) => {
-    const { name, value } = e.target;
-    setTrDetails({ ...trDetails, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => {
-    setShowModal2(false);
-    setTrDetails({
+      setTrDetailsList((prev) => [...prev, trDetails])
+      setTrDetails({
+        trScheduleId: "",
         trTraineeName: "",
         designationId: "",
         trOfficeId: "",
@@ -161,8 +94,123 @@ const handleAdd = (event) => {
         preTestScore: "",
         postTestScore: "",
         percentageImproved: "",
+      });
+      // event.stopPropagation();
+    // api
+    //   .post(baseURL2 + `trTrainee/add`,trDetails)
+    //   .then((response) => {
+        // getTrDetailsList();
+        setShowModal(false);
+      // })
+      // .catch((err) => {
+        // getTrDetailsList();
+        // saveError();
+    
+      setValidatedTrDetails(false);
+    }
+  };
+
+  // const handleDelete = (i) => {
+  //   api
+  //     .delete(baseURL2 + `trTrainee/delete/${i}`)
+  //     .then((response) => {
+  //       getTrDetailsList();
+  //     })
+  //     .catch((err) => {
+  //       getTrDetailsList();
+  //     });
+  // };
+
+  const handleDelete = (i) => {
+    setTrDetailsList((prev) => {
+      const newArray = prev.filter((item, place) => place !== i);
+      return newArray;
     });
   };
+
+  const [trainerId, setTrainerId] = useState();
+    const handleGet = (i) => {
+      setTrDetails(trDetailsList[i]);
+      setShowModal2(true);
+      setTrainerId(i);
+    };
+  
+
+   //   const [vb, setVb] = useState({});
+  //  const handleTrGet = (i) => {
+  //   api
+  //     .get(baseURL2 + `trTrainee/get/${i}`)
+  //     .then((response) => {
+  //       setTrDetails(response.data.content);
+  //       setShowModal2(true);
+  //     })
+  //     .catch((err) => {
+  //       setTrDetails({});
+  //     });
+  // };
+
+  const handleUpdate = (e, i, changes) => {
+    setTrDetailsList((prev) =>
+      prev.map((item, ix) => {
+        if (ix === i) {
+          return { ...item, ...changes };
+        }
+        return item;
+      })
+    );
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidatedTrDetailsEdit(true);
+    } else {
+      e.preventDefault();
+      setShowModal2(false);
+      setValidatedTrDetailsEdit(false);
+      setTrDetails({
+          trScheduleId: "",
+          trTraineeName: "",
+          designationId: "",
+          trOfficeId: "",
+          gender: "",
+          mobileNumber: "",
+          place: "",
+          stateId: "",
+          districtId: "",
+          talukId: "",
+          hobliId: "",
+          villageId: "",
+          preTestScore: "",
+          postTestScore: "",
+          percentageImproved: "",
+      });
+    }
+  };
+  const handleTrainerInputs = (e) => {
+    const { name, value } = e.target;
+    setTrDetails({ ...trDetails, [name]: value });
+  };
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+  //   setTrDetails({
+  //       trScheduleId: "",
+  //       trTraineeName: "",
+  //       designationId: "",
+  //       trOfficeId: "",
+  //       gender: "",
+  //       mobileNumber: "",
+  //       place: "",
+  //       stateId: "",
+  //       districtId: "",
+  //       talukId: "",
+  //       hobliId: "",
+  //       villageId: "",
+  //       preTestScore: "",
+  //       postTestScore: "",
+  //       percentageImproved: "",
+  //   });
+  // };
 
   let name, value;
   const handleInputs = (e) => {
@@ -186,34 +234,40 @@ const handleAdd = (event) => {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    axios
-      .post(baseURL2 + `trSchedule/edit`, data, {
-        headers: _header,
-      })
+    api
+      .post(baseURL2 + `trSchedule/edit`, data)
       .then((response) => {
-        // if (vbAccountList.length > 0) {
-        //   const reelerId = response.data.content.reelerId;
-        //   vbAccountList.forEach((list) => {
-        //     const updatedVb = {
-        //       ...list,
-        //       reelerId: reelerId,
-        //     };
-        //     axios
-        //       .post(baseURL + `reeler-virtual-bank-account/edit`, updatedVb, {
-        //         headers: _header,
-        //       })
-        //       .then((response) => {
-        //         updateSuccess();
-        //       })
-        //       .catch((err) => {
-        //         setVbAccount({});
-        //         updateError();
-        //       });
-        //   });
-        // } else {
-        //   updateSuccess();
-        // }
+        if (response.data.content.error) {
+          const scheduleError = response.data.content.error_description;
+            updateError(scheduleError);
+        }else{
+
+          if (trDetailsList.length > 0) {
+            const trScheduleId = response.data.content.trScheduleId;
+            trDetailsList.forEach((list) => {
+              const updatedTr = {
+                ...list,
+                trScheduleId: trScheduleId,
+              };
+              api
+                .post(baseURL2 + `trTrainee/add`, updatedTr)
+                .then((response) => {
+                  if (response.data.content.error) {
+                    const bankError = response.data.content.error_description;
+                      updateError(bankError);
+                    }else{
+                  updateSuccess();
+                    }
+                })
+                .catch((err) => {
+                  setTrDetails({});
+                  updateError();
+                });
+            });
+          } else {
         updateSuccess();
+          }
+        }
       })
       .catch((err) => {
         setData({});
@@ -222,6 +276,8 @@ const handleAdd = (event) => {
       setValidated(true);
     }
   };
+
+
 
   //   to get data from api
   const getIdList = () => {
@@ -233,17 +289,37 @@ const handleAdd = (event) => {
         // setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         // setLoading(false);
       });
   };
 
   useEffect(() => {
     getIdList();
-    getTrDetailsList();
+    // getTrDetailsList();
   }, [id]);
+
+  // to get User  master
+  const [trUserListData, setTrUserListData] = useState([]);
+
+  const getTrUserList = () => {
+    const response = api
+      .get(baseURL2 + `userMaster/get-all`)
+      .then((response) => {
+        if (response.data.content.userMaster) {
+        setTrUserListData(response.data.content.userMaster);
+        }
+      })
+      .catch((err) => {
+        setTrUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTrUserList();
+  }, []);
 
    // to get TrInstitutionMaster
    const [trInstituteListData, setTrInstituteListData] = useState([]);
@@ -252,7 +328,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `trInstitutionMaster/get-all`)
        .then((response) => {
+        if (response.data.content.trInstitutionMaster) {
          setTrInstituteListData(response.data.content.trInstitutionMaster);
+        }
        })
        .catch((err) => {
          setTrInstituteListData([]);
@@ -270,7 +348,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `trGroupMaster/get-all`)
        .then((response) => {
+        if (response.data.content.trGroupMaster) {
          setTrGroupListData(response.data.content.trGroupMaster);
+        }
        })
        .catch((err) => {
          setTrGroupListData([]);
@@ -288,7 +368,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `trProgramMaster/get-all`)
        .then((response) => {
+        if (response.data.content.trProgramMaster) {
          setTrProgramListData(response.data.content.trProgramMaster);
+        }
        })
        .catch((err) => {
          setTrProgramListData([]);
@@ -306,7 +388,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `trCourseMaster/get-all`)
        .then((response) => {
+        if (response.data.content.trCourseMaster) {
          setTrCourseListData(response.data.content.trCourseMaster);
+        }
        })
        .catch((err) => {
          setTrCourseListData([]);
@@ -324,7 +408,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `trModeMaster/get-all`)
        .then((response) => {
+        if (response.data.content.trModeMaster) {
          setTrModeListData(response.data.content.trModeMaster);
+        }
        })
        .catch((err) => {
          setTrModeListData([]);
@@ -339,6 +425,9 @@ const handleAdd = (event) => {
  const handleDateChange = (date, type) => {
    setData({ ...data, [type]: date });
  };
+
+ const isDataStartSet = !!data.trStartDate;
+  const isDataCompletionSet = !!data.trDateOfCompletion;
  
    // to get Designation
    const [designationListData, setDesignationListData] = useState([]);
@@ -347,7 +436,9 @@ const handleAdd = (event) => {
      const response = api
        .get(baseURL2 + `designation/get-all`)
        .then((response) => {
+        if (response.data.content.designation) {
          setDesignationListData(response.data.content.designation);
+        }
        })
        .catch((err) => {
          setDesignationListData([]);
@@ -358,14 +449,16 @@ const handleAdd = (event) => {
      getDesignationList();
    }, []);
  
-   // to get Designation
+   // to get Office
    const [officeListData, setOfficeListData] = useState([]);
  
    const getOfficeList = () => {
      const response = api
        .get(baseURL2 + `trOffice/get-all`)
        .then((response) => {
+        if (response.data.content.trOffice) {
          setOfficeListData(response.data.content.trOffice);
+        }
        })
        .catch((err) => {
          setOfficeListData([]);
@@ -401,7 +494,9 @@ const handleAdd = (event) => {
        api
          .get(baseURL2 + `district/get-by-state-id/${_id}`)
          .then((response) => {
+          if (response.data.content.district) {
            setDistrictListData(response.data.content.district);
+          }
          })
          .catch((err) => {
            setDistrictListData([]);
@@ -422,7 +517,9 @@ const handleAdd = (event) => {
        api
          .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
          .then((response) => {
+          if (response.data.content.taluk) {
            setTalukListData(response.data.content.taluk);
+          }
          })
          .catch((err) => {
            setTalukListData([]);
@@ -443,7 +540,9 @@ const handleAdd = (event) => {
        api
          .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
          .then((response) => {
+          if (response.data.content.hobli) {
            setHobliListData(response.data.content.hobli);
+          }
          })
          .catch((err) => {
            setHobliListData([]);
@@ -464,7 +563,9 @@ const handleAdd = (event) => {
        api
          .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
          .then((response) => {
+          if (response.data.content.village) {
            setVillageListData(response.data.content.village);
+          }
          })
          .catch((err) => {
            setVillageListData([]);
@@ -618,25 +719,57 @@ const handleAdd = (event) => {
                   <Card.Header>Training Details</Card.Header>
                   <Card.Body>
                     <Row className="g-gs">
-                      <Col lg="6">
-                      <Form.Group className="form-group">
-                      <Form.Label htmlFor="trName">Trainer Name<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="trName"
-                          name="trName"
-                          value={data.trName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Trainer Name"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                    Trainer Name is required
-                </Form.Control.Feedback>
+
+                    <Col lg="6">
+                  <Form.Group className="form-group">
+                        <Form.Label>Stake Holder Type</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="trStakeholderType"
+                            value={data.trStakeholderType}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select Stake Holder Type</option>
+                            <option value="1">Training For Internal Stake Holders</option>
+                            <option value="2">Training For External Stake Holders</option>
+                            <option value="3">Other</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                  <Form.Group className="form-group">
+                      <Form.Label>
+                        User<span className="text-danger">*</span>
+                      </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userMasterId"
+                            value={data.userMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs} 
+                            required
+                            isInvalid={data.userMasterId === undefined || data.userMasterId === "0"}
+                          >
+                            <option value="">Select User</option>
+                            {trUserListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                           User is required
+                          </Form.Control.Feedback>
+                        </div>
+                    </Form.Group> 
+                    </Col> 
+
+                   
 
                     <Col lg="6">
                     <Form.Group className="form-group">
@@ -671,7 +804,7 @@ const handleAdd = (event) => {
 
                           <Col lg="6">
                           <Form.Group
-                            className="form-group mt-n4"
+                            className="form-group"
                           >
                             <Form.Label>
                               Training Group<span className="text-danger">*</span>
@@ -704,7 +837,7 @@ const handleAdd = (event) => {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group mt-n4"
+                            className="form-group"
                           >
                             <Form.Label>
                               Training Program<span className="text-danger">*</span>
@@ -737,7 +870,7 @@ const handleAdd = (event) => {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group mt-n4"
+                            className="form-group"
                           >
                             <Form.Label>
                               Training Course<span className="text-danger">*</span>
@@ -769,9 +902,9 @@ const handleAdd = (event) => {
                           </Col>
 
 
-                          <Col lg="6">
+                           <Col lg="6">
                           <Form.Group
-                            className="form-group mt-n4"
+                            className="form-group"
                           >
                             <Form.Label>
                               Training Mode<span className="text-danger">*</span>
@@ -800,10 +933,10 @@ const handleAdd = (event) => {
                                 </Form.Control.Feedback>
                               </div>
                           </Form.Group> 
-                        </Col>
-                
+                        </Col> 
+                 
                 <Col lg="6">
-                 <Form.Group className="form-group mt-n4">
+                 <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
                     Training Duration
                     </Form.Label>
@@ -821,7 +954,7 @@ const handleAdd = (event) => {
                 </Col>
 
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="trPeriod">
                       Training Period
                       </Form.Label>
@@ -839,7 +972,7 @@ const handleAdd = (event) => {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="trNoOfParticipant">
                       Training No Of Participant
                       </Form.Label>
@@ -854,8 +987,10 @@ const handleAdd = (event) => {
                         />
                       </div>
                     </Form.Group>
+                    </Col>
 
-                    <Form.Group className="form-group mt-2">
+                    <Col lg="6">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="trUploadPath">
                       Training Upload
                       </Form.Label>
@@ -873,24 +1008,22 @@ const handleAdd = (event) => {
                   </Col>
 
                   <Col lg='6'>          
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group">
                         <Form.Label>Training Period Start Date</Form.Label>
                         <Row>
                           <Col lg="6">
                           <div className="form-control-wrap">
-                          {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
+                          {isDataStartSet && (
                           <DatePicker
-                            selected={data.trStartDate}
-                            onChange={(date) => handleDateChange(date, "trStartDate")}
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                          />
+                           selected={new Date(data.trStartDate)}
+                              onChange={(date) => handleDateChange(date, "trStartDate")}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                            />
+                          )}
                         </div>
                         </Col>
                         </Row>
@@ -901,12 +1034,9 @@ const handleAdd = (event) => {
                       {/* <Form.Group className="form-group"> */}
                         <Form.Label>Date of Completion</Form.Label>
                         <div className="form-control-wrap">
-                          {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
+                        {isDataCompletionSet && (
                           <DatePicker
-                            selected={data.trDateOfCompletion}
+                            selected={new Date(data.trDateOfCompletion)}
                             onChange={(date) => handleDateChange(date, "trDateOfCompletion")}
                             peekNextMonth
                             showMonthDropdown
@@ -914,6 +1044,7 @@ const handleAdd = (event) => {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                           />
+                          )}
                         </div>
                       </Col>
                       </Row>
@@ -993,10 +1124,7 @@ const handleAdd = (event) => {
                                         variant="primary"
                                         size="sm"
                                         onClick={() =>
-                                            handleTrGet(
-                                                item.trTraineeId
-                                            )
-                                            }
+                                            handleGet(i)}
                                             >
                                                 Edit
                                             </Button>
@@ -1004,9 +1132,7 @@ const handleAdd = (event) => {
                                             variant="danger"
                                             size="sm"
                                             onClick={()=>
-                                            handleDelete(
-                                                item.trTraineeId
-                                            )
+                                            handleDelete( i)
                                             }
                                             className="ms-2"
                                         >
@@ -1103,7 +1229,7 @@ const handleAdd = (event) => {
                         }
                       >
                         <option value="">Select Designation</option>
-                        {designationListData.length
+                        {designationListData && designationListData.length
                           ? designationListData.map((list) => (
                               <option
                                 key={list.designationId}
@@ -1140,7 +1266,7 @@ const handleAdd = (event) => {
                         }
                       >
                         <option value="">Select Office</option>
-                        {officeListData.length
+                        {officeListData && officeListData.length
                           ? officeListData.map((list) => (
                               <option
                                 key={list.trOfficeId}
@@ -1164,7 +1290,7 @@ const handleAdd = (event) => {
                         <div className="form-control-wrap">
                           <Form.Select
                             name="gender"
-                            value={data.gender}
+                            value={trDetails.gender}
                             onChange={handleTrainerInputs}
                           >
                             <option value="">Select Gender</option>
@@ -1185,7 +1311,7 @@ const handleAdd = (event) => {
                           <Form.Control
                             id="mobileNumber"
                             name="mobileNumber"
-                            value={data.mobileNumber}
+                            value={trDetails.mobileNumber}
                             onChange={handleTrainerInputs}
                             type="text"
                             placeholder="Enter Mobile Number"
@@ -1226,14 +1352,17 @@ const handleAdd = (event) => {
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
-                          // value={`${farmerLand.stateId}_${farmerLand.stateName}`}
-                          value={trDetails.stateId}
+                          value={`${trDetails.stateId}_${trDetails.stateName}`}
+                          // value={trDetails.stateId}
+                          // value={`${trDetails.stateId || ""}_${trDetails.stateName || ""}`}
                           onChange={handleStateOption}
                         >
-                          <option value="0">Select State</option>
+                          <option value="">Select State</option>
                           {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                            <option key={list.stateId} 
+                            value={`${list.stateId}_${list.stateName}`}
+                            >
+                            {list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -1420,12 +1549,13 @@ const handleAdd = (event) => {
           </Modal.Body>
         </Modal>
 
-        <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+        <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
           <Modal.Header closeButton>
             <Modal.Title>Edit Trainer Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form noValidate validated={validatedTrDetailsEdit} onSubmit={handleEdit}>
+          <Form noValidate validated={validatedTrDetailsEdit} onSubmit={(e) => handleUpdate(e, trainerId, trDetails)}
+            >
           <Row className="g-5 px-5">
                 <Col lg="6">
                 <Form.Group className="form-group">
@@ -1468,7 +1598,7 @@ const handleAdd = (event) => {
                         }
                       >
                         <option value="">Select Designation</option>
-                        {designationListData.length
+                        {designationListData && designationListData.length
                           ? designationListData.map((list) => (
                               <option
                                 key={list.designationId}
@@ -1487,7 +1617,7 @@ const handleAdd = (event) => {
                 </Col>
   
                 <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group mt-n5">
                     <Form.Label>
                       Office<span className="text-danger">*</span>
                     </Form.Label>
@@ -1505,7 +1635,7 @@ const handleAdd = (event) => {
                         }
                       >
                         <option value="">Select Office</option>
-                        {officeListData.length
+                        {officeListData && officeListData.length
                           ? officeListData.map((list) => (
                               <option
                                 key={list.trOfficeId}
@@ -1524,12 +1654,12 @@ const handleAdd = (event) => {
                 </Col>
                 
                 <Col lg="6">
-                  <Form.Group className="form-group  mt-n4">
+                  <Form.Group className="form-group  mt-n5">
                         <Form.Label>Gender</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="gender"
-                            value={data.gender}
+                            value={trDetails.gender}
                             onChange={handleTrainerInputs}
                           >
                             <option value="">Select Gender</option>
@@ -1542,7 +1672,7 @@ const handleAdd = (event) => {
                     </Col>
                             
                     <Col lg="6">
-                      <Form.Group className="form-group  mt-n4">
+                      <Form.Group className="form-group  mt-n5">
                         <Form.Label htmlFor="mobileNumber">
                           Mobile Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1550,7 +1680,7 @@ const handleAdd = (event) => {
                           <Form.Control
                             id="mobileNumber"
                             name="mobileNumber"
-                            value={data.mobileNumber}
+                            value={trDetails.mobileNumber}
                             onChange={handleTrainerInputs}
                             type="text"
                             placeholder="Enter Mobile Number"
@@ -1564,7 +1694,7 @@ const handleAdd = (event) => {
                       </Col>
 
                       <Col lg="6">
-                      <Form.Group className="form-group  mt-n4">
+                      <Form.Group className="form-group  mt-n5">
                         <Form.Label htmlFor="place">
                           Place<span className="text-danger">*</span>
                         </Form.Label>
@@ -1586,19 +1716,22 @@ const handleAdd = (event) => {
                     </Col>
                     
                     <Col lg="6">
-                      <Form.Group className="form-group  mt-n4">
+                      <Form.Group className="form-group  mt-n5">
                       <Form.Label>State</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
-                          // value={`${farmerLand.stateId}_${farmerLand.stateName}`}
-                          value={trDetails.stateId}
+                          value={`${trDetails.stateId}_${trDetails.stateName}`}
+                          // value={trDetails.stateId}
+                          // value={`${trDetails.stateId || ""}_${trDetails.stateName || ""}`}
                           onChange={handleStateOption}
                         >
-                          <option value="0">Select State</option>
+                          <option value="">Select State</option>
                           {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                            <option key={list.stateId} 
+                            value={`${list.stateId}_${list.stateName}`}
+                            >
+                            {list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -1607,7 +1740,7 @@ const handleAdd = (event) => {
                 </Col>
                 
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n5">
                       <Form.Label>District</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1632,7 +1765,7 @@ const handleAdd = (event) => {
                 </Col>
 
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n5">
                       <Form.Label>Taluk</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1657,7 +1790,7 @@ const handleAdd = (event) => {
                 </Col>
 
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4 ">
+                    <Form.Group className="form-group mt-n5 ">
                       <Form.Label>Hobli</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -1682,7 +1815,7 @@ const handleAdd = (event) => {
                 </Col>
                 
                 <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n5">
                       <Form.Label htmlFor="Village">Village</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select

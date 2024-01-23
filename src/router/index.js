@@ -435,14 +435,14 @@ import TrainingMode from "../pages/masters/training-mode/TrainingMode";
 import TrainingModeList from "../pages/masters/training-mode/TrainingModeList";
 import TrainingModeEdit from "../pages/masters/training-mode/TrainingModeEdit";
 import TrainingModeView from "../pages/masters/training-mode/TrainingModeView";
-// import TrainerPage from "../pages/trainer-page/TrainerPage";
+import TrainerPage from "../pages/trainer-page/TrainerPage";
 import TrainingDeputationTracker from "../pages/training-deputation-tracker/TrainingDeputationTracker";
 import TrainingDeputationTrackerEdit from "../pages/training-deputation-tracker/TrainingDeputationTrackerEdit";
 import TrainingDeputationTrackerList from "../pages/training-deputation-tracker/TrainingDeputationTrackerList";
 import TrainingDeputationTrackerView from "../pages/training-deputation-tracker/TrainingDeputationTrackerView";
-// import TrainerPageEdit from "../pages/trainer-page/TrainerPageEdit";
-// import TrainerPageList from "../pages/trainer-page/TrainerPageList";
-// import TrainerPageView from "../pages/trainer-page/TrainerPageView";
+import TrainerPageEdit from "../pages/trainer-page/TrainerPageEdit";
+import TrainerPageList from "../pages/trainer-page/TrainerPageList";
+import TrainerPageView from "../pages/trainer-page/TrainerPageView";
 import TrainingOffice from "../pages/masters/training-office/TrainingOffice";
 import TrainingOfficeList from "../pages/masters/training-office/TrainingOfficeList";
 import TrainingOfficeEdit from "../pages/masters/training-office/TrainingOfficeEdit";
@@ -644,7 +644,7 @@ function Router() {
         <Route path="training-schedule-list" element={<TrainingScheduleList />} />
         <Route path="training-schedule-view/:id" element={<TrainingScheduleView />} />
         <Route path="training-schedule-edit/:id" element={<TrainingScheduleEdit />} />
-        {/* <Route
+        <Route
           path="trainer-page"
           element={<TrainerPage />}
         />
@@ -659,7 +659,7 @@ function Router() {
         <Route
           path="trainer-page-view/:id"
           element={<TrainerPageView />}
-        /> */}
+        />
 
         <Route
           path="training-deputation-tracker"

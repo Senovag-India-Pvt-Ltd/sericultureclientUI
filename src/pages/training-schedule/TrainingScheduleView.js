@@ -108,23 +108,23 @@ function TrainingScheduleView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Institution:</td>
-                        <td>{trainingSchedule.trInstitutionMasterId}</td>
+                        <td>{trainingSchedule.trInstitutionMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Group:</td>
-                        <td>{trainingSchedule.trGroupMasterId}</td>
+                        <td>{trainingSchedule.trGroupMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Program:</td>
-                        <td>{trainingSchedule.trProgramMasterId}</td>
+                        <td>{trainingSchedule.trProgramMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Course:</td>
-                        <td>{trainingSchedule.trCourseMasterId}</td>
+                        <td>{trainingSchedule.trCourseMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Mode Master:</td>
-                        <td>{trainingSchedule.trModeMasterId}</td>
+                        <td>{trainingSchedule.trModeMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Duration:</td>

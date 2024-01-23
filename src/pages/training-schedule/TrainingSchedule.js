@@ -17,7 +17,7 @@ function TrainingSchedule() {
 
   const [data, setData] = useState({
     userMasterId: "",
-    trStakeholdertype: "",
+    trStakeholderType: "",
     trName: "",
     trInstitutionMasterId: "",
     trGroupMasterId: "",

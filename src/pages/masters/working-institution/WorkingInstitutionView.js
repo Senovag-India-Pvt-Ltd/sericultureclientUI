@@ -48,7 +48,7 @@ function WorkingInstitutionView() {
   }, [id]);
 
   return (
-    <Layout title="WorkingInstitutions View" content="container">
+    <Layout title="WorkingInstitutions View" >
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -80,7 +80,7 @@ function WorkingInstitutionView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <Card.Header>WorkingInstitution Details</Card.Header>
           <Card.Body>

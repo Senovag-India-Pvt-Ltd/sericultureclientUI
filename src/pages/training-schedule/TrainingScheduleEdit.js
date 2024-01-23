@@ -84,6 +84,24 @@ function TrainingScheduleEdit() {
     }, [id]);
 
     // to get TrInstitutionMaster
+  const [trUserListData, setTrUserListData] = useState([]);
+
+  const getTrUserList = () => {
+    const response = api
+      .get(baseURL + `userMaster/get-all`)
+      .then((response) => {
+        setTrUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setTrUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTrUserList();
+  }, []);
+
+    // to get TrInstitutionMaster
   const [trInstituteListData, setTrInstituteListData] = useState([]);
 
   const getTrInstitutionMasterList = () => {
@@ -181,7 +199,7 @@ function TrainingScheduleEdit() {
         icon: "success",
         title: "Updated successfully",
         // text: "You clicked the button!",
-      }).then(() => navigate("/issue-new-trader-license-list"));
+      }).then(() => navigate("/training-schedule-list"));
     };
     const updateError = (message) => {
       Swal.fire({
@@ -195,7 +213,7 @@ function TrainingScheduleEdit() {
         icon: "error",
         title: message,
         text: "Something went wrong!",
-      }).then(() => navigate("/issue-new-trader-license-list"));
+      }).then(() => navigate("/training-schedule-list"));
     };
   
     return (
@@ -242,25 +260,37 @@ function TrainingScheduleEdit() {
                     </h1>
                   ) : (
                     <Row className="g-gs">
-                      <Col lg="6">
-                      <Form.Group className="form-group">
-                      <Form.Label htmlFor="trainerName">Trainer Name<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="trainerName"
-                          name="trName"
-                          value={data.trName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Trainer Name"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                    Trainer Name is required
-                </Form.Control.Feedback>
-             </Col>
+                    <Col lg="6">
+                  <Form.Group className="form-group">
+                      <Form.Label>
+                        User<span className="text-danger">*</span>
+                      </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userMasterId"
+                            value={data.userMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs} 
+                            required
+                            isInvalid={data.userMasterId === undefined || data.userMasterId === "0"}
+                          >
+                            <option value="">Select User</option>
+                            {trUserListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                           User is required
+                          </Form.Control.Feedback>
+                        </div>
+                    </Form.Group> 
+                    </Col>
+
 
                     <Col lg="6">
                     <Form.Group className="form-group">
