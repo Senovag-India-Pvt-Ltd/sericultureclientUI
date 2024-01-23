@@ -284,7 +284,7 @@ function Weighment() {
       const result = await Swal.fire({
         title: "Are you sure?",
         text: "Insufficient balance, Do you want to continue with the Weighment?",
-        icon: "success",
+        icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, Continue!",
       });
