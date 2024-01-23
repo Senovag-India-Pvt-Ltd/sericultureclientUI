@@ -42,16 +42,31 @@ function CrateEdit() {
           updateError();
           }else{
             updateSuccess();
+            setData({
+              raceMasterId: "",
+              marketId: "",
+              godownId: "",
+              approxWeightPerCrate: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
-        updateError(message);
-        setData({});
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      raceMasterId: "",
+      marketId: "",
+      godownId: "",
+      approxWeightPerCrate: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -127,7 +142,7 @@ const updateSuccess = () => {
     icon: "success",
     title: "Updated successfully",
     // text: "You clicked the button!",
-  }).then(() => navigate("/crate-list"));
+  }).then(() => navigate("#"));
 };
 const updateError = (message) => {
   Swal.fire({
@@ -141,7 +156,7 @@ const editError = (message) => {
     icon: "error",
     title: message,
     text: "Something went wrong!",
-  }).then(() => navigate("/crate-list"));
+  }).then(() => navigate("#"));
 };
 
 return (
@@ -286,12 +301,15 @@ return (
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/crate-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

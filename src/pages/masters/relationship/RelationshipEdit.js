@@ -49,15 +49,26 @@ function RelationshipEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              relationshipName: "",
+              relationshipNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      relationshipName: "",
+      relationshipNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -208,9 +219,12 @@ function RelationshipEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/relationship-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/relationship-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -42,15 +42,28 @@ function GodawnEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              marketMasterId: "",
+              godownName: "",
+              godownNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      marketMasterId: "",
+      godownName: "",
+      godownNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -98,7 +111,7 @@ function GodawnEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/godawn-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -112,7 +125,7 @@ function GodawnEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/godawn-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -240,12 +253,9 @@ function GodawnEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/godawn-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -45,15 +45,27 @@ function Godawn() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              marketMasterId: "",
+              godownName: "",
+              godownNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+  const clear = () =>{
+    setData({
+      marketMasterId: "",
+      godownName: "",
+      godownNameInKannada: "",
+    })
+  }
 
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
@@ -80,7 +92,7 @@ function Godawn() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/godawn-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -211,12 +223,9 @@ function Godawn() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/godawn-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

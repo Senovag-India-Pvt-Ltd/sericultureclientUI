@@ -49,15 +49,26 @@ function IrrigationSourceEdit() {
           updateError(response.data.content.error_description);
           }else{
         updateSuccess();
+        setData({
+          irrigationSourceName: "",
+          irrigationSourceNameInKannada: "",
+        });
+        setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+    irrigationSourceName: "",
+    irrigationSourceNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -86,7 +97,7 @@ function IrrigationSourceEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/irrigation-source-list"));
+    }).then(() => navigate("#"));
   };
 
   const updateError = (message) => {
@@ -102,7 +113,7 @@ function IrrigationSourceEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/state-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -204,12 +215,15 @@ function IrrigationSourceEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/irrigation-source-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

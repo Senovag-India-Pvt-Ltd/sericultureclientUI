@@ -48,15 +48,26 @@ function EducationEdit() {
           updateError(response.data.content.error_description);
           }else{
         updateSuccess();
+        setData({
+          name: "",
+          educationNameInKannada:"", 
+        });
+        setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      name: "",
+      educationNameInKannada:"", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -85,7 +96,7 @@ function EducationEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/education-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -99,7 +110,7 @@ function EducationEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/education-list"));
+    }).then(() => navigate("#"));
   };
   return (
     <Layout title="Education">
@@ -197,9 +208,9 @@ function EducationEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/education-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

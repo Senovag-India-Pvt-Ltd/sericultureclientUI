@@ -43,15 +43,26 @@ function ExternalUnitType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              externalUnitTypeName: "",
+              externalUnitTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      externalUnitTypeName: "",
+      externalUnitTypeNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -160,9 +171,12 @@ function ExternalUnitType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/external-unit-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/external-unit-type-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -48,24 +48,34 @@ function Relationship() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              relationshipName: "",
+              relationshipNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
-
       setValidated(true);
     }
-
   };
+
+  const clear = () =>{
+    setData({
+      relationshipName: "",
+      relationshipNameInKannada: "",
+    })
+  }
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
     })
-    // .then(() => navigate("/relationship-list"));
+     .then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -173,9 +183,12 @@ function Relationship() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/relationship-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/relationship-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -49,15 +49,27 @@ function LandOwnershipEdit() {
           updateError(response.data.content.error_description);
           }else{
         updateSuccess();
+        setData({
+          landOwnershipName: "",
+          landOwnershipNameInKannada: "", 
+        });
+        setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      landOwnershipName: "",
+      landOwnershipNameInKannada: "",
+    })
+  }
+
 
   //   to get data from api
   const getIdList = () => {
@@ -200,12 +212,9 @@ function LandOwnershipEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/land-ownership-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

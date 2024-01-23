@@ -42,15 +42,26 @@ function ExternalUnitTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              externalUnitTypeName: "",
+              externalUnitTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      externalUnitTypeName: "",
+      externalUnitTypeNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -194,9 +205,12 @@ function ExternalUnitTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/external-unit-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/external-unit-type-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

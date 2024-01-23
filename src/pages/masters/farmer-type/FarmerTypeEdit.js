@@ -42,15 +42,26 @@ function FarmerTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              farmerTypeName: "",
+              farmerTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      farmerTypeName: "",
+      farmerTypeNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +91,7 @@ function FarmerTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/farmer-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +105,7 @@ function FarmerTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/farmer-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -194,9 +205,12 @@ function FarmerTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/farmer-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/farmer-type-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

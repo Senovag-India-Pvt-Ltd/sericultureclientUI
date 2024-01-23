@@ -41,15 +41,28 @@ function DesignationEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              name: "",
+              designationNameInKannada:"",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
+        
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      name: "",
+      designationNameInKannada:"",
+    })
+  }
+
 
   //   to get data from api
   const getIdList = () => {
@@ -79,7 +92,7 @@ function DesignationEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/designation-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -93,7 +106,7 @@ function DesignationEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/designation-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -198,9 +211,12 @@ function DesignationEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/designation-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/designation-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -43,15 +43,26 @@ function FarmerType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              farmerTypeName: "",
+              farmerTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      farmerTypeName: "",
+      farmerTypeNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -59,7 +70,7 @@ function FarmerType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/farmer-type-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -160,9 +171,12 @@ function FarmerType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/farmer-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/farmer-type-list" className="btn btn-secondary border-0">
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

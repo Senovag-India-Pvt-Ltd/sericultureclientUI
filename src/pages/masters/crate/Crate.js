@@ -49,15 +49,30 @@ function Crate() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              raceMasterId: "",
+              marketId: "",
+              godownId: "",
+              approxWeightPerCrate: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
     setValidated(true);
   }
 };
+
+const clear = () =>{
+  setData({
+    raceMasterId: "",
+    marketId: "",
+    godownId: "",
+    approxWeightPerCrate: "",
+  })
+}
  
 
   const [loading, setLoading] = useState(false);
@@ -140,7 +155,7 @@ function Crate() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/crate-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -330,12 +345,15 @@ function Crate() {
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/crate-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>
