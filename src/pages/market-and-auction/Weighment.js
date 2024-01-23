@@ -43,6 +43,10 @@ function Weighment() {
     date: new Date(),
     bidAmount: "0",
     reelerCurrentBalance: 0,
+    farmerFirstName: "",
+    farmerNumber: "",
+    reelerName: "",
+    reelerLicense: "",
   });
 
   let name, value;
@@ -138,6 +142,18 @@ function Weighment() {
       icon: "error",
       title: "Not Saved",
       text: message,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setData({
+          allottedLotId: "",
+          noOfCrates: "0",
+        });
+        setTableWeightData([]);
+        setTotalWeight(0);
+        setTotalNetWeight(0);
+        setTareWeight(0);
+        setCounter(0);
+      }
     });
   };
 
@@ -152,12 +168,22 @@ function Weighment() {
           allottedLotId: "",
           noOfCrates: "0",
         });
+        setWeigh({
+          date: new Date(),
+          bidAmount: "0",
+          reelerCurrentBalance: 0,
+          farmerFirstName: "",
+          farmerNumber: "",
+          reelerName: "",
+          reelerLicense: "",
+        });
         setTableWeightData([]);
         setTotalWeight(0);
         setTotalNetWeight(0);
         setTareWeight(0);
         setCounter(0);
         // setLotNumber("");
+
         printTriplet();
       }
     });
