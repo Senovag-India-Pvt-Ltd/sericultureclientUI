@@ -40,32 +40,44 @@ function TrainingCourse() {
       .post(baseURL + `trCourseMaster/add`, data)
       .then((response) => {
         if(response.data.content.error){
-            saveError();
+            saveError(response.data.content.error_description);
             }else{
               saveSuccess();
+              setData({
+                trCourseMasterName: "",
+                trCourseNameInKannada: "",
+              });
+              setValidated(false);
             }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trCourseMasterName: "",
+      trCourseNameInKannada: "",
+    })
+  }
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/trainingCourses-list"));
+    }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 
@@ -164,9 +176,9 @@ function TrainingCourse() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/trainingCourses-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -39,7 +39,7 @@ function Roles() {
       .post(baseURL + `role/add`, data)
       .then((response) => {
         if(response.data.content.error){
-          saveError();
+          saveError(response.data.content.error_description);
           }else{
             saveSuccess();
             setData({
@@ -70,11 +70,11 @@ function Roles() {
     }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 

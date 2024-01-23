@@ -42,15 +42,27 @@ function TraderTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              traderTypeMasterName: "",
+              traderTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      traderTypeMasterName: "",
+      traderTypeNameInKannada: "", 
+    })
+  }
+
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +92,7 @@ function TraderTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/trader-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +106,7 @@ function TraderTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/trader-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -194,9 +206,9 @@ function TraderTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/trader-type-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

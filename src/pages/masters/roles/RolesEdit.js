@@ -42,7 +42,7 @@ function RolesEdit() {
       .post(baseURL + `role/edit`, datas)
       .then((response) => {
         if(response.data.content.error){
-          updateError();
+          updateError(response.data.content.error_description);
           }else{
             updateSuccess();
             setData({
@@ -92,11 +92,11 @@ function RolesEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
   const editError = (message) => {
