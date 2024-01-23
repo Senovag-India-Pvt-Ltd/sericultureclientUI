@@ -148,6 +148,16 @@ function Weighment() {
       text: `Total amount Debited is ${amount} for Lot ${lot}`,
     }).then((result) => {
       if (result.isConfirmed) {
+        setData({
+          allottedLotId: "",
+          noOfCrates: "0",
+        });
+        setTableWeightData([]);
+        setTotalWeight(0);
+        setTotalNetWeight(0);
+        setTareWeight(0);
+        setCounter(0);
+        // setLotNumber("");
         printTriplet();
       }
     });
@@ -202,10 +212,6 @@ function Weighment() {
         // debugger;
         console.log(response.data.content);
         if (response.data.content) {
-          setTableWeightData([]);
-          setTotalWeight(0);
-          setTotalNetWeight(0);
-          setLotNumber("");
           submitSuccess(
             response.data.content.totalAmountDebited,
             response.data.content.allottedLotId
