@@ -63,7 +63,7 @@ function ReadyForPayment() {
     setPayment({ ...payment, [type]: date });
   };
 
-  const handleAddToBank = (marketId, godown, date, lot) => {
+  const handleAddToBank = (marketId, date, lot) => {
     // alert("Added To Bank");
     debugger;
     api
