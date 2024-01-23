@@ -42,6 +42,11 @@ function SourceOfMulberryEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              mulberrySourceName: "",
+              mulberrySourceNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
@@ -51,6 +56,13 @@ function SourceOfMulberryEdit() {
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      mulberrySourceName: "",
+      mulberrySourceNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -79,7 +91,7 @@ function SourceOfMulberryEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/source-of-mulberry-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -93,7 +105,7 @@ function SourceOfMulberryEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/source-of-mulberry-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -197,12 +209,9 @@ function SourceOfMulberryEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/source-of-mulberry-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

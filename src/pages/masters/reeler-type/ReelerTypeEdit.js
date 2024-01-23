@@ -42,15 +42,28 @@ function ReelerTypeEdit() {
           updateError();
           }else{
             updateSuccess();
+            setData({
+              reelerTypeMasterName: "",
+              reelerTypeNameInKannada: "",
+              noOfDeviceAllowed: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      reelerTypeMasterName: "",
+      reelerTypeNameInKannada: "",
+      noOfDeviceAllowed: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +93,7 @@ function ReelerTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +107,7 @@ function ReelerTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/reeler-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -216,9 +229,9 @@ function ReelerTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/reeler-type-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

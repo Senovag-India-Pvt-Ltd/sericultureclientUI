@@ -43,18 +43,29 @@ function TrainingCourseEdit() {
       .post(baseURL + `trCourseMaster/edit`, datas)
       .then((response) => {
         if(response.data.content.error){
-            updateError();
+            updateError(response.data.content.error_description);
             }else{
               updateSuccess();
+              setData({
+                trCourseMasterName: "",
+                trCourseNameInKannada: "",
+              });
+              setValidated(false);
             }
-      })
+          })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trCourseMasterName: "",
+      trCourseNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -72,12 +83,10 @@ function TrainingCourseEdit() {
         setLoading(false);
       });
   };
-
-  // console.log(getIdList());
-
   useEffect(() => {
     getIdList();
   }, [id]);
+
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -85,7 +94,7 @@ function TrainingCourseEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/trainingCourses-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = () => {
     Swal.fire({
@@ -99,7 +108,7 @@ function TrainingCourseEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/trainingCourses-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -202,9 +211,9 @@ function TrainingCourseEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/trainingCourses-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

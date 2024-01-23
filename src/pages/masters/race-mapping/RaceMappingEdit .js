@@ -41,16 +41,27 @@ function RaceMappingEdit() {
           updateError();
           }else{
             updateSuccess();
+            setData({
+              raceMasterId: "",
+              marketMasterId: "",
+            });
+            setValidated(false)
           }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
-        updateError(message);
-        setData({});
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      raceMasterId: "",
+      marketMasterId: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -126,7 +137,7 @@ const updateSuccess = () => {
     icon: "success",
     title: "Updated successfully",
     // text: "You clicked the button!",
-  }).then(() => navigate("/race-mapping-list"));
+  }).then(() => navigate("#"));
 };
 const updateError = (message) => {
   Swal.fire({
@@ -140,7 +151,7 @@ const editError = (message) => {
     icon: "error",
     title: message,
     text: "Something went wrong!",
-  }).then(() => navigate("/race-mapping-list"));
+  }).then(() => navigate("#"));
 };
 
 return (
@@ -265,12 +276,9 @@ return (
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/crate-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

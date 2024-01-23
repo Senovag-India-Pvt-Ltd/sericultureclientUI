@@ -42,15 +42,26 @@ function TrainingGroupEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              trGroupMasterName: "",
+              trGroupNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trGroupMasterName: "",
+      trGroupNameInKannada: "",  
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +91,7 @@ function TrainingGroupEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/training-group-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +105,7 @@ function TrainingGroupEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/training-group-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -198,9 +209,9 @@ function TrainingGroupEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-group-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -736,7 +736,6 @@ function StakeHolderRegister() {
         e.target.classList.remove("is-invalid");
         e.target.classList.add("is-valid");
     }
-
     setBank({ ...bank, [name]: value });
   };
 

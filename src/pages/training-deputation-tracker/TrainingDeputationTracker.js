@@ -64,34 +64,44 @@ function TrainingDeputationTracker() {
             saveError(response.data.content.error_description);
             }else{
               saveSuccess();
+              setData({
+                officialName: "",
+                designationId: "",
+                officialAddress: "",
+                mobileNumber: "",
+                deputedInstituteId: "",
+                deputedFromDate: "",
+                deputedToDate: "",
+                trProgramMasterId: "",
+                trCourseMasterId: "",
+                deputedAttended:"",
+                deputedRemarks:"",
+              });
+              setValidated(false);
             }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
 
-  // const postData = (e) => {
-  //   console.log("Data to be sent:", data);
-  //   axios
-  //     .post(baseURL2 + `trader-license/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       console.log("Response from server:", response.data);
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error from server:", err);
-  //       console.log("Detailed error response:", err.response); // Log the detailed error response
-  //       setData({}); // You might want to handle the error and state appropriately
-  //       saveError();
-  //     });
-  // };
-  
+  const clear = () =>{
+    setData({
+      officialName: "",
+      designationId: "",
+      officialAddress: "",
+      mobileNumber: "",
+      deputedInstituteId: "",
+      deputedFromDate: "",
+      deputedToDate: "",
+      trProgramMasterId: "",
+      trCourseMasterId: "",
+      deputedAttended:"",
+      deputedRemarks:"",
+    })
+  }
 
   // to get Designation
   const [designationListData, setDesignationListData] = useState([]);
@@ -166,20 +176,6 @@ function TrainingDeputationTracker() {
   }, []);
 
  
-  
-//  // const YourFormComponent = ({ data, handleDateChange }) => {
-//   const handleRenewedDateChange = (date) => {
-//     // Calculate expiration date by adding 3 years to the renewed date
-//     const expirationDate = new Date(date);
-//     expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-
-//     setData({
-//       ...data,
-//       receiptDate: date,
-//       licenseExpiryDate: expirationDate,
-//     });
-//   };
-
 const handleDateChange = (date, type) => {
   setData({ ...data, [type]: date });
 };
@@ -191,7 +187,7 @@ const handleDateChange = (date, type) => {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/training-deputation-tracker-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -240,7 +236,7 @@ const handleDateChange = (date, type) => {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n3">
                       <Form.Label htmlFor="official Name">Name Of the Official<span className="text-danger">*</span></Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -259,7 +255,7 @@ const handleDateChange = (date, type) => {
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Designation<span className="text-danger">*</span>
                             </Form.Label>
@@ -291,7 +287,7 @@ const handleDateChange = (date, type) => {
 
                           <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Deputed to Institute Name and Details<span className="text-danger">*</span>
@@ -324,7 +320,7 @@ const handleDateChange = (date, type) => {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Training Program<span className="text-danger">*</span>
@@ -357,7 +353,7 @@ const handleDateChange = (date, type) => {
 
                         <Col lg="6">
                           <Form.Group
-                            className="form-group"
+                            className="form-group mt-n3"
                           >
                             <Form.Label>
                               Training Course<span className="text-danger">*</span>
@@ -390,7 +386,7 @@ const handleDateChange = (date, type) => {
 
 
                           <Col lg="6">
-                          <Form.Group className="form-group">
+                          <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="trDuration">
                             Official Address
                             </Form.Label>
@@ -408,7 +404,7 @@ const handleDateChange = (date, type) => {
                         </Col>
                 
                 <Col lg="6">
-                 <Form.Group className="form-group">
+                 <Form.Group className="form-group mt-n3">
                     <Form.Label htmlFor="trDuration">
                     Mobile Number
                     </Form.Label>
@@ -426,7 +422,7 @@ const handleDateChange = (date, type) => {
                 </Col>
 
                 <Col lg="6">
-                <Form.Group className="form-group">
+                <Form.Group className="form-group mt-n3">
                         <Form.Label>Training Attended</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -444,7 +440,7 @@ const handleDateChange = (date, type) => {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n3">
                       <Form.Label htmlFor="trNoOfParticipant">
                       Remarks
                       </Form.Label>
@@ -462,7 +458,7 @@ const handleDateChange = (date, type) => {
                   </Col>
 
                   <Col lg='6'>          
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>Training Deputation Start Date</Form.Label>
                         <Row>
                           <Col lg="6">
@@ -521,9 +517,9 @@ const handleDateChange = (date, type) => {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-deputation-tracker-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

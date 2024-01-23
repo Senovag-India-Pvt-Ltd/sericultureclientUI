@@ -42,15 +42,26 @@ function MulberryVarietyEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              mulberryVarietyName: "",
+              mulberryVarietyNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      mulberryVarietyName: "",
+      mulberryVarietyNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -195,9 +206,9 @@ function MulberryVarietyEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/mulberry-variety-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

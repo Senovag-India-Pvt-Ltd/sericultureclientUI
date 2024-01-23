@@ -45,15 +45,26 @@ function SoilType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              soilTypeName: "",
+              soilTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      soilTypeName: "",
+      soilTypeNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -61,7 +72,7 @@ function SoilType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/soil-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -164,9 +175,9 @@ function SoilType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/soil-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -42,15 +42,72 @@ function MarketEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              marketMasterName: "",
+              marketMasterAddress: "",
+              boxWeight: "",
+              lotWeight: "",
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              issueBidSlipStartTime: "",
+              issueBidSlipEndTime: "",
+              auction1StartTime: "",
+              auction2StartTime: "",
+              auction3StartTime: "",
+              auction1EndTime: "",
+              auction2EndTime: "",
+              auction3EndTime: "",
+              auctionAcceptance1StartTime: "",
+              auctionAcceptance2StartTime: "",
+              auctionAcceptance3StartTime: "",
+              auctionAcceptance1EndTime: "",
+              auctionAcceptance2EndTime: "",
+              auctionAcceptance3EndTime: "",
+              serialNumberPrefix: "",
+              marketTypeMasterId: "",
+              reelerMinimumBalance: "",
+              marketNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      marketMasterName: "",
+      marketMasterAddress: "",
+      boxWeight: "",
+      lotWeight: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      issueBidSlipStartTime: "",
+      issueBidSlipEndTime: "",
+      auction1StartTime: "",
+      auction2StartTime: "",
+      auction3StartTime: "",
+      auction1EndTime: "",
+      auction2EndTime: "",
+      auction3EndTime: "",
+      auctionAcceptance1StartTime: "",
+      auctionAcceptance2StartTime: "",
+      auctionAcceptance3StartTime: "",
+      auctionAcceptance1EndTime: "",
+      auctionAcceptance2EndTime: "",
+      auctionAcceptance3EndTime: "",
+      serialNumberPrefix: "",
+      marketTypeMasterId: "",
+      reelerMinimumBalance: "",
+      marketNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -163,7 +220,7 @@ function MarketEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/market-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -177,7 +234,7 @@ function MarketEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/market-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -924,9 +981,9 @@ function MarketEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/market-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

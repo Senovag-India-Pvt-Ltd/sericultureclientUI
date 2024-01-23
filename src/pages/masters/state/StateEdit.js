@@ -42,15 +42,26 @@ function StateEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              stateName: "",
+              stateNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      stateName: "",
+      stateNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +91,7 @@ function StateEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/state-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +105,7 @@ function StateEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/state-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -198,9 +209,9 @@ function StateEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/state-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

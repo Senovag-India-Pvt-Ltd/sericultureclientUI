@@ -45,15 +45,26 @@ function IrrigationType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              irrigationTypeName: "",
+              irrigationTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      irrigationTypeName: "",
+      irrigationTypeNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -61,7 +72,7 @@ function IrrigationType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/irrigation-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -168,9 +179,9 @@ function IrrigationType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/irrigation-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -42,15 +42,26 @@ function MachineTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              machineTypeName: "",
+              machineTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      machineTypeName: "",
+      machineTypeNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -79,7 +90,7 @@ function MachineTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/machine-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -93,7 +104,7 @@ function MachineTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/machine-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -193,9 +204,9 @@ function MachineTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/machine-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

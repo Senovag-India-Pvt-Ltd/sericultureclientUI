@@ -49,15 +49,26 @@ function LandCategoryEdit() {
           updateError(response.data.content.error_description);
           }else{
         updateSuccess();
+        setData({
+          landCategoryName: "",
+          landCategoryNameInKannada: "",
+        });
+        setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      landCategoryName: "",
+      landCategoryNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -87,7 +98,7 @@ function LandCategoryEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/land-category-list"));
+    }).then(() => navigate("#"));
   };
 
   const updateError = (message) => {
@@ -103,7 +114,7 @@ function LandCategoryEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/land-category-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -207,12 +218,9 @@ function LandCategoryEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/land-category-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

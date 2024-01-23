@@ -46,15 +46,26 @@ function RearHouseRoofType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              roofTypeName: "",
+              roofTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      roofTypeName: "",
+      roofTypeNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -62,7 +73,7 @@ function RearHouseRoofType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/rear-house-roof-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -169,9 +180,9 @@ function RearHouseRoofType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/rear-house-roof-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

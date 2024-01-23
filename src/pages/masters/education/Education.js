@@ -44,15 +44,26 @@ function Education() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              name: "",
+              educationNameInKannada:"", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      name: "",
+      educationNameInKannada:"", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -60,7 +71,7 @@ function Education() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/education-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -167,9 +178,9 @@ function Education() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/education-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

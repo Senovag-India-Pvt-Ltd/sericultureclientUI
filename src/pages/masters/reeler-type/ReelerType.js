@@ -44,15 +44,28 @@ function ReelerType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              reelerTypeMasterName: "",
+              reelerTypeNameInKannada: "",
+              noOfDeviceAllowed: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      reelerTypeMasterName: "",
+      reelerTypeNameInKannada: "",
+      noOfDeviceAllowed: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -60,7 +73,7 @@ function ReelerType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-type-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -183,9 +196,9 @@ function ReelerType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/reeler-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

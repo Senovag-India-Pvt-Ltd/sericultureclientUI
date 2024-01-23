@@ -50,15 +50,32 @@ function MarketType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              marketTypeMasterName: "",
+              reelerFee: "",
+              farmerFee: "",
+              traderFee: "",
+              marketTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      marketTypeMasterName: "",
+      reelerFee: "",
+      farmerFee: "",
+      traderFee: "",
+      marketTypeNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -66,7 +83,7 @@ function MarketType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/market-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -232,9 +249,9 @@ function MarketType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/market-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

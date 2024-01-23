@@ -45,15 +45,26 @@ function MachineType() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              machineTypeName: "",
+              machineTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      machineTypeName: "",
+      machineTypeNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -61,7 +72,7 @@ function MachineType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/machine-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -164,9 +175,9 @@ function MachineType() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/machine-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

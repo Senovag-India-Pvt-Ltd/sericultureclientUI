@@ -42,6 +42,11 @@ function PlantationTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              plantationTypeName: "",
+              plantationTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
@@ -51,6 +56,13 @@ function PlantationTypeEdit() {
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      plantationTypeName: "",
+      plantationTypeNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -79,7 +91,7 @@ function PlantationTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/plantation-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -93,7 +105,7 @@ function PlantationTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/plantation-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -196,9 +208,9 @@ function PlantationTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/plantation-type-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

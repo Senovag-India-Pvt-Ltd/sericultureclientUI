@@ -46,15 +46,32 @@ function Hobli() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              hobliName: "",
+              hobliNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliName: "",
+      hobliNameInKannada: "",
+    })
+  }
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -129,7 +146,7 @@ function Hobli() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/hobli-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -316,9 +333,9 @@ function Hobli() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/hobli-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

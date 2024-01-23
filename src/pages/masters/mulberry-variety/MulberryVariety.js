@@ -45,15 +45,26 @@ function MulberryVariety() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              mulberryVarietyName: "",
+              mulberryVarietyNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      mulberryVarietyName: "",
+      mulberryVarietyNameInKannada: "",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -168,9 +179,9 @@ function MulberryVariety() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/mulberry-variety-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

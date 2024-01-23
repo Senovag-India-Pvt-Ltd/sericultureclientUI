@@ -45,15 +45,26 @@ function LandCategory() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              landCategoryName: "",
+              landCategoryNameInKannada: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      landCategoryName: "",
+      landCategoryNameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -61,7 +72,7 @@ function LandCategory() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/land-category-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -168,9 +179,9 @@ function LandCategory() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/land-category-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

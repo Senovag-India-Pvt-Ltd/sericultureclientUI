@@ -42,18 +42,27 @@ function RolesEdit() {
       .post(baseURL + `role/edit`, datas)
       .then((response) => {
         if(response.data.content.error){
-          updateError();
+          updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              roleName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      roleName: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -71,9 +80,6 @@ function RolesEdit() {
         setLoading(false);
       });
   };
-
-  // console.log(getIdList());
-
   useEffect(() => {
     getIdList();
   }, [id]);
@@ -84,13 +90,13 @@ function RolesEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/roles-list"));
+    }).then(() => navigate("#"));
   };
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
   const editError = (message) => {
@@ -98,7 +104,7 @@ function RolesEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/roles-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -180,9 +186,9 @@ function RolesEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/roles-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

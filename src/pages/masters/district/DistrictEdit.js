@@ -42,15 +42,28 @@ function DistrictEdit() {
           updateError(response.data.content.error_description);
       }else{
         updateSuccess();
+        setData({
+          stateId: "",
+          districtName: "",
+          districtNameInKannada: "", 
+        });
+        setValidated(false);
         }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      stateId: "",
+      districtName: "",
+      districtNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -98,7 +111,7 @@ function DistrictEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/district-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -112,7 +125,7 @@ function DistrictEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/district-list"));
+    }).then(() => navigate("#"));
   };
   return (
     <Layout title="District">
@@ -236,12 +249,15 @@ function DistrictEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/district-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

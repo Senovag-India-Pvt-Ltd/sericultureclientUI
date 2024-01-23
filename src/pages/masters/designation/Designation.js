@@ -58,15 +58,26 @@ function Designation() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              name: "",
+              designationNameInKannada:"",
+            });
+            setValidated(false);
           }
       })
-      .catch((err) => {
-        setData({});
+      .catch((err) => {   
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      name: "",
+      designationNameInKannada:"",
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -74,7 +85,7 @@ function Designation() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/designation-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -207,9 +218,9 @@ function Designation() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/designation-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

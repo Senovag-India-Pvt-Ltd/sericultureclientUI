@@ -44,15 +44,26 @@ function SoilTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              soilTypeName: "",
+              soilTypeNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      soilTypeName: "",
+      soilTypeNameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -81,7 +92,7 @@ function SoilTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/soil-type-list"));
+    }).then(() => navigate("#"));
   };
 
   const updateError = (message) => {
@@ -97,7 +108,7 @@ function SoilTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/soil-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -197,12 +208,9 @@ function SoilTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/soil-type-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

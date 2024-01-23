@@ -42,15 +42,28 @@ function RaceEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              raceMasterName: "",
+              marketMasterId: "",
+              raceNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      raceMasterName: "",
+      marketMasterId: "",
+      raceNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -98,7 +111,7 @@ function RaceEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/race-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -112,7 +125,7 @@ function RaceEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/race-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -241,9 +254,9 @@ function RaceEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/race-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

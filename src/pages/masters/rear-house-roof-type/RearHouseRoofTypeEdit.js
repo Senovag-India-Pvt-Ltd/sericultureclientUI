@@ -45,15 +45,26 @@ function RearHouseRoofTypeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              roofTypeName: "",
+              roofTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      roofTypeName: "",
+      roofTypeNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -82,7 +93,7 @@ function RearHouseRoofTypeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/rear-house-roof-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -96,7 +107,7 @@ function RearHouseRoofTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/rear-house-roof-type-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -200,12 +211,9 @@ function RearHouseRoofTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/rear-house-roof-type-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
