@@ -31,6 +31,9 @@ function Weighment() {
 
   const [canContinue, setCanContinue] = useState(false);
 
+
+  const [weighTest,setWeighTest] = useState(false);
+
   const [data, setData] = useState({
     allottedLotId: "",
     noOfCrates: "0",
@@ -178,10 +181,12 @@ function Weighment() {
           reelerLicense: "",
         });
         setTableWeightData([]);
+        setTotalNetPrice(0);
         setTotalWeight(0);
         setTotalNetWeight(0);
         setTareWeight(0);
         setCounter(0);
+        setLastWeight("0");
         // setLotNumber("");
 
         printTriplet();
@@ -848,8 +853,8 @@ function Weighment() {
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head> */}
-
-      <Block>
+     
+      {weighTest?( <Block>
         <Form action="#">
           <Row className="g-3">
             <Col lg="12">
@@ -1168,7 +1173,81 @@ function Weighment() {
             </div> */}
           </Row>
         </Form>
-      </Block>
+      </Block>):( <Block>
+        {/* <h1>Hello</h1> */}
+        <Form action="#">
+          <Row className="g-3">
+            <Col lg="12">
+              <Card>
+                <Card.Body>
+                 
+                  <Row className="g-3 ">
+                    <Col lg="8">
+                      <table className="table smallwhiteback table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.smallwhiteback}>
+                              Date: {new Date().toDateString()}
+                            </td>
+                          </tr>
+                         
+                          {/* <tr>
+                            <td
+                              style={{
+                                backgroundColor: "green",
+                                padding: "3%",
+                              }}
+                            >
+                              {" "}
+                            </td>
+                          </tr> */}
+                          <tr>
+                            <td style={styles.large}>{lastWeight}</td>
+                          </tr>
+                         
+                          <tr>
+                            <td>
+                              <Button
+                                type="button"
+                                variant="primary"
+                                // onClick={testSerialPort}
+                              >
+                                Check Weight
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="primary"
+                                onClick={()=>setWeighTest(true)}
+                                className="ms-1"
+                              >
+                                Continue weighment
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={weighStream}
+                              />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+
+                    
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            
+          </Row>
+        </Form>
+      </Block>)}
+     
     </div>
     // </Layout>
   );
