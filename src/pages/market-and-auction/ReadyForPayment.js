@@ -63,7 +63,7 @@ function ReadyForPayment() {
     setPayment({ ...payment, [type]: date });
   };
 
-  const handleAddToBank = (marketId, godown, date, lot) => {
+  const handleAddToBank = (marketId, date, lot) => {
     // alert("Added To Bank");
     debugger;
     api
@@ -88,7 +88,7 @@ function ReadyForPayment() {
   };
 
   useEffect(() => {
-    postData()
+    postData();
   }, []);
 
   // to get Godown
@@ -144,21 +144,6 @@ function ReadyForPayment() {
           setWeighmentCompletedList(
             response.data.content.body.content.farmerPaymentInfoResponseList
           );
-          const res =
-            response.data.content.body.content.farmerPaymentInfoResponseList;
-          // console.log("hello",res);
-          // debugger;
-          res.forEach((item) => {
-            console.log("hello", item);
-            // debugger;
-            if (!item.ifscCode) {
-              setShowBankError(true);
-              setShowAddToButton(false);
-            } else {
-              setShowBankError(false);
-              setShowAddToButton(true);
-            }
-          });
           // if (!res.ifscCode) {
           //   setShowBankError(true);
           //   setShowAddToButton(false);
@@ -234,7 +219,7 @@ function ReadyForPayment() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {showAddToButton && (
+          {row.ifscCode && row.reelerCurrentBalance > 0 &&(
             <Button
               variant="primary"
               size="sm"
@@ -252,8 +237,11 @@ function ReadyForPayment() {
             </Button>
           )}
 
-          {showBankError && (
+          {!row.ifscCode && row.reelerCurrentBalance > 0 && (
             <span style={{ fontWeight: "bold" }}>No Bank Details</span>
+          )}
+           {(row.reelerCurrentBalance < 0 )&& (
+            <span style={{ fontWeight: "bold" }}>Minus Balance</span>
           )}
 
           {/* {showBankError?( <span style={{fontWeight:"bold"}}>No Bank Details</span>):""} */}
