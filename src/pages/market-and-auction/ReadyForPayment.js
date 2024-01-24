@@ -219,7 +219,7 @@ function ReadyForPayment() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {row.ifscCode && row.reelerCurrentBalance > 0 &&(
+          {row.ifscCode && row.reelerCurrentBalance > 0 && (
             <Button
               variant="primary"
               size="sm"
@@ -240,8 +240,10 @@ function ReadyForPayment() {
           {!row.ifscCode && row.reelerCurrentBalance > 0 && (
             <span style={{ fontWeight: "bold" }}>No Bank Details</span>
           )}
-           {(row.reelerCurrentBalance < 0 )&& (
-            <span style={{ fontWeight: "bold" }}>Minus Balance</span>
+          {row.reelerCurrentBalance < 0 && (
+            <span style={{ fontWeight: "bold" }}>
+              Minus {Math.round(row.reelerCurrentBalance)}
+            </span>
           )}
 
           {/* {showBankError?( <span style={{fontWeight:"bold"}}>No Bank Details</span>):""} */}
