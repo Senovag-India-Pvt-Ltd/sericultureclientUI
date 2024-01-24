@@ -148,11 +148,22 @@ function Weighment() {
           allottedLotId: "",
           noOfCrates: "0",
         });
+        setWeigh({
+          date: new Date(),
+          bidAmount: "0",
+          reelerCurrentBalance: 0,
+          farmerFirstName: "",
+          farmerNumber: "",
+          reelerName: "",
+          reelerLicense: "",
+        });
         setTableWeightData([]);
+        setTotalNetPrice(0);
         setTotalWeight(0);
         setTotalNetWeight(0);
         setTareWeight(0);
         setCounter(0);
+        setLastWeight("0");
       }
     });
   };
