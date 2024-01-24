@@ -297,7 +297,7 @@ function FlexTime() {
             <Block.Title tag="h2">Flex Time</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/farmer-type-list"
@@ -316,7 +316,7 @@ function FlexTime() {
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
