@@ -68,6 +68,9 @@ function MarketEdit() {
               marketTypeMasterId: "",
               reelerMinimumBalance: "",
               marketNameInKannada: "",
+              marketLatitude: "",
+              marketLongitude: "",
+              radius: "",
             });
             setValidated(false);
           }
@@ -106,6 +109,9 @@ function MarketEdit() {
       marketTypeMasterId: "",
       reelerMinimumBalance: "",
       marketNameInKannada: "",
+      marketLatitude: "",
+      marketLongitude: "",
+      radius: "",
     })
   }
 
@@ -941,6 +947,54 @@ function MarketEdit() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Taluk Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="chakbandi">
+                          Market Coordinates
+                        </Form.Label>
+                        <Row>
+                          <Col lg="6">
+                            <Form.Control
+                              id="marketLongitude"
+                              name="marketLongitude"
+                              value={data.marketLongitude}
+                              onChange={handleInputs}
+                              placeholder="Enter Longitude"
+                            />
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Control
+                              id="marketLatitude"
+                              name="marketLatitude"
+                              value={data.marketLatitude}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter Latitude"
+                            />
+                          </Col>
+                        </Row>
+                      </Form.Group>
+
+                      <Form.Group className="form-group">
+                      <Form.Label htmlFor="address">
+                       Radius<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="radius"
+                          name="radius"
+                          value={data.radius}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Radius"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Radius is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

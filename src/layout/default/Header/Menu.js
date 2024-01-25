@@ -334,6 +334,13 @@ function Menu() {
     Admin_Master_Training_Mode: false,
     Admin_Master_Training_Office: false,
 
+    Admin_Master_HelpDesk: false,
+    Admin_Master_HelpDesk_Module: false,
+    Admin_Master_HelpDesk_Feature: false,
+    Admin_Master_HelpDesk_Board_Category: false,
+    Admin_Master_HelpDesk_Category: false,
+    Admin_Master_HelpDesk_Sub_Category: false,
+
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
     Admin_Master_Auction_Market: false,
@@ -1711,6 +1718,44 @@ function Menu() {
                       {showMenu.Admin_Master_Training_Office ? (
                         <MenuItem>
                           <MenuItemLink text="Training Office" to="/training-office" />
+                        </MenuItem>
+                      ) : null}
+                    </MenuSub>
+                  </MenuItem>
+                ) : null}
+
+                {showMenu.Admin_Master_HelpDesk ? (
+                  <MenuItem sub>
+                    <MenuItemLink
+                      text="HelpDesk"
+                      onClick={menuToggle}
+                      onMouseEnter={menuHover}
+                      sub
+                    />
+                    <MenuSub>
+                      {showMenu.Admin_Master_HelpDesk_Module ? (
+                        <MenuItem>
+                          <MenuItemLink text="Modules" to="/hd-module" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Feature ? (
+                        <MenuItem>
+                          <MenuItemLink text="Feature" to="/hd-feature" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Board_Category ? (
+                        <MenuItem>
+                          <MenuItemLink text="Broad Category" to="/hd-board-category" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Category ? (
+                        <MenuItem>
+                          <MenuItemLink text="Category" to="/hd-category" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
+                        <MenuItem>
+                          <MenuItemLink text="Sub Category" to="/hd-sub-category" />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
