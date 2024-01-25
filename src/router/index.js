@@ -1207,7 +1207,7 @@ function Router() {
         <Route path="unit-mf" element={<UnitMf />} />
         <Route path="reeler-abstract" element={<ReelerAbstract />} />
         <Route path="reeler-purchase" element={<ReelerPurchase />} />
-        <Route path="reeler-purchase" element={<ReelerPurchase />} />
+        {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
         <Route
           path="district-wise-abstract"
           element={<DistrictWiseAbstractReport />}
