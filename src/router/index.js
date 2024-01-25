@@ -451,6 +451,27 @@ import TrainingDeputedInstitute from "../pages/masters/training-deputed-institut
 import TrainingDeputedInstituteList from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteList";
 import TrainingDeputedInstituteEdit from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteEdit";
 import TrainingDeputedInstituteView from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteView";
+import HelpDesk from "../pages/helpdesk/HelpDesk";
+import HelpDeskModule from "../pages/masters/helpdesk-module/HelpDeskModule";
+import HelpDeskModuleEdit from "../pages/masters/helpdesk-module/HelpDeskModuleEdit";
+import HelpDeskModuleList from "../pages/masters/helpdesk-module/HelpDeskModuleList";
+import HelpDeskModuleView from "../pages/masters/helpdesk-module/HelpDeskModuleView";
+import HelpDeskFeature from "../pages/masters/help-desk-feature/HelpDeskFeature";
+import HelpDeskFeatureList from "../pages/masters/help-desk-feature/HelpDeskFeatureList";
+import HelpDeskFeatureEdit from "../pages/masters/help-desk-feature/HelpDeskFeatureEdit";
+import HelpDeskFeatureView from "../pages/masters/help-desk-feature/HelpDeskFeatureView";
+import HelpDeskBoardCategory from "../pages/masters/help-desk-board-category/HelpDeskBoardCategory";
+import HelpDeskBoardCategoryEdit from "../pages/masters/help-desk-board-category/HelpDeskBoardCategoryEdit";
+import HelpDeskBoardCategoryList from "../pages/masters/help-desk-board-category/HelpDeskBoardCategoryList";
+import HelpDeskBoardCategoryView from "../pages/masters/help-desk-board-category/HelpDeskBoardCategoryView";
+import HelpDeskCategory from "../pages/masters/help-desk-category/HelpDeskCategory";
+import HelpDeskSubCategoryList from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryList";
+import HelpDeskCategoryView from "../pages/masters/help-desk-category/HelpDeskCategoryView";
+import HelpDeskCategoryList from "../pages/masters/help-desk-category/HelpDeskCategoryList";
+import HelpDeskCategoryEdit from "../pages/masters/help-desk-category/HelpDeskCategoryEdit";
+import HelpDeskSubCategory from "../pages/masters/help-desk-sub-category/HelpDeskSubCategory";
+import HelpDeskSubCategoryEdit from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryEdit";
+import HelpDeskSubCategoryView from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryView";
 
 // Admin and Reports
 
@@ -781,6 +802,7 @@ function Router() {
         <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
         <Route path="my-tickets" element={<MyTickets />} />
         <Route path="my-tickets/:id" element={<ViewMyTicket />} />
+        <Route path="help-desk" element={<HelpDesk />} />
 
         {/* Garden Management */}
         <Route
@@ -1130,6 +1152,26 @@ function Router() {
         <Route path="deputed-institute-list" element={<TrainingDeputedInstituteList />}/>
         <Route path="deputed-institute-edit/:id" element={<TrainingDeputedInstituteEdit/>}/>
         <Route path="deputed-institute-view/:id" element={<TrainingDeputedInstituteView/>}/>
+        <Route path="hd-module" element={<HelpDeskModule />}/>
+        <Route path="hd-module-list" element={<HelpDeskModuleList />}/>
+        <Route path="hd-module-edit/:id" element={<HelpDeskModuleEdit/>}/>
+        <Route path="hd-module-view/:id" element={<HelpDeskModuleView/>}/>
+        <Route path="hd-feature" element={<HelpDeskFeature />}/>
+        <Route path="hd-feature-list" element={<HelpDeskFeatureList />}/>
+        <Route path="hd-feature-edit/:id" element={<HelpDeskFeatureEdit/>}/>
+        <Route path="hd-feature-view/:id" element={<HelpDeskFeatureView/>}/>
+        <Route path="hd-board-category" element={<HelpDeskBoardCategory />}/>
+        <Route path="hd-board-category-list" element={<HelpDeskBoardCategoryList />}/>
+        <Route path="hd-board-category-edit/:id" element={<HelpDeskBoardCategoryEdit/>}/>
+        <Route path="hd-board-category-view/:id" element={<HelpDeskBoardCategoryView/>}/>
+        <Route path="hd-category" element={<HelpDeskCategory />}/>
+        <Route path="hd-category-list" element={<HelpDeskCategoryList />}/>
+        <Route path="hd-category-edit/:id" element={<HelpDeskCategoryEdit/>}/>
+        <Route path="hd-category-view/:id" element={<HelpDeskCategoryView/>}/>
+        <Route path="hd-sub-category" element={<HelpDeskSubCategory />}/>
+        <Route path="hd-sub-category-list" element={<HelpDeskSubCategoryList />}/>
+        <Route path="hd-sub-category-edit/:id" element={<HelpDeskSubCategoryEdit/>}/>
+        <Route path="hd-sub-category-view/:id" element={<HelpDeskSubCategoryView/>}/>
         
         {/* Direct Benefit Transfer */}
         <Route
