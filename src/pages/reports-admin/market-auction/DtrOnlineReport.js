@@ -113,6 +113,7 @@ function DtrOnlineReport() {
   //   }
   // };
   const [listData, setListData] = useState([]);
+  const [listDetails, setListDetails] = useState([]);
 
   const postData = (event) => {
     const { marketId, godownId, reelerId, fromDate, toDate } = data;
@@ -142,7 +143,7 @@ function DtrOnlineReport() {
       // event.stopPropagation();
       axios
         .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
-          marketId: marketId,
+          marketId: 15,
           // godownId: godownId,
           reelerId: reelerId,
           fromDate: formattedFromDate,
@@ -152,6 +153,7 @@ function DtrOnlineReport() {
           //  console.log(response);
           if (response.data.content)
             setListData(response.data.content.dtrOnlineReportUnitDetailList);
+          setListDetails(response.data.content);
         })
         .catch((error) => {
           // console.log("error", error);
@@ -465,6 +467,38 @@ function DtrOnlineReport() {
                             <td>{list.accountNumber}</td>
                           </tr>
                         ))}
+                        {
+                          <tr>
+                            <td style={{ fontWeight: "bold", background:"rgb(251 255 248)" }} colSpan="13">
+                              <div>
+                                Total Lots:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalLots}
+                                </span>
+                              </div>
+                              <div>
+                                Farmers Cheque Amt:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalFarmerAmount}
+                                </span>
+                              </div>
+                              <div>
+                                MF Amount:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalReelerMarketFee +
+                                    listDetails.totalFarmerMarketFee}
+                                </span>
+                              </div>
+                              <div>
+                                Reeler Transaction Amt:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalReelerAmount}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        }
+                        
 
                         {/* <tr className="text-center">
                         <td colSpan="4">
@@ -510,7 +544,9 @@ function DtrOnlineReport() {
                   </Col>
                 </Row>
               </div>
-            ) : ""}
+            ) : (
+              ""
+            )}
           </Row>
         </Form>
       </Block>
