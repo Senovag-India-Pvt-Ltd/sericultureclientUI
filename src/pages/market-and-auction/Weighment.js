@@ -10,6 +10,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 // import { SerialPort } from "serialport";
 import api from "../../../src/services/auth/api";
+import { useSpeechSynthesis } from "react-speech-kit";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -20,6 +21,8 @@ function Weighment() {
   const [totalWeight, setTotalWeight] = useState(0);
   const [totalNetWeight, setTotalNetWeight] = useState(0);
   const [tableWeightData, setTableWeightData] = useState([]);
+
+  const { speak } = useSpeechSynthesis();
 
   const [noOfBox, setNoOfBox] = useState(0);
   const [lotNumber, setLotNumber] = useState("");
@@ -92,10 +95,10 @@ function Weighment() {
     // }
   };
 
-  const continueWeighment = ()=>{
+  const continueWeighment = () => {
     setWeighTest(true);
-    setLastWeight("0")
-  }
+    setLastWeight("0");
+  };
 
   const getLotDetails = (allottedLotId) => {
     const sendData = {
@@ -669,6 +672,7 @@ function Weighment() {
 
             if (counter <= parseInt(data.noOfCrates) - 1) {
               debugger;
+              speak({ text: `Crate number ${counter + 1} is completed` });
               setCounter(counter + 1);
             }
 
@@ -765,6 +769,7 @@ function Weighment() {
     let weightAmount;
     let weightNet;
     let weightGross;
+    speak({ text: `Crate number ${indexToDelete + 1}  is deleted` });
     const updatedData = tableWeightData.filter((data, index) => {
       if (index === indexToDelete) {
         weightAmount = data.netWeight * weigh.bidAmount;
@@ -773,6 +778,7 @@ function Weighment() {
       }
       return index !== indexToDelete;
     });
+
     console.log("wa", weightAmount);
     console.log("wn", weightNet);
     console.log("wg", weightGross);
