@@ -66,7 +66,7 @@ function Weighment() {
     if (data.allottedLotId) {
       getLotDetails(data.allottedLotId);
       if (value && parseInt(value) !== 0) {
-        debugger
+        debugger;
         getCrateDetails(value, data.allottedLotId);
       }
     }
@@ -78,12 +78,11 @@ function Weighment() {
       return { ...prev, allottedLotId: value };
     });
     if (value !== "") {
-      debugger
+      debugger;
       getLotDetails(value);
       if (data.noOfCrates && parseInt(data.noOfCrates) !== 0) {
         getCrateDetails(data.noOfCrates, value);
-    }
-     
+      }
     }
     // if(!data.noOfCrates){
     //   getLotDetails(value);
@@ -92,6 +91,11 @@ function Weighment() {
     //   alert("Please Enter No of Crates");
     // }
   };
+
+  const continueWeighment = ()=>{
+    setWeighTest(true);
+    setLastWeight("0")
+  }
 
   const getLotDetails = (allottedLotId) => {
     const sendData = {
@@ -539,146 +543,168 @@ function Weighment() {
   // });
 
   useEffect(() => {
-    let canContinue1 = false;
-    const handleKeyDown = async (event) => {
-      if (event.key === "Enter") {
-        debugger;
-        // Handle the Enter key press here
-        //{data.noOfCrates} - {counter}
-        // If condition to continue with weighing
-        if (data.allottedLotId == "" || data.noOfCrates <= 0) {
+    if (weighTest) {
+      let canContinue1 = false;
+      const handleKeyDown = async (event) => {
+        if (event.key === "Enter") {
           debugger;
-          if (data.allottedLotId == "") {
-            alert("Please Enter Lot No");
-            setCanContinue(false);
-            canContinue1 = false;
-          }
-          if (data.noOfCrates <= 0) {
-            alert("Please Enter No of Crates");
-            setCanContinue(false);
-            canContinue1 = false;
-          }
-        }
-
-        // debugger;
-        // if (counter >= parseInt(data.noOfCrates)-1) {
-        //   setCanContinue(false);
-        //   // alert("You already completed the weighment with crates");
-        //   // document.removeEventListener("keydown", handleKeyDown);
-        //   // await submitConfirm();
-
-        //   onSubmitting();
-        //   // printTriplet();
-        // }
-        console.log("counter", counter);
-        console.log("noOfCrate", parseInt(data.noOfCrates));
-        if (
-          counter === parseInt(data.noOfCrates) ||
-          data.allottedLotId === ""
-        ) {
-          // debugger;
-          if (parseInt(data.noOfCrates) === 0) {
-            alert("Please Enter No of Crates");
-            setCanContinue(false);
-            canContinue1 = false;
-          } else if (data.allottedLotId === "") {
-            alert("Please Enter Lot Number");
-            setCanContinue(false);
-            canContinue1 = false;
-          } else if (totalNetPrice > weigh.reelerCurrentBalance) {
-            // console.log("Reeler don't have enough money");
-            // getCrateDetails();
+          // Handle the Enter key press here
+          //{data.noOfCrates} - {counter}
+          // If condition to continue with weighing
+          if (data.allottedLotId == "" || data.noOfCrates <= 0) {
             debugger;
-            await lastSubmitConfirm();
-          } else {
-            console.log("hello Weight");
-            setCanContinue(false);
-            canContinue1 = false;
-            onSubmitting();
+            if (data.allottedLotId == "") {
+              alert("Please Enter Lot No");
+              setCanContinue(false);
+              canContinue1 = false;
+            }
+            if (data.noOfCrates <= 0) {
+              alert("Please Enter No of Crates");
+              setCanContinue(false);
+              canContinue1 = false;
+            }
           }
-        } else {
-          canContinue1 = true;
+
+          // debugger;
+          // if (counter >= parseInt(data.noOfCrates)-1) {
+          //   setCanContinue(false);
+          //   // alert("You already completed the weighment with crates");
+          //   // document.removeEventListener("keydown", handleKeyDown);
+          //   // await submitConfirm();
+
+          //   onSubmitting();
+          //   // printTriplet();
+          // }
+          console.log("counter", counter);
+          console.log("noOfCrate", parseInt(data.noOfCrates));
+          if (
+            counter === parseInt(data.noOfCrates) ||
+            data.allottedLotId === ""
+          ) {
+            // debugger;
+            if (parseInt(data.noOfCrates) === 0) {
+              alert("Please Enter No of Crates");
+              setCanContinue(false);
+              canContinue1 = false;
+            } else if (data.allottedLotId === "") {
+              alert("Please Enter Lot Number");
+              setCanContinue(false);
+              canContinue1 = false;
+            } else if (totalNetPrice > weigh.reelerCurrentBalance) {
+              // console.log("Reeler don't have enough money");
+              // getCrateDetails();
+              debugger;
+              await lastSubmitConfirm();
+            } else {
+              console.log("hello Weight");
+              setCanContinue(false);
+              canContinue1 = false;
+              onSubmitting();
+            }
+          } else {
+            canContinue1 = true;
+          }
+
+          // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
+          // if (
+          //   data.noOfCrates <= 0 ||
+          //   data.allottedLotId == "" ||
+          //   counter >= parseInt(data.noOfCrates) - 1
+          // ) {
+          //   debugger;
+          //   setCanContinue(false);
+          //   canContinue1 = false;
+          //   console.log("cannot continue with weighment");
+          // } else {
+          //   setCanContinue(true);
+          //   canContinue1 = true;
+          // }
+
+          if (canContinue1) {
+            let prabhu = weighStream.toString();
+
+            const lastWeightString = prabhu.substring(
+              prabhu.lastIndexOf("kg") - 8,
+              prabhu.lastIndexOf("kg") - 1
+            );
+
+            setLastWeight(lastWeightString);
+
+            const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
+            const totalWeightFloat = lastWeightFloat + totalWeight;
+
+            setTotalWeight(totalWeightFloat);
+
+            // calculate set total net weight
+            // const totalNetWeightFloat =
+            //   lastWeightFloat - tareWeight + totalNetWeight;
+
+            const totalNetWeightFloat =
+              lastWeightFloat - tareWeight + totalNetWeight < 0
+                ? 0
+                : lastWeightFloat - tareWeight + totalNetWeight;
+
+            setTotalNetWeight(totalNetWeightFloat);
+
+            const weightObj = {
+              grossWeight: lastWeightFloat,
+              netWeight:
+                lastWeightFloat >= tareWeight
+                  ? lastWeightFloat - tareWeight
+                  : 0,
+              crateNumber: data.noOfCrates,
+            };
+            setTableWeightData((prevState) => [...prevState, weightObj]);
+
+            const formattedTotalPrice = totalWeightFloat * pricePerKg;
+            console.log(pricePerKg);
+            console.log(formattedTotalPrice);
+
+            setTotalPrice(formattedTotalPrice);
+
+            // calculate total net cocoon net weight total price
+            const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
+            setTotalNetPrice(formattedTotalNetPrice);
+            // setTotalNetPrice(10);
+
+            if (counter <= parseInt(data.noOfCrates) - 1) {
+              debugger;
+              setCounter(counter + 1);
+            }
+
+            setWeighStream("");
+          }
         }
+      };
 
-        // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
-        // if (
-        //   data.noOfCrates <= 0 ||
-        //   data.allottedLotId == "" ||
-        //   counter >= parseInt(data.noOfCrates) - 1
-        // ) {
-        //   debugger;
-        //   setCanContinue(false);
-        //   canContinue1 = false;
-        //   console.log("cannot continue with weighment");
-        // } else {
-        //   setCanContinue(true);
-        //   canContinue1 = true;
-        // }
+      // console.log(tableWeightData);
 
-        if (canContinue1) {
-          let prabhu = weighStream.toString();
+      // Attach the event listener when the component mounts
+      document.addEventListener("keydown", handleKeyDown);
 
-          const lastWeightString = prabhu.substring(
-            prabhu.lastIndexOf("kg") - 8,
-            prabhu.lastIndexOf("kg") - 1
+      // Detach the event listener when the component unmounts
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      const handleTestKeyDown = async (event) => {
+        if (event.key === "Enter") {
+          let prabhuTest = weighStream.toString();
+
+          const lastWeightStringTest = prabhuTest.substring(
+            prabhuTest.lastIndexOf("kg") - 8,
+            prabhuTest.lastIndexOf("kg") - 1
           );
 
-          setLastWeight(lastWeightString);
-
-          const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
-          const totalWeightFloat = lastWeightFloat + totalWeight;
-
-          setTotalWeight(totalWeightFloat);
-
-          // calculate set total net weight
-          // const totalNetWeightFloat =
-          //   lastWeightFloat - tareWeight + totalNetWeight;
-
-          const totalNetWeightFloat =
-            lastWeightFloat - tareWeight + totalNetWeight < 0
-              ? 0
-              : lastWeightFloat - tareWeight + totalNetWeight;
-
-          setTotalNetWeight(totalNetWeightFloat);
-
-          const weightObj = {
-            grossWeight: lastWeightFloat,
-            netWeight:
-              lastWeightFloat >= tareWeight ? lastWeightFloat - tareWeight : 0,
-            crateNumber: data.noOfCrates,
-          };
-          setTableWeightData((prevState) => [...prevState, weightObj]);
-
-          const formattedTotalPrice = totalWeightFloat * pricePerKg;
-          console.log(pricePerKg);
-          console.log(formattedTotalPrice);
-
-          setTotalPrice(formattedTotalPrice);
-
-          // calculate total net cocoon net weight total price
-          const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
-          setTotalNetPrice(formattedTotalNetPrice);
-          // setTotalNetPrice(10);
-
-          if (counter <= parseInt(data.noOfCrates) - 1) {
-            debugger;
-            setCounter(counter + 1);
-          }
-
-          setWeighStream("");
+          setLastWeight(lastWeightStringTest);
         }
-      }
-    };
+      };
+      document.addEventListener("keydown", handleTestKeyDown);
 
-    // console.log(tableWeightData);
-
-    // Attach the event listener when the component mounts
-    document.addEventListener("keydown", handleKeyDown);
-
-    // Detach the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+      return () => {
+        document.removeEventListener("keydown", handleTestKeyDown);
+      };
+    }
   });
 
   // if (counter == parseInt(data.noOfCrates)) {
@@ -1239,14 +1265,14 @@ function Weighment() {
                                 <Button
                                   type="button"
                                   variant="primary"
-                                  // onClick={testSerialPort}
+                                  onClick={testSerialPort}
                                 >
                                   Check Weight
                                 </Button>
                                 <Button
                                   type="button"
                                   variant="primary"
-                                  onClick={() => setWeighTest(true)}
+                                  onClick={continueWeighment}
                                   className="ms-1"
                                 >
                                   Continue weighment
