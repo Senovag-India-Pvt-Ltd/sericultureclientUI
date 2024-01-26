@@ -114,6 +114,7 @@ function TrainingSchedule() {
       trStartDate:"",
       trDateOfCompletion:"",
     })
+    setPPt("");
   }
 
   // const postData = (e) => {
@@ -279,7 +280,7 @@ const handleDateChange = (date, type) => {
      const formData = new FormData();
      formData.append("multipartFile",ppt);
 
-     const response = await api.post(baseURL2 +`trSchedule/tr-upload-path?${parameters}`,formData,{
+     const response = await api.post(baseURL2 +`trSchedule/upload-path?${parameters}`,formData,{
        headers: {
          'Content-Type': 'multipart/form-data', 
        },

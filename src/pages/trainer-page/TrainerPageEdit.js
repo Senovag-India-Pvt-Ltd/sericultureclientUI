@@ -682,7 +682,7 @@ const handleAdd = (event) => {
      const formData = new FormData();
      formData.append("multipartFile",ppt);
 
-     const response = await api.post(baseURL +`trSchedule/tr-upload-path?${parameters}`,formData,{
+     const response = await api.post(baseURL +`trSchedule/upload-path?${parameters}`,formData,{
        headers: {
          'Content-Type': 'multipart/form-data', 
        },

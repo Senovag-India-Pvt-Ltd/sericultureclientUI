@@ -104,6 +104,7 @@ function TrainingScheduleEdit() {
         trDateOfCompletion:"",
 
       })
+      setPPtFile("");
     }
   
     //   to get data from api
@@ -257,7 +258,7 @@ function TrainingScheduleEdit() {
      const formData = new FormData();
      formData.append("multipartFile",ppt);
 
-     const response = await api.post(baseURL2 +`trSchedule/tr-upload-path?${parameters}`,formData,{
+     const response = await api.post(baseURL2 +`trSchedule/upload-path?${parameters}`,formData,{
        headers: {
          'Content-Type': 'multipart/form-data', 
        },
@@ -276,7 +277,7 @@ const getPPtFile = async (file) => {
   const parameters = `fileName=${file}`;
   try {
     const response = await api.get(
-      baseURL + `api/s3/download?${parameters}`,
+      baseURL2 + `api/s3/download?${parameters}`,
       {
         responseType: "arraybuffer",
       }
