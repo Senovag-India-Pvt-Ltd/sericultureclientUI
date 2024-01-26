@@ -537,7 +537,7 @@ const handleDateChange = (date, type) => {
                       {/* <Form.Label htmlFor="address">
                         Query<span className="text-danger">*</span>
                       </Form.Label> */}
-                      <Card.Header>Query Details</Card.Header>
+                      <Card.Header>Query Details </Card.Header>
                       <div className="form-control-wrap">
                         {/* <Form.Control
                           as="textarea"
