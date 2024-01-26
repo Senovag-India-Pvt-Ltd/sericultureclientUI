@@ -12,16 +12,22 @@ import api from "../../../src/services/auth/api";
 import Quill from "../../components/Form/editors/Quill";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function HelpDesk() {
 
   const [data, setData] = useState({
     hdModuleId: "",
     hdFeatureId: "",
+    hdBoardCategoryId: "",
     hdCategoryId: "",
     hdSubCategoryId: "",
-    usersAffectedId: "",
+    hdUsersAffected: "",
+    query: "",
+    queryDetails: "",
+    hdAttachFiles: "",
+    hdCreatedBy: "",
+    ticketNumber: "",
 
   });
 
@@ -53,11 +59,11 @@ function HelpDesk() {
       event.preventDefault();
       // event.stopPropagation();
     api
-      .post(baseURL + `trSchedule/add`, data)
+      .post(baseURL2 + `hdTicket/add`, data)
       .then((response) => {
-        if(response.data.content.trScheduleId){
-          const trUploadId = response.data.content.trScheduleId;
-          handlePPtUpload(trUploadId);
+        if(response.data.content.hdTicketId){
+          const hdAttach = response.data.content.hdTicketId;
+          handleAttachFileUpload(hdAttach);
         }
         if(response.data.content.error){
             saveError(response.data.content.error_description);
@@ -66,9 +72,15 @@ function HelpDesk() {
               setData({
                 hdModuleId: "",
                 hdFeatureId: "",
+                hdBoardCategoryId: "",
                 hdCategoryId: "",
                 hdSubCategoryId: "",
-                usersAffectedId: "",
+                hdUsersAffected: "",
+                query: "",
+                queryDetails: "",
+                hdAttachFiles: "",
+                hdCreatedBy: "",
+                ticketNumber: "",
               });
               setValidated(false);
             }
@@ -82,41 +94,47 @@ function HelpDesk() {
 
   const clear = () =>{
     setData({
-        hdModuleId: "",
-        hdFeatureId: "",
-        hdCategoryId: "",
-        hdSubCategoryId: "",
-        usersAffectedId: "",
+      hdModuleId: "",
+      hdFeatureId: "",
+      hdBoardCategoryId: "",
+      hdCategoryId: "",
+      hdSubCategoryId: "",
+      hdUsersAffected: "",
+      query: "",
+      queryDetails: "",
+      hdAttachFiles: "",
+      hdCreatedBy: "",
+      ticketNumber: "",
     })
   }
 
   const [loading, setLoading] = useState(false);
 
   
-  // to get Module
-  const [moduleListData, setModuleListData] = useState([]);
+   // to get Module
+   const [hdModuleListData, setHdModuleListData] = useState([]);
 
-  const getModuleList = () => {
-    const response = api
-      .get(baseURL + `moduleMaster/get-all`)
-      .then((response) => {
-        setModuleListData(response.data.content.moduleMaster);
-      })
-      .catch((err) => {
-        setModuleListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getModuleList();
-  }, []);
+   const getList = () => {
+     const response = api
+       .get(baseURL + `hdModuleMaster/get-all`)
+       .then((response) => {
+         setHdModuleListData(response.data.content.hdModuleMaster);
+       })
+       .catch((err) => {
+         setHdModuleListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getList();
+   }, []);
 
   // to get Feature
   const [featureListData, setFeatureListData] = useState([]);
 
   const getFeatureList = (_id) => {
     const response = api
-      .get(baseURL + `hdFeatureMaster/get-by-module-id/${_id}`)
+      .get(baseURL + `hdFeatureMaster/get-by-hd-module-id/${_id}`)
       .then((response) => {
         setFeatureListData(response.data.content.hdFeatureMaster);
         setLoading(false);
@@ -137,77 +155,74 @@ function HelpDesk() {
   }, [data.hdModuleId]);
 
 
-  // to get TrGroup
-  const [trGroupListData, setTrGroupListData] = useState([]);
+  // to get BoardCategory
+  const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
 
-  const getTrGroupList = () => {
+  const getHdBoardCategoryList = (_id) => {
     const response = api
-      .get(baseURL + `trGroupMaster/get-all`)
+      .get(baseURL + `hdBoardCategoryMaster/get-all`)
       .then((response) => {
-        setTrGroupListData(response.data.content.trGroupMaster);
+        if(response.data.content.hdBoardCategoryMaster){
+          setHdBoardCategoryListData(response.data.content.hdBoardCategoryMaster);
+          }
       })
       .catch((err) => {
-        setTrGroupListData([]);
+        setHdBoardCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
   useEffect(() => {
-    getTrGroupList();
+    getHdBoardCategoryList();
   }, []);
 
-  // to get TrProgram
-  const [trProgramListData, setTrProgramListData] = useState([]);
 
-  const getTrProgramList = () => {
+  // to get hdCategory
+  const [hdCategoryListData, setHdCategoryListData] = useState([]);
+
+  const getHdCategoryList = (_id) => {
     const response = api
-      .get(baseURL + `trProgramMaster/get-all`)
+      .get(baseURL + `hdCategoryMaster/get-by-hd-board-category-id/${_id}`)
       .then((response) => {
-        setTrProgramListData(response.data.content.trProgramMaster);
+        if(response.data.content.hdCategoryMaster){
+          setHdCategoryListData(response.data.content.hdCategoryMaster);
+          }
       })
       .catch((err) => {
-        setTrProgramListData([]);
+        setHdCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
   useEffect(() => {
-    getTrProgramList();
-  }, []);
+    if (data.hdBoardCategoryId) {
+      getHdCategoryList(data.hdBoardCategoryId);
+    }
+  }, [data.hdBoardCategoryId]);
 
-  // to get Course
-  const [trCourseListData, setTrCourseListData] = useState([]);
+ // to get hdCategory
+ const [hdSubCategoryListData, setHdSubCategoryListData] = useState([]);
 
-  const getTrCourseList = () => {
-    const response = api
-      .get(baseURL + `trCourseMaster/get-all`)
-      .then((response) => {
-        setTrCourseListData(response.data.content.trCourseMaster);
-      })
-      .catch((err) => {
-        setTrCourseListData([]);
-      });
-  };
+ const getHdSubCategoryList = (_id) => {
+   const response = api
+     .get(baseURL + `hdSubCategoryMaster/get-by-hd-category-id/${_id}`)
+     .then((response) => {
+       if(response.data.content.hdSubCategoryMaster){
+         setHdSubCategoryListData(response.data.content.hdSubCategoryMaster);
+         }
+     })
+     .catch((err) => {
+       setHdSubCategoryListData([]);
+       // alert(err.response.data.errorMessages[0].message[0].message);
+     });
+ };
 
-  useEffect(() => {
-    getTrCourseList();
-  }, []);
+ useEffect(() => {
+   if (data.hdCategoryId) {
+     getHdSubCategoryList(data.hdCategoryId);
+   }
+ }, [data.hdCategoryId]);
 
-  // to get TrMode
-  const [trModeListData, setTrModeListData] = useState([]);
-
-  const getTrModeList = () => {
-    const response = api
-      .get(baseURL + `trModeMaster/get-all`)
-      .then((response) => {
-        setTrModeListData(response.data.content.trModeMaster);
-      })
-      .catch((err) => {
-        setTrModeListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getTrModeList();
-  }, []);
 
   
 //  // const YourFormComponent = ({ data, handleDateChange }) => {
@@ -228,24 +243,24 @@ const handleDateChange = (date, type) => {
 };
 
  // Display Image
- const [ppt, setPPt] = useState("");
+ const [attachFiles, setAttachFiles] = useState("");
  // const [photoFile,setPhotoFile] = useState("")
 
- const handlePPtChange = (e) => {
+ const handleAttachFileChange = (e) => {
    const file = e.target.files[0];
-   setPPt(file);
+   setAttachFiles(file);
    setData(prev=>({...prev,trUploadPath:file.name}))
    // setPhotoFile(file);
  };
 
  // Upload Image to S3 Bucket
- const handlePPtUpload = async (trScheduleid)=>{
-   const parameters = `trScheduleId=${trScheduleid}`
+ const handleAttachFileUpload = async (hdTicketid)=>{
+   const parameters = `hdTicketId=${hdTicketid}`
    try{
      const formData = new FormData();
-     formData.append("multipartFile",ppt);
+     formData.append("multipartFile",attachFiles);
 
-     const response = await api.post(baseURL +`trSchedule/tr-upload-path?${parameters}`,formData,{
+     const response = await api.post(baseURL +`hdTicket/hd-attach-files?${parameters}`,formData,{
        headers: {
          'Content-Type': 'multipart/form-data', 
        },
@@ -277,11 +292,11 @@ const handleDateChange = (date, type) => {
   };
 
   return (
-    <Layout title="Help Desk">
+    <Layout title="Create Ticket">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Help Desk</Block.Title>
+            <Block.Title tag="h2">Create Ticket</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -328,7 +343,7 @@ const handleDateChange = (date, type) => {
                             isInvalid={data.hdModuleId === undefined || data.hdModuleId === "0"}
                           >
                             <option value="">Select Module</option>
-                            {moduleListData.map((list) => (
+                            {hdModuleListData.map((list) => (
                               <option
                                 key={list.hdModuleId}
                                 value={list.hdModuleId}
@@ -380,6 +395,39 @@ const handleDateChange = (date, type) => {
                             className="form-group mt-n3"
                           >
                             <Form.Label>
+                              Board Category<span className="text-danger">*</span>
+                            </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="hdBoardCategoryId"
+                                  value={data.hdBoardCategoryId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs} 
+                                  required
+                                  isInvalid={data.hdBoardCategoryId === undefined || data.hdBoardCategoryId === "0"}
+                                >
+                                  <option value="">Select Board Category</option>
+                                  {hdBoardCategoryListData.map((list) => (
+                                    <option
+                                      key={list.hdBoardCategoryId}
+                                      value={list.hdBoardCategoryId}
+                                    >
+                                      {list.hdBoardCategoryName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                 Board Category Name is required
+                                </Form.Control.Feedback>
+                              </div>
+                          </Form.Group>
+                        </Col> 
+
+                          <Col lg="4">
+                          <Form.Group
+                            className="form-group mt-n4"
+                          >
+                            <Form.Label>
                               Category<span className="text-danger">*</span>
                             </Form.Label>
                               <div className="form-control-wrap">
@@ -392,7 +440,7 @@ const handleDateChange = (date, type) => {
                                   isInvalid={data.hdCategoryId === undefined || data.hdCategoryId === "0"}
                                 >
                                   <option value="">Select Category</option>
-                                  {trGroupListData.map((list) => (
+                                  {hdCategoryListData.map((list) => (
                                     <option
                                       key={list.hdCategoryId}
                                       value={list.hdCategoryId}
@@ -425,7 +473,7 @@ const handleDateChange = (date, type) => {
                                   isInvalid={data.hdSubCategoryId === undefined || data.hdSubCategoryId === "0"}
                                 >
                                   <option value="">Select Sub Category</option>
-                                  {trProgramListData.map((list) => (
+                                  {hdSubCategoryListData.map((list) => (
                                     <option
                                       key={list.hdSubCategoryId}
                                       value={list.hdSubCategoryId}
@@ -448,9 +496,9 @@ const handleDateChange = (date, type) => {
                             </Form.Label>
                             <div className="form-control-wrap">
                             <Form.Control
-                                id="usersAffectedId"
-                                name="usersAffectedId"
-                                value={data.usersAffectedId}
+                                id="hdUsersAffected"
+                                name="hdUsersAffected"
+                                value={data.hdUsersAffected}
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter Users Affected"
@@ -467,7 +515,7 @@ const handleDateChange = (date, type) => {
                       <Card.Header>Query</Card.Header>
                       <div className="form-control-wrap">
                         <Form.Control
-                          as="textarea"
+                          // as="textarea"
                           id="query"
                           name="query"
                           value={data.query}
@@ -510,17 +558,45 @@ const handleDateChange = (date, type) => {
                     </Form.Group>
                     </Col>
 
+                  <Col lg ="4">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="trUploadPath">
+                         Attach Files 
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="hdAttachFiles"
+                            name="hdAttachFiles"
+                            // value={data.photoPath}
+                            onChange={handleAttachFileChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {attachFiles ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(attachFiles)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                  </Col>
+
                     <div className="gap-col">
                         <ul className="d-flex align-items-start justify-content-start gap g-3">
                             <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                                Attach Files
+                              Create New Ticket
                             </Button>
                             </li>
                             <li>
                             <Button type="button" variant="secondary" onClick={clear}>
-                                Create New Ticket
+                                Clear
                             </Button>
                             </li>
                         </ul>
@@ -529,10 +605,10 @@ const handleDateChange = (date, type) => {
               </Card.Body>
             </Card>
 
-            <div className="gap-col">
+            {/* <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="button" variant="primary" onClick={postData}>
                   <Button type="submit" variant="primary">
                     Save
                   </Button>
@@ -543,7 +619,7 @@ const handleDateChange = (date, type) => {
                   </Button>
                   </li>
               </ul>
-            </div>
+            </div> */}
           </Row>
         </Form>
       </Block>

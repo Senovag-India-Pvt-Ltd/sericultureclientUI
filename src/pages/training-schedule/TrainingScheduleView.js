@@ -11,7 +11,7 @@ import {
 } from "../../components";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingScheduleView() {
   const styles = {
@@ -36,9 +36,12 @@ function TrainingScheduleView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `trSchedule/get-join/${id}`)
+      .get(baseURL + `trSchedule/get-join/${id}`)
       .then((response) => {
         setTrainingSchedule(response.data.content);
+        if(response.data.content.trUploadPath){
+          getPPtFile(response.data.content.trUploadPath)
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -46,6 +49,23 @@ function TrainingScheduleView() {
         setLoading(false);
       });
   };
+
+  // To get Photo
+  const [selectedPPtFile, setSelectedPPtFile] = useState(null);
+
+  const getPPtFile = async (file) => {
+    const parameters = `fileName=${file}`
+    try {
+      const response = await api.get(baseURL+`api/s3/download?${parameters}`, {
+        responseType: 'arraybuffer',
+      }); 
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedPPtFile(url);
+    } catch (error) {
+      console.error('Error fetching file:', error);
+    }
+  }
 
   //console.log(Caste);
 
@@ -139,10 +159,6 @@ function TrainingScheduleView() {
                         <td>{trainingSchedule.trNoOfParticipant}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Upload:</td>
-                        <td>{trainingSchedule.trUploadPath}</td>
-                      </tr>
-                      <tr>
                         <td style={styles.ctstyle}>Training Start Date:</td>
                         <td>{trainingSchedule.trStartDate}</td>
                       </tr>
@@ -150,6 +166,13 @@ function TrainingScheduleView() {
                         <td style={styles.ctstyle}>Date Of Completion:</td>
                         <td>{trainingSchedule.trDateOfCompletion}</td>
                       </tr>
+                      <tr>
+                      <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
+                      <td>
+                        {" "}
+                         {selectedPPtFile && <img style={{ height: "100px", width: "100px" }} src={selectedPPtFile} alt="Selected File" />}
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </Col>

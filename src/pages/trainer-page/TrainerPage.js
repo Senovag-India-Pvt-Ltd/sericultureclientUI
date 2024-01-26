@@ -11,7 +11,7 @@ import axios from "axios";
 import { Icon } from "../../components";
 import api from "../../../src/services/auth/api";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainerPage() {
@@ -168,7 +168,7 @@ function TrainerPage() {
         event.preventDefault();
         // event.stopPropagation();
         api
-          .post(baseURL2 + `trSchedule/add`, data)
+          .post(baseURL + `trSchedule/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               const trainerError = response.data.content.error_description;
@@ -183,7 +183,7 @@ function TrainerPage() {
                     trScheduleId: trScheduleId,
                   };
                   api
-                    .post(baseURL2 + `trTrainee/add`, updatedTr)
+                    .post(baseURL + `trTrainee/add`, updatedTr)
                     .then((response) => {
                       if (response.data.content.error) {
                         const trainingError = response.data.content.error_description;

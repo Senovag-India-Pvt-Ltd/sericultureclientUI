@@ -16,7 +16,7 @@ import api from "../../../src/services/auth/api";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTrackerList() {
   const [listData, setListData] = useState({});
@@ -49,7 +49,7 @@ function TrainingDeputationTrackerList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL2 + `trainingDeputationTracker/search`, {
+      .post(baseURL + `trainingDeputationTracker/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
       }, {
@@ -73,7 +73,7 @@ function TrainingDeputationTrackerList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `trainingDeputationTracker/list-with-join`, _params)
+      .get(baseURL + `trainingDeputationTracker/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.trainingDeputationTracker);
         setTotalRows(response.data.content.totalItems);
@@ -123,7 +123,7 @@ function TrainingDeputationTrackerList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `trainingDeputationTracker/delete/${_id}`)
+          .delete(baseURL + `trainingDeputationTracker/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();

@@ -11,8 +11,8 @@ import {
 } from "../../components";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+// const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTrackerView() {
   const styles = {
@@ -37,7 +37,7 @@ function TrainingDeputationTrackerView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `trainingDeputationTracker/get-join/${id}`)
+      .get(baseURL + `trainingDeputationTracker/get-join/${id}`)
       .then((response) => {
         setTrainingDeputationTracker(response.data.content);
         setLoading(false);

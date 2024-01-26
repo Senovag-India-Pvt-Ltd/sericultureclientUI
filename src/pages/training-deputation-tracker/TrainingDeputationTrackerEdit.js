@@ -15,7 +15,7 @@ import api from "../../../src/services/auth/api";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTrackerEdit() {
     const { id } = useParams();
@@ -50,7 +50,7 @@ function TrainingDeputationTrackerEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `trainingDeputationTracker/edit`, data)
+        .post(baseURL2 + `trainingDeputationTracker/edit`, data)
         .then((response) => {
           if(response.data.content.error){
             updateError(response.data.content.error_description);
@@ -100,7 +100,7 @@ function TrainingDeputationTrackerEdit() {
     const getIdList = () => {
       setLoading(true);
       const response = api
-        .get(baseURL + `trainingDeputationTracker/get/${id}`)
+        .get(baseURL2 + `trainingDeputationTracker/get/${id}`)
         .then((response) => {
           setData(response.data.content);
           setLoading(false);

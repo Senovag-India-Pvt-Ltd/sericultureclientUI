@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingDeputationTracker() {
 
@@ -58,7 +58,7 @@ function TrainingDeputationTracker() {
       event.preventDefault();
       // event.stopPropagation();
     api
-      .post(baseURL + `trainingDeputationTracker/add`, data)
+      .post(baseURL2 + `trainingDeputationTracker/add`, data)
       .then((response) => {
         if(response.data.content.error){
             saveError(response.data.content.error_description);
@@ -121,7 +121,7 @@ function TrainingDeputationTracker() {
     getDesignationList();
   }, []);
 
-  // to get TrGroup
+  // to get Deputed
   const [deputedInstituteListData, setDeputedInstituteListData] = useState([]);
 
   const getDeputedInstituteList = () => {

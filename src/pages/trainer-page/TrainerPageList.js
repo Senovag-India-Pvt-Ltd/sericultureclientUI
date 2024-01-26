@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../services/auth/api";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TrainerPageList() {

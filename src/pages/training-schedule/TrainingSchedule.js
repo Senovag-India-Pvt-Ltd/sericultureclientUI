@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingSchedule() {
 
@@ -61,21 +61,60 @@ function TrainingSchedule() {
       event.preventDefault();
       // event.stopPropagation();
     api
-      .post(baseURL + `trSchedule/add`, data)
+      .post(baseURL2 + `trSchedule/add`, data)
       .then((response) => {
+        if(response.data.content.trScheduleId){
+          const trUploadId = response.data.content.trScheduleId;
+          handlePPtUpload(trUploadId);
+        }
         if(response.data.content.error){
             saveError(response.data.content.error_description);
             }else{
               saveSuccess();
+              setData({
+                userMasterId: "",
+                trStakeholderType: "",
+                trName: "",
+                trInstitutionMasterId: "",
+                trGroupMasterId: "",
+                trProgramMasterId: "",
+                trCourseMasterId: "",
+                trModeMasterId: "",
+                trDuration: "",
+                trPeriod: "",
+                trNoOfParticipant: "",
+                trUploadPath:"",
+                trStartDate:"",
+                trDateOfCompletion:"",
+              });
+              setValidated(false);
             }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      userMasterId: "",
+      trStakeholderType: "",
+      trName: "",
+      trInstitutionMasterId: "",
+      trGroupMasterId: "",
+      trProgramMasterId: "",
+      trCourseMasterId: "",
+      trModeMasterId: "",
+      trDuration: "",
+      trPeriod: "",
+      trNoOfParticipant: "",
+      trUploadPath:"",
+      trStartDate:"",
+      trDateOfCompletion:"",
+    })
+  }
 
   // const postData = (e) => {
   //   console.log("Data to be sent:", data);
@@ -222,6 +261,37 @@ const handleDateChange = (date, type) => {
   setData({ ...data, [type]: date });
 };
 
+ // Display Image
+ const [ppt, setPPt] = useState("");
+ // const [photoFile,setPhotoFile] = useState("")
+
+ const handlePPtChange = (e) => {
+   const file = e.target.files[0];
+   setPPt(file);
+   setData(prev=>({...prev,trUploadPath:file.name}))
+   // setPhotoFile(file);
+ };
+
+ // Upload Image to S3 Bucket
+ const handlePPtUpload = async (trScheduleid)=>{
+   const parameters = `trScheduleId=${trScheduleid}`
+   try{
+     const formData = new FormData();
+     formData.append("multipartFile",ppt);
+
+     const response = await api.post(baseURL2 +`trSchedule/tr-upload-path?${parameters}`,formData,{
+       headers: {
+         'Content-Type': 'multipart/form-data', 
+       },
+     });
+     console.log('File upload response:', response.data);
+
+   }catch(error){
+     console.error('Error uploading file:', error);
+   }
+ }
+
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -229,7 +299,7 @@ const handleDateChange = (date, type) => {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/training-schedule-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -525,21 +595,31 @@ const handleDateChange = (date, type) => {
                       </div>
                     </Form.Group>
 
-                    <Form.Group className="form-group mt-4">
-                      <Form.Label htmlFor="trUploadPath">
-                      Training Upload
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="trUploadPath"
-                          name="trUploadPath"
-                          value={data.trUploadPath}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Upload Path"
-                        />
-                      </div>
-                    </Form.Group>
+                    <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="trUploadPath">
+                          Upload PPT/Video
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="trUploadPath"
+                            name="trUploadPath"
+                            // value={data.photoPath}
+                            onChange={handlePPtChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {ppt ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(ppt)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
                   </Col>
 
                   <Col lg='6'>          
@@ -602,9 +682,9 @@ const handleDateChange = (date, type) => {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-schedule-list" className="btn btn-secondary border-0">
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

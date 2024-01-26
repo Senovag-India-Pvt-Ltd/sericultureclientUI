@@ -6,7 +6,7 @@ import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TrainerPageView() {
@@ -38,6 +38,9 @@ function TrainerPageView() {
       .get(baseURL2 + `trSchedule/get-join/${id}`)
       .then((response) => {
         setTrTrainer(response.data.content);
+        if(response.data.content.trUploadPath){
+          getPPtFile(response.data.content.trUploadPath)
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -46,19 +49,6 @@ function TrainerPageView() {
       });
   };
 
-  // const getVbAccountList = () => {
-  //   setLoadingVbAccount(true);
-  //   axios
-  //     .get(baseURL2 + `reeler-virtual-bank-account/get-by-reeler-id/${id}`)
-  //     .then((response) => {
-  //       setVbAccount(response.data.content);
-  //       setLoadingVbAccount(false);
-  //     })
-  //     .catch((err) => {
-  //       setVbAccount({});
-  //       setLoadingVbAccount(false);
-  //     });
-  // }
 
   const [trDetailsList, setTrDetailsList] = useState([]);
   const getTrDetailsList = () => {
@@ -73,6 +63,23 @@ function TrainerPageView() {
         // editError(message);
       });
   };
+
+  // To get Photo
+  const [selectedPPtFile, setSelectedPPtFile] = useState(null);
+
+  const getPPtFile = async (file) => {
+    const parameters = `fileName=${file}`
+    try {
+      const response = await api.get(baseURL2+`api/s3/download?${parameters}`, {
+        responseType: 'arraybuffer',
+      }); 
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedPPtFile(url);
+    } catch (error) {
+      console.error('Error fetching file:', error);
+    }
+  }
 
 
   // console.log(getIdList());
@@ -180,6 +187,13 @@ function TrainerPageView() {
                     <tr>
                       <td style={styles.ctstyle}>No of Participant:</td>
                       <td>{trTrainer.trNoOfParticipant}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
+                      <td>
+                        {" "}
+                         {selectedPPtFile && <img style={{ height: "100px", width: "100px" }} src={selectedPPtFile} alt="Selected File" />}
+                      </td>
                     </tr>
                     </tbody>
                 </table>

@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainerPageEdit() {
@@ -48,7 +48,7 @@ const [trDetailsList, setTrDetailsList] = useState([]);
 
 const getTrDetailsList = () => {
     api
-      .get(baseURL2 + `trTrainee/get-by-tr-schedule-id-join/${id}`)
+      .get(baseURL + `trTrainee/get-by-tr-schedule-id-join/${id}`)
       .then((response) => {
         setTrDetailsList(response.data.content.trSchedule);
       })
@@ -235,8 +235,12 @@ const handleAdd = (event) => {
       event.preventDefault();
       // event.stopPropagation();
     api
-      .post(baseURL2 + `trSchedule/edit`, data)
+      .post(baseURL + `trSchedule/edit`, data)
       .then((response) => {
+        const trScheduleId = response.data.content.trScheduleId;
+          if (trScheduleId) {
+            handlePPtUpload(trScheduleId);
+          }
         if (response.data.content.error) {
           const scheduleError = response.data.content.error_description;
             updateError(scheduleError);
@@ -250,7 +254,7 @@ const handleAdd = (event) => {
                 trScheduleId: trScheduleId,
               };
               api
-                .post(baseURL2 + `trTrainee/add`, updatedTr)
+                .post(baseURL + `trTrainee/add`, updatedTr)
                 .then((response) => {
                   if (response.data.content.error) {
                     const bankError = response.data.content.error_description;
@@ -283,10 +287,13 @@ const handleAdd = (event) => {
   const getIdList = () => {
     // setLoading(true);
     api
-      .get(baseURL2 + `trSchedule/get/${id}`)
+      .get(baseURL + `trSchedule/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         // setLoading(false);
+        if (response.data.content.trUploadPath) {
+          getPPtFile(response.data.content.trUploadPath);
+        }
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -657,6 +664,57 @@ const handleAdd = (event) => {
       });
     };
 
+     // Display Image
+ const [ppt, setPPt] = useState("");
+ // const [photoFile,setPhotoFile] = useState("")
+
+ const handlePPtChange = (e) => {
+   const file = e.target.files[0];
+   setPPt(file);
+   setData(prev=>({...prev,trUploadPath:file.name}))
+   // setPhotoFile(file);
+ };
+
+ // Upload Image to S3 Bucket
+ const handlePPtUpload = async (trScheduleid)=>{
+   const parameters = `trScheduleId=${trScheduleid}`
+   try{
+     const formData = new FormData();
+     formData.append("multipartFile",ppt);
+
+     const response = await api.post(baseURL +`trSchedule/tr-upload-path?${parameters}`,formData,{
+       headers: {
+         'Content-Type': 'multipart/form-data', 
+       },
+     });
+     console.log('File upload response:', response.data);
+
+   }catch(error){
+     console.error('Error uploading file:', error);
+   }
+ }
+
+// To get Photo from S3 Bucket
+const [selectedPPtFile, setPPtFile] = useState(null);
+
+const getPPtFile = async (file) => {
+  const parameters = `fileName=${file}`;
+  try {
+    const response = await api.get(
+      baseURL + `api/s3/download?${parameters}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+    const blob = new Blob([response.data]);
+    const url = URL.createObjectURL(blob);
+    setPPtFile(url);
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+};
+  
+
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -990,21 +1048,36 @@ const handleAdd = (event) => {
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="trUploadPath">
-                      Training Upload
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="trUploadPath"
-                          name="trUploadPath"
-                          value={data.trUploadPath}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Upload Path"
-                        />
-                      </div>
-                    </Form.Group>
+                    <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="photoPath">
+                          Upload PPt/Video
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="trUploadPath"
+                            name="trUploadPath"
+                            onChange={handlePPtChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {ppt ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(ppt)}
+                          />
+                        ) : (
+                          selectedPPtFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedPPtFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
                   </Col>
 
                   <Col lg='6'>          

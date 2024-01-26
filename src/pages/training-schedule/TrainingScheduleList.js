@@ -15,7 +15,7 @@ import {
 import api from "../../../src/services/auth/api";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingScheduleList() {
   const [listData, setListData] = useState({});
@@ -48,7 +48,7 @@ function TrainingScheduleList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL2 + `trSchedule/search`, {
+      .post(baseURL + `trSchedule/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
       }, {
@@ -72,7 +72,7 @@ function TrainingScheduleList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `trSchedule/list-with-join`, _params)
+      .get(baseURL + `trSchedule/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.trSchedule);
         setTotalRows(response.data.content.totalItems);
@@ -122,7 +122,7 @@ function TrainingScheduleList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `trSchedule/delete/${_id}`)
+          .delete(baseURL + `trSchedule/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
