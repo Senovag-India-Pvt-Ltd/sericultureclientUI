@@ -106,6 +106,7 @@ function HelpDesk() {
       hdCreatedBy: "",
       ticketNumber: "",
     })
+    setAttachFiles("");
   }
 
   const [loading, setLoading] = useState(false);
@@ -260,7 +261,7 @@ const handleDateChange = (date, type) => {
      const formData = new FormData();
      formData.append("multipartFile",attachFiles);
 
-     const response = await api.post(baseURL +`hdTicket/hd-attach-files?${parameters}`,formData,{
+     const response = await api.post(baseURL2 +`hdTicket/hd-attach-files?${parameters}`,formData,{
        headers: {
          'Content-Type': 'multipart/form-data', 
        },
@@ -299,7 +300,7 @@ const handleDateChange = (date, type) => {
             <Block.Title tag="h2">Create Ticket</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link to="/help-desk-list" className="btn btn-primary btn-md d-md-none">
                   <Icon name="arrow-long-left" />
@@ -315,7 +316,7 @@ const handleDateChange = (date, type) => {
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>

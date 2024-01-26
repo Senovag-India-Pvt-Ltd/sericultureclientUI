@@ -364,13 +364,17 @@ function Header() {
                             <span>My Profile</span>
                           </LinkListItem>
                           {/* <LinkListItem to="/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
-                          <LinkListItem to="/admin/profile-settings">
+                          {/* <LinkListItem to="/admin/profile-settings">
                             <Icon name="setting-alt"></Icon>
                             <span>Account Settings</span>
-                          </LinkListItem>
+                          </LinkListItem> */}
                           <LinkListItem to="/change-password">
                             <Icon name="lock-alt"></Icon>
                             <span>Change Password</span>
+                          </LinkListItem>
+                          <LinkListItem to="/help-desk">
+                            <Icon name="question-alt"></Icon>
+                            <span>Raise a ticket</span>
                           </LinkListItem>
                         </LinkList>
                       </div>
