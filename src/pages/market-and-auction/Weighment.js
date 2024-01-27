@@ -279,6 +279,7 @@ function Weighment() {
             response.data.content.totalAmountDebited,
             response.data.content.allottedLotId
           );
+          speak({ text: `Weighment Completed Successfully` });
         } else {
           submitError(response.data.errorMessages);
         }
