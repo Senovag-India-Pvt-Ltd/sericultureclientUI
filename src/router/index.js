@@ -473,6 +473,7 @@ import HelpDeskCategoryEdit from "../pages/masters/help-desk-category/HelpDeskCa
 import HelpDeskSubCategory from "../pages/masters/help-desk-sub-category/HelpDeskSubCategory";
 import HelpDeskSubCategoryEdit from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryEdit";
 import HelpDeskSubCategoryView from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryView";
+import MarketExceptionTime from "../pages/masters/market-exception-time/MarketExceptionTime";
 
 // Admin and Reports
 
@@ -1259,6 +1260,10 @@ function Router() {
 
         {/* Display All Lot */}
         <Route path="display-all-lot" element={<DisplayAllLot />} />
+
+        {/* Market Exception Time */}
+        <Route path="market-exception-time" element={<MarketExceptionTime />} />
+
 
         <Route path="test1" element={<Test1 />} />
       </Routes>

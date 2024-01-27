@@ -8,30 +8,30 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function UnitCounterReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
-    allottedLotId: "",
-    auctionDate: new Date(),
+    reportFromDate: new Date(),
   });
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+  // let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
 
   const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -57,10 +57,11 @@ function UnitCounterReport() {
   //       saveError();
   //     });
   // };
+  const [counterData, setCounterData] = useState([]);
 
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
+    const { marketId, godownId, reportFromDate } = data;
+    const newDate = reportFromDate;
     const formattedDate =
       newDate.getFullYear() +
       "-" +
@@ -76,27 +77,20 @@ function UnitCounterReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
-        .post(
-          `https://api.senovagseri.com/reports/marketreport/gettripletpdf`,
-          {
-            marketId: marketId,
-            godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
-          },
-          {
-            responseType: "blob", //Force to receive data in a Blob Format
-          }
-        )
+      api
+        .post(baseURLMarket + `auction/report/getUnitCounterReport`, {
+          marketId: marketId,
+          godownId: godownId,
+          reportFromDate: formattedDate,
+        })
         .then((response) => {
-          //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
+          if (response.data.errorCode === 0) {
+            if (response.data.content && response.data.content.length) {
+              setCounterData(response.data.content);
+            }
+          } else if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0]);
+          }
         })
         .catch((error) => {
           // console.log("error", error);
@@ -114,11 +108,11 @@ function UnitCounterReport() {
       navigate("/caste-list");
     });
   };
-  const saveError = () => {
+  const saveError = (message = "Something went wrong!") => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: "Not Found",
+      text: message,
     });
   };
   return (
@@ -188,7 +182,7 @@ function UnitCounterReport() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
+                            selected={data.reportFromDate}
                             onChange={handleDateChange}
                           />
                         </div>
@@ -225,20 +219,212 @@ function UnitCounterReport() {
               </Card.Body>
             </Card>
 
-            {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
+            {counterData && counterData.length ? (
+              <div
+              //  className={isActive ? "" : "d-none"}
+              >
+                <Row className="g-gs pt-2">
+                  <Col lg="12">
+                    <table className="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Lot Number
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Date
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Reeler Id
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Name
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Bid Amt
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Kgs
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Amt
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            MF Amt
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            counter
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {counterData.map((list, i) => (
+                          <tr key={i}>
+                            <td>{list.allottedLotId}</td>
+                            <td>{list.lotTransactionDate}</td>
+                            <td>{list.reelerLicense}</td>
+                            <td>{list.reelerName}</td>
+                            <td>{list.bidAmount}</td>
+                            <td>{list.weight}</td>
+                            <td>{list.lotSoldOutAmount}</td>
+                            <td>
+                              {parseFloat(
+                                (
+                                  list.farmerMarketFee + list.reelerMarketFee
+                                ).toFixed(2)
+                              )}
+                            </td>
+                            <td>---</td>
+                            
+                          </tr>
+                        ))}
+                        {/* {
+                          <tr>
+                            <td
+                              style={{
+                                fontWeight: "bold",
+                                background: "rgb(251 255 248)",
+                              }}
+                              colSpan="13"
+                            >
+                              <div>
+                                Total Lots:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalLots}
+                                </span>
+                              </div>
+                              <div>
+                                Farmers Cheque Amt:{" "}
+                                <span style={{ color: "green" }}>
+                                  {parseFloat(
+                                    listDetails.totalFarmerAmount.toFixed(2)
+                                  )}
+                                </span>
+                              </div>
+                              <div>
+                                MF Amount:{" "}
+                                <span style={{ color: "green" }}>
+                                  {parseFloat(
+                                    (
+                                      listDetails.totalReelerMarketFee +
+                                      listDetails.totalFarmerMarketFee
+                                    ).toFixed(2)
+                                  )}
+                                </span>
+                              </div>
+                              <div>
+                                Reeler Transaction Amt:{" "}
+                                <span style={{ color: "green" }}>
+                                  {parseFloat(
+                                    listDetails.totalReelerAmount.toFixed(2)
+                                  )}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        } */}
+
+                        {/* <tr className="text-center">
+                        <td colSpan="4">
+                          {" "}
+                         
+                          <div className="gap-col">
+                            <ul className="d-flex align-items-center justify-content-center gap g-3">
+                              <li>
+                                <div className={showAccept ? "" : "d-none"}>
+                                  <Button
+                                    type="button"
+                                    variant="primary"
+                                    onClick={postData}
+                                    disabled={disable}
+                                  >
+                                    Accept
+                                  </Button>
+                                </div>
+                                <div className={showAccept ? "d-none" : ""}>
+                                  <span style={{ fontWeight: "bold" }}>
+                                    Already accepted by{" "}
+                                  </span>
+                                  <span
+                                    style={{
+                                      fontWeight: "bold",
+                                      color: "green",
+                                    }}
+                                  >
+                                    {farmerAuction.bidAcceptedBy}
+                                  </span>
+                                  <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    on behalf of Farmer{" "}
+                                  </span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr> */}
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+              </div>
+            ) : (
+              ""
+            )}
           </Row>
         </Form>
       </Block>
