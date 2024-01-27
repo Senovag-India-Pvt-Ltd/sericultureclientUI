@@ -281,6 +281,46 @@ const handleAdd = (event) => {
     }
   };
 
+  const clear = () =>{
+    setData({
+      userMasterId:"",
+      trStakeholderType:"",
+      trName: "",
+      trInstitutionMasterId: "",
+      trGroupMasterId: "",
+      trProgramMasterId: "",
+      trCourseMasterId: "",
+      trModeMasterId: "",
+      trStartDate: "",
+      trDuration: "",
+      trPeriod: "",
+      trDateOfCompletion: "",
+      trUploadPath: "",
+      trNoOfParticipant: "",
+    })
+    setPPtFile("");
+  }
+
+  const trClear = () =>{
+    setTrDetails({
+      trScheduleId: "",
+        trTraineeName: "",
+        designationId: "",
+        trOfficeId: "",
+        gender: "",
+        mobileNumber: "",
+        place: "",
+        stateId: "",
+        districtId: "",
+        talukId: "",
+        hobliId: "",
+        villageId: "",
+        preTestScore: "",
+        postTestScore: "",
+        percentageImproved: "",
+    })
+  }
+
 
 
   //   to get data from api
@@ -1241,12 +1281,15 @@ const getPPtFile = async (file) => {
                     </Button>
                   </li>
                   <li>
-                    <Link
+                    {/* <Link
                       to="/trainer-page-list"
                       className="btn btn-secondary border-0"
                     >
                       Cancel
-                    </Link>
+                    </Link> */}
+                    <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                   </li>
                 </ul>
               </div> 
@@ -1610,11 +1653,14 @@ const getPPtFile = async (file) => {
                         Reject
                       </Button>
                     </div> */}
-                    <div className="gap-col">
+                    {/* <div className="gap-col">
                       <Button variant="secondary" onClick={handleCloseModal}>
                         Cancel
                       </Button>
-                    </div>
+                    </div> */}
+                    <Button type="button" variant="secondary" onClick={trClear}>
+                    Cancel
+                  </Button>
                   </div>
                 </Col>
               </Row>
@@ -1982,11 +2028,14 @@ const getPPtFile = async (file) => {
                         Reject
                       </Button>
                     </div> */}
-                    <div className="gap-col">
+                    {/* <div className="gap-col">
                       <Button variant="secondary" onClick={handleCloseModal2}>
                         Cancel
                       </Button>
-                    </div>
+                    </div> */}
+                    <Button type="button" variant="secondary" onClick={trClear}>
+                    Cancel
+                  </Button>
                   </div>
                 </Col>
               </Row>

@@ -273,10 +273,9 @@ function Menu() {
     Inspection_Implementation_of_MGNREGA: false,
 
     Training: false,
-    Training_Cocoons_Handicrafts_Training: false,
-    Training_Workshops_or_Department_Training: false,
-    Training_Physical_Target: false,
-    Training_Financial_Target: false,
+    Training_Schedule: false,
+    Training_Page: false,
+    Training_Deputation_Tracker: false,
 
     Helpdesk: false,
     Helpdesk_Raise_a_Ticket: false,
@@ -1362,32 +1361,32 @@ function Menu() {
           sub
         />
         <MenuSub>
-          {showMenu.Training_Cocoons_Handicrafts_Training ? (
+          {showMenu.Training_Schedule ? (
             <MenuItem>
               <MenuItemLink
-                text="Cocoon Handicraft Training"
-                to="/attribute-undertaking-training"
+                text="Schedule Training"
+                to="/training-schedule"
               />
             </MenuItem>
           ) : null}
-          {showMenu.Training_Workshops_or_Department_Training ? (
+          {showMenu.Training_Page ? (
             <MenuItem>
               <MenuItemLink
-                text="Workshops or Department training"
-                to="/attribute-foundation-courses"
+                text="Trainer Page"
+                to="/trainer-page-list"
               />
             </MenuItem>
           ) : null}
-          {showMenu.Training_Physical_Target ? (
+          {showMenu.Training_Deputation_Tracker ? (
             <MenuItem>
-              <MenuItemLink text="Physical Target" to="#" />
+              <MenuItemLink text="Training Deputation Tracker" to="training-deputation-tracker" />
             </MenuItem>
           ) : null}
-          {showMenu.Training_Financial_Target ? (
+          {/* {showMenu.Training_Financial_Target ? (
             <MenuItem>
               <MenuItemLink text="Financial Target" to="#" />
             </MenuItem>
-          ) : null}
+          ) : null} */}
         </MenuSub>
       </MenuItem>
 
@@ -1401,7 +1400,7 @@ function Menu() {
         <MenuSub>
           {showMenu.Helpdesk_Raise_a_Ticket ? (
             <MenuItem>
-              <MenuItemLink text="Raise a Ticket" to="/raise-ticket" />
+              <MenuItemLink text="Raise a Ticket" to="/help-desk" />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_Dashboard ? (
