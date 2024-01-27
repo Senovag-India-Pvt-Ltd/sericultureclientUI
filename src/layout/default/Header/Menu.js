@@ -1384,7 +1384,7 @@ function Menu() {
           ) : null}
           {showMenu.Training_Deputation_Tracker ? (
             <MenuItem>
-              <MenuItemLink text="Training Deputation Tracker" to="training-deputation-tracker" />
+              <MenuItemLink text="Training Deputation Tracker" to="/training-deputation-tracker" />
             </MenuItem>
           ) : null}
           {/* {showMenu.Training_Financial_Target ? (
