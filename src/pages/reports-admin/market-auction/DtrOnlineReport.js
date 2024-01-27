@@ -143,7 +143,7 @@ function DtrOnlineReport() {
       // event.stopPropagation();
       api
         .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
-          marketId: 15,
+          marketId: marketId,
           // godownId: godownId,
           reelerId: reelerId,
           fromDate: formattedFromDate,
@@ -469,7 +469,13 @@ function DtrOnlineReport() {
                         ))}
                         {
                           <tr>
-                            <td style={{ fontWeight: "bold", background:"rgb(251 255 248)" }} colSpan="13">
+                            <td
+                              style={{
+                                fontWeight: "bold",
+                                background: "rgb(251 255 248)",
+                              }}
+                              colSpan="13"
+                            >
                               <div>
                                 Total Lots:{" "}
                                 <span style={{ color: "green" }}>
@@ -479,26 +485,33 @@ function DtrOnlineReport() {
                               <div>
                                 Farmers Cheque Amt:{" "}
                                 <span style={{ color: "green" }}>
-                                  {parseFloat(listDetails.totalFarmerAmount.toFixed(2))}
+                                  {parseFloat(
+                                    listDetails.totalFarmerAmount.toFixed(2)
+                                  )}
                                 </span>
                               </div>
                               <div>
                                 MF Amount:{" "}
                                 <span style={{ color: "green" }}>
-                                     {parseFloat((listDetails.totalReelerMarketFee +
-                                    listDetails.totalFarmerMarketFee).toFixed(2))}
+                                  {parseFloat(
+                                    (
+                                      listDetails.totalReelerMarketFee +
+                                      listDetails.totalFarmerMarketFee
+                                    ).toFixed(2)
+                                  )}
                                 </span>
                               </div>
                               <div>
                                 Reeler Transaction Amt:{" "}
                                 <span style={{ color: "green" }}>
-                                  {parseFloat(listDetails.totalReelerAmount.toFixed(2))}
+                                  {parseFloat(
+                                    listDetails.totalReelerAmount.toFixed(2)
+                                  )}
                                 </span>
                               </div>
                             </td>
                           </tr>
                         }
-                        
 
                         {/* <tr className="text-center">
                         <td colSpan="4">
