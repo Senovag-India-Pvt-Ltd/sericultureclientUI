@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -141,7 +141,7 @@ function DtrOnlineReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
+      api
         .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
           marketId: 15,
           // godownId: godownId,
