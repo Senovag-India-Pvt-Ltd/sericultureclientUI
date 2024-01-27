@@ -451,6 +451,7 @@ import TrainingDeputedInstitute from "../pages/masters/training-deputed-institut
 import TrainingDeputedInstituteList from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteList";
 import TrainingDeputedInstituteEdit from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteEdit";
 import TrainingDeputedInstituteView from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteView";
+import Gatepass from "../pages/market-and-auction/Gatepass";
 
 // Admin and Reports
 
@@ -1157,6 +1158,7 @@ function Router() {
         <Route path="weighment" element={<Weighment />} />
         <Route path="update-lot-weight" element={<UpdateLotWeight />} />
         <Route path="accept-former-auction" element={<AcceptFarmerAuction />} />
+        <Route path="gatepass" element={<Gatepass />} />
 
         {/* Admin and Reports */}
         <Route path="report-admin" element={<ReportsAdmin />} />
