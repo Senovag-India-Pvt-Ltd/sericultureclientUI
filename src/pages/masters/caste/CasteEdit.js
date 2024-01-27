@@ -43,15 +43,28 @@ function CasteEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              title: "",
+              code: "",
+              nameInKannada: "", 
+            });
+            setValidated(false);
           }
         })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+     title: "",
+    code: "",
+    nameInKannada: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +93,7 @@ function CasteEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/caste-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +107,7 @@ function CasteEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/caste-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -212,9 +225,9 @@ function CasteEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
