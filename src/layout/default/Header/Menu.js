@@ -212,8 +212,9 @@ function Menu() {
     Market_Register: false,
     Market_Bidding: false,
     Market_Auction: false,
-    Market_weighment: false,
-    Market_Reject:false,
+    Market_Weighment: false,
+    Market_Gatepass: false,
+    Market_Reject: false,
 
     Market_Payment: false,
     Market_Payment_Ready_for_Payment: false,
@@ -932,9 +933,14 @@ function Menu() {
               <MenuItemLink text="e-Auction" to="/reject-lot" />
             </MenuItem>
           ) : null} */}
-          {showMenu.Market_weighment ? (
+          {showMenu.Market_Weighment ? (
             <MenuItem>
               <MenuItemLink text="e-Weighment" to="/weighment" />
+            </MenuItem>
+          ) : null}
+          {showMenu.Market_Gatepass ? (
+            <MenuItem>
+              <MenuItemLink text="Gatepass" to="/gatepass" />
             </MenuItem>
           ) : null}
           <MenuItem>
@@ -985,7 +991,7 @@ function Menu() {
               <MenuItemLink text="Reject Lot" to="/reject-lot" />
             </MenuItem>
           ) : null}
-           {showMenu.Market_Reject ? (
+          {showMenu.Market_Reject ? (
             <MenuItem>
               <MenuItemLink text="Show Lot Details" to="/display-all-lot" />
             </MenuItem>
@@ -1016,7 +1022,6 @@ function Menu() {
               <MenuItemLink text="Update Lot Weight" to="/update-lot-weight" />
             </MenuItem>
           ) : null} */}
-          
         </MenuSub>
       </MenuItem>
 
@@ -1680,37 +1685,58 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_Training_Program ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Program" to="/trainingProgram" />
+                          <MenuItemLink
+                            text="Training Program"
+                            to="/trainingProgram"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Course ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Course" to="/trainingCourse" />
+                          <MenuItemLink
+                            text="Training Course"
+                            to="/trainingCourse"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Deputed_Institute ? (
                         <MenuItem>
-                          <MenuItemLink text="Deputed Institute Training" to="/deputed-institute" />
+                          <MenuItemLink
+                            text="Deputed Institute Training"
+                            to="/deputed-institute"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Group ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Group" to="/training-group" />
+                          <MenuItemLink
+                            text="Training Group"
+                            to="/training-group"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Institution ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Institution" to="/training-institution" />
+                          <MenuItemLink
+                            text="Training Institution"
+                            to="/training-institution"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Mode ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Institution" to="/training-mode" />
+                          <MenuItemLink
+                            text="Training Institution"
+                            to="/training-mode"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Training_Office ? (
                         <MenuItem>
-                          <MenuItemLink text="Training Office" to="/training-office" />
+                          <MenuItemLink
+                            text="Training Office"
+                            to="/training-office"
+                          />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
