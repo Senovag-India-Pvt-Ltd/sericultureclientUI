@@ -479,20 +479,20 @@ function DtrOnlineReport() {
                               <div>
                                 Farmers Cheque Amt:{" "}
                                 <span style={{ color: "green" }}>
-                                  {listDetails.totalFarmerAmount}
+                                  {parseFloat(listDetails.totalFarmerAmount.toFixed(2))}
                                 </span>
                               </div>
                               <div>
                                 MF Amount:{" "}
                                 <span style={{ color: "green" }}>
-                                  {listDetails.totalReelerMarketFee +
-                                    listDetails.totalFarmerMarketFee}
+                                     {parseFloat((listDetails.totalReelerMarketFee +
+                                    listDetails.totalFarmerMarketFee).toFixed(2))}
                                 </span>
                               </div>
                               <div>
                                 Reeler Transaction Amt:{" "}
                                 <span style={{ color: "green" }}>
-                                  {listDetails.totalReelerAmount}
+                                  {parseFloat(listDetails.totalReelerAmount.toFixed(2))}
                                 </span>
                               </div>
                             </td>
