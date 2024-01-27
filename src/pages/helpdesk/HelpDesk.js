@@ -38,8 +38,8 @@ function HelpDesk() {
   useEffect(()=>{
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
-        console.log(quill.getText().replace(/\n+$/, '')); 
-        setData(prev=>({...prev,queryDetails:quill.getText()})) 
+        console.log(quill.getText()); 
+        setData(prev=>({...prev,queryDetails:quill.getText().replace(/\n+$/,'')})) 
       });
     }
   }, [quill]);
