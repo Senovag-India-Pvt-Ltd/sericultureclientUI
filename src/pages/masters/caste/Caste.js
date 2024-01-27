@@ -64,15 +64,28 @@ function Caste() {
         saveError(response.data.content.error_description);
         }else{
           saveSuccess();
+          setData({
+            title: "",
+            code: "",
+            nameInKannada: "", 
+          });
+          setValidated(false);
         }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+     title: "",
+    code: "",
+    nameInKannada: "", 
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -81,7 +94,7 @@ function Caste() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -202,9 +215,9 @@ function Caste() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
