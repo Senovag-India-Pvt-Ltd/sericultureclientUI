@@ -234,7 +234,7 @@ function Weighment() {
       (newDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       newDate.getDate().toString().padStart(2, "0");
-    axios
+    api
       .post(
         `https://api.senovagseri.com/reports/marketreport/gettripletpdf`,
         {
