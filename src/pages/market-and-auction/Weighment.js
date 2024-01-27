@@ -10,6 +10,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 // import { SerialPort } from "serialport";
 import api from "../../../src/services/auth/api";
+import { useSpeechSynthesis } from "react-speech-kit";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -21,6 +22,8 @@ function Weighment() {
   const [totalNetWeight, setTotalNetWeight] = useState(0);
   const [tableWeightData, setTableWeightData] = useState([]);
 
+  const { speak } = useSpeechSynthesis();
+
   const [noOfBox, setNoOfBox] = useState(0);
   const [lotNumber, setLotNumber] = useState("");
   const [pricePerKg, setPricePerKg] = useState(0);
@@ -30,6 +33,8 @@ function Weighment() {
   const [counter, setCounter] = useState(0);
 
   const [canContinue, setCanContinue] = useState(false);
+
+  const [weighTest, setWeighTest] = useState(false);
 
   const [data, setData] = useState({
     allottedLotId: "",
@@ -61,6 +66,13 @@ function Weighment() {
     setData((prev) => {
       return { ...prev, noOfCrates: value };
     });
+    if (data.allottedLotId) {
+      getLotDetails(data.allottedLotId);
+      if (value && parseInt(value) !== 0) {
+        debugger;
+        getCrateDetails(value, data.allottedLotId);
+      }
+    }
   };
 
   const onchanging = (e) => {
@@ -68,14 +80,24 @@ function Weighment() {
     setData((prev) => {
       return { ...prev, allottedLotId: value };
     });
-    getLotDetails(value);
-    getCrateDetails(data.noOfCrates, value);
+    if (value !== "") {
+      debugger;
+      getLotDetails(value);
+      if (data.noOfCrates && parseInt(data.noOfCrates) !== 0) {
+        getCrateDetails(data.noOfCrates, value);
+      }
+    }
     // if(!data.noOfCrates){
     //   getLotDetails(value);
     //   getCrateDetails(data.noOfCrates, value);
     // }else{
     //   alert("Please Enter No of Crates");
     // }
+  };
+
+  const continueWeighment = () => {
+    setWeighTest(true);
+    setLastWeight("0");
   };
 
   const getLotDetails = (allottedLotId) => {
@@ -125,6 +147,8 @@ function Weighment() {
             // alert(response.data.errorMessages[0]);
             // submitError(response.data.errorMessages[0]);
             submitConfirm();
+          } else {
+            submitError(response.data.errorMessages[0]);
           }
         } else if (response.data.errorCode === 0) {
           setWeight(response.data.content.weight);
@@ -189,10 +213,12 @@ function Weighment() {
           reelerLicense: "",
         });
         setTableWeightData([]);
+        setTotalNetPrice(0);
         setTotalWeight(0);
         setTotalNetWeight(0);
         setTareWeight(0);
         setCounter(0);
+        setLastWeight("0");
         // setLotNumber("");
 
         printTriplet();
@@ -253,6 +279,7 @@ function Weighment() {
             response.data.content.totalAmountDebited,
             response.data.content.allottedLotId
           );
+          speak({ text: `Weighment Completed Successfully` });
         } else {
           submitError(response.data.errorMessages);
         }
@@ -277,7 +304,7 @@ function Weighment() {
       const result = await Swal.fire({
         title: "Are you sure?",
         text: "Insufficient balance, Do you want to continue with the Weighment?",
-        icon: "success",
+        icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, Continue!",
       });
@@ -520,146 +547,169 @@ function Weighment() {
   // });
 
   useEffect(() => {
-    let canContinue1 = false;
-    const handleKeyDown = async (event) => {
-      if (event.key === "Enter") {
-        debugger;
-        // Handle the Enter key press here
-        //{data.noOfCrates} - {counter}
-        // If condition to continue with weighing
-        if (data.allottedLotId == "" || data.noOfCrates <= 0) {
+    if (weighTest) {
+      let canContinue1 = false;
+      const handleKeyDown = async (event) => {
+        if (event.key === "Enter") {
           debugger;
-          if (data.allottedLotId == "") {
-            alert("Please Enter Lot No");
-            setCanContinue(false);
-            canContinue1 = false;
-          }
-          if (data.noOfCrates <= 0) {
-            alert("Please Enter No of Crates");
-            setCanContinue(false);
-            canContinue1 = false;
-          }
-        }
-
-        // debugger;
-        // if (counter >= parseInt(data.noOfCrates)-1) {
-        //   setCanContinue(false);
-        //   // alert("You already completed the weighment with crates");
-        //   // document.removeEventListener("keydown", handleKeyDown);
-        //   // await submitConfirm();
-
-        //   onSubmitting();
-        //   // printTriplet();
-        // }
-        console.log("counter", counter);
-        console.log("noOfCrate", parseInt(data.noOfCrates));
-        if (
-          counter === parseInt(data.noOfCrates) ||
-          data.allottedLotId === ""
-        ) {
-          // debugger;
-          if (parseInt(data.noOfCrates) === 0) {
-            alert("Please Enter No of Crates");
-            setCanContinue(false);
-            canContinue1 = false;
-          } else if (data.allottedLotId === "") {
-            alert("Please Enter Lot Number");
-            setCanContinue(false);
-            canContinue1 = false;
-          } else if (totalNetPrice > weigh.reelerCurrentBalance) {
-            // console.log("Reeler don't have enough money");
-            // getCrateDetails();
+          // Handle the Enter key press here
+          //{data.noOfCrates} - {counter}
+          // If condition to continue with weighing
+          if (data.allottedLotId == "" || data.noOfCrates <= 0) {
             debugger;
-            await lastSubmitConfirm();
-          } else {
-            console.log("hello Weight");
-            setCanContinue(false);
-            canContinue1 = false;
-            onSubmitting();
+            if (data.allottedLotId == "") {
+              alert("Please Enter Lot No");
+              setCanContinue(false);
+              canContinue1 = false;
+            }
+            if (data.noOfCrates <= 0) {
+              alert("Please Enter No of Crates");
+              setCanContinue(false);
+              canContinue1 = false;
+            }
           }
-        } else {
-          canContinue1 = true;
+
+          // debugger;
+          // if (counter >= parseInt(data.noOfCrates)-1) {
+          //   setCanContinue(false);
+          //   // alert("You already completed the weighment with crates");
+          //   // document.removeEventListener("keydown", handleKeyDown);
+          //   // await submitConfirm();
+
+          //   onSubmitting();
+          //   // printTriplet();
+          // }
+          console.log("counter", counter);
+          console.log("noOfCrate", parseInt(data.noOfCrates));
+          if (
+            counter === parseInt(data.noOfCrates) ||
+            data.allottedLotId === ""
+          ) {
+            // debugger;
+            if (parseInt(data.noOfCrates) === 0) {
+              alert("Please Enter No of Crates");
+              setCanContinue(false);
+              canContinue1 = false;
+            } else if (data.allottedLotId === "") {
+              alert("Please Enter Lot Number");
+              setCanContinue(false);
+              canContinue1 = false;
+            } else if (totalNetPrice > weigh.reelerCurrentBalance) {
+              // console.log("Reeler don't have enough money");
+              // getCrateDetails();
+              debugger;
+              await lastSubmitConfirm();
+            } else {
+              console.log("hello Weight");
+              setCanContinue(false);
+              canContinue1 = false;
+              onSubmitting();
+            }
+          } else {
+            canContinue1 = true;
+          }
+
+          // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
+          // if (
+          //   data.noOfCrates <= 0 ||
+          //   data.allottedLotId == "" ||
+          //   counter >= parseInt(data.noOfCrates) - 1
+          // ) {
+          //   debugger;
+          //   setCanContinue(false);
+          //   canContinue1 = false;
+          //   console.log("cannot continue with weighment");
+          // } else {
+          //   setCanContinue(true);
+          //   canContinue1 = true;
+          // }
+
+          if (canContinue1) {
+            let prabhu = weighStream.toString();
+
+            const lastWeightString = prabhu.substring(
+              prabhu.lastIndexOf("kg") - 8,
+              prabhu.lastIndexOf("kg") - 1
+            );
+
+            setLastWeight(lastWeightString);
+
+            const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
+            const totalWeightFloat = lastWeightFloat + totalWeight;
+
+            setTotalWeight(totalWeightFloat);
+
+            // calculate set total net weight
+            // const totalNetWeightFloat =
+            //   lastWeightFloat - tareWeight + totalNetWeight;
+
+            const totalNetWeightFloat =
+              lastWeightFloat - tareWeight + totalNetWeight < 0
+                ? 0
+                : lastWeightFloat - tareWeight + totalNetWeight;
+
+            setTotalNetWeight(totalNetWeightFloat);
+
+            const weightObj = {
+              grossWeight: lastWeightFloat,
+              netWeight:
+                lastWeightFloat >= tareWeight
+                  ? lastWeightFloat - tareWeight
+                  : 0,
+              crateNumber: data.noOfCrates,
+            };
+            setTableWeightData((prevState) => [...prevState, weightObj]);
+
+            const formattedTotalPrice = totalWeightFloat * pricePerKg;
+            console.log(pricePerKg);
+            console.log(formattedTotalPrice);
+
+            setTotalPrice(formattedTotalPrice);
+
+            // calculate total net cocoon net weight total price
+            const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
+            setTotalNetPrice(formattedTotalNetPrice);
+            // setTotalNetPrice(10);
+
+            if (counter <= parseInt(data.noOfCrates) - 1) {
+              debugger;
+              speak({ text: `Crate number ${counter + 1} is completed` });
+              setCounter(counter + 1);
+            }
+
+            setWeighStream("");
+          }
         }
+      };
 
-        // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
-        // if (
-        //   data.noOfCrates <= 0 ||
-        //   data.allottedLotId == "" ||
-        //   counter >= parseInt(data.noOfCrates) - 1
-        // ) {
-        //   debugger;
-        //   setCanContinue(false);
-        //   canContinue1 = false;
-        //   console.log("cannot continue with weighment");
-        // } else {
-        //   setCanContinue(true);
-        //   canContinue1 = true;
-        // }
+      // console.log(tableWeightData);
 
-        if (canContinue1) {
-          let prabhu = weighStream.toString();
+      // Attach the event listener when the component mounts
+      document.addEventListener("keydown", handleKeyDown);
 
-          const lastWeightString = prabhu.substring(
-            prabhu.lastIndexOf("kg") - 8,
-            prabhu.lastIndexOf("kg") - 1
+      // Detach the event listener when the component unmounts
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      const handleTestKeyDown = async (event) => {
+        if (event.key === "Enter") {
+          let prabhuTest = weighStream.toString();
+
+          const lastWeightStringTest = prabhuTest.substring(
+            prabhuTest.lastIndexOf("kg") - 8,
+            prabhuTest.lastIndexOf("kg") - 1
           );
 
-          setLastWeight(lastWeightString);
-
-          const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
-          const totalWeightFloat = lastWeightFloat + totalWeight;
-
-          setTotalWeight(totalWeightFloat);
-
-          // calculate set total net weight
-          // const totalNetWeightFloat =
-          //   lastWeightFloat - tareWeight + totalNetWeight;
-
-          const totalNetWeightFloat =
-            lastWeightFloat - tareWeight + totalNetWeight < 0
-              ? 0
-              : lastWeightFloat - tareWeight + totalNetWeight;
-
-          setTotalNetWeight(totalNetWeightFloat);
-
-          const weightObj = {
-            grossWeight: lastWeightFloat,
-            netWeight:
-              lastWeightFloat >= tareWeight ? lastWeightFloat - tareWeight : 0,
-            crateNumber: data.noOfCrates,
-          };
-          setTableWeightData((prevState) => [...prevState, weightObj]);
-
-          const formattedTotalPrice = totalWeightFloat * pricePerKg;
-          console.log(pricePerKg);
-          console.log(formattedTotalPrice);
-
-          setTotalPrice(formattedTotalPrice);
-
-          // calculate total net cocoon net weight total price
-          const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
-          setTotalNetPrice(formattedTotalNetPrice);
-          // setTotalNetPrice(10);
-
-          if (counter <= parseInt(data.noOfCrates) - 1) {
-            debugger;
-            setCounter(counter + 1);
-          }
-
-          setWeighStream("");
+          setLastWeight(lastWeightStringTest);
         }
-      }
-    };
+      };
+      document.addEventListener("keydown", handleTestKeyDown);
 
-    // console.log(tableWeightData);
-
-    // Attach the event listener when the component mounts
-    document.addEventListener("keydown", handleKeyDown);
-
-    // Detach the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+      return () => {
+        document.removeEventListener("keydown", handleTestKeyDown);
+      };
+    }
   });
 
   // if (counter == parseInt(data.noOfCrates)) {
@@ -720,6 +770,7 @@ function Weighment() {
     let weightAmount;
     let weightNet;
     let weightGross;
+    speak({ text: `Crate number ${indexToDelete + 1}  is deleted` });
     const updatedData = tableWeightData.filter((data, index) => {
       if (index === indexToDelete) {
         weightAmount = data.netWeight * weigh.bidAmount;
@@ -728,6 +779,7 @@ function Weighment() {
       }
       return index !== indexToDelete;
     });
+
     console.log("wa", weightAmount);
     console.log("wn", weightNet);
     console.log("wg", weightGross);
@@ -860,260 +912,263 @@ function Weighment() {
         </Block.HeadBetween>
       </Block.Head> */}
 
-      <Block>
-        <Form action="#">
-          <Row className="g-3">
-            <Col lg="12">
-              <Card>
-                <Card.Body>
-                  <Row className="g-3 ">
-                    <Col lg="6" style={{ padding: "0px 0px 0px 8px" }}>
-                      <table className="table small table-bordered weightmenttable marginbottom0">
-                        <thead>
-                          <tr>
-                            <th style={styles.top}>No of Crate(s)</th>
-                            <th style={styles.top}>Lot No</th>
-                            <th style={styles.top}>Bid Price / Kg</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={styles.bottom}>
-                              <input
-                                name="noOfCrates"
-                                value={data.noOfCrates}
-                                onChange={handleInputs}
-                                onBlur={onchangingCrate}
-                                style={{
-                                  width: "100px",
-                                  color: "#b50606",
-                                  borderStyle: "none",
-                                  boxSizing: "border-box",
-                                }}
-                              />
-                            </td>
+      {weighTest ? (
+        <Block>
+          <Form action="#">
+            <Row className="g-3">
+              <Col lg="12">
+                <Card>
+                  <Card.Body>
+                    <Row className="g-3 ">
+                      <Col lg="6" style={{ padding: "0px 0px 0px 8px" }}>
+                        <table className="table small table-bordered weightmenttable marginbottom0">
+                          <thead>
+                            <tr>
+                              <th style={styles.top}>No of Crate(s)</th>
+                              <th style={styles.top}>Lot No</th>
+                              <th style={styles.top}>Bid Price / Kg</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              {/* <td style={styles.bottom}>{noOfBox}</td> */}
+                              <td style={styles.bottom}>
+                                <input
+                                  name="noOfCrates"
+                                  value={data.noOfCrates}
+                                  onChange={handleInputs}
+                                  onBlur={onchangingCrate}
+                                  style={{
+                                    width: "100px",
+                                    color: "#b50606",
+                                    borderStyle: "none",
+                                    boxSizing: "border-box",
+                                  }}
+                                />
+                              </td>
 
-                            <td style={styles.bottom}>
-                              <input
-                                name="allottedLotId"
-                                value={data.allottedLotId}
-                                onChange={handleInputs}
-                                onBlur={onchanging}
-                                style={{
-                                  width: "100px",
-                                  color: "#b50606",
-                                  borderStyle: "none",
-                                  boxSizing: "border-box",
-                                }}
-                              />
-                            </td>
+                              <td style={styles.bottom}>
+                                <input
+                                  name="allottedLotId"
+                                  value={data.allottedLotId}
+                                  onChange={handleInputs}
+                                  onBlur={onchanging}
+                                  style={{
+                                    width: "100px",
+                                    color: "#b50606",
+                                    borderStyle: "none",
+                                    boxSizing: "border-box",
+                                  }}
+                                />
+                              </td>
 
-                            <td style={styles.bottom}>
-                              {" "}
-                              &#8377; {weigh.bidAmount}
-                            </td>
+                              <td style={styles.bottom}>
+                                {" "}
+                                &#8377; {weigh.bidAmount}
+                              </td>
 
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
+                              {/* <td style={styles.bottom}>2</td> */}
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Col>
 
-                    <Col lg="3" style={{ padding: 0 }}>
-                      <table className="table small table-bordered marginbottom0">
-                        {/* <thead>
+                      <Col lg="3" style={{ padding: 0 }}>
+                        <table className="table small table-bordered marginbottom0">
+                          {/* <thead>
                           <tr>
                             <th style={styles.top}>No of Box(es)</th>
                             <th style={styles.top}>Lot No</th>
                             <th style={styles.top}>Price</th>
                           </tr>
                         </thead> */}
-                        <tbody>
-                          <tr>
-                            <td
-                              style={{
-                                backgroundColor: "rgb(248, 248, 249, 1)",
-                                color: "rgb(0, 0, 0)",
-                                fontWeight: "bold",
-                                fontSize: "16px",
-                                textAlign: "center",
-                              }}
-                            >
-                              {weigh.date.toDateString()}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                ...styles.small,
-                                backgroundColor:
-                                  Math.round(
-                                    weigh.reelerCurrentBalance -
-                                      weight * weigh.bidAmount
-                                  ) >= 0
-                                    ? "green"
-                                    : "red",
-                                fontSize: "31px",
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#000",
-                              }}
-                            >
-                              {" "}
-                              {/* &#8377; {totalNetPrice } */}
-                              Balance: &#8377;{" "}
-                              {Math.round(
-                                weigh.reelerCurrentBalance -
-                                  weight * weigh.bidAmount
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={styles.small}
-                              style={{
-                                backgroundColor: "white",
-                                fontSize: "31px",
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#000",
-                              }}
-                            >
-                              {" "}
-                              {/* &#8377; {totalNetPrice } */}
-                              &#8377;{" "}
-                              {Number.isInteger(Number(totalNetPrice))
-                                ? Number(totalNetPrice).toFixed(0)
-                                : Number(totalNetPrice).toFixed(2)}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                    <Col lg="3" style={{ padding: "0 8px 0 0" }}>
-                      <table className="table small table-bordered marginbottom0">
-                        <tbody>
-                          <tr>
-                            <td style={styles.small}>Tare wt: {tareWeight}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.small}>
-                              {" "}
-                              Crates {data.noOfCrates} - {counter}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                  <Row className="g-3 ">
-                    <Col lg="8">
-                      <table className="table smallwhiteback table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.smallwhiteback}>
-                              Farmer Details: {weigh.farmerFirstName}{" "}
-                              {weigh.farmerNumber}
-                              {/* RMG3333-RAM (SAK 3333) */}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style={styles.smallwhiteback}>
-                              Reeler Details:{weigh.reelerName}{" "}
-                              {weigh.reelerLicense}
-                              {/* 353535-MARUTI */}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                backgroundColor: "green",
-                                padding: "3%",
-                              }}
-                            >
-                              {" "}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style={styles.large}>{lastWeight}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.xxsmallcolor}>
-                              Reeler Wallet Amount: &#8377;{" "}
-                              {weigh.reelerCurrentBalance}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <Button
-                                type="button"
-                                variant="primary"
-                                onClick={testSerialPort}
+                          <tbody>
+                            <tr>
+                              <td
+                                style={{
+                                  backgroundColor: "rgb(248, 248, 249, 1)",
+                                  color: "rgb(0, 0, 0)",
+                                  fontWeight: "bold",
+                                  fontSize: "16px",
+                                  textAlign: "center",
+                                }}
                               >
-                                Generate
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="primary"
-                                onClick={onSubmitting}
-                                className="ms-1"
+                                {weigh.date.toDateString()}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                style={{
+                                  ...styles.small,
+                                  backgroundColor:
+                                    Math.round(
+                                      weigh.reelerCurrentBalance -
+                                        weight * weigh.bidAmount
+                                    ) >= 0
+                                      ? "green"
+                                      : "red",
+                                  fontSize: "31px",
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                  color: "#000",
+                                }}
                               >
-                                Submit
-                              </Button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <Form.Control
-                                as="textarea"
-                                rows={3}
-                                value={weighStream}
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
+                                {" "}
+                                {/* &#8377; {totalNetPrice } */}
+                                Balance: &#8377;{" "}
+                                {Math.round(
+                                  weigh.reelerCurrentBalance -
+                                    weight * weigh.bidAmount
+                                )}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                style={styles.small}
+                                style={{
+                                  backgroundColor: "white",
+                                  fontSize: "31px",
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                  color: "#000",
+                                }}
+                              >
+                                {" "}
+                                {/* &#8377; {totalNetPrice } */}
+                                &#8377;{" "}
+                                {Number.isInteger(Number(totalNetPrice))
+                                  ? Number(totalNetPrice).toFixed(0)
+                                  : Number(totalNetPrice).toFixed(2)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Col>
+                      <Col lg="3" style={{ padding: "0 8px 0 0" }}>
+                        <table className="table small table-bordered marginbottom0">
+                          <tbody>
+                            <tr>
+                              <td style={styles.small}>
+                                Tare wt: {tareWeight}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.small}>
+                                {" "}
+                                Crates {data.noOfCrates} - {counter}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Col>
+                    </Row>
+                    <Row className="g-3 ">
+                      <Col lg="8">
+                        <table className="table smallwhiteback table-bordered">
+                          <tbody>
+                            <tr>
+                              <td style={styles.smallwhiteback}>
+                                Farmer Details: {weigh.farmerFirstName}{" "}
+                                {weigh.farmerNumber}
+                                {/* RMG3333-RAM (SAK 3333) */}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.smallwhiteback}>
+                                Reeler Details:{weigh.reelerName}{" "}
+                                {weigh.reelerLicense}
+                                {/* 353535-MARUTI */}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                style={{
+                                  backgroundColor: "green",
+                                  padding: "3%",
+                                }}
+                              >
+                                {" "}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={styles.large}>{lastWeight}</td>
+                            </tr>
+                            <tr>
+                              <td style={styles.xxsmallcolor}>
+                                Reeler Wallet Amount: &#8377;{" "}
+                                {weigh.reelerCurrentBalance}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Button
+                                  type="button"
+                                  variant="primary"
+                                  onClick={testSerialPort}
+                                >
+                                  Generate
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="primary"
+                                  onClick={onSubmitting}
+                                  className="ms-1"
+                                >
+                                  Submit
+                                </Button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Form.Control
+                                  as="textarea"
+                                  rows={3}
+                                  value={weighStream}
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Col>
 
-                    <Col lg="4">
-                      <table className="table small table-bordered totalweight">
-                        <tbody>
-                          <tr>
-                            <td
-                              style={styles.small}
-                              style={{
-                                fontSize: "50px",
-                                color: "rgb(181, 6, 6)",
-                              }}
-                            >
-                              {/* Total Gross Wt: {totalWeight} */}
-                              {/* Total Gross Wt: {Number(totalWeight).toFixed(2)} */}
-                              Total Gross Wt:{" "}
-                              {Number.isInteger(Number(totalWeight))
-                                ? Number(totalWeight).toFixed(0)
-                                : Number(totalWeight).toFixed(2)}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={styles.small}
-                              style={{
-                                fontSize: "50px",
-                                color: "rgb(181, 6, 6)",
-                              }}
-                            >
-                              {/* Total Net Wt: {totalNetWeight} */}
-                              {/* Total Net Wt: {Number(totalNetWeight).toFixed(2)} */}
-                              Total Net Wt:{" "}
-                              {Number.isInteger(Number(totalNetWeight))
-                                ? Number(totalNetWeight).toFixed(0)
-                                : Number(totalNetWeight).toFixed(2)}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      {/* <table className="table small table-bordered totalweight">
+                      <Col lg="4">
+                        <table className="table small table-bordered totalweight">
+                          <tbody>
+                            <tr>
+                              <td
+                                style={styles.small}
+                                style={{
+                                  fontSize: "50px",
+                                  color: "rgb(181, 6, 6)",
+                                }}
+                              >
+                                {/* Total Gross Wt: {totalWeight} */}
+                                {/* Total Gross Wt: {Number(totalWeight).toFixed(2)} */}
+                                Total Gross Wt:{" "}
+                                {Number.isInteger(Number(totalWeight))
+                                  ? Number(totalWeight).toFixed(0)
+                                  : Number(totalWeight).toFixed(2)}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                style={styles.small}
+                                style={{
+                                  fontSize: "50px",
+                                  color: "rgb(181, 6, 6)",
+                                }}
+                              >
+                                {/* Total Net Wt: {totalNetWeight} */}
+                                {/* Total Net Wt: {Number(totalNetWeight).toFixed(2)} */}
+                                Total Net Wt:{" "}
+                                {Number.isInteger(Number(totalNetWeight))
+                                  ? Number(totalNetWeight).toFixed(0)
+                                  : Number(totalNetWeight).toFixed(2)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {/* <table className="table small table-bordered totalweight">
                         <tbody>
                           {tableWeightData.map((row, index) => (
                             <tr key={index}>
@@ -1136,39 +1191,39 @@ function Weighment() {
                           ))}
                         </tbody>
                       </table> */}
-                      <table className="table small table-bordered totalweight">
-                        <tbody>
-                          {tableWeightData.map(
-                            (row, index) =>
-                              // debugger
-                              index + 1 !== data.noOfCrates && (
-                                <tr key={index}>
-                                  <td style={styles.xxsmall}>
-                                    {index + 1} -{" "}
-                                    {Number.isInteger(Number(row.netWeight))
-                                      ? Number(row.netWeight).toFixed(0)
-                                      : Number(row.netWeight).toFixed(2)}
-                                    <span className="ms-2">
-                                      <Button
-                                        size="sm"
-                                        onClick={() => deleteRow(index)}
-                                      >
-                                        Delete
-                                      </Button>
-                                    </span>
-                                  </td>
-                                </tr>
-                              )
-                          )}
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
+                        <table className="table small table-bordered totalweight">
+                          <tbody>
+                            {tableWeightData.map(
+                              (row, index) =>
+                                // debugger
+                                index + 1 !== data.noOfCrates && (
+                                  <tr key={index}>
+                                    <td style={styles.xxsmall}>
+                                      {index + 1} -{" "}
+                                      {Number.isInteger(Number(row.netWeight))
+                                        ? Number(row.netWeight).toFixed(0)
+                                        : Number(row.netWeight).toFixed(2)}
+                                      <span className="ms-2">
+                                        <Button
+                                          size="sm"
+                                          onClick={() => deleteRow(index)}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </span>
+                                    </td>
+                                  </tr>
+                                )
+                            )}
+                          </tbody>
+                        </table>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-            {/* <div className="gap-col">
+              {/* <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="button" variant="primary" onClick={postData}>
@@ -1177,9 +1232,80 @@ function Weighment() {
                 </li>
               </ul>
             </div> */}
-          </Row>
-        </Form>
-      </Block>
+            </Row>
+          </Form>
+        </Block>
+      ) : (
+        <Block>
+          {/* <h1>Hello</h1> */}
+          <Form action="#">
+            <Row className="g-3">
+              <Col lg="12">
+                <Card>
+                  <Card.Body>
+                    <Row className="g-3 ">
+                      <Col lg="8">
+                        <table className="table smallwhiteback table-bordered">
+                          <tbody>
+                            <tr>
+                              <td style={styles.smallwhiteback}>
+                                Date: {new Date().toDateString()}
+                              </td>
+                            </tr>
+
+                            {/* <tr>
+                            <td
+                              style={{
+                                backgroundColor: "green",
+                                padding: "3%",
+                              }}
+                            >
+                              {" "}
+                            </td>
+                          </tr> */}
+                            <tr>
+                              <td style={styles.large}>{lastWeight}</td>
+                            </tr>
+
+                            <tr>
+                              <td>
+                                <Button
+                                  type="button"
+                                  variant="primary"
+                                  onClick={testSerialPort}
+                                >
+                                  Check Weight
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="primary"
+                                  onClick={continueWeighment}
+                                  className="ms-1"
+                                >
+                                  Continue weighment
+                                </Button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Form.Control
+                                  as="textarea"
+                                  rows={3}
+                                  value={weighStream}
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Form>
+        </Block>
+      )}
     </div>
     // </Layout>
   );

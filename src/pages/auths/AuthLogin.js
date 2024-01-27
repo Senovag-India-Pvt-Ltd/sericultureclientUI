@@ -116,7 +116,7 @@ const AuthLoginPage = () => {
 
   const resendOTP = () => {
     axios
-      .post(baseURL + `userMaster/generate-otp-by-username-and-password`, data, {
+      .post(baseURL + `userMaster/generate-otp-by-user-name-and-password`, data, {
         headers: _header,
       })
       .then((response) => {

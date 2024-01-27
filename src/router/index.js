@@ -451,6 +451,7 @@ import TrainingDeputedInstitute from "../pages/masters/training-deputed-institut
 import TrainingDeputedInstituteList from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteList";
 import TrainingDeputedInstituteEdit from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteEdit";
 import TrainingDeputedInstituteView from "../pages/masters/training-deputed-institute/TrainingDeputedInstituteView";
+import Gatepass from "../pages/market-and-auction/Gatepass";
 import HelpDesk from "../pages/helpdesk/HelpDesk";
 import HelpDeskModule from "../pages/masters/helpdesk-module/HelpDeskModule";
 import HelpDeskModuleEdit from "../pages/masters/helpdesk-module/HelpDeskModuleEdit";
@@ -1172,7 +1173,7 @@ function Router() {
         <Route path="hd-sub-category-list" element={<HelpDeskSubCategoryList />}/>
         <Route path="hd-sub-category-edit/:id" element={<HelpDeskSubCategoryEdit/>}/>
         <Route path="hd-sub-category-view/:id" element={<HelpDeskSubCategoryView/>}/>
-        
+
         {/* Direct Benefit Transfer */}
         <Route
           path="subsidy-approval-verification"
@@ -1199,6 +1200,7 @@ function Router() {
         <Route path="weighment" element={<Weighment />} />
         <Route path="update-lot-weight" element={<UpdateLotWeight />} />
         <Route path="accept-former-auction" element={<AcceptFarmerAuction />} />
+        <Route path="gatepass" element={<Gatepass />} />
 
         {/* Admin and Reports */}
         <Route path="report-admin" element={<ReportsAdmin />} />
@@ -1249,7 +1251,7 @@ function Router() {
         <Route path="unit-mf" element={<UnitMf />} />
         <Route path="reeler-abstract" element={<ReelerAbstract />} />
         <Route path="reeler-purchase" element={<ReelerPurchase />} />
-        <Route path="reeler-purchase" element={<ReelerPurchase />} />
+        {/* <Route path="reeler-purchase" element={<ReelerPurchase />} /> */}
         <Route
           path="district-wise-abstract"
           element={<DistrictWiseAbstractReport />}
