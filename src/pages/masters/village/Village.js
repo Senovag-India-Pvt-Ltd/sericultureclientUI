@@ -47,15 +47,32 @@ function Village() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              hobliId: "",
+              villageName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageName: "", 
+    })
+  }
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -153,7 +170,7 @@ function Village() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/village-list");
+      navigate("#");
     });
   };
   const saveError = (message) => {
@@ -364,12 +381,15 @@ function Village() {
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/village-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>

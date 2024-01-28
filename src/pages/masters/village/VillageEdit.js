@@ -43,6 +43,14 @@ function VillageEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              hobliId: "",
+              villageName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
@@ -54,6 +62,15 @@ function VillageEdit() {
     }
   };
 
+  const clear = () =>{
+    setData({
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageName: "", 
+    })
+  }
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
@@ -171,7 +188,7 @@ function VillageEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/village-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -185,7 +202,7 @@ function VillageEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/village-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -395,12 +412,15 @@ function VillageEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
+                  {/* <Link
                     to="/village-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
-                  </Link>
+                  </Link> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
                 </li>
               </ul>
             </div>
