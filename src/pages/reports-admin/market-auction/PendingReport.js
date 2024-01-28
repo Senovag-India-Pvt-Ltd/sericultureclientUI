@@ -8,16 +8,16 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function PendingReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId"),
-    allottedLotId: "",
-    auctionDate: new Date(),
+    reportFromDate: new Date(),
   });
   console.log("printBid", data);
 
@@ -31,7 +31,7 @@ function PendingReport() {
   };
 
   const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -58,9 +58,57 @@ function PendingReport() {
   //     });
   // };
 
+  // const postData = (event) => {
+  //   const { marketId, godownId, allottedLotId, auctionDate } = data;
+  //   const newDate = new Date(auctionDate);
+  //   const formattedDate =
+  //     newDate.getFullYear() +
+  //     "-" +
+  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     newDate.getDate().toString().padStart(2, "0");
+
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     // event.stopPropagation();
+  //     axios
+  //       .post(
+  //         `https://api.senovagseri.com/reports/marketreport/gettripletpdf`,
+  //         {
+  //           marketId: marketId,
+  //           godownId: godownId,
+  //           allottedLotId: allottedLotId,
+  //           auctionDate: formattedDate,
+  //         },
+  //         {
+  //           responseType: "blob", //Force to receive data in a Blob Format
+  //         }
+  //       )
+  //       .then((response) => {
+  //         //console.log("hello world", response.data);
+  //         //Create a Blob from the PDF Stream
+  //         const file = new Blob([response.data], { type: "application/pdf" });
+  //         //Build a URL from the file
+  //         const fileURL = URL.createObjectURL(file);
+  //         //Open the URL on new Window
+  //         window.open(fileURL);
+  //       })
+  //       .catch((error) => {
+  //         // console.log("error", error);
+  //       });
+  //   }
+  // };
+
+  const [pendingData,setPendingData] = useState([]);
+
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
+    const { marketId, godownId, reportFromDate } = data;
+    const newDate = reportFromDate;
     const formattedDate =
       newDate.getFullYear() +
       "-" +
@@ -76,27 +124,20 @@ function PendingReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
-        .post(
-          `https://api.senovagseri.com/reports/marketreport/gettripletpdf`,
-          {
-            marketId: marketId,
-            godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
-          },
-          {
-            responseType: "blob", //Force to receive data in a Blob Format
-          }
-        )
+      api
+        .post(baseURLMarket + `auction/report/getPendingLotReport`, {
+          marketId: marketId,
+          godownId: godownId,
+          reportFromDate: formattedDate,
+        })
         .then((response) => {
-          //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
+          if (response.data.errorCode === 0) {
+            if (response.data.content && response.data.content.length) {
+              setPendingData(response.data.content);
+            }
+          } else if (response.data.errorCode === -1) {
+            saveError(response.data.errorMessages[0].message[0].message);
+          }
         })
         .catch((error) => {
           // console.log("error", error);
@@ -110,15 +151,13 @@ function PendingReport() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/caste-list");
-    });
+    })
   };
-  const saveError = () => {
+  const saveError = (message = "Something went wrong!") => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: "Not Found",
+      text: message,
     });
   };
   return (
@@ -188,7 +227,7 @@ function PendingReport() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
+                            selected={data.reportFromDate}
                             onChange={handleDateChange}
                           />
                         </div>
@@ -225,20 +264,150 @@ function PendingReport() {
               </Card.Body>
             </Card>
 
-            {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
+            {pendingData && pendingData.length ? (
+              <div
+              //  className={isActive ? "" : "d-none"}
+              >
+                <Row className="g-gs pt-2">
+                  <Col lg="12">
+                    <table className="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            SL No
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Lot No
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Bin No
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Shed
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Farmer ID
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Name
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Village
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Phone
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            A User
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Reeler ID
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Reeler Ph
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                           Balance
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pendingData.map((list, i) => (
+                          <tr key={i}>
+                            <td>{i+1}</td>
+                            <td>{list.allottedLotId}</td>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>{list.farmerNumber}</td>
+                            <td>{list.farmerFirstName}</td>
+                            <td>{list.farmerVillage}</td>
+                            <td>{list.farmerMobileNumber}</td>
+                            <td>---</td>
+                            <td>{list.reelerLicense}</td>
+                            <td>{list.reelerMobileNumber}</td>
+                            <td>{list.reelerCurrentBalance}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+              </div>
+            ) : (
+              ""
+            )}
           </Row>
         </Form>
       </Block>

@@ -104,9 +104,7 @@ function UnitCounterReport() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/caste-list");
-    });
+    })
   };
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
