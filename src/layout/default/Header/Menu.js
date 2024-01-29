@@ -350,6 +350,7 @@ function Menu() {
     Admin_Master_Auction_Race: false,
     Admin_Master_Auction_Source: false,
     Admin_Master_Auction_Flex_Time: false,
+    Admin_Master_Auction_Exception_Time: false,
     Admin_Master_Auction_Market_Type: false,
     Admin_Master_Auction_Reeler_Type: false,
     Admin_Master_Auction_External_Unit: false,
@@ -365,6 +366,9 @@ function Menu() {
     Admin_Report_Admin: false,
     Admin_Report_Transaction: false,
     Admin_Report_Dashboard: false,
+    Admin_Report_DTR: false,
+    Admin_Report_Unit: false,
+    Admin_Report_Pending: false,
   });
 
   // Old show menu using mapcode
@@ -1368,23 +1372,20 @@ function Menu() {
         <MenuSub>
           {showMenu.Training_Schedule ? (
             <MenuItem>
-              <MenuItemLink
-                text="Schedule Training"
-                to="/training-schedule"
-              />
+              <MenuItemLink text="Schedule Training" to="/training-schedule" />
             </MenuItem>
           ) : null}
           {showMenu.Training_Page ? (
             <MenuItem>
-              <MenuItemLink
-                text="Trainer Page"
-                to="/trainer-page-list"
-              />
+              <MenuItemLink text="Trainer Page" to="/trainer-page-list" />
             </MenuItem>
           ) : null}
           {showMenu.Training_Deputation_Tracker ? (
             <MenuItem>
-              <MenuItemLink text="Training Deputation Tracker" to="/training-deputation-tracker" />
+              <MenuItemLink
+                text="Training Deputation Tracker"
+                to="/training-deputation-tracker"
+              />
             </MenuItem>
           ) : null}
           {/* {showMenu.Training_Financial_Target ? (
@@ -1770,7 +1771,10 @@ function Menu() {
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Board_Category ? (
                         <MenuItem>
-                          <MenuItemLink text="Broad Category" to="/hd-board-category" />
+                          <MenuItemLink
+                            text="Broad Category"
+                            to="/hd-board-category"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Category ? (
@@ -1780,7 +1784,10 @@ function Menu() {
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
                         <MenuItem>
-                          <MenuItemLink text="Sub Category" to="/hd-sub-category" />
+                          <MenuItemLink
+                            text="Sub Category"
+                            to="/hd-sub-category"
+                          />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
@@ -1837,6 +1844,14 @@ function Menu() {
                       {showMenu.Admin_Master_Auction_Flex_Time ? (
                         <MenuItem>
                           <MenuItemLink text="Flex Time" to="/flex-time" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Auction_Exception_Time ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Exception Time"
+                            to="/market-exception-time"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Market_Type ? (
@@ -1941,6 +1956,24 @@ function Menu() {
                 {showMenu.Admin_Report_Dashboard ? (
                   <MenuItem>
                     <MenuItemLink text="Dashboard" to="/bid-dashboard" />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_DTR ? (
+                  <MenuItem>
+                    <MenuItemLink text="DTR Online" to="/dtr-online" />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Unit ? (
+                  <MenuItem>
+                    <MenuItemLink
+                      text="Unit Counter Report"
+                      to="/unit-counter-report"
+                    />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Pending ? (
+                  <MenuItem>
+                    <MenuItemLink text="Pending Report" to="/pending-reports" />
                   </MenuItem>
                 ) : null}
               </MenuSub>
