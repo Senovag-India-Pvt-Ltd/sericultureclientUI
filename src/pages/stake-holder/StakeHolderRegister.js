@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../../src/services/auth/api";
@@ -99,7 +99,7 @@ function StakeHolderRegister() {
       farmerBankIfscCode: "",
     });
 
-    axios
+    api
       .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data, {
         headers: _header,
       })
@@ -108,13 +108,13 @@ function StakeHolderRegister() {
           const farmerId = response.data.content.farmerResponse.farmerId;
           navigate(`/stake-holder-edit/${farmerId}`);
         } else {
-          axios
+          api
             .post(
               "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
               { fruitsId: data.fruitsId },
-              {
-                headers: _header,
-              }
+              // {
+              //   headers: _header,
+              // }
             )
             .then((result) => {
               setData((prev) => ({
@@ -769,10 +769,8 @@ function StakeHolderRegister() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
-        .post(baseURL2 + `farmer/add`, data, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer/add`, data,)
         .then((response) => {
           const farmerId = response.data.content.farmerId;
           if (response.data.content.error) {
@@ -781,7 +779,7 @@ function StakeHolderRegister() {
           // postDataBankAccount
 
           if (farmerId) {
-            axios
+            api
               .post(
                 baseURL2 + `farmer-bank-account/add`,
                 { ...bank, farmerId },
@@ -820,10 +818,8 @@ function StakeHolderRegister() {
                   ...list,
                   farmerId: farmerId,
                 };
-                axios
-                  .post(baseURL2 + `farmer-family/add`, updatedFM, {
-                    headers: _header,
-                  })
+                api
+                  .post(baseURL2 + `farmer-family/add`, updatedFM,)
                   .then((response) => {
                     if(response.data.content.error){
                       saveFarmerError(response.data.content.error_description);
@@ -845,10 +841,8 @@ function StakeHolderRegister() {
                   ...list,
                   farmerId: farmerId,
                 };
-                axios
-                  .post(baseURL2 + `farmer-land-details/add`, updatedFL, {
-                    headers: _header,
-                  })
+                api
+                  .post(baseURL2 + `farmer-land-details/add`, updatedFL,)
                   .then((response) => {
                     saveSuccess();
                     setFarmerLandList([]);
@@ -865,10 +859,8 @@ function StakeHolderRegister() {
                   ...list,
                   farmerId: farmerId,
                 };
-                axios
-                  .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress, {
-                    headers: _header,
-                  })
+                api
+                  .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress,)
                   .then((response) => {
                     saveSuccess();
                     setFarmerAddressList([]);
@@ -894,7 +886,7 @@ function StakeHolderRegister() {
   const [farmerTypeListData, setFarmerTypeListData] = useState([]);
 
   const getFarmerTypeList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-type/list`)
       .then((response) => {
         setFarmerTypeListData(response.data.content.farmerType);
@@ -1100,6 +1092,24 @@ function StakeHolderRegister() {
   useEffect(() => {
     getIrrigationTypeList();
   }, []);
+
+  // // to get Programs
+  // const [programListData, setProgramListData] = useState([]);
+
+  // const getProgramList = () => {
+  //   api
+  //     .get(baseURL + `scProgram/get-all`)
+  //     .then((response) => {
+  //       setProgramListData(response.data.content.scProgram);
+  //     })
+  //     .catch((err) => {
+  //       setProgramListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getProgramList();
+  // }, []);
 
   // to get roofType
   const [roofTypeListData, setRoofTypeListData] = useState([]);
@@ -1589,6 +1599,17 @@ function StakeHolderRegister() {
     });
   };
 
+  // Program
+  // const handleProgramOption = (e) => {
+  //   const value = e.target.value;
+  //   const [chooseId, chooseName] = value.split("_");
+  //   setFarmerLand({
+  //     ...farmerLand,
+  //     scProgramId: chooseId,
+  //     scProgramName: chooseName,
+  //   });
+  // };
+
   // roofType
   const handleRoofTypeOption = (e) => {
     const value = e.target.value;
@@ -1715,7 +1736,7 @@ function StakeHolderRegister() {
       const formData = new FormData();
       formData.append("multipartFile",document);
 
-      const response = await axios.post(baseURL2 +`farmer-bank-account/upload-photo?${parameters}`,formData,{
+      const response = await api.post(baseURL2 +`farmer-bank-account/upload-photo?${parameters}`,formData,{
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
@@ -1747,7 +1768,7 @@ function StakeHolderRegister() {
       const formData = new FormData();
       formData.append("multipartFile",image);
 
-      const response = await axios.post(baseURL2 +`farmer/upload-photo?${parameters}`,formData,{
+      const response = await api.post(baseURL2 +`farmer/upload-photo?${parameters}`,formData,{
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
@@ -4391,7 +4412,7 @@ function StakeHolderRegister() {
                   </div>
                 </Form.Group>
 
-                {/* {selected === "yes" && (
+                 {/* {selected === "yes" && (
                   <Form.Group className="form-group mt-3">
                     <Form.Label>{t("programs")}</Form.Label>
                     <div className="form-control-wrap">
@@ -4406,9 +4427,32 @@ function StakeHolderRegister() {
                       </Select>
                     </div>
                   </Form.Group>
-                )}
+                )} */}
 
-                <Form.Group className="form-group mt-3">
+                {/* {selected === "yes" && (
+                  <Form.Group className="form-group mt-3">
+                  <Form.Label>Programs</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="scProgramId"
+                      value={`${farmerLand.scProgramId}_${farmerLand.scProgramName}`}
+                      onChange={handleProgramOption}
+                    >
+                      <option value="0">Select Programs</option>
+                      {programListData.map((list) => (
+                        <option
+                          key={list.scProgramId}
+                          value={`${list.scProgramId}_${list.scProgramName}`}
+                        >
+                          {list.scProgramName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group> 
+                )} */}
+
+                {/* <Form.Group className="form-group mt-3">
                   <Form.Label>Subsidy Details</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4427,7 +4471,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                   </div>
-                </Form.Group> */}
+                </Form.Group>  */}
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="gpsLat">

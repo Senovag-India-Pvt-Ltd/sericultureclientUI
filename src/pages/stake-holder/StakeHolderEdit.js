@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../../src/services/auth/api";
@@ -27,7 +27,7 @@ function StakeHolderEdit() {
 
   const [familyMembersList, setFamilyMembersList] = useState([]);
   const getFMDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-family/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFamilyMembersList(response.data.content.farmerFamily);
@@ -72,7 +72,7 @@ function StakeHolderEdit() {
       setValidatedFamilyMembers(true);
     } else {
       e.preventDefault();
-      axios
+      api
         .post(baseURL2 + `farmer-family/add`, withFarmerId, {
           headers: _header,
         })
@@ -89,7 +89,7 @@ function StakeHolderEdit() {
   };
 
   const handleDeleteFamilyMembers = (i) => {
-    axios
+    api
       .delete(baseURL2 + `farmer-family/delete/${i}`)
       .then((response) => {
         getFMDetailsList();
@@ -101,7 +101,7 @@ function StakeHolderEdit() {
 
   //   const [vb, setVb] = useState({});
   const handleFMGet = (i) => {
-    axios
+    api
       .get(baseURL2 + `farmer-family/get/${i}`)
       .then((response) => {
         setFamilyMembers(response.data.content);
@@ -120,10 +120,8 @@ function StakeHolderEdit() {
       setValidatedFamilyMembersEdit(true);
     } else {
       e.preventDefault();
-      axios
-        .post(baseURL2 + `farmer-family/edit`, familyMembers, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer-family/edit`, familyMembers,)
         .then((response) => {
           getFMDetailsList();
           setShowModal1(false);
@@ -191,7 +189,7 @@ function StakeHolderEdit() {
 
   const [farmerLandList, setFarmerLandList] = useState([]);
   const getFLDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-land-details/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFarmerLandList(response.data.content.farmerLandDetails);
@@ -218,10 +216,8 @@ function StakeHolderEdit() {
       setValidatedFarmerLand(true);
     } else {
       e.preventDefault();
-      axios
-        .post(baseURL2 + `farmer-land-details/add`, withFarmerId, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer-land-details/add`, withFarmerId,)
         .then((response) => {
           getFLDetailsList();
           setShowModal2(false);
@@ -235,7 +231,7 @@ function StakeHolderEdit() {
   };
 
   const handleDeleteFarmerLand = (i) => {
-    axios
+    api
       .delete(baseURL2 + `farmer-land-details/delete/${i}`)
       .then((response) => {
         getFLDetailsList();
@@ -247,7 +243,7 @@ function StakeHolderEdit() {
 
   //   const [vb, setVb] = useState({});
   const handleFLGet = (i) => {
-    axios
+    api
       .get(baseURL2 + `farmer-land-details/get/${i}`)
       .then((response) => {
         setFarmerLand(response.data.content);
@@ -266,10 +262,8 @@ function StakeHolderEdit() {
       setValidatedFarmerLandEdit(true);
     } else {
       e.preventDefault();
-      axios
-        .post(baseURL2 + `farmer-land-details/edit`, farmerLand, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer-land-details/edit`, farmerLand,)
         .then((response) => {
           getFLDetailsList();
           setShowModal3(false);
@@ -341,7 +335,7 @@ function StakeHolderEdit() {
 
   const [farmerAddressList, setFarmerAddressList] = useState([]);
   const getFarmerAddressDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-address/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFarmerAddressList(response.data.content.farmerAddress);
@@ -368,10 +362,8 @@ function StakeHolderEdit() {
       setValidatedFarmerAddress(true);
     } else {
       e.preventDefault();
-      axios
-        .post(baseURL2 + `farmer-address/add`, withFarmerId, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer-address/add`, withFarmerId)
         .then((response) => {
           getFarmerAddressDetailsList();
           setShowModal4(false);
@@ -385,7 +377,7 @@ function StakeHolderEdit() {
   };
 
   const handleDeleteFarmerAddress = (i) => {
-    axios
+    api
       .delete(baseURL2 + `farmer-address/delete/${i}`)
       .then((response) => {
         getFarmerAddressDetailsList();
@@ -397,7 +389,7 @@ function StakeHolderEdit() {
 
   //   const [vb, setVb] = useState({});
   const handleFAGet = (i) => {
-    axios
+    api
       .get(baseURL2 + `farmer-address/get/${i}`)
       .then((response) => {
         setFarmerAddress(response.data.content);
@@ -416,10 +408,8 @@ function StakeHolderEdit() {
       setValidatedFarmerAddressEdit(true);
     } else {
       e.preventDefault();
-      axios
-        .post(baseURL2 + `farmer-address/edit`, farmerAddress, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer-address/edit`, farmerAddress)
         .then((response) => {
           getFarmerAddressDetailsList();
           setShowModal5(false);
@@ -510,23 +500,21 @@ function StakeHolderEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
-        .post(baseURL2 + `farmer/edit`, data, {
-          headers: _header,
-        })
+      api
+        .post(baseURL2 + `farmer/edit`, data)
         .then((response) => {
           const farmerId = response.data.content.farmerId;
           if (farmerId) {
             handleFileUpload(farmerId);
           }
           if (bank.farmerBankAccountId) {
-            axios
+            api
               .post(
                 baseURL2 + `farmer-bank-account/edit`,
                 { ...bank, farmerId },
-                {
-                  headers: _header,
-                }
+                // {
+                //   headers: _header,
+                // }
               )
               .then((response) => {
                 // saveSuccess();
@@ -542,13 +530,13 @@ function StakeHolderEdit() {
 
             updateSuccess();
           } else {
-            axios
+            api
               .post(
                 baseURL2 + `farmer-bank-account/add`,
                 { ...bank, farmerId },
-                {
-                  headers: _header,
-                }
+                // {
+                //   headers: _header,
+                // }
               )
               .then((response) => {
                 // saveSuccess();
@@ -573,7 +561,7 @@ function StakeHolderEdit() {
 
   const getBankDetails = () => {
     // setLoading(true);
-    axios
+    api
       .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${id}`)
       .then((response) => {
         setBank(response.data.content);
@@ -592,7 +580,7 @@ function StakeHolderEdit() {
 
   const getIdList = () => {
     // setLoading(true);
-    axios
+    api
       .get(baseURL2 + `farmer/get/${id}`)
       .then((response) => {
         setData(response.data.content);
@@ -1290,7 +1278,7 @@ function StakeHolderEdit() {
       const formData = new FormData();
       formData.append("multipartFile", document);
 
-      const response = await axios.post(
+      const response = await api.post(
         baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
         formData,
         {
@@ -1311,7 +1299,7 @@ function StakeHolderEdit() {
   const getDocumentFile = async (file) => {
     const parameters = `fileName=${file}`;
     try {
-      const response = await axios.get(
+      const response = await api.get(
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
@@ -1341,7 +1329,7 @@ function StakeHolderEdit() {
       const formData = new FormData();
       formData.append("multipartFile", image);
 
-      const response = await axios.post(
+      const response = await api.post(
         baseURL2 + `farmer/upload-photo?${parameters}`,
         formData,
         {
@@ -1362,7 +1350,7 @@ function StakeHolderEdit() {
   const getFile = async (file) => {
     const parameters = `fileName=${file}`;
     try {
-      const response = await axios.get(
+      const response = await api.get(
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",

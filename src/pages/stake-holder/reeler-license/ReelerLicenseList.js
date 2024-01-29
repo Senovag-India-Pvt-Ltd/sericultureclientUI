@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData";
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -46,7 +47,7 @@ function ReelerLicenseList() {
       joinColumn = "reeler.reelingLicenseNumber";
     }
     // console.log(joinColumn);
-    axios
+    api
       .post(baseURL2 + `reeler/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
@@ -71,7 +72,7 @@ function ReelerLicenseList() {
 
   const getList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL2 + `reeler/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.reeler);
@@ -136,7 +137,7 @@ function ReelerLicenseList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        axios
+        api
           .delete(baseURL2 + `reeler/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);

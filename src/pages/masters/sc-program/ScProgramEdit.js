@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -26,23 +27,33 @@ function ScProgramEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (e) => {
-    axios
-      .post(baseURL + `scProgram/edit`, data, {
-        headers: _header,
-      })
+    api
+      .post(baseURL + `scProgram/edit`, data)
       .then((response) => {
+        if(response.data.content.error){
+          updateError(response.data.content.error_description);
+          }else{
         updateSuccess();
+        setData({
+          scProgramName: "",
+        });
+          }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
   };
 
+  const clear = () =>{
+    setData({
+      scProgramName: "",
+    })
+  }
+
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `scProgram/get/${id}`)
       .then((response) => {
         setData(response.data.content);
@@ -66,14 +77,14 @@ function ScProgramEdit() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/sc-program-list"));
+    }).then(() => navigate("#"));
   };
 
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 
@@ -82,7 +93,7 @@ function ScProgramEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/sc-program-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -91,19 +102,6 @@ function ScProgramEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Edit Program</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Edit Program
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +128,7 @@ function ScProgramEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n5">
         <Form action="#">
           <Row className="g-3 ">
             <Card>
@@ -142,7 +140,7 @@ function ScProgramEdit() {
                     ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="program">Program</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -169,12 +167,9 @@ function ScProgramEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/sc-program-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

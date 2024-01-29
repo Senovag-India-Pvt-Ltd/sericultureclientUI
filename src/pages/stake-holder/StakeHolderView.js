@@ -6,7 +6,8 @@ import Block from "../../components/Block/Block";
 import {
   Icon,
 } from "../../components";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA; 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -31,7 +32,7 @@ function StakeHolderViewPage() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL2 + `farmer/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setStakeHolder(response.data.content);
@@ -48,7 +49,7 @@ function StakeHolderViewPage() {
 
   const [familyMembersList, setFamilyMembersList] = useState([]);
   const getFamilyMembersDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-family/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFamilyMembersList(response.data.content.farmerFamily);
@@ -62,7 +63,7 @@ function StakeHolderViewPage() {
 
   const [farmerAddressDetailsList, setFarmerAddressDetailsList] = useState([]);
   const getFarmerAddressDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-address/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFarmerAddressDetailsList(response.data.content.farmerAddress);
@@ -76,7 +77,7 @@ function StakeHolderViewPage() {
 
   const [farmerLandList, setFarmerLandList] = useState([]);
   const getFLDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `farmer-land-details/get-by-farmer-id-join/${id}`)
       .then((response) => {
         setFarmerLandList(response.data.content.farmerLandDetails);
@@ -94,7 +95,7 @@ function StakeHolderViewPage() {
 
   const getBankList = () => {
     setLoadingBank(true);
-    axios
+    api
       .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${id}`)
       .then((response) => {
         setBank(response.data.content);
@@ -115,7 +116,7 @@ function StakeHolderViewPage() {
   const getDocumentFile = async (file) => {
     const parameters = `fileName=${file}`
     try {
-      const response = await axios.get(baseURL2+`api/s3/download?${parameters}`, {
+      const response = await api.get(baseURL2+`api/s3/download?${parameters}`, {
         responseType: 'arraybuffer',
       }); 
       const blob = new Blob([response.data]);
@@ -132,7 +133,7 @@ function StakeHolderViewPage() {
   const getFile = async (file) => {
     const parameters = `fileName=${file}`
     try {
-      const response = await axios.get(baseURL2+`api/s3/download?${parameters}`, {
+      const response = await api.get(baseURL2+`api/s3/download?${parameters}`, {
         responseType: 'arraybuffer',
       }); 
       const blob = new Blob([response.data]);

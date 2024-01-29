@@ -7,7 +7,8 @@ import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -26,19 +27,29 @@ function ScProgram() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
-    axios
-      .post(baseURL + `scProgram/add`, data, {
-        headers: _header,
-      })
+  const postData = () => {
+    api
+      .post(baseURL + `scProgram/add`, data)
       .then((response) => {
+        if(response.data.content.error){
+          saveError(response.data.content.error_description);
+          }else{
         saveSuccess();
+        setData({
+          scProgramName: "",
+        });
+      }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
   };
+  const clear = () =>{
+    setData({
+      scProgramName: "",
+    })
+  }
+
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -46,14 +57,14 @@ function ScProgram() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/sc-program-list"));
+    }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 
@@ -63,19 +74,6 @@ function ScProgram() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Program </Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                    Program
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -102,7 +100,7 @@ function ScProgram() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n5">
         <Form action="#">
           <Row className="g-3 ">
             <Card>
@@ -110,7 +108,7 @@ function ScProgram() {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                    <Form.Group className="form-group mt-3">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="program">Program</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -136,9 +134,9 @@ function ScProgram() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/sc-program-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

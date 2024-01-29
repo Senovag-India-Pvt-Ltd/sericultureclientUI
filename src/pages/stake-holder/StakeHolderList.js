@@ -9,7 +9,7 @@ import StakeHolderDatas from "../../store/stakeHolder/StakeHolderData";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -48,7 +48,7 @@ function StakeHolderList() {
         joinColumn = "farmer.mobileNumber";
       }
       // console.log(joinColumn);
-      axios
+      api
         .post(baseURL2 + `farmer/search`, {
           searchText: data.text,
           joinColumn: joinColumn,
@@ -72,7 +72,7 @@ function StakeHolderList() {
   
     const getList = () => {
       setLoading(true);
-      axios
+      api
         .get(baseURL2 + `farmer/list-with-join`, _params)
         .then((response) => {
           setListData(response.data.content.farmer);
@@ -116,7 +116,7 @@ function StakeHolderList() {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.value) {
-          axios
+          api
             .delete(baseURL2 + `farmer/delete/${_id}`)
             .then((response) => {
               // deleteConfirm(_id);

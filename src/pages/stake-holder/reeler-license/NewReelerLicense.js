@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+// import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
@@ -166,13 +166,13 @@ function NewReelerLicense() {
   });
 
   const search = () => {
-    axios
+    api
       .post(
         "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
         { fruitsId: data.fruitsId },
-        {
-          headers: _header,
-        }
+        // {
+        //   headers: _header,
+        // }
       )
       .then((response) => {
         // console.log("Hello");
@@ -180,13 +180,13 @@ function NewReelerLicense() {
           const reelerId = response.data.content.farmerResponse.reelerId;
           navigate(`/reeler-license-edit/${reelerId}`);
         } else {
-          axios
+          api
             .post(
               "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
               { fruitsId: data.fruitsId },
-              {
-                headers: _header,
-              }
+              // {
+              //   headers: _header,
+              // }
             )
             .then((result) => {
               const dump = result.data.content.farmerResponse;
@@ -213,13 +213,13 @@ function NewReelerLicense() {
         }
       })
       .catch((error) => {
-        axios
+        api
           .post(
             "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
             { fruitsId: data.fruitsId },
-            {
-              headers: _header,
-            }
+            // {
+            //   headers: _header,
+            // }
           )
           .then((result) => {
             // console.log(result);

@@ -5,7 +5,8 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -35,7 +36,7 @@ function ReelerLicenseView() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL2 + `reeler/get-by-reeler-id-join/${id}`)
       .then((response) => {
         setReeler(response.data.content);
@@ -63,7 +64,7 @@ function ReelerLicenseView() {
 
   const [vbAccountList, setVbAccountList] = useState([]);
   const getVbAccountDetailsList = () => {
-    axios
+    api
       .get(baseURL2 + `reeler-virtual-bank-account/get-by-reeler-id-join/${id}`)
       .then((response) => {
         setVbAccountList(response.data.content.reelerVirtualBankAccount);

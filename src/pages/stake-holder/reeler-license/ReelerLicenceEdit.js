@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+// import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
 
@@ -33,7 +33,7 @@ function ReelerLicenceEdit() {
 
   const [vbAccountList, setVbAccountList] = useState([]);
   const getVbDetailsList = () => {
-    axios
+    api
       .get(baseURL + `reeler-virtual-bank-account/get-by-reeler-id-join/${id}`)
       .then((response) => {
         setVbAccountList(response.data.content.reelerVirtualBankAccount);
@@ -64,10 +64,8 @@ function ReelerLicenceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    axios
-      .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId, {
-        headers: _header,
-      })
+    api
+      .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId)
       .then((response) => {
         getVbDetailsList();
         setShowModal(false);
@@ -109,7 +107,7 @@ function ReelerLicenceEdit() {
 
 
   const handleDelete = (i) => {
-    axios
+    api
       .delete(baseURL + `reeler-virtual-bank-account/delete/${i}`)
       .then((response) => {
         getVbDetailsList();
@@ -121,7 +119,7 @@ function ReelerLicenceEdit() {
 
   //   const [vb, setVb] = useState({});
   const handleVbGet = (i) => {
-    axios
+    api
       .get(baseURL + `reeler-virtual-bank-account/get/${i}`)
       .then((response) => {
         setVbAccount(response.data.content);
@@ -140,10 +138,8 @@ function ReelerLicenceEdit() {
       setValidatedVbAccountEdit(true);
     } else {
       event.preventDefault();
-    axios
-      .post(baseURL + `reeler-virtual-bank-account/edit`, vbAccount, {
-        headers: _header,
-      })
+    api
+      .post(baseURL + `reeler-virtual-bank-account/edit`, vbAccount)
       .then((response) => {
         getVbDetailsList();
         setShowModal2(false);
@@ -193,10 +189,8 @@ function ReelerLicenceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    axios
-      .post(baseURL + `reeler/edit`, data, {
-        headers: _header,
-      })
+    api
+      .post(baseURL + `reeler/edit`, data)
       .then((response) => {
         // if (vbAccountList.length > 0) {
         //   const reelerId = response.data.content.reelerId;
@@ -233,7 +227,7 @@ function ReelerLicenceEdit() {
   //   to get data from api
   const getIdList = () => {
     // setLoading(true);
-    axios
+    api
       .get(baseURL + `reeler/get/${id}`)
       .then((response) => {
         setData(response.data.content);

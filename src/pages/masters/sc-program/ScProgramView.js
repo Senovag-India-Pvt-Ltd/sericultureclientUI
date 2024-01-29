@@ -4,7 +4,8 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../services/auth/api";
 import ScProgram from "./ScProgram";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -24,7 +25,7 @@ function ScProgramView() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `scProgram/get/${id}`)
       .then((response) => {
         setScProgram(response.data.content);
@@ -47,16 +48,6 @@ function ScProgramView() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Program View</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Program View
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -83,7 +74,7 @@ function ScProgramView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <Card.Header>Program Details</Card.Header>
           <Card.Body>
