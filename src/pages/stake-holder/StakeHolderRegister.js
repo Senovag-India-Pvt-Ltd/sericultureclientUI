@@ -100,9 +100,7 @@ function StakeHolderRegister() {
     });
 
     api
-      .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data, {
-        headers: _header,
-      })
+      .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
       .then((response) => {
         if (!response.data.content.isFruitService) {
           const farmerId = response.data.content.farmerResponse.farmerId;
@@ -111,7 +109,7 @@ function StakeHolderRegister() {
           api
             .post(
               "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-              { fruitsId: data.fruitsId },
+              { fruitsId: data.fruitsId }
               // {
               //   headers: _header,
               // }
@@ -782,10 +780,10 @@ function StakeHolderRegister() {
             api
               .post(
                 baseURL2 + `farmer-bank-account/add`,
-                { ...bank, farmerId },
-                {
-                  headers: _header,
-                }
+                { ...bank, farmerId }
+                // {
+                //   headers: _header,
+                // }
               )
               .then((response) => {
                 if(response.data.content.farmerBankAccountId){

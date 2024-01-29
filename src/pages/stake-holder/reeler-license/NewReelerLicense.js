@@ -183,14 +183,18 @@ function NewReelerLicense() {
           api
             .post(
               "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-              { fruitsId: data.fruitsId },
+              { fruitsId: data.fruitsId }
               // {
               //   headers: _header,
               // }
             )
             .then((result) => {
               const dump = result.data.content.farmerResponse;
-              const dump1 = result.data.content.farmerAddressList[0];
+              let dump1 ="";
+              if(result.data.content.farmerAddressList && result.data.content.farmerAddressList.length){
+                dump1 = result.data.content.farmerAddressList[0];
+              }
+  
               setData((prev) => ({
                 ...prev,
                 // ...result.data.content.farmerResponse,
@@ -216,15 +220,20 @@ function NewReelerLicense() {
         api
           .post(
             "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-            { fruitsId: data.fruitsId },
+            { fruitsId: data.fruitsId }
             // {
             //   headers: _header,
             // }
           )
           .then((result) => {
             // console.log(result);
+            // console.log("result",result);
             const dump = result.data.content.farmerResponse;
-            const dump1 = result.data.content.farmerAddressList[0];
+            let dump1 ="";
+            if(result.data.content.farmerAddressList && result.data.content.farmerAddressList.length){
+              dump1 = result.data.content.farmerAddressList[0];
+            }
+
             setData((prev) => ({
               ...prev,
               // ...result.data.content.farmerResponse,
@@ -232,7 +241,7 @@ function NewReelerLicense() {
               fatherName: dump.fatherName,
               gender: dump.genderId,
               casteId: dump.casteId,
-              address: dump1.addressText,
+              address: dump1?dump1.addressText:"",
             }));
             // setFarmerAddressList((prev) => [
             //   ...prev,
