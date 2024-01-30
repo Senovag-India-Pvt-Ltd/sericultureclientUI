@@ -1735,7 +1735,7 @@ function Menu() {
                       {showMenu.Admin_Master_Training_Mode ? (
                         <MenuItem>
                           <MenuItemLink
-                            text="Training Institution"
+                            text="Training Mode"
                             to="/training-mode"
                           />
                         </MenuItem>
