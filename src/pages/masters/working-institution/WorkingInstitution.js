@@ -43,22 +43,33 @@ function WorkingInstitution() {
             saveError(response.data.content.error_description);
             }else{
               saveSuccess();
+              setData({
+                workingInstitutionName: "",
+                workingInstitutionNameInKannada: "", 
+              });
+              setValidated(false);
             }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+  const clear = () =>{
+    setData({
+      workingInstitutionName: "",
+      workingInstitutionNameInKannada: "", 
+    })
+  }
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/workingInstitutions-list"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -189,9 +200,9 @@ function WorkingInstitution() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/workingInstitutions-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

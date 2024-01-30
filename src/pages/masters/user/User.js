@@ -61,15 +61,50 @@ function User() {
           saveUserError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              firstName: "",
+              middleName: "",
+              lastName: "",
+              password: "",
+              emailID: "",
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              roleId: "",
+              marketMasterId: "",
+              username: "",
+              designationId: "",
+              phoneNumber: "",
+              workingInstitutionId: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      password: "",
+      emailID: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      roleId: "",
+      marketMasterId: "",
+      username: "",
+      designationId: "",
+      phoneNumber: "",
+      workingInstitutionId: "", 
+    })
+  }
 
   // to get designation
 const [designationListData, setDesignationListData] = useState([]);
@@ -211,7 +246,7 @@ useEffect(() => {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/users-list");
+      navigate("#");
     });
   };
   const saveError = () => {
@@ -622,12 +657,9 @@ useEffect(() => {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/users-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -42,16 +42,51 @@ function UsersEdit() {
           updateError();
           }else{
             updateSuccess();
+            setData({
+              firstName: "",
+              middleName: "",
+              lastName: "",
+              password: "",
+              emailID: "",
+              stateId: "",
+              districtId: "",
+              talukId: "",
+              roleId: "",
+              marketMasterId: "",
+              username: "",
+              designationId: "",
+              phoneNumber: "",
+              workingInstitutionId: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
         updateError(message);
-        setData({});
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      password: "",
+      emailID: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      roleId: "",
+      marketMasterId: "",
+      username: "",
+      designationId: "",
+      phoneNumber: "",
+      workingInstitutionId: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -226,13 +261,13 @@ useEffect(() => {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/users-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: message,
     });
   };
   const editError = (message) => {
@@ -240,7 +275,7 @@ useEffect(() => {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/users-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -634,12 +669,9 @@ useEffect(() => {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/users-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
