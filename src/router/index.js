@@ -483,6 +483,7 @@ import HelpDeskSeverityList from "../pages/masters/help-desk-severity/HelpDeskSe
 import HelpDeskSeverityView from "../pages/masters/help-desk-severity/HelpDeskSeverityView";
 import HelpDeskSeverityEdit from "../pages/masters/help-desk-severity/HelpDeskSeverityEdit";
 import HelpDeskFaq from "../pages/helpdesk/HelpDeskFaq";
+import HelpDeskFaqView from "../pages/helpdesk/HelpDeskFaqView";
 
 // Admin and Reports
 
@@ -814,6 +815,7 @@ function Router() {
         <Route path="my-tickets" element={<MyTickets />} />
         <Route path="my-tickets/:id" element={<ViewMyTicket />} />
         <Route path="help-desk" element={<HelpDesk />} />
+        <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
 
         {/* Garden Management */}
         <Route
