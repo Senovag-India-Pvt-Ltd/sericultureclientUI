@@ -282,6 +282,7 @@ function Menu() {
     Helpdesk_Raise_a_Ticket: false,
     Helpdesk_Dashboard: false,
     Helpdesk_My_Tickets: false,
+    Helpdesk_FAQ: false,
 
     Admin: false,
 
@@ -342,6 +343,7 @@ function Menu() {
     Admin_Master_HelpDesk_Sub_Category: false,
     Admin_Master_HelpDesk_Status: false,
     Admin_Master_HelpDesk_Severity: false,
+    Admin_Master_HelpDesk_Faq: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -1421,6 +1423,11 @@ function Menu() {
               <MenuItemLink text="My Tickets" to="/my-tickets" />
             </MenuItem>
           ) : null}
+          {showMenu.Helpdesk_FAQ ? (
+            <MenuItem>
+              <MenuItemLink text="FAQ" to="/help-desk-faq-view" />
+            </MenuItem>
+          ) : null}
         </MenuSub>
       </MenuItem>
 
@@ -1805,6 +1812,14 @@ function Menu() {
                           <MenuItemLink
                             text="Help Desk Severity"
                             to="/hd-severity"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Faq ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Help Desk FAQ"
+                            to="/hd-question"
                           />
                         </MenuItem>
                       ) : null}

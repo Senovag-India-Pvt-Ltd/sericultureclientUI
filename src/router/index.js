@@ -482,8 +482,10 @@ import HelpDeskSeverity from "../pages/masters/help-desk-severity/HelpDeskSeveri
 import HelpDeskSeverityList from "../pages/masters/help-desk-severity/HelpDeskSeverityList";
 import HelpDeskSeverityView from "../pages/masters/help-desk-severity/HelpDeskSeverityView";
 import HelpDeskSeverityEdit from "../pages/masters/help-desk-severity/HelpDeskSeverityEdit";
-import HelpDeskFaq from "../pages/helpdesk/HelpDeskFaq";
+import HelpDeskFaq from "../pages/masters/help-desk-faq/HelpDeskFaq";
 import HelpDeskFaqView from "../pages/helpdesk/HelpDeskFaqView";
+import HelpDeskFaqEdit from "../pages/masters/help-desk-faq/HelpDeskFaqEdit";
+import HelpDeskFaqList from "../pages/masters/help-desk-faq/HelpDeskFaqList";
 
 // Admin and Reports
 
@@ -1193,7 +1195,9 @@ function Router() {
         <Route path="hd-severity-list" element={<HelpDeskSeverityList />}/>
         <Route path="hd-severity-edit/:id" element={<HelpDeskSeverityEdit/>}/>
         <Route path="hd-severity-view/:id" element={<HelpDeskSeverityView/>}/>
-        <Route path="hd-faq" element={<HelpDeskFaq />}/>
+        <Route path="hd-question" element={<HelpDeskFaq/>}/>
+        <Route path="hd-question-edit/:id" element={<HelpDeskFaqEdit />}/>
+        <Route path="hd-question-list" element={<HelpDeskFaqList />}/>
 
         {/* Direct Benefit Transfer */}
         <Route

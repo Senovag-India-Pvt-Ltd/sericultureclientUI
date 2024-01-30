@@ -111,7 +111,7 @@ function HelpDeskFaqView() {
             <Block.Title tag="h2">FAQ</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/hd-question-list"
@@ -130,12 +130,12 @@ function HelpDeskFaqView() {
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className= "mt-n4">
         <Card>
           <Card.Body>
             <Accordion defaultActiveKey="0">
