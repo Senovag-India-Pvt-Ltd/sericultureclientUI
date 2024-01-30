@@ -9,7 +9,6 @@ import {
 } from "../../../components";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
@@ -110,7 +109,7 @@ function TransferReelerLicense() {
       .post(baseURL2 + `reeler/add`,data)
       .then((response) => {
         saveSuccess();
-        axios
+        api
           .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
           .then((response) => {
            
