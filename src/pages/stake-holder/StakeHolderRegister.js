@@ -93,6 +93,8 @@ function StakeHolderRegister() {
     setFarmerLandList([]);
     setFarmerAddressList([]);
     setBank({
+      accountImagePath: "",
+      farmerId: "",
       farmerBankName: "",
       farmerBankAccountNumber: "",
       farmerBankBranchName: "",
@@ -703,10 +705,12 @@ function StakeHolderRegister() {
   };
 
   const [bank, setBank] = useState({
-    farmerBankName: "",
-    farmerBankAccountNumber: "",
-    farmerBankBranchName: "",
-    farmerBankIfscCode: "",
+      accountImagePath: "",
+      farmerId: "",
+      farmerBankName: "",
+      farmerBankAccountNumber: "",
+      farmerBankBranchName: "",
+      farmerBankIfscCode: "",
   });
 
   // const [farmerId, setFarmerId] = useState({
@@ -797,10 +801,12 @@ function StakeHolderRegister() {
                 
                 saveSuccess();
                 setBank({
-                farmerBankName: "",
-                farmerBankAccountNumber: "",
-                farmerBankBranchName: "",
-                farmerBankIfscCode: "",
+                  accountImagePath: "",
+                  farmerId: "",
+                  farmerBankName: "",
+                  farmerBankAccountNumber: "",
+                  farmerBankBranchName: "",
+                  farmerBankIfscCode: "",
               });
               }
               })
@@ -1723,13 +1729,13 @@ function StakeHolderRegister() {
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     setDocument(file);
-    setData(prev=>({...prev,accountImagePath:file.name}))
+    setBank(prev=>({...prev,accountImagePath:file.name}))
     // setPhotoFile(file);
   };
 
    // Upload Image to S3 Bucket
-   const handleFileDocumentUpload = async (fid)=>{
-    const parameters = `farmerBankAccountId=${fid}`
+   const handleFileDocumentUpload = async (farmerBankAccountid)=>{
+    const parameters = `farmerBankAccountId=${farmerBankAccountid}`
     try{
       const formData = new FormData();
       formData.append("multipartFile",document);

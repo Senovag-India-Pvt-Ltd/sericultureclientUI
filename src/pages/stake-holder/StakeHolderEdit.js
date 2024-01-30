@@ -73,9 +73,7 @@ function StakeHolderEdit() {
     } else {
       e.preventDefault();
       api
-        .post(baseURL2 + `farmer-family/add`, withFarmerId, {
-          headers: _header,
-        })
+        .post(baseURL2 + `farmer-family/add`, withFarmerId)
         .then((response) => {
           getFMDetailsList();
           setShowModal(false);
@@ -442,15 +440,27 @@ function StakeHolderEdit() {
   };
 
   const [bank, setBank] = useState({
-    farmerBankAccountId: "",
-    farmerBankName: "",
-    farmerBankAccountNumber: "",
-    farmerBankBranchName: "",
-    farmerBankIfscCode: "",
+      accountImagePath: "",
+      farmerId: "",
+      farmerBankName: "",
+      farmerBankAccountNumber: "",
+      farmerBankBranchName: "",
+      farmerBankIfscCode: "",
   });
 
   const handleBankInputs = (e) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    let value = e.target.value;
+    
+    // if (name === "farmerBankIfscCode" && value.length > 11) {
+    //   value = value.slice(0, 11);
+    // }
+    if (name === "farmerBankIfscCode" && (value.length < 11 || value.length > 11) ) {
+        e.target.classList.add("is-invalid");
+    } else {
+        e.target.classList.remove("is-invalid");
+        e.target.classList.add("is-valid");
+    }
     setBank({ ...bank, [name]: value });
   };
 
@@ -458,20 +468,20 @@ function StakeHolderEdit() {
     setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
   };
 
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/stake-holder-list"));
-  };
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
+  // const saveSuccess = () => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Saved successfully",
+  //     // text: "You clicked the button!",
+  //   }).then(() => navigate("/stake-holder-list"));
+  // };
+  // const saveError = () => {
+  //   Swal.fire({
+  //     icon: "error",
+  //     title: "Save attempt was not successful",
+  //     text: "Something went wrong!",
+  //   });
+  // };
 
   let name, value;
   const handleInputs = (e) => {
@@ -522,10 +532,17 @@ function StakeHolderEdit() {
                 if (bankId) {
                   handleFileDocumentUpload(bankId);
                 }
+                if (response.data.content.error) {
+                  const bankError = response.data.content.error_description;
+                    updateError(bankError);
+                  }else{
+                
+                updateSuccess();
+                  }
               })
               .catch((err) => {
                 setBank({});
-                saveError();
+                updateError();
               });
 
             updateSuccess();
@@ -539,11 +556,16 @@ function StakeHolderEdit() {
                 // }
               )
               .then((response) => {
-                // saveSuccess();
+                if (response.data.content.error) {
+                  const bankError = response.data.content.error_description;
+                    updateError(bankError);
+                  }else{
+                    updateSuccess();
+                  }
               })
               .catch((err) => {
                 setBank({});
-                saveError();
+                updateError();
               });
 
             updateSuccess();
@@ -1243,15 +1265,15 @@ function StakeHolderEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
     }).then(() => navigate("/stake-holder-list"));
   };
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
   const editError = (message) => {
@@ -1268,12 +1290,12 @@ function StakeHolderEdit() {
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     setDocument(file);
-    setData((prev) => ({ ...prev, accountImagePath: file.name }));
+    setBank((prev) => ({ ...prev, accountImagePath: file.name }));
     // setPhotoFile(file);
   };
   // Upload Image to S3 Bucket
-  const handleFileDocumentUpload = async (fid) => {
-    const parameters = `farmerBankAccountId=${fid}`;
+  const handleFileDocumentUpload = async (farmerBankAccountid) => {
+    const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
     try {
       const formData = new FormData();
       formData.append("multipartFile", document);
