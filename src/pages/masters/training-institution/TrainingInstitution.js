@@ -43,15 +43,26 @@ function TrainingInstitution() {
           saveError(response.data.content.error_description);
           }else{
             saveSuccess();
+            setData({
+              trInstitutionMasterName: "",
+              trInstitutionNameInKannada: "", 
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         saveError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trInstitutionMasterName: "",
+      trInstitutionNameInKannada: "",   
+    })
+  }
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -59,7 +70,7 @@ function TrainingInstitution() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/training-institution-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
@@ -164,9 +175,9 @@ function TrainingInstitution() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-institution-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

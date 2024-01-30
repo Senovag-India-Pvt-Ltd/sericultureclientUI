@@ -42,15 +42,25 @@ function TrainingModeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              trModeMasterName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trModeMasterName: "",
+    })
+  }
+
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +90,7 @@ function TrainingModeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/training-mode-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +104,7 @@ function TrainingModeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/training-mode-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -176,9 +186,9 @@ function TrainingModeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-mode-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

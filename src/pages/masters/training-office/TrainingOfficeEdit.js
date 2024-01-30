@@ -42,15 +42,24 @@ function TrainingOfficeEdit() {
           updateError(response.data.content.error_description);
           }else{
             updateSuccess();
+            setData({
+              trOfficeName: "",
+            });
+            setValidated(false);
           }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trOfficeName: "", 
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -80,7 +89,7 @@ function TrainingOfficeEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/training-office-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -94,7 +103,7 @@ function TrainingOfficeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/training-office-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -176,9 +185,9 @@ function TrainingOfficeEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/training-office-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -46,15 +46,26 @@ function TrainingProgramEdit() {
             updateError(response.data.content.error_description);
             }else{
               updateSuccess();
+              setData({
+                trProgramMasterName: "",
+                trProgramNameInKannada: "",
+              });
+              setValidated(false);
             }
       })
       .catch((err) => {
-        setData({});
         updateError();
       });
       setValidated(true);
     }
   };
+
+  const clear = () =>{
+    setData({
+      trProgramMasterName: "",
+      trProgramNameInKannada: "",
+    })
+  }
 
   //   to get data from api
   const getIdList = () => {
@@ -85,7 +96,7 @@ function TrainingProgramEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/trainingPrograms-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -99,7 +110,7 @@ function TrainingProgramEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/trainingPrograms-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -202,9 +213,9 @@ function TrainingProgramEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/trainingPrograms-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

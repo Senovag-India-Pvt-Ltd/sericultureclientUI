@@ -96,11 +96,11 @@ function TrainingCourseEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
   const editError = (message) => {
