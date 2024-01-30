@@ -474,6 +474,15 @@ import HelpDeskSubCategory from "../pages/masters/help-desk-sub-category/HelpDes
 import HelpDeskSubCategoryEdit from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryEdit";
 import HelpDeskSubCategoryView from "../pages/masters/help-desk-sub-category/HelpDeskSubCategoryView";
 import MarketExceptionTime from "../pages/masters/market-exception-time/MarketExceptionTime";
+import HelpDeskStatus from "../pages/masters/help-desk-status/HelpDeskStatus";
+import HelpDeskStatusEdit from "../pages/masters/help-desk-status/HelpDeskStatusEdit";
+import HelpDeskStatusView from "../pages/masters/help-desk-status/HelpDeskView";
+import HelpDeskStatusList from "../pages/masters/help-desk-status/HelpDeskStatusList";
+import HelpDeskSeverity from "../pages/masters/help-desk-severity/HelpDeskSeverity";
+import HelpDeskSeverityList from "../pages/masters/help-desk-severity/HelpDeskSeverityList";
+import HelpDeskSeverityView from "../pages/masters/help-desk-severity/HelpDeskSeverityView";
+import HelpDeskSeverityEdit from "../pages/masters/help-desk-severity/HelpDeskSeverityEdit";
+import HelpDeskFaq from "../pages/helpdesk/HelpDeskFaq";
 
 // Admin and Reports
 
@@ -1174,6 +1183,15 @@ function Router() {
         <Route path="hd-sub-category-list" element={<HelpDeskSubCategoryList />}/>
         <Route path="hd-sub-category-edit/:id" element={<HelpDeskSubCategoryEdit/>}/>
         <Route path="hd-sub-category-view/:id" element={<HelpDeskSubCategoryView/>}/>
+        <Route path="hd-status" element={<HelpDeskStatus />}/>
+        <Route path="hd-status-list" element={<HelpDeskStatusList />}/>
+        <Route path="hd-status-edit/:id" element={<HelpDeskStatusEdit/>}/>
+        <Route path="hd-status-view/:id" element={<HelpDeskStatusView/>}/>
+        <Route path="hd-severity" element={<HelpDeskSeverity />}/>
+        <Route path="hd-severity-list" element={<HelpDeskSeverityList />}/>
+        <Route path="hd-severity-edit/:id" element={<HelpDeskSeverityEdit/>}/>
+        <Route path="hd-severity-view/:id" element={<HelpDeskSeverityView/>}/>
+        <Route path="hd-faq" element={<HelpDeskFaq />}/>
 
         {/* Direct Benefit Transfer */}
         <Route

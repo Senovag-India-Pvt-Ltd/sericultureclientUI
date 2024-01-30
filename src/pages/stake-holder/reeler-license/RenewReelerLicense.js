@@ -158,28 +158,6 @@ function RenewReelerLicense() {
           <Block.HeadContent>
             <Block.Title tag="h2">Renew Reeler License</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/reeler-license-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/reeler-license-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 

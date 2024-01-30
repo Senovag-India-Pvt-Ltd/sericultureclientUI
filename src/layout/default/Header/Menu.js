@@ -340,6 +340,8 @@ function Menu() {
     Admin_Master_HelpDesk_Board_Category: false,
     Admin_Master_HelpDesk_Category: false,
     Admin_Master_HelpDesk_Sub_Category: false,
+    Admin_Master_HelpDesk_Status: false,
+    Admin_Master_HelpDesk_Severity: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -1787,6 +1789,22 @@ function Menu() {
                           <MenuItemLink
                             text="Sub Category"
                             to="/hd-sub-category"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Status ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Help Desk Status"
+                            to="/hd-status"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Severity ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Help Desk Severity"
+                            to="/hd-severity"
                           />
                         </MenuItem>
                       ) : null}

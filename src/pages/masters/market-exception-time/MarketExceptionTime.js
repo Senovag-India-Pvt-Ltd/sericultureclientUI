@@ -44,7 +44,7 @@ function MarketExceptionTime() {
     setData((prev) => ({ ...prev, issueBidSlipStartTime: selectedTime }));
   };
 
-  const [validated, setValidated] = useState(false);
+  // const [validated, setValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
@@ -73,14 +73,14 @@ function MarketExceptionTime() {
   }, []);
 
   const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   setValidated(true);
+    // } else {
+    //   event.preventDefault();
+    //   // event.stopPropagation();
       api
         .post(baseURLMarket + `auction/misc/updateExceptionalTime`, data)
         .then((response) => {
@@ -115,8 +115,8 @@ function MarketExceptionTime() {
         .catch((err) => {
           saveError();
         });
-      setValidated(true);
-    }
+    //   setValidated(true);
+    // }
   };
 
   const clear = () => {
@@ -186,7 +186,7 @@ function MarketExceptionTime() {
       </Block.Head>
 
       <Block className="mt-n5">
-        <Form noValidate validated={validated} onSubmit={postData}>
+        <Form >
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -198,7 +198,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             Issue Bidding Slip Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -208,11 +207,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter Issue Bidding Slip Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Issue Bidding Slip Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -220,7 +219,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             Issue Bidding Slip End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -230,11 +228,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               Issue Bidding Slip End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -242,7 +240,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             1st Round Bid Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -252,11 +249,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               1st Round Bid Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -264,7 +261,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             1st Round Bid End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -274,11 +270,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               1st Round Bid End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -286,7 +282,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidstart">
                             2nd Round Bid Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -296,11 +291,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 2st Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               2nd Round Bid Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -308,7 +303,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidend">
                             2nd Round Bid End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -318,11 +312,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 2st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               2nd Round Bid End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -330,7 +324,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidstart">
                             3rd Round Bid Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -340,11 +333,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 3rd Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               3rd Round Bid Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -352,7 +345,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="secbidend">
                             3rd Round Bid End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -362,11 +354,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 3rd Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               3rd Round Bid End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -375,7 +367,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             1st Round Bid Acceptance Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -385,11 +376,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               1st Round Bid Acceptance Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -397,7 +388,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             1st Round Bid Acceptance End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -407,11 +397,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               1st Round Bid Acceptance End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -420,7 +410,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             2nd Round Bid Acceptance Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -430,11 +419,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               2nd Round Bid Acceptance Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -442,7 +431,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             2nd Round Bid Acceptance End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -452,11 +440,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               2nd Round Bid Acceptance End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -465,7 +453,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             3rd Round Bid Acceptance Start Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -475,11 +462,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid Start Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               3rd Round Bid Acceptance Start Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                             {/* <TimePicker
                               name="auction1StartTime"
                               value={data.auction1StartTime}
@@ -492,7 +479,6 @@ function MarketExceptionTime() {
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             3rd Round Bid Acceptance End Time
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -502,11 +488,11 @@ function MarketExceptionTime() {
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter 1st Round Bid End Time"
-                              required
+                              // required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               3rd Round Bid Acceptance End Time is required
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </div>
                         </Form.Group>
                       </Col>
@@ -519,8 +505,8 @@ function MarketExceptionTime() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
+                  <Button type="button" variant="primary" onClick={postData}>
+                  {/* <Button type="submit" variant="primary"> */}
                     Save
                   </Button>
                 </li>
