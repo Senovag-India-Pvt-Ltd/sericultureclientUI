@@ -10,14 +10,100 @@ import {
 import { ChartDoughnut } from "../../components/Chart/Charts";
 import { ChartLegend } from "../../components";
 import { Colors } from "../../utilities/index";
-
+import { useState, useEffect } from "react";
 import Layout from "../../layout/default";
+import api from "../../services/auth/api";
+
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
+
 
 // import {
 //     Image,
 //   } from '../../components';
 
 function HelpdeskDashboard() {
+
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+
+  const [data, setData] = useState({
+    text: "",
+    searchBy: "username",
+  });
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "username") {
+      joinColumn = "userMaster.username";
+    }
+    if (data.searchBy === "hdModuleName") {
+      joinColumn = "hdModuleMaster.hdModuleName";
+    }
+    // console.log(joinColumn);
+    api
+      .post(baseURL2 + `hdTicket/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      }, {
+        headers: _header,
+      })
+      .then((response) => {
+        setListData(response.data.content.hdTicket);
+
+        // if (response.data.content.error) {
+        //   // saveError();
+        // } else {
+        //   console.log(response);
+        //   // saveSuccess();
+        // }
+      })
+      .catch((err) => {
+        // saveError();
+      });
+  };
+
+  const [hdTicketList, setHdTicketListData] = useState({
+    userMasterId: localStorage.getItem("userMasterId"),
+  });
+
+  const getList = (e) => {
+    // setLoading(true);
+    api
+      .post(baseURL2 + `hdTicket/get-by-user-master-id`,{userMasterId:e})
+      .then((response) => {
+        setListData(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+        if (response.data.content.error) {
+          setListData([]);
+        }
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (hdTicketList.userMasterId) {
+      getList(hdTicketList.userMasterId);
+    }
+  }, [hdTicketList.userMasterId]);
+
+
   let sessionsDevice = {
     labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
     datasets: [
@@ -34,31 +120,11 @@ function HelpdeskDashboard() {
     ],
   };
 
+
+
   return (
-    <Layout title="Helpdesk Dashboard">
+    <Layout title="Help desk Dashboard">
       <Row className="g-gs mt-5">
-        {/* <Col xxl="3">
-          <Card className="h-100">
-              <Card.Body>
-                  <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                          <div className="card-title">
-                              <h4 className="title mb-1">Congratulations John Doe!</h4>
-                              <p className="small">Employee of the month</p>
-                          </div>
-                          <div className="my-3">
-                              <div className="amount h2 fw-bold text-primary">&#8377;42.5k</div>
-                              <div className="smaller">You have done 69.5% more sales today.</div>
-                          </div>
-                          <Button href="#" size="sm" variant="primary">View Sales</Button>
-                      </div>
-                      <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
-                          <Image src="/images/award/a.png" alt=""/>
-                      </div>
-                  </div>
-              </Card.Body>
-          </Card>
-        </Col> */}
 
         <Col xxl="3">
           <Card className="h-100">
@@ -70,7 +136,7 @@ function HelpdeskDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary">35</div>
+                    <div className="amount h2 fw-bold text-primary">{totalRows}</div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
