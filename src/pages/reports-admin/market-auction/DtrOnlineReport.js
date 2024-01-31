@@ -249,6 +249,7 @@ function DtrOnlineReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.fromDate}
                             onChange={handleFromDateChange}
+                            className="form-control"
                           />
                         </div>
                       </Col>
@@ -262,6 +263,7 @@ function DtrOnlineReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.toDate}
                             onChange={handleToDateChange}
+                            className="form-control"
                           />
                         </div>
                       </Col>
