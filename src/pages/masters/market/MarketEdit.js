@@ -71,6 +71,7 @@ function MarketEdit() {
               marketLatitude: "",
               marketLongitude: "",
               radius: "",
+              clientId:"",
             });
             setValidated(false);
           }
@@ -112,6 +113,7 @@ function MarketEdit() {
       marketLatitude: "",
       marketLongitude: "",
       radius: "",
+      clientId:"",
     })
   }
 
@@ -827,6 +829,26 @@ function MarketEdit() {
                   </Col>
 
                   <Col lg="6">
+                  <Form.Group className="form-group">
+                      <Form.Label htmlFor="weight">
+                        Client ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="clientId"
+                          name="clientId"
+                          value={data.clientId}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Client Id"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Client Id is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
                     <Form.Group className="form-group">
                       <Form.Label>
                         Market Type<span className="text-danger">*</span>

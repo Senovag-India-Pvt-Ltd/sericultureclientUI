@@ -105,6 +105,10 @@ function MarketView() {
                       <td>{MarketMaster.marketTypeMasterName}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> Client ID:</td>
+                      <td>{MarketMaster.clientId}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>Crate Weight:</td>
                       <td>{MarketMaster.boxWeight}</td>
                     </tr>
