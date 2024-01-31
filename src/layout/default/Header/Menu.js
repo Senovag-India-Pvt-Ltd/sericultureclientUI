@@ -281,6 +281,7 @@ function Menu() {
     Helpdesk: false,
     Helpdesk_Raise_a_Ticket: false,
     Helpdesk_Dashboard: false,
+    Helpdesk_User_Dashboard: false,
     Helpdesk_My_Tickets: false,
     Helpdesk_FAQ: false,
 
@@ -1418,6 +1419,11 @@ function Menu() {
               <MenuItemLink text="Dashboard" to="/helpdesk-dashboard" />
             </MenuItem>
           ) : null}
+          {showMenu.Helpdesk_User_Dashboard ? (
+            <MenuItem>
+              <MenuItemLink text="User Dashboard" to="/user-dashboard" />
+            </MenuItem>
+          ) : null}
           {showMenu.Helpdesk_My_Tickets ? (
             <MenuItem>
               <MenuItemLink text="My Tickets" to="/my-tickets" />
@@ -1820,6 +1826,14 @@ function Menu() {
                           <MenuItemLink
                             text="Help Desk FAQ"
                             to="/hd-question"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_HelpDesk_Status ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Help Desk Status"
+                            to="/hd-status"
                           />
                         </MenuItem>
                       ) : null}

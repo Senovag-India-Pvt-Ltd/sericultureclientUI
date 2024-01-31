@@ -135,14 +135,59 @@ function HelpDeskFaqView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
+        <Row className="m-2">
+                <Col>
+                  <Form.Group as={Row} className="form-group" id="fid">
+                    {/* <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                      <option value="village">Village</option>
+                      <option value="hobli">Hobli</option>
+                      <option value="taluk">Taluk</option>
+                      <option value="district">District</option>
+                      <option value="state">State</option>
+                    </Form.Select>
+                  </div>
+                </Col> */}
+
+                    <Col sm={3}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="text"
+                        value={data.text}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Search"
+                      />
+                    </Col>
+                    <Col sm={3}>
+                      <Button type="button" variant="primary" >
+                        Search
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
           <Card.Body>
             <Accordion defaultActiveKey="0">
               {faqData && faqData.length
                 ? faqData.map((data, i) => (
                     <Accordion.Item eventKey={i}>
-                      <Accordion.Header style={{backgroundColor:"#dfdfe8"}} className="mb-2">{data.hdQuestionName}</Accordion.Header>
+                      <Accordion.Header
+                        style={{ backgroundColor: "#dfdfe8" }}
+                        className="mb-2"
+                      >
+                        {data.hdQuestionName}
+                      </Accordion.Header>
                       <Accordion.Body>
                         {data.hdQuestionAnswerName}
                       </Accordion.Body>

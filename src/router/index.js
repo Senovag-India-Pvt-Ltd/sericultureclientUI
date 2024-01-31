@@ -486,6 +486,7 @@ import HelpDeskFaq from "../pages/masters/help-desk-faq/HelpDeskFaq";
 import HelpDeskFaqView from "../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqEdit from "../pages/masters/help-desk-faq/HelpDeskFaqEdit";
 import HelpDeskFaqList from "../pages/masters/help-desk-faq/HelpDeskFaqList";
+import UserDashboard from "../pages/helpdesk/UserDashboard";
 
 // Admin and Reports
 
@@ -814,6 +815,7 @@ function Router() {
         {/* Helpdesk */}
         <Route path="raise-ticket" element={<RaiseTicket />} />
         <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
+        <Route path="user-dashboard" element={<UserDashboard />} />
         <Route path="my-tickets" element={<MyTickets />} />
         <Route path="my-tickets/:id" element={<ViewMyTicket />} />
         <Route path="help-desk" element={<HelpDesk />} />
