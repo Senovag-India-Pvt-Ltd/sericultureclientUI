@@ -27,8 +27,9 @@ function HelpDesk() {
     query: "",
     queryDetails: "",
     hdAttachFiles: "",
-    hdCreatedBy: "",
     ticketNumber: "",
+    hdStatusId: "",
+    userMasterId: "",
   });
 
   const placeholder ="Enter your Query";
@@ -92,6 +93,8 @@ function HelpDesk() {
               hdAttachFiles: "",
               hdCreatedBy: "",
               ticketNumber: "",
+              hdStatusId: "",
+              userMasterId: "",
             });
             setValidated(false);
           }
@@ -116,11 +119,31 @@ function HelpDesk() {
       hdAttachFiles: "",
       hdCreatedBy: "",
       ticketNumber: "",
+      hdStatusId: "",
+      userMasterId: "",
     });
     setAttachFiles("");
   };
 
   const [loading, setLoading] = useState(false);
+
+  // to get Module
+  const [hdStatusListData, setHdStatusListData] = useState([]);
+
+  const getStatusList = () => {
+    const response = api
+      .get(baseURL + `hdStatusMaster/get-all`)
+      .then((response) => {
+        setHdStatusListData(response.data.content.hdStatusMaster);
+      })
+      .catch((err) => {
+        setHdStatusListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getStatusList();
+  }, []);
 
   // to get Module
   const [hdModuleListData, setHdModuleListData] = useState([]);
@@ -578,6 +601,40 @@ function HelpDesk() {
                         {/* <Form.Control.Feedback type="invalid">
                           Market Address is required
                         </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                       Status<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="hdStatusId"
+                          value={data.hdStatusId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.hdStatusId === undefined ||
+                            data.hdStatusId === "0"
+                          }
+                        >
+                          <option value="">Select Status</option>
+                          {hdStatusListData.map((list) => (
+                            <option
+                              key={list.hdStatusId}
+                              value={list.hdStatusId}
+                            >
+                              {list.hdStatusName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Status is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
