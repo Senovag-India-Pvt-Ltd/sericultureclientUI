@@ -81,33 +81,36 @@ function UserDashboard() {
       });
   };
 
-  const [hdTicketList, setHdTicketListData] = useState({
+  const [hdUserData, setHdUserData] = useState({
     userMasterId: localStorage.getItem("userMasterId"),
   });
 
-  const getList = (e) => {
+  const [ticketData,setTicketData] = useState({})
+
+  const getUserTicket = (e) => {
     // setLoading(true);
     api
-      .post(baseURL2 + `hdTicket/get-by-user-master-id`, { userMasterId: e })
+      .get(
+        baseURL2 +
+          `hdTicket/get-ticket-counts-by-user-master-id?userMasterId=${e}`
+      )
       .then((response) => {
-        setListData(response.data.content.hdTicket);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-        if (response.data.content.error) {
-          setListData([]);
-        }
+        setTicketData(response.data)
+        // setListData(response.data.content.hdTicket);
+        // setTotalRows(response.data.content.totalItems);
+        // setLoading(false);
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        // setListData({});
+        // setLoading(false);
       });
   };
 
   useEffect(() => {
-    if (hdTicketList.userMasterId) {
-      getList(hdTicketList.userMasterId);
+    if (hdUserData.userMasterId) {
+      getUserTicket(hdUserData.userMasterId);
     }
-  }, [hdTicketList.userMasterId]);
+  }, [hdUserData.userMasterId]);
 
   // let sessionsDevice = {
   //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
@@ -266,7 +269,7 @@ function UserDashboard() {
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
-      
+
       <Row className="g-gs">
         <Col xxl="3">
           <Card className="h-100">
@@ -279,7 +282,7 @@ function UserDashboard() {
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary">
-                      {totalRows}
+                      {ticketData.newTickets}
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
@@ -305,7 +308,7 @@ function UserDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary">23</div>
+                    <div className="amount h2 fw-bold text-primary"> {ticketData.openTickets}</div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -330,7 +333,7 @@ function UserDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary ">10</div>
+                    <div className="amount h2 fw-bold text-primary ">{ticketData.closedTickets}</div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">

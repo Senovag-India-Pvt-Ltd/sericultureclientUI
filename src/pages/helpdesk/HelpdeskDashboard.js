@@ -19,7 +19,6 @@ import Layout from "../../layout/default";
 import api from "../../services/auth/api";
 import { Icon } from "../../components";
 
-
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 // import {
@@ -82,33 +81,26 @@ function HelpdeskDashboard() {
       });
   };
 
-  const [hdTicketList, setHdTicketListData] = useState({
-    userMasterId: localStorage.getItem("userMasterId"),
-  });
+  const [hdTicketData, setHdTicketData] = useState({});
 
-  const getList = (e) => {
+  const getTicketData = () => {
     // setLoading(true);
     api
-      .post(baseURL2 + `hdTicket/get-by-user-master-id`, { userMasterId: e })
+      .get(baseURL2 + `hdTicket/ticket-counts`)
       .then((response) => {
-        setListData(response.data.content.hdTicket);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-        if (response.data.content.error) {
-          setListData([]);
-        }
+        setHdTicketData(response.data);
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        // setListData({});
+        // setLoading(false);
       });
   };
 
   useEffect(() => {
-    if (hdTicketList.userMasterId) {
-      getList(hdTicketList.userMasterId);
-    }
-  }, [hdTicketList.userMasterId]);
+    getTicketData();
+  }, []);
+
+  // console.log(hdTicketData);
 
   // let sessionsDevice = {
   //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
@@ -270,7 +262,7 @@ function HelpdeskDashboard() {
       <Row className="g-gs">
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body> 
+            <Card.Body>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -279,7 +271,7 @@ function HelpdeskDashboard() {
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary">
-                      {totalRows}
+                      {hdTicketData.newTickets}
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
@@ -305,7 +297,9 @@ function HelpdeskDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary">23</div>
+                    <div className="amount h2 fw-bold text-primary">
+                      {hdTicketData.openTickets}
+                    </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -330,7 +324,9 @@ function HelpdeskDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary ">10</div>
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.closedTickets}
+                    </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -355,7 +351,9 @@ function HelpdeskDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary ">111</div>
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.unassignedTickets}
+                    </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -369,10 +367,9 @@ function HelpdeskDashboard() {
             </Card.Body>
           </Card>
         </Col>
-
       </Row>
       <Row className="g-gs mt-2">
-      <Col xxl="12">
+        <Col xxl="12">
           <Block className="mt-n3">
             <Card>
               <Row className="m-2">
