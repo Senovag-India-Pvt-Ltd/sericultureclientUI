@@ -100,6 +100,27 @@ function HelpdeskDashboard() {
     getTicketData();
   }, []);
 
+  // get list of ticket
+  const [hdTicketDataList, setHdTicketDataList] = useState([]);
+
+  const getTicketDataList = () => {
+    // setLoading(true);
+    api
+      .get(baseURL2 + `hdTicket/list-with-join`)
+      .then((response) => {
+        setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        // setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getTicketDataList();
+  }, []);
   // console.log(hdTicketData);
 
   // let sessionsDevice = {
@@ -144,64 +165,64 @@ function HelpdeskDashboard() {
   const HelpdeskDataColumns = [
     {
       name: "Ticket No.",
-      selector: (row) => row.stateName,
-      cell: (row) => <span>{row.stateName}</span>,
+      selector: (row) => row.hdTicketId,
+      cell: (row) => <span>{row.hdTicketId}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "User Profile",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Query",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
+      selector: (row) => row.query,
+      cell: (row) => <span>{row.query}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Query Details",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
+      selector: (row) => row.queryDetails,
+      cell: (row) => <span>{row.queryDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Category",
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
+      selector: (row) => row.hdCategoryName,
+      cell: (row) => <span>{row.hdCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "User Affected",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdUsersAffected,
+      cell: (row) => <span>{row.hdUsersAffected}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Module",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdModuleName,
+      cell: (row) => <span>{row.hdModuleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Feature",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdFeatureName,
+      cell: (row) => <span>{row.hdFeatureName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Status",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdStatusName,
+      cell: (row) => <span>{row.hdStatusName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -415,7 +436,7 @@ function HelpdeskDashboard() {
               <DataTable
                 tableClassName="data-table-head-light table-responsive"
                 columns={HelpdeskDataColumns}
-                data={listData}
+                data={hdTicketDataList}
                 highlightOnHover
                 pagination
                 paginationServer
