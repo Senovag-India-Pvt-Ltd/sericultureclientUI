@@ -36,7 +36,7 @@ function HelpdeskDashboard() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "username",
+    searchBy: "hdModuleName",
   });
 
   const handleInputs = (e) => {
@@ -48,11 +48,11 @@ function HelpdeskDashboard() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "username") {
-      joinColumn = "userMaster.username";
-    }
     if (data.searchBy === "hdModuleName") {
       joinColumn = "hdModuleMaster.hdModuleName";
+    }
+    if (data.searchBy === "username") {
+      joinColumn = "userMaster.username";
     }
     if (data.searchBy === "hdFeatureName") {
       joinColumn = "hdModuleMaster.hdFeatureName";
@@ -401,7 +401,7 @@ function HelpdeskDashboard() {
             <Card>
               <Row className="m-2">
                 <Col>
-                  <Form.Group as={Row} className="form-group" id="fid">
+                  <Form.Group as={Row} className="form-group" id="hdTicketId">
                     <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
@@ -412,8 +412,8 @@ function HelpdeskDashboard() {
                       value={data.searchBy}
                       onChange={handleInputs}
                     >
-                      <option value="username">User name</option>
                       <option value="hdModuleName">Module</option>
+                      <option value="username">User name</option>
                       <option value="hdFeatureName">Feature</option>
                       <option value="hdBoardCategoryName">Board Category</option>
                     </Form.Select>
@@ -422,7 +422,7 @@ function HelpdeskDashboard() {
 
                     <Col sm={3}>
                       <Form.Control
-                        id="fruitsId"
+                        id="hdTicketId"
                         name="text"
                         value={data.text}
                         onChange={handleInputs}
