@@ -106,7 +106,7 @@ function HelpdeskDashboard() {
   const getTicketDataList = () => {
     // setLoading(true);
     api
-      .get(baseURL2 + `hdTicket/list-with-join`)
+      .get(baseURL2 + `hdTicket/list-with-join`,_params)
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
         setTotalRows(response.data.content.totalItems);
@@ -120,7 +120,7 @@ function HelpdeskDashboard() {
 
   useEffect(() => {
     getTicketDataList();
-  }, []);
+  }, [page]);
   // console.log(hdTicketData);
 
   // let sessionsDevice = {
