@@ -450,6 +450,7 @@ const AuthLoginPage = () => {
                                   onChange={setOtp}
                                   numInputs={6}
                                   renderSeparator={<span> </span>}
+                                  autoFocus
                                   renderInput={(props, i) => (
                                     <input {...props} autoFocus={i === 0} />
                                   )}
