@@ -34,6 +34,11 @@ function UserDashboard() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const styles = {
+    backgroundColor: "#cdefff",
+    borderRadius: "2%",
+  };
+
   const [data, setData] = useState({
     text: "",
     searchBy: "username",
@@ -48,11 +53,17 @@ function UserDashboard() {
   // Search
   const search = (e) => {
     let joinColumn;
+    if (data.searchBy === "hdModuleName") {
+      joinColumn = "hdModuleMaster.hdModuleName";
+    }
     if (data.searchBy === "username") {
       joinColumn = "userMaster.username";
     }
-    if (data.searchBy === "hdModuleName") {
-      joinColumn = "hdModuleMaster.hdModuleName";
+    if (data.searchBy === "hdFeatureName") {
+      joinColumn = "hdModuleMaster.hdFeatureName";
+    }
+    if (data.searchBy === "hdBoardCategoryName") {
+      joinColumn = "hdBoardCategoryMaster.hdBoardCategoryName";
     }
     // console.log(joinColumn);
     api
@@ -85,17 +96,16 @@ function UserDashboard() {
     userMasterId: localStorage.getItem("userMasterId"),
   });
 
-  const [ticketData,setTicketData] = useState({})
+  const [ticketData, setTicketData] = useState({});
 
   const getUserTicket = (e) => {
     // setLoading(true);
     api
-      .get(
-        baseURL2 +
-          `hdTicket/get-ticket-counts-by-user-master-id?userMasterId=${e}`
-      )
+      .get(baseURL2 + `hdTicket/get-ticket-counts-by-user-master-id`, {
+        params: { userMasterId: e },
+      })
       .then((response) => {
-        setTicketData(response.data)
+        setTicketData(response.data);
         // setListData(response.data.content.hdTicket);
         // setTotalRows(response.data.content.totalItems);
         // setLoading(false);
@@ -111,6 +121,30 @@ function UserDashboard() {
       getUserTicket(hdUserData.userMasterId);
     }
   }, [hdUserData.userMasterId]);
+
+  // get list of ticket
+  const [hdTicketDataList, setHdTicketDataList] = useState([]);
+
+  const getTicketDataList = () => {
+    // setLoading(true);
+    api
+      .post(baseURL2 + `hdTicket/get-by-user-master-id`, {
+        userMasterId: localStorage.getItem("userMasterId"),
+      })
+      .then((response) => {
+        setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        // setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getTicketDataList();
+  }, [page]);
 
   // let sessionsDevice = {
   //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
@@ -154,85 +188,85 @@ function UserDashboard() {
   const HelpdeskDataColumns = [
     {
       name: "Ticket No.",
-      selector: (row) => row.stateName,
-      cell: (row) => <span>{row.stateName}</span>,
+      selector: (row) => row.hdTicketId,
+      cell: (row) => <span>{row.hdTicketId}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "User Profile",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Query",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
+      selector: (row) => row.query,
+      cell: (row) => <span>{row.query}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Query Details",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
+      selector: (row) => row.queryDetails,
+      cell: (row) => <span>{row.queryDetails}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Category",
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
+      selector: (row) => row.hdCategoryName,
+      cell: (row) => <span>{row.hdCategoryName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "User Affected",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdUsersAffected,
+      cell: (row) => <span>{row.hdUsersAffected}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Module",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdModuleName,
+      cell: (row) => <span>{row.hdModuleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Feature",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdFeatureName,
+      cell: (row) => <span>{row.hdFeatureName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Status",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdStatusName,
+      cell: (row) => <span>{row.hdStatusName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Severity",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdSeverityId,
+      cell: (row) => <span>{row.hdSeverityId}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Assigned To",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.assignedTo,
+      cell: (row) => <span>{row.assignedTo}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Attachments",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdAttachFiles,
+      cell: (row) => <span>{row.hdAttachFiles}</span>,
       sortable: true,
       hide: "md",
     },
@@ -273,7 +307,7 @@ function UserDashboard() {
       <Row className="g-gs">
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -300,7 +334,7 @@ function UserDashboard() {
 
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -308,7 +342,10 @@ function UserDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary"> {ticketData.openTickets}</div>
+                    <div className="amount h2 fw-bold text-primary">
+                      {" "}
+                      {ticketData.openTickets}
+                    </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -325,7 +362,7 @@ function UserDashboard() {
 
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -333,7 +370,9 @@ function UserDashboard() {
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
-                    <div className="amount h2 fw-bold text-primary ">{ticketData.closedTickets}</div>
+                    <div className="amount h2 fw-bold text-primary ">
+                      {ticketData.closedTickets}
+                    </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
                   <Button href="#" size="sm" variant="primary">
@@ -374,29 +413,30 @@ function UserDashboard() {
             <Card>
               <Row className="m-2">
                 <Col>
-                  <Form.Group as={Row} className="form-group" id="fid">
-                    {/* <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      <option value="village">Village</option>
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
-                    </Form.Select>
-                  </div>
-                </Col> */}
+                  <Form.Group as={Row} className="form-group" id="hdTicketId">
+                    <Form.Label column sm={1}>
+                      Search By
+                    </Form.Label>
+                    <Col sm={3}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="searchBy"
+                          value={data.searchBy}
+                          onChange={handleInputs}
+                        >
+                          <option value="hdModuleName">Module</option>
+                          <option value="username">User name</option>
+                          <option value="hdFeatureName">Feature</option>
+                          <option value="hdBoardCategoryName">
+                            Board Category
+                          </option>
+                        </Form.Select>
+                      </div>
+                    </Col>
 
                     <Col sm={3}>
                       <Form.Control
-                        id="fruitsId"
+                        id="hdTicketId"
                         name="text"
                         value={data.text}
                         onChange={handleInputs}
@@ -415,7 +455,7 @@ function UserDashboard() {
               <DataTable
                 tableClassName="data-table-head-light table-responsive"
                 columns={HelpdeskDataColumns}
-                data={listData}
+                data={hdTicketDataList}
                 highlightOnHover
                 pagination
                 paginationServer

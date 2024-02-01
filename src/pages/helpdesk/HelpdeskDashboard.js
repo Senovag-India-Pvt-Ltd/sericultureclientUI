@@ -45,6 +45,11 @@ function HelpdeskDashboard() {
     setData({ ...data, [name]: value });
   };
 
+  const styles = {
+    backgroundColor: "#cdefff",
+    borderRadius: "2%",
+  };
+
   // Search
   const search = (e) => {
     let joinColumn;
@@ -112,7 +117,7 @@ function HelpdeskDashboard() {
   const getTicketDataList = () => {
     // setLoading(true);
     api
-      .get(baseURL2 + `hdTicket/list-with-join`,_params)
+      .get(baseURL2 + `hdTicket/list-with-join`, _params)
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
         setTotalRows(response.data.content.totalItems);
@@ -289,7 +294,7 @@ function HelpdeskDashboard() {
       <Row className="g-gs">
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -316,7 +321,7 @@ function HelpdeskDashboard() {
 
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -343,7 +348,7 @@ function HelpdeskDashboard() {
 
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -370,7 +375,7 @@ function HelpdeskDashboard() {
 
         <Col xxl="3">
           <Card className="h-100">
-            <Card.Body>
+            <Card.Body style={{ ...styles }}>
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
@@ -403,22 +408,24 @@ function HelpdeskDashboard() {
                 <Col>
                   <Form.Group as={Row} className="form-group" id="hdTicketId">
                     <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      <option value="hdModuleName">Module</option>
-                      <option value="username">User name</option>
-                      <option value="hdFeatureName">Feature</option>
-                      <option value="hdBoardCategoryName">Board Category</option>
-                    </Form.Select>
-                  </div>
-                </Col>
+                      Search By
+                    </Form.Label>
+                    <Col sm={3}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="searchBy"
+                          value={data.searchBy}
+                          onChange={handleInputs}
+                        >
+                          <option value="hdModuleName">Module</option>
+                          <option value="username">User name</option>
+                          <option value="hdFeatureName">Feature</option>
+                          <option value="hdBoardCategoryName">
+                            Board Category
+                          </option>
+                        </Form.Select>
+                      </div>
+                    </Col>
 
                     <Col sm={3}>
                       <Form.Control
