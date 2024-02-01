@@ -54,6 +54,12 @@ function HelpdeskDashboard() {
     if (data.searchBy === "hdModuleName") {
       joinColumn = "hdModuleMaster.hdModuleName";
     }
+    if (data.searchBy === "hdFeatureName") {
+      joinColumn = "hdModuleMaster.hdFeatureName";
+    }
+    if (data.searchBy === "hdBoardCategoryName") {
+      joinColumn = "hdBoardCategoryMaster.hdBoardCategoryName";
+    }
     // console.log(joinColumn);
     api
       .post(
@@ -396,7 +402,7 @@ function HelpdeskDashboard() {
               <Row className="m-2">
                 <Col>
                   <Form.Group as={Row} className="form-group" id="fid">
-                    {/* <Form.Label column sm={1}>
+                    <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
                 <Col sm={3}>
@@ -406,14 +412,13 @@ function HelpdeskDashboard() {
                       value={data.searchBy}
                       onChange={handleInputs}
                     >
-                      <option value="village">Village</option>
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="username">User name</option>
+                      <option value="hdModuleName">Module</option>
+                      <option value="hdFeatureName">Feature</option>
+                      <option value="hdBoardCategoryName">Board Category</option>
                     </Form.Select>
                   </div>
-                </Col> */}
+                </Col>
 
                     <Col sm={3}>
                       <Form.Control
