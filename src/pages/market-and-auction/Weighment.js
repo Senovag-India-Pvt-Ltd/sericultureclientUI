@@ -236,7 +236,7 @@ function Weighment() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        `https://api.senovagseri.com/reports/marketreport/gettripletpdf`,
+        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),

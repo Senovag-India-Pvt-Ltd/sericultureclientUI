@@ -474,8 +474,8 @@ function BiddingSlip() {
       newDate.getDate().toString().padStart(2, "0");
 
     try {
-      const response = await axios.post(
-        `https://api.senovagseri.com/reports/marketreport/getfarmercopy`,
+      const response = await api.post(
+        `https://api.senovagseri.com/reports-uat/marketreport/getfarmercopy-kannada`,
         {
           marketId: data.marketId,
           godownId: data.godownId,
@@ -563,15 +563,15 @@ function BiddingSlip() {
     let small;
     let big;
     if (bigList.length) {
-      big = ` Big ${bigList.join(",")}`
-    }else{
-      big = ''
+      big = ` Big ${bigList.join(",")}`;
+    } else {
+      big = "";
     }
 
     if (smallList.length) {
-      small = ` Small ${smallList.join(",")}`
-    }else{
-      small = ''
+      small = ` Small ${smallList.join(",")}`;
+    } else {
+      small = "";
     }
 
     debugger;

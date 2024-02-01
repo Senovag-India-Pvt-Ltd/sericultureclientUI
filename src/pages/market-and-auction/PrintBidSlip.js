@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -76,9 +76,9 @@ function PrintBidSlip() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
+      api
         .post(
-          `https://api.senovagseri.com/reports/gettripletpdf`,
+          `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
           {
             marketId: marketId,
             godownId: godownId,
