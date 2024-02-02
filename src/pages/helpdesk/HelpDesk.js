@@ -433,7 +433,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
-                        Board Category<span className="text-danger">*</span>
+                        Broad Category<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -447,7 +447,7 @@ function HelpDesk() {
                             data.hdBoardCategoryId === "0"
                           }
                         >
-                          <option value="">Select Board Category</option>
+                          <option value="">Select Broad Category</option>
                           {hdBoardCategoryListData.map((list) => (
                             <option
                               key={list.hdBoardCategoryId}
@@ -458,7 +458,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Board Category Name is required
+                        Broad Category Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
