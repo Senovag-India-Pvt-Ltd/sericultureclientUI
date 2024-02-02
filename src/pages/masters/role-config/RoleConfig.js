@@ -29,64 +29,64 @@ function RoleConfig() {
   // console.log(data.values);
   const [arr, setArr] = useState([]);
 
-    // var arr = [
-    //   {
-    //     id: 1,
-    //     root: 1,
-    //     parentid: 0,
-    //     name: "seedAndDLF",
-    //     route: "/home/Chwaki",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 2,
-    //     root: 1,
-    //     parentid: 0,
-    //     name: "seedAndDLF 2",
-    //     route: "/home/Chwaki-2",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 3,
-    //     root: 1,
-    //     parentid: 0,
-    //     name: "seedAndDLF-3",
-    //     route: "/home/Chwaki-4",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 5,
-    //     root: 1,
-    //     parentid: 1,
-    //     name: "basicseedfromkunigal",
-    //     route: "/home/Chwaki/seed",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 6,
-    //     root: 1,
-    //     parentid: 5,
-    //     name: "maintence of mulbury farm",
-    //     route: "/maintenance-mulberry-farm",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 7,
-    //     root: 1,
-    //     parentid: 5,
-    //     name: "Register",
-    //     route: "/registration/farmer",
-    //     isPage: false,
-    //   },
-    //   {
-    //     id: 8,
-    //     root: 1,
-    //     parentid: 5,
-    //     name: "Farmer Registration",
-    //     route: "stake-holder-registration",
-    //     isPage: false,
-    //   },
-    // ];
+  // var arr = [
+  //   {
+  //     id: 1,
+  //     root: 1,
+  //     parentid: 0,
+  //     name: "seedAndDLF",
+  //     route: "/home/Chwaki",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     root: 1,
+  //     parentid: 0,
+  //     name: "seedAndDLF 2",
+  //     route: "/home/Chwaki-2",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     root: 1,
+  //     parentid: 0,
+  //     name: "seedAndDLF-3",
+  //     route: "/home/Chwaki-4",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 5,
+  //     root: 1,
+  //     parentid: 1,
+  //     name: "basicseedfromkunigal",
+  //     route: "/home/Chwaki/seed",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 6,
+  //     root: 1,
+  //     parentid: 5,
+  //     name: "maintence of mulbury farm",
+  //     route: "/maintenance-mulberry-farm",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 7,
+  //     root: 1,
+  //     parentid: 5,
+  //     name: "Register",
+  //     route: "/registration/farmer",
+  //     isPage: false,
+  //   },
+  //   {
+  //     id: 8,
+  //     root: 1,
+  //     parentid: 5,
+  //     name: "Farmer Registration",
+  //     route: "stake-holder-registration",
+  //     isPage: false,
+  //   },
+  // ];
 
   // var arr = [
   //     {'id':1 ,'parentid' : 0},
@@ -197,7 +197,11 @@ function RoleConfig() {
       .post(baseURL + `rp-role-association/save-multiple`, data)
       .then((response) => {
         // saveSuccess();
-        alert("saved");
+        Swal.fire({
+          icon: "success",
+          title: "Saved successfully",
+        })
+        // alert("saved");
         setData({
           roleId: "",
           rpRolePermissionId: 4,
@@ -232,12 +236,15 @@ function RoleConfig() {
         // const man =res.map((item)=>(
         //   item.value
         // ))
-        if(res){
-          setData((prev) => ({ ...prev, values: res.map((item) => item.value) }));
-        }else{
-          setData(prev=>({...prev,values:[]}));
+        if (res) {
+          setData((prev) => ({
+            ...prev,
+            values: res.map((item) => item.value),
+          }));
+        } else {
+          setData((prev) => ({ ...prev, values: [] }));
         }
-        
+
         // console.log(man);
         // setData()
         // setData({
@@ -392,10 +399,10 @@ function RoleConfig() {
                             const onCheckboxSelect = (e, selectedId) => {
                               handleSelect(e);
                               e.stopPropagation();
-                            console.log(element.parent);  
+                              console.log(element.parent);
 
                               //   const isSelected =
-                              //     data.values.includes(selectedId);  
+                              //     data.values.includes(selectedId);
                               let updatedValues;
                               // console.log(isSelected);
 
@@ -404,11 +411,11 @@ function RoleConfig() {
                                   (id) => id !== selectedId
                                 );
                                 // updatedValues = [...data.values, selectedId];
-                                console.log("hello",updatedValues);
+                                console.log("hello", updatedValues);
                               }
                               // else if(element.parent){
                               //   updatedValues = [...data.values, selectedId,element.parent];
-                              // } 
+                              // }
                               else {
                                 updatedValues = [...data.values, selectedId];
                               }
@@ -437,9 +444,7 @@ function RoleConfig() {
                                       : "none"
                                   }
                                 />
-                                <span className="name">
-                                  {element.name}
-                                </span>
+                                <span className="name">{element.name}</span>
                               </div>
                             );
                           }}

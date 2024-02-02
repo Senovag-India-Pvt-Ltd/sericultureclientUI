@@ -55,7 +55,7 @@ function UpdateLotWeight() {
         // debugger
         console.log(res.length);
         if (response.data.errorMessages.length) {
-          alert(response.data.errorMessages);
+          console.log(response.data.errorMessages);
           setDisable(true);
         } else {
           setDisable(false);

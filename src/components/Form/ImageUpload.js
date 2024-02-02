@@ -19,7 +19,7 @@ function ImageUpload({src, ...props}) {
                     var ext = this.value.substring(lastDot + 1);
                     var extTxt = img.value = ext;
                     if (!allowedExtensions.includes(fileExtension)) {
-                        alert(extTxt + " file type not allowed, Please upload jpg, JPG, JPEG, or png file");
+                        console.error(extTxt + " file type not allowed, Please upload jpg, JPG, JPEG, or png file");
                         img.src = "/images/avatar/avatar-placeholder.jpg";
                     }
                 }

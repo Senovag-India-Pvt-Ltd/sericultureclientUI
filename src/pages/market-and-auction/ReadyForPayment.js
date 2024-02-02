@@ -65,7 +65,7 @@ function ReadyForPayment() {
 
   const handleAddToBank = (marketId, date, lot) => {
     // alert("Added To Bank");
-    debugger;
+    // debugger;
     api
       .post(baseURLMarket + `auction/fp/addSelectedLotlistToReadyForPayment`, {
         marketId: marketId,

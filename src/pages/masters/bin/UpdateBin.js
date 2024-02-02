@@ -248,7 +248,7 @@ function UpdateBin() {
   };
 
   const handleInputs = (e) => {
-    alert("hello");
+    console.log("hello");
   };
 
   const [marketListData, setMarketListData] = useState([]);

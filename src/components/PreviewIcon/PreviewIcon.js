@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import he from 'he';
 
 import Icon from "../Icon/Icon";
 
@@ -13,7 +14,7 @@ function PreviewIconList({...props}) {
 }
 
 function PreviewIcon({title, icon, ...props}) {
-  const [copyText] = useState(`<Icon name="${icon}"></Icon>`);
+  const [copyText] = useState(`<Icon name="${he.encode(icon)}"></Icon>`);
   const [copyState, setCopyState] = useState(false);
 
   const onCopyClick = () => {
@@ -33,7 +34,8 @@ function PreviewIcon({title, icon, ...props}) {
               </button>
             </CopyToClipboard>
             <div className="preview-icon-wrap">
-                <Icon name={icon}></Icon>
+                {/* <Icon name={icon}></Icon> */}
+                <div dangerouslySetInnerHTML={{ __html: copyText }} />
             </div>
             <span className="preview-icon-name">{title}</span>
         </Card>

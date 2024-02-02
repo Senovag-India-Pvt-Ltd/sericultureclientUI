@@ -277,7 +277,7 @@ function AppCalendar() {
         .fc-list-event-title {
           position:relative;
         }
-    `
+    `;
     
     function handleEventClick(eventInfo){
       let title = eventInfo.event._def.title;

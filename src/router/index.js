@@ -44,16 +44,6 @@ import UserEdit from "../pages/user-manage/UserEdit";
 import Profile from "../pages/admin/Profile";
 import ProfileSettings from "../pages/admin/ProfileSettings";
 
-// layout
-import Breakpoints from "../pages/layout/Breakpoints";
-import Containers from "../pages/layout/Containers";
-import Gutters from "../pages/layout/Gutters";
-
-// other pages
-import DataTablePreview from "../pages/DataTablePreview";
-import ChartsPreview from "../pages/ChartsPreview";
-import Sweetalert from "../pages/Sweetalert";
-
 // auths pages
 import AuthRegister from "../pages/auths/AuthRegister";
 import AuthLogin from "../pages/auths/AuthLogin";
@@ -556,12 +546,6 @@ function Router() {
           <Route path="profile-settings" element={<ProfileSettings />} />
         </Route>
 
-        <Route path="layout">
-          <Route path="breakpoints" element={<Breakpoints />} />
-          <Route path="containers" element={<Containers />} />
-          <Route path="gutters" element={<Gutters />} />
-        </Route>
-
         <Route path="masters">
           <Route path="user-group" element={<UserGroupListPage />} />
           <Route path="user-group-view/:id" element={<UserGroupViewPage />} />
@@ -611,10 +595,6 @@ function Router() {
           <Route path="test-post" element={<PostListPage />} />
           <Route path="test-data-table" element={<TestDataTablePage />} />
         </Route>
-
-        <Route path="data-table" element={<DataTablePreview />} />
-        <Route path="charts" element={<ChartsPreview />} />
-        <Route path="sweetalert" element={<Sweetalert />} />
 
         <Route path="auths">
           <Route path="auth-register" element={<AuthRegister />} />
