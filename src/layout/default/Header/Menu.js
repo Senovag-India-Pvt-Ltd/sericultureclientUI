@@ -1829,14 +1829,6 @@ function Menu() {
                           />
                         </MenuItem>
                       ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Status ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Help Desk Status"
-                            to="/hd-status"
-                          />
-                        </MenuItem>
-                      ) : null}
                     </MenuSub>
                   </MenuItem>
                 ) : null}
