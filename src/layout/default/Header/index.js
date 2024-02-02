@@ -138,7 +138,7 @@ function Header() {
     // eslint-disable-next-line
     "navbar-mobile":
       layout.headerTransition ||
-      eval(`layout.breaks.${layout.headerCollapse}`) > window.innerWidth,
+      (layout.breaks[layout.headerCollapse] > window.innerWidth),
   });
 
   // offcanvas

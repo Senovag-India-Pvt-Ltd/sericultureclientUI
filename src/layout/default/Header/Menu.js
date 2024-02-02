@@ -678,7 +678,7 @@ function Menu() {
       ? layout.headerCollapse
       : layout.breaks.lg;
     // eslint-disable-next-line
-    if (window.innerWidth > eval(`layout.breaks.${headerCollapse}`)) {
+    if (window.innerWidth > layout.breaks[headerCollapse]) {
       let placement =
         getParents(elm, `.${menu.classes.main}`, menu.classes.sub).length > 0
           ? "right-start"

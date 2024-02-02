@@ -53,9 +53,9 @@ function LayoutProvider( {children}) {
   const observer = new ResizeObserver(entries =>{
     let width = entries[0].contentRect.width;
     // eslint-disable-next-line
-    let headerBreak = eval(`layout.breaks.${layout.headerCollapse}`);
+    let headerBreak = layout.breaks[layout.headerCollapse];
     // eslint-disable-next-line
-    let sidebarBreak = eval(`layout.breaks.${layout.sidebarCollapse}`);
+    let sidebarBreak = layout.breaks[layout.sidebarCollapse];
     if(width > headerBreak && (layout.headerActive === true || layout.headerTransition === true)){
         const newLayout = {...layout, headerTransition: false, headerActive: false}
         setLayout(newLayout);
