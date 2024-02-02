@@ -78,7 +78,7 @@ function HelpdeskDashboard() {
         }
       )
       .then((response) => {
-        setListData(response.data.content.hdTicket);
+        setHdTicketDataList(response.data.content.hdTicket);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -239,22 +239,22 @@ function HelpdeskDashboard() {
     },
     {
       name: "Severity",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdSeverityId,
+      cell: (row) => <span>{row.hdSeverityId}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Assigned To",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.assignedTo,
+      cell: (row) => <span>{row.assignedTo}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Attachments",
-      selector: (row) => row.villageNameInKannada,
-      cell: (row) => <span>{row.villageNameInKannada}</span>,
+      selector: (row) => row.hdAttachFiles,
+      cell: (row) => <span>{row.hdAttachFiles}</span>,
       sortable: true,
       hide: "md",
     },
@@ -307,9 +307,9 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -334,9 +334,9 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -361,9 +361,9 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -379,7 +379,7 @@ function HelpdeskDashboard() {
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <div className="card-title">
-                    <h4 className="title mb-1">Unsigned Tickets</h4>
+                    <h4 className="title mb-1">Unassigned Tickets</h4>
                     {/* <p className="small">Best seller of the month</p> */}
                   </div>
                   <div className="my-3">
@@ -388,9 +388,9 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
