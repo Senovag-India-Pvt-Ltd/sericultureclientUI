@@ -573,8 +573,6 @@ function BiddingSlip() {
     } else {
       small = "";
     }
-
-    debugger;
     Swal.fire({
       icon: "success",
       title: "Bidding Slip has been generated",

@@ -35,7 +35,7 @@ const thumbs = files.map(file => (
         onDrop={acceptedFiles => handleDropChange(acceptedFiles, setFiles)} 
         maxFiles={maxFiles}
         maxSize={maxSize}
-        onDropRejected={() => alert(errorText)}
+        onDropRejected={() => console.error(errorText)}
       >
           {({getRootProps, getInputProps}) => (
               <div {...getRootProps()} className="dropzone dz-clickable">

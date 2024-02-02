@@ -3,6 +3,7 @@ import toMin from './toMin'
 import toTwelve from './toTwelve'
 import toTime from './toTime'
 import attr from './attr'
+import escapeHtml from 'escape-html';
 
 // time piker
 export default function timePicker(selector, opt) {
@@ -36,8 +37,8 @@ export default function timePicker(selector, opt) {
                 return toTime(currentTime)
             }
         };
-        items.push(`<li><button class="dropdown-item ${options.class.dropdownItem}" data-picker-text="${timeString()}" type="button">
-            ${timeString()}
+        items.push(`<li><button class="dropdown-item ${options.class.dropdownItem}" data-picker-text="${escapeHtml(timeString())}" type="button">
+            ${escapeHtml(timeString())}
         </button></li>`
         )
         startTime = currentTime + timeInterval;

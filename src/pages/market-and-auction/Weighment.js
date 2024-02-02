@@ -8,6 +8,9 @@ import { Icon } from "../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // import { SerialPort } from "serialport";
 import api from "../../../src/services/auth/api";
 import { useSpeechSynthesis } from "react-speech-kit";
@@ -35,6 +38,19 @@ function Weighment() {
   const [canContinue, setCanContinue] = useState(false);
 
   const [weighTest, setWeighTest] = useState(false);
+
+  const notify = (what) =>{
+    if(what==="lot"){
+      toast.warn("Please Enter Lot No",{
+        position: "top-center"
+      });
+    }
+    if(what==="crate"){
+      toast.warn("Please Enter No of Crates",{
+        position: "top-center"
+      });
+    }
+  }
 
   const [data, setData] = useState({
     allottedLotId: "",
@@ -69,7 +85,7 @@ function Weighment() {
     if (data.allottedLotId) {
       getLotDetails(data.allottedLotId);
       if (value && parseInt(value) !== 0) {
-        debugger;
+        // debugger;
         getCrateDetails(value, data.allottedLotId);
       }
     }
@@ -81,7 +97,7 @@ function Weighment() {
       return { ...prev, allottedLotId: value };
     });
     if (value !== "") {
-      debugger;
+      // debugger;
       getLotDetails(value);
       if (data.noOfCrates && parseInt(data.noOfCrates) !== 0) {
         getCrateDetails(data.noOfCrates, value);
@@ -394,7 +410,7 @@ function Weighment() {
 
   const lastSubmitConfirm = async () => {
     // return window.confirm("Are you sure?");
-    debugger;
+    // debugger;
     try {
       // return Swal.fire({
       //   title: "Are you sure?",
@@ -414,7 +430,7 @@ function Weighment() {
       const isConfirmed = window.confirm(
         "Insufficient Balance,Do you want to continue with the Weighment?"
       );
-      debugger;
+      // debugger;
       if (isConfirmed) {
         onSubmitting();
       } else {
@@ -551,19 +567,19 @@ function Weighment() {
       let canContinue1 = false;
       const handleKeyDown = async (event) => {
         if (event.key === "Enter") {
-          debugger;
+          // debugger;
           // Handle the Enter key press here
           //{data.noOfCrates} - {counter}
           // If condition to continue with weighing
           if (data.allottedLotId == "" || data.noOfCrates <= 0) {
-            debugger;
+            // debugger;
             if (data.allottedLotId == "") {
-              alert("Please Enter Lot No");
+              notify("lot");
               setCanContinue(false);
               canContinue1 = false;
             }
             if (data.noOfCrates <= 0) {
-              alert("Please Enter No of Crates");
+              notify("crate");
               setCanContinue(false);
               canContinue1 = false;
             }
@@ -587,17 +603,18 @@ function Weighment() {
           ) {
             // debugger;
             if (parseInt(data.noOfCrates) === 0) {
-              alert("Please Enter No of Crates");
+              // alert("Please Enter No of Crates");
+              notify("crate");
               setCanContinue(false);
               canContinue1 = false;
             } else if (data.allottedLotId === "") {
-              alert("Please Enter Lot Number");
+              // alert("Please Enter Lot Number");
+              notify("lot");
               setCanContinue(false);
               canContinue1 = false;
             } else if (totalNetPrice > weigh.reelerCurrentBalance) {
               // console.log("Reeler don't have enough money");
               // getCrateDetails();
-              debugger;
               await lastSubmitConfirm();
             } else {
               console.log("hello Weight");
@@ -672,7 +689,7 @@ function Weighment() {
             // setTotalNetPrice(10);
 
             if (counter <= parseInt(data.noOfCrates) - 1) {
-              debugger;
+              // debugger;
               speak({ text: `Crate number ${counter + 1} is completed` });
               setCounter(counter + 1);
             }
@@ -920,6 +937,7 @@ function Weighment() {
                 <Card>
                   <Card.Body>
                     <Row className="g-3 ">
+                    <ToastContainer />
                       <Col lg="6" style={{ padding: "0px 0px 0px 8px" }}>
                         <table className="table small table-bordered weightmenttable marginbottom0">
                           <thead>

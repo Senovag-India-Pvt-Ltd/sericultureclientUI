@@ -170,7 +170,6 @@ function AcceptFarmerAuction() {
           }
         })
         .catch((err) => {
-          debugger;
           // setAcceptData({});
           acceptError();
         });

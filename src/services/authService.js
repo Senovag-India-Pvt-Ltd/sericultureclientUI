@@ -1,5 +1,7 @@
 // authService.js
 import axios from "axios";
+import Swal from "sweetalert2/src/sweetalert2.js";
+
 
 const API_URL = process.env.REACT_APP_API_BASE_URL_AUTH_LOGIN; // Replace with your server URL
 
@@ -36,7 +38,11 @@ const login = async (username, password) => {
       return true;
     } else {
       // Error
-      alert(response.data.message);
+      Swal.fire({
+        icon: "warning",
+        title: response.data.message,
+      })
+      // alert(response.data.message);
       return false;
     }
   } catch (error) {

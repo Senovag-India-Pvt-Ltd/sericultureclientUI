@@ -65,7 +65,12 @@ const AuthLoginPage = () => {
       if (isLoginSuccess) {
         navigate("/stake-holder-registration");
       } else {
-        alert("Login Failed");
+        // alert("Login Failed");
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Please Check Again!",
+        });
       }
     } catch (error) {
       console.error("Login failed:", error.message);
@@ -108,7 +113,6 @@ const AuthLoginPage = () => {
   };
 
   const handleResendOTP = () => {
-    debugger;
     setTimer(60);
     startTimer();
     resendOTP();

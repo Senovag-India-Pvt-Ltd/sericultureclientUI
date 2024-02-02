@@ -270,9 +270,6 @@ function Bin() {
     });
   };
 
-  const handleInputs = (e) => {
-    alert("hello");
-  };
 
   const [marketListData, setMarketListData] = useState([]);
   const [godownListData, setGodownListData] = useState([]);
