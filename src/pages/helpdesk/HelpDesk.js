@@ -281,7 +281,7 @@ function HelpDesk() {
   const handleAttachFileChange = (e) => {
     const file = e.target.files[0];
     setAttachFiles(file);
-    setData((prev) => ({ ...prev, trUploadPath: file.name }));
+    setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
     // setPhotoFile(file);
   };
 
