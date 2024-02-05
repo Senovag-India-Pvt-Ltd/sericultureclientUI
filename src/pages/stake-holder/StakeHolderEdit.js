@@ -635,7 +635,7 @@ function StakeHolderEdit() {
 
   const getFarmerTypeList = () => {
     api
-      .get(baseURL2 + `farmer-type/list`)
+      .get(baseURL2 + `farmer-type/get-all`)
       .then((response) => {
         setFarmerTypeListData(response.data.content.farmerType);
       })
