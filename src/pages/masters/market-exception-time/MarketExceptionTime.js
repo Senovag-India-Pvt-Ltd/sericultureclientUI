@@ -236,7 +236,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             1st Round Bid Start Time
@@ -257,7 +257,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             1st Round Bid End Time
@@ -278,92 +278,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidstart">
-                            2nd Round Bid Start Time
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidstart"
-                              name="auction2StartTime"
-                              value={data.auction2StartTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 2st Round Bid Start Time"
-                              // required
-                            />
-                            {/* <Form.Control.Feedback type="invalid">
-                              2nd Round Bid Start Time is required
-                            </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidend">
-                            2nd Round Bid End Time
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidend"
-                              name="auction2EndTime"
-                              value={data.auction2EndTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 2st Round Bid End Time"
-                              // required
-                            />
-                            {/* <Form.Control.Feedback type="invalid">
-                              2nd Round Bid End Time is required
-                            </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidstart">
-                            3rd Round Bid Start Time
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidstart"
-                              name="auction3StartTime"
-                              value={data.auction3StartTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 3rd Round Bid Start Time"
-                              // required
-                            />
-                            {/* <Form.Control.Feedback type="invalid">
-                              3rd Round Bid Start Time is required
-                            </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidend">
-                            3rd Round Bid End Time
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidend"
-                              name="auction3EndTime"
-                              value={data.auction3EndTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 3rd Round Bid End Time"
-                              // required
-                            />
-                            {/* <Form.Control.Feedback type="invalid">
-                              3rd Round Bid End Time is required
-                            </Form.Control.Feedback> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             1st Round Bid Acceptance Start Time
@@ -384,7 +299,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             1st Round Bid Acceptance End Time
@@ -406,7 +321,50 @@ function MarketExceptionTime() {
                         </Form.Group>
                       </Col>
 
-                      <Col lg="6">
+                      <Col lg="3">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidstart">
+                            2nd Round Bid Start Time
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidstart"
+                              name="auction2StartTime"
+                              value={data.auction2StartTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 2st Round Bid Start Time"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                              2nd Round Bid Start Time is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="3">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidend">
+                            2nd Round Bid End Time
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidend"
+                              name="auction2EndTime"
+                              value={data.auction2EndTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 2st Round Bid End Time"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                              2nd Round Bid End Time is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             2nd Round Bid Acceptance Start Time
@@ -427,7 +385,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             2nd Round Bid Acceptance End Time
@@ -448,8 +406,50 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
+                      <Col lg="3">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidstart">
+                            3rd Round Bid Start Time
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidstart"
+                              name="auction3StartTime"
+                              value={data.auction3StartTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 3rd Round Bid Start Time"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                              3rd Round Bid Start Time is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="3">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidend">
+                            3rd Round Bid End Time
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidend"
+                              name="auction3EndTime"
+                              value={data.auction3EndTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 3rd Round Bid End Time"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                              3rd Round Bid End Time is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             3rd Round Bid Acceptance Start Time
@@ -475,7 +475,7 @@ function MarketExceptionTime() {
                           </div>
                         </Form.Group>
                       </Col>
-                      <Col lg="6">
+                      <Col lg="3">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
                             3rd Round Bid Acceptance End Time
