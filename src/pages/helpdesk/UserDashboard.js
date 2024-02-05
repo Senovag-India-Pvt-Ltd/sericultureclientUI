@@ -128,8 +128,8 @@ function UserDashboard() {
   const getTicketDataList = () => {
     // setLoading(true);
     api
-      .post(baseURL2 + `hdTicket/get-by-user-master-id`, {
-        userMasterId: localStorage.getItem("userMasterId"),
+      .post(baseURL2 + `hdTicket/get-by-on-behalf-of`, {
+        onBehalfOf: localStorage.getItem("userMasterId"),
       })
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);

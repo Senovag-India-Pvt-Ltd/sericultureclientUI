@@ -133,16 +133,16 @@ function ReadyForPayment() {
       .then((response) => {
         // debugger;
         console.log(response);
-        if (response.data.content.body.content) {
+        if (response.data.content) {
           setTotalAmount(
-            response.data.content.body.content.totalAmountToFarmer
+            response.data.content.farmerReadyForPaymentResponse.totalAmountToFarmer
           );
         } else {
           setWeighmentCompletedList([]);
         }
-        if (response.data.content.body.content.farmerPaymentInfoResponseList) {
+        if (response.data.content.farmerReadyForPaymentResponse.farmerPaymentInfoResponseList) {
           setWeighmentCompletedList(
-            response.data.content.body.content.farmerPaymentInfoResponseList
+            response.data.content.farmerReadyForPaymentResponse.farmerPaymentInfoResponseList
           );
           // if (!res.ifscCode) {
           //   setShowBankError(true);

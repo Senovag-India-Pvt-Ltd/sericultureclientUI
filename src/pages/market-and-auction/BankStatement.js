@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 
 import DataTable, { createTheme } from "react-data-table-component";
+import Swal from "sweetalert2/src/sweetalert2.js";
 // import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -39,33 +40,13 @@ function BankStatement() {
   const [data, setData] = useState({
     paymentDate: "",
     fileName: "",
-    godownId: localStorage.getItem("godownId")
+    godownId: localStorage.getItem("godownId"),
   });
 
-  // const [market, setMarket] = useState(localStorage.getItem("marketId"));
+  const [fileNameError, setFileNameError] = useState("");
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  // const [godownListData, setGodownListData] = useState([]);
-  // const getGodownList = (_id) => {
-  //   api
-  //     .get(baseURL + `godown/get-by-market-master-id/${_id}`)
-  //     .then((response) => {
-  //       setGodownListData(response.data.content.godown);
-  //       // setTotalRows(response.data.content.totalItems);
-  //       if (response.data.content.error) {
-  //         setGodownListData([]);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setGodownListData([]);
-  //       // alert(err.response.data.errorMessages[0].message[0].message);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (market) {
-  //     getGodownList(market);
-  //   }
-  // }, [market]);
+  
 
   const parameters = `marketId=${localStorage.getItem(
     "marketId"
@@ -315,50 +296,143 @@ function BankStatement() {
   const handleInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    setData({ ...data, [name]: value });
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    if (isFormSubmitted && name === 'fileName') {
+      setFileNameError(value.trim() === "" ? "File name cannot be empty" : "");
+    }
   };
 
+  const handleButtonClick = (actionFunction) => {
+    if (!data.fileName.trim()) {
+      setFileNameError("File Name is required");
+      setIsFormSubmitted(true); // Still set isFormSubmitted to true for invalid fields
+      return;
+    }
+
+    setIsFormSubmitted(true);
+
+    if (fileNameError === '') {
+      actionFunction();
+    } else {
+      console.error('Validation error:', fileNameError);
+    }
+  };
+
+  // Generate CSV file
   const generateCsv = (e) => {
-    const { paymentDate, fileName } = data;
-    const parameters = `marketId=${localStorage.getItem(
-      "marketId"
-    )}&auctionDate=${paymentDate}&fileName=${fileName}`;
-    axios
-      .get(baseURLMarket + `auction/fp/generateCSVFile?${parameters}`, {
-        headers: {
-          accept: "*/*",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((response) => {
-        // console.log(response.blob());
-      })
-      .catch((err) => {
-        // setData({});
-      });
+    if (fileNameError === "") {
+      const { paymentDate, fileName } = data;
+      const parameters = `marketId=${localStorage.getItem(
+        "marketId"
+      )}&auctionDate=${paymentDate}&fileName=${fileName}`;
+      api
+        .get(baseURLMarket + `auction/fp/generateCSVFile?${parameters}`, {
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/csv" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `${fileName}.csv`;
+          document.body.appendChild(link);
+          link.click();
+
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(link.href);
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "warning",
+            title: "No record found!!!",
+          });
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
   };
 
   const requestJobToProcessPayment = (e) => {
-    const { paymentDate, fileName } = data;
-    api
-      .post(baseURLMarket + `auction/fp/requestJobToProcessPayment`, {
-        marketId: localStorage.getItem("marketId"),
-        godownId: data.godownId,
-        paymentDate: paymentDate,
-        fileName: fileName,
-      })
-      .then((response) => {
-        console.log(response);
-        // if (response.data.content) {
-        //   setBankStatementList(
-        //     response.data.content.farmerPaymentInfoResponseList
-        //   );
-        // }
-      })
-      .catch((err) => {
-        // setBankStatementList([]);
-      });
+    if (fileNameError === "") {
+      const { paymentDate, fileName } = data;
+      api
+        .post(baseURLMarket + `auction/fp/requestJobToProcessPayment`, {
+          marketId: localStorage.getItem("marketId"),
+          godownId: data.godownId,
+          paymentDate: paymentDate,
+          fileName: fileName,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.errorCode === 0) {
+            Swal.fire({
+              icon: "success",
+              title: "Request has been sent to Bank",
+            });
+          }
+          if (response.data.errorCode === -1) {
+            Swal.fire({
+              icon: "warning",
+              title: response.data.errorMessages[0],
+            });
+          }
+
+          // if (response.data.content) {
+          //   setBankStatementList(
+          //     response.data.content.farmerPaymentInfoResponseList
+          //   );
+          // }
+        })
+        .catch((err) => {
+          // setBankStatementList([]);
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
+  };
+
+  // Generate CSV after process for payment  file
+  const checkBankGeneratedStatement = (e) => {
+    if (fileNameError === "") {
+      const { fileName } = data;
+      const parameters = `marketId=${localStorage.getItem(
+        "marketId"
+      )}&fileName=${fileName}`;
+      api
+        .get(baseURLMarket + `auction/filedownloader/download?${parameters}`, {
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/csv" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `${fileName}.csv`;
+          document.body.appendChild(link);
+          link.click();
+
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(link.href);
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "warning",
+            title: "Either file name is incorrect or Wait for few minutes!!!",
+          });
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
   };
 
   const _header = {
@@ -556,17 +630,18 @@ function BankStatement() {
                       onChange={handleInputs}
                       type="text"
                       placeholder="Enter File Name"
+                      isInvalid={isFormSubmitted && !!fileNameError}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {fileNameError}
+                    </Form.Control.Feedback>
                   </div>
                 </Col>
                 <Col sm={2}>
                   <Button
                     type="button"
-                    href={
-                      baseURLMarket + `auction/fp/generateCSVFile?${parameters}`
-                    }
                     variant="primary"
-                    // onClick={generateCsv}
+                    onClick={() => handleButtonClick(generateCsv)}
                   >
                     Generate CSV File
                   </Button>
@@ -575,9 +650,19 @@ function BankStatement() {
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={requestJobToProcessPayment}
+                    onClick={() => handleButtonClick(requestJobToProcessPayment)}
                   >
                     Process For Payment
+                  </Button>
+                </Col>
+
+                <Col sm={2}>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={() => handleButtonClick(checkBankGeneratedStatement)}
+                  >
+                    Check Bank Generated File
                   </Button>
                 </Col>
                 {/* <Col sm={2}>

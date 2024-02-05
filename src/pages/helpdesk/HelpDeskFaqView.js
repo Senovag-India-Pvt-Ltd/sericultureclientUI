@@ -104,11 +104,11 @@ function HelpDeskFaqView() {
     });
   };
   return (
-    <Layout title="FAQ">
+    <Layout title="KEDB">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">FAQ</Block.Title>
+            <Block.Title tag="h2">KEDB</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">

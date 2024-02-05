@@ -1416,7 +1416,7 @@ function Menu() {
           ) : null}
           {showMenu.Helpdesk_Dashboard ? (
             <MenuItem>
-              <MenuItemLink text="Dashboard" to="/helpdesk-dashboard" />
+              <MenuItemLink text="Helpdesk Dashboard" to="/helpdesk-dashboard" />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_User_Dashboard ? (
@@ -1431,7 +1431,7 @@ function Menu() {
           ) : null}
           {showMenu.Helpdesk_FAQ ? (
             <MenuItem>
-              <MenuItemLink text="FAQ" to="/help-desk-faq-view" />
+              <MenuItemLink text="KEDB" to="/help-desk-faq-view" />
             </MenuItem>
           ) : null}
         </MenuSub>

@@ -169,7 +169,7 @@ function NewReelerLicense() {
     api
       .post(
         "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
-        { fruitsId: data.fruitsId },
+        { fruitsId: data.fruitsId }
         // {
         //   headers: _header,
         // }
@@ -190,11 +190,14 @@ function NewReelerLicense() {
             )
             .then((result) => {
               const dump = result.data.content.farmerResponse;
-              let dump1 ="";
-              if(result.data.content.farmerAddressList && result.data.content.farmerAddressList.length){
+              let dump1 = "";
+              if (
+                result.data.content.farmerAddressList &&
+                result.data.content.farmerAddressList.length
+              ) {
                 dump1 = result.data.content.farmerAddressList[0];
               }
-  
+
               setData((prev) => ({
                 ...prev,
                 // ...result.data.content.farmerResponse,
@@ -229,8 +232,11 @@ function NewReelerLicense() {
             // console.log(result);
             // console.log("result",result);
             const dump = result.data.content.farmerResponse;
-            let dump1 ="";
-            if(result.data.content.farmerAddressList && result.data.content.farmerAddressList.length){
+            let dump1 = "";
+            if (
+              result.data.content.farmerAddressList &&
+              result.data.content.farmerAddressList.length
+            ) {
               dump1 = result.data.content.farmerAddressList[0];
             }
 
@@ -241,7 +247,7 @@ function NewReelerLicense() {
               fatherName: dump.fatherName,
               gender: dump.genderId,
               casteId: dump.casteId,
-              address: dump1?dump1.addressText:"",
+              address: dump1 ? dump1.addressText : "",
             }));
             // setFarmerAddressList((prev) => [
             //   ...prev,
@@ -263,7 +269,6 @@ function NewReelerLicense() {
     setData({ ...data, [name]: value });
   };
 
-
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -280,9 +285,8 @@ function NewReelerLicense() {
         .then((response) => {
           if (response.data.content.error) {
             const reelerError = response.data.content.error_description;
-              saveReelerError(reelerError);
-          }else{
-
+            saveReelerError(reelerError);
+          } else {
             if (vbAccountList.length > 0) {
               const reelerId = response.data.content.reelerId;
               vbAccountList.forEach((list) => {
@@ -295,10 +299,10 @@ function NewReelerLicense() {
                   .then((response) => {
                     if (response.data.content.error) {
                       const bankError = response.data.content.error_description;
-                        saveReelerError(bankError);
-                      }else{
-                    saveSuccess();
-                      }
+                      saveReelerError(bankError);
+                    } else {
+                      saveSuccess();
+                    }
                   })
                   .catch((err) => {
                     setVbAccount({});
@@ -309,7 +313,6 @@ function NewReelerLicense() {
               saveSuccess();
             }
           }
-          
         })
         .catch((err) => {
           setData({});
@@ -536,17 +539,17 @@ function NewReelerLicense() {
   };
 
   // const YourFormComponent = ({ data, handleDateChange }) => {
-    const handleRenewedDateChange = (date) => {
-      // Calculate expiration date by adding 3 years to the renewed date
-      const expirationDate = new Date(date);
-      expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-  
-      setData({
-        ...data,
-        receiptDate: date,
-        licenseExpiryDate: expirationDate,
-      });
-    };
+  const handleRenewedDateChange = (date) => {
+    // Calculate expiration date by adding 3 years to the renewed date
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+
+    setData({
+      ...data,
+      receiptDate: date,
+      licenseExpiryDate: expirationDate,
+    });
+  };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -681,7 +684,6 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="fatherName">
                           Father's/Husband's Name
@@ -718,6 +720,7 @@ function NewReelerLicense() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            className="form-control"
                           />
                         </div>
                       </Form.Group>
@@ -805,7 +808,7 @@ function NewReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="arnNumber">
                           ARN Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -823,13 +826,11 @@ function NewReelerLicense() {
                             ARN Number is required.
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-
-                    <Form.Group className="form-group">
-                        <Form.Label htmlFor="reelerNumber">Reeler Number<span className="text-danger">*</span></Form.Label>
+                      </Form.Group> */}
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="reelerNumber">
+                          Reeler Number<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="reelerNumber"
@@ -845,7 +846,9 @@ function NewReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
+                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="wnumber">Ward Number</Form.Label>
                         <div className="form-control-wrap">
@@ -999,11 +1002,10 @@ function NewReelerLicense() {
                           </Col>
                         </Row>
                       </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                    <Form.Group className="form-group">
-                        <Form.Label>Reeler Type<span className="text-danger">*</span></Form.Label>
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Reeler Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="reelerTypeMasterId"
@@ -1015,10 +1017,13 @@ function NewReelerLicense() {
                               data.reelerTypeMasterId === undefined ||
                               data.reelerTypeMasterId === "0"
                             }
-                            >
+                          >
                             <option value="">Select Reeler Type</option>
                             {reelerTypeListData.map((list) => (
-                              <option key={list.reelerTypeMasterId} value={list.reelerTypeMasterId}>
+                              <option
+                                key={list.reelerTypeMasterId}
+                                value={list.reelerTypeMasterId}
+                              >
                                 {list.reelerTypeMasterName}
                               </option>
                             ))}
@@ -1028,7 +1033,9 @@ function NewReelerLicense() {
                       <Form.Control.Feedback type="invalid">
                         Reeler Type is required
                       </Form.Control.Feedback>
+                    </Col>
 
+                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="passbook">
                           Passbook Number<span className="text-danger">*</span>
@@ -1121,6 +1128,7 @@ function NewReelerLicense() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            className="form-control"
                           />
                         </div>
                       </Form.Group>
@@ -1201,6 +1209,7 @@ function NewReelerLicense() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            className="form-control"
                           />
                         </div>
                       </Form.Group>
@@ -1399,7 +1408,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="4">
-                    <Form.Group className="form-group">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="address">
                           Address<span className="text-danger">*</span>
                         </Form.Label>
@@ -1476,7 +1485,7 @@ function NewReelerLicense() {
                       </Form.Group>
                     </Col>
 
-                      <Col lg='6'>
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others
@@ -1494,7 +1503,7 @@ function NewReelerLicense() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg = '6'>
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
@@ -1509,8 +1518,8 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-                      
-                    <Col lg ='6'>
+
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
@@ -1527,46 +1536,46 @@ function NewReelerLicense() {
                       </Form.Group>
                     </Col>
 
-                      <Col lg='6'>          
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>Receipt Date</Form.Label>
                         <Row>
                           <Col lg="6">
                             <div className="form-control-wrap">
-                          {/* <DatePicker
+                              {/* <DatePicker
                             selected={data.receiptDate}
                             onChange={(date) =>
                               handleDateChange(date, "receiptDate")
                             }
                           /> */}
-                          <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleRenewedDateChange(date, "receiptDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                          />
-                        </div>
-                        </Col>
+                              <DatePicker
+                                selected={data.receiptDate}
+                                onChange={(date) =>
+                                  handleRenewedDateChange(date, "receiptDate")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                              />
+                            </div>
+                          </Col>
                         </Row>
-                      {/* </Form.Group> */}
+                        {/* </Form.Group> */}
 
-                      <Row>
-                      <Col lg="6">
-                      {/* <Form.Group className="form-group"> */}
-                        <Form.Label>License Expiry Date</Form.Label>
-                        <div className="form-control-wrap">
-                          {/* <DatePicker
+                        <Row>
+                          <Col lg="6">
+                            {/* <Form.Group className="form-group"> */}
+                            <Form.Label>License Expiry Date</Form.Label>
+                            <div className="form-control-wrap">
+                              {/* <DatePicker
                             selected={data.licenseExpiryDate}
                             onChange={(date) =>
                               handleDateChange(date, "licenseExpiryDate")
                             }
                           /> */}
-                           {/* <DatePicker
+                              {/* <DatePicker
                              selected={data.licenseExpiryDate}
                              onChange={(date) =>
                                handleDateChange(date, "licenseExpiryDate")
@@ -1577,25 +1586,27 @@ function NewReelerLicense() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                           /> */}
-                          <DatePicker
-                          selected={data.licenseExpiryDate}
-                          onChange={(date) => handleDateChange(date, "licenseExpiryDate")}
-                          disabled={data.licenseRenewalDate !== null}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                        />
-                        </div>
-                      </Col>
-                      </Row>
-                    </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Block>
+                              <DatePicker
+                                selected={data.licenseExpiryDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "licenseExpiryDate")
+                                }
+                                disabled={data.licenseRenewalDate !== null}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
 
             <Block className="mt-3">
               <Card>
@@ -1689,7 +1700,6 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-
                   </Row>
                 </Card.Body>
               </Card>

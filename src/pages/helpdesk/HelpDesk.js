@@ -29,18 +29,21 @@ function HelpDesk() {
     hdAttachFiles: "",
     ticketNumber: "",
     hdStatusId: "",
-    userMasterId: "",
+    onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
-  const placeholder ="Enter your Query";
+  const placeholder = "Enter your Query";
 
-  const { quill, quillRef } = useQuill({placeholder});
+  const { quill, quillRef } = useQuill({ placeholder });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (quill) {
-      quill.on('text-change', (delta, oldDelta, source) => {
-        console.log(quill.getText()); 
-        setData(prev=>({...prev,queryDetails:quill.getText().replace(/\n+$/,'')})) 
+      quill.on("text-change", (delta, oldDelta, source) => {
+        console.log(quill.getText());
+        setData((prev) => ({
+          ...prev,
+          queryDetails: quill.getText().replace(/\n+$/, ""),
+        }));
       });
     }
   }, [quill]);
@@ -58,6 +61,19 @@ function HelpDesk() {
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
   // };
+  const [check, setCheck] = useState(false);
+
+  const handleCheckBox = (e) => {
+    setCheck(e.target.checked);
+    if (!e.target.checked) {
+      setData((prev) => ({
+        ...prev,
+        onBehalfOf: localStorage.getItem("userMasterId"),
+      }));
+    }
+  };
+
+  console.log(data.onBehalfOf);
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -94,7 +110,7 @@ function HelpDesk() {
               hdCreatedBy: "",
               ticketNumber: "",
               hdStatusId: "",
-              userMasterId: "",
+              onBehalfOf: localStorage.getItem("userMasterId"),
             });
             setValidated(false);
           }
@@ -120,7 +136,7 @@ function HelpDesk() {
       hdCreatedBy: "",
       ticketNumber: "",
       hdStatusId: "",
-      userMasterId: "",
+      onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");
   };
@@ -256,6 +272,24 @@ function HelpDesk() {
       getHdSubCategoryList(data.hdCategoryId);
     }
   }, [data.hdCategoryId]);
+
+  // to get username
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = () => {
+    api
+      .get(baseURL + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
 
   //  // const YourFormComponent = ({ data, handleDateChange }) => {
   //   const handleRenewedDateChange = (date) => {
@@ -458,7 +492,7 @@ function HelpDesk() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Broad Category Name is required
+                          Broad Category Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -550,8 +584,61 @@ function HelpDesk() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="4">
+                    <Form.Group as={Row} className="form-group mt-2">
+                      <Form.Label column sm={3} className="mt-n2">
+                        for Others
+                      </Form.Label>
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="defaultAddress"
+                          checked={check}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  {check ? (
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          User Name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="onBehalfOf"
+                            value={data.onBehalfOf}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+
+                            // isInvalid={
+                            //   data.onBehalfOf === undefined ||
+                            //   data.onBehalfOf === "0"
+                            // }
+                          >
+                            <option value="">Select Feature</option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  ) : (
+                    ""
+                  )}
+
                   <Col lg="12">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n1">
                       {/* <Form.Label htmlFor="address">
                         Query<span className="text-danger">*</span>
                       </Form.Label> */}
@@ -575,7 +662,7 @@ function HelpDesk() {
                   </Col>
 
                   <Col lg="12">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n1">
                       {/* <Form.Label htmlFor="address">
                         Query<span className="text-danger">*</span>
                       </Form.Label> */}
@@ -592,7 +679,7 @@ function HelpDesk() {
                           rows=""
 
                         /> */}
-                         <div ref={quillRef} />
+                        <div ref={quillRef} />
                         {/* <Quill
                           theme="snow"
                           defaultValue="hello"
@@ -605,10 +692,10 @@ function HelpDesk() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                       Status<span className="text-danger">*</span>
+                        Status<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -637,7 +724,7 @@ function HelpDesk() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
@@ -672,7 +759,7 @@ function HelpDesk() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Create New Ticket
+                          Save
                         </Button>
                       </li>
                       <li>
@@ -681,7 +768,7 @@ function HelpDesk() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Clear
+                          Create New Ticket
                         </Button>
                       </li>
                     </ul>
