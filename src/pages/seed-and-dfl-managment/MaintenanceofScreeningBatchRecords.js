@@ -14,12 +14,10 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
  
-
- 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+ const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function SeedCuttingBank() {
+function MaintenanceofScreeningBatchRecords() {
  
 
   const styles = {
@@ -414,11 +412,11 @@ function SeedCuttingBank() {
 
   
   return (
-    <Layout title="Seed cutting bank">
+    <Layout title="Maintenance of screening batch records">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed cutting bank</Block.Title>
+            <Block.Title tag="h2">Maintenance of screening batch records</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -428,7 +426,7 @@ function SeedCuttingBank() {
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-              Seed cutting bank
+                 Maintenance of screening batch records
                 </li>
               </ol>
             </nav>
@@ -466,48 +464,73 @@ function SeedCuttingBank() {
                 <Col lg="12">
                   <Block >
                     <Card>
-                      <Card.Header>Seed cutting bank</Card.Header>
+                      <Card.Header> Maintenance of screening batch records  </Card.Header>
                       <Card.Body>
                          <Row className="g-gs">
                         <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                             FRUITS-ID
+                              Total number of cocoons produced at each generation
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="FRUITS-ID"
+                                placeholder="Total number of cocoons produced at each generation"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
-                        <Col lg="4" >
+                         <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                            Farmer’s name
+                            Lot number/Year
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Farmer’s name"
+                                placeholder="Lot number/Year"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
+                         
+                          <Col lg="4" >
+
+                           <Form.Group className="form-group  ">
+                        <Form.Label>Line details/Year (Silk Worm Race)</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="gender"
+                            value={data.gender}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Kempanahalli</option>
+                            <option value="1">Magadi</option>
+                            <option value="2">Hebbur</option>
+                            <option value="3"> Kunigal</option>
+                             <option value="">Solur</option>
+                            <option value="1">Kudur</option>
+                            <option value="2">Swarna-I</option>
+                            <option value="3"> CSB</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+
+                         </Col  >
+                          
 
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Quantity of seed cuttings
+                             Line Name
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Quantity of seed cuttings"
+                                placeholder="Line Name"
                               />
                             </div>
                           </Form.Group>
@@ -517,13 +540,13 @@ function SeedCuttingBank() {
                           <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                          Date of pruning
+                             Incubation Date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Date of pruning"
+                                placeholder="Incubation Date"
                               />
                             </div>
                           </Form.Group>
@@ -531,13 +554,13 @@ function SeedCuttingBank() {
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Rate per Tonne
+                           Black Boxing Date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Rate per Tonne"
+                                placeholder="Black Boxing Date"
                               />
                             </div>
                           </Form.Group>
@@ -546,76 +569,52 @@ function SeedCuttingBank() {
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                            Generate Recipt
+                             Brushed on date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Generate Recipt"
+                                placeholder="Brushed on date"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
 
 
-                          <Col lg="4" >
+                         <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Receipt number
+                              Spun on date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Receipt number"
+                                placeholder=" Spun on date"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
+                         <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                            Worm Test details  and result
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Worm Test details  and result"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  >  
 
                           
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Remittance details 
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Remittance details "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Challan Upload
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Challan Upload "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-
-                          
-                       
-
-                         
-                         
- 
- 
 
                          <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  onClick={handleShowModal} > Submit  </Button>  
+                        <Button type="button" variant="primary"  > Submit  </Button>  
                       </Col>
  
                       </Row>
@@ -634,29 +633,29 @@ function SeedCuttingBank() {
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Line Number/Year</th>  
-                                  <th style={styles.ctstyle}>Line of DFLs</th> 
-                                  <th style={styles.ctstyle}>Laid on Date</th> 
-                                  <th style={styles.ctstyle}>Lot  Number</th> 
-                                  <th style={styles.ctstyle}>Number of DFLs received</th> 
-                                   <th style={styles.ctstyle}>Invoice no. and Date</th> 
-                                  <th style={styles.ctstyle}>Worm test details and result</th>
-                                   <th style={styles.ctstyle}>Generation details</th>
-                                  
+                                  <th style={styles.ctstyle}>Total number of cocoons produced at each generation</th>  
+                                  <th style={styles.ctstyle}>Lot number/Year</th> 
+                                  <th style={styles.ctstyle}>Line details/Year (Silk Worm Race)</th> 
+                                  <th style={styles.ctstyle}>Line Name</th> 
+                                  <th style={styles.ctstyle}>Incubation Date</th> 
+                                   <th style={styles.ctstyle}>Black Boxing Date</th> 
+                                  <th style={styles.ctstyle}>Brushed on date</th>
+                                   <th style={styles.ctstyle}>Spun on date</th>
+                                   <th style={styles.ctstyle}>Worm Test details  and result</th>
                                    
                                 </tr>
                               </thead>
                               <tbody>
                                  <tr>
-                                   <td>Line Number/Year  data</td>  
-                                   <td>Line of DFLs data</td> 
-                                   <td>Laid on Date data</td> 
-                                    <td>Lot  Number data</td> 
-                                    <td>Number of DFLs received data</td> 
-                                     <td>Invoice no. and Date data</td> 
-                                    <td>Worm test details and result date</td> 
-                                    <td>Generation details data</td> 
-                                    
+                                   <td>Total number of cocoons produced at each generation data</td>  
+                                   <td>Lot number/Year data</td> 
+                                   <td>Line details/Year (Silk Worm Race) data</td> 
+                                    <td>Line Name data</td> 
+                                    <td>Incubation Date data</td> 
+                                     <td>Black Boxing Date data</td> 
+                                    <td>Brushed on date data</td> 
+                                    <td>Spun on date data</td> 
+                                     <td>Worm Test details  and result data</td> 
                                       
                                 </tr>
                               </tbody>
@@ -670,70 +669,7 @@ function SeedCuttingBank() {
                     </Card.Body>
                   </Card>
                  
-                
                  
-                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title> Status of Receipt of DFLs from the grainage</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="#">
-            <Row className="g-5 px-5">
-               
-              <div className="table-responsive">
-                          <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>   
-                                  <th style={styles.ctstyle}>Number of DFLs received</th> 
-                                  <th style={styles.ctstyle}>Line Name</th> 
-                                   <th style={styles.ctstyle}>Lot  Number</th> 
-                                  <th style={styles.ctstyle}>Invoice no</th>
-                                   <th style={styles.ctstyle}>Invoice Date</th>
-                                   <th style={styles.ctstyle}>Status (Recived)</th>
-                                   
-                                </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actionredtstyle}>Reject</td>   
-                                </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actiongreentstyle}>Accept</td>   
-                                </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actionredtstyle}>Reject</td>   
-                                </tr>
-                              </tbody>
-                            </table>
-                             
-                            </div>
-
-              
-            </Row>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-
 
                 </Col>
               </Row>
@@ -745,4 +681,4 @@ function SeedCuttingBank() {
   );
 }
 
-export default SeedCuttingBank;
+export default MaintenanceofScreeningBatchRecords;

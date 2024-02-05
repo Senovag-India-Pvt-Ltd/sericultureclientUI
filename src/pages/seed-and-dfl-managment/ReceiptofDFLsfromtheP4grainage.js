@@ -19,7 +19,7 @@ import { Icon } from "../../components";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function SeedCuttingBank() {
+function ReceiptofDFLsfromtheP4grainage() {
  
 
   const styles = {
@@ -414,11 +414,11 @@ function SeedCuttingBank() {
 
   
   return (
-    <Layout title="Seed cutting bank">
+    <Layout title="Receipt of DFLs from the P4 grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed cutting bank</Block.Title>
+            <Block.Title tag="h2">Receipt of DFLs from the P4 grainage</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -428,7 +428,7 @@ function SeedCuttingBank() {
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-              Seed cutting bank
+                Receipt of DFLs from the P4 grainage
                 </li>
               </ol>
             </nav>
@@ -466,48 +466,55 @@ function SeedCuttingBank() {
                 <Col lg="12">
                   <Block >
                     <Card>
-                      <Card.Header>Seed cutting bank</Card.Header>
+                      <Card.Header>Receipt of DFLs from the P4 grainage </Card.Header>
                       <Card.Body>
                          <Row className="g-gs">
                         <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                             FRUITS-ID
+                              Line Number/Year
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="FRUITS-ID"
+                                placeholder="Line Number/Year"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Farmer’s name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Farmer’s name"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                         <Col lg="4" >
+                          <Form.Group className="form-group  ">
+                        <Form.Label>Line of DFLs</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="gender"
+                            value={data.gender}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Kempanahalli</option>
+                            <option value="1">Magadi</option>
+                            <option value="2">Hebbur</option>
+                            <option value="3"> Kunigal</option>
+                             <option value="">Solur</option>
+                            <option value="1">Kudur</option>
+                            <option value="2">Swarna-I</option>
+                            <option value="3"> CSB</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                         </Col  >  
 
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Quantity of seed cuttings
+                             Laid on Date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Quantity of seed cuttings"
+                                placeholder="Laid on Date"
                               />
                             </div>
                           </Form.Group>
@@ -517,13 +524,13 @@ function SeedCuttingBank() {
                           <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                          Date of pruning
+                              Lot  Number
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Date of pruning"
+                                placeholder="Lot  Number"
                               />
                             </div>
                           </Form.Group>
@@ -531,13 +538,13 @@ function SeedCuttingBank() {
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Rate per Tonne
+                            Number of DFLs received
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Rate per Tonne"
+                                placeholder="Number of DFLs received"
                               />
                             </div>
                           </Form.Group>
@@ -546,68 +553,71 @@ function SeedCuttingBank() {
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                            Generate Recipt
+                             Invoice no. and Date
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Generate Recipt"
+                                placeholder="Invoice no. and Date"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
 
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Receipt number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Receipt number"
-                              />
-                            </div>
-                          </Form.Group>
+                         <Col lg="4" >
+                           <Form.Group className="form-group  ">
+                        <Form.Label>Worm test details and result</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="gender"
+                            value={data.gender}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Worms Stage (Dropdown) </option>
+                            <option value="1">2nd</option>
+                            <option value="2">3rd</option>
+                            <option value="3"> 4th </option>
+                             <option value="">5th</option>
+                            <option value="1">6th</option>
+                            <option value="2">7th</option>
+                            <option value="3"> 8th</option>
+                              <option value="">Litter</option>
+                            <option value="1">Ripen</option>
+                            <option value="2">Dust</option> 
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
                          </Col  > 
+                         <Col lg="4" >
+                           <Form.Group className="form-group  ">
+                        <Form.Label>Generation details</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="gender"
+                            value={data.gender}
+                            onChange={handleInputs}
+                          >
+                            <option value="">1st </option>
+                            <option value="1">2nd</option>
+                            <option value="2">3rd</option>
+                            <option value="3"> 4th </option>
+                             <option value="">5th</option>
+                            <option value="1">6th</option>
+                            <option value="2">7th</option>
+                            <option value="3"> 8th</option>
+                              <option value="">9th</option>
+                            <option value="1">10th</option>
+                            <option value="2">11th</option>
+                            <option value="3">12th</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                         </Col  >  
 
                           
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Remittance details 
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Remittance details "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
 
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Challan Upload
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Challan Upload "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-
-                          
-                       
 
                          
                          
@@ -713,15 +723,6 @@ function SeedCuttingBank() {
                                     <td >Invoice Date data</td>  
                                      <td style={styles.actiongreentstyle}>Accept</td>   
                                 </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actionredtstyle}>Reject</td>   
-                                </tr>
                               </tbody>
                             </table>
                              
@@ -745,4 +746,4 @@ function SeedCuttingBank() {
   );
 }
 
-export default SeedCuttingBank;
+export default ReceiptofDFLsfromtheP4grainage;

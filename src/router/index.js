@@ -115,30 +115,51 @@ import ProvidingReelersIncentives from "../pages/services-module/ProvidingReeler
 import ProvidingReelersSubsidy from "../pages/services-module/ProvidingReelersSubsidy";
 import SubsidyPrograms from "../pages/services-module/SubsidyPrograms";
 
+
 // Seed and DFL Module
-import MaintenanceMulberryFarm from "../pages/seed-and-dfl-managment/MaintenanceMulberryFarm";
-import MaintenanceMulberryFarmList from "../pages/seed-and-dfl-managment/MaintenanceMulberryFarmList";
-import MaintenanceMulberryFarmView from "../pages/seed-and-dfl-managment/MaintenanceMulberryView";
-import ReceiptsofDfls from "../pages/seed-and-dfl-managment/ReceiptsofDfls";
-import MaintenanceLineRecord from "../pages/seed-and-dfl-managment/MaintenanceLineRecord";
-import MaintenanceBatchRecord from "../pages/seed-and-dfl-managment/MaintenanceBatchRecord";
-import DispatchOfCocoons from "../pages/seed-and-dfl-managment/DispatchOfCocoons";
-import RearingofDfls from "../pages/seed-and-dfl-managment/RearingofDfls";
-import PreservationSeedCocoons from "../pages/seed-and-dfl-managment/PreservationSeedCocoons";
-import PreparationofEggs from "../pages/seed-and-dfl-managment/PreparationofEggs";
-import MaintenanceOfEggs from "../pages/seed-and-dfl-managment/MaintenanceOfEggs";
-import ColdStorageSchedule from "../pages/seed-and-dfl-managment/ColdStorageSchedule";
-import SaleDisposalDfl from "../pages/seed-and-dfl-managment/SaleDisposalDfl";
-import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
-import MaintenancePiercedCocoons from "../pages/seed-and-dfl-managment/MaintenancePiercedCocoons";
-import SaleOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleOfPiercedCocoons";
-import MaintenanceEggSheets from "../pages/seed-and-dfl-managment/MaintenanceEggSheets";
-import Remittance from "../pages/seed-and-dfl-managment/Remittance";
+
+import MaintenanceofMulberryfarm from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarm";
+import ReceiptofDFLsfromtheP4grainage from "../pages/seed-and-dfl-managment/ReceiptofDFLsfromtheP4grainage";
+import MaintenanceofLineRecordsforEachRace from "../pages/seed-and-dfl-managment/MaintenanceofLineRecordsforEachRace";
+import MaintenanceofScreeningBatchRecords from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecords";
+import DispatchofCocoonstoP4Grainage from "../pages/seed-and-dfl-managment/DispatchofCocoonstoP4Grainage";
+import RearingofDFLsforthe8Lines from "../pages/seed-and-dfl-managment/RearingofDFLsforthe8Lines";
+import Preservationofseedcocoonforprocessing from "../pages/seed-and-dfl-managment/Preservationofseedcocoonforprocessing";
+import PreparationofeggsDFLs from "../pages/seed-and-dfl-managment/PreparationofeggsDFLs";
+import Maintenanceofeggsatcoldstorage from "../pages/seed-and-dfl-managment/Maintenanceofeggsatcoldstorage";
+
+import ColdStorageScheduleBV from "../pages/seed-and-dfl-managment/ColdStorageScheduleBV";
+
+
+
+
+// Seed and DFL Module
+// import MaintenanceMulberryFarm from "../pages/seed-and-dfl-managment/MaintenanceMulberryFarm";
+// import MaintenanceMulberryFarmList from "../pages/seed-and-dfl-managment/MaintenanceMulberryFarmList";
+// import MaintenanceMulberryFarmView from "../pages/seed-and-dfl-managment/MaintenanceMulberryView";
+// import ReceiptsofDfls from "../pages/seed-and-dfl-managment/ReceiptsofDfls";
+// import MaintenanceLineRecord from "../pages/seed-and-dfl-managment/MaintenanceLineRecord";
+// import MaintenanceBatchRecord from "../pages/seed-and-dfl-managment/MaintenanceBatchRecord";
+// import DispatchOfCocoons from "../pages/seed-and-dfl-managment/DispatchOfCocoons";
+// import RearingofDfls from "../pages/seed-and-dfl-managment/RearingofDfls";
+// import PreservationSeedCocoons from "../pages/seed-and-dfl-managment/PreservationSeedCocoons";
+// import PreparationofEggs from "../pages/seed-and-dfl-managment/PreparationofEggs";
+// import MaintenanceOfEggs from "../pages/seed-and-dfl-managment/MaintenanceOfEggs";
+// import ColdStorageSchedule from "../pages/seed-and-dfl-managment/ColdStorageSchedule";
+// import SaleDisposalDfl from "../pages/seed-and-dfl-managment/SaleDisposalDfl";
+// import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
+// import MaintenancePiercedCocoons from "../pages/seed-and-dfl-managment/MaintenancePiercedCocoons";
+// import SaleOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleOfPiercedCocoons";
+// import MaintenanceEggSheets from "../pages/seed-and-dfl-managment/MaintenanceEggSheets";
+// import Remittance from "../pages/seed-and-dfl-managment/Remittance";
 
 // Chawki Management
 import SaleChawkiWorms from "../pages/chawki-management/SaleChawkiWorms";
 import SaleChawkiWormsList from "../pages/chawki-management/SaleChawkiWormsList";
 import SaleChawkiWormsView from "../pages/chawki-management/SaleChawkiWormsView";
+import ChawkiManagement from "../pages/chawki-management/ChawkiManagement";
+import ChawkiManagementEdit from "../pages/chawki-management/ChawkiManagementEdit";
+
 
 // Inspection
 import TrackingCurrentStatus from "../pages/Inspection/TrackingCurrentStatus";
@@ -158,13 +179,18 @@ import HelpdeskDashboard from "../pages/helpdesk/HelpdeskDashboard";
 import MyTickets from "../pages/helpdesk/MyTickets";
 import ViewMyTicket from "../pages/helpdesk/ViewMyTicket";
 
-// Garden Management
-import GmaintenanceMulberryFarm from "../pages/garden-management/GmaintenanceMulberryFarm";
-import GreceiptsofDfls from "../pages/garden-management/GreceiptsofDfls";
-import GrearingofDfls from "../pages/garden-management/GrearingofDfls";
-import SupplyCocoonsGrainage from "../pages/garden-management/SupplyCocoonsGrainage";
-import SaleNurseryFarmers from "../pages/garden-management/SaleNurseryFarmers";
+// Garden Management 
 import SeedCuttingBank from "../pages/garden-management/SeedCuttingBank";
+import MaintenanceofmulberryGarden from "../pages/garden-management/MaintenanceofmulberryGarden";
+import ReceiptofDFLsfromthegrainage from "../pages/garden-management/ReceiptofDFLsfromthegrainage";
+import RearingofDFLs from "../pages/garden-management/RearingofDFLs";
+import SupplyofCocoonstoGrainage from "../pages/garden-management/SupplyofCocoonstoGrainage";
+import MaintenanceandSaleofNurserytoFarmers from "../pages/garden-management/MaintenanceandSaleofNurserytoFarmers";
+import ChawkidistributiontoFarmers from "../pages/garden-management/ChawkidistributiontoFarmers";
+
+ 
+
+
 
 // Direct Benefit Transfer
 import SubsidyApprovalVerification from "../pages/direct-benefit-transfer/SubsidyApprovalVerification";
@@ -280,7 +306,8 @@ import SilkWormVarietyEdit from "../pages/masters/silk-worm-variety/SilkWormVari
 import SourceOfMulberryEdit from "../pages/masters/source-of-mulberry/SourceOfMulberryEdit";
 import MulberryVarietyEdit from "../pages/masters/mulberry-variety/MulberryVarietyEdit";
 import PlantationTypeEdit from "../pages/masters/plantation-type/PlantationTypeEdit";
-import CasteEdit from "../pages/masters/caste/CasteEdit";
+import CasteEdit from "../pages/masters/caste/CasteEdit"; 
+
 import MachineTypeEdit from "../pages/masters/machine-type/MachineTypeEdit";
 import ReasonLotCancellationEdit from "../pages/masters/reason-lot-cancellation/ReasonLotCancellationEdit";
 import ReasonBidRejectionEdit from "../pages/masters/reason-bid-rejection/ReasonBidRejectionEdit";
@@ -716,8 +743,63 @@ function Router() {
           element={<SubsidyAcknowledgement />}
         />
 
-        {/* Seed & DFL Management */}
+
+  {/* Seed & DFL Management */}
+
+       <Route
+          path="Maintenance-of-mulberry-Garden-in-the-Farms"
+          element={<MaintenanceofMulberryfarm />}
+        />
         <Route
+          path="Receipt-of-DFLs-from-the-P4-grainage"
+          element={<ReceiptofDFLsfromtheP4grainage />}
+        />
+         <Route
+          path="Maintenance-of-Line-Records-for-Each-Race"
+          element={<MaintenanceofLineRecordsforEachRace />}
+        />
+
+        <Route
+          path="Maintenance-of-Screening-Batch-Records"
+          element={<MaintenanceofScreeningBatchRecords />}
+        />
+
+        <Route
+          path="Dispatch-of-Cocoons-to-P4-Grainage"
+          element={<DispatchofCocoonstoP4Grainage />}
+        />
+
+        <Route
+          path="Rearing-of-DFLs-for-the-8-Lines"
+          element={<RearingofDFLsforthe8Lines />}
+        />
+
+        <Route
+          path="Preservation-of-seed-cocoon-for-processing"
+          element={<Preservationofseedcocoonforprocessing />}
+        />
+
+        <Route
+          path="Preparation-of-eggs-DFLs"
+          element={<PreparationofeggsDFLs />}
+        />
+
+        <Route
+          path="Maintenance-of-eggs-at-cold-storage"
+          element={<Maintenanceofeggsatcoldstorage />}
+        />
+
+        <Route
+          path="Cold-Storage-Schedule-BV"
+          element={<ColdStorageScheduleBV />}
+        />
+ 
+
+
+         
+        
+        {/* Seed & DFL Management */}
+        {/*<Route
           path="maintenance-mulberry-farm"
           element={<MaintenanceMulberryFarm />}
         />
@@ -752,7 +834,7 @@ function Router() {
         <Route path="pierced-Cocoons" element={<MaintenancePiercedCocoons />} />
         <Route path="sale-Cocoons" element={<SaleOfPiercedCocoons />} />
         <Route path="maintenance-sheets" element={<MaintenanceEggSheets />} />
-        <Route path="remittance" element={<Remittance />} />
+        <Route path="remittance" element={<Remittance />} />*/}
 
         {/* Chawki Management */}
         <Route path="sale-chawki-worms" element={<SaleChawkiWorms />} />
@@ -764,6 +846,17 @@ function Router() {
           path="sale-chawki-worms-view/:id"
           element={<SaleChawkiWormsView />}
         />
+         <Route
+          path="chawki-management"
+          element={<ChawkiManagement />}
+        />
+
+        <Route
+          path="chawki-management-edit/:id"
+          element={<ChawkiManagementEdit />}
+        />
+  
+        
 
         {/* Inspection */}
         <Route
@@ -802,26 +895,23 @@ function Router() {
         <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
 
         {/* Garden Management */}
-        <Route
-          path="garden-mulberry-farm"
-          element={<GmaintenanceMulberryFarm />}
-        />
-        <Route path="garden-receipt-dfl" element={<GreceiptsofDfls />} />
-
-        <Route path="garden-rearing-dfl" element={<GrearingofDfls />} />
-        <Route
-          path="supply-cocoon-grainage"
-          element={<SupplyCocoonsGrainage />}
-        />
-        <Route path="sale-nursery-farmer" element={<SaleNurseryFarmers />} />
+       
         <Route path="seed-cutting-bank" element={<SeedCuttingBank />} />
-
+          <Route path="mainenanc-of-mulberrygardern" element={<MaintenanceofmulberryGarden />} />
+           <Route path="Receipt-of-DFLs-from-the-grainage" element={<ReceiptofDFLsfromthegrainage />} />
+             <Route path="Rearing-of-DFLs" element={<RearingofDFLs />} />
+                <Route path="Supply-of-Cocoons-to-Grainagee" element={<SupplyofCocoonstoGrainage />} />
+                <Route path="Maintenance-and-Sale-of-Nursery-to-Farmers" element={<MaintenanceandSaleofNurserytoFarmers />} />
+               <Route path="Chawki-distribution-to-Farmers" element={<ChawkidistributiontoFarmers />} />
+                
+        
         {/* Master */}
         <Route path="head-of-account" element={<HeadOfAccount />} />
         <Route path="caste" element={<Caste />} />
         <Route path="caste-list" element={<CasteList />} />
         <Route path="caste-view/:id" element={<CasteView />} />
         <Route path="caste-edit/:id" element={<CasteEdit />} />
+         {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
         <Route path="roles" element={<Roles />} />
         <Route path="roles-list" element={<RolesList />} />
         <Route path="roles-view/:id" element={<RolesView />} />
