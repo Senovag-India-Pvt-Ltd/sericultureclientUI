@@ -491,6 +491,7 @@ function MarketEdit() {
                           </div>
                         </Form.Group>
                       </Col>
+
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidend">
@@ -513,6 +514,7 @@ function MarketEdit() {
                           </div>
                         </Form.Group>
                       </Col>
+                      
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
@@ -562,114 +564,6 @@ function MarketEdit() {
                             {/* <TimePicker
                               name="auction1EndTime"
                               value={data.auction1EndTime}
-                              placeholder="hh:mm"
-                            /> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidstart">
-                            2nd Round Bid Start Time
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidstart"
-                              name="auction2StartTime"
-                              value={data.auction2StartTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 2st Round Bid Start Time"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              2nd Round Bid Start Time is required
-                            </Form.Control.Feedback>
-                            {/* <TimePicker
-                              name="auction2StartTime"
-                              value={data.auction2StartTime}
-                              placeholder="hh:mm"
-                            /> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidend">
-                            2nd Round Bid End Time
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidend"
-                              name="auction2EndTime"
-                              value={data.auction2EndTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 2st Round Bid End Time"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              2nd Round Bid End Time is required
-                            </Form.Control.Feedback>
-                            {/* <TimePicker
-                              name="auction2EndTime"
-                              value={data.auction2EndTime}
-                              placeholder="hh:mm"
-                            /> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidstart">
-                            3rd Round Bid Start Time
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidstart"
-                              name="auction3StartTime"
-                              value={data.auction3StartTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 3rd Round Bid Start Time"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              3rd Round Bid Start Time is required
-                            </Form.Control.Feedback>
-                            {/* <TimePicker
-                              name="auction3StartTime"
-                              value={data.auction3StartTime}
-                              placeholder="hh:mm"
-                            /> */}
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group">
-                          <Form.Label htmlFor="secbidend">
-                            3rd Round Bid End Time
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="secbidend"
-                              name="auction3EndTime"
-                              value={data.auction3EndTime}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter 3rd Round Bid End Time"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              3rd Round Bid End Time is required
-                            </Form.Control.Feedback>
-                            {/* <TimePicker
-                              name="auction3EndTime"
-                              value={data.auction3EndTime}
                               placeholder="hh:mm"
                             /> */}
                           </div>
@@ -728,6 +622,61 @@ function MarketEdit() {
 
                       <Col lg="6">
                         <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidstart">
+                            2nd Round Bid Start Time
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidstart"
+                              name="auction2StartTime"
+                              value={data.auction2StartTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 2st Round Bid Start Time"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              2nd Round Bid Start Time is required
+                            </Form.Control.Feedback>
+                            {/* <TimePicker
+                              name="auction2StartTime"
+                              value={data.auction2StartTime}
+                              placeholder="hh:mm"
+                            /> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidend">
+                            2nd Round Bid End Time
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidend"
+                              name="auction2EndTime"
+                              value={data.auction2EndTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 2st Round Bid End Time"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              2nd Round Bid End Time is required
+                            </Form.Control.Feedback>
+                            {/* <TimePicker
+                              name="auction2EndTime"
+                              value={data.auction2EndTime}
+                              placeholder="hh:mm"
+                            /> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
                             2nd Round Bid Acceptance Start Time
                             <span className="text-danger">*</span>
@@ -776,6 +725,62 @@ function MarketEdit() {
                         </Form.Group>
                       </Col>
 
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidstart">
+                            3rd Round Bid Start Time
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidstart"
+                              name="auction3StartTime"
+                              value={data.auction3StartTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 3rd Round Bid Start Time"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              3rd Round Bid Start Time is required
+                            </Form.Control.Feedback>
+                            {/* <TimePicker
+                              name="auction3StartTime"
+                              value={data.auction3StartTime}
+                              placeholder="hh:mm"
+                            /> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="secbidend">
+                            3rd Round Bid End Time
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="secbidend"
+                              name="auction3EndTime"
+                              value={data.auction3EndTime}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter 3rd Round Bid End Time"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              3rd Round Bid End Time is required
+                            </Form.Control.Feedback>
+                            {/* <TimePicker
+                              name="auction3EndTime"
+                              value={data.auction3EndTime}
+                              placeholder="hh:mm"
+                            /> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
