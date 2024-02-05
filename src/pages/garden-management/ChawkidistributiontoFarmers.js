@@ -19,7 +19,7 @@ import { Icon } from "../../components";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function SeedCuttingBank() {
+function ChawkidistributiontoFarmers() {
  
 
   const styles = {
@@ -414,11 +414,11 @@ function SeedCuttingBank() {
 
   
   return (
-    <Layout title="Seed cutting bank">
+    <Layout title="Chawki distribution to Farmers">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed cutting bank</Block.Title>
+            <Block.Title tag="h2">Chawki distribution to Farmers</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -428,7 +428,7 @@ function SeedCuttingBank() {
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-              Seed cutting bank
+               Chawki distribution to Farmers
                 </li>
               </ol>
             </nav>
@@ -466,7 +466,7 @@ function SeedCuttingBank() {
                 <Col lg="12">
                   <Block >
                     <Card>
-                      <Card.Header>Seed cutting bank</Card.Header>
+                      <Card.Header>Chawki distribution to Farmers </Card.Header>
                       <Card.Body>
                          <Row className="g-gs">
                         <Col lg="4" >
@@ -483,10 +483,11 @@ function SeedCuttingBank() {
                             </div>
                           </Form.Group>
                          </Col  > 
-                        <Col lg="4" >
+
+                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                            Farmer’s name
+                             Farmer’s name
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -496,18 +497,18 @@ function SeedCuttingBank() {
                               />
                             </div>
                           </Form.Group>
-                         </Col  > 
+                         </Col  >  
 
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Quantity of seed cuttings
+                            Father’s Name
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Quantity of seed cuttings"
+                                placeholder="Father’s Name"
                               />
                             </div>
                           </Form.Group>
@@ -517,27 +518,43 @@ function SeedCuttingBank() {
                           <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                          Date of pruning
+                             Source of DFLs
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Date of pruning"
+                                placeholder="Source of DFLs"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
-                         <Col lg="4" >
+
+                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Rate per Tonne
+                            Number of DFL’s
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Rate per Tonne"
+                                placeholder="Number of DFL’s"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
+
+                         <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                           Lot Number (of the RSP)
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Lot Number (of the RSP)"
                               />
                             </div>
                           </Form.Group>
@@ -546,45 +563,107 @@ function SeedCuttingBank() {
                          <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                            Generate Recipt
+                            Lot No. (CRC)
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Generate Recipt"
+                                placeholder="Lot No. (CRC)"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
+
+                      <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                            Village
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Village"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
+
+                            <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                           District
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="District"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
 
 
-                          <Col lg="4" >
+                           <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                           Receipt number
+                           State
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Receipt number"
+                                placeholder="State"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
 
                           
-                          <Col lg="4" >
+                         <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                          Remittance details 
+                        TSC
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Remittance details "
+                                placeholder="TSC"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
+
+                         
+                         
+                       <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                        Sold after 1st/2nd Moult
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Sold after 1st/2nd Moult"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
+
+                     <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                        Rate per 100 DFLs(optional)
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Rate per 100 DFLs(optional)"
                               />
                             </div>
                           </Form.Group>
@@ -593,25 +672,32 @@ function SeedCuttingBank() {
                            <Col lg="4" >
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
-                          Challan Upload
+                      Price (in Rupees) (optional)
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="sordfl"
                                 type="text"
-                                placeholder="Challan Upload "
+                                placeholder="Price (in Rupees) (optional)"
                               />
                             </div>
                           </Form.Group>
                          </Col  > 
 
-
-                          
-                       
-
-                         
-                         
- 
+                         <Col lg="4" >
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="sordfl">
+                     Dispatch date
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sordfl"
+                                type="text"
+                                placeholder="Dispatch date"
+                              />
+                            </div>
+                          </Form.Group>
+                         </Col  > 
  
 
                          <Col lg="12" className="text-center">
@@ -745,4 +831,4 @@ function SeedCuttingBank() {
   );
 }
 
-export default SeedCuttingBank;
+export default ChawkidistributiontoFarmers;
