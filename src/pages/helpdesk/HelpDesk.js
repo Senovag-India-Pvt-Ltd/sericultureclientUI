@@ -28,7 +28,7 @@ function HelpDesk() {
     queryDetails: "",
     hdAttachFiles: "",
     ticketNumber: "",
-    hdStatusId: "",
+    hdStatusId: "6",
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
@@ -109,7 +109,7 @@ function HelpDesk() {
               hdAttachFiles: "",
               hdCreatedBy: "",
               ticketNumber: "",
-              hdStatusId: "",
+              hdStatusId: "6",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
             setValidated(false);
@@ -135,7 +135,7 @@ function HelpDesk() {
       hdAttachFiles: "",
       hdCreatedBy: "",
       ticketNumber: "",
-      hdStatusId: "",
+      hdStatusId: "6",
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");
@@ -143,7 +143,7 @@ function HelpDesk() {
 
   const [loading, setLoading] = useState(false);
 
-  // to get Module
+  // to get Status
   const [hdStatusListData, setHdStatusListData] = useState([]);
 
   const getStatusList = () => {

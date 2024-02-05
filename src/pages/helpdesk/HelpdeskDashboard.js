@@ -20,6 +20,7 @@ import api from "../../services/auth/api";
 import { Icon } from "../../components";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
+const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 // import {
 //     Image,
@@ -44,6 +45,18 @@ function HelpdeskDashboard() {
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+
+  const handleListInput = (e, row) => {
+    // debugger;
+    let { name, value } = e.target;
+    const updatedRow = { ...row, [name]: value };
+    const updatedDataList = hdTicketDataList.map((rowData) =>
+      rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
+    );
+    setHdTicketDataList(updatedDataList);
+  };
+
+  // console.log(hdTicketDataList);
 
   const styles = {
     backgroundColor: "#cdefff",
@@ -133,6 +146,57 @@ function HelpdeskDashboard() {
     getTicketDataList();
   }, [page]);
   // console.log(hdTicketData);
+
+  // to get Status
+  const [hdStatusListData, setHdStatusListData] = useState([]);
+
+  const getStatusList = () => {
+    api
+      .get(baseURLMaster + `hdStatusMaster/get-all`)
+      .then((response) => {
+        setHdStatusListData(response.data.content.hdStatusMaster);
+      })
+      .catch((err) => {
+        setHdStatusListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getStatusList();
+  }, []);
+
+  // to get Severity
+  const [severityListData, setSeverityListData] = useState([]);
+
+  const getSeverityList = () => {
+    api
+      .get(baseURLMaster + `hdSeverityMaster/get-all`)
+      .then((response) => {
+        setSeverityListData(response.data.content.hdSeverityMaster);
+      })
+      .catch((err) => {
+        setSeverityListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSeverityList();
+  }, []);
+
+  // Update details
+  const edit = (rowData) => {
+    console.log(rowData);
+    api
+      .post(baseURL2 + `hdTicket/edit`, {
+        ...rowData,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // let sessionsDevice = {
   //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
@@ -232,15 +296,54 @@ function HelpdeskDashboard() {
     },
     {
       name: "Status",
-      selector: (row) => row.hdStatusName,
-      cell: (row) => <span>{row.hdStatusName}</span>,
+      cell: (row) => (
+        <div className="text-start w-100">
+          <Form.Group className="form-group">
+            <div className="form-control-wrap">
+              <Form.Select
+                name="hdStatusId"
+                value={row.hdStatusId}
+                onChange={(e) => handleListInput(e, row)}
+                // onBlur={() => handleInputs}
+              >
+                <option value="">Select Status</option>
+                {hdStatusListData.map((list) => (
+                  <option key={list.hdStatusId} value={list.hdStatusId}>
+                    {list.hdStatusName}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+          </Form.Group>
+        </div>
+      ),
       sortable: true,
       hide: "md",
     },
     {
       name: "Severity",
       selector: (row) => row.hdSeverityId,
-      cell: (row) => <span>{row.hdSeverityId}</span>,
+      cell: (row) => (
+        <div className="text-start w-100">
+          <Form.Group className="form-group">
+            <div className="form-control-wrap">
+              <Form.Select
+                name="hdSeverityId"
+                value={row.hdSeverityId}
+                onChange={(e) => handleListInput(e, row)}
+                // onBlur={() => handleInputs}
+              >
+                <option value="">Select Severity</option>
+                {severityListData.map((list) => (
+                  <option key={list.hdSeverityId} value={list.hdSeverityId}>
+                    {list.hdSeverityName}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+          </Form.Group>
+        </div>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -255,6 +358,18 @@ function HelpdeskDashboard() {
       name: "Attachments",
       selector: (row) => row.hdAttachFiles,
       cell: (row) => <span>{row.hdAttachFiles}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div text-start w-100>
+          <Button variant="primary" size="sm" onClick={() => edit(row)}>
+            Update
+          </Button>
+        </div>
+      ),
       sortable: true,
       hide: "md",
     },

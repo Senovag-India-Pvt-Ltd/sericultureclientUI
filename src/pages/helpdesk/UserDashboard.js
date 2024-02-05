@@ -320,9 +320,9 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -348,9 +348,9 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -375,9 +375,9 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  {/* <Button href="#" size="sm" variant="primary">
                     View
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
