@@ -287,6 +287,7 @@ function NewReelerLicense() {
             const reelerError = response.data.content.error_description;
             saveReelerError(reelerError);
           } else {
+            const arnNumber = response.data.content.arnNumber;
             if (vbAccountList.length > 0) {
               const reelerId = response.data.content.reelerId;
               vbAccountList.forEach((list) => {
@@ -301,7 +302,7 @@ function NewReelerLicense() {
                       const bankError = response.data.content.error_description;
                       saveReelerError(bankError);
                     } else {
-                      saveSuccess();
+                      saveSuccess(arnNumber);
                     }
                   })
                   .catch((err) => {
@@ -310,7 +311,7 @@ function NewReelerLicense() {
                   });
               });
             } else {
-              saveSuccess();
+              saveSuccess(arnNumber);
             }
           }
         })
@@ -515,11 +516,11 @@ function NewReelerLicense() {
   }, [data.hobliId]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (arn) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: `Generated ARN Number is ${arn}`,
     }).then(() => navigate("/reeler-license-list"));
   };
   const saveError = () => {
@@ -1558,50 +1559,32 @@ function NewReelerLicense() {
                                 showYearDropdown
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
+                                className="form-control"
                               />
                             </div>
                           </Col>
                         </Row>
                         {/* </Form.Group> */}
-
-                        <Row>
-                          <Col lg="6">
-                            {/* <Form.Group className="form-group"> */}
-                            <Form.Label>License Expiry Date</Form.Label>
-                            <div className="form-control-wrap">
-                              {/* <DatePicker
-                            selected={data.licenseExpiryDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "licenseExpiryDate")
-                            }
-                          /> */}
-                              {/* <DatePicker
-                             selected={data.licenseExpiryDate}
-                             onChange={(date) =>
-                               handleDateChange(date, "licenseExpiryDate")
-                               disabled={data.licenseRenewalDate !== null}
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                          /> */}
-                              <DatePicker
-                                selected={data.licenseExpiryDate}
-                                onChange={(date) =>
-                                  handleDateChange(date, "licenseExpiryDate")
-                                }
-                                disabled={data.licenseRenewalDate !== null}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </div>
-                          </Col>
-                        </Row>
                       </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      {/* <Form.Group className="form-group"> */}
+                      <Form.Label>License Expiry Date</Form.Label>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.licenseExpiryDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "licenseExpiryDate")
+                          }
+                          disabled={data.licenseRenewalDate !== null}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
                     </Col>
                   </Row>
                 </Card.Body>
