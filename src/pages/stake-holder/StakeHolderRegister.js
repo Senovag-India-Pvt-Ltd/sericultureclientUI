@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import "react-datepicker/dist/react-datepicker.css";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
