@@ -46,8 +46,6 @@ function BankStatement() {
   const [fileNameError, setFileNameError] = useState("");
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  
-
   const parameters = `marketId=${localStorage.getItem(
     "marketId"
   )}&auctionDate=${data.paymentDate}&fileName=${data.fileName}`;
@@ -70,11 +68,19 @@ function BankStatement() {
         }
       )
       .then((response) => {
+        if (response.data.errorCode === 0) {
+          getBankStatement();
+        }
+
         // const res = response.data.content.body.content;
         // console.log(res);
-        getBankStatement();
       })
       .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: err.response.data.errorMessages[0].message[0].message,
+        });
+
         // setData({});
         // saveError();
       });
@@ -301,7 +307,7 @@ function BankStatement() {
       [name]: value,
     }));
 
-    if (isFormSubmitted && name === 'fileName') {
+    if (isFormSubmitted && name === "fileName") {
       setFileNameError(value.trim() === "" ? "File name cannot be empty" : "");
     }
   };
@@ -315,10 +321,10 @@ function BankStatement() {
 
     setIsFormSubmitted(true);
 
-    if (fileNameError === '') {
+    if (fileNameError === "") {
       actionFunction();
     } else {
-      console.error('Validation error:', fileNameError);
+      console.error("Validation error:", fileNameError);
     }
   };
 
@@ -650,7 +656,9 @@ function BankStatement() {
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={() => handleButtonClick(requestJobToProcessPayment)}
+                    onClick={() =>
+                      handleButtonClick(requestJobToProcessPayment)
+                    }
                   >
                     Process For Payment
                   </Button>
@@ -660,7 +668,9 @@ function BankStatement() {
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={() => handleButtonClick(checkBankGeneratedStatement)}
+                    onClick={() =>
+                      handleButtonClick(checkBankGeneratedStatement)
+                    }
                   >
                     Check Bank Generated File
                   </Button>
