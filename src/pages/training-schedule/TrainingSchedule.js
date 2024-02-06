@@ -42,9 +42,6 @@ function TrainingSchedule() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-
-  
-  
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
   // };
@@ -117,26 +114,8 @@ function TrainingSchedule() {
     setPPt("");
   }
 
-  // const postData = (e) => {
-  //   console.log("Data to be sent:", data);
-  //   axios
-  //     .post(baseURL2 + `trader-license/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       console.log("Response from server:", response.data);
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error from server:", err);
-  //       console.log("Detailed error response:", err.response); // Log the detailed error response
-  //       setData({}); // You might want to handle the error and state appropriately
-  //       saveError();
-  //     });
-  // };
-  
-  
-  // to get TrInstitutionMaster
+
+  // to get User
   const [trUserListData, setTrUserListData] = useState([]);
 
   const getTrUserList = () => {
@@ -349,99 +328,99 @@ const handleDateChange = (date, type) => {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                  <Form.Group className="form-group">
+                      <Form.Group className="form-group">
                       <Form.Label>
                         User<span className="text-danger">*</span>
                       </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="userMasterId"
-                            value={data.userMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs} 
-                            required
-                            isInvalid={data.userMasterId === undefined || data.userMasterId === "0"}
-                          >
-                            <option value="">Select User</option>
-                            {trUserListData.map((list) => (
-                              <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
-                              >
-                                {list.username}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                           User is required
-                          </Form.Control.Feedback>
-                        </div>
-                    </Form.Group> 
-                    </Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="userMasterId"
+                          value={data.userMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs} 
+                          required
+                          isInvalid={data.userMasterId === undefined || data.userMasterId === "0"} 
+                        >
+                          <option value="">Select User</option>
+                          {trUserListData.map((list) => (
+                            <option
+                              key={list.userMasterId}
+                              value={list.userMasterId}
+                            >
+                              {list.username}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          User is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                     <Col lg="6">
                     <Form.Group className="form-group">
-                            <Form.Label>
-                              Training Institution<span className="text-danger">*</span>
-                            </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="trInstitutionMasterId"
-                                  value={data.trInstitutionMasterId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs} 
-                                  required
-                                  isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
-                                >
-                                  <option value="">Select Institution</option>
-                                  {trInstituteListData.map((list) => (
-                                    <option
-                                      key={list.trInstitutionMasterId}
-                                      value={list.trInstitutionMasterId}
-                                    >
-                                      {list.trInstitutionMasterName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Training Institution is required
-                                </Form.Control.Feedback>
-                              </div>
-                          </Form.Group> 
-                          </Col>
-
-                          <Col lg="6">
-                          <Form.Group
-                            className="form-group"
+                      <Form.Label>
+                        Training Institution
+                      </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="trInstitutionMasterId"
+                            value={data.trInstitutionMasterId}
+                            onChange={handleInputs}
+                            // onBlur={() => handleInputs} 
+                            // required
+                            // isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
                           >
-                            <Form.Label>
-                              Training Group<span className="text-danger">*</span>
-                            </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="trGroupMasterId"
-                                  value={data.trGroupMasterId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs} 
-                                  required
-                                  isInvalid={data.trGroupMasterId === undefined || data.trGroupMasterId === "0"}
+                            <option value="">Select Institution</option>
+                            {trInstituteListData.map((list) => (
+                              <option
+                                key={list.trInstitutionMasterId}
+                                value={list.trInstitutionMasterId}
+                              >
+                                {list.trInstitutionMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                            Training Institution is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                    </Form.Group> 
+                  </Col>
+
+                    <Col lg="6">
+                      <Form.Group
+                        className="form-group"
+                      >
+                        <Form.Label>
+                          Training Group<span className="text-danger">*</span>
+                        </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="trGroupMasterId"
+                              value={data.trGroupMasterId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs} 
+                              required
+                              isInvalid={data.trGroupMasterId === undefined || data.trGroupMasterId === "0"}
+                            >
+                              <option value="">Select Group</option>
+                              {trGroupListData.map((list) => (
+                                <option
+                                  key={list.trGroupMasterId}
+                                  value={list.trGroupMasterId}
                                 >
-                                  <option value="">Select Group</option>
-                                  {trGroupListData.map((list) => (
-                                    <option
-                                      key={list.trGroupMasterId}
-                                      value={list.trGroupMasterId}
-                                    >
-                                      {list.trGroupMasterName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                Training Group is required
-                                </Form.Control.Feedback>
-                              </div>
-                          </Form.Group>
-                        </Col>          
+                                  {list.trGroupMasterName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                            Training Group is required
+                            </Form.Control.Feedback>
+                          </div>
+                      </Form.Group>
+                    </Col>          
 
                         <Col lg="6">
                           <Form.Group
@@ -546,7 +525,7 @@ const handleDateChange = (date, type) => {
                 <Col lg="6">
                  <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
-                    Training Duration
+                    Training Duration(In Hours)
                     </Form.Label>
                     <div className="form-control-wrap">
                     <Form.Control
@@ -564,7 +543,7 @@ const handleDateChange = (date, type) => {
                 <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trPeriod">
-                      Training Period
+                      Training Period(In Days)
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -625,7 +604,7 @@ const handleDateChange = (date, type) => {
 
                   <Col lg='6'>          
                       <Form.Group className="form-group">
-                        <Form.Label>Training Period Start Date</Form.Label>
+                        <Form.Label>Training Period Start Date<span className="text-danger">*</span></Form.Label>
                         <Row>
                           <Col lg="6">
                           <div className="form-control-wrap">
@@ -650,7 +629,7 @@ const handleDateChange = (date, type) => {
                       <Row>
                       <Col lg="6">
                       {/* <Form.Group className="form-group"> */}
-                        <Form.Label>Date of Completion</Form.Label>
+                        <Form.Label>Expected Date of Completion<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
                             selected={data.dob}

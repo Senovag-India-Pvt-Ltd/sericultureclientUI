@@ -113,35 +113,35 @@ function TrainerPageList() {
     });
   };
 
-  const deleteConfirm = (_id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        api
-          .delete(baseURL2 + `trSchedule/delete/${_id}`)
-          .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
+  // const deleteConfirm = (_id) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "It will delete permanently!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes, delete it!",
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       api
+  //         .delete(baseURL2 + `trSchedule/delete/${_id}`)
+  //         .then((response) => {
+  //           // deleteConfirm(_id);
+  //           getList();
+  //           Swal.fire(
+  //             "Deleted",
+  //             "You successfully deleted this record",
+  //             "success"
+  //           );
+  //         })
+  //         .catch((err) => {
+  //           deleteError();
+  //         });
+  //       // Swal.fire("Deleted", "You successfully deleted this record", "success");
+  //     } else {
+  //       Swal.fire("Cancelled", "Your record is not deleted", "info");
+  //     }
+  //   });
+  // };
 
   createTheme(
     "solarized",
@@ -218,14 +218,14 @@ function TrainerPageList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.trScheduleId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -258,7 +258,21 @@ function TrainerPageList() {
         cell: (row) => <span>{row.trProgramMasterName}</span>,
         sortable: true,
         hide: "md",
-    },      
+    }, 
+    {
+      name: "Training Course Name",
+      selector: (row) => row.trCourseMasterName,
+      cell: (row) => <span>{row.trCourseMasterName}</span>,
+      sortable: true,
+      hide: "md",
+  }, 
+  {
+    name: "Training Mode",
+    selector: (row) => row.trModeMasterName,
+    cell: (row) => <span>{row.trModeMasterName}</span>,
+    sortable: true,
+    hide: "md",
+  },          
   ];
 
   return (
