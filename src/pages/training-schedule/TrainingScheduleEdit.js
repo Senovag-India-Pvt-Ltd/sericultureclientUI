@@ -400,9 +400,9 @@ const getPPtFile = async (file) => {
                                   name="trInstitutionMasterId"
                                   value={data.trInstitutionMasterId}
                                   onChange={handleInputs}
-                                  onBlur={() => handleInputs} 
-                                  required
-                                  isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
+                                  // onBlur={() => handleInputs} 
+                                  // required
+                                  // isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
                                 >
                                   <option value="">Select Training Institution Type</option>
                                   {trInstituteListData.map((list) => (
@@ -414,9 +414,6 @@ const getPPtFile = async (file) => {
                                     </option>
                                   ))}
                                 </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Training Institution is required
-                                </Form.Control.Feedback>
                               </div>
                           </Form.Group> 
                           </Col>
@@ -557,7 +554,7 @@ const getPPtFile = async (file) => {
                 <Col lg="6">
                  <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
-                    Training Duration
+                    Training Duration(In Hours)
                     </Form.Label>
                     <div className="form-control-wrap">
                     <Form.Control
@@ -575,7 +572,7 @@ const getPPtFile = async (file) => {
                 <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trPeriod">
-                      Training Period
+                      Training Period(In Days)
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -641,7 +638,7 @@ const getPPtFile = async (file) => {
 
                   <Col lg='6'>          
                       <Form.Group className="form-group">
-                        <Form.Label>Training Period Start Date</Form.Label>
+                        <Form.Label>Training Period Start Date<span className="text-danger">*</span></Form.Label>
                         <Row>
                           <Col lg="6">
                           <div className="form-control-wrap">
@@ -664,7 +661,7 @@ const getPPtFile = async (file) => {
                       <Row>
                       <Col lg="6">
                       {/* <Form.Group className="form-group"> */}
-                        <Form.Label>Date of Completion</Form.Label>
+                        <Form.Label>Expected Date of Completion<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                         {isDataCompletionSet && (
                           <DatePicker

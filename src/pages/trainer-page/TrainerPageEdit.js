@@ -319,6 +319,7 @@ const handleAdd = (event) => {
         postTestScore: "",
         percentageImproved: "",
     })
+    
   }
 
 
@@ -762,7 +763,7 @@ const getPPtFile = async (file) => {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/trainer-page-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
@@ -776,7 +777,7 @@ const getPPtFile = async (file) => {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/trainer-page-list"));
+    }).then(() => navigate("#"));
   };
 
   return (
@@ -830,7 +831,7 @@ const getPPtFile = async (file) => {
                             <option value="">Select Stake Holder Type</option>
                             <option value="1">Training For Internal Stake Holders</option>
                             <option value="2">Training For External Stake Holders</option>
-                            <option value="3">Other</option>
+                            {/* <option value="3">Other</option> */}
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -872,16 +873,16 @@ const getPPtFile = async (file) => {
                     <Col lg="6">
                     <Form.Group className="form-group">
                             <Form.Label>
-                              Training Institution<span className="text-danger">*</span>
+                              Training Institution
                             </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
                                   name="trInstitutionMasterId"
                                   value={data.trInstitutionMasterId}
                                   onChange={handleInputs}
-                                  onBlur={() => handleInputs} 
-                                  required
-                                  isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
+                                  // onBlur={() => handleInputs} 
+                                  // required
+                                  // isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
                                 >
                                   <option value="">Select Institution</option>
                                   {trInstituteListData.map((list) => (
@@ -893,9 +894,6 @@ const getPPtFile = async (file) => {
                                     </option>
                                   ))}
                                 </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Training Institution is required
-                                </Form.Control.Feedback>
                               </div>
                           </Form.Group> 
                           </Col>
@@ -914,6 +912,7 @@ const getPPtFile = async (file) => {
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs} 
                                   required
+                                  disabled
                                   isInvalid={data.trGroupMasterId === undefined || data.trGroupMasterId === "0"}
                                 >
                                   <option value="">Select Group</option>
@@ -947,6 +946,7 @@ const getPPtFile = async (file) => {
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs} 
                                   required
+                                  disabled
                                   isInvalid={data.trProgramMasterId === undefined || data.trProgramMasterId === "0"}
                                 >
                                   <option value="">Select Program</option>
@@ -980,6 +980,7 @@ const getPPtFile = async (file) => {
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs} 
                                   required
+                                  disabled
                                   isInvalid={data.trCourseMasterId === undefined || data.trCourseMasterId === "0"}
                                 >
                                   <option value="">Select Course</option>
@@ -1014,6 +1015,7 @@ const getPPtFile = async (file) => {
                                   onChange={handleInputs}
                                   onBlur={() => handleInputs} 
                                   required
+                                  disabled
                                   isInvalid={data.trModeMasterId === undefined || data.trModeMasterId === "0"}
                                 >
                                   <option value="">Select Training Mode</option>
@@ -1036,7 +1038,7 @@ const getPPtFile = async (file) => {
                 <Col lg="6">
                  <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
-                    Training Duration
+                    Training Duration(In Hours)
                     </Form.Label>
                     <div className="form-control-wrap">
                     <Form.Control
@@ -1054,7 +1056,7 @@ const getPPtFile = async (file) => {
                 <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trPeriod">
-                      Training Period
+                      Training Period(In Days)
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1098,6 +1100,7 @@ const getPPtFile = async (file) => {
                             id="trUploadPath"
                             name="trUploadPath"
                             onChange={handlePPtChange}
+                            disabled
                           />
                         </div>
                       </Form.Group>
@@ -1122,7 +1125,7 @@ const getPPtFile = async (file) => {
 
                   <Col lg='6'>          
                       <Form.Group className="form-group">
-                        <Form.Label>Training Period Start Date</Form.Label>
+                        <Form.Label>Training Period Start Date<span className="text-danger">*</span></Form.Label>
                         <Row>
                           <Col lg="6">
                           <div className="form-control-wrap">
@@ -1145,7 +1148,7 @@ const getPPtFile = async (file) => {
                       <Row>
                       <Col lg="6">
                       {/* <Form.Group className="form-group"> */}
-                        <Form.Label>Date of Completion</Form.Label>
+                        <Form.Label>Date of Completion<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                         {isDataCompletionSet && (
                           <DatePicker
@@ -1158,7 +1161,7 @@ const getPPtFile = async (file) => {
                             dateFormat="dd/MM/yyyy"
                           />
                           )}
-                        </div>
+                        </div>       
                       </Col>
                       </Row>
                     </Form.Group>
