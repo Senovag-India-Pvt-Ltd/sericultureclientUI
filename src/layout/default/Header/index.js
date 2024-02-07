@@ -32,7 +32,8 @@ import { logout } from "../../../services/authService";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function handleLogout() {
-  logout();
+  localStorage.clear();
+  // logout();
 }
 
 function QuickNav({ className, ...props }) {
@@ -73,8 +74,8 @@ function Header() {
         })
         .then((res) => {
           const isTrue = res.data.content.error;
-          if(!isTrue){
-           localStorage.setItem("godownId", value)
+          if (!isTrue) {
+            localStorage.setItem("godownId", value);
           }
         });
     }
@@ -138,7 +139,7 @@ function Header() {
     // eslint-disable-next-line
     "navbar-mobile":
       layout.headerTransition ||
-      (layout.breaks[layout.headerCollapse] > window.innerWidth),
+      layout.breaks[layout.headerCollapse] > window.innerWidth,
   });
 
   // offcanvas
@@ -352,7 +353,9 @@ function Header() {
                             />
                           </Media>
                           <MediaText>
-                            <div className="lead-text">{localStorage.getItem("username")}</div>
+                            <div className="lead-text">
+                              {localStorage.getItem("username")}
+                            </div>
                             <span className="sub-text">Admin</span>
                           </MediaText>
                         </MediaGroup>

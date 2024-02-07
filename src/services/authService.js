@@ -53,6 +53,7 @@ const login = async (username, password) => {
 
 const logout = () => {
   // Clear the token from local storage or a secure storage mechanism
+  localStorage.clear();
   localStorage.removeItem("jwtToken");
   localStorage.removeItem("username");
   localStorage.removeItem("userMasterId");
