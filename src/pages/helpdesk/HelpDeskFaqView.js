@@ -28,6 +28,32 @@ function HelpDeskFaqView() {
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const [helpDeskFaq, setHelpDeskFaq] = useState({
+    text: "",
+    searchBy: "hdQuestionName",
+  });
+
+  const handleHelpDeskFaqInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setHelpDeskFaq({ ...helpDeskFaq, [name]: value });
+  };
+
+// Search
+const search = (e) => {
+  api
+    .post(baseURL + `hdQuestionMaster/search`, {
+      searchText: helpDeskFaq.text,
+      searchBy: helpDeskFaq.searchBy,
+    }, {
+      headers: _header,
+    })
+    .then((response) => {
+      setFaqData(response.data.content.hdQuestionMaster);
+    })
+    .catch((err) => {
+    });
+};
   // To get faq
   const [faqData, setFaqData] = useState([]);
 
@@ -111,26 +137,6 @@ function HelpDeskFaqView() {
             <Block.Title tag="h2">KEDB</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="/hd-question-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/hd-question-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -140,37 +146,33 @@ function HelpDeskFaqView() {
         <Row className="m-2">
                 <Col>
                   <Form.Group as={Row} className="form-group" id="fid">
-                    {/* <Form.Label column sm={1}>
+                    <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
+                      value={helpDeskFaq.searchBy}
+                      onChange={handleHelpDeskFaqInputs}
                     >
-                      <option value="village">Village</option>
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="hdQuestionName">Question Or Answer</option>
                     </Form.Select>
                   </div>
-                </Col> */}
+                </Col>
 
                     <Col sm={3}>
                       <Form.Control
-                        id="fruitsId"
+                        id="hdTicketId"
                         name="text"
-                        value={data.text}
-                        onChange={handleInputs}
+                        value={helpDeskFaq.text}
+                        onChange={handleHelpDeskFaqInputs}
                         type="text"
                         placeholder="Search"
                       />
                     </Col>
                     <Col sm={3}>
-                      <Button type="button" variant="primary" >
+                      <Button type="button" variant="primary" onClick={search}>
                         Search
                       </Button>
                     </Col>
