@@ -1,53 +1,42 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
- 
+import Block from "../../components/Block/Block"; 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {  useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
+
  
-// const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-
-function RearingofDFLs() {
+function RearingOfDFLsEdit() {
  
-  const [data, setData] = useState({
-    disinfectantUsageDetails: "",
-    cropDetail: "",
-    cropNumber: "",
-    lotNumber: "",
-    numberOfDFLs: "",
-    laidOnDate: "",
-    coldStorageDetails: "",
-    releasedOnDate: "",
-    chawkiPercentage: "",
-    wormWeight: "",
-    spunOnDate: "",
-    wormTestDetails: "",
-    cocoonAssessmentDetails: "",
-  });
+  const { id } = useParams();
+    const [data, setData] = useState({});
+    const [loading, setLoading] = useState(false);
+  
+    const [validated, setValidated] = useState(false);
 
-  const [validated, setValidated] = useState(false);
+    let name, value;
+    const handleInputs = (e) => {
+      name = e.target.name;
+      value = e.target.value;
+      setData({ ...data, [name]: value });
+    };
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const isDataLaidSet = !!data.laidOnDate;
+  const isDataReleasedSet = !!data.releasedOnDate;
+  const isDataSpunSet = !!data.spunOnDate;
+  
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -58,122 +47,150 @@ function RearingofDFLs() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `Rearing-of-dfls/add-info`, data)
-      .then((response) => {
-        if(response.data.error){
-            saveError(response.data.message);
+      api
+        .post(baseURL2 + `Rearing-of-dfls/update-info`, data)
+        .then((response) => {
+        //   const trScheduleId = response.data.content.trScheduleId;
+        //   if (trScheduleId) {
+        //     handlePPtUpload(trScheduleId);
+        //   }
+          if(response.data.error){
+            updateError(response.data.message);
             }else{
-              saveSuccess();
-              setData({
-                disinfectantUsageDetails: "",
-                cropDetail: "",
-                cropNumber: "",
-                lotNumber: "",
-                numberOfDFLs: "",
-                laidOnDate: "",
-                coldStorageDetails: "",
-                releasedOnDate: "",
-                chawkiPercentage: "",
-                wormWeight: "",
-                spunOnDate: "",
-                wormTestDetails: "",
-                cocoonAssessmentDetails: "",
-              });
-              setValidated(false);
-            }
+              updateSuccess();
+          setData({
+            disinfectantUsageDetails: "",
+            cropDetail: "",
+            cropNumber: "",
+            lotNumber: "",
+            numberOfDFLs: "",
+            laidOnDate: "",
+            coldStorageDetails: "",
+            releasedOnDate: "",
+            chawkiPercentage: "",
+            wormWeight: "",
+            spunOnDate: "",
+            wormTestDetails: "",
+            cocoonAssessmentDetails: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
+        });
+        setValidated(true);
+      }
+    };
+
+    const clear = () =>{
+        setData({
+            disinfectantUsageDetails: "",
+            cropDetail: "",
+            cropNumber: "",
+            lotNumber: "",
+            numberOfDFLs: "",
+            laidOnDate: "",
+            coldStorageDetails: "",
+            releasedOnDate: "",
+            chawkiPercentage: "",
+            wormWeight: "",
+            spunOnDate: "",
+            wormTestDetails: "",
+            cocoonAssessmentDetails: "",
+        })
+      }
+
+
+       //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURL2 + `Rearing-of-dfls/get-info-by-id/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        saveError();
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
       });
-      setValidated(true);
-    }
   };
 
-  const clear = () =>{
-    setData({
-      disinfectantUsageDetails: "",
-      cropDetail: "",
-      cropNumber: "",
-      lotNumber: "",
-      numberOfDFLs: "",
-      laidOnDate: "",
-      coldStorageDetails: "",
-      releasedOnDate: "",
-      chawkiPercentage: "",
-      wormWeight: "",
-      spunOnDate: "",
-      wormTestDetails: "",
-      cocoonAssessmentDetails: "",
-    })
-  }
- 
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
-const handleDateChange = (date, type) => {
-  setData({ ...data, [type]: date });
-};
 
- 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+
+  const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+    }).then(() => navigate("#"));
   };
-  const saveError = (message) => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
       text: message,
     });
   };
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
 
-  
   return (
-    <Layout title="Rearing of DFLs ">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Rearing of DFLs </Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/rearing-of-dfls-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/rearing-of-dfls-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+    <Layout title="Edit Rearing of DFLs">
+    <Block.Head>
+      <Block.HeadBetween>
+        <Block.HeadContent>
+          <Block.Title tag="h2">Edit Rearing of DFLs</Block.Title>
+        </Block.HeadContent>
+        <Block.HeadContent>
+          <ul className="d-flex">
+            <li>
+              <Link to="/rearing-of-dfls-list" className="btn btn-primary btn-md d-md-none">
+                <Icon name="arrow-long-left" />
+                <span>Go to List</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/rearing-of-dfls-list"
+                className="btn btn-primary d-none d-md-inline-flex"
+              >
+                <Icon name="arrow-long-left" />
+                <span>Go to List</span>
+              </Link>
+            </li>
+          </ul>
+        </Block.HeadContent>
+      </Block.HeadBetween>
+    </Block.Head>
 
-          <Block className="mt-n5">
-              {/* <Form action="#"> */}
-              <Form noValidate validated={validated} onSubmit={postData}>
-                <Row className="g-3 ">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="4">
+    <Block className="mt-n5">
+      {/* <Form action="#"> */}
+      <Form noValidate validated={validated} onSubmit={postData}>
+        <Row className="g-3 ">
+          <Card>
+            <Card.Body>
+            {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+                Loading...
+            </h1>
+                ) : (
+              <Row className="g-gs">
+              <Col lg="4">
                           <Form.Group className="form-group">
                               <Form.Label htmlFor="plotNumber">
                               Disinfectant Usage Details<span className="text-danger">*</span>
@@ -303,12 +320,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataLaidSet && (
                         <DatePicker
-                          selected={data.laidOnDate}
+                          selected={new Date(data.laidOnDate)}
                           onChange={(date) => handleDateChange(date, "laidOnDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -317,6 +331,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
 
@@ -326,12 +341,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataReleasedSet && (
                         <DatePicker
-                          selected={data.releasedOnDate}
+                          selected={new Date(data.releasedOnDate)}
                           onChange={(date) => handleDateChange(date, "releasedOnDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -340,6 +352,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
 
@@ -349,12 +362,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataSpunSet && (
                         <DatePicker
-                          selected={data.spunOnDate}
+                          selected={new Date(data.spunOnDate)}
                           onChange={(date) => handleDateChange(date, "spunOnDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -363,6 +373,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
 
@@ -383,7 +394,7 @@ const handleDateChange = (date, type) => {
                             </div>
                         </Form.Group>
                       </Col>
-                       
+                      
                       <Col lg="4">
                         <Form.Group className="form-group">
                             <Form.Label htmlFor="plotNumber">
@@ -439,28 +450,30 @@ const handleDateChange = (date, type) => {
                       </Col>
 
                       </Row>
+                )}
                   </Card.Body>
                 </Card>
 
-          <div className="gap-col">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="submit" variant="primary">
-                  Save
-                </Button>
-              </li>
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-        </Row>
-      </Form>
-    </Block>
-  </Layout>
-);
-}
-export default RearingofDFLs;
+                <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
+                    <Button type="submit" variant="primary">
+                      Update
+                    </Button>
+                  </li>
+                  <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                  </li>
+                </ul>
+              </div>
+            </Row>
+          </Form>
+        </Block>
+      </Layout>
+    );
+  }
+  
+  export default RearingOfDFLsEdit;

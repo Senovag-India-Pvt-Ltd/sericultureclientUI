@@ -1,11 +1,8 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
- 
+import Block from "../../components/Block/Block"; 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {  useEffect } from "react";
@@ -17,33 +14,30 @@ import { Icon } from "../../components";
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-function MaintenanceofmulberryGarden() {
+function MaintenanceOfMulberryGardenEdit() {
  
-  const [data, setData] = useState({
-    plotNumber: "",
-    variety: "",
-    areaUnderEachVariety: "",
-    pruningDate: "",
-    fertilizerApplicationDate: "",
-    fymApplicationDate: "",
-    irrigationDate: "",
-    brushingDate: "",
-    remarks: "",
-  });
+  const { id } = useParams();
+    const [data, setData] = useState({});
+    const [loading, setLoading] = useState(false);
+  
+    const [validated, setValidated] = useState(false);
 
-  const [validated, setValidated] = useState(false);
+    let name, value;
+    const handleInputs = (e) => {
+      name = e.target.name;
+      value = e.target.value;
+      setData({ ...data, [name]: value });
+    };
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const isDataPruningSet = !!data.pruningDate;
+  const isDataFertilizerSet = !!data.fertilizerApplicationDate;
+  const isDataFymSet = !!data.fymApplicationDate;
+  const isDataIrrigationSet = !!data.irrigationDate;
+  const isDataBrushingSet = !!data.brushingDate;
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -54,15 +48,19 @@ function MaintenanceofmulberryGarden() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `Mulberry-garden/add-info`, data)
-      .then((response) => {
-        if(response.data.error){
-            saveError(response.data.message);
+      api
+        .post(baseURL2 + `Mulberry-garden/update-info`, data)
+        .then((response) => {
+        //   const trScheduleId = response.data.content.trScheduleId;
+        //   if (trScheduleId) {
+        //     handlePPtUpload(trScheduleId);
+        //   }
+          if(response.data.error){
+            updateError(response.data.message);
             }else{
-              saveSuccess();
-              setData({
-                plotNumber: "",
+              updateSuccess();
+          setData({
+            plotNumber: "",
                 variety: "",
                 areaUnderEachVariety: "",
                 pruningDate: "",
@@ -71,82 +69,84 @@ function MaintenanceofmulberryGarden() {
                 irrigationDate: "",
                 brushingDate: "",
                 remarks: "",
-              });
-              setValidated(false);
-            }
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
+        });
+        setValidated(true);
+      }
+    };
+
+    const clear = () =>{
+        setData({
+          plotNumber: "",
+          variety: "",
+          areaUnderEachVariety: "",
+          pruningDate: "",
+          fertilizerApplicationDate: "",
+          fymApplicationDate: "",
+          irrigationDate: "",
+          brushingDate: "",
+          remarks: "",
+        })
+      }
+
+
+       //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURL2 + `Mulberry-garden/get-info-by-id/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        saveError();
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
       });
-      setValidated(true);
-    }
   };
 
-  const clear = () =>{
-    setData({
-      plotNumber: "",
-      variety: "",
-      areaUnderEachVariety: "",
-      pruningDate: "",
-      fertilizerApplicationDate: "",
-      fymApplicationDate: "",
-      irrigationDate: "",
-      brushingDate: "",
-      remarks: "",
-    })
-  }
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
 
-  // to get Mulberry Variety
-  // const [mulberryVarietyListData, setMulberryVarietyListData] = useState([]);
-
-  // const getMulberryVarietyList = () => {
-  //   const response = api
-  //     .get(baseURL + `mulberry-variety/get-all`)
-  //     .then((response) => {
-  //       setMulberryVarietyListData(response.data);
-  //     })
-  //     .catch((err) => {
-  //       setMulberryVarietyListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getMulberryVarietyList();
-  // }, []);
-
- 
-
-const handleDateChange = (date, type) => {
-  setData({ ...data, [type]: date });
-};
-
- 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+
+  const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+    }).then(() => navigate("#"));
   };
-  const saveError = (message) => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
       text: message,
     });
   };
-   
-  
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
   return (
-    <Layout title="Maintenance of Mulberry Garden">
+    <Layout title="Edit Maintenance of Mulberry Garden">
     <Block.Head>
       <Block.HeadBetween>
         <Block.HeadContent>
-          <Block.Title tag="h2">Maintenance of Mulberry Garden</Block.Title>
+          <Block.Title tag="h2">Edit Maintenance of Mulberry Garden</Block.Title>
         </Block.HeadContent>
         <Block.HeadContent>
           <ul className="d-flex">
@@ -176,7 +176,11 @@ const handleDateChange = (date, type) => {
         <Row className="g-3 ">
           <Card>
             <Card.Body>
-              {/* <h3>Farmers Details</h3> */}
+            {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+                Loading...
+            </h1>
+                ) : (
               <Row className="g-gs">
               <Col lg="4">
                <Form.Group className="form-group">
@@ -269,18 +273,15 @@ const handleDateChange = (date, type) => {
                   </Form.Group>
                   </Col>
 
-                    <Form.Label column sm={2}>
+                  <Form.Label column sm={2}>
                         Pruning Date
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataPruningSet && (
                         <DatePicker
-                          selected={data.pruningDate}
+                          selected={new Date(data.pruningDate)}
                           onChange={(date) => handleDateChange(date, "pruningDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -289,20 +290,19 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
+
                       <Form.Label column sm={2}>
                         Fertilizer Application Date
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataFertilizerSet && (
                         <DatePicker
-                          selected={data.fertilizerApplicationDate}
+                          selected={new Date(data.fertilizerApplicationDate)}
                           onChange={(date) => handleDateChange(date, "fertilizerApplicationDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -311,6 +311,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
                     {/* </Form.Group>
@@ -322,12 +323,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataFymSet && (
                         <DatePicker
-                          selected={data.fymApplicationDate}
+                          selected={new Date(data.fymApplicationDate)}
                           onChange={(date) => handleDateChange(date, "fymApplicationDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -336,6 +334,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
 
@@ -345,12 +344,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataIrrigationSet && (
                         <DatePicker
-                          selected={data.irrigationDate}
+                          selected={new Date(data.irrigationDate)}
                           onChange={(date) => handleDateChange(date, "irrigationDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -359,6 +355,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
                       <Form.Label column sm={2}  >
@@ -367,12 +364,9 @@ const handleDateChange = (date, type) => {
                       </Form.Label>
                       <Col sm={2} >
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        {isDataBrushingSet && (
                         <DatePicker
-                          selected={data.brushingDate}
+                          selected={new Date(data.brushingDate)}
                           onChange={(date) => handleDateChange(date, "brushingDate")}
                           peekNextMonth
                           showMonthDropdown
@@ -381,6 +375,7 @@ const handleDateChange = (date, type) => {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                         />
+                        )}
                       </div>
                       </Col>
                       
@@ -402,28 +397,30 @@ const handleDateChange = (date, type) => {
                       </Form.Group>
                       </Col>
                     </Row>
+                )}
                   </Card.Body>
                 </Card>
 
-          <div className="gap-col">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="submit" variant="primary">
-                  Save
-                </Button>
-              </li>
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-        </Row>
-      </Form>
-    </Block>
-  </Layout>
-);
-}
-export default MaintenanceofmulberryGarden;
+                <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
+                    <Button type="submit" variant="primary">
+                      Update
+                    </Button>
+                  </li>
+                  <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                  </li>
+                </ul>
+              </div>
+            </Row>
+          </Form>
+        </Block>
+      </Layout>
+    );
+  }
+  
+  export default MaintenanceOfMulberryGardenEdit;
