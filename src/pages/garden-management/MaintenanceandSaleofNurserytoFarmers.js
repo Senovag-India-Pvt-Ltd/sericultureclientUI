@@ -76,7 +76,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
     api
       .post(baseURL + `Maintenance-sale/add-info`, data)
       .then((response) => {
-        debugger;
+        // debugger;
         if(response.data.error){
           saveError();
         }else{

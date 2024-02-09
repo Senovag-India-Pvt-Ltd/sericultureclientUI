@@ -28,13 +28,6 @@ import RequestView from "../pages/request/RequestView";
 import AssignRequestToTech from "../pages/request/AssignRequestToTech";
 import TechnicianRequestList from "../pages/technician/TechnicianRequestList";
 
-// apps
-import AppCalendar from "../pages/AppCalendar";
-import KanbanBasic from "../pages/kanban/KanbanBasic";
-import KanbanCustom from "../pages/kanban/KanbanCustom";
-import Chats from "../pages/apps/chat/Chats";
-import Inbox from "../pages/apps/mailbox/Inbox";
-
 // user manage
 import UserList from "../pages/user-manage/UserList";
 import UserCards from "../pages/user-manage/UserCards";
@@ -51,7 +44,7 @@ import AuthLogin from "../pages/auths/AuthLogin";
 import AuthReset from "../pages/auths/AuthReset";
 
 import NotFound from "../pages/error/NotFound";
-import IconsPreview from "../pages/IconsPreview";
+
 
 // production
 import ManufacturingOrderList from "../pages/production/ManufacturingOrderList";
@@ -571,13 +564,7 @@ function Router() {
               element={<TechnicianRequestList />}
             />
 
-            <Route path="apps">
-              <Route path="calendar" element={<AppCalendar />} />
-              <Route path="kanban/basic" element={<KanbanBasic />} />
-              <Route path="kanban/custom" element={<KanbanCustom />} />
-              <Route path="chats" element={<Chats />} />
-              <Route path="inbox" element={<Inbox />} />
-            </Route>
+            
 
             <Route path="user-manage">
               <Route path="user-list" element={<UserList />} />
@@ -669,7 +656,7 @@ function Router() {
               <Route path="auth-reset" element={<AuthReset />} />
             </Route>
 
-            <Route path="icons" element={<IconsPreview />} />
+            
             <Route path="not-found" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
 

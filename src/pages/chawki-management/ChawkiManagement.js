@@ -78,7 +78,7 @@ function ChawkiManagement() {
     api
       .post(baseURL + `chowkimanagement/add-info`, data)
       .then((response) => {
-        debugger;
+        // debugger;
         if(response.data.error){
           saveError();
         }else{
