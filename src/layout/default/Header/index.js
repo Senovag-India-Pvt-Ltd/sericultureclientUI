@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { Dropdown, Offcanvas } from "react-bootstrap";
 import SimpleBar from "simplebar-react";
@@ -31,11 +32,6 @@ import { logout } from "../../../services/authService";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function handleLogout() {
-  localStorage.clear();
-  // logout();
-}
-
 function QuickNav({ className, ...props }) {
   const compClass = classNames({
     "nk-quick-nav": true,
@@ -53,6 +49,7 @@ function QuickNavItem({ className, ...props }) {
 }
 
 function Header() {
+  const navigate = useNavigate();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
@@ -60,6 +57,11 @@ function Header() {
       ? localStorage.getItem("godownId")
       : "",
   });
+
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/");
+  }
 
   const handleInputs = (e) => {
     // debugger;
@@ -382,12 +384,10 @@ function Header() {
                         </LinkList>
                       </div>
                       <div className="dropdown-content dropdown-content-x-lg py-3">
-                        <LinkList>
-                          <LinkListItem to="/" onClick={handleLogout}>
-                            <Icon name="signout"></Icon>
-                            <span>Log Out</span>
-                          </LinkListItem>
-                        </LinkList>
+                        <Button variant="link" onClick={handleLogout}>
+                          <Icon name="signout"></Icon>
+                          <span>Log Out</span>
+                        </Button>
                       </div>
                     </Dropdown.Menu>
                   </Dropdown>
