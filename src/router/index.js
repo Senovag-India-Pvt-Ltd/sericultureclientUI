@@ -183,6 +183,10 @@ import RearingofDFLs from "../pages/garden-management/RearingofDFLs";
 import SupplyofCocoonstoGrainage from "../pages/garden-management/SupplyofCocoonstoGrainage";
 import MaintenanceandSaleofNurserytoFarmers from "../pages/garden-management/MaintenanceandSaleofNurserytoFarmers";
 import ChawkidistributiontoFarmers from "../pages/garden-management/ChawkidistributiontoFarmers";
+import SupplyofCocoonstoGrainageEdit from "../pages/garden-management/SupplyofCocoonstoGrainageEdit";
+import MaintenanceandSaleofNurserytoFarmersEdit from "../pages/garden-management/MaintenanceandSaleofNurserytoFarmersEdit";
+import ChawkidistributiontoFarmersEdit from "../pages/garden-management/ChawkidistributiontoFarmersEdit";
+
 
 // Direct Benefit Transfer
 import SubsidyApprovalVerification from "../pages/direct-benefit-transfer/SubsidyApprovalVerification";
@@ -965,6 +969,21 @@ function Router() {
               path="Chawki-distribution-to-Farmers"
               element={<ChawkidistributiontoFarmers />}
             />
+
+              <Route
+          path="SupplyofCocoonstoGrainage-edit/:id"
+          element={<SupplyofCocoonstoGrainageEdit />}
+        /> 
+
+          <Route
+          path="MaintenanceandSaleofNurserytoFarmers-edit/:id"
+          element={<MaintenanceandSaleofNurserytoFarmersEdit />}
+        /> 
+
+         <Route
+          path="ChawkidistributiontoFarmers-edit/:id"
+          element={<ChawkidistributiontoFarmersEdit />}
+        /> 
 
             {/* Master */}
             <Route path="head-of-account" element={<HeadOfAccount />} />

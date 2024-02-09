@@ -269,10 +269,7 @@ const customStyles = {
   };
 
  const ChawkiDataColumns = [
-
-
-
-
+ 
     {
       name: "Fruits ID",
       selector: (row) => row.fruitsId,
@@ -403,13 +400,7 @@ const customStyles = {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.chowki_id)}
-          >
-            View
-          </Button>
+           
           <Button
             variant="primary"
             size="sm"
