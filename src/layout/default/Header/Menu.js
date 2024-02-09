@@ -1160,15 +1160,15 @@ function Menu() {
          
            
             <MenuItem>
-              <MenuItemLink text="mainenanc of mulberrygardern" to="/mainenanc-of-mulberrygardern" />
+              <MenuItemLink text="Maintenance Of Mulberry Garden" to="/maintenance-of-mulberry-garden" />
             </MenuItem>
 
              <MenuItem>
-              <MenuItemLink text="Receipt of DFLs from the grainage" to="/Receipt-of-DFLs-from-the-grainage" />
+              <MenuItemLink text="Receipt of DFLs from the grainage" to="/receipt-of-dfls" />
             </MenuItem>
 
                <MenuItem>
-              <MenuItemLink text="Rearing of DFLs" to="/Rearing-of-DFLs" />
+              <MenuItemLink text="Rearing of DFLs" to="/rearing-of-dfls" />
             </MenuItem>
 
                 <MenuItem>

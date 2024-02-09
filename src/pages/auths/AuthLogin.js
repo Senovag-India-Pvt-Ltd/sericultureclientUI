@@ -231,7 +231,11 @@ const AuthLoginPage = () => {
       if (isLoginSuccess) {
         navigate("/stake-holder-registration");
       } else {
-        alert("Login Failed");
+        Swal.fire({
+          icon: "warning",
+          title: "Login failed!!!",
+          // text: "You clicked the button!",
+        })
       }
     } catch (error) {
       console.error("Login failed:", error.message);

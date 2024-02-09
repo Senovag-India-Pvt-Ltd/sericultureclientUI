@@ -500,6 +500,18 @@ import HelpDeskFaqView from "../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqEdit from "../pages/masters/help-desk-faq/HelpDeskFaqEdit";
 import HelpDeskFaqList from "../pages/masters/help-desk-faq/HelpDeskFaqList";
 import UserDashboard from "../pages/helpdesk/UserDashboard";
+import MaintenanceOfMulberryGardenList from "../pages/garden-management/MaintenanceOfMulberryGardenList";
+import MaintenanceOfMulberryGardenView from "../pages/garden-management/MaintenanceOfMulberryGardenView";
+import MaintenanceOfMulberryGardenEdit from "../pages/garden-management/MaintenanceOfMulberryGardenEdit";
+import RearingOfDFLsList from "../pages/garden-management/RearingOfDFLsList";
+import RearingOfDFLsView from "../pages/garden-management/RearingOfDFLsView";
+import RearingOfDFLsEdit from "../pages/garden-management/RearingOfDFLsEdit";
+import ReceiptOfDFLsList from "../pages/garden-management/ReceiptOfDFLsList";
+import ReceiptOfDFLsView from "../pages/garden-management/ReceiptOfDFLsView";
+import ReceiptOfDFLsEdit from "../pages/garden-management/ReceiptOfDFLsEdit";
+import SeedCuttingBankList from "../pages/garden-management/SeedCuttingBankList";
+import SeedCuttingBankView from "../pages/garden-management/SeedCuttingBankView";
+import SeedCuttingBankEdit from "../pages/garden-management/SeedCuttingBankEdit";
 
 // Admin and Reports
 
@@ -948,15 +960,28 @@ function Router() {
             {/* Garden Management */}
 
             <Route path="seed-cutting-bank" element={<SeedCuttingBank />} />
+            <Route path="seed-cutting-bank-list" element={<SeedCuttingBankList />} />
+            <Route path="seed-cutting-bank-view/:id" element={<SeedCuttingBankView />} />
+            <Route path="seed-cutting-bank-edit/:id" element={<SeedCuttingBankEdit />} />
             <Route
-              path="mainenanc-of-mulberrygardern"
+              path="maintenance-of-mulberry-garden"
               element={<MaintenanceofmulberryGarden />}
             />
+            <Route path="maintenance-of-mulberry-garden-list" element={<MaintenanceOfMulberryGardenList />} />
+            <Route path="maintenance-of-mulberry-garden-view/:id" element={<MaintenanceOfMulberryGardenView />} />
+            <Route path="maintenance-of-mulberry-garden-edit/:id" element={<MaintenanceOfMulberryGardenEdit />} />
             <Route
-              path="Receipt-of-DFLs-from-the-grainage"
+              path="receipt-of-dfls"
               element={<ReceiptofDFLsfromthegrainage />}
             />
-            <Route path="Rearing-of-DFLs" element={<RearingofDFLs />} />
+            <Route path="receipt-of-dfls-list" element={<ReceiptOfDFLsList />} />
+            <Route path="receipt-of-dfls-view/:id" element={<ReceiptOfDFLsView />} />
+            <Route path="receipt-of-dfls-edit/:id" element={<ReceiptOfDFLsEdit />} />
+
+            <Route path="rearing-of-dfls" element={<RearingofDFLs />} />
+            <Route path="rearing-of-dfls-list" element={<RearingOfDFLsList />} />
+            <Route path="rearing-of-dfls-view/:id" element={<RearingOfDFLsView />} />
+            <Route path="rearing-of-dfls-edit/:id" element={<RearingOfDFLsEdit />} />
             <Route
               path="Supply-of-Cocoons-to-Grainagee"
               element={<SupplyofCocoonstoGrainage />}
