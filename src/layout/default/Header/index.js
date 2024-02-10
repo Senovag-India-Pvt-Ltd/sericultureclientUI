@@ -168,7 +168,8 @@ function Header() {
         <div style={{ padding: "14px 10px 14px 20px" }}>
           <div className="d-flex align-items-center">
             <img
-              src="../images/logo/KG.png"
+              // src="../images/logo/KG.png"
+              src={process.env.PUBLIC_URL + "/images/logo/KG.png"}
               alt="Government of Karnataka"
               style={{ height: 35, width: 35 }}
             />

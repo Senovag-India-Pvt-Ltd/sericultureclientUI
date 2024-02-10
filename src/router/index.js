@@ -520,7 +520,7 @@ function Router() {
   return (
     <ScrollToTop>
       <Routes>
-        <Route path="/blank" element={<Blank />} />
+        {/* <Route path="/blank" element={<Blank />} /> */}
         <Route path="/seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
 

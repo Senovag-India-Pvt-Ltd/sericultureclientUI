@@ -7,7 +7,8 @@ function LoginLogo() {
       <div className="logo-wrap">
         <div className="d-flex justify-content-center">
           <img
-            src="../images/logo/KG.png"
+            // src="../images/logo/KG.png"
+            src={process.env.PUBLIC_URL + "/images/logo/KG.png"}
             alt="Government of Karnataka"
             style={{ height: 200, width: 200 }}
           />
