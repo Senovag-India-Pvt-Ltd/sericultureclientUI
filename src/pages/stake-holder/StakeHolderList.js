@@ -95,11 +95,11 @@ function StakeHolderList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/stake-holder-view/${_id}`);
+    navigate(`/seriui/stake-holder-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/stake-holder-edit/${_id}`);
+    navigate(`/seriui/stake-holder-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

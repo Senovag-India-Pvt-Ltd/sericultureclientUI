@@ -43,11 +43,11 @@ function SourceOfMulberryList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/source-of-mulberry-view/${_id}`);
+    navigate(`/seriui/source-of-mulberry-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/source-of-mulberry-edit/${_id}`);
+    navigate(`/seriui/source-of-mulberry-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

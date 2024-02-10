@@ -42,11 +42,11 @@ function RaceMappingList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/race-mapping-view/${_id}`);
+    navigate(`/seriui/race-mapping-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/race-mapping-edit/${_id}`);
+    navigate(`/seriui/race-mapping-edit/${_id}`);
     // navigate("/seriui/taluk");
   };
 

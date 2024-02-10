@@ -86,11 +86,11 @@ function GodawnList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/godawn-view/${_id}`);
+    navigate(`/seriui/godawn-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/godawn-edit/${_id}`);
+    navigate(`/seriui/godawn-edit/${_id}`);
     // navigate("/seriui/district");
   };
 

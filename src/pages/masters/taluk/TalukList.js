@@ -87,11 +87,11 @@ function TalukList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/taluk-view/${_id}`);
+    navigate(`/seriui/taluk-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/taluk-edit/${_id}`);
+    navigate(`/seriui/taluk-edit/${_id}`);
     // navigate("/seriui/taluk");
   };
 

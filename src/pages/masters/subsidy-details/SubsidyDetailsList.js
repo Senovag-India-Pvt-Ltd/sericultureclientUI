@@ -45,11 +45,11 @@ function SubsidyDetailsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/subsidy-details-view/${_id}`);
+    navigate(`/seriui/subsidy-details-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/subsidy-details-edit/${_id}`);
+    navigate(`/seriui/subsidy-details-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

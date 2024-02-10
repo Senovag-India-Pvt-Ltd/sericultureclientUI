@@ -114,11 +114,11 @@ function ReelerLicenseList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reeler-license-view/${_id}`);
+    navigate(`/seriui/reeler-license-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reeler-license-edit/${_id}`);
+    navigate(`/seriui/reeler-license-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

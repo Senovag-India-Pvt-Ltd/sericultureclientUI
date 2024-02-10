@@ -91,16 +91,16 @@ function TrainingScheduleList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-schedule-view/${_id}`);
+    navigate(`/seriui/training-schedule-view/${_id}`);
   };
 
   // const handleEdit = (_id) => {
-  //   // navigate(`/caste/${_id}`);
+  //   // navigate(`/seriui/caste/${_id}`);
   //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
-    navigate(`/training-schedule-edit/${_id}`);
+    navigate(`/seriui/training-schedule-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 

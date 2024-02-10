@@ -45,11 +45,11 @@ function TrainingProgramList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/trainingPrograms-view/${_id}`);
+    navigate(`/seriui/trainingPrograms-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/trainingPrograms-edit/${_id}`);
+    navigate(`/seriui/trainingPrograms-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

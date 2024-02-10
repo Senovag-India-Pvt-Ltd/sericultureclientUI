@@ -85,11 +85,11 @@ function MarketList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/market-view/${_id}`);
+    navigate(`/seriui/market-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/market-edit/${_id}`);
+    navigate(`/seriui/market-edit/${_id}`);
     // navigate("/seriui/district");
   };
 

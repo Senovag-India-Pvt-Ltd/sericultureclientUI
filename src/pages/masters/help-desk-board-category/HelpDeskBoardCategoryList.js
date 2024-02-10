@@ -45,11 +45,11 @@ function HelpDeskBoardCategoryList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-board-category-view/${_id}`);
+    navigate(`/seriui/hd-board-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-board-category-edit/${_id}`);
+    navigate(`/seriui/hd-board-category-edit/${_id}`);
     // navigate("/seriui/hdBoardCategoryMaster");
   };
 

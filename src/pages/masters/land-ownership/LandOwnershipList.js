@@ -143,11 +143,11 @@ function LandOwnershipList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/land-ownership-view/${_id}`);
+    navigate(`/seriui/land-ownership-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/land-ownership-edit/${_id}`);
+    navigate(`/seriui/land-ownership-edit/${_id}`);
     // navigate("/seriui/land-ownership");
   };
 

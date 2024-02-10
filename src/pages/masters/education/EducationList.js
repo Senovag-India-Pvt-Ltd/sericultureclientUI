@@ -44,11 +44,11 @@ function EducationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/education-view/${_id}`);
+    navigate(`/seriui/education-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/education-edit/${_id}`);
+    navigate(`/seriui/education-edit/${_id}`);
     // navigate("/seriui/education");
   };
 

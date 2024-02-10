@@ -43,11 +43,11 @@ function MulberryVarietyList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/mulberry-variety-view/${_id}`);
+    navigate(`/seriui/mulberry-variety-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/mulberry-variety-edit/${_id}`);
+    navigate(`/seriui/mulberry-variety-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

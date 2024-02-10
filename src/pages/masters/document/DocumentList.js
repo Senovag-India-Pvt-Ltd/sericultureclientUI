@@ -44,11 +44,11 @@ function DocumentList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/documents-view/${_id}`);
+    navigate(`/seriui/documents-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/documents-edit/${_id}`);
+    navigate(`/seriui/documents-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

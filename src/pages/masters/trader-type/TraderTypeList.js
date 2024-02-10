@@ -44,11 +44,11 @@ function TraderTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/trader-type-view/${_id}`);
+    navigate(`/seriui/trader-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/trader-type-edit/${_id}`);
+    navigate(`/seriui/trader-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

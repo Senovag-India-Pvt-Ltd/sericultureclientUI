@@ -45,11 +45,11 @@ function TrainingGroupList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-group-view/${_id}`);
+    navigate(`/seriui/training-group-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/training-group-edit/${_id}`);
+    navigate(`/seriui/training-group-edit/${_id}`);
     // navigate("/seriui/trGroupMaster");
   };
 

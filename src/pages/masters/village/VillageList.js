@@ -93,11 +93,11 @@ function VillageList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/village-view/${_id}`);
+    navigate(`/seriui/village-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/village-edit/${_id}`);
+    navigate(`/seriui/village-edit/${_id}`);
     // navigate("/seriui/taluk");
   };
 

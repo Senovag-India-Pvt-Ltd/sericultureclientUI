@@ -90,11 +90,11 @@ function HobliList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hobli-view/${_id}`);
+    navigate(`/seriui/hobli-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hobli-edit/${_id}`);
+    navigate(`/seriui/hobli-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

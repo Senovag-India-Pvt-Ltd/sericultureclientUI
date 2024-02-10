@@ -43,11 +43,11 @@ function IrrigationSourceList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/irrigation-source-view/${_id}`);
+    navigate(`/seriui/irrigation-source-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/irrigation-source-edit/${_id}`);
+    navigate(`/seriui/irrigation-source-edit/${_id}`);
     // navigate("/seriui/irrigation-source");
   };
 

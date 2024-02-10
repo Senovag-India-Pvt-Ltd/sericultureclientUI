@@ -44,11 +44,11 @@ function RelationshipList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/relationship-view/${_id}`);
+    navigate(`/seriui/relationship-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/relationship-edit/${_id}`);
+    navigate(`/seriui/relationship-edit/${_id}`);
     // navigate("/seriui/relationship");
   };
 

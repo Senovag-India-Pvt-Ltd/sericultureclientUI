@@ -43,11 +43,11 @@ function ScProgramList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/sc-program-view/${_id}`);
+    navigate(`/seriui/sc-program-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/sc-program-edit/${_id}`);
+    navigate(`/seriui/sc-program-edit/${_id}`);
     // navigate("/seriui/soil-type");
   };
 

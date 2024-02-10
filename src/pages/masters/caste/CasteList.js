@@ -65,16 +65,16 @@ function CasteList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/caste-view/${_id}`);
+    navigate(`/seriui/caste-view/${_id}`);
   };
 
   // const handleEdit = (_id) => {
-  //   // navigate(`/caste/${_id}`);
+  //   // navigate(`/seriui/caste/${_id}`);
   //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
-    navigate(`/caste-edit/${_id}`);
+    navigate(`/seriui/caste-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

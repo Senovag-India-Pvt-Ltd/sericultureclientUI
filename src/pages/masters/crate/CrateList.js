@@ -42,11 +42,11 @@ function CrateList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/crate-view/${_id}`);
+    navigate(`/seriui/crate-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/crate-edit/${_id}`);
+    navigate(`/seriui/crate-edit/${_id}`);
     // navigate("/seriui/taluk");
   };
 

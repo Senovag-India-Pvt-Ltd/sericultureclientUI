@@ -178,7 +178,7 @@ function NewReelerLicense() {
         // console.log("Hello");
         if (!response.data.content.isFruitService) {
           const reelerId = response.data.content.farmerResponse.reelerId;
-          navigate(`/reeler-license-edit/${reelerId}`);
+          navigate(`/seriui/reeler-license-edit/${reelerId}`);
         } else {
           api
             .post(

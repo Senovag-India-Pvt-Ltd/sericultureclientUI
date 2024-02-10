@@ -43,11 +43,11 @@ function PlantationTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/plantation-type-view/${_id}`);
+    navigate(`/seriui/plantation-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/plantation-type-edit/${_id}`);
+    navigate(`/seriui/plantation-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

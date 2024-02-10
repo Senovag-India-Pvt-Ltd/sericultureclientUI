@@ -28,11 +28,11 @@ function SaleChawkiWormsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/sale-chawki-worms-view/${_id}`);
+    navigate(`/seriui/sale-chawki-worms-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    // navigate(`/caste/${_id}`);
+    // navigate(`/seriui/caste/${_id}`);
     navigate("/seriui/sale-chawki-worms");
   };
 

@@ -87,11 +87,11 @@ function DistrictList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/district-view/${_id}`);
+    navigate(`/seriui/district-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/district-edit/${_id}`);
+    navigate(`/seriui/district-edit/${_id}`);
     // navigate("/seriui/district");
   };
 

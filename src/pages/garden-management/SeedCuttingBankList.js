@@ -48,11 +48,11 @@ function SeedCuttingBankList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seed-cutting-bank-view/${_id}`);
+    navigate(`/seriui/seed-cutting-bank-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seed-cutting-bank-edit/${_id}`);
+    navigate(`/seriui/seed-cutting-bank-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 

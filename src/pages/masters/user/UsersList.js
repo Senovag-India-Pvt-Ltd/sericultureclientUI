@@ -84,11 +84,11 @@ function UsersList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/users-view/${_id}`);
+    navigate(`/seriui/users-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/users-edit/${_id}`);
+    navigate(`/seriui/users-edit/${_id}`);
     // navigate("/seriui/user");
   };
 

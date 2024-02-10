@@ -513,7 +513,7 @@ function Router() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/seriui/seriui");
+      navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
 

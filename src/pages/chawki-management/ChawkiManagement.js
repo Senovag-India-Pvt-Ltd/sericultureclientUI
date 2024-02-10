@@ -198,11 +198,11 @@ function ChawkiManagement() {
   };
 
   const handleView = (_id) => {
-    navigate(`/chawki-management-view/${_id}`);
+    navigate(`/seriui/chawki-management-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/chawki-management-edit/${_id}`);
+    navigate(`/seriui/chawki-management-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

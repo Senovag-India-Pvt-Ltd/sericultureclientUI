@@ -45,11 +45,11 @@ function TrainingDeputedInstituteList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/deputed-institute-view/${_id}`);
+    navigate(`/seriui/deputed-institute-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/deputed-institute-edit/${_id}`);
+    navigate(`/seriui/deputed-institute-edit/${_id}`);
     // navigate("/seriui/deputedInstituteMaster");
   };
 

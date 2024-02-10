@@ -200,11 +200,11 @@ function ChawkidistributiontoFarmers() {
   };
 
   const handleView = (_id) => {
-    navigate(`/Chawki-distribution-view/${_id}`);
+    navigate(`/seriui/Chawki-distribution-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/ChawkidistributiontoFarmers-edit/${_id}`);
+    navigate(`/seriui/ChawkidistributiontoFarmers-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

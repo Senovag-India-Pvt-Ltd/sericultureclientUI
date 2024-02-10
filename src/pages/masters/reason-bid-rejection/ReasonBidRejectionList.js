@@ -42,11 +42,11 @@ function ReasonBidRejectionList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reason-bid-rejection-view/${_id}`);
+    navigate(`/seriui/reason-bid-rejection-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reason-bid-rejection-edit/${_id}`);
+    navigate(`/seriui/reason-bid-rejection-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

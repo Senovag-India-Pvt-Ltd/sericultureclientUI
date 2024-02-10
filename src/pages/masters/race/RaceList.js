@@ -77,11 +77,11 @@ function RaceList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/race-view/${_id}`);
+    navigate(`/seriui/race-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/race-edit/${_id}`);
+    navigate(`/seriui/race-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

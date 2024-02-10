@@ -199,11 +199,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
   };
 
   const handleView = (_id) => {
-    navigate(`/MaintenanceandSaleofNurserytoFarmers-view/${_id}`);
+    navigate(`/seriui/MaintenanceandSaleofNurserytoFarmers-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/MaintenanceandSaleofNurserytoFarmers-edit/${_id}`);
+    navigate(`/seriui/MaintenanceandSaleofNurserytoFarmers-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

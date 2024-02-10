@@ -43,11 +43,11 @@ function LandCategoryList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/land-category-view/${_id}`);
+    navigate(`/seriui/land-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/land-category-edit/${_id}`);
+    navigate(`/seriui/land-category-edit/${_id}`);
     // navigate("/seriui/land-category");
   };
 

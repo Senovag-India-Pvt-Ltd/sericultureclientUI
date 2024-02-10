@@ -45,11 +45,11 @@ function HelpDeskStatusList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-status-view/${_id}`);
+    navigate(`/seriui/hd-status-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-status-edit/${_id}`);
+    navigate(`/seriui/hd-status-edit/${_id}`);
     // navigate("/seriui/hdStatusMaster");
   };
 

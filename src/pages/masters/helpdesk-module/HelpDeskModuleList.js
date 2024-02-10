@@ -45,11 +45,11 @@ function HelpDeskModuleList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-module-view/${_id}`);
+    navigate(`/seriui/hd-module-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-module-edit/${_id}`);
+    navigate(`/seriui/hd-module-edit/${_id}`);
     // navigate("/seriui/hdModuleMaster");
   };
 

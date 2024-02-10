@@ -43,11 +43,11 @@ function ReasonLotCancellationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reason-lot-cancellation-view/${_id}`);
+    navigate(`/seriui/reason-lot-cancellation-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reason-lot-cancellation-edit/${_id}`);
+    navigate(`/seriui/reason-lot-cancellation-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

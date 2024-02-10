@@ -45,11 +45,11 @@ function HelpDeskFeatureList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-feature-view/${_id}`);
+    navigate(`/seriui/hd-feature-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-feature-edit/${_id}`);
+    navigate(`/seriui/hd-feature-edit/${_id}`);
     // navigate("/seriui/hdFeatureMaster");
   };
 

@@ -101,11 +101,11 @@ function TrainerPageList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/trainer-page-view/${_id}`);
+    navigate(`/seriui/trainer-page-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/trainer-page-edit/${_id}`);
+    navigate(`/seriui/trainer-page-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

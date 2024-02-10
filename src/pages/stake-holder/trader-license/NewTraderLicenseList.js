@@ -43,16 +43,16 @@ function NewTraderLicenseList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/issue-new-trader-license-view/${_id}`);
+    navigate(`/seriui/issue-new-trader-license-view/${_id}`);
   };
 
   // const handleEdit = (_id) => {
-  //   // navigate(`/caste/${_id}`);
+  //   // navigate(`/seriui/caste/${_id}`);
   //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
-    navigate(`/issue-new-trader-license-edit/${_id}`);
+    navigate(`/seriui/issue-new-trader-license-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

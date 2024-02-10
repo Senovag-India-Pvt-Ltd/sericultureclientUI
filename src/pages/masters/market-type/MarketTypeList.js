@@ -43,11 +43,11 @@ function MarketTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/market-type-view/${_id}`);
+    navigate(`/seriui/market-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/market-type-edit/${_id}`);
+    navigate(`/seriui/market-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

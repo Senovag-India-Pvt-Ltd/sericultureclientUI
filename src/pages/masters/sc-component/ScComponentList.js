@@ -41,11 +41,11 @@ function ScComponentList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/sc-component-view/${_id}`);
+    navigate(`/seriui/sc-component-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/sc-component-edit/${_id}`);
+    navigate(`/seriui/sc-component-edit/${_id}`);
     // navigate("/seriui/soil-type");
   };
 

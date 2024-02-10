@@ -56,11 +56,11 @@ function DesignationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/designation-view/${_id}`);
+    navigate(`/seriui/designation-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/designation-edit/${_id}`);
+    navigate(`/seriui/designation-edit/${_id}`);
     // navigate("/seriui/designation");
   };
 

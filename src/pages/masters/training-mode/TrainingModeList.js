@@ -45,11 +45,11 @@ function TrainingModeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-mode-view/${_id}`);
+    navigate(`/seriui/training-mode-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/training-mode-edit/${_id}`);
+    navigate(`/seriui/training-mode-edit/${_id}`);
     // navigate("/seriui/trModeMaster");
   };
 

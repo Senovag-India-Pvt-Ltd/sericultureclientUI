@@ -41,11 +41,11 @@ function ScHeadAccountList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/sc-head-account-view/${_id}`);
+    navigate(`/seriui/sc-head-account-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/sc-head-account-edit/${_id}`);
+    navigate(`/seriui/sc-head-account-edit/${_id}`);
     // navigate("/seriui/soil-type");
   };
 

@@ -172,11 +172,11 @@ function SupplyofCocoonstoGrainage() {
   };
 
   const handleView = (_id) => {
-    navigate(`/SupplyofCocoonstoGrainage-view/${_id}`);
+    navigate(`/seriui/SupplyofCocoonstoGrainage-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/SupplyofCocoonstoGrainage-edit/${_id}`);
+    navigate(`/seriui/SupplyofCocoonstoGrainage-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

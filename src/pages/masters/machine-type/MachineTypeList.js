@@ -43,11 +43,11 @@ function MachineTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/machine-type-view/${_id}`);
+    navigate(`/seriui/machine-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/machine-type-edit/${_id}`);
+    navigate(`/seriui/machine-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

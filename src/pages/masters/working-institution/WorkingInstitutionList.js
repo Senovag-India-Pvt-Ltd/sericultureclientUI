@@ -45,11 +45,11 @@ function WorkingInstitutionList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/workingInstitutions-view/${_id}`);
+    navigate(`/seriui/workingInstitutions-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/workingInstitutions-edit/${_id}`);
+    navigate(`/seriui/workingInstitutions-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

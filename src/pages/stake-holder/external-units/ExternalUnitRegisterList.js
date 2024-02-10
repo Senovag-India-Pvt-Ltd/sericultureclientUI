@@ -43,16 +43,16 @@ function ExternalUnitRegisterList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/external-unit-registration-view/${_id}`);
+    navigate(`/seriui/external-unit-registration-view/${_id}`);
   };
 
   // const handleEdit = (_id) => {
-  //   // navigate(`/caste/${_id}`);
+  //   // navigate(`/seriui/caste/${_id}`);
   //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
-    navigate(`/external-unit-registration-edit/${_id}`);
+    navigate(`/seriui/external-unit-registration-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

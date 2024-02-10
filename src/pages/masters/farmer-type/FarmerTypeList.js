@@ -45,11 +45,11 @@ function FarmerTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/farmer-type-view/${_id}`);
+    navigate(`/seriui/farmer-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/farmer-type-edit/${_id}`);
+    navigate(`/seriui/farmer-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

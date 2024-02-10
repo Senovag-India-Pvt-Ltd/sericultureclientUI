@@ -41,11 +41,11 @@ function PostListPage() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/education-view/${_id}`);
+    navigate(`/seriui/education-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    // navigate(`/education/${_id}`);
+    // navigate(`/seriui/education/${_id}`);
     navigate("/seriui/education");
   };
 

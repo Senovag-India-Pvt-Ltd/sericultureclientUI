@@ -44,11 +44,11 @@ function SourceList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/source-view/${_id}`);
+    navigate(`/seriui/source-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/source-edit/${_id}`);
+    navigate(`/seriui/source-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

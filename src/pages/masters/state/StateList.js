@@ -45,11 +45,11 @@ function StateList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/state-view/${_id}`);
+    navigate(`/seriui/state-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/state-edit/${_id}`);
+    navigate(`/seriui/state-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

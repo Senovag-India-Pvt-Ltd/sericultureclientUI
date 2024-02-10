@@ -44,11 +44,11 @@ function ExternalUnitTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/external-unit-type-view/${_id}`);
+    navigate(`/seriui/external-unit-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/external-unit-type-edit/${_id}`);
+    navigate(`/seriui/external-unit-type-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

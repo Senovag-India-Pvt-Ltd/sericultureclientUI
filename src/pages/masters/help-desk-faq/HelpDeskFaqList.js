@@ -45,11 +45,11 @@ function HelpDeskFaqList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-question-view/${_id}`);
+    navigate(`/seriui/hd-question-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-question-edit/${_id}`);
+    navigate(`/seriui/hd-question-edit/${_id}`);
     // navigate("/seriui/hdQuestionMaster");
   };
 

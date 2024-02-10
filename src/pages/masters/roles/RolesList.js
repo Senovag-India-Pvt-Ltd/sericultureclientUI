@@ -45,11 +45,11 @@ function RolesList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/roles-view/${_id}`);
+    navigate(`/seriui/roles-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/roles-edit/${_id}`);
+    navigate(`/seriui/roles-edit/${_id}`);
     // navigate("/seriui/state");
   };
 

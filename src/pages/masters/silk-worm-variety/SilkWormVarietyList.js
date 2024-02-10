@@ -43,11 +43,11 @@ function SilkWormVarietyList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/silk-worm-variety-view/${_id}`);
+    navigate(`/seriui/silk-worm-variety-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/silk-worm-variety-edit/${_id}`);
+    navigate(`/seriui/silk-worm-variety-edit/${_id}`);
     // navigate("/seriui/silk-worm-variety");
   };
 

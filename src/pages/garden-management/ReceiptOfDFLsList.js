@@ -47,11 +47,11 @@ function ReceiptOfDFLsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/receipt-of-dfls-view/${_id}`);
+    navigate(`/seriui/receipt-of-dfls-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/receipt-of-dfls-edit/${_id}`);
+    navigate(`/seriui/receipt-of-dfls-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 

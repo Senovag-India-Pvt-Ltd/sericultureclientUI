@@ -85,11 +85,11 @@ function BinList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/bin-view/${_id}`);
+    navigate(`/seriui/bin-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    // navigate(`/village/${_id}`);
+    // navigate(`/seriui/village/${_id}`);
     navigate("/seriui/bin");
   };
 

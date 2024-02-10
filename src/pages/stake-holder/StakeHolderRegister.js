@@ -107,7 +107,7 @@ function StakeHolderRegister() {
       .then((response) => {
         if (!response.data.content.isFruitService) {
           const farmerId = response.data.content.farmerResponse.farmerId;
-          navigate(`/stake-holder-edit/${farmerId}`);
+          navigate(`/seriui/stake-holder-edit/${farmerId}`);
         } else {
           api
             .post(
@@ -166,7 +166,7 @@ function StakeHolderRegister() {
   //     .then((response) => {
   //       if (!response.data.content.isFruitService) {
   //         const farmerId = response.data.content.farmerResponse.farmerId;
-  //         navigate(`/stake-holder-edit/${farmerId}`);
+  //         navigate(`/seriui/stake-holder-edit/${farmerId}`);
   //       } else {
   //         axios
   //           .post('http://13.200.62.144:8000/farmer-registration/fuits-api/get-farmer-by-fid',farmerId, {

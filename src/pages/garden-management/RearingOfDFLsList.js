@@ -46,11 +46,11 @@ function RearingOfDFLsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/rearing-of-dfls-view/${_id}`);
+    navigate(`/seriui/rearing-of-dfls-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/rearing-of-dfls-edit/${_id}`);
+    navigate(`/seriui/rearing-of-dfls-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 

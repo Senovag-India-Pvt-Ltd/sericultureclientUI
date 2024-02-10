@@ -42,11 +42,11 @@ function EmpanelledVendorList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/empanelled-vendor-view/${_id}`);
+    navigate(`/seriui/empanelled-vendor-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/empanelled-vendor-edit/${_id}`);
+    navigate(`/seriui/empanelled-vendor-edit/${_id}`);
     // navigate("/seriui/soil-type");
   };
 

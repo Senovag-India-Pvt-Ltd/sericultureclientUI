@@ -44,11 +44,11 @@ function TrainingOfficeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-office-view/${_id}`);
+    navigate(`/seriui/training-office-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/training-office-edit/${_id}`);
+    navigate(`/seriui/training-office-edit/${_id}`);
     // navigate("/seriui/trOffice");
   };
 

@@ -45,11 +45,11 @@ function ReelerTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reeler-type-view/${_id}`);
+    navigate(`/seriui/reeler-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reeler-type-edit/${_id}`);
+    navigate(`/seriui/reeler-type-edit/${_id}`);
     // navigate("/seriui/releerTypeMaster");
   };
 

@@ -46,11 +46,11 @@ function MaintenanceOfMulberryGardenList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/maintenance-of-mulberry-garden-view/${_id}`);
+    navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/maintenance-of-mulberry-garden-edit/${_id}`);
+    navigate(`/seriui/maintenance-of-mulberry-garden-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 

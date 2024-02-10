@@ -45,11 +45,11 @@ function HelpDeskSeverityList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-severity-view/${_id}`);
+    navigate(`/seriui/hd-severity-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-severity-edit/${_id}`);
+    navigate(`/seriui/hd-severity-edit/${_id}`);
     // navigate("/seriui/hdSeverityMaster");
   };
 
