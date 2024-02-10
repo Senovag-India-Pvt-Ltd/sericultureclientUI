@@ -37,19 +37,19 @@ function EmpanelledVendorEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `vendorMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError();
-          }else{
+      api
+        .post(baseURL + `vendorMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError();
+          } else {
             updateSuccess();
           }
-      })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+        })
+        .catch((err) => {
+          setData({});
+          updateError();
+        });
       setValidated(true);
     }
   };
@@ -81,7 +81,7 @@ function EmpanelledVendorEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/empanelled-vendor-list"));
+    }).then(() => navigate("/seriui/empanelled-vendor-list"));
   };
 
   const updateError = () => {
@@ -97,7 +97,7 @@ function EmpanelledVendorEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/empanelled-vendor-list"));
+    }).then(() => navigate("/seriui/empanelled-vendor-list"));
   };
 
   return (
@@ -111,7 +111,7 @@ function EmpanelledVendorEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -120,7 +120,7 @@ function EmpanelledVendorEdit() {
               </li>
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -142,11 +142,13 @@ function EmpanelledVendorEdit() {
                   <h1 className="d-flex justify-content-center align-items-center">
                     Loading...
                   </h1>
-                    ) : (
+                ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="vendorMaster">Empaneled Vendor<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="vendorMaster">
+                          Empaneled Vendor<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="vendorMaster"
@@ -156,10 +158,10 @@ function EmpanelledVendorEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Empaneled Vendor"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Vendor Name is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Vendor Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -178,7 +180,7 @@ function EmpanelledVendorEdit() {
                 </li>
                 <li>
                   <Link
-                    to="/empanelled-vendor-list"
+                    to="/seriui/empanelled-vendor-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

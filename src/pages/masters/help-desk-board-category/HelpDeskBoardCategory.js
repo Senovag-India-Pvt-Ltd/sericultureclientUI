@@ -35,31 +35,31 @@ function HelpDeskBoardCategory() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdBoardCategoryMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdBoardCategoryMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
-                hdBoardCategoryName: "",
+              hdBoardCategoryName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdBoardCategoryName: "", 
-    })
-  }
+      hdBoardCategoryName: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -87,7 +87,7 @@ function HelpDeskBoardCategory() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-board-category-list"
+                  to="/seriui/hd-board-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -96,7 +96,7 @@ function HelpDeskBoardCategory() {
               </li>
               <li>
                 <Link
-                  to="/hd-board-category-list"
+                  to="/seriui/hd-board-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,7 +118,9 @@ function HelpDeskBoardCategory() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Hd BoardCategory">Broad Category<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Hd BoardCategory">
+                        Broad Category<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hdBoardCategory"
@@ -130,7 +132,7 @@ function HelpDeskBoardCategory() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Broad Category Name is required
+                          Broad Category Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -141,22 +143,22 @@ function HelpDeskBoardCategory() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

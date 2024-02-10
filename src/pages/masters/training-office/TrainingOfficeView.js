@@ -57,7 +57,7 @@ function TrainingOfficeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-office-list"
+                  to="/seriui/training-office-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function TrainingOfficeView() {
               </li>
               <li>
                 <Link
-                  to="/training-office-list"
+                  to="/seriui/training-office-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -112,6 +112,3 @@ function TrainingOfficeView() {
 }
 
 export default TrainingOfficeView;
-
-
-

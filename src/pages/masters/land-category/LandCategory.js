@@ -38,12 +38,12 @@ function LandCategory() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `landCategory/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `landCategory/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               landCategoryName: "",
@@ -51,20 +51,20 @@ function LandCategory() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       landCategoryName: "",
-      landCategoryNameInKannada: "", 
-    })
-  }
+      landCategoryNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -94,7 +94,7 @@ function LandCategory() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/land-category-list"
+                  to="/seriui/land-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function LandCategory() {
               </li>
               <li>
                 <Link
-                  to="/land-category-list"
+                  to="/seriui/land-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -126,7 +126,8 @@ function LandCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="category">
-                        Land Holding Category<span className="text-danger">*</span>
+                        Land Holding Category
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -148,7 +149,8 @@ function LandCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Land Category Name in Kannada<span className="text-danger">*</span>
+                        Land Category Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -161,7 +163,7 @@ function LandCategory() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Land Category  Name in Kannada is required.
+                          Land Category Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -179,7 +181,7 @@ function LandCategory() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

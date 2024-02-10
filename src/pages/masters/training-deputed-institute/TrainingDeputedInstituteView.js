@@ -7,7 +7,6 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingDeputedInstituteView() {
@@ -58,7 +57,7 @@ function TrainingDeputedInstituteView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/deputed-institute-list"
+                  to="/seriui/deputed-institute-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +66,7 @@ function TrainingDeputedInstituteView() {
               </li>
               <li>
                 <Link
-                  to="/deputed-institute-list"
+                  to="/seriui/deputed-institute-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -113,7 +112,3 @@ function TrainingDeputedInstituteView() {
 }
 
 export default TrainingDeputedInstituteView;
-
-
-
-

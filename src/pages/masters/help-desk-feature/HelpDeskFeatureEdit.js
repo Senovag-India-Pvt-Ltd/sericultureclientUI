@@ -35,52 +35,51 @@ function HelpDeskFeatureEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdFeatureMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdFeatureMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
-                hdModuleId: "",
-                hdFeatureName: "",
+              hdModuleId: "",
+              hdFeatureName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdModuleId: "",
-        hdFeatureName: "", 
-    })
-  }
+      hdModuleId: "",
+      hdFeatureName: "",
+    });
+  };
 
- // to get Module
- const [hdModuleListData, setHdModuleListData] = useState([]);
+  // to get Module
+  const [hdModuleListData, setHdModuleListData] = useState([]);
 
- const getList = () => {
-   const response = api
-     .get(baseURL + `hdModuleMaster/get-all`)
-     .then((response) => {
-       setHdModuleListData(response.data.content.hdModuleMaster);
-     })
-     .catch((err) => {
-       setHdModuleListData([]);
-     });
- };
+  const getList = () => {
+    const response = api
+      .get(baseURL + `hdModuleMaster/get-all`)
+      .then((response) => {
+        setHdModuleListData(response.data.content.hdModuleMaster);
+      })
+      .catch((err) => {
+        setHdModuleListData([]);
+      });
+  };
 
- useEffect(() => {
-   getList();
- }, []);
-
+  useEffect(() => {
+    getList();
+  }, []);
 
   //   to get data from api
   const getIdList = () => {
@@ -138,7 +137,7 @@ function HelpDeskFeatureEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -147,7 +146,7 @@ function HelpDeskFeatureEdit() {
               </li>
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -171,39 +170,45 @@ function HelpDeskFeatureEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Modules<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="hdModuleId"
-                          value={data.hdModuleId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.hdModuleId === undefined || data.hdModuleId === "0"}
-                        >
-                         <option value="">Select Module</option>
-                          {hdModuleListData.map((list) => (
-                            <option
-                              key={list.hdModuleId}
-                              value={list.hdModuleId}
-                            >
-                              {list.hdModuleName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Module name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="hdFeature">Features<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Modules<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hdModuleId"
+                            value={data.hdModuleId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hdModuleId === undefined ||
+                              data.hdModuleId === "0"
+                            }
+                          >
+                            <option value="">Select Module</option>
+                            {hdModuleListData.map((list) => (
+                              <option
+                                key={list.hdModuleId}
+                                value={list.hdModuleId}
+                              >
+                                {list.hdModuleName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Module name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="hdFeature">
+                          Features<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="hdFeature"
@@ -213,10 +218,10 @@ function HelpDeskFeatureEdit() {
                             type="text"
                             placeholder="Enter Features"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
+                          />
+                          <Form.Control.Feedback type="invalid">
                             Feature Name is required.
-                            </Form.Control.Feedback>
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -224,25 +229,25 @@ function HelpDeskFeatureEdit() {
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

@@ -9,7 +9,6 @@ import axios from "axios";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-
 function RejectFarmerAuction() {
   const navigate = useNavigate();
 
@@ -28,23 +27,23 @@ function RejectFarmerAuction() {
     setIsActive((current) => !current);
   };
 
- // to get Bid Rejection
- const [bidRejectionListData, setBidRejectionListData] = useState([]);
+  // to get Bid Rejection
+  const [bidRejectionListData, setBidRejectionListData] = useState([]);
 
- const getBidRejectionList = () => {
-   axios
-     .get(baseURL + `reason-bid-reject-master/get-all`)
-     .then((response) => {
-       setBidRejectionListData(response.data.content.reasonBidRejectMaster);
-     })
-     .catch((err) => {
-       setBidRejectionListData([]);
-     });
- };
+  const getBidRejectionList = () => {
+    axios
+      .get(baseURL + `reason-bid-reject-master/get-all`)
+      .then((response) => {
+        setBidRejectionListData(response.data.content.reasonBidRejectMaster);
+      })
+      .catch((err) => {
+        setBidRejectionListData([]);
+      });
+  };
 
- useEffect(() => {
-  getBidRejectionList();
- }, []);
+  useEffect(() => {
+    getBidRejectionList();
+  }, []);
 
   return (
     <Layout title="Reject Farmer Auction">
@@ -55,7 +54,7 @@ function RejectFarmerAuction() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

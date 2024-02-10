@@ -35,33 +35,33 @@ function TrainingGroupEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `trGroupMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `trGroupMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               trGroupMasterName: "",
-              trGroupNameInKannada: "", 
+              trGroupNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trGroupMasterName: "",
-      trGroupNameInKannada: "",  
-    })
-  }
+      trGroupNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -119,7 +119,7 @@ function TrainingGroupEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trGroupMaster-list"
+                  to="/seriui/trGroupMaster-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +128,7 @@ function TrainingGroupEdit() {
               </li>
               <li>
                 <Link
-                  to="/trGroupMaster-list"
+                  to="/seriui/trGroupMaster-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -154,7 +154,9 @@ function TrainingGroupEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="trGroupMaster">Training Group<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="trGroupMaster">
+                          Training Group<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="trGroupMaster"
@@ -164,58 +166,59 @@ function TrainingGroupEdit() {
                             type="text"
                             placeholder="Enter Training Group"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
+                          />
+                          <Form.Control.Feedback type="invalid">
                             Training Group Name is required.
-                            </Form.Control.Feedback>
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Training Group Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="trGroupNameInKannada"
-                          value={data.trGroupNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Group Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Training Group Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Training Group Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="trGroupNameInKannada"
+                            value={data.trGroupNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Training Group Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Group Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

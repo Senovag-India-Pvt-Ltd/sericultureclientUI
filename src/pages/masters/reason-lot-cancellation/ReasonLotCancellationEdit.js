@@ -35,19 +35,19 @@ function ReasonLotCancellationEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reason-lot-reject-master/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
+      api
+        .post(baseURL + `reason-lot-reject-master/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
           }
-      })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+        })
+        .catch((err) => {
+          setData({});
+          updateError();
+        });
       setValidated(true);
     }
   };
@@ -79,13 +79,13 @@ function ReasonLotCancellationEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reason-lot-cancellation-list"));
+    }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Update attempt was not successful",
-      text:  message,
+      text: message,
     });
   };
   const editError = (message) => {
@@ -93,7 +93,7 @@ function ReasonLotCancellationEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/reason-lot-cancellation-list"));
+    }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
 
   return (
@@ -107,7 +107,7 @@ function ReasonLotCancellationEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -116,7 +116,7 @@ function ReasonLotCancellationEdit() {
               </li>
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -142,7 +142,10 @@ function ReasonLotCancellationEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="rear">Reason for Lot Cancellation<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="rear">
+                          Reason for Lot Cancellation
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="Reason Lot Cancellation"
@@ -152,10 +155,10 @@ function ReasonLotCancellationEdit() {
                             type="text"
                             placeholder="Enter Reason for Lot Cancellation"
                             required
-                        />
-                         <Form.Control.Feedback type="invalid">
-                         Reason for Lot Cancellation is required
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reason for Lot Cancellation is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -173,7 +176,10 @@ function ReasonLotCancellationEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/reason-lot-cancellation-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/reason-lot-cancellation-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

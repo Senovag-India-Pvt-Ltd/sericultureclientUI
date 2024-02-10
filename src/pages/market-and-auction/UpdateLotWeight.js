@@ -194,7 +194,7 @@ function UpdateLotWeight() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -213,7 +213,7 @@ function UpdateLotWeight() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Update Lot Weight
@@ -225,7 +225,7 @@ function UpdateLotWeight() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -234,7 +234,7 @@ function UpdateLotWeight() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

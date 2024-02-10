@@ -35,33 +35,33 @@ function MachineTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `machine-type-master/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `machine-type-master/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               machineTypeName: "",
-              machineTypeNameInKannada: "", 
+              machineTypeNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       machineTypeName: "",
       machineTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -118,7 +118,7 @@ function MachineTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/machine-type-list"
+                  to="/seriui/machine-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +127,7 @@ function MachineTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/machine-type-list"
+                  to="/seriui/machine-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +153,9 @@ function MachineTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="machine">Machine Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="machine">
+                          Machine Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="machine"
@@ -163,33 +165,36 @@ function MachineTypeEdit() {
                             type="text"
                             placeholder="Enter Machine Type"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Machine Type is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Machine Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="machine">Machine Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="machine"
-                          name="machineTypeNameInKannada"
-                          type="text"
-                          value={data.machineTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Machine Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Machine Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="machine">
+                          Machine Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="machine"
+                            name="machineTypeNameInKannada"
+                            type="text"
+                            value={data.machineTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Machine Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Machine Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -204,7 +209,7 @@ function MachineTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

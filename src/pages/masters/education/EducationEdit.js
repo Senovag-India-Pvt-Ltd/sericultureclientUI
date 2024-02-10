@@ -41,33 +41,33 @@ function EducationEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `education/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
-        setData({
-          name: "",
-          educationNameInKannada:"", 
-        });
-        setValidated(false);
+      api
+        .post(baseURL + `education/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              name: "",
+              educationNameInKannada: "",
+            });
+            setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       name: "",
-      educationNameInKannada:"", 
-    })
-  }
+      educationNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -123,7 +123,7 @@ function EducationEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -132,7 +132,7 @@ function EducationEdit() {
               </li>
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -154,7 +154,9 @@ function EducationEdit() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">Education<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="name">
+                        Education<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="name"
@@ -175,7 +177,8 @@ function EducationEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Education Name in Kannada<span className="text-danger">*</span>
+                        Education Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -198,23 +201,23 @@ function EducationEdit() {
             </Card>
 
             <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

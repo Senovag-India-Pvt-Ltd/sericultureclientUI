@@ -6,59 +6,54 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
 import SeedCuttingBank from "./SeedCuttingBank";
-
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function SeedCuttingBankList() {
-    const [listData, setListData] = useState({});
-    const [page, setPage] = useState(0);
-    const countPerPage = 5;
-    const [totalRows, setTotalRows] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const _params = { params: { pageNumber: page, size: countPerPage } };
-    const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const getList = () => {
+    setLoading(true);
 
-    const getList = () => {
-        setLoading(true);
-    
-        const response = api
-          .get(baseURL2+`seed-cutting/get-info`)
-          .then((response) => {
-            // console.log(response.data)
-            setListData(response.data);
-            // setTotalRows(response.data.content.totalItems);
-            setLoading(false);
-          })
-          .catch((err) => {
-            // setListData({});
-            setLoading(false);
-          });   
-      };
-    
-     useEffect(() => {
-        getList();
-      }, []);
+    const response = api
+      .get(baseURL2 + `seed-cutting/get-info`)
+      .then((response) => {
+        // console.log(response.data)
+        setListData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
 
- const  navigate = useNavigate();
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/seed-cutting-bank-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
     navigate(`/seed-cutting-bank-edit/${_id}`);
-    // navigate("/training Schedule");
+    // navigate("/seriui/training Schedule");
   };
 
   const deleteError = () => {
@@ -200,11 +195,11 @@ function SeedCuttingBankList() {
       hide: "md",
     },
     {
-        name: "Quantity Of Seed Cuttings",
-        selector: (row) => row.quantityOfSeedCuttings,
-        cell: (row) => <span>{row.quantityOfSeedCuttings}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Quantity Of Seed Cuttings",
+      selector: (row) => row.quantityOfSeedCuttings,
+      cell: (row) => <span>{row.quantityOfSeedCuttings}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Date Of Pruning",
@@ -212,21 +207,21 @@ function SeedCuttingBankList() {
       cell: (row) => <span>{row.dateOfPruning}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
       name: " Rate Per Tonne",
       selector: (row) => row.ratePerTonne,
       cell: (row) => <span>{row.ratePerTonne}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
-        name: "Receipt Number",
-        selector: (row) => row.receiptNumber,
-        cell: (row) => <span>{row.receiptNumber}</span>,
-        sortable: true,
-        hide: "md",
-    },      
+      name: "Receipt Number",
+      selector: (row) => row.receiptNumber,
+      cell: (row) => <span>{row.receiptNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -239,14 +234,17 @@ function SeedCuttingBankList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/seed-cutting-bank" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/seed-cutting-bank"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seed-cutting-bank"
+                  to="/seriui/seed-cutting-bank"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

@@ -57,7 +57,7 @@ function HelpDeskSeverityView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-severity-list"
+                  to="/seriui/hd-severity-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function HelpDeskSeverityView() {
               </li>
               <li>
                 <Link
-                  to="/hd-severity-list"
+                  to="/seriui/hd-severity-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -110,6 +110,5 @@ function HelpDeskSeverityView() {
     </Layout>
   );
 }
-
 
 export default HelpDeskSeverityView;

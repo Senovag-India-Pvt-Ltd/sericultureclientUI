@@ -59,7 +59,7 @@ function RaceMappingView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/race-mapping-list"
+                  to="/seriui/race-mapping-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +68,7 @@ function RaceMappingView() {
               </li>
               <li>
                 <Link
-                  to="/race-mapping-list"
+                  to="/seriui/race-mapping-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,9 +80,9 @@ function RaceMappingView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Card.Header>Race Mapping Details</Card.Header>
+          <Card.Header>Race Mapping Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">

@@ -6,57 +6,52 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
-
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsList() {
-    const [listData, setListData] = useState({});
-    const [page, setPage] = useState(0);
-    const countPerPage = 5;
-    const [totalRows, setTotalRows] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const _params = { params: { pageNumber: page, size: countPerPage } };
-    const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const getList = () => {
+    setLoading(true);
 
-    const getList = () => {
-        setLoading(true);
-    
-        const response = api
-          .get(baseURL2+`Rearing-of-dfls/get-info`)
-          .then((response) => {
-            // console.log(response.data)
-            setListData(response.data);
-            // setTotalRows(response.data.content.totalItems);
-            setLoading(false);
-          })
-          .catch((err) => {
-            // setListData({});
-            setLoading(false);
-          });   
-      };
-    
-     useEffect(() => {
-        getList();
-      }, []);
+    const response = api
+      .get(baseURL2 + `Rearing-of-dfls/get-info`)
+      .then((response) => {
+        // console.log(response.data)
+        setListData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
 
- const  navigate = useNavigate();
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/rearing-of-dfls-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
     navigate(`/rearing-of-dfls-edit/${_id}`);
-    // navigate("/training Schedule");
+    // navigate("/seriui/training Schedule");
   };
 
   const deleteError = () => {
@@ -198,11 +193,11 @@ function RearingOfDFLsList() {
       hide: "md",
     },
     {
-        name: "Crop Number",
-        selector: (row) => row.cropNumber,
-        cell: (row) => <span>{row.cropNumber}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Crop Number",
+      selector: (row) => row.cropNumber,
+      cell: (row) => <span>{row.cropNumber}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: " Lot Number",
@@ -210,21 +205,21 @@ function RearingOfDFLsList() {
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
       name: " Number Of DFLs",
       selector: (row) => row.numberOfDFLs,
       cell: (row) => <span>{row.numberOfDFLs}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
-        name: "Cold Storage Details",
-        selector: (row) => row.coldStorageDetails,
-        cell: (row) => <span>{row.coldStorageDetails}</span>,
-        sortable: true,
-        hide: "md",
-    },      
+      name: "Cold Storage Details",
+      selector: (row) => row.coldStorageDetails,
+      cell: (row) => <span>{row.coldStorageDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -237,14 +232,17 @@ function RearingOfDFLsList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/rearing-of-dfls" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/rearing-of-dfls"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/rearing-of-dfls"
+                  to="/seriui/rearing-of-dfls"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

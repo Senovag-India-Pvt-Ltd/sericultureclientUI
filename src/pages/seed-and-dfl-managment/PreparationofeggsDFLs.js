@@ -5,22 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
- 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PreparationofeggsDFLs() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -36,7 +32,7 @@ function PreparationofeggsDFLs() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -389,7 +385,7 @@ function PreparationofeggsDFLs() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -410,7 +406,7 @@ function PreparationofeggsDFLs() {
       stateName: chooseName,
     });
   };
-  
+
   return (
     <Layout title="Preparati on of eggs (DFLs)">
       <Block.Head>
@@ -420,13 +416,13 @@ function PreparationofeggsDFLs() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Preparati on of eggs (DFLs)
+                  Preparati on of eggs (DFLs)
                 </li>
               </ol>
             </nav>
@@ -435,7 +431,7 @@ function PreparationofeggsDFLs() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -444,7 +440,7 @@ function PreparationofeggsDFLs() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -458,219 +454,210 @@ function PreparationofeggsDFLs() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>  Preparati on of eggs (DFLs)  </Card.Header>
+                      <Card.Header> Preparati on of eggs (DFLs) </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Name of the Grainage and Address
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Name of the Grainage and Address"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                     Lot number/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot number/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Number of Cocoons (CB, Hybrid)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Number of Cocoons (CB, Hybrid)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                          
-                          
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Date of moth emergence
-                            </Form.Label>
-                               <div className="Date of moth emergence">
-                              <DatePicker />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Egg sheet serial number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Egg sheet serial number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Number of pairs
-                            </Form.Label>
-                             <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Number of pairs"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Number of Rejection</Form.Label>
-                      <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Number of Rejection"
-                              />
-                            </div>
-                    </Form.Group>
-                         </Col  > 
-                         
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           DFLs obtained
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="DFLs obtained "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Egg Recovery %
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Egg Recovery %"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Examination details (Date, etc)
-                            </Form.Label>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Name of the Grainage and Address
+                              </Form.Label>
                               <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Examination details (Date, etc)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                           
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Test results
-                            </Form.Label>
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Name of the Grainage and Address"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number/Year
+                              </Form.Label>
                               <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Test results"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot number/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                        Certification (Yes/No)
-                            </Form.Label>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of Cocoons (CB, Hybrid)
+                              </Form.Label>
                               <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Certification (Yes/No)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of Cocoons (CB, Hybrid)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                       Additional remarks
-                            </Form.Label>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Date of moth emergence
+                              </Form.Label>
+                              <div className="Date of moth emergence">
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Egg sheet serial number
+                              </Form.Label>
                               <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Additional remarks"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Egg sheet serial number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of pairs
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Number of pairs"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                             
- 
- 
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Number of Rejection</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Number of Rejection"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                DFLs obtained
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="DFLs obtained "
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Egg Recovery %
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Egg Recovery %"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Examination details (Date, etc)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Examination details (Date, etc)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Test results
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Test results"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Certification (Yes/No)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Certification (Yes/No)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Additional remarks
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Additional remarks"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="12" className="text-center">
+                            <Button type="button" variant="primary">
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -680,56 +667,68 @@ function PreparationofeggsDFLs() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Lot number</th>   
-                                  <th style={styles.ctstyle}>Race (MSC,CSR 2,FC1, FC2)</th> 
-                                  <th style={styles.ctstyle}>Date of seed cocoon supply</th> 
-                                   <th style={styles.ctstyle}>Name of the Government Seed Farm/Farmer</th> 
+                                  <th style={styles.ctstyle}>Lot number</th>
+                                  <th style={styles.ctstyle}>
+                                    Race (MSC,CSR 2,FC1, FC2)
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of seed cocoon supply
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Name of the Government Seed Farm/Farmer
+                                  </th>
                                   <th style={styles.ctstyle}>Spun On date</th>
-                                   <th style={styles.ctstyle}>Crop Number</th>
-                                    <th style={styles.ctstyle}>Source (Line) of the Cocoon</th> 
-                                  <th style={styles.ctstyle}>Bed number Number / Kgs of cocoons supplied </th>
-                                   <th style={styles.ctstyle}>Number of pupa examined</th>
-                                     <th style={styles.ctstyle}>Cocoon rejection details/ numbers</th> 
-                                  <th style={styles.ctstyle}>Invoice No. and Date</th>
-                                   <th style={styles.ctstyle}>Rate per Kg</th>
-                                   
+                                  <th style={styles.ctstyle}>Crop Number</th>
+                                  <th style={styles.ctstyle}>
+                                    Source (Line) of the Cocoon
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Bed number Number / Kgs of cocoons supplied{" "}
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Number of pupa examined
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Cocoon rejection details/ numbers
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Invoice No. and Date
+                                  </th>
+                                  <th style={styles.ctstyle}>Rate per Kg</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Lot number data </td>  
-                                    <td>Race (MSC,CSR 2,FC1, FC2) data</td> 
-                                    <td>Date of seed cocoon supply data</td> 
-                                     <td>Name of the Government Seed Farm/Farmer data</td> 
-                                    <td>12/20/2023</td> 
-                                    <td>Crop Number data</td>  
-                                    <td>Source (Line) of the Cocoon data </td> 
-                                    <td>Bed number Number / Kgs of cocoons supplied data</td> 
-                                    <td>Number of pupa examined</td>  
-                                     <td>Cocoon rejection details/ numbers</td>  
-                                    <td>Invoice No. and Date</td> 
-                                    <td >Rate per Kg data </td> 
-                                  
+                                <tr>
+                                  <td>Lot number data </td>
+                                  <td>Race (MSC,CSR 2,FC1, FC2) data</td>
+                                  <td>Date of seed cocoon supply data</td>
+                                  <td>
+                                    Name of the Government Seed Farm/Farmer data
+                                  </td>
+                                  <td>12/20/2023</td>
+                                  <td>Crop Number data</td>
+                                  <td>Source (Line) of the Cocoon data </td>
+                                  <td>
+                                    Bed number Number / Kgs of cocoons supplied
+                                    data
+                                  </td>
+                                  <td>Number of pupa examined</td>
+                                  <td>Cocoon rejection details/ numbers</td>
+                                  <td>Invoice No. and Date</td>
+                                  <td>Rate per Kg data </td>
                                 </tr>
-                                
                               </tbody>
                             </table>
-
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                  
-
                 </Col>
               </Row>
             </div>

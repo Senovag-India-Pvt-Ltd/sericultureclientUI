@@ -57,7 +57,7 @@ function HelpDeskSubCategoryView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-sub-category-list"
+                  to="/seriui/hd-sub-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function HelpDeskSubCategoryView() {
               </li>
               <li>
                 <Link
-                  to="/hd-sub-category-list"
+                  to="/seriui/hd-sub-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

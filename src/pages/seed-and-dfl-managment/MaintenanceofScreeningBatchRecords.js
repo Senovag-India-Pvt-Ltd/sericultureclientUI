@@ -5,21 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
- const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MaintenanceofScreeningBatchRecords() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -35,7 +32,7 @@ function MaintenanceofScreeningBatchRecords() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -388,7 +385,7 @@ function MaintenanceofScreeningBatchRecords() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -410,23 +407,24 @@ function MaintenanceofScreeningBatchRecords() {
     });
   };
 
-  
   return (
     <Layout title="Maintenance of screening batch records">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Maintenance of screening batch records</Block.Title>
+            <Block.Title tag="h2">
+              Maintenance of screening batch records
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Maintenance of screening batch records
+                  Maintenance of screening batch records
                 </li>
               </ol>
             </nav>
@@ -435,7 +433,7 @@ function MaintenanceofScreeningBatchRecords() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -444,7 +442,7 @@ function MaintenanceofScreeningBatchRecords() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -458,167 +456,167 @@ function MaintenanceofScreeningBatchRecords() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header> Maintenance of screening batch records  </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Maintenance of screening batch records{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Total number of cocoons produced at each generation
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Total number of cocoons produced at each generation"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Lot number/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot number/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                          <Col lg="4" >
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Total number of cocoons produced at each
+                                generation
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Total number of cocoons produced at each generation"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot number/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           <Form.Group className="form-group  ">
-                        <Form.Label>Line details/Year (Silk Worm Race)</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Kempanahalli</option>
-                            <option value="1">Magadi</option>
-                            <option value="2">Hebbur</option>
-                            <option value="3"> Kunigal</option>
-                             <option value="">Solur</option>
-                            <option value="1">Kudur</option>
-                            <option value="2">Swarna-I</option>
-                            <option value="3"> CSB</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>
+                                Line details/Year (Silk Worm Race)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">Kempanahalli</option>
+                                  <option value="1">Magadi</option>
+                                  <option value="2">Hebbur</option>
+                                  <option value="3"> Kunigal</option>
+                                  <option value="">Solur</option>
+                                  <option value="1">Kudur</option>
+                                  <option value="2">Swarna-I</option>
+                                  <option value="3"> CSB</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         </Col  >
-                          
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Line Name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Line Name"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Line Name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Line Name"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Incubation Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Incubation Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Black Boxing Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Black Boxing Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Incubation Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Incubation Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Black Boxing Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Black Boxing Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Brushed on date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Brushed on date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Brushed on date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Brushed on date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Spun on date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Spun on date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Worm Test details and result
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Worm Test details  and result"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Spun on date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Spun on date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Worm Test details  and result
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Worm Test details  and result"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                          
-
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="12" className="text-center">
+                            <Button type="button" variant="primary">
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -628,49 +626,61 @@ function MaintenanceofScreeningBatchRecords() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Total number of cocoons produced at each generation</th>  
-                                  <th style={styles.ctstyle}>Lot number/Year</th> 
-                                  <th style={styles.ctstyle}>Line details/Year (Silk Worm Race)</th> 
-                                  <th style={styles.ctstyle}>Line Name</th> 
-                                  <th style={styles.ctstyle}>Incubation Date</th> 
-                                   <th style={styles.ctstyle}>Black Boxing Date</th> 
-                                  <th style={styles.ctstyle}>Brushed on date</th>
-                                   <th style={styles.ctstyle}>Spun on date</th>
-                                   <th style={styles.ctstyle}>Worm Test details  and result</th>
-                                   
+                                  <th style={styles.ctstyle}>
+                                    Total number of cocoons produced at each
+                                    generation
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Lot number/Year
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Line details/Year (Silk Worm Race)
+                                  </th>
+                                  <th style={styles.ctstyle}>Line Name</th>
+                                  <th style={styles.ctstyle}>
+                                    Incubation Date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Black Boxing Date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Brushed on date
+                                  </th>
+                                  <th style={styles.ctstyle}>Spun on date</th>
+                                  <th style={styles.ctstyle}>
+                                    Worm Test details and result
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Total number of cocoons produced at each generation data</td>  
-                                   <td>Lot number/Year data</td> 
-                                   <td>Line details/Year (Silk Worm Race) data</td> 
-                                    <td>Line Name data</td> 
-                                    <td>Incubation Date data</td> 
-                                     <td>Black Boxing Date data</td> 
-                                    <td>Brushed on date data</td> 
-                                    <td>Spun on date data</td> 
-                                     <td>Worm Test details  and result data</td> 
-                                      
+                                <tr>
+                                  <td>
+                                    Total number of cocoons produced at each
+                                    generation data
+                                  </td>
+                                  <td>Lot number/Year data</td>
+                                  <td>
+                                    Line details/Year (Silk Worm Race) data
+                                  </td>
+                                  <td>Line Name data</td>
+                                  <td>Incubation Date data</td>
+                                  <td>Black Boxing Date data</td>
+                                  <td>Brushed on date data</td>
+                                  <td>Spun on date data</td>
+                                  <td>Worm Test details and result data</td>
                                 </tr>
                               </tbody>
-                            </table> 
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                            </table>
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                 
-                 
-
                 </Col>
               </Row>
             </div>

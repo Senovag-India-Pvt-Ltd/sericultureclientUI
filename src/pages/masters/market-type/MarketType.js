@@ -19,7 +19,6 @@ function MarketType() {
     farmerFee: "",
     traderFee: "",
     marketTypeNameInKannada: "",
-    
   });
 
   const [validated, setValidated] = useState(false);
@@ -43,12 +42,12 @@ function MarketType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `marketTypeMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `marketTypeMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               marketTypeMasterName: "",
@@ -60,22 +59,22 @@ function MarketType() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketTypeMasterName: "",
       reelerFee: "",
       farmerFee: "",
       traderFee: "",
       marketTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -105,7 +104,7 @@ function MarketType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -114,7 +113,7 @@ function MarketType() {
               </li>
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -150,14 +149,15 @@ function MarketType() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Market Type is required.
+                          Market Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="marketTypeMasterName">
-                        Market Type Name In Kannada<span className="text-danger">*</span>
+                        Market Type Name In Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -170,7 +170,7 @@ function MarketType() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Market Type Name in Kannada is required.
+                          Market Type Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -217,7 +217,7 @@ function MarketType() {
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trader">
-                        Trader  Fee (in %)<span className="text-danger">*</span>
+                        Trader Fee (in %)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -235,7 +235,6 @@ function MarketType() {
                       </div>
                     </Form.Group>
                   </Col>
-
                 </Row>
               </Card.Body>
             </Card>
@@ -249,7 +248,7 @@ function MarketType() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

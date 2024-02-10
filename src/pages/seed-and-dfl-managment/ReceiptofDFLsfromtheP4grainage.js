@@ -5,23 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
-
- 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReceiptofDFLsfromtheP4grainage() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -37,7 +32,7 @@ function ReceiptofDFLsfromtheP4grainage() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -390,7 +385,7 @@ function ReceiptofDFLsfromtheP4grainage() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -412,23 +407,24 @@ function ReceiptofDFLsfromtheP4grainage() {
     });
   };
 
-  
   return (
     <Layout title="Receipt of DFLs from the P4 grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Receipt of DFLs from the P4 grainage</Block.Title>
+            <Block.Title tag="h2">
+              Receipt of DFLs from the P4 grainage
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                Receipt of DFLs from the P4 grainage
+                  Receipt of DFLs from the P4 grainage
                 </li>
               </ol>
             </nav>
@@ -437,7 +433,7 @@ function ReceiptofDFLsfromtheP4grainage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -446,7 +442,7 @@ function ReceiptofDFLsfromtheP4grainage() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -460,176 +456,177 @@ function ReceiptofDFLsfromtheP4grainage() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>Receipt of DFLs from the P4 grainage </Card.Header>
+                      <Card.Header>
+                        Receipt of DFLs from the P4 grainage{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Line Number/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Line Number/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group  ">
-                        <Form.Label>Line of DFLs</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Kempanahalli</option>
-                            <option value="1">Magadi</option>
-                            <option value="2">Hebbur</option>
-                            <option value="3"> Kunigal</option>
-                             <option value="">Solur</option>
-                            <option value="1">Kudur</option>
-                            <option value="2">Swarna-I</option>
-                            <option value="3"> CSB</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                         </Col  >  
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Line Number/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Line Number/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>Line of DFLs</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">Kempanahalli</option>
+                                  <option value="1">Magadi</option>
+                                  <option value="2">Hebbur</option>
+                                  <option value="3"> Kunigal</option>
+                                  <option value="">Solur</option>
+                                  <option value="1">Kudur</option>
+                                  <option value="2">Swarna-I</option>
+                                  <option value="3"> CSB</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Laid on Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Laid on Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Laid on Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Laid on Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Lot  Number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot  Number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Number of DFLs received
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Number of DFLs received"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot  Number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of DFLs received
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of DFLs received"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Invoice no. and Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Invoice no. and Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice no. and Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Invoice no. and Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>
+                                Worm test details and result
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">
+                                    Worms Stage (Dropdown){" "}
+                                  </option>
+                                  <option value="1">2nd</option>
+                                  <option value="2">3rd</option>
+                                  <option value="3"> 4th </option>
+                                  <option value="">5th</option>
+                                  <option value="1">6th</option>
+                                  <option value="2">7th</option>
+                                  <option value="3"> 8th</option>
+                                  <option value="">Litter</option>
+                                  <option value="1">Ripen</option>
+                                  <option value="2">Dust</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>Generation details</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">1st </option>
+                                  <option value="1">2nd</option>
+                                  <option value="2">3rd</option>
+                                  <option value="3"> 4th </option>
+                                  <option value="">5th</option>
+                                  <option value="1">6th</option>
+                                  <option value="2">7th</option>
+                                  <option value="3"> 8th</option>
+                                  <option value="">9th</option>
+                                  <option value="1">10th</option>
+                                  <option value="2">11th</option>
+                                  <option value="3">12th</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                           <Form.Group className="form-group  ">
-                        <Form.Label>Worm test details and result</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Worms Stage (Dropdown) </option>
-                            <option value="1">2nd</option>
-                            <option value="2">3rd</option>
-                            <option value="3"> 4th </option>
-                             <option value="">5th</option>
-                            <option value="1">6th</option>
-                            <option value="2">7th</option>
-                            <option value="3"> 8th</option>
-                              <option value="">Litter</option>
-                            <option value="1">Ripen</option>
-                            <option value="2">Dust</option> 
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                           <Form.Group className="form-group  ">
-                        <Form.Label>Generation details</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">1st </option>
-                            <option value="1">2nd</option>
-                            <option value="2">3rd</option>
-                            <option value="3"> 4th </option>
-                             <option value="">5th</option>
-                            <option value="1">6th</option>
-                            <option value="2">7th</option>
-                            <option value="3"> 8th</option>
-                              <option value="">9th</option>
-                            <option value="1">10th</option>
-                            <option value="2">11th</option>
-                            <option value="3">12th</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                         </Col  >  
-
-                          
-
-
-                         
-                         
- 
- 
-
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  onClick={handleShowModal} > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="12" className="text-center">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -639,103 +636,105 @@ function ReceiptofDFLsfromtheP4grainage() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Line Number/Year</th>  
-                                  <th style={styles.ctstyle}>Line of DFLs</th> 
-                                  <th style={styles.ctstyle}>Laid on Date</th> 
-                                  <th style={styles.ctstyle}>Lot  Number</th> 
-                                  <th style={styles.ctstyle}>Number of DFLs received</th> 
-                                   <th style={styles.ctstyle}>Invoice no. and Date</th> 
-                                  <th style={styles.ctstyle}>Worm test details and result</th>
-                                   <th style={styles.ctstyle}>Generation details</th>
-                                  
-                                   
+                                  <th style={styles.ctstyle}>
+                                    Line Number/Year
+                                  </th>
+                                  <th style={styles.ctstyle}>Line of DFLs</th>
+                                  <th style={styles.ctstyle}>Laid on Date</th>
+                                  <th style={styles.ctstyle}>Lot Number</th>
+                                  <th style={styles.ctstyle}>
+                                    Number of DFLs received
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Invoice no. and Date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Worm test details and result
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Generation details
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Line Number/Year  data</td>  
-                                   <td>Line of DFLs data</td> 
-                                   <td>Laid on Date data</td> 
-                                    <td>Lot  Number data</td> 
-                                    <td>Number of DFLs received data</td> 
-                                     <td>Invoice no. and Date data</td> 
-                                    <td>Worm test details and result date</td> 
-                                    <td>Generation details data</td> 
-                                    
-                                      
-                                </tr>
-                              </tbody>
-                            </table> 
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
-                    </Card.Body>
-                  </Card>
-                 
-                
-                 
-                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title> Status of Receipt of DFLs from the grainage</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="#">
-            <Row className="g-5 px-5">
-               
-              <div className="table-responsive">
-                          <table className="table small table-bordered">
-                              <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>   
-                                  <th style={styles.ctstyle}>Number of DFLs received</th> 
-                                  <th style={styles.ctstyle}>Line Name</th> 
-                                   <th style={styles.ctstyle}>Lot  Number</th> 
-                                  <th style={styles.ctstyle}>Invoice no</th>
-                                   <th style={styles.ctstyle}>Invoice Date</th>
-                                   <th style={styles.ctstyle}>Status (Recived)</th>
-                                   
-                                </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actionredtstyle}>Reject</td>   
-                                </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actiongreentstyle}>Accept</td>   
+                                  <td>Line Number/Year data</td>
+                                  <td>Line of DFLs data</td>
+                                  <td>Laid on Date data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Invoice no. and Date data</td>
+                                  <td>Worm test details and result date</td>
+                                  <td>Generation details data</td>
                                 </tr>
                               </tbody>
                             </table>
-                             
-                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
 
-              
-            </Row>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-
-
+                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        {" "}
+                        Status of Receipt of DFLs from the grainage
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form action="#">
+                        <Row className="g-5 px-5">
+                          <div className="table-responsive">
+                            <table className="table small table-bordered">
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>Grainage Name</th>
+                                  <th style={styles.ctstyle}>
+                                    Number of DFLs received
+                                  </th>
+                                  <th style={styles.ctstyle}>Line Name</th>
+                                  <th style={styles.ctstyle}>Lot Number</th>
+                                  <th style={styles.ctstyle}>Invoice no</th>
+                                  <th style={styles.ctstyle}>Invoice Date</th>
+                                  <th style={styles.ctstyle}>
+                                    Status (Recived)
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+                                  <td>Invoice Date data</td>
+                                  <td style={styles.actionredtstyle}>Reject</td>
+                                </tr>
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+                                  <td>Invoice Date data</td>
+                                  <td style={styles.actiongreentstyle}>
+                                    Accept
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </Row>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </Col>
               </Row>
             </div>

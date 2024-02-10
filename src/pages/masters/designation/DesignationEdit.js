@@ -34,35 +34,33 @@ function DesignationEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `designation/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `designation/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               name: "",
-              designationNameInKannada:"",
+              designationNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       name: "",
-      designationNameInKannada:"",
-    })
-  }
-
+      designationNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -120,7 +118,7 @@ function DesignationEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/designation-list"
+                  to="/seriui/designation-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -129,7 +127,7 @@ function DesignationEdit() {
               </li>
               <li>
                 <Link
-                  to="/designation-list"
+                  to="/seriui/designation-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -155,7 +153,9 @@ function DesignationEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="name">Designation<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="name">
+                          Designation<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="name"
@@ -167,60 +167,60 @@ function DesignationEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Designation Name is required.
-                        </Form.Control.Feedback>
+                            Designation Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Designation Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="designationNameInKannada"
-                          value={data.designationNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Designation Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Designation Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> 
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Designation Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="designationNameInKannada"
+                            value={data.designationNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Designation Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Designation Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
 
-
-          <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  {/* <Link to="/designation-list" className="btn btn-secondary border-0">
+            <Card>
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      {/* <Link to="/seriui/designation-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

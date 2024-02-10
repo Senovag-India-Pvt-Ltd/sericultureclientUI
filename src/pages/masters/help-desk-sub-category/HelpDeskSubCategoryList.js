@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -50,7 +50,7 @@ function HelpDeskSubCategoryList() {
 
   const handleEdit = (_id) => {
     navigate(`/hd-sub-category-edit/${_id}`);
-    // navigate("/hdSubCategoryMaster");
+    // navigate("/seriui/hdSubCategoryMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function HelpDeskSubCategoryList() {
     },
   };
 
-
   const HdSubCategoryDataColumns = [
     {
       name: "Action",
@@ -192,12 +191,12 @@ function HelpDeskSubCategoryList() {
       hide: "md",
     },
     {
-        name: " Sub Category",
-        selector: (row) => row.hdSubCategoryName,
-        cell: (row) => <span>{row.hdSubCategoryName}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      name: " Sub Category",
+      selector: (row) => row.hdSubCategoryName,
+      cell: (row) => <span>{row.hdSubCategoryName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -210,14 +209,17 @@ function HelpDeskSubCategoryList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/hd-sub-category" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/hd-sub-category"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hd-sub-category"
+                  to="/seriui/hd-sub-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -229,7 +231,7 @@ function HelpDeskSubCategoryList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

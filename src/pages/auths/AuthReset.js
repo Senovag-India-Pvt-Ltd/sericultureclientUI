@@ -45,7 +45,7 @@ function AuthResetPage() {
                 </Form>
                 <div className="text-center mt-4">
                   <p className="small">
-                    <Link to="/">Back to Login</Link>
+                    <Link to="/seriui/">Back to Login</Link>
                   </p>
                 </div>
               </Card.Body>

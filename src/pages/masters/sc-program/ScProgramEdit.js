@@ -30,25 +30,25 @@ function ScProgramEdit() {
     api
       .post(baseURL + `scProgram/edit`, data)
       .then((response) => {
-        if(response.data.content.error){
+        if (response.data.content.error) {
           updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
-        setData({
-          scProgramName: "",
-        });
-          }
+        } else {
+          updateSuccess();
+          setData({
+            scProgramName: "",
+          });
+        }
       })
       .catch((err) => {
         updateError();
       });
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       scProgramName: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -107,7 +107,7 @@ function ScProgramEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -116,7 +116,7 @@ function ScProgramEdit() {
               </li>
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -137,7 +137,7 @@ function ScProgramEdit() {
                   <h1 className="d-flex justify-content-center align-items-center">
                     Loading...
                   </h1>
-                    ) : (
+                ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
@@ -167,7 +167,7 @@ function ScProgramEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -2,10 +2,7 @@ import { Card, Form, Row, Col, Button, Tab, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 
 function AddCompanyPage() {
   return (
@@ -17,10 +14,10 @@ function AddCompanyPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/masters/company-list">Company List</Link>
+                  <Link to="/seriui/masters/company-list">Company List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Add Company
@@ -32,7 +29,7 @@ function AddCompanyPage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/masters/company-list"
+                  to="/seriui/masters/company-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="eye" />
@@ -41,7 +38,7 @@ function AddCompanyPage() {
               </li>
               <li>
                 <Link
-                  to="/masters/company-list"
+                  to="/seriui/masters/company-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="eye" />
@@ -226,7 +223,7 @@ function AddCompanyPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel
@@ -353,7 +350,7 @@ function AddCompanyPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel
@@ -629,7 +626,7 @@ function AddCompanyPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel

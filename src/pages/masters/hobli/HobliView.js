@@ -62,7 +62,7 @@ function HobliView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hobli-list"
+                  to="/seriui/hobli-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -71,7 +71,7 @@ function HobliView() {
               </li>
               <li>
                 <Link
-                  to="/hobli-list"
+                  to="/seriui/hobli-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -85,7 +85,7 @@ function HobliView() {
 
       <Block className="mt-n4">
         <Card>
-        <Card.Header>Hobli Details</Card.Header>
+          <Card.Header>Hobli Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">

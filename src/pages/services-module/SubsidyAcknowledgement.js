@@ -5,7 +5,6 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import StakeHolderData from "../../store/stakeHolder/StakeHolderData";
 
-
 function StakeHolderViewPage() {
   //   const { id } = useParams();
   const id = "uid01";
@@ -27,7 +26,7 @@ function StakeHolderViewPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Subsidy Form Acknowledgement
@@ -39,7 +38,7 @@ function StakeHolderViewPage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -48,7 +47,7 @@ function StakeHolderViewPage() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

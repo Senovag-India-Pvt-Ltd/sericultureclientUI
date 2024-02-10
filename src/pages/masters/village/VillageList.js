@@ -1,15 +1,15 @@
-import { Card, Button,Col,Row,Form} from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -42,13 +42,13 @@ function VillageList() {
     if (data.searchBy === "district") {
       joinColumn = "district.districtName";
     }
-    if(data.searchBy === "taluk"){
+    if (data.searchBy === "taluk") {
       joinColumn = "taluk.talukName";
     }
-    if(data.searchBy === "hobli"){
+    if (data.searchBy === "hobli") {
       joinColumn = "hobli.hobliName";
     }
-    if(data.searchBy === "village"){
+    if (data.searchBy === "village") {
       joinColumn = "village.villageName";
     }
     // console.log(joinColumn);
@@ -98,7 +98,7 @@ function VillageList() {
 
   const handleEdit = (_id) => {
     navigate(`/village-edit/${_id}`);
-    // navigate("/taluk");
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -246,20 +246,20 @@ function VillageList() {
       hide: "md",
     },
     {
-        name: "Hobli",
-        selector: (row) => row.hobliName,
-        cell: (row) => <span>{row.hobliName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Village",
-        selector: (row) => row.villageName,
-        cell: (row) => <span>{row.villageName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Village Name In Kannada",
       selector: (row) => row.villageNameInKannada,
       cell: (row) => <span>{row.villageNameInKannada}</span>,
@@ -277,15 +277,18 @@ function VillageList() {
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
-            <li>
-                <Link to="/village" className="btn btn-primary btn-md d-md-none">
+              <li>
+                <Link
+                  to="/seriui/village"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/village"
+                  to="/seriui/village"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -297,9 +300,9 @@ function VillageList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -321,7 +324,7 @@ function VillageList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="fruitsId"

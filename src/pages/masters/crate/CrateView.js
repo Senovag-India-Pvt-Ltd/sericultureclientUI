@@ -59,7 +59,7 @@ function CrateView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/crate-list"
+                  to="/seriui/crate-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +68,7 @@ function CrateView() {
               </li>
               <li>
                 <Link
-                  to="/crate-list"
+                  to="/seriui/crate-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,9 +80,9 @@ function CrateView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Card.Header>Crate Details</Card.Header>
+          <Card.Header>Crate Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">

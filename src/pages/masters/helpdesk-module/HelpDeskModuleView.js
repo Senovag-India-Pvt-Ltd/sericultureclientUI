@@ -57,7 +57,7 @@ function HelpDeskModuleView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function HelpDeskModuleView() {
               </li>
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -110,6 +110,5 @@ function HelpDeskModuleView() {
     </Layout>
   );
 }
-
 
 export default HelpDeskModuleView;

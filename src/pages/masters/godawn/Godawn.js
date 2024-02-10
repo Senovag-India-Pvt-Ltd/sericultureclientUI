@@ -31,19 +31,19 @@ function Godawn() {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURL + `godown/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL + `godown/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               marketMasterId: "",
@@ -52,20 +52,20 @@ function Godawn() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketMasterId: "",
       godownName: "",
       godownNameInKannada: "",
-    })
-  }
+    });
+  };
 
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
@@ -114,7 +114,7 @@ function Godawn() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,7 +123,7 @@ function Godawn() {
               </li>
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -145,15 +145,20 @@ function Godawn() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Market<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="marketMasterId"
                           value={data.marketMasterId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
+                          isInvalid={
+                            data.marketMasterId === undefined ||
+                            data.marketMasterId === "0"
+                          }
                         >
                           <option value="">Select Market</option>
                           {marketListData.map((list) => (
@@ -166,14 +171,16 @@ function Godawn() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
+                          Market Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Godown Name">Godown Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Godown Name">
+                        Godown Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="Godown Name"
@@ -185,15 +192,18 @@ function Godawn() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Godown Name is required
-                      </Form.Control.Feedback>
+                          Godown Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Godown Name">Godown Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Godown Name">
+                        Godown Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="Godown Name"
@@ -205,8 +215,8 @@ function Godawn() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Godown Name in Kannada is required
-                      </Form.Control.Feedback>
+                          Godown Name in Kannada is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -223,7 +233,7 @@ function Godawn() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

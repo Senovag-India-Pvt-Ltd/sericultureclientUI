@@ -42,35 +42,35 @@ function IrrigationTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `irrigationType/edit`, datas, {
-        headers: _header,
-      })
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
-        setData({
-          irrigationTypeName: "",
-          irrigationTypeNameInKannada: "",
-        });
-        setValidated(false);
+      api
+        .post(baseURL + `irrigationType/edit`, datas, {
+          headers: _header,
+        })
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              irrigationTypeName: "",
+              irrigationTypeNameInKannada: "",
+            });
+            setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       irrigationTypeName: "",
       irrigationTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -129,7 +129,7 @@ function IrrigationTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -138,7 +138,7 @@ function IrrigationTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -176,35 +176,36 @@ function IrrigationTypeEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Irrigation Type"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Irrigation Type is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Irrigation Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="irrigationTypeName">
-                        Irrigation Type Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="irrigationTypeName"
-                          name="irrigationTypeNameInKannada"
-                          type="text"
-                          value={data.irrigationTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Irrigation Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Irrigation Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="irrigationTypeName">
+                          Irrigation Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="irrigationTypeName"
+                            name="irrigationTypeNameInKannada"
+                            type="text"
+                            value={data.irrigationTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Irrigation Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Irrigation Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -219,7 +220,7 @@ function IrrigationTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

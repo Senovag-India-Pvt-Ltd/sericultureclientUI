@@ -35,31 +35,31 @@ function HelpDeskModule() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdModuleMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdModuleMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
-                hdModuleName: "",
+              hdModuleName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdModuleName: "", 
-    })
-  }
+      hdModuleName: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -87,7 +87,7 @@ function HelpDeskModule() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -96,7 +96,7 @@ function HelpDeskModule() {
               </li>
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,7 +118,9 @@ function HelpDeskModule() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="Hd Module">Modules<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Hd Module">
+                        Modules<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hdModule"
@@ -130,7 +132,7 @@ function HelpDeskModule() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                           Modules Name is required
+                          Modules Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -141,22 +143,22 @@ function HelpDeskModule() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

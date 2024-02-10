@@ -94,7 +94,7 @@ function MyProfilePage() {
             <ul className="d-flex gap g-2">
               <li className="d-none d-md-block">
                 <Link
-                  to="/admin/profile-settings"
+                  to="/seriui/admin/profile-settings"
                   className="btn btn-soft btn-primary"
                 >
                   <Icon name="edit"></Icon>
@@ -103,7 +103,7 @@ function MyProfilePage() {
               </li>
               <li className="d-md-none">
                 <Link
-                  to="/admin/profile-settings"
+                  to="/seriui/admin/profile-settings"
                   className="btn btn-soft btn-primary btn-icon"
                 >
                   <Icon name="edit"></Icon>
@@ -238,22 +238,22 @@ function MyProfilePage() {
                                             <h4 className="bio-block-title mb-3">Social</h4>
                                             <ul className="d-flex flex-wrap gap g-2">
                                                 <li>
-                                                    <Media size="sm" to="/" variant="dark">
+                                                    <Media size="sm" to="/seriui/" variant="dark">
                                                         <Icon name="github-circle"></Icon>
                                                     </Media>
                                                 </li>
                                                 <li>
-                                                    <Media size="sm" to="/" variant="danger">
+                                                    <Media size="sm" to="/seriui/" variant="danger">
                                                         <Icon name="dribbble"></Icon>
                                                     </Media>
                                                 </li>
                                                 <li>
-                                                    <Media size="sm" to="/" variant="info">
+                                                    <Media size="sm" to="/seriui/" variant="info">
                                                         <Icon name="twitter"></Icon>
                                                     </Media>
                                                 </li>
                                                 <li>
-                                                    <Media size="sm" to="/" variant="pink">
+                                                    <Media size="sm" to="/seriui/" variant="pink">
                                                         <Icon name="linkedin"></Icon>
                                                     </Media>
                                                 </li>
@@ -388,7 +388,7 @@ function MyProfilePage() {
                                                 </li>
                                             </ul>
                                             <div className="pt-3">
-                                                <Link to="/" className="btn btn-sm btn-soft btn-primary">View All</Link>
+                                                <Link to="/seriui/" className="btn btn-sm btn-soft btn-primary">View All</Link>
                                             </div>
                                         </div> */}
                     </Card.Body>

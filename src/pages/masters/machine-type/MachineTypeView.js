@@ -51,7 +51,7 @@ function MachineTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/machine-type-list"
+                  to="/seriui/machine-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -60,7 +60,7 @@ function MachineTypeView() {
               </li>
               <li>
                 <Link
-                  to="/machine-type-list"
+                  to="/seriui/machine-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -94,7 +94,10 @@ function MachineTypeView() {
                         <td>{MachineType.machineTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Machine Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Machine Type Name in Kannada:
+                        </td>
                         <td>{MachineType.machineTypeNameInKannada}</td>
                       </tr>
                     </tbody>

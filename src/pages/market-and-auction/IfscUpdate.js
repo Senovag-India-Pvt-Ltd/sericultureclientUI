@@ -34,7 +34,7 @@ function IfscUpdate() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -43,7 +43,7 @@ function IfscUpdate() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -59,30 +59,29 @@ function IfscUpdate() {
         <Card>
           <Card.Header className="text-center">Select Cheque No</Card.Header>
           <Card.Body>
-            
-              <Row className="g-gs">
-                <Col lg="12">
+            <Row className="g-gs">
+              <Col lg="12">
                 <Dropdown>
-            <Dropdown.Toggle variant="primary" id="chequeNoDropdown">
-                Select Cheque No
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-            {/* Replace the dummy values below with your actual Cheque No values */}
-            <Dropdown.Item href="#">Cheque No 1</Dropdown.Item>
-            <Dropdown.Item href="#">Cheque No 2</Dropdown.Item>
-            <Dropdown.Item href="#">Cheque No 3</Dropdown.Item>
-            </Dropdown.Menu>
-            </Dropdown>
-            {/* <table className="table table-striped table-bordered"> */}
-              <thead>
-                <tr>
-                  {/* <th></th> */}
-                  {/* <th>Ready For Payment</th> */}
-                  {/* <th>select Cheque No</th> */}
-                  <th>
-                  <button className="btn btn-info">Update</button>
-                  </th>
-                  {/* <th>Lot Nbr</th>
+                  <Dropdown.Toggle variant="primary" id="chequeNoDropdown">
+                    Select Cheque No
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {/* Replace the dummy values below with your actual Cheque No values */}
+                    <Dropdown.Item href="#">Cheque No 1</Dropdown.Item>
+                    <Dropdown.Item href="#">Cheque No 2</Dropdown.Item>
+                    <Dropdown.Item href="#">Cheque No 3</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                {/* <table className="table table-striped table-bordered"> */}
+                <thead>
+                  <tr>
+                    {/* <th></th> */}
+                    {/* <th>Ready For Payment</th> */}
+                    {/* <th>select Cheque No</th> */}
+                    <th>
+                      <button className="btn btn-info">Update</button>
+                    </th>
+                    {/* <th>Lot Nbr</th>
                   <th>Transaction_Date</th>
                   <th>Farmer</th>
                   <th>TSC</th>
@@ -95,14 +94,14 @@ function IfscUpdate() {
                   <th>Amount</th>
                   <th>MF</th>
                   <th>Actions</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {/* <td>1</td> */}
-                  {/* <td>111</td> */}
-                  {/* <td>100056</td> */}
-                  {/* <td>Basappa</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {/* <td>1</td> */}
+                    {/* <td>111</td> */}
+                    {/* <td>100056</td> */}
+                    {/* <td>Basappa</td>
                   <td>Kolar</td>
                   <td>99999999</td>
                   <td>KKR13145</td>
@@ -112,10 +111,10 @@ function IfscUpdate() {
                   <td>100000123</td>
                   <td>4000</td>
                   <td>112</td> */}
-                  {/* <td>
+                    {/* <td>
                     <button className="btn btn-info">Update</button>
                   </td> */}
-                  {/* <td>
+                    {/* <td>
                     <div className="text-end w-100 d-flex justify-content-start">
                       <Dropdown>
                         <Dropdown.Toggle
@@ -157,8 +156,8 @@ function IfscUpdate() {
                       </Dropdown>
                     </div>
                   </td> */}
-                </tr>
-                {/* <tr>
+                  </tr>
+                  {/* <tr>
                 <td>
                     <button className="btn btn-info">remove</button>
                   </td>
@@ -220,7 +219,7 @@ function IfscUpdate() {
                       </Dropdown>
                     </div>
                   </td> */}
-                {/* </tr>
+                  {/* </tr>
                 <tr>
                 <td>
                     <button className="btn btn-info">remove</button>
@@ -283,12 +282,11 @@ function IfscUpdate() {
                       </Dropdown>
                     </div>
                   </td> */}
-                {/* </tr> */}
-              </tbody>
-            {/* </table> */}
-            </Col>
-              </Row>
-            
+                  {/* </tr> */}
+                </tbody>
+                {/* </table> */}
+              </Col>
+            </Row>
           </Card.Body>
         </Card>
       </Block>

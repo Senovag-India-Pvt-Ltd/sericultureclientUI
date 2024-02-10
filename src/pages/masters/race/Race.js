@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
@@ -37,13 +37,13 @@ function Race() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `raceMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          // saveError();
-          saveRaceError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `raceMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            // saveError();
+            saveRaceError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               raceMasterName: "",
@@ -53,39 +53,38 @@ function Race() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       raceMasterName: "",
       marketMasterId: "",
       raceNameInKannada: "",
-    })
-  }
+    });
+  };
 
-   // to get Market
-   const [marketListData, setMarketListData] = useState([]);
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
 
-   const getList = () => {
-     const response = api
-       .get(baseURL + `marketMaster/get-all`)
-       .then((response) => {
-         setMarketListData(response.data.content.marketMaster);
-       })
-       .catch((err) => {
-         setMarketListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getList();
-   }, []);
- 
+  const getList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -122,7 +121,7 @@ function Race() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -131,7 +130,7 @@ function Race() {
               </li>
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,15 +152,20 @@ function Race() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Market<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="marketMasterId"
                           value={data.marketMasterId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
+                          isInvalid={
+                            data.marketMasterId === undefined ||
+                            data.marketMasterId === "0"
+                          }
                         >
                           <option value="">Select Market</option>
                           {marketListData.map((list) => (
@@ -174,15 +178,17 @@ function Race() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
+                          Market Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="raceMaster">Race<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="raceMaster">
+                        Race<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="raceMaster"
@@ -202,7 +208,10 @@ function Race() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="raceMaster">Race Name In Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="raceMaster">
+                        Race Name In Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="raceMaster"
@@ -232,7 +241,7 @@ function Race() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

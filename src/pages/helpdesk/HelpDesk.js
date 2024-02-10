@@ -369,14 +369,14 @@ function HelpDesk() {
           <Block.HeadContent>
             {/* <ul className="d-flex">
               <li>
-                <Link to="/help-desk-list" className="btn btn-primary btn-md d-md-none">
+                <Link to="/seriui/help-desk-list" className="btn btn-primary btn-md d-md-none">
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/help-desk-list"
+                  to="/seriui/help-desk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

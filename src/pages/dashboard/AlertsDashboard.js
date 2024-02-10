@@ -1,9 +1,5 @@
 // import { Row, Col, Card, Button, Dropdown, Table, Badge } from 'react-bootstrap';
-import {
-  Row,
-  Col,
-  Card,
-} from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import { Colors } from "../../utilities/index";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
@@ -15,7 +11,7 @@ import Layout from "../../layout/default";
 function AlertsDashboard() {
   const navigate = useNavigate();
   const clickCard = () => {
-    navigate("/maintenance-mulberry-farm-list");
+    navigate("/seriui/maintenance-mulberry-farm-list");
   };
   let sessionsDevice = {
     labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],

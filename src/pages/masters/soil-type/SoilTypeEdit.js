@@ -37,33 +37,33 @@ function SoilTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `soilType/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `soilType/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               soilTypeName: "",
-              soilTypeNameInKannada: "", 
+              soilTypeNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       soilTypeName: "",
-      soilTypeNameInKannada: "", 
-    })
-  }
+      soilTypeNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -122,7 +122,7 @@ function SoilTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -131,7 +131,7 @@ function SoilTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -157,7 +157,9 @@ function SoilTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="soil">Soil Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="soil">
+                          Soil Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="soil"
@@ -167,33 +169,36 @@ function SoilTypeEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Soil Type"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Soil Type is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Soil Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="soil">Soil Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="soil"
-                          name="soilTypeNameInKannada"
-                          type="text"
-                          value={data.soilTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Soil Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Soil Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="soil">
+                          Soil Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="soil"
+                            name="soilTypeNameInKannada"
+                            type="text"
+                            value={data.soilTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Soil Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Soil Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -208,7 +213,7 @@ function SoilTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

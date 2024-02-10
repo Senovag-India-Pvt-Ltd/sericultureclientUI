@@ -1,14 +1,11 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -25,7 +22,9 @@ function TrainingDeputationTrackerView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [trainingDeputationTracker, setTrainingDeputationTracker] = useState({});
+  const [trainingDeputationTracker, setTrainingDeputationTracker] = useState(
+    {}
+  );
   const [loading, setLoading] = useState(false);
 
   // grabsthe id form the url and loads the corresponding data
@@ -65,7 +64,7 @@ function TrainingDeputationTrackerView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-deputation-tracker-list"
+                  to="/seriui/training-deputation-tracker-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -74,7 +73,7 @@ function TrainingDeputationTrackerView() {
               </li>
               <li>
                 <Link
-                  to="/training-deputation-tracker-list"
+                  to="/seriui/training-deputation-tracker-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -99,9 +98,11 @@ function TrainingDeputationTrackerView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                    <tr>
+                      <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{trainingDeputationTracker.trainingDeputationId}</td>
+                        <td>
+                          {trainingDeputationTracker.trainingDeputationId}
+                        </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Official Name:</td>
@@ -121,7 +122,9 @@ function TrainingDeputationTrackerView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Deputed Institute:</td>
-                        <td>{trainingDeputationTracker.deputedInstituteName}</td>
+                        <td>
+                          {trainingDeputationTracker.deputedInstituteName}
+                        </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Deputed From Date:</td>
@@ -140,16 +143,15 @@ function TrainingDeputationTrackerView() {
                         <td>{trainingDeputationTracker.trCourseMasterName}</td>
                       </tr>
                       <tr>
-                      <td style={styles.ctstyle}> Attended:</td>
-                      <td>
-                        {trainingDeputationTracker.deputedAttended === 1
-                          ? 'Yes'
-                          : trainingDeputationTracker.deputedAttended === 2
-                          ? 'No'
-                          : 'Other'
-                          }
-                      </td>
-                    </tr>
+                        <td style={styles.ctstyle}> Attended:</td>
+                        <td>
+                          {trainingDeputationTracker.deputedAttended === 1
+                            ? "Yes"
+                            : trainingDeputationTracker.deputedAttended === 2
+                            ? "No"
+                            : "Other"}
+                        </td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>Remarks:</td>
                         <td>{trainingDeputationTracker.deputedRemarks}</td>

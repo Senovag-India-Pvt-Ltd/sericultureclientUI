@@ -7,7 +7,7 @@ import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
@@ -47,7 +47,7 @@ function RearHouseRoofTypeList() {
 
   const handleEdit = (_id) => {
     navigate(`/rear-house-roof-type-edit/${_id}`);
-    // navigate("/rear-house-roof-type");
+    // navigate("/seriui/rear-house-roof-type");
   };
 
   const deleteError = () => {
@@ -200,7 +200,7 @@ function RearHouseRoofTypeList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/rear-house-roof-type"
+                  to="/seriui/rear-house-roof-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -209,7 +209,7 @@ function RearHouseRoofTypeList() {
               </li>
               <li>
                 <Link
-                  to="/rear-house-roof-type"
+                  to="/seriui/rear-house-roof-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -221,7 +221,7 @@ function RearHouseRoofTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

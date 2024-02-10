@@ -36,12 +36,12 @@ function FarmerType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `farmer-type/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `farmer-type/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               farmerTypeName: "",
@@ -49,20 +49,20 @@ function FarmerType() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       farmerTypeName: "",
       farmerTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -90,7 +90,7 @@ function FarmerType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -99,7 +99,7 @@ function FarmerType() {
               </li>
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -112,8 +112,8 @@ function FarmerType() {
       </Block.Head>
 
       <Block className="mt-n5">
-      {/* <Form action="#"> */}
-      <Form noValidate validated={validated} onSubmit={postData}>
+        {/* <Form action="#"> */}
+        <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -121,7 +121,9 @@ function FarmerType() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="farmerTypeName">Farmer Type<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="farmerTypeName">
+                        Farmer Type<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="farmerTypeName"
@@ -141,7 +143,10 @@ function FarmerType() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="farmerTypeName">Farmer Type Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="farmerTypeName">
+                        Farmer Type Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="farmerTypeNameInKannada"
@@ -171,7 +176,7 @@ function FarmerType() {
                   </Button>
                 </li>
                 <li>
-                  {/* <Link to="/farmer-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/seriui/farmer-type-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>

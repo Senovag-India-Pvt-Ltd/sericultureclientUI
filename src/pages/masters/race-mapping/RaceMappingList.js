@@ -4,12 +4,12 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -47,7 +47,7 @@ function RaceMappingList() {
 
   const handleEdit = (_id) => {
     navigate(`/race-mapping-edit/${_id}`);
-    // navigate("/taluk");
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -173,7 +173,7 @@ function RaceMappingList() {
       sortable: false,
       hide: "md",
     },
-    
+
     {
       name: "Market",
       selector: (row) => row.marketMasterName,
@@ -188,7 +188,6 @@ function RaceMappingList() {
       sortable: true,
       hide: "md",
     },
-
   ];
 
   return (
@@ -200,15 +199,18 @@ function RaceMappingList() {
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
-            <li>
-                <Link to="/race-mapping" className="btn btn-primary btn-md d-md-none">
+              <li>
+                <Link
+                  to="/seriui/race-mapping"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/race-mapping"
+                  to="/seriui/race-mapping"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -220,7 +222,7 @@ function RaceMappingList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             // title="Crate List"

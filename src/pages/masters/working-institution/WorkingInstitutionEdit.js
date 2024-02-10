@@ -39,33 +39,33 @@ function WorkingInstitutionEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `workingInstitution/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `workingInstitution/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
             updateError(response.data.content.error_description);
-            }else{
-              updateSuccess();
-              setData({
-                workingInstitutionName: "",
-                workingInstitutionNameInKannada: "", 
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        updateError();
-      });
+          } else {
+            updateSuccess();
+            setData({
+              workingInstitutionName: "",
+              workingInstitutionNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       workingInstitutionName: "",
-      workingInstitutionNameInKannada: "", 
-    })
-  }
+      workingInstitutionNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -119,13 +119,12 @@ function WorkingInstitutionEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Edit Working Institution</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -134,7 +133,7 @@ function WorkingInstitutionEdit() {
               </li>
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -160,7 +159,10 @@ function WorkingInstitutionEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="workingInstitution">Working Institution<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="workingInstitution">
+                          Working Institution
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="workingInstitution"
@@ -170,33 +172,36 @@ function WorkingInstitutionEdit() {
                             type="text"
                             placeholder="Enter Working Institution"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Working Institution Name is required
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Working Institution Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Working Institution Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="workingInstitutionNameInKannada"
-                          type="text"
-                          value={data.workingInstitutionNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Working Institution Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Work Institution Name in Kannada is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Working Institution Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="workingInstitutionNameInKannada"
+                            type="text"
+                            value={data.workingInstitutionNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Working Institution Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Work Institution Name in Kannada is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -211,7 +216,7 @@ function WorkingInstitutionEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

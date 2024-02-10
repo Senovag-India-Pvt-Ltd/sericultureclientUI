@@ -64,16 +64,16 @@ function ReelerLicenceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId)
-      .then((response) => {
-        getVbDetailsList();
-        setShowModal(false);
-      })
-      .catch((err) => {
-        getVbDetailsList();
-        // saveError();
-      });
+      api
+        .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId)
+        .then((response) => {
+          getVbDetailsList();
+          setShowModal(false);
+        })
+        .catch((err) => {
+          getVbDetailsList();
+          // saveError();
+        });
       setValidatedVbAccount(true);
     }
   };
@@ -83,7 +83,7 @@ function ReelerLicenceEdit() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -104,7 +104,6 @@ function ReelerLicenceEdit() {
       marketMasterName: chooseName,
     });
   };
-
 
   const handleDelete = (i) => {
     api
@@ -138,15 +137,15 @@ function ReelerLicenceEdit() {
       setValidatedVbAccountEdit(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `reeler-virtual-bank-account/edit`, vbAccount)
-      .then((response) => {
-        getVbDetailsList();
-        setShowModal2(false);
-      })
-      .catch((err) => {
-        getVbDetailsList();
-      });
+      api
+        .post(baseURL + `reeler-virtual-bank-account/edit`, vbAccount)
+        .then((response) => {
+          getVbDetailsList();
+          setShowModal2(false);
+        })
+        .catch((err) => {
+          getVbDetailsList();
+        });
       setValidatedVbAccountEdit(true);
     }
   };
@@ -189,37 +188,37 @@ function ReelerLicenceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reeler/edit`, data)
-      .then((response) => {
-        // if (vbAccountList.length > 0) {
-        //   const reelerId = response.data.content.reelerId;
-        //   vbAccountList.forEach((list) => {
-        //     const updatedVb = {
-        //       ...list,
-        //       reelerId: reelerId,
-        //     };
-        //     axios
-        //       .post(baseURL + `reeler-virtual-bank-account/edit`, updatedVb, {
-        //         headers: _header,
-        //       })
-        //       .then((response) => {
-        //         updateSuccess();
-        //       })
-        //       .catch((err) => {
-        //         setVbAccount({});
-        //         updateError();
-        //       });
-        //   });
-        // } else {
-        //   updateSuccess();
-        // }
-        updateSuccess();
-      })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+      api
+        .post(baseURL + `reeler/edit`, data)
+        .then((response) => {
+          // if (vbAccountList.length > 0) {
+          //   const reelerId = response.data.content.reelerId;
+          //   vbAccountList.forEach((list) => {
+          //     const updatedVb = {
+          //       ...list,
+          //       reelerId: reelerId,
+          //     };
+          //     axios
+          //       .post(baseURL + `reeler-virtual-bank-account/edit`, updatedVb, {
+          //         headers: _header,
+          //       })
+          //       .then((response) => {
+          //         updateSuccess();
+          //       })
+          //       .catch((err) => {
+          //         setVbAccount({});
+          //         updateError();
+          //       });
+          //   });
+          // } else {
+          //   updateSuccess();
+          // }
+          updateSuccess();
+        })
+        .catch((err) => {
+          setData({});
+          updateError();
+        });
       setValidated(true);
     }
   };
@@ -444,7 +443,7 @@ function ReelerLicenceEdit() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const updateError = () => {
     Swal.fire({
@@ -458,16 +457,16 @@ function ReelerLicenceEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
 
   // Display Document
-const [document, setDocument] = useState("");
+  const [document, setDocument] = useState("");
 
-const handleDocumentChange = (e) => {
-  const file = e.target.files[0];
-  setDocument(file);
-};
+  const handleDocumentChange = (e) => {
+    const file = e.target.files[0];
+    setDocument(file);
+  };
 
   return (
     <Layout title="Reeler License Edit">
@@ -478,7 +477,7 @@ const handleDocumentChange = (e) => {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Reeler License Edit List</Link>
@@ -493,7 +492,7 @@ const handleDocumentChange = (e) => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -502,7 +501,7 @@ const handleDocumentChange = (e) => {
               </li>
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -515,13 +514,12 @@ const handleDocumentChange = (e) => {
       </Block.Head>
 
       <Block className="mt-n4">
-         {/* <Form action="#"> */}
-         <Form noValidate validated={validated} onSubmit={postData}>
+        {/* <Form action="#"> */}
+        <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1">
             <Card>
               <Card.Body>
                 <Row className="g-gs">
-
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group" controlId="fid">
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
@@ -537,7 +535,7 @@ const handleDocumentChange = (e) => {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID  is required.
+                          Fruits ID is required.
                         </Form.Control.Feedback>
                       </Col>
                       {/* <Col sm={2}>
@@ -562,7 +560,9 @@ const handleDocumentChange = (e) => {
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="reelerName">Reeler Name<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="reelerName">
+                          Reeler Name<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="reelerName"
@@ -574,14 +574,15 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Reeler Name is required.
-                        </Form.Control.Feedback>
+                            Reeler Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="fatherName">
-                          Father's/Husband's Name<span className="text-danger">*</span>
+                          Father's/Husband's Name
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -594,8 +595,8 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Fathers/Husband Name is required.
-                        </Form.Control.Feedback>
+                            Fathers/Husband Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -658,7 +659,7 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Mobile Number  is required
+                            Mobile Number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -693,7 +694,9 @@ const handleDocumentChange = (e) => {
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="arnNumber">ARN Number<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="arnNumber">
+                          ARN Number<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="arnNumber"
@@ -704,16 +707,18 @@ const handleDocumentChange = (e) => {
                             placeholder="Enter ARN Number"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                          ARN Number is required.
-                        </Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            ARN Number is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="4">
-                    <Form.Group className="form-group">
-                        <Form.Label htmlFor="reelerNumber">Reeler Number<span className="text-danger">*</span></Form.Label>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="reelerNumber">
+                          Reeler Number<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="reelerNumber"
@@ -856,12 +861,10 @@ const handleDocumentChange = (e) => {
                           />
                         </div>
                       </Form.Group> */}
-                      
                     </Col>
 
                     <Col lg="4">
-
-                    <Form.Group className="form-group">
+                      <Form.Group className="form-group">
                         <Form.Label>Reeler Type</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -874,10 +877,13 @@ const handleDocumentChange = (e) => {
                               data.reelerTypeMasterId === undefined ||
                               data.reelerTypeMasterId === "0"
                             }
-                            >
+                          >
                             <option value="">Select Reeler Type</option>
                             {reelerTypeListData.map((list) => (
-                              <option key={list.reelerTypeMasterId} value={list.reelerTypeMasterId}>
+                              <option
+                                key={list.reelerTypeMasterId}
+                                value={list.reelerTypeMasterId}
+                              >
                                 {list.reelerTypeMasterName}
                               </option>
                             ))}
@@ -888,9 +894,9 @@ const handleDocumentChange = (e) => {
                         Reeler Type is required
                       </Form.Control.Feedback>
 
-                    <Form.Group className="form-group">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="chakbandi">
-                        GPS Coordinates of reeling unit
+                          GPS Coordinates of reeling unit
                         </Form.Label>
                         <Row>
                           <Col lg="6">
@@ -937,8 +943,8 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Passbook Number is required.
-                        </Form.Control.Feedback>
+                            Passbook Number is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -959,15 +965,20 @@ const handleDocumentChange = (e) => {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Machine Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Machine Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="machineTypeId"
                             value={data.machineTypeId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.machineTypeId === undefined || data.machineTypeId === "0"}
+                            isInvalid={
+                              data.machineTypeId === undefined ||
+                              data.machineTypeId === "0"
+                            }
                           >
                             <option value="0">Select Machine Type</option>
                             {machineTypeListData.map((list) => (
@@ -1025,23 +1036,21 @@ const handleDocumentChange = (e) => {
                             id="mahajarDetails"
                             name="mahajarDetails"
                             // value={data.mahajarDetails}
-                             // onChange={handleInputs}
-                             type="file"
+                            // onChange={handleInputs}
+                            type="file"
                             accept=".pdf, .doc, .docx"
                             onChange={handleDocumentChange}
-                            
-        
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3 ">
-                      {document ? (
-                        <p>Selected Document: {document.name}</p>
-                      ) : (
-                        ""
-                      )}
-                    </Form.Group>
+                        {document ? (
+                          <p>Selected Document: {document.name}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
@@ -1083,15 +1092,19 @@ const handleDocumentChange = (e) => {
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          State<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="stateId"
                             value={data.stateId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.stateId === undefined || data.stateId === "0"}
+                            isInvalid={
+                              data.stateId === undefined || data.stateId === "0"
+                            }
                           >
                             <option value="0">Select State</option>
                             {stateListData.map((list) => (
@@ -1107,15 +1120,20 @@ const handleDocumentChange = (e) => {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>District<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          District<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="districtId"
                             value={data.districtId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.districtId === undefined || data.districtId === "0"}
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
                           >
                             <option value="">Select District</option>
                             {districtListData && districtListData.length
@@ -1135,15 +1153,19 @@ const handleDocumentChange = (e) => {
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Taluk<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Taluk<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="talukId"
                             value={data.talukId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.talukId === undefined || data.talukId === "0"}
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
                           >
                             <option value="">Select Taluk</option>
                             {talukListData && talukListData.length
@@ -1158,22 +1180,26 @@ const handleDocumentChange = (e) => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
-                        </Form.Control.Feedback>
+                            Taluk Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label>Hobli<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Hobli<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="hobliId"
                             value={data.hobliId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.hobliId === undefined || data.hobliId === "0"}
+                            isInvalid={
+                              data.hobliId === undefined || data.hobliId === "0"
+                            }
                           >
                             <option value="">Select Hobli</option>
                             {hobliListData && hobliListData.length
@@ -1188,8 +1214,8 @@ const handleDocumentChange = (e) => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Hobli Name is required
-                        </Form.Control.Feedback>
+                            Hobli Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
@@ -1199,9 +1225,12 @@ const handleDocumentChange = (e) => {
                             name="villageId"
                             value={data.villageId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.villageId === undefined || data.villageId === "0"}
+                            isInvalid={
+                              data.villageId === undefined ||
+                              data.villageId === "0"
+                            }
                           >
                             <option value="">Select Village</option>
                             {villageListData && villageListData.length
@@ -1216,8 +1245,8 @@ const handleDocumentChange = (e) => {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Village Name is required
-                        </Form.Control.Feedback>
+                            Village Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1243,7 +1272,7 @@ const handleDocumentChange = (e) => {
                     </Col>
 
                     <Col lg="4">
-                    <Form.Group className="form-group">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="address">
                           Address<span className="text-danger">*</span>
                         </Form.Label>
@@ -1290,8 +1319,8 @@ const handleDocumentChange = (e) => {
                             placeholder="Enter Receipt number"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                           Receipt number is required
+                          <Form.Control.Feedback type="invalid">
+                            Receipt number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1310,7 +1339,8 @@ const handleDocumentChange = (e) => {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="reelingLicenseNumber">
-                          Reeling License Number<span className="text-danger">*</span>
+                          Reeling License Number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1321,10 +1351,10 @@ const handleDocumentChange = (e) => {
                             type="text"
                             placeholder="Enter Reeling License Number"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Reeling License Number is required
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeling License Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1396,9 +1426,11 @@ const handleDocumentChange = (e) => {
                 <Card.Header>Chakbandi Details</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
-                  <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarEast">East<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarEast">
+                          East<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarEast"
@@ -1414,11 +1446,13 @@ const handleDocumentChange = (e) => {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarWest">West<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarWest">
+                          West<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarWest"
@@ -1434,11 +1468,13 @@ const handleDocumentChange = (e) => {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarNorth">North<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarNorth">
+                          North<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarNorth"
@@ -1454,11 +1490,13 @@ const handleDocumentChange = (e) => {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarSouth">South<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarSouth">
+                          South<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarSouth"
@@ -1486,8 +1524,10 @@ const handleDocumentChange = (e) => {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                        <Form.Label htmlFor="bankName">Bank Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="bankName">
+                          Bank Name<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="bankName"
@@ -1499,8 +1539,8 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bank Name is required
-                        </Form.Control.Feedback>
+                            Bank Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1519,8 +1559,8 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Branch Name is required
-                        </Form.Control.Feedback>
+                            Branch Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -1528,7 +1568,8 @@ const handleDocumentChange = (e) => {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="accno">
-                          Bank Account Number<span className="text-danger">*</span>
+                          Bank Account Number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1541,13 +1582,15 @@ const handleDocumentChange = (e) => {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bank Account Number is required
-                        </Form.Control.Feedback>
+                            Bank Account Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="ifsc">IFSC Code<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="ifsc">
+                          IFSC Code<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="ifscCode"
@@ -1611,7 +1654,7 @@ const handleDocumentChange = (e) => {
                       </Form.Group>
                     </Col>
                   </Row>
-                  {vbAccountList &&   vbAccountList.length > 0 ? (
+                  {vbAccountList && vbAccountList.length > 0 ? (
                     <Row className="g-gs">
                       <Block>
                         <Card>
@@ -1689,7 +1732,7 @@ const handleDocumentChange = (e) => {
                 </li>
                 <li>
                   <Link
-                    to="/reeler-license-list"
+                    to="/seriui/reeler-license-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel
@@ -1710,7 +1753,7 @@ const handleDocumentChange = (e) => {
           <Form noValidate validated={validatedVbAccount} onSubmit={handleAdd}>
             <Row className="g-5 px-5">
               <Col lg="6">
-              <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="virtualAccountNumber">
                     Virtual Account Number<span className="text-danger">*</span>
                   </Form.Label>
@@ -1726,12 +1769,14 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       Virtual Account Number is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="branchNamevb">Branch Name<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="branchNamevb">
+                    Branch Name<span className="text-danger">*</span>
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="branchNamevb"
@@ -1744,14 +1789,16 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       Branch Name is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="ifscCodevb">IFSC Code<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="ifscCodevb">
+                    IFSC Code<span className="text-danger">*</span>
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="ifscCodevb"
@@ -1764,22 +1811,27 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       IFSC Code is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
-                  <Form.Label>Market<span className="text-danger">*</span></Form.Label>
+                  <Form.Label>
+                    Market<span className="text-danger">*</span>
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="marketMasterId"
                       // value={vbAccount.marketMasterId}
                       value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
                       onChange={handleMarketOption}
-                      onBlur={() => handleMarketOption} 
+                      onBlur={() => handleMarketOption}
                       required
-                      isInvalid={vbAccount.marketMasterId === undefined || vbAccount.marketMasterId === "0"}
-                      >
+                      isInvalid={
+                        vbAccount.marketMasterId === undefined ||
+                        vbAccount.marketMasterId === "0"
+                      }
+                    >
                       <option value="">Select Market</option>
                       {marketMasterListData.length
                         ? marketMasterListData.map((list) => (
@@ -1793,8 +1845,8 @@ const handleDocumentChange = (e) => {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                        Market is required
-                      </Form.Control.Feedback>
+                      Market is required
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
@@ -1830,7 +1882,11 @@ const handleDocumentChange = (e) => {
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
-          <Form noValidate validated={validatedVbAccountEdit} onSubmit={handleEdit}>
+          <Form
+            noValidate
+            validated={validatedVbAccountEdit}
+            onSubmit={handleEdit}
+          >
             <Row className="g-5 px-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
@@ -1849,12 +1905,14 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       Virtual Account Number is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="branchNamevb">Branch Name<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="branchNamevb">
+                    Branch Name<span className="text-danger">*</span>
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="branchNamevb"
@@ -1867,14 +1925,16 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       Branch Name is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="ifscCodevb">IFSC Code<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="ifscCodevb">
+                    IFSC Code<span className="text-danger">*</span>
+                  </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="ifscCodevb"
@@ -1887,7 +1947,7 @@ const handleDocumentChange = (e) => {
                     />
                     <Form.Control.Feedback type="invalid">
                       IFSC Code is required
-                      </Form.Control.Feedback>
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
@@ -1899,10 +1959,13 @@ const handleDocumentChange = (e) => {
                       // value={vbAccount.marketMasterId}
                       value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
                       onChange={handleMarketOption}
-                      onBlur={() => handleMarketOption} 
+                      onBlur={() => handleMarketOption}
                       required
-                      isInvalid={vbAccount.marketMasterId === undefined || vbAccount.marketMasterId === "0"}
-                      >
+                      isInvalid={
+                        vbAccount.marketMasterId === undefined ||
+                        vbAccount.marketMasterId === "0"
+                      }
+                    >
                       <option value="">Select Market</option>
                       {marketMasterListData.length
                         ? marketMasterListData.map((list) => (
@@ -1916,8 +1979,8 @@ const handleDocumentChange = (e) => {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                        Market is required
-                      </Form.Control.Feedback>
+                      Market is required
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>

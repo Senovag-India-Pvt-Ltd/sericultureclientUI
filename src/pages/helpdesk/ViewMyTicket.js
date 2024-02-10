@@ -3,9 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import {
-  Icon,
-} from "../../components";
+import { Icon } from "../../components";
 import MyTicketsData from "../../store/helpdesk/MyTicketsData";
 
 function ViewMyTicket() {
@@ -28,10 +26,10 @@ function ViewMyTicket() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
-                  <Link to="/stake-holder-list">Farmer registration List</Link>
+                  <Link to="/seriui/stake-holder-list">Farmer registration List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   View My Ticket
@@ -43,7 +41,7 @@ function ViewMyTicket() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/my-tickets"
+                  to="/seriui/my-tickets"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -52,7 +50,7 @@ function ViewMyTicket() {
               </li>
               <li>
                 <Link
-                  to="/my-tickets"
+                  to="/seriui/my-tickets"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

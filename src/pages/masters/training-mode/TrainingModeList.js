@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -50,7 +50,7 @@ function TrainingModeList() {
 
   const handleEdit = (_id) => {
     navigate(`/training-mode-edit/${_id}`);
-    // navigate("/trModeMaster");
+    // navigate("/seriui/trModeMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function TrainingModeList() {
     },
   };
 
-
   const TrModeMasterDataColumns = [
     {
       name: "Action",
@@ -196,14 +195,17 @@ function TrainingModeList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/training-mode" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/training-mode"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/training-mode"
+                  to="/seriui/training-mode"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -215,7 +217,7 @@ function TrainingModeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

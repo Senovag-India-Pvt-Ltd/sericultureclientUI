@@ -10,7 +10,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../services/auth/api";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -48,7 +48,7 @@ function ScProgramList() {
 
   const handleEdit = (_id) => {
     navigate(`/sc-program-edit/${_id}`);
-    // navigate("/soil-type");
+    // navigate("/seriui/soil-type");
   };
 
   const deleteError = () => {
@@ -194,7 +194,7 @@ function ScProgramList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-program"
+                  to="/seriui/sc-program"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -203,7 +203,7 @@ function ScProgramList() {
               </li>
               <li>
                 <Link
-                  to="/sc-program"
+                  to="/seriui/sc-program"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -215,7 +215,7 @@ function ScProgramList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             // title="Program List"

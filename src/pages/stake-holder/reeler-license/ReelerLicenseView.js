@@ -76,7 +76,6 @@ function ReelerLicenseView() {
       });
   };
 
-
   // console.log(getIdList());
 
   useEffect(() => {
@@ -95,7 +94,7 @@ function ReelerLicenseView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -104,7 +103,7 @@ function ReelerLicenseView() {
               </li>
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,13 +117,13 @@ function ReelerLicenseView() {
 
       <Block className="mt-n4">
         <Card>
-        <Card.Header>Reeler Personal Info</Card.Header>
+          <Card.Header>Reeler Personal Info</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
                 <table className="table small table-bordered">
                   <tbody>
-                  <tr>
+                    <tr>
                       <td style={styles.ctstyle}> Fruits ID:</td>
                       <td>{Reeler.fruitsId}</td>
                     </tr>
@@ -148,10 +147,10 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> Gender:</td>
                       <td>
                         {Reeler.gender === 1
-                          ? 'Male'
+                          ? "Male"
                           : Reeler.gender === 2
-                          ? 'Female'
-                          : 'Other'}
+                          ? "Female"
+                          : "Other"}
                       </td>
                     </tr>
                     <tr>
@@ -178,11 +177,11 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> ARN Number:</td>
                       <td>{Reeler.arnNumber}</td>
                     </tr>
-                    </tbody>
+                  </tbody>
                 </table>
               </Col>
               <Col lg="4">
-              <table className="table small table-bordered">
+                <table className="table small table-bordered">
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Ward Number:</td>
@@ -209,7 +208,10 @@ function ReelerLicenseView() {
                       <td>{Reeler.recipientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Representative Name and Address:</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        Representative Name and Address:
+                      </td>
                       <td>{Reeler.representativeNameAddress}</td>
                     </tr>
                     <tr>
@@ -221,9 +223,13 @@ function ReelerLicenseView() {
                       <td>{Reeler.gpsLat}</td>
                     </tr> */}
                     <tr>
-                    <td style={styles.ctstyle}>GPS Coordinates of reeling unit:</td>
-                    <td>Latitude: {Reeler.chakbandiLat}, 
-                        Longitude: {Reeler.chakbandiLng}</td>
+                      <td style={styles.ctstyle}>
+                        GPS Coordinates of reeling unit:
+                      </td>
+                      <td>
+                        Latitude: {Reeler.chakbandiLat}, Longitude:{" "}
+                        {Reeler.chakbandiLng}
+                      </td>
                     </tr>
 
                     <tr>
@@ -234,14 +240,14 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> Reeler Type:</td>
                       <td>{Reeler.reelerTypeMasterName}</td>
                     </tr>
-                    </tbody>
-                  </table>
-                </Col>
-                    
-                    <Col lg="4">
-                    <table className="table small table-bordered">
-                      <tbody>
-                      <tr>
+                  </tbody>
+                </table>
+              </Col>
+
+              <Col lg="4">
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
                       <td style={styles.ctstyle}> Passbook Number:</td>
                       <td>{Reeler.passbookNumber}</td>
                     </tr>
@@ -250,7 +256,10 @@ function ReelerLicenseView() {
                       <td>{Reeler.reelingUnitBoundary}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Date of Machine Installation:</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        Date of Machine Installation:
+                      </td>
                       <td>{Reeler.dateOfMachineInstallation}</td>
                     </tr>
                     <tr>
@@ -261,7 +270,7 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> Number of Basins/Charaka:</td>
                       <td>{Reeler.numberOfBasins}</td>
                     </tr>
-        
+
                     {/* <tr>
                       <td style={styles.ctstyle}> Mahajar Details:</td>
                       <td>{Reeler.mahajarDetails}</td>
@@ -427,47 +436,52 @@ function ReelerLicenseView() {
         <Card className="mt-3">
           <Card.Header>Virtual Bank Account</Card.Header>
           <Card.Body>
-          {/* {console.log('Virtual Bank Account List:', vbAccountList)}
+            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
           {vbAccountList && vbAccountList.length > 0 ? (
             vbAccountList.map((vbAccount) => (
               <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-                {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
+            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
             {/* <Row className="g-gs"> */}
-            {vbAccountList && vbAccountList.length>0?(vbAccountList.map((vbAccount)=>(
+            {vbAccountList && vbAccountList.length > 0
+              ? vbAccountList.map((vbAccount) => (
                   <Row className="g-gs">
-                  {console.log(vbAccount.reelerVirtualBankAccountId)}
-              <Col lg="4">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}> Virtual Bank ID:</td>
-                      <td>{vbAccount.reelerVirtualBankAccountId}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Reeler Id:</td>
-                      <td>{vbAccount.reelerId}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Virtual Account Number:</td>
-                      <td>{vbAccount.virtualAccountNumber}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Branch Name:</td>
-                      <td>{vbAccount.branchName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Ifsc Code:</td>
-                      <td>{vbAccount.ifscCode}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Market:</td>
-                      <td>{vbAccount.marketMasterName}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
-            ))):""} 
+                    {console.log(vbAccount.reelerVirtualBankAccountId)}
+                    <Col lg="4">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}> Virtual Bank ID:</td>
+                            <td>{vbAccount.reelerVirtualBankAccountId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Reeler Id:</td>
+                            <td>{vbAccount.reelerId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Virtual Account Number:
+                            </td>
+                            <td>{vbAccount.virtualAccountNumber}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Branch Name:</td>
+                            <td>{vbAccount.branchName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Ifsc Code:</td>
+                            <td>{vbAccount.ifscCode}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Market:</td>
+                            <td>{vbAccount.marketMasterName}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                ))
+              : ""}
           </Card.Body>
         </Card>
       </Block>

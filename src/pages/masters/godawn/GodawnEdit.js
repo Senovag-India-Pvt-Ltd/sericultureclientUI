@@ -28,19 +28,19 @@ function GodawnEdit() {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURL + `godown/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL + `godown/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               marketMasterId: "",
@@ -49,21 +49,21 @@ function GodawnEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketMasterId: "",
       godownName: "",
       godownNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -139,7 +139,7 @@ function GodawnEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +148,7 @@ function GodawnEdit() {
               </li>
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -173,72 +173,82 @@ function GodawnEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Market<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="marketMasterId"
-                          value={data.marketMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
-                        >
-                          <option value="">Select Market</option>
-                          {marketListData.map((list) => (
-                            <option
-                              key={list.marketMasterId}
-                              value={list.marketMasterId}
-                            >
-                              {list.marketMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Godown Name">Godown Name<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="Godown Name"
-                          name="godownName"
-                          value={data.godownName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Godown Name"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Godown Name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Market<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="Godown Name">
+                          Godown Name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Godown Name"
+                            name="godownName"
+                            value={data.godownName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Godown Name"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Godown Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Godown Name">Godown Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="Godown Name"
-                          name="godownNameInKannada"
-                          value={data.godownNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Godown Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Godown Name in Kannada is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="Godown Name">
+                          Godown Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Godown Name"
+                            name="godownNameInKannada"
+                            value={data.godownNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Godown Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Godown Name in Kannada is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -253,7 +263,7 @@ function GodawnEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

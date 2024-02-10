@@ -38,33 +38,33 @@ function SoilType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `soilType/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `soilType/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               soilTypeName: "",
-              soilTypeNameInKannada: "", 
+              soilTypeNameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       soilTypeName: "",
-      soilTypeNameInKannada: "", 
-    })
-  }
+      soilTypeNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -94,7 +94,7 @@ function SoilType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function SoilType() {
               </li>
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -125,7 +125,9 @@ function SoilType() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="soil">Soil Type<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="soil">
+                        Soil Type<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="soil"
@@ -145,7 +147,10 @@ function SoilType() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="soil">Soil Type Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="soil">
+                        Soil Type Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="soil"
@@ -175,7 +180,7 @@ function SoilType() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

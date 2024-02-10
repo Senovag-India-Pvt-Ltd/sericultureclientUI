@@ -36,40 +36,40 @@ function CasteEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `caste/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `caste/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               title: "",
               code: "",
-              nameInKannada: "", 
+              nameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-     title: "",
-    code: "",
-    nameInKannada: "", 
-    })
-  }
+      title: "",
+      code: "",
+      nameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
-  const response = api
+    const response = api
       .get(baseURL + `caste/get/${id}`)
       .then((response) => {
         setData(response.data.content);
@@ -121,7 +121,7 @@ function CasteEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +130,7 @@ function CasteEdit() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +156,9 @@ function CasteEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">Title<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="title">
+                          Title<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="title"
@@ -168,33 +170,34 @@ function CasteEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Title Name is required.
-                        </Form.Control.Feedback>
+                            Title Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Title Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Title Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Title Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="nameInKannada"
+                            value={data.nameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Title Name in Kannda"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Title Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                     {/* <Col lg="6">
                       <Form.Group className="form-group">
@@ -225,7 +228,7 @@ function CasteEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

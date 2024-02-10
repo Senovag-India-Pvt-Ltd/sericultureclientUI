@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainingDeputedInstituteEdit() {
@@ -36,31 +35,31 @@ function TrainingDeputedInstituteEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `deputedInstituteMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `deputedInstituteMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               deputedInstituteName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-      deputedInstituteName: "", 
-    })
-  }
+      deputedInstituteName: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -118,7 +117,7 @@ function TrainingDeputedInstituteEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/deputed-institute-list"
+                  to="/seriui/deputed-institute-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +126,7 @@ function TrainingDeputedInstituteEdit() {
               </li>
               <li>
                 <Link
-                  to="/deputed-institute-list"
+                  to="/seriui/deputed-institute-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +152,10 @@ function TrainingDeputedInstituteEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="deputedInstituteMaster">Deputed Institute<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="deputedInstituteMaster">
+                          Deputed Institute
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="deputedInstituteName"
@@ -163,10 +165,10 @@ function TrainingDeputedInstituteEdit() {
                             type="text"
                             placeholder="Enter Deputed Institute"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
+                          />
+                          <Form.Control.Feedback type="invalid">
                             Deputed Institute Name is required.
-                            </Form.Control.Feedback>
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -174,25 +176,25 @@ function TrainingDeputedInstituteEdit() {
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

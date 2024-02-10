@@ -5,21 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MaintenanceofMulberryfarm() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -43,7 +40,6 @@ function MaintenanceofMulberryfarm() {
     ifscCode: "",
     marketMasterId: "",
   });
-
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -389,7 +385,7 @@ function MaintenanceofMulberryfarm() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -411,24 +407,24 @@ function MaintenanceofMulberryfarm() {
     });
   };
 
-
-  
   return (
     <Layout title="Maintenance of mulberry Garden in the Farms">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Maintenance of mulberry Garden in the Farms</Block.Title>
+            <Block.Title tag="h2">
+              Maintenance of mulberry Garden in the Farms
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                Maintenance of mulberry Garden in the Farms
+                  Maintenance of mulberry Garden in the Farms
                 </li>
               </ol>
             </nav>
@@ -437,7 +433,7 @@ function MaintenanceofMulberryfarm() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -446,7 +442,7 @@ function MaintenanceofMulberryfarm() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -460,161 +456,159 @@ function MaintenanceofMulberryfarm() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header> Maintenance of mulberry Garden in the Farms </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Maintenance of mulberry Garden in the Farms{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Plot Number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Plot Number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Types of mulberry Variety
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Types of mulberry Variety"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Plot Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Plot Number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Types of mulberry Variety
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Types of mulberry Variety"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Area Under each Variety
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Area Under each Variety"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Area Under each Variety
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Area Under each Variety"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Pruning Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Pruning Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Fertilizer Application Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Fertilizer Application Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Pruning Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Pruning Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Fertilizer Application Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Fertilizer Application Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             FYM (Farm Yard Manure) application date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="FYM (Farm Yard Manure) application date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                FYM (Farm Yard Manure) application date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="FYM (Farm Yard Manure) application date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Irrigation date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Irrigation date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Date of Brushing
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Date of Brushing"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Irrigation date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Irrigation date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Date of Brushing
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Date of Brushing"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">Remarks</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Remarks"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Remarks
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Remarks"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-
-                         
-                         
- 
- 
-
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  onClick={handleShowModal} > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="12" className="text-center">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -624,94 +618,109 @@ function MaintenanceofMulberryfarm() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Plot Number</th>  
-                                  <th style={styles.ctstyle}>Types of mulberry Variety</th> 
-                                  <th style={styles.ctstyle}>Area Under each Variety</th> 
-                                  <th style={styles.ctstyle}>Pruning Date</th> 
-                                  <th style={styles.ctstyle}>Fertilizer Application Date</th> 
-                                   <th style={styles.ctstyle}>FYM (Farm Yard Manure) application date</th> 
-                                  <th style={styles.ctstyle}>Irrigation date</th>
-                                   <th style={styles.ctstyle}>Date of Brushing</th>
-                                   <th style={styles.ctstyle}>Remarks</th>
-                                   
+                                  <th style={styles.ctstyle}>Plot Number</th>
+                                  <th style={styles.ctstyle}>
+                                    Types of mulberry Variety
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Area Under each Variety
+                                  </th>
+                                  <th style={styles.ctstyle}>Pruning Date</th>
+                                  <th style={styles.ctstyle}>
+                                    Fertilizer Application Date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    FYM (Farm Yard Manure) application date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Irrigation date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of Brushing
+                                  </th>
+                                  <th style={styles.ctstyle}>Remarks</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Plot Number data</td>  
-                                   <td>Types of mulberry Variety data</td> 
-                                   <td>Area Under each Variety data</td> 
-                                    <td>Pruning Date data</td> 
-                                    <td>Fertilizer Application Date data</td> 
-                                     <td>FYM (Farm Yard Manure) application date data</td> 
-                                    <td>Irrigation date</td> 
-                                    <td>Date of Brushing</td> 
-                                     <td>Remarks</td> 
-                                      
-                                </tr>
-                              </tbody>
-                            </table> 
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
-                    </Card.Body>
-                  </Card>
-                 
-                
-                 
-                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>Maintenance of mulberry farm Schedule</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="#">
-            <Row className="g-5 px-5">
-               
-              <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Plot Number</th>   
-                                  <th style={styles.ctstyle}>Pruning Date</th> 
-                                  <th style={styles.ctstyle}>Fertilizer Application Date</th> 
-                                   <th style={styles.ctstyle}>FYM (Farm Yard Manure) application date</th> 
-                                  <th style={styles.ctstyle}>Irrigation date</th>
-                                   <th style={styles.ctstyle}>Date of Brushing</th>
-                                  
-                                   
-                                </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                   <td>81</td>  
-                                    <td>12/20/2023</td> 
-                                    <td  style={styles.actiongreentstyle} >Completed</td> 
-                                     <td style={styles.actiongreentstyle}>Completed</td> 
-                                    <td style={styles.actionredtstyle}>Pending</td> 
-                                    <td style={styles.actionredtstyle}>Pending</td>  
-                                      
+                                  <td>Plot Number data</td>
+                                  <td>Types of mulberry Variety data</td>
+                                  <td>Area Under each Variety data</td>
+                                  <td>Pruning Date data</td>
+                                  <td>Fertilizer Application Date data</td>
+                                  <td>
+                                    FYM (Farm Yard Manure) application date data
+                                  </td>
+                                  <td>Irrigation date</td>
+                                  <td>Date of Brushing</td>
+                                  <td>Remarks</td>
                                 </tr>
                               </tbody>
                             </table>
-                             
-                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
 
-              
-            </Row>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-
-
+                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        Maintenance of mulberry farm Schedule
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form action="#">
+                        <Row className="g-5 px-5">
+                          <div className="table-responsive">
+                            <table className="table small table-bordered">
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>Plot Number</th>
+                                  <th style={styles.ctstyle}>Pruning Date</th>
+                                  <th style={styles.ctstyle}>
+                                    Fertilizer Application Date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    FYM (Farm Yard Manure) application date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Irrigation date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of Brushing
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>81</td>
+                                  <td>12/20/2023</td>
+                                  <td style={styles.actiongreentstyle}>
+                                    Completed
+                                  </td>
+                                  <td style={styles.actiongreentstyle}>
+                                    Completed
+                                  </td>
+                                  <td style={styles.actionredtstyle}>
+                                    Pending
+                                  </td>
+                                  <td style={styles.actionredtstyle}>
+                                    Pending
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </Row>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </Col>
               </Row>
             </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ function MarketTypeList() {
 
   const handleEdit = (_id) => {
     navigate(`/market-type-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -139,7 +139,6 @@ function MarketTypeList() {
     },
   };
 
-
   const MarketTypeDataColumns = [
     {
       name: "Action",
@@ -190,26 +189,26 @@ function MarketTypeList() {
       hide: "md",
     },
     {
-        name: "Reeler Fee",
-        selector: (row) => row.reelerFee,
-        cell: (row) => <span>{row.reelerFee}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Farmer Fee",
-        selector: (row) => row.farmerFee,
-        cell: (row) => <span>{row.farmerFee}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Trader Fee",
-        selector: (row) => row.traderFee,
-        cell: (row) => <span>{row.traderFee}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      name: "Reeler Fee",
+      selector: (row) => row.reelerFee,
+      cell: (row) => <span>{row.reelerFee}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farmer Fee",
+      selector: (row) => row.farmerFee,
+      cell: (row) => <span>{row.farmerFee}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Trader Fee",
+      selector: (row) => row.traderFee,
+      cell: (row) => <span>{row.traderFee}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -223,7 +222,7 @@ function MarketTypeList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-type"
+                  to="/seriui/market-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -232,7 +231,7 @@ function MarketTypeList() {
               </li>
               <li>
                 <Link
-                  to="/market-type"
+                  to="/seriui/market-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -244,7 +243,7 @@ function MarketTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

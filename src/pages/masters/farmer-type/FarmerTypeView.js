@@ -57,7 +57,7 @@ function FarmerTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function FarmerTypeView() {
               </li>
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -100,7 +100,10 @@ function FarmerTypeView() {
                         <td>{farmerType.farmerTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Farmer Type Name In Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Farmer Type Name In Kannada:
+                        </td>
                         <td>{farmerType.farmerTypeNameInKannada}</td>
                       </tr>
                     </tbody>

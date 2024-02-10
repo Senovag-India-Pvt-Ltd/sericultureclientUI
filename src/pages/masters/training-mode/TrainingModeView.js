@@ -57,7 +57,7 @@ function TrainingModeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-mode-list"
+                  to="/seriui/training-mode-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function TrainingModeView() {
               </li>
               <li>
                 <Link
-                  to="/training-mode-list"
+                  to="/seriui/training-mode-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -200,7 +200,7 @@ function RoleConfig() {
         Swal.fire({
           icon: "success",
           title: "Saved successfully",
-        })
+        });
         // alert("saved");
         setData({
           roleId: "",
@@ -263,7 +263,7 @@ function RoleConfig() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/relationship-list"));
+    }).then(() => navigate("/seriui/relationship-list"));
   };
 
   const saveError = () => {
@@ -302,7 +302,7 @@ function RoleConfig() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -317,7 +317,7 @@ function RoleConfig() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -326,7 +326,7 @@ function RoleConfig() {
               </li>
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -465,7 +465,7 @@ function RoleConfig() {
                 </li>
                 <li>
                   <Link
-                    to="/relationship-list"
+                    to="/seriui/relationship-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

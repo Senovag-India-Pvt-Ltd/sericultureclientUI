@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -13,12 +13,10 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DispatchofCocoonstoP4Grainage() {
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -33,8 +31,8 @@ function DispatchofCocoonstoP4Grainage() {
       color: "#fff",
     },
   };
- 
- // Virtual Bank Account
+
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -387,7 +385,7 @@ function DispatchofCocoonstoP4Grainage() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -409,23 +407,25 @@ function DispatchofCocoonstoP4Grainage() {
     });
   };
 
-  
   return (
     <Layout title=" Dispatch of Cocoons to P4 Grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Dispatch of Cocoons to P4 Grainage</Block.Title>
+            <Block.Title tag="h2">
+              {" "}
+              Dispatch of Cocoons to P4 Grainage
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Dispatch of Cocoons to P4 Grainage
+                  Dispatch of Cocoons to P4 Grainage
                 </li>
               </ol>
             </nav>
@@ -434,7 +434,7 @@ function DispatchofCocoonstoP4Grainage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +443,7 @@ function DispatchofCocoonstoP4Grainage() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -457,159 +457,156 @@ function DispatchofCocoonstoP4Grainage() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>  Dispatch of Cocoons to P4 Grainage  </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Dispatch of Cocoons to P4 Grainage{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Line/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Line/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Source
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Source"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Generation No. ( 1 to 15)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Generation No. ( 1 to 15)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                          
-                          
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Spun on Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Spun on Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Line/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Line/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">Source</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Source"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Lot Number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot Number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Generation No. ( 1 to 15)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Generation No. ( 1 to 15)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Number of Cocoons Dispatched
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Number of Cocoons Dispatched"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Spun on Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Spun on Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Date of Supply</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot Number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of Cocoons Dispatched
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of Cocoons Dispatched"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Date of Supply</Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
-                         
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Dispatch 
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Dispatch "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Invoice No & Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Invoice No & Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
- 
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">Dispatch</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Dispatch "
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice No & Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Invoice No & Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="12" className="text-center">
+                            <Button type="button" variant="primary">
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -619,60 +616,58 @@ function DispatchofCocoonstoP4Grainage() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Line/Year</th>   
-                                  <th style={styles.ctstyle}>Source</th> 
-                                  <th style={styles.ctstyle}>Generation No. ( 1 to 15)</th> 
-                                   <th style={styles.ctstyle}>Spun on Date</th> 
+                                  <th style={styles.ctstyle}>Line/Year</th>
+                                  <th style={styles.ctstyle}>Source</th>
+                                  <th style={styles.ctstyle}>
+                                    Generation No. ( 1 to 15)
+                                  </th>
+                                  <th style={styles.ctstyle}>Spun on Date</th>
                                   <th style={styles.ctstyle}>Lot Number</th>
-                                   <th style={styles.ctstyle}>Number of Cocoons Dispatched</th>
-                                    <th style={styles.ctstyle}>Date of Supply</th> 
+                                  <th style={styles.ctstyle}>
+                                    Number of Cocoons Dispatched
+                                  </th>
+                                  <th style={styles.ctstyle}>Date of Supply</th>
                                   <th style={styles.ctstyle}>Dispatch </th>
-                                   <th style={styles.ctstyle}>Invoice No & Date</th>
-                                  
-                                   
+                                  <th style={styles.ctstyle}>
+                                    Invoice No & Date
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Line/Year data </td>  
-                                    <td>Source</td> 
-                                    <td   >Generation No. ( 1 to 15)</td> 
-                                     <td  >Spun on Date</td> 
-                                    <td  >Lot Number</td> 
-                                    <td  >Number of Cocoons Dispatched</td>  
-                                       <td  >12/20/2023</td> 
-                                    <td >Dispatch </td> 
-                                    <td  >Invoice No amd Date</td>  
+                                <tr>
+                                  <td>Line/Year data </td>
+                                  <td>Source</td>
+                                  <td>Generation No. ( 1 to 15)</td>
+                                  <td>Spun on Date</td>
+                                  <td>Lot Number</td>
+                                  <td>Number of Cocoons Dispatched</td>
+                                  <td>12/20/2023</td>
+                                  <td>Dispatch </td>
+                                  <td>Invoice No amd Date</td>
                                 </tr>
-                                 <tr>
-                                   <td>Line/Year data </td>  
-                                    <td>Source</td> 
-                                    <td   >Generation No. ( 1 to 15)</td> 
-                                     <td  >Spun on Date</td> 
-                                    <td  >Lot Number</td> 
-                                    <td  >Number of Cocoons Dispatched</td>  
-                                       <td  >12/20/2023</td> 
-                                    <td >Dispatch </td> 
-                                    <td  >Invoice No amd Date</td>  
+                                <tr>
+                                  <td>Line/Year data </td>
+                                  <td>Source</td>
+                                  <td>Generation No. ( 1 to 15)</td>
+                                  <td>Spun on Date</td>
+                                  <td>Lot Number</td>
+                                  <td>Number of Cocoons Dispatched</td>
+                                  <td>12/20/2023</td>
+                                  <td>Dispatch </td>
+                                  <td>Invoice No amd Date</td>
                                 </tr>
                               </tbody>
                             </table>
-
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                  
-
                 </Col>
               </Row>
             </div>

@@ -57,7 +57,7 @@ function TrainingGroupView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-group-list"
+                  to="/seriui/training-group-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function TrainingGroupView() {
               </li>
               <li>
                 <Link
-                  to="/training-group-list"
+                  to="/seriui/training-group-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -100,7 +100,10 @@ function TrainingGroupView() {
                         <td>{trGroup.trGroupMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Group Name In Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Training Group Name In Kannada:
+                        </td>
                         <td>{trGroup.trGroupNameInKannada}</td>
                       </tr>
                     </tbody>
@@ -116,5 +119,3 @@ function TrainingGroupView() {
 }
 
 export default TrainingGroupView;
-
-

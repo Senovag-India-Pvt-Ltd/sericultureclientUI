@@ -8,7 +8,6 @@ import axios from "axios";
 import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DistrictView() {
@@ -62,7 +61,7 @@ function DistrictView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/district-list"
+                  to="/seriui/district-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -71,7 +70,7 @@ function DistrictView() {
               </li>
               <li>
                 <Link
-                  to="/district-list"
+                  to="/seriui/district-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -109,7 +108,10 @@ function DistrictView() {
                         <td>{District.districtName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> District Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          District Name in Kannada:
+                        </td>
                         <td>{District.districtNameInKannada}</td>
                       </tr>
                     </tbody>

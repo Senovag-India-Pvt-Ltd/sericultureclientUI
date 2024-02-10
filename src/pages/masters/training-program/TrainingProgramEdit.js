@@ -39,33 +39,33 @@ function TrainingProgramEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `trProgramMaster/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `trProgramMaster/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
             updateError(response.data.content.error_description);
-            }else{
-              updateSuccess();
-              setData({
-                trProgramMasterName: "",
-                trProgramNameInKannada: "",
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        updateError();
-      });
+          } else {
+            updateSuccess();
+            setData({
+              trProgramMasterName: "",
+              trProgramNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trProgramMasterName: "",
       trProgramNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -119,13 +119,12 @@ function TrainingProgramEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Edit Training Program</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -134,7 +133,7 @@ function TrainingProgramEdit() {
               </li>
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -160,7 +159,9 @@ function TrainingProgramEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="trainingProgram">Training Program<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="trainingProgram">
+                          Training Program<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="trainingProgram"
@@ -170,35 +171,36 @@ function TrainingProgramEdit() {
                             type="text"
                             placeholder="Enter Training Programs"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Training Program Name is required
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Program Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Training Program Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="trProgramNameInKannada"
-                          value={data.trProgramNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Program Mode Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Training Program Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Training Program Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="trProgramNameInKannada"
+                            value={data.trProgramNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Program Mode Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Program Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -213,7 +215,7 @@ function TrainingProgramEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

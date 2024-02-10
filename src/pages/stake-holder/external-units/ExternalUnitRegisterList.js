@@ -8,11 +8,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../src/services/auth/api";
-import { createTheme } from 'react-data-table-component';
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { createTheme } from "react-data-table-component";
+import { Icon, Select } from "../../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -51,12 +48,12 @@ function ExternalUnitRegisterList() {
 
   // const handleEdit = (_id) => {
   //   // navigate(`/caste/${_id}`);
-  //   navigate("/caste-edit");
+  //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
     navigate(`/external-unit-registration-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -198,25 +195,25 @@ function ExternalUnitRegisterList() {
       hide: "md",
     },
     {
-        name: "Address",
-        selector: (row) => row.address,
-        cell: (row) => <span>{row.address}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Address",
+      selector: (row) => row.address,
+      cell: (row) => <span>{row.address}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "License Number",
-        selector: (row) => row.licenseNumber,
-        cell: (row) => <span>{row.licenseNumber}</span>,
-        sortable: true,
-        hide: "md",
+      name: "License Number",
+      selector: (row) => row.licenseNumber,
+      cell: (row) => <span>{row.licenseNumber}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "External Unit Number",
-        selector: (row) => row.externalUnitNumber,
-        cell: (row) => <span>{row.externalUnitNumber}</span>,
-        sortable: true,
-        hide: "md",
+      name: "External Unit Number",
+      selector: (row) => row.externalUnitNumber,
+      cell: (row) => <span>{row.externalUnitNumber}</span>,
+      sortable: true,
+      hide: "md",
     },
   ];
 
@@ -230,14 +227,17 @@ function ExternalUnitRegisterList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/external-unit-registration" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/external-unit-registration"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/external-unit-registration"
+                  to="/seriui/external-unit-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

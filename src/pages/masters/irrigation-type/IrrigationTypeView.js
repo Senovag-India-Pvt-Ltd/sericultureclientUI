@@ -59,7 +59,7 @@ function IrrigationTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +68,7 @@ function IrrigationTypeView() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,7 +102,10 @@ function IrrigationTypeView() {
                         <td>{irrigationType.irrigationTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Irrigation Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Irrigation Type Name in Kannada:
+                        </td>
                         <td>{irrigationType.irrigationTypeNameInKannada}</td>
                       </tr>
                     </tbody>

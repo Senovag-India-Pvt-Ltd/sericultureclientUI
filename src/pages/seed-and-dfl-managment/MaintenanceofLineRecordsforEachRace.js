@@ -5,21 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
- const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MaintenanceofLineRecordsforEachRace() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -35,7 +32,7 @@ function MaintenanceofLineRecordsforEachRace() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -388,7 +385,7 @@ function MaintenanceofLineRecordsforEachRace() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -410,24 +407,24 @@ function MaintenanceofLineRecordsforEachRace() {
     });
   };
 
-
-  
   return (
     <Layout title="Maintenance of Line records for each race">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Maintenance of Line records for each race</Block.Title>
+            <Block.Title tag="h2">
+              Maintenance of Line records for each race
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Maintenance of Line records for each race
+                  Maintenance of Line records for each race
                 </li>
               </ol>
             </nav>
@@ -436,7 +433,7 @@ function MaintenanceofLineRecordsforEachRace() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -445,7 +442,7 @@ function MaintenanceofLineRecordsforEachRace() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -459,250 +456,257 @@ function MaintenanceofLineRecordsforEachRace() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header> Maintenance of Line records for each race  </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Maintenance of Line records for each race{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>
+                                Line details/Year (Silk Worm Race)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">Kempanahalli</option>
+                                  <option value="1">Magadi</option>
+                                  <option value="2">Hebbur</option>
+                                  <option value="3"> Kunigal</option>
+                                  <option value="">Solur</option>
+                                  <option value="1">Kudur</option>
+                                  <option value="2">Swarna-I</option>
+                                  <option value="3"> CSB</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                FRUITS-ID
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="FRUITS-ID"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           <Form.Group className="form-group  ">
-                        <Form.Label>Line details/Year (Silk Worm Race)</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Kempanahalli</option>
-                            <option value="1">Magadi</option>
-                            <option value="2">Hebbur</option>
-                            <option value="3"> Kunigal</option>
-                             <option value="">Solur</option>
-                            <option value="1">Kudur</option>
-                            <option value="2">Swarna-I</option>
-                            <option value="3"> CSB</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Farmer’s name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Farmer’s name"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            FRUITS-ID
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="FRUITS-ID"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot number/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>Generation number</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">1st </option>
+                                  <option value="1">2nd</option>
+                                  <option value="2">3rd</option>
+                                  <option value="3"> 4th </option>
+                                  <option value="">5th</option>
+                                  <option value="1">6th</option>
+                                  <option value="2">7th</option>
+                                  <option value="3"> 8th</option>
+                                  <option value="">9th</option>
+                                  <option value="1">10th</option>
+                                  <option value="2">11th</option>
+                                  <option value="3">12th</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Farmer’s name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Farmer’s name"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Lot number/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot number/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                         
-                         <Form.Group className="form-group  ">
-                        <Form.Label>Generation number</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">1st </option>
-                            <option value="1">2nd</option>
-                            <option value="2">3rd</option>
-                            <option value="3"> 4th </option>
-                             <option value="">5th</option>
-                            <option value="1">6th</option>
-                            <option value="2">7th</option>
-                            <option value="3"> 8th</option>
-                              <option value="">9th</option>
-                            <option value="1">10th</option>
-                            <option value="2">11th</option>
-                            <option value="3">12th</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-
-                         </Col  >  
-
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Date of selection of Cocoon</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label>
+                                {" "}
+                                Date of selection of Cocoon
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>Market Name</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">Kempanahalli</option>
+                                  <option value="2">Hebbur</option>
+                                  <option value="3"> Kunigal</option>
+                                  <option value="">Solur</option>
+                                  <option value="1">Kudur</option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                No. of cocoons selected
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="No. of cocoons selected"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                           <Form.Group className="form-group  ">
-                        <Form.Label>Market Name</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Kempanahalli</option> 
-                            <option value="2">Hebbur</option>
-                            <option value="3"> Kunigal</option>
-                             <option value="">Solur</option>
-                            <option value="1">Kudur</option>
-                             
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             No. of cocoons selected
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="No. of cocoons selected"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Crop number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Crop number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Crop number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Crop number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                            <Col lg="4" >
-                         <Form.Group className="form-group ">
-                      <Form.Label> Date of Brushing (each generation)</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label>
+                                {" "}
+                                Date of Brushing (each generation)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           <Col lg="4" >
-                         <Form.Group className="form-group ">
-                      <Form.Label> Spun on date (each generation)</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label>
+                                {" "}
+                                Spun on date (each generation)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                            <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Total number of cocoons produced
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Total number of cocoons produced"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Total number of cocoons produced
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Total number of cocoons produced"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                            <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Average Weight
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Average Weight"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Average Weight
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Average Weight"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         
-                         
- 
- 
-
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  onClick={handleShowModal} > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="12" className="text-center">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -712,113 +716,125 @@ function MaintenanceofLineRecordsforEachRace() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Line details/Year (Silk Worm Race)</th>  
-                                  <th style={styles.ctstyle}>FRUITS-ID</th> 
-                                  <th style={styles.ctstyle}>Farmer’s name</th> 
-                                  <th style={styles.ctstyle}>Lot number/Year</th> 
-                                  <th style={styles.ctstyle}>Generation number</th> 
-                                   <th style={styles.ctstyle}>Date of selection of Cocoon</th> 
+                                  <th style={styles.ctstyle}>
+                                    Line details/Year (Silk Worm Race)
+                                  </th>
+                                  <th style={styles.ctstyle}>FRUITS-ID</th>
+                                  <th style={styles.ctstyle}>Farmer’s name</th>
+                                  <th style={styles.ctstyle}>
+                                    Lot number/Year
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Generation number
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of selection of Cocoon
+                                  </th>
                                   <th style={styles.ctstyle}>Market Name</th>
-                                   <th style={styles.ctstyle}>No. of cocoons selected</th>
-                                   <th style={styles.ctstyle}>Crop number</th>
+                                  <th style={styles.ctstyle}>
+                                    No. of cocoons selected
+                                  </th>
+                                  <th style={styles.ctstyle}>Crop number</th>
 
-                                   <th style={styles.ctstyle}>Date of Brushing </th>
-                                   <th style={styles.ctstyle}>Spun on date (each generation) </th>
-                                   <th style={styles.ctstyle}>Total number of cocoons produced</th>
-                                       <th style={styles.ctstyle}>Average Weight</th>
-                                   
+                                  <th style={styles.ctstyle}>
+                                    Date of Brushing{" "}
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Spun on date (each generation){" "}
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Total number of cocoons produced
+                                  </th>
+                                  <th style={styles.ctstyle}>Average Weight</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Line details/Year (Silk Worm Race) data</td>  
-                                   <td>FRUITS-ID data</td> 
-                                   <td>Farmer’s name data</td> 
-                                    <td>Lot number/Year data</td> 
-                                    <td>Generation number data</td> 
-                                     <td>12-9-2023</td> 
-                                    <td>Market Name date</td> 
-                                    <td>No. of cocoons selected data</td> 
-                                     <td>Crop number</td> 
-                                     
-                                      <td>20-9-2023</td> 
-                                    <td>30-8-2023</td> 
-                                    <td>Total number of cocoons produced</td> 
-                                     <td>Average Weight</td> 
-                                      
-                                </tr>
-                              </tbody>
-                            </table> 
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
-                    </Card.Body>
-                  </Card>
-                 
-                
-                 
-                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title> Status of Receipt of DFLs from the grainage</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="#">
-            <Row className="g-5 px-5">
-               
-              <div className="table-responsive">
-                          <table className="table small table-bordered">
-                              <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>   
-                                  <th style={styles.ctstyle}>Number of DFLs received</th> 
-                                  <th style={styles.ctstyle}>Line Name</th> 
-                                   <th style={styles.ctstyle}>Lot  Number</th> 
-                                  <th style={styles.ctstyle}>Invoice no</th>
-                                   <th style={styles.ctstyle}>Invoice Date</th>
-                                   <th style={styles.ctstyle}>Status (Recived)</th>
-                                   
-                                </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actionredtstyle}>Reject</td>   
-                                </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    <td >Invoice Date data</td>  
-                                     <td style={styles.actiongreentstyle}>Accept</td>   
+                                  <td>
+                                    Line details/Year (Silk Worm Race) data
+                                  </td>
+                                  <td>FRUITS-ID data</td>
+                                  <td>Farmer’s name data</td>
+                                  <td>Lot number/Year data</td>
+                                  <td>Generation number data</td>
+                                  <td>12-9-2023</td>
+                                  <td>Market Name date</td>
+                                  <td>No. of cocoons selected data</td>
+                                  <td>Crop number</td>
+
+                                  <td>20-9-2023</td>
+                                  <td>30-8-2023</td>
+                                  <td>Total number of cocoons produced</td>
+                                  <td>Average Weight</td>
                                 </tr>
                               </tbody>
                             </table>
-                             
-                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
 
-              
-            </Row>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
-
-
+                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        {" "}
+                        Status of Receipt of DFLs from the grainage
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form action="#">
+                        <Row className="g-5 px-5">
+                          <div className="table-responsive">
+                            <table className="table small table-bordered">
+                              <thead>
+                                <tr>
+                                  <th style={styles.ctstyle}>Grainage Name</th>
+                                  <th style={styles.ctstyle}>
+                                    Number of DFLs received
+                                  </th>
+                                  <th style={styles.ctstyle}>Line Name</th>
+                                  <th style={styles.ctstyle}>Lot Number</th>
+                                  <th style={styles.ctstyle}>Invoice no</th>
+                                  <th style={styles.ctstyle}>Invoice Date</th>
+                                  <th style={styles.ctstyle}>
+                                    Status (Recived)
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+                                  <td>Invoice Date data</td>
+                                  <td style={styles.actionredtstyle}>Reject</td>
+                                </tr>
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+                                  <td>Invoice Date data</td>
+                                  <td style={styles.actiongreentstyle}>
+                                    Accept
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </Row>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </Col>
               </Row>
             </div>

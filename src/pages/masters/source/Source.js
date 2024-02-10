@@ -34,32 +34,32 @@ function Source() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `sourceMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `sourceMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               sourceMasterName: "",
-              sourceNameInKannada: "", 
+              sourceNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
-  const clear = () =>{
+  const clear = () => {
     setData({
       sourceMasterName: "",
-      sourceNameInKannada: "", 
-    })
-  }
+      sourceNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -87,7 +87,7 @@ function Source() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/source-list"
+                  to="/seriui/source-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -96,7 +96,7 @@ function Source() {
               </li>
               <li>
                 <Link
-                  to="/source-list"
+                  to="/seriui/source-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,7 +118,9 @@ function Source() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="source">Source<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="source">
+                        Source<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="source"
@@ -138,7 +140,10 @@ function Source() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="source">Source Name In Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="source">
+                        Source Name In Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="source"
@@ -168,7 +173,7 @@ function Source() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

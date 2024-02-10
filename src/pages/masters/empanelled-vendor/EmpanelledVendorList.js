@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -47,7 +47,7 @@ function EmpanelledVendorList() {
 
   const handleEdit = (_id) => {
     navigate(`/empanelled-vendor-edit/${_id}`);
-    // navigate("/soil-type");
+    // navigate("/seriui/soil-type");
   };
 
   const deleteError = () => {
@@ -193,7 +193,7 @@ function EmpanelledVendorList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/empanelled-vendor"
+                  to="/seriui/empanelled-vendor"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -202,7 +202,7 @@ function EmpanelledVendorList() {
               </li>
               <li>
                 <Link
-                  to="/empanelled-vendor"
+                  to="/seriui/empanelled-vendor"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

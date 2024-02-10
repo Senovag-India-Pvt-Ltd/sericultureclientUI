@@ -1,15 +1,15 @@
-import { Card, Button,Col,Row,Form  } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -24,7 +24,7 @@ function UsersList() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "username",   
+    searchBy: "username",
   });
 
   const handleInputs = (e) => {
@@ -89,7 +89,7 @@ function UsersList() {
 
   const handleEdit = (_id) => {
     navigate(`/users-edit/${_id}`);
-    // navigate("/user");
+    // navigate("/seriui/user");
   };
 
   const deleteError = () => {
@@ -180,7 +180,6 @@ function UsersList() {
     },
   };
 
-
   const UserDataColumns = [
     {
       name: "action",
@@ -231,11 +230,11 @@ function UsersList() {
       hide: "md",
     },
     {
-        name: "Last Name",
-        selector: (row) => row.lastName,
-        cell: (row) => <span>{row.lastName}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Last Name",
+      selector: (row) => row.lastName,
+      cell: (row) => <span>{row.lastName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Mobile Number",
@@ -243,20 +242,20 @@ function UsersList() {
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
-  },
-    {
-        name: "Designation",
-        selector: (row) => row.name,
-        cell: (row) => <span>{row.name}</span>,
-        sortable: true,
-        hide: "md",
     },
     {
-        name: "Email",
-        selector: (row) => row.emailID,
-        cell: (row) => <span>{row.emailID}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Designation",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Email",
+      selector: (row) => row.emailID,
+      cell: (row) => <span>{row.emailID}</span>,
+      sortable: true,
+      hide: "md",
     },
   ];
 
@@ -271,7 +270,7 @@ function UsersList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/user"
+                  to="/seriui/user"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -280,7 +279,7 @@ function UsersList() {
               </li>
               <li>
                 <Link
-                  to="/user"
+                  to="/seriui/user"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -294,7 +293,7 @@ function UsersList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -310,11 +309,10 @@ function UsersList() {
                       {/* <option value="">Select</option> */}
                       <option value="username">User Name</option>
                       <option value="phoneNumber">Phone Number</option>
-                      
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="userMasterId"

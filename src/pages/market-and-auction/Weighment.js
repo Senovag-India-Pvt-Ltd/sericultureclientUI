@@ -39,18 +39,18 @@ function Weighment() {
 
   const [weighTest, setWeighTest] = useState(false);
 
-  const notify = (what) =>{
-    if(what==="lot"){
-      toast.warn("Please Enter Lot No",{
-        position: "top-center"
+  const notify = (what) => {
+    if (what === "lot") {
+      toast.warn("Please Enter Lot No", {
+        position: "top-center",
       });
     }
-    if(what==="crate"){
-      toast.warn("Please Enter No of Crates",{
-        position: "top-center"
+    if (what === "crate") {
+      toast.warn("Please Enter No of Crates", {
+        position: "top-center",
       });
     }
-  }
+  };
 
   const [data, setData] = useState({
     allottedLotId: "",
@@ -876,7 +876,7 @@ function Weighment() {
 
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -896,7 +896,7 @@ function Weighment() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   e-Weighment
@@ -908,7 +908,7 @@ function Weighment() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -917,7 +917,7 @@ function Weighment() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -937,7 +937,7 @@ function Weighment() {
                 <Card>
                   <Card.Body>
                     <Row className="g-3 ">
-                    <ToastContainer />
+                      <ToastContainer />
                       <Col lg="6" style={{ padding: "0px 0px 0px 8px" }}>
                         <table className="table small table-bordered weightmenttable marginbottom0">
                           <thead>

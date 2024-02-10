@@ -6,12 +6,9 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -51,12 +48,12 @@ function NewTraderLicenseList() {
 
   // const handleEdit = (_id) => {
   //   // navigate(`/caste/${_id}`);
-  //   navigate("/caste-edit");
+  //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
     navigate(`/issue-new-trader-license-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -198,32 +195,32 @@ function NewTraderLicenseList() {
       hide: "md",
     },
     {
-        name: "Applicant Name",
-        selector: (row) => row.firstName,
-        cell: (row) => <span>{row.firstName}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Applicant Name",
+      selector: (row) => row.firstName,
+      cell: (row) => <span>{row.firstName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Father Name",
-        selector: (row) => row.fatherName,
-        cell: (row) => <span>{row.fatherName}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Father Name",
+      selector: (row) => row.fatherName,
+      cell: (row) => <span>{row.fatherName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Address",
-        selector: (row) => row.address,
-        cell: (row) => <span>{row.address}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Address",
+      selector: (row) => row.address,
+      cell: (row) => <span>{row.address}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Premises Description",
-        selector: (row) => row.premisesDescription,
-        cell: (row) => <span>{row.premisesDescription}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Premises Description",
+      selector: (row) => row.premisesDescription,
+      cell: (row) => <span>{row.premisesDescription}</span>,
+      sortable: true,
+      hide: "md",
     },
   ];
 
@@ -237,14 +234,17 @@ function NewTraderLicenseList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/issue-new-trader-license" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/issue-new-trader-license"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/issue-new-trader-license"
+                  to="/seriui/issue-new-trader-license"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

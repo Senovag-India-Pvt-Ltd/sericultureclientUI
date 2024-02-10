@@ -35,12 +35,12 @@ function SourceOfMulberryEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `mulberry-source/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `mulberry-source/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               mulberrySourceName: "",
@@ -49,20 +49,20 @@ function SourceOfMulberryEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+        .catch((err) => {
+          setData({});
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       mulberrySourceName: "",
-      mulberrySourceNameInKannada: "", 
-    })
-  }
+      mulberrySourceNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -119,7 +119,7 @@ function SourceOfMulberryEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/source-of-mulberry-list"
+                  to="/seriui/source-of-mulberry-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +128,7 @@ function SourceOfMulberryEdit() {
               </li>
               <li>
                 <Link
-                  to="/source-of-mulberry-list"
+                  to="/seriui/source-of-mulberry-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -155,7 +155,8 @@ function SourceOfMulberryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sourceOfMulberry">
-                          Source Of Mulberry<span className="text-danger">*</span>
+                          Source Of Mulberry
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -166,35 +167,36 @@ function SourceOfMulberryEdit() {
                             type="text"
                             placeholder="Enter Source of Mulberry"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Mulberry Source is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Mulberry Source is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="source">
-                        Source of Mulberry in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="source"
-                          name="mulberrySourceNameInKannada"
-                          type="text"
-                          value={data.mulberrySourceNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Source of Mulberry  in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Mulberry Source  in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="source">
+                          Source of Mulberry in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="source"
+                            name="mulberrySourceNameInKannada"
+                            type="text"
+                            value={data.mulberrySourceNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Source of Mulberry  in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Mulberry Source in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -209,7 +211,7 @@ function SourceOfMulberryEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

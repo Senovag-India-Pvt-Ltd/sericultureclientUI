@@ -1,4 +1,3 @@
-
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
@@ -35,12 +34,12 @@ function CrateEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `crateMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError();
-          }else{
+      api
+        .post(baseURL + `crateMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError();
+          } else {
             updateSuccess();
             setData({
               raceMasterId: "",
@@ -50,23 +49,23 @@ function CrateEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        // const message = err.response.data.errorMessages[0].message[0].message;
-        updateError();
-      });
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       raceMasterId: "",
       marketId: "",
       godownId: "",
       approxWeightPerCrate: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -89,7 +88,6 @@ function CrateEdit() {
     getIdList();
   }, [id]);
 
-  
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
 
@@ -107,7 +105,6 @@ function CrateEdit() {
   useEffect(() => {
     getMarketList();
   }, []);
-
 
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
@@ -130,36 +127,35 @@ function CrateEdit() {
 
   useEffect(() => {
     if (data.marketId) {
-    getRaceList(data.marketId);
+      getRaceList(data.marketId);
     }
   }, [data.marketId]);
 
+  const navigate = useNavigate();
 
-const navigate = useNavigate();
+  const updateSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Updated successfully",
+      // text: "You clicked the button!",
+    }).then(() => navigate("#"));
+  };
+  const updateError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    });
+  };
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
 
-const updateSuccess = () => {
-  Swal.fire({
-    icon: "success",
-    title: "Updated successfully",
-    // text: "You clicked the button!",
-  }).then(() => navigate("#"));
-};
-const updateError = (message) => {
-  Swal.fire({
-    icon: "error",
-    title: message,
-    text: "Something went wrong!",
-  });
-};
-const editError = (message) => {
-  Swal.fire({
-    icon: "error",
-    title: message,
-    text: "Something went wrong!",
-  }).then(() => navigate("#"));
-};
-
-return (
+  return (
     <Layout title="Edit Crate">
       <Block.Head>
         <Block.HeadBetween>
@@ -170,7 +166,7 @@ return (
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/crate-list"
+                  to="/seriui/crate-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -179,7 +175,7 @@ return (
               </li>
               <li>
                 <Link
-                  to="/crate-list"
+                  to="/seriui/crate-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -199,79 +195,84 @@ return (
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                <Col lg="6">
-                  <Form.Group
-                    className="form-group"
-                  >
-                    <Form.Label>
-                      Market<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="marketId"
-                          value={data.marketId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.marketId === undefined || data.marketId === "0"}
-                        >
-                          <option value="">Select Market</option>
-                          {marketListData.map((list) => (
-                            <option
-                              key={list.marketMasterId}
-                              value={list.marketMasterId}
-                            >
-                              {list.marketMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Market is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group> 
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketId"
+                            value={data.marketId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketId === undefined ||
+                              data.marketId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                  <Form.Group
-                    className="form-group"
-                    >
-                    <Form.Label>
-                      Race<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="raceMasterId"
-                          value={data.raceMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.raceMasterId === undefined || data.raceMasterId === "0"}
-                        >
-                          <option value="">Select Race</option>
-                          {raceListData.map((list) => (
-                            <option
-                              key={list.raceMasterId}
-                              value={list.raceMasterId}
-                            >
-                              {list.raceMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Race is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-                  
-                    <Col lg= "6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="approxWeightPerCrate">Approx Weight Per Crate<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Race<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceMasterId"
+                            value={data.raceMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.raceMasterId === undefined ||
+                              data.raceMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Race</option>
+                            {raceListData.map((list) => (
+                              <option
+                                key={list.raceMasterId}
+                                value={list.raceMasterId}
+                              >
+                                {list.raceMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Race is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="approxWeightPerCrate">
+                        Approx Weight Per Crate
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="approxWeightPerCrate"
@@ -283,7 +284,7 @@ return (
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Approx Weight Per Crate  is required.
+                          Approx Weight Per Crate is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -302,7 +303,7 @@ return (
                 </li>
                 <li>
                   {/* <Link
-                    to="/crate-list"
+                    to="/seriui/crate-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

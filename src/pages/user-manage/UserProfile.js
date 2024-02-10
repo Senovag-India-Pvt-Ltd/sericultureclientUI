@@ -178,7 +178,7 @@ function UserProfilePage() {
                             return (
                               <li key={item}>
                                 <Link
-                                  to="/user-manage/user-profile"
+                                  to="/seriui/user-manage/user-profile"
                                   className="badge text-bg-secondary-soft"
                                 >
                                   {item}

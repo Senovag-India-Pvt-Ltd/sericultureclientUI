@@ -52,7 +52,7 @@ function RearHouseRoofTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/rear-house-roof-type-list"
+                  to="/seriui/rear-house-roof-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +61,7 @@ function RearHouseRoofTypeView() {
               </li>
               <li>
                 <Link
-                  to="/rear-house-roof-type-list"
+                  to="/seriui/rear-house-roof-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -95,7 +95,10 @@ function RearHouseRoofTypeView() {
                         <td>{RearHouseRoofType.roofTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Rear House Roof Type Name In Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Rear House Roof Type Name In Kannada:
+                        </td>
                         <td>{RearHouseRoofType.roofTypeNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -521,7 +521,7 @@ function NewReelerLicense() {
       icon: "success",
       title: "Saved successfully",
       text: `Generated ARN Number is ${arn}`,
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -587,7 +587,7 @@ function NewReelerLicense() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -596,7 +596,7 @@ function NewReelerLicense() {
               </li>
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -1894,7 +1894,7 @@ function NewReelerLicense() {
                 </li>
                 <li>
                   <Link
-                    to="/reeler-license-list"
+                    to="/seriui/reeler-license-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

@@ -15,7 +15,6 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function DisplayAllLot() {
-
   const styles = {
     top: {
       backgroundColor: "rgb(248 248 249)",
@@ -84,7 +83,7 @@ function DisplayAllLot() {
 
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -104,7 +103,7 @@ function DisplayAllLot() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   e-Weighment
@@ -116,7 +115,7 @@ function DisplayAllLot() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -125,7 +124,7 @@ function DisplayAllLot() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -155,61 +154,95 @@ function DisplayAllLot() {
                         <tbody>
                           <tr>
                             {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>1</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              1
+                            </td>
 
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 200</td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>2</td>
-
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 300</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 200
+                            </td>
 
                             {/* <td style={styles.bottom}>2</td> */}
                           </tr>
                           <tr>
                             {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>3</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              2
+                            </td>
 
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 400</td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>4</td>
-
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 500</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 300
+                            </td>
 
                             {/* <td style={styles.bottom}>2</td> */}
                           </tr>
                           <tr>
                             {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>5</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              3
+                            </td>
 
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 600</td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>6</td>
-
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 700</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 400
+                            </td>
 
                             {/* <td style={styles.bottom}>2</td> */}
                           </tr>
                           <tr>
                             {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{...styles.bottom,width:"50%"}}>7</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              4
+                            </td>
 
-                            <td style={{...styles.bottom,width:"50%"}}> &#8377; 800</td>
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 500
+                            </td>
 
                             {/* <td style={styles.bottom}>2</td> */}
                           </tr>
-                          
+                          <tr>
+                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              5
+                            </td>
+
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 600
+                            </td>
+
+                            {/* <td style={styles.bottom}>2</td> */}
+                          </tr>
+                          <tr>
+                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              6
+                            </td>
+
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 700
+                            </td>
+
+                            {/* <td style={styles.bottom}>2</td> */}
+                          </tr>
+                          <tr>
+                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              7
+                            </td>
+
+                            <td style={{ ...styles.bottom, width: "50%" }}>
+                              {" "}
+                              &#8377; 800
+                            </td>
+
+                            {/* <td style={styles.bottom}>2</td> */}
+                          </tr>
                         </tbody>
                       </table>
                     </Col>

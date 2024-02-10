@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ function MachineTypeList() {
 
   const handleEdit = (_id) => {
     navigate(`/machine-type-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -200,7 +200,7 @@ function MachineTypeList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/machine-type"
+                  to="/seriui/machine-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -209,7 +209,7 @@ function MachineTypeList() {
               </li>
               <li>
                 <Link
-                  to="/machine-type"
+                  to="/seriui/machine-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -221,7 +221,7 @@ function MachineTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

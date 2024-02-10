@@ -57,7 +57,7 @@ function RaceView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function RaceView() {
               </li>
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

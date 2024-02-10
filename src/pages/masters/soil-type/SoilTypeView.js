@@ -52,7 +52,7 @@ function SoilTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +61,7 @@ function SoilTypeView() {
               </li>
               <li>
                 <Link
-                  to="/soil-type-list"
+                  to="/seriui/soil-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -95,7 +95,10 @@ function SoilTypeView() {
                         <td>{soilType.soilTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Soil Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Soil Type Name in Kannada:
+                        </td>
                         <td>{soilType.soilTypeNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -46,7 +46,7 @@ function ScHeadAccount() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/sc-head-account-list"));
+    }).then(() => navigate("/seriui/sc-head-account-list"));
   };
 
   const saveError = () => {
@@ -66,13 +66,13 @@ function ScHeadAccount() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                    Head of Account
+                  Head of Account
                 </li>
               </ol>
             </nav>
@@ -81,7 +81,7 @@ function ScHeadAccount() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-head-account-list"
+                  to="/seriui/sc-head-account-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -90,7 +90,7 @@ function ScHeadAccount() {
               </li>
               <li>
                 <Link
-                  to="/sc-head-account-list"
+                  to="/seriui/sc-head-account-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -111,7 +111,9 @@ function ScHeadAccount() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="headAccount">Head of Account</Form.Label>
+                      <Form.Label htmlFor="headAccount">
+                        Head of Account
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="headAccount"
@@ -136,7 +138,10 @@ function ScHeadAccount() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/sc-head-account-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/sc-head-account-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

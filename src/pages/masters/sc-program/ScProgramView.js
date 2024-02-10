@@ -53,7 +53,7 @@ function ScProgramView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -62,7 +62,7 @@ function ScProgramView() {
               </li>
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +82,7 @@ function ScProgramView() {
               <h1 className="d-flex justify-content-center align-items-center">
                 Loading...
               </h1>
-                ) : (
+            ) : (
               <Row className="g-gs">
                 <Col lg="12">
                   <table className="table small table-bordered">

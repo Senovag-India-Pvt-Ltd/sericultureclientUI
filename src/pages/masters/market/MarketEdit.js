@@ -28,19 +28,19 @@ function MarketEdit() {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURL + `marketMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL + `marketMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               marketMasterName: "",
@@ -71,19 +71,19 @@ function MarketEdit() {
               marketLatitude: "",
               marketLongitude: "",
               radius: "",
-              clientId:"",
+              clientId: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketMasterName: "",
       marketMasterAddress: "",
@@ -113,9 +113,9 @@ function MarketEdit() {
       marketLatitude: "",
       marketLongitude: "",
       radius: "",
-      clientId:"",
-    })
-  }
+      clientId: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -138,73 +138,73 @@ function MarketEdit() {
     getIdList();
   }, [id]);
 
-    // to get State
-    const [stateListData, setStateListData] = useState([]);
+  // to get State
+  const [stateListData, setStateListData] = useState([]);
 
-    const getList = () => {
-      const response = api
-        .get(baseURL + `state/get-all`)
-        .then((response) => {
-          if(response.data.content.state){
+  const getList = () => {
+    const response = api
+      .get(baseURL + `state/get-all`)
+      .then((response) => {
+        if (response.data.content.state) {
           setStateListData(response.data.content.state);
-          }
-        })
-        .catch((err) => {
-          setStateListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getList();
-    }, []);
-  
-    // to get district
-    const [districtListData, setDistrictListData] = useState([]);
-  
-    const getDistrictList = (_id) => {
-      const response = api
-        .get(baseURL + `district/get-by-state-id/${_id}`)
-        .then((response) => {
-          if(response.data.content.district){
-          setDistrictListData(response.data.content.district);
-          }
-        })
-        .catch((err) => {
-          setDistrictListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    };
-  
-    useEffect(() => {
-      if (data.stateId) {
-        getDistrictList(data.stateId);
-      }
-    }, [data.stateId]);
-  
-    // to get taluk
-    const [talukListData, setTalukListData] = useState([]);
-  
-    const getTalukList = (_id) => {
-      const response = api
-        .get(baseURL + `taluk/get-by-district-id/${_id}`)
-        .then((response) => {
-          if(response.data.content.taluk){
-          setTalukListData(response.data.content.taluk);
-          }
-        })
-        .catch((err) => {
-          setTalukListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    };
-  
-    useEffect(() => {
-      if (data.districtId) {
-        getTalukList(data.districtId);
-      }
-    }, [data.districtId]);
+        }
+      })
+      .catch((err) => {
+        setStateListData([]);
+      });
+  };
 
-     // to get Market Type
+  useEffect(() => {
+    getList();
+  }, []);
+
+  // to get district
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = (_id) => {
+    const response = api
+      .get(baseURL + `district/get-by-state-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.stateId) {
+      getDistrictList(data.stateId);
+    }
+  }, [data.stateId]);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    const response = api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTalukList(data.districtId);
+    }
+  }, [data.districtId]);
+
+  // to get Market Type
   const [marketTypeListData, setMarketTypeListData] = useState([]);
 
   const getMarketTypeList = () => {
@@ -256,7 +256,7 @@ function MarketEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -265,7 +265,7 @@ function MarketEdit() {
               </li>
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -281,13 +281,15 @@ function MarketEdit() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-          <Card>
+            <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                  <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">Market<span className="text-danger">*</span></Form.Label>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="name">
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="name"
@@ -298,15 +300,16 @@ function MarketEdit() {
                           placeholder="Enter Market"
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Market Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Market Name in Kannada<span className="text-danger">*</span>
+                        Market Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -346,7 +349,10 @@ function MarketEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="weight">Crate Weight(In Kg)<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="weight">
+                        Crate Weight(In Kg)
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="weight"
@@ -358,12 +364,14 @@ function MarketEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Crate Weight(In Kg) is required
+                          Crate Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="weight">Lot Weight(In Kg)<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="weight">
+                        Lot Weight(In Kg)<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="weight"
@@ -375,7 +383,7 @@ function MarketEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Lot Weight(In Kg) is required
+                          Lot Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -413,7 +421,8 @@ function MarketEdit() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Reeler Minimum Balance<span className="text-danger">*</span>
+                        Reeler Minimum Balance
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -426,7 +435,7 @@ function MarketEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Reeler Minimum Balance is required
+                          Reeler Minimum Balance is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -514,7 +523,7 @@ function MarketEdit() {
                           </div>
                         </Form.Group>
                       </Col>
-                      
+
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
@@ -780,7 +789,6 @@ function MarketEdit() {
                         </Form.Group>
                       </Col>
 
-                      
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
@@ -834,7 +842,7 @@ function MarketEdit() {
                   </Col>
 
                   <Col lg="6">
-                  <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
                         Client ID<span className="text-danger">*</span>
                       </Form.Label>
@@ -849,7 +857,7 @@ function MarketEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Client Id is required
+                          Client Id is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -979,36 +987,36 @@ function MarketEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                        <Form.Label htmlFor="chakbandi">
-                          Market Coordinates
-                        </Form.Label>
-                        <Row>
-                          <Col lg="6">
-                            <Form.Control
-                              id="marketLongitude"
-                              name="marketLongitude"
-                              value={data.marketLongitude}
-                              onChange={handleInputs}
-                              placeholder="Enter Longitude"
-                            />
-                          </Col>
+                      <Form.Label htmlFor="chakbandi">
+                        Market Coordinates
+                      </Form.Label>
+                      <Row>
+                        <Col lg="6">
+                          <Form.Control
+                            id="marketLongitude"
+                            name="marketLongitude"
+                            value={data.marketLongitude}
+                            onChange={handleInputs}
+                            placeholder="Enter Longitude"
+                          />
+                        </Col>
 
-                          <Col lg="6">
-                            <Form.Control
-                              id="marketLatitude"
-                              name="marketLatitude"
-                              value={data.marketLatitude}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Latitude"
-                            />
-                          </Col>
-                        </Row>
-                      </Form.Group>
+                        <Col lg="6">
+                          <Form.Control
+                            id="marketLatitude"
+                            name="marketLatitude"
+                            value={data.marketLatitude}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Latitude"
+                          />
+                        </Col>
+                      </Row>
+                    </Form.Group>
 
-                      <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="address">
-                       Radius<span className="text-danger">*</span>
+                        Radius<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1052,7 +1060,6 @@ function MarketEdit() {
               </Card.Body>
             </Card>
 
-
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
@@ -1062,7 +1069,7 @@ function MarketEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

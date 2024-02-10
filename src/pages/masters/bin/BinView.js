@@ -34,10 +34,10 @@ function BinView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/godawn-list">Bin List</Link>
+                  <Link to="/seriui/godawn-list">Bin List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Bin View
@@ -49,7 +49,7 @@ function BinView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -58,7 +58,7 @@ function BinView() {
               </li>
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -38,12 +38,12 @@ function RearHouseRoofTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `roofType/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `roofType/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               roofTypeName: "",
@@ -52,19 +52,19 @@ function RearHouseRoofTypeEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       roofTypeName: "",
       roofTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -121,7 +121,7 @@ function RearHouseRoofTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/rear-house-roof-type-list"
+                  to="/seriui/rear-house-roof-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +130,7 @@ function RearHouseRoofTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/rear-house-roof-type-list"
+                  to="/seriui/rear-house-roof-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -157,7 +157,8 @@ function RearHouseRoofTypeEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rear">
-                          Rear House Roof Type<span className="text-danger">*</span>
+                          Rear House Roof Type
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -168,35 +169,36 @@ function RearHouseRoofTypeEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Rear House Roof Type"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Roof Type is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Roof Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="rear">
-                        Rear House  Type Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="rear"
-                          name="roofTypeNameInKannada"
-                          type="text"
-                          value={data.roofTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Rear House Roof Type  Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Roof House Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="rear">
+                          Rear House Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="rear"
+                            name="roofTypeNameInKannada"
+                            type="text"
+                            value={data.roofTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Rear House Roof Type  Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Roof House Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -211,7 +213,7 @@ function RearHouseRoofTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

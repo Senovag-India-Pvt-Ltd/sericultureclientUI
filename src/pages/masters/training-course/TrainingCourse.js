@@ -26,7 +26,7 @@ function TrainingCourse() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  const  _header = { "Content-Type": "application/json", accept: "*/*" };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -36,33 +36,33 @@ function TrainingCourse() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `trCourseMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `trCourseMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
             saveError(response.data.content.error_description);
-            }else{
-              saveSuccess();
-              setData({
-                trCourseMasterName: "",
-                trCourseNameInKannada: "",
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        saveError();
-      });
+          } else {
+            saveSuccess();
+            setData({
+              trCourseMasterName: "",
+              trCourseNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trCourseMasterName: "",
       trCourseNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -87,13 +87,12 @@ function TrainingCourse() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Training Course</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainingCourses-list"
+                  to="/seriui/trainingCourses-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,7 +101,7 @@ function TrainingCourse() {
               </li>
               <li>
                 <Link
-                  to="/trainingCourses-list"
+                  to="/seriui/trainingCourses-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -124,7 +123,10 @@ function TrainingCourse() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Training Course Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="title">
+                        Training Course Name
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
@@ -136,7 +138,7 @@ function TrainingCourse() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Training Course Name is required
+                          Training Course Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -145,7 +147,8 @@ function TrainingCourse() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Training Course Name in Kannada<span className="text-danger">*</span>
+                        Training Course Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -158,7 +161,7 @@ function TrainingCourse() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Training Course Name in Kannada is required.
+                          Training Course Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

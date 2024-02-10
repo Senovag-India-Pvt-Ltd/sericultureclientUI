@@ -4,9 +4,7 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "../../components/Form/DatePicker";
 import TimePicker from "../../components/Form/TimePicker";
-import {
-  Select,
-} from "../../components";
+import { Select } from "../../components";
 
 function AssignRequestToTech() {
   return (
@@ -18,10 +16,10 @@ function AssignRequestToTech() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/request">request</Link>
+                  <Link to="/seriui/request">request</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Assign Request to Technician
@@ -116,7 +114,7 @@ function AssignRequestToTech() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/request" className="btn border-0">
+                  <Link to="/seriui/request" className="btn border-0">
                     Cancel
                   </Link>
                 </li>

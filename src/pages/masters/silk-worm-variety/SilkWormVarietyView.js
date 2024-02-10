@@ -52,7 +52,7 @@ function SilkWormVarietyView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +61,7 @@ function SilkWormVarietyView() {
               </li>
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -95,7 +95,10 @@ function SilkWormVarietyView() {
                         <td>{SilkWormVariety.silkWormVarietyName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Silk Worm Variety Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Silk Worm Variety Name in Kannada:
+                        </td>
                         <td>{SilkWormVariety.silkWormVarietyNameInKannada}</td>
                       </tr>
                     </tbody>

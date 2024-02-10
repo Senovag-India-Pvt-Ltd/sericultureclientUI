@@ -4,12 +4,12 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -47,7 +47,7 @@ function CrateList() {
 
   const handleEdit = (_id) => {
     navigate(`/crate-edit/${_id}`);
-    // navigate("/taluk");
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -173,7 +173,7 @@ function CrateList() {
       sortable: false,
       hide: "md",
     },
-    
+
     {
       name: "Market",
       selector: (row) => row.marketMasterName,
@@ -196,13 +196,12 @@ function CrateList() {
     //   hide: "md",
     // },
     {
-        name: "Approx Weight",
-        selector: (row) => row.approxWeightPerCrate,
-        cell: (row) => <span>{row.approxWeightPerCrate}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      
+      name: "Approx Weight",
+      selector: (row) => row.approxWeightPerCrate,
+      cell: (row) => <span>{row.approxWeightPerCrate}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -214,15 +213,18 @@ function CrateList() {
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
-            <li>
-                <Link to="/crate" className="btn btn-primary btn-md d-md-none">
+              <li>
+                <Link
+                  to="/seriui/crate"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/crate"
+                  to="/seriui/crate"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -234,7 +236,7 @@ function CrateList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             // title="Crate List"

@@ -1,6 +1,6 @@
-import { Card,Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -23,18 +23,14 @@ function RaceList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [market, setMarket] = useState({})
-  
+  const [market, setMarket] = useState({});
 
   // Search
   const [isActive, setIsActive] = useState(false);
   const display = () => {
     const marketMasterId = data.marketMasterId;
     const response = api
-      .get(
-        baseURL +
-          `raceMaster/get-by-market-master-id/${marketMasterId}`
-      )
+      .get(baseURL + `raceMaster/get-by-market-master-id/${marketMasterId}`)
       .then((response) => {
         setMarket(response.data.content);
         setListData(response.data.content.raceMaster);
@@ -50,16 +46,15 @@ function RaceList() {
     // });
   };
 
-const [data, setData] = useState({
-  marketMasterId: "",
-})
+  const [data, setData] = useState({
+    marketMasterId: "",
+  });
 
-const handleInputs = (e) => {
-  // debugger;
-  let { name, value } = e.target;
-  setData({ ...data, [name]: value });
-};
-
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const getList = () => {
     setLoading(true);
@@ -87,7 +82,7 @@ const handleInputs = (e) => {
 
   const handleEdit = (_id) => {
     navigate(`/race-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -264,14 +259,17 @@ const handleInputs = (e) => {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/race" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/race"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/race"
+                  to="/seriui/race"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -285,64 +283,66 @@ const handleInputs = (e) => {
 
       <Block className="mt-n4">
         <Card>
-        
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
-              <Form.Label column sm={1}>
-                Market
-              </Form.Label>
-              <Col sm={3}>
-              {/* <Form.Label>Market</Form.Label> */}
-              <div className="form-control-wrap">
-                <Form.Select
-                  name="marketMasterId"
-                  value={data.marketMasterId}
-                  onChange={handleInputs}
-                  onBlur={() => handleInputs} 
-                  required
-                  isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
-                >
-                  <option value="">Select Market</option>
-                  {marketListData.map((list) => (
-                    <option
-                      key={list.marketMasterId}
-                      value={list.marketMasterId}
+                <Form.Label column sm={1}>
+                  Market
+                </Form.Label>
+                <Col sm={3}>
+                  {/* <Form.Label>Market</Form.Label> */}
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="marketMasterId"
+                      value={data.marketMasterId}
+                      onChange={handleInputs}
+                      onBlur={() => handleInputs}
+                      required
+                      isInvalid={
+                        data.marketMasterId === undefined ||
+                        data.marketMasterId === "0"
+                      }
                     >
-                      {list.marketMasterName}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-              </Col>
+                      <option value="">Select Market</option>
+                      {marketListData.map((list) => (
+                        <option
+                          key={list.marketMasterId}
+                          value={list.marketMasterId}
+                        >
+                          {list.marketMasterName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
 
-              <Col sm={3}>
-                <Button type="button" variant="primary" onClick={display}>
-                  Search
-                </Button>
-              </Col>
-            </Form.Group>
-          </Col>
-        </Row>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={display}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
 
-        <div className={isActive ? "" : "d-none"}>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={RaceDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div className={isActive ? "" : "d-none"}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={RaceDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
           </div>
         </Card>
       </Block>

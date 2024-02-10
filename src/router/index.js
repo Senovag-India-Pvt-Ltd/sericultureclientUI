@@ -45,7 +45,6 @@ import AuthReset from "../pages/auths/AuthReset";
 
 import NotFound from "../pages/error/NotFound";
 
-
 // production
 import ManufacturingOrderList from "../pages/production/ManufacturingOrderList";
 import AddManufacturingOrder from "../pages/production/AddManufacturingOrder";
@@ -179,7 +178,6 @@ import ChawkidistributiontoFarmers from "../pages/garden-management/Chawkidistri
 import SupplyofCocoonstoGrainageEdit from "../pages/garden-management/SupplyofCocoonstoGrainageEdit";
 import MaintenanceandSaleofNurserytoFarmersEdit from "../pages/garden-management/MaintenanceandSaleofNurserytoFarmersEdit";
 import ChawkidistributiontoFarmersEdit from "../pages/garden-management/ChawkidistributiontoFarmersEdit";
-
 
 // Direct Benefit Transfer
 import SubsidyApprovalVerification from "../pages/direct-benefit-transfer/SubsidyApprovalVerification";
@@ -515,7 +513,7 @@ function Router() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/");
+      navigate("/seriui/seriui");
     }
   }, [isAuthenticated, navigate]);
 
@@ -523,12 +521,12 @@ function Router() {
     <ScrollToTop>
       <Routes>
         <Route path="/blank" element={<Blank />} />
-        <Route path="/" element={<AuthLogin />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/seriui" element={<AuthLogin />} />
+        <Route path="/seriui/home" element={<Home />} />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
-          <>
+          <Route path="seriui">
             <Route path="home-ecommerce" element={<HomeEcommerce />} />
             <Route path="home-project" element={<HomeProject />} />
             <Route path="home-marketing" element={<HomeMarketing />} />
@@ -563,8 +561,6 @@ function Router() {
               path="technician-request-list"
               element={<TechnicianRequestList />}
             />
-
-            
 
             <Route path="user-manage">
               <Route path="user-list" element={<UserList />} />
@@ -656,7 +652,6 @@ function Router() {
               <Route path="auth-reset" element={<AuthReset />} />
             </Route>
 
-            
             <Route path="not-found" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
 
@@ -947,28 +942,64 @@ function Router() {
             {/* Garden Management */}
 
             <Route path="seed-cutting-bank" element={<SeedCuttingBank />} />
-            <Route path="seed-cutting-bank-list" element={<SeedCuttingBankList />} />
-            <Route path="seed-cutting-bank-view/:id" element={<SeedCuttingBankView />} />
-            <Route path="seed-cutting-bank-edit/:id" element={<SeedCuttingBankEdit />} />
+            <Route
+              path="seed-cutting-bank-list"
+              element={<SeedCuttingBankList />}
+            />
+            <Route
+              path="seed-cutting-bank-view/:id"
+              element={<SeedCuttingBankView />}
+            />
+            <Route
+              path="seed-cutting-bank-edit/:id"
+              element={<SeedCuttingBankEdit />}
+            />
             <Route
               path="maintenance-of-mulberry-garden"
               element={<MaintenanceofmulberryGarden />}
             />
-            <Route path="maintenance-of-mulberry-garden-list" element={<MaintenanceOfMulberryGardenList />} />
-            <Route path="maintenance-of-mulberry-garden-view/:id" element={<MaintenanceOfMulberryGardenView />} />
-            <Route path="maintenance-of-mulberry-garden-edit/:id" element={<MaintenanceOfMulberryGardenEdit />} />
+            <Route
+              path="maintenance-of-mulberry-garden-list"
+              element={<MaintenanceOfMulberryGardenList />}
+            />
+            <Route
+              path="maintenance-of-mulberry-garden-view/:id"
+              element={<MaintenanceOfMulberryGardenView />}
+            />
+            <Route
+              path="maintenance-of-mulberry-garden-edit/:id"
+              element={<MaintenanceOfMulberryGardenEdit />}
+            />
             <Route
               path="receipt-of-dfls"
               element={<ReceiptofDFLsfromthegrainage />}
             />
-            <Route path="receipt-of-dfls-list" element={<ReceiptOfDFLsList />} />
-            <Route path="receipt-of-dfls-view/:id" element={<ReceiptOfDFLsView />} />
-            <Route path="receipt-of-dfls-edit/:id" element={<ReceiptOfDFLsEdit />} />
+            <Route
+              path="receipt-of-dfls-list"
+              element={<ReceiptOfDFLsList />}
+            />
+            <Route
+              path="receipt-of-dfls-view/:id"
+              element={<ReceiptOfDFLsView />}
+            />
+            <Route
+              path="receipt-of-dfls-edit/:id"
+              element={<ReceiptOfDFLsEdit />}
+            />
 
             <Route path="rearing-of-dfls" element={<RearingofDFLs />} />
-            <Route path="rearing-of-dfls-list" element={<RearingOfDFLsList />} />
-            <Route path="rearing-of-dfls-view/:id" element={<RearingOfDFLsView />} />
-            <Route path="rearing-of-dfls-edit/:id" element={<RearingOfDFLsEdit />} />
+            <Route
+              path="rearing-of-dfls-list"
+              element={<RearingOfDFLsList />}
+            />
+            <Route
+              path="rearing-of-dfls-view/:id"
+              element={<RearingOfDFLsView />}
+            />
+            <Route
+              path="rearing-of-dfls-edit/:id"
+              element={<RearingOfDFLsEdit />}
+            />
             <Route
               path="Supply-of-Cocoons-to-Grainagee"
               element={<SupplyofCocoonstoGrainage />}
@@ -982,20 +1013,20 @@ function Router() {
               element={<ChawkidistributiontoFarmers />}
             />
 
-              <Route
-          path="SupplyofCocoonstoGrainage-edit/:id"
-          element={<SupplyofCocoonstoGrainageEdit />}
-        /> 
+            <Route
+              path="SupplyofCocoonstoGrainage-edit/:id"
+              element={<SupplyofCocoonstoGrainageEdit />}
+            />
 
-          <Route
-          path="MaintenanceandSaleofNurserytoFarmers-edit/:id"
-          element={<MaintenanceandSaleofNurserytoFarmersEdit />}
-        /> 
+            <Route
+              path="MaintenanceandSaleofNurserytoFarmers-edit/:id"
+              element={<MaintenanceandSaleofNurserytoFarmersEdit />}
+            />
 
-         <Route
-          path="ChawkidistributiontoFarmers-edit/:id"
-          element={<ChawkidistributiontoFarmersEdit />}
-        /> 
+            <Route
+              path="ChawkidistributiontoFarmers-edit/:id"
+              element={<ChawkidistributiontoFarmersEdit />}
+            />
 
             {/* Master */}
             <Route path="head-of-account" element={<HeadOfAccount />} />
@@ -1603,7 +1634,7 @@ function Router() {
             />
 
             <Route path="test1" element={<Test1 />} />
-          </>
+          </Route>
         )}
       </Routes>
     </ScrollToTop>

@@ -35,12 +35,12 @@ function RaceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `raceMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `raceMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               raceMasterName: "",
@@ -50,20 +50,20 @@ function RaceEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       raceMasterName: "",
       marketMasterId: "",
       raceNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -86,26 +86,26 @@ function RaceEdit() {
     getIdList();
   }, [id]);
 
-   // to get Market
-   const [marketListData, setMarketListData] = useState([]);
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
 
-   const getList = () => {
-     const response = api
-       .get(baseURL + `marketMaster/get-all`)
-       .then((response) => {
-         setMarketListData(response.data.content.marketMaster);
-       })
-       .catch((err) => {
-         setMarketListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getList();
-   }, []);
+  const getList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const navigate = useNavigate();
-  
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -139,7 +139,7 @@ function RaceEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +148,7 @@ function RaceEdit() {
               </li>
               <li>
                 <Link
-                  to="/race-list"
+                  to="/seriui/race-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -172,74 +172,84 @@ function RaceEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Market<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="marketMasterId"
-                          value={data.marketMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
-                        >
-                          <option value="">Select Market</option>
-                          {marketListData.map((list) => (
-                            <option
-                              key={list.marketMasterId}
-                              value={list.marketMasterId}
-                            >
-                              {list.marketMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Market<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="raceMaster">Race<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="raceMaster"
-                          name="raceMasterName"
-                          value={data.raceMasterName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Race"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Race is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="raceMaster">
+                          Race<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="raceMaster"
+                            name="raceMasterName"
+                            value={data.raceMasterName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Race"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Race is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="raceMaster">Race Name In Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="raceMaster"
-                          name="raceNameInKannada"
-                          value={data.raceNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Race Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Race Name In Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="raceMaster">
+                          Race Name In Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="raceMaster"
+                            name="raceNameInKannada"
+                            value={data.raceNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Race Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Race Name In Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -254,7 +264,7 @@ function RaceEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -37,19 +37,19 @@ function EmpanelledVendor() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `vendorMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError();
-          }else{
+      api
+        .post(baseURL + `vendorMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError();
+          } else {
             saveSuccess();
           }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+        })
+        .catch((err) => {
+          setData({});
+          saveError();
+        });
       setValidated(true);
     }
   };
@@ -60,7 +60,7 @@ function EmpanelledVendor() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/empanelled-vendor-list"));
+    }).then(() => navigate("/seriui/empanelled-vendor-list"));
   };
 
   const saveError = () => {
@@ -82,7 +82,7 @@ function EmpanelledVendor() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -91,7 +91,7 @@ function EmpanelledVendor() {
               </li>
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -113,7 +113,9 @@ function EmpanelledVendor() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="vendorMaster">Empaneled Vendor<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="vendorMaster">
+                        Empaneled Vendor<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="vendorMaster"
@@ -143,7 +145,10 @@ function EmpanelledVendor() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/empanelled-vendor-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/empanelled-vendor-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

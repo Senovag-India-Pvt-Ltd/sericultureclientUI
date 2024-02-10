@@ -111,7 +111,7 @@ function ReelerTransactionReports() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -132,7 +132,7 @@ function ReelerTransactionReports() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -141,7 +141,7 @@ function ReelerTransactionReports() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -225,22 +225,21 @@ function ReelerTransactionReports() {
                     </Form.Group>
                   </Col> */}
                 </Row>
-                
               </Card.Body>
             </Card>
 
             <Row className="d-flex justify-content-center mt-2">
-                  <Col sm={2} >
-                    {/* <Button
+              <Col sm={2}>
+                {/* <Button
                           type="button"
                           variant="primary"
                           onClick={display}
                         > */}
-                    <Button type="submit" variant="primary">
-                      Generate Report
-                    </Button>
-                  </Col>
-                </Row>
+                <Button type="submit" variant="primary">
+                  Generate Report
+                </Button>
+              </Col>
+            </Row>
 
             {/* <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -250,7 +249,7 @@ function ReelerTransactionReports() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
+                  <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link>
                 </li>

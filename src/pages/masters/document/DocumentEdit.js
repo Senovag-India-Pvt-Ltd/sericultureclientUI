@@ -70,7 +70,7 @@ function DocumentsEdit() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/documents-list"));
+    }).then(() => navigate("/seriui/documents-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -84,7 +84,7 @@ function DocumentsEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/documents-list"));
+    }).then(() => navigate("/seriui/documents-list"));
   };
 
   return (
@@ -96,7 +96,7 @@ function DocumentsEdit() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -111,7 +111,7 @@ function DocumentsEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -120,7 +120,7 @@ function DocumentsEdit() {
               </li>
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -145,7 +145,9 @@ function DocumentsEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="documentMaster">Document</Form.Label>
+                        <Form.Label htmlFor="documentMaster">
+                          Document
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="documentMaster"
@@ -171,7 +173,10 @@ function DocumentsEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/documents-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/documents-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

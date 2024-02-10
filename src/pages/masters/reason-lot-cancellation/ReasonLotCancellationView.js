@@ -7,7 +7,6 @@ import { Icon } from "../../../components";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonLotCancellationView() {
@@ -60,7 +59,7 @@ function ReasonLotCancellationView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +68,7 @@ function ReasonLotCancellationView() {
               </li>
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

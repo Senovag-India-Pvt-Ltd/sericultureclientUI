@@ -3,11 +3,12 @@ import { Media, MediaGroup, Image, OverlineTitle } from "..";
 
 function LoginLogo() {
   return (
-    <Link to="/" className="logo-link">
+    <Link to="/seriui/" className="logo-link">
       <div className="logo-wrap">
         <div className="d-flex justify-content-center">
           <img
-            src="../images/logo/KG.png" alt="Government of Karnataka"
+            src="../images/logo/KG.png"
+            alt="Government of Karnataka"
             style={{ height: 200, width: 200 }}
           />
           {/* <Image

@@ -60,7 +60,7 @@ function Header() {
 
   function handleLogout() {
     localStorage.clear();
-    navigate("/");
+    navigate("/seriui/");
   }
 
   const handleInputs = (e) => {
@@ -364,20 +364,20 @@ function Header() {
                       </div>
                       <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                         <LinkList>
-                          <LinkListItem to="/admin/profile">
+                          <LinkListItem to="/seriui/admin/profile">
                             <Icon name="user"></Icon>
                             <span>My Profile</span>
                           </LinkListItem>
-                          {/* <LinkListItem to="/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
-                          {/* <LinkListItem to="/admin/profile-settings">
+                          {/* <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
+                          {/* <LinkListItem to="/seriui/admin/profile-settings">
                             <Icon name="setting-alt"></Icon>
                             <span>Account Settings</span>
                           </LinkListItem> */}
-                          <LinkListItem to="/change-password">
+                          <LinkListItem to="/seriui/change-password">
                             <Icon name="lock-alt"></Icon>
                             <span>Change Password</span>
                           </LinkListItem>
-                          <LinkListItem to="/help-desk">
+                          <LinkListItem to="/seriui/help-desk">
                             <Icon name="question-alt"></Icon>
                             <span>Raise a ticket</span>
                           </LinkListItem>
@@ -562,14 +562,14 @@ function Header() {
                                     </div>
                                     <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                                         <LinkList>
-                                            <LinkListItem to="/admin/profile"><Icon name="user"></Icon><span>My Profile</span></LinkListItem>
-                                            <LinkListItem to="/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem>
-                                            <LinkListItem to="/admin/profile-settings"><Icon name="setting-alt"></Icon><span>Account Settings</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile"><Icon name="user"></Icon><span>My Profile</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile-settings"><Icon name="setting-alt"></Icon><span>Account Settings</span></LinkListItem>
                                         </LinkList>
                                     </div>
                                     <div className="dropdown-content dropdown-content-x-lg py-3">
                                         <LinkList>
-                                            <LinkListItem to="/"><Icon name="signout"></Icon><span>Log Out</span></LinkListItem>
+                                            <LinkListItem to="/seriui/"><Icon name="signout"></Icon><span>Log Out</span></LinkListItem>
                                         </LinkList>
                                     </div>
                                 </Dropdown.Menu>

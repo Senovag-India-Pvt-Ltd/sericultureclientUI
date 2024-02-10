@@ -57,7 +57,7 @@ function HelpDeskFeatureView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function HelpDeskFeatureView() {
               </li>
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

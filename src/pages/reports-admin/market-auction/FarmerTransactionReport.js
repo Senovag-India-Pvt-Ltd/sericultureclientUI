@@ -148,7 +148,7 @@ function FarmerTransactionReport() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -236,7 +236,7 @@ function FarmerTransactionReport() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -245,7 +245,7 @@ function FarmerTransactionReport() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -402,7 +402,10 @@ function FarmerTransactionReport() {
                             style={{ fontWeight: "bold" }}
                           >
                             Total Sale Amount:{" "}
-                            <span style={{ color: "green" }}> &#8377; {53370}</span>
+                            <span style={{ color: "green" }}>
+                              {" "}
+                              &#8377; {53370}
+                            </span>
                           </Form.Label>
                         </Form.Group>
 
@@ -413,7 +416,10 @@ function FarmerTransactionReport() {
                             style={{ fontWeight: "bold" }}
                           >
                             Total Market Amount:{" "}
-                            <span style={{ color: "green" }}> &#8377; {534}</span>
+                            <span style={{ color: "green" }}>
+                              {" "}
+                              &#8377; {534}
+                            </span>
                           </Form.Label>
                         </Form.Group>
 
@@ -424,7 +430,9 @@ function FarmerTransactionReport() {
                             style={{ fontWeight: "bold" }}
                           >
                             Total Amount:{" "}
-                            <span style={{ color: "green" }}>&#8377; {52836}</span>
+                            <span style={{ color: "green" }}>
+                              &#8377; {52836}
+                            </span>
                           </Form.Label>
                         </Form.Group>
                       </div>
@@ -442,7 +450,7 @@ function FarmerTransactionReport() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
+                  <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link>
                 </li>

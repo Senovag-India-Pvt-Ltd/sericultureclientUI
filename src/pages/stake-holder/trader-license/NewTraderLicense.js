@@ -6,7 +6,7 @@ import { Icon, Select } from "../../../components";
 import DatePicker from "../../../components/Form/DatePicker";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../src/services/auth/api";
 
@@ -14,7 +14,6 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function NewTraderLicense() {
-
   const [data, setData] = useState({
     arnNumber: "",
     traderTypeMasterId: "",
@@ -46,7 +45,7 @@ function NewTraderLicense() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  
+
   const handleDateChange = (newDate) => {
     setData({ ...data, applicationDate: newDate });
   };
@@ -62,15 +61,15 @@ function NewTraderLicense() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `trader-license/add`, data)
-      .then((response) => {
-        saveSuccess();
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+      api
+        .post(baseURL2 + `trader-license/add`, data)
+        .then((response) => {
+          saveSuccess();
+        })
+        .catch((err) => {
+          setData({});
+          saveError();
+        });
       setValidated(true);
     }
   };
@@ -92,8 +91,7 @@ function NewTraderLicense() {
   //       saveError();
   //     });
   // };
-  
-  
+
   // to get traderType Unit
   const [traderTypeListData, setTraderTypeListData] = useState([]);
 
@@ -158,7 +156,7 @@ function NewTraderLicense() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/issue-new-trader-license-list");
+      navigate("/seriui/issue-new-trader-license-list");
     });
   };
   const saveError = () => {
@@ -179,14 +177,17 @@ function NewTraderLicense() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/issue-new-trader-license-list" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/issue-new-trader-license-list"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/issue-new-trader-license-list"
+                  to="/seriui/issue-new-trader-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -221,36 +222,37 @@ function NewTraderLicense() {
                       </div>
                     </Form.Group>
 
-                    <Form.Group
-                            className="form-group"
-                          >
-                            <Form.Label>
-                              Trader Type<span className="text-danger">*</span>
-                            </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="traderTypeMasterId"
-                                  value={data.traderTypeMasterId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs} 
-                                  required
-                                  isInvalid={data.traderTypeMasterId === undefined || data.traderTypeMasterId === "0"}
-                                >
-                                  <option value="">Select Trader Type</option>
-                                  {traderTypeListData.map((list) => (
-                                    <option
-                                      key={list.traderTypeMasterId}
-                                      value={list.traderTypeMasterId}
-                                    >
-                                      {list.traderTypeMasterName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Trader Type is required
-                                </Form.Control.Feedback>
-                              </div>
-                          </Form.Group> 
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Trader Type<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="traderTypeMasterId"
+                          value={data.traderTypeMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.traderTypeMasterId === undefined ||
+                            data.traderTypeMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Trader Type</option>
+                          {traderTypeListData.map((list) => (
+                            <option
+                              key={list.traderTypeMasterId}
+                              value={list.traderTypeMasterId}
+                            >
+                              {list.traderTypeMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Trader Type is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="firstName">
@@ -269,7 +271,9 @@ function NewTraderLicense() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="fatherName">Father's Name</Form.Label>
+                      <Form.Label htmlFor="fatherName">
+                        Father's Name
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="fatherName"
@@ -411,9 +415,7 @@ function NewTraderLicense() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="licenseFee">
-                        License Fee
-                      </Form.Label>
+                      <Form.Label htmlFor="licenseFee">License Fee</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="licenseFee"
@@ -443,7 +445,9 @@ function NewTraderLicense() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="godownDetails">Godown Details</Form.Label>
+                      <Form.Label htmlFor="godownDetails">
+                        Godown Details
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="godownDetails"
@@ -485,7 +489,10 @@ function NewTraderLicense() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/issue-new-trader-license-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/issue-new-trader-license-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

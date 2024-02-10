@@ -61,7 +61,7 @@ function GodawnView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function GodawnView() {
               </li>
               <li>
                 <Link
-                  to="/godawn-list"
+                  to="/seriui/godawn-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,9 +82,9 @@ function GodawnView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Card.Header>Godown Details</Card.Header>
+          <Card.Header>Godown Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">

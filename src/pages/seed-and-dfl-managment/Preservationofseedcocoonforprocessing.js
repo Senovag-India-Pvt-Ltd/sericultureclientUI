@@ -5,22 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- 
- 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Preservationofseedcocoonforprocessing() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -36,7 +32,7 @@ function Preservationofseedcocoonforprocessing() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -389,7 +385,7 @@ function Preservationofseedcocoonforprocessing() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -411,23 +407,25 @@ function Preservationofseedcocoonforprocessing() {
     });
   };
 
-  
   return (
     <Layout title="Preservation of seed cocoon for processing">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Preservation of seed cocoon for processing</Block.Title>
+            <Block.Title tag="h2">
+              {" "}
+              Preservation of seed cocoon for processing
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Preservation of seed cocoon for processing
+                  Preservation of seed cocoon for processing
                 </li>
               </ol>
             </nav>
@@ -436,7 +434,7 @@ function Preservationofseedcocoonforprocessing() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -445,7 +443,7 @@ function Preservationofseedcocoonforprocessing() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -459,173 +457,171 @@ function Preservationofseedcocoonforprocessing() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>  Preservation of seed cocoon for processing  </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Preservation of seed cocoon for processing{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Lot number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Lot number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      Race (MSC,CRS 2,FC1, FC2)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Race (MSC,CRS 2,FC1, FC2)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Name of the Government Seed Farm/Farmer
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Name of the Government Seed Farm/Farmer"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                          
-                          
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Spun On date
-                            </Form.Label>
-                               <div className="form-control-wrap">
-                              <DatePicker />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Crop Number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Crop Number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Source (Line) of the Cocoon
-                            </Form.Label>
-                             <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Source (Line) of the Cocoon"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Bed number Number / Kgs of cocoons supplied</Form.Label>
-                      <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder=" Bed number Number / Kgs of cocoons supplied"
-                              />
-                            </div>
-                    </Form.Group>
-                         </Col  > 
-                         
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Number of pupa examined
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Number of pupa examined "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Invoice No. and Date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Invoice No. and Date"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Rate per Kg
-                            </Form.Label>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number
+                              </Form.Label>
                               <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Rate per Kg "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Lot number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Race (MSC,CRS 2,FC1, FC2)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Race (MSC,CRS 2,FC1, FC2)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Name of the Government Seed Farm/Farmer
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Name of the Government Seed Farm/Farmer"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                             
- 
- 
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Spun On date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Crop Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Crop Number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Source (Line) of the Cocoon
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Source (Line) of the Cocoon"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label>
+                                {" "}
+                                Bed number Number / Kgs of cocoons supplied
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder=" Bed number Number / Kgs of cocoons supplied"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of pupa examined
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of pupa examined "
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice No. and Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Invoice No. and Date"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Rate per Kg
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Rate per Kg "
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="12" className="text-center">
+                            <Button type="button" variant="primary">
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -635,56 +631,68 @@ function Preservationofseedcocoonforprocessing() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Lot number</th>   
-                                  <th style={styles.ctstyle}>Race (MSC,CSR 2,FC1, FC2)</th> 
-                                  <th style={styles.ctstyle}>Date of seed cocoon supply</th> 
-                                   <th style={styles.ctstyle}>Name of the Government Seed Farm/Farmer</th> 
+                                  <th style={styles.ctstyle}>Lot number</th>
+                                  <th style={styles.ctstyle}>
+                                    Race (MSC,CSR 2,FC1, FC2)
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of seed cocoon supply
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Name of the Government Seed Farm/Farmer
+                                  </th>
                                   <th style={styles.ctstyle}>Spun On date</th>
-                                   <th style={styles.ctstyle}>Crop Number</th>
-                                    <th style={styles.ctstyle}>Source (Line) of the Cocoon</th> 
-                                  <th style={styles.ctstyle}>Bed number Number / Kgs of cocoons supplied </th>
-                                   <th style={styles.ctstyle}>Number of pupa examined</th>
-                                     <th style={styles.ctstyle}>Cocoon rejection details/ numbers</th> 
-                                  <th style={styles.ctstyle}>Invoice No. and Date</th>
-                                   <th style={styles.ctstyle}>Rate per Kg</th>
-                                   
+                                  <th style={styles.ctstyle}>Crop Number</th>
+                                  <th style={styles.ctstyle}>
+                                    Source (Line) of the Cocoon
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Bed number Number / Kgs of cocoons supplied{" "}
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Number of pupa examined
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Cocoon rejection details/ numbers
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Invoice No. and Date
+                                  </th>
+                                  <th style={styles.ctstyle}>Rate per Kg</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Lot number data </td>  
-                                    <td>Race (MSC,CSR 2,FC1, FC2) data</td> 
-                                    <td>Date of seed cocoon supply data</td> 
-                                     <td>Name of the Government Seed Farm/Farmer data</td> 
-                                    <td>12/20/2023</td> 
-                                    <td>Crop Number data</td>  
-                                    <td>Source (Line) of the Cocoon data </td> 
-                                    <td>Bed number Number / Kgs of cocoons supplied data</td> 
-                                    <td>Number of pupa examined</td>  
-                                     <td>Cocoon rejection details/ numbers</td>  
-                                    <td>Invoice No. and Date</td> 
-                                    <td >Rate per Kg data </td> 
-                                  
+                                <tr>
+                                  <td>Lot number data </td>
+                                  <td>Race (MSC,CSR 2,FC1, FC2) data</td>
+                                  <td>Date of seed cocoon supply data</td>
+                                  <td>
+                                    Name of the Government Seed Farm/Farmer data
+                                  </td>
+                                  <td>12/20/2023</td>
+                                  <td>Crop Number data</td>
+                                  <td>Source (Line) of the Cocoon data </td>
+                                  <td>
+                                    Bed number Number / Kgs of cocoons supplied
+                                    data
+                                  </td>
+                                  <td>Number of pupa examined</td>
+                                  <td>Cocoon rejection details/ numbers</td>
+                                  <td>Invoice No. and Date</td>
+                                  <td>Rate per Kg data </td>
                                 </tr>
-                                
                               </tbody>
                             </table>
-
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                  
-
                 </Col>
               </Row>
             </div>

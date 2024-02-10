@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "../../components/DataTable/DataTable";
-import {
-  Select,
-} from "../../components";
+import { Select } from "../../components";
 import {
   bomColumns,
   fgColumns,
@@ -29,10 +27,10 @@ function AddBomPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/production/bill-of-material">BoM List</Link>
+                  <Link to="/seriui/production/bill-of-material">BoM List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Add BoM
@@ -43,13 +41,13 @@ function AddBomPage() {
           {/* <Block.HeadContent>
                         <ul className="d-flex">
                             <li>
-                                <Link to="/masters/company-list" className="btn btn-primary btn-md d-md-none">
+                                <Link to="/seriui/masters/company-list" className="btn btn-primary btn-md d-md-none">
                                     <Icon name="eye" />
                                     <span>View</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/masters/company-list" className="btn btn-primary d-none d-md-inline-flex">
+                                <Link to="/seriui/masters/company-list" className="btn btn-primary d-none d-md-inline-flex">
                                     <Icon name="eye" />
                                     <span>View BoM</span>
                                 </Link>
@@ -246,7 +244,7 @@ function AddBomPage() {
                           </li>
                           <li>
                             <Link
-                              to="/production/bill-of-material"
+                              to="/seriui/production/bill-of-material"
                               className="btn border-0"
                             >
                               Cancel
@@ -389,7 +387,7 @@ function AddBomPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel
@@ -532,7 +530,7 @@ function AddBomPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel
@@ -644,7 +642,7 @@ function AddBomPage() {
                                                         <Button type="submit" variant="primary">Save</Button>
                                                     </li>
                                                     <li>
-                                                        <Link to="/masters/company-list" className="btn border-0">Cancel</Link>
+                                                        <Link to="/seriui/masters/company-list" className="btn border-0">Cancel</Link>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -771,7 +769,7 @@ function AddBomPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel
@@ -881,7 +879,7 @@ function AddBomPage() {
                           </li>
                           <li>
                             <Link
-                              to="/masters/company-list"
+                              to="/seriui/masters/company-list"
                               className="btn border-0"
                             >
                               Cancel

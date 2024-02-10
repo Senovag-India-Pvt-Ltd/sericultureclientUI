@@ -6,57 +6,52 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
-
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenList() {
-    const [listData, setListData] = useState({});
-    const [page, setPage] = useState(0);
-    const countPerPage = 5;
-    const [totalRows, setTotalRows] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const _params = { params: { pageNumber: page, size: countPerPage } };
-    const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const getList = () => {
+    setLoading(true);
 
-    const getList = () => {
-        setLoading(true);
-    
-        const response = api
-          .get(baseURL2+`Mulberry-garden/get-info`)
-          .then((response) => {
-            // console.log(response.data)
-            setListData(response.data);
-            // setTotalRows(response.data.content.totalItems);
-            setLoading(false);
-          })
-          .catch((err) => {
-            // setListData({});
-            setLoading(false);
-          });   
-      };
-    
-     useEffect(() => {
-        getList();
-      }, []);
+    const response = api
+      .get(baseURL2 + `Mulberry-garden/get-info`)
+      .then((response) => {
+        // console.log(response.data)
+        setListData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
 
- const  navigate = useNavigate();
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/maintenance-of-mulberry-garden-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
     navigate(`/maintenance-of-mulberry-garden-edit/${_id}`);
-    // navigate("/training Schedule");
+    // navigate("/seriui/training Schedule");
   };
 
   const deleteError = () => {
@@ -198,11 +193,11 @@ function MaintenanceOfMulberryGardenList() {
       hide: "md",
     },
     {
-        name: "Area Under Each Variety",
-        selector: (row) => row.areaUnderEachVariety,
-        cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Area Under Each Variety",
+      selector: (row) => row.areaUnderEachVariety,
+      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Pruning Date",
@@ -210,21 +205,21 @@ function MaintenanceOfMulberryGardenList() {
       cell: (row) => <span>{row.pruningDate}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
       name: "Fertilizer Application Date",
       selector: (row) => row.fertilizerApplicationDate,
       cell: (row) => <span>{row.fymApplicationDate}</span>,
       sortable: true,
       hide: "md",
-  },
+    },
     {
-        name: "Remarks",
-        selector: (row) => row.remarks,
-        cell: (row) => <span>{row.remarks}</span>,
-        sortable: true,
-        hide: "md",
-    },      
+      name: "Remarks",
+      selector: (row) => row.remarks,
+      cell: (row) => <span>{row.remarks}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -232,19 +227,24 @@ function MaintenanceOfMulberryGardenList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Maintenance Of Mulberry Garden List</Block.Title>
+            <Block.Title tag="h2">
+              Maintenance Of Mulberry Garden List
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/maintenance-of-mulberry-garden" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/maintenance-of-mulberry-garden"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/maintenance-of-mulberry-garden"
+                  to="/seriui/maintenance-of-mulberry-garden"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

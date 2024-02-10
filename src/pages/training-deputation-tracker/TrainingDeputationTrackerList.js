@@ -6,12 +6,9 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
@@ -49,12 +46,16 @@ function TrainingDeputationTrackerList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL + `trainingDeputationTracker/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      }, {
-        headers: _header,
-      })
+      .post(
+        baseURL + `trainingDeputationTracker/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         setListData(response.data.content.trainingDeputationTracker);
 
@@ -96,12 +97,12 @@ function TrainingDeputationTrackerList() {
 
   // const handleEdit = (_id) => {
   //   // navigate(`/caste/${_id}`);
-  //   navigate("/caste-edit");
+  //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
     navigate(`/training-deputation-tracker-edit/${_id}`);
-    // navigate("/training Schedule");
+    // navigate("/seriui/training Schedule");
   };
 
   const deleteError = () => {
@@ -243,19 +244,19 @@ function TrainingDeputationTrackerList() {
       hide: "md",
     },
     {
-        name: "Mobile Number",
-        selector: (row) => row.mobileNumber,
-        cell: (row) => <span>{row.mobileNumber}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Mobile Number",
+      selector: (row) => row.mobileNumber,
+      cell: (row) => <span>{row.mobileNumber}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Training Program Name",
-        selector: (row) => row.trProgramMasterName,
-        cell: (row) => <span>{row.trProgramMasterName}</span>,
-        sortable: true,
-        hide: "md",
-    },      
+      name: "Training Program Name",
+      selector: (row) => row.trProgramMasterName,
+      cell: (row) => <span>{row.trProgramMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -263,19 +264,22 @@ function TrainingDeputationTrackerList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker  List</Block.Title>
+            <Block.Title tag="h2">Training Deputation Tracker List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/training-deputation-tracker" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/training-deputation-tracker"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/training-deputation-tracker"
+                  to="/seriui/training-deputation-tracker"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -289,7 +293,7 @@ function TrainingDeputationTrackerList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -308,7 +312,7 @@ function TrainingDeputationTrackerList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="trScheduleId"

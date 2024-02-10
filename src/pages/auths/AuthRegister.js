@@ -92,7 +92,7 @@ function AuthRegisterPage() {
                             </Row> */}
                 <div className="text-center mt-4">
                   <p className="small">
-                    Already have an account? <Link to="/">Login</Link>
+                    Already have an account? <Link to="/seriui/">Login</Link>
                   </p>
                 </div>
               </Card.Body>

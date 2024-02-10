@@ -1,9 +1,9 @@
-import { Card, Button,Col,Row,Form  } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -46,12 +46,16 @@ function TrainerPageList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL2 + `trSchedule/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      }, {
-        headers: _header,
-      })
+      .post(
+        baseURL2 + `trSchedule/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         setListData(response.data.content.trSchedule);
 
@@ -74,7 +78,7 @@ function TrainerPageList() {
   const getList = (e) => {
     // setLoading(true);
     api
-      .post(baseURL2 + `trSchedule/get-by-user-master-id`,{userMasterId:e})
+      .post(baseURL2 + `trSchedule/get-by-user-master-id`, { userMasterId: e })
       .then((response) => {
         setListData(response.data.content.trSchedule);
         setTotalRows(response.data.content.totalItems);
@@ -102,7 +106,7 @@ function TrainerPageList() {
 
   const handleEdit = (_id) => {
     navigate(`/trainer-page-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -192,7 +196,6 @@ function TrainerPageList() {
     },
   };
 
-
   const TrTraineeLicenseDataColumns = [
     {
       name: "Action",
@@ -246,33 +249,33 @@ function TrainerPageList() {
       hide: "md",
     },
     {
-        name: "Training Group Name",
-        selector: (row) => row.trGroupMasterName,
-        cell: (row) => <span>{row.trGroupMasterName}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Training Group Name",
+      selector: (row) => row.trGroupMasterName,
+      cell: (row) => <span>{row.trGroupMasterName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Training Program Name",
-        selector: (row) => row.trProgramMasterName,
-        cell: (row) => <span>{row.trProgramMasterName}</span>,
-        sortable: true,
-        hide: "md",
-    }, 
+      name: "Training Program Name",
+      selector: (row) => row.trProgramMasterName,
+      cell: (row) => <span>{row.trProgramMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Training Course Name",
       selector: (row) => row.trCourseMasterName,
       cell: (row) => <span>{row.trCourseMasterName}</span>,
       sortable: true,
       hide: "md",
-  }, 
-  {
-    name: "Training Mode",
-    selector: (row) => row.trModeMasterName,
-    cell: (row) => <span>{row.trModeMasterName}</span>,
-    sortable: true,
-    hide: "md",
-  },          
+    },
+    {
+      name: "Training Mode",
+      selector: (row) => row.trModeMasterName,
+      cell: (row) => <span>{row.trModeMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -309,7 +312,7 @@ function TrainerPageList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -325,11 +328,10 @@ function TrainerPageList() {
                       {/* <option value="">Select</option> */}
                       <option value="username">User Name</option>
                       <option value="trScheduleId">Training Schedule</option>
-                      
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="reelerId"

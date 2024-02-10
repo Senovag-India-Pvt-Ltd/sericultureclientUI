@@ -9,10 +9,7 @@ import DatePicker from "../../components/Form/DatePicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 
 function SaleChawkiWorms() {
   const [isActive, setIsActive] = useState(false);
@@ -35,7 +32,7 @@ function SaleChawkiWorms() {
       title: "Sale of Chawki Worms Submitted Successfully",
       text: "Receipt Number is 1001",
     }).then(() => {
-      navigate("/sale-chawki-worms-list");
+      navigate("/seriui/sale-chawki-worms-list");
     });
   };
   return (
@@ -47,7 +44,7 @@ function SaleChawkiWorms() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -62,7 +59,7 @@ function SaleChawkiWorms() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -71,7 +68,7 @@ function SaleChawkiWorms() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

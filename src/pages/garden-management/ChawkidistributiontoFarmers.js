@@ -95,7 +95,7 @@ function ChawkidistributiontoFarmers() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      // navigate("/caste-list");
+      // navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -205,7 +205,7 @@ function ChawkidistributiontoFarmers() {
 
   const handleEdit = (_id) => {
     navigate(`/ChawkidistributiontoFarmers-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {

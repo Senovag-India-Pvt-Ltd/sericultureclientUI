@@ -35,12 +35,12 @@ function MarketTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `marketTypeMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `marketTypeMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               marketTypeMasterName: "",
@@ -51,23 +51,23 @@ function MarketTypeEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketTypeMasterName: "",
       reelerFee: "",
       farmerFee: "",
       traderFee: "",
       marketTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -124,7 +124,7 @@ function MarketTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -133,7 +133,7 @@ function MarketTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -157,108 +157,112 @@ function MarketTypeEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                  <Col lg="6">
-                  <Form.Group className="form-group">
-                      <Form.Label htmlFor="marketTypeMasterName">
-                        Market Type<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="marketTypeMasterName"
-                          name="marketTypeMasterName"
-                          type="text"
-                          value={data.marketTypeMasterName}
-                          onChange={handleInputs}
-                          placeholder="Enter Market Type"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Market Type is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="marketTypeMasterName">
+                          Market Type<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="marketTypeMasterName"
+                            name="marketTypeMasterName"
+                            type="text"
+                            value={data.marketTypeMasterName}
+                            onChange={handleInputs}
+                            placeholder="Enter Market Type"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Market Type is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
 
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="marketTypeMasterName">
-                        Market Type Name In Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="marketTypeNameInKannada"
-                          name="marketTypeNameInKannada"
-                          type="text"
-                          value={data.marketTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Market Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Market Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="marketTypeMasterName">
+                          Market Type Name In Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="marketTypeNameInKannada"
+                            name="marketTypeNameInKannada"
+                            type="text"
+                            value={data.marketTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Market Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Market Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
 
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="reeler">
-                        Reeler Fee (in %)<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reeler"
-                          name="reelerFee"
-                          type="text"
-                          value={data.reelerFee}
-                          onChange={handleInputs}
-                          placeholder="Enter Reeler Fee"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Reeler Fee is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="reeler">
+                          Reeler Fee (in %)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reeler"
+                            name="reelerFee"
+                            type="text"
+                            value={data.reelerFee}
+                            onChange={handleInputs}
+                            placeholder="Enter Reeler Fee"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Fee is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="farmerFee">
-                        Farmer Fee (in %)<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="farmerFee"
-                          name="farmerFee"
-                          type="text"
-                          value={data.farmerFee}
-                          onChange={handleInputs}
-                          placeholder="Enter Farmer Fee"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Farmer Fee is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="trader">
-                        Trader  Fee (in %)<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="traderFee"
-                          name="traderFee"
-                          type="text"
-                          value={data.traderFee}
-                          onChange={handleInputs}
-                          placeholder="Enter Trader Fee"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Trader Fee is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="farmerFee">
+                          Farmer Fee (in %)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerFee"
+                            name="farmerFee"
+                            type="text"
+                            value={data.farmerFee}
+                            onChange={handleInputs}
+                            placeholder="Enter Farmer Fee"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Fee is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="trader">
+                          Trader Fee (in %)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="traderFee"
+                            name="traderFee"
+                            type="text"
+                            value={data.traderFee}
+                            onChange={handleInputs}
+                            placeholder="Enter Trader Fee"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Trader Fee is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -273,7 +277,7 @@ function MarketTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

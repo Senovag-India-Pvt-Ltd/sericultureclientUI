@@ -35,12 +35,12 @@ function FarmerTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `farmer-type/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `farmer-type/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               farmerTypeName: "",
@@ -48,20 +48,20 @@ function FarmerTypeEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       farmerTypeName: "",
       farmerTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -119,7 +119,7 @@ function FarmerTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +128,7 @@ function FarmerTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -154,7 +154,9 @@ function FarmerTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="farmerTypeName">Farmer Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="farmerTypeName">
+                          Farmer Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="farmerTypeName"
@@ -164,33 +166,36 @@ function FarmerTypeEdit() {
                             type="text"
                             placeholder="Enter Farmer Type"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Farmer Type is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="farmerTypeName">Farmer Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="farmerTypeNameInKannada"
-                          name="farmerTypeNameInKannada"
-                          value={data.farmerTypeNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Farmer Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Farmer Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="farmerTypeName">
+                          Farmer Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerTypeNameInKannada"
+                            name="farmerTypeNameInKannada"
+                            value={data.farmerTypeNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Farmer Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -205,7 +210,7 @@ function FarmerTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  {/* <Link to="/farmer-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/seriui/farmer-type-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>

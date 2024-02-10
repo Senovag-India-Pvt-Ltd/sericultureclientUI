@@ -1,13 +1,13 @@
-import { Card, Button,Row,Col,Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import React from 'react'
+import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -90,7 +90,7 @@ function MarketList() {
 
   const handleEdit = (_id) => {
     navigate(`/market-edit/${_id}`);
-    // navigate("/district");
+    // navigate("/seriui/district");
   };
 
   const deleteError = () => {
@@ -280,7 +280,7 @@ function MarketList() {
       hide: "md",
     },
   ];
- 
+
   return (
     <Layout title="Market List">
       <Block.Head>
@@ -291,14 +291,17 @@ function MarketList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/market" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/market"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/market"
+                  to="/seriui/market"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -312,7 +315,7 @@ function MarketList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -331,7 +334,7 @@ function MarketList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="marketMasterId"

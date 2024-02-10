@@ -35,12 +35,12 @@ function TraderTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `traderTypeMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `traderTypeMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               traderTypeMasterName: "",
@@ -48,21 +48,20 @@ function TraderTypeEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       traderTypeMasterName: "",
-      traderTypeNameInKannada: "", 
-    })
-  }
-
+      traderTypeNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -86,7 +85,7 @@ function TraderTypeEdit() {
   }, [id]);
 
   const navigate = useNavigate();
-  
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -120,7 +119,7 @@ function TraderTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -129,7 +128,7 @@ function TraderTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -151,11 +150,13 @@ function TraderTypeEdit() {
                   <h1 className="d-flex justify-content-center align-items-center">
                     Loading...
                   </h1>
-                    ) : (
+                ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group ">
-                        <Form.Label htmlFor="traderType">Trader Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="traderType">
+                          Trader Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="traderType"
@@ -167,31 +168,34 @@ function TraderTypeEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Trader Type is required.
-                        </Form.Control.Feedback>
+                            Trader Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="traderTypeMasterName">Trader Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="traderTypeNameInKannada"
-                          name="traderTypeNameInKannada"
-                          value={data.traderTypeNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Trader Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Trader Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="traderTypeMasterName">
+                          Trader Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="traderTypeNameInKannada"
+                            name="traderTypeNameInKannada"
+                            value={data.traderTypeNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Trader Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Trader Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>

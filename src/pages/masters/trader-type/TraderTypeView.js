@@ -57,7 +57,7 @@ function TraderTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function TraderTypeView() {
               </li>
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -86,7 +86,7 @@ function TraderTypeView() {
               <h1 className="d-flex justify-content-center align-items-center">
                 Loading...
               </h1>
-              ) : (
+            ) : (
               <Row className="g-gs">
                 <Col lg="12">
                   <table className="table small table-bordered">
@@ -100,7 +100,10 @@ function TraderTypeView() {
                         <td>{TraderTypeMaster.traderTypeMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Trader Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Trader Type Name in Kannada:
+                        </td>
                         <td>{TraderTypeMaster.traderTypeNameInKannada}</td>
                       </tr>
                     </tbody>

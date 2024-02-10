@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -48,7 +48,7 @@ function SourceOfMulberryList() {
 
   const handleEdit = (_id) => {
     navigate(`/source-of-mulberry-edit/${_id}`);
-    // navigate("/state");
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -201,7 +201,7 @@ function SourceOfMulberryList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/source-of-mulberry"
+                  to="/seriui/source-of-mulberry"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -210,7 +210,7 @@ function SourceOfMulberryList() {
               </li>
               <li>
                 <Link
-                  to="/source-of-mulberry"
+                  to="/seriui/source-of-mulberry"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

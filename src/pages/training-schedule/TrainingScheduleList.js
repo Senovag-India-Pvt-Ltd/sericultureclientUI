@@ -6,12 +6,9 @@ import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -48,12 +45,16 @@ function TrainingScheduleList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL + `trSchedule/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      }, {
-        headers: _header,
-      })
+      .post(
+        baseURL + `trSchedule/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         setListData(response.data.content.trSchedule);
 
@@ -95,12 +96,12 @@ function TrainingScheduleList() {
 
   // const handleEdit = (_id) => {
   //   // navigate(`/caste/${_id}`);
-  //   navigate("/caste-edit");
+  //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
     navigate(`/training-schedule-edit/${_id}`);
-    // navigate("/training Schedule");
+    // navigate("/seriui/training Schedule");
   };
 
   const deleteError = () => {
@@ -242,19 +243,19 @@ function TrainingScheduleList() {
       hide: "md",
     },
     {
-        name: "Training Group Name",
-        selector: (row) => row.trGroupMasterName,
-        cell: (row) => <span>{row.trGroupMasterName}</span>,
-        sortable: true,
-        hide: "md",
+      name: "Training Group Name",
+      selector: (row) => row.trGroupMasterName,
+      cell: (row) => <span>{row.trGroupMasterName}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
-        name: "Training Program Name",
-        selector: (row) => row.trProgramMasterName,
-        cell: (row) => <span>{row.trProgramMasterName}</span>,
-        sortable: true,
-        hide: "md",
-    },      
+      name: "Training Program Name",
+      selector: (row) => row.trProgramMasterName,
+      cell: (row) => <span>{row.trProgramMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -262,19 +263,22 @@ function TrainingScheduleList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule  List</Block.Title>
+            <Block.Title tag="h2">Training Schedule List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/training-schedule" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/training-schedule"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/training-schedule"
+                  to="/seriui/training-schedule"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -288,7 +292,7 @@ function TrainingScheduleList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -307,7 +311,7 @@ function TrainingScheduleList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="trScheduleId"

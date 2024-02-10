@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
@@ -13,7 +13,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function HelpDeskCategory() {
   const [data, setData] = useState({
-    hdBoardCategoryId:"",
+    hdBoardCategoryId: "",
     hdCategoryName: "",
   });
 
@@ -36,33 +36,33 @@ function HelpDeskCategory() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdCategoryMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdCategoryMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
-                hdBoardCategoryId:"",
-                hdCategoryName: "",
+              hdBoardCategoryId: "",
+              hdCategoryName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdBoardCategoryId:"",
-        hdCategoryName: "",
-    })
-  }
+      hdBoardCategoryId: "",
+      hdCategoryName: "",
+    });
+  };
 
   // to get BoardCategory
   const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
@@ -71,9 +71,11 @@ function HelpDeskCategory() {
     const response = api
       .get(baseURL + `hdBoardCategoryMaster/get-all`)
       .then((response) => {
-        if(response.data.content.hdBoardCategoryMaster){
-          setHdBoardCategoryListData(response.data.content.hdBoardCategoryMaster);
-          }
+        if (response.data.content.hdBoardCategoryMaster) {
+          setHdBoardCategoryListData(
+            response.data.content.hdBoardCategoryMaster
+          );
+        }
       })
       .catch((err) => {
         setHdBoardCategoryListData([]);
@@ -84,7 +86,6 @@ function HelpDeskCategory() {
   useEffect(() => {
     getHdBoardCategoryList();
   }, []);
-
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -112,7 +113,7 @@ function HelpDeskCategory() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-category-list"
+                  to="/seriui/hd-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -121,7 +122,7 @@ function HelpDeskCategory() {
               </li>
               <li>
                 <Link
-                  to="/hd-category-list"
+                  to="/seriui/hd-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -141,20 +142,24 @@ function HelpDeskCategory() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-
-                <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Broad Category<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Broad Category<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="hdBoardCategoryId"
                           value={data.hdBoardCategoryId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.hdBoardCategoryId === undefined || data.hdBoardCategoryId === "0"}
+                          isInvalid={
+                            data.hdBoardCategoryId === undefined ||
+                            data.hdBoardCategoryId === "0"
+                          }
                         >
-                         <option value="">Select Broad Category</option>
+                          <option value="">Select Broad Category</option>
                           {hdBoardCategoryListData.map((list) => (
                             <option
                               key={list.hdBoardCategoryId}
@@ -165,15 +170,17 @@ function HelpDeskCategory() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Broad Category name is required
-                      </Form.Control.Feedback>
+                          Broad Category name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Hd Category">Category<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Hd Category">
+                        Category<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hdCategory"
@@ -196,22 +203,22 @@ function HelpDeskCategory() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

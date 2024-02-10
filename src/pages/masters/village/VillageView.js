@@ -60,7 +60,7 @@ function VillageView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/village-list"
+                  to="/seriui/village-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function VillageView() {
               </li>
               <li>
                 <Link
-                  to="/village-list"
+                  to="/seriui/village-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -83,7 +83,7 @@ function VillageView() {
 
       <Block className="mt-n4">
         <Card>
-        <Card.Header>Village Details</Card.Header>
+          <Card.Header>Village Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">

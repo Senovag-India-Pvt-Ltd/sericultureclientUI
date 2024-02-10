@@ -38,12 +38,12 @@ function IrrigationSource() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `irrigationSource/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `irrigationSource/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               irrigationSourceName: "",
@@ -51,20 +51,20 @@ function IrrigationSource() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError();
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-    irrigationSourceName: "",
-    irrigationSourceNameInKannada: "",
-    })
-  }
+      irrigationSourceName: "",
+      irrigationSourceNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -94,7 +94,7 @@ function IrrigationSource() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function IrrigationSource() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -147,7 +147,10 @@ function IrrigationSource() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="land">Irrigation Source Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="land">
+                        Irrigation Source Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="land"
@@ -177,7 +180,7 @@ function IrrigationSource() {
                   </Button>
                 </li>
                 <li>
-                  {/* <Link to="/irrigation-source-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/seriui/irrigation-source-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
