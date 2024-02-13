@@ -175,7 +175,6 @@ function NewReelerLicense() {
         // }
       )
       .then((response) => {
-        debugger;
         // console.log("Hello");
         if (response.data.content) {
           const reelerId = response.data.content.reelerResponse.reelerId;
