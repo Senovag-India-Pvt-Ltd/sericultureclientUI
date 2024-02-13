@@ -73,7 +73,7 @@ function Caste() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors.title);
         });
       setValidated(true);
     }
