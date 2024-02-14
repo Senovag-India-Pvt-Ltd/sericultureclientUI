@@ -41,17 +41,26 @@ function EmpanelledVendor() {
         .post(baseURL + `vendorMaster/add`, data)
         .then((response) => {
           if (response.data.content.error) {
-            saveError();
+            saveError(response.data.content.error_description);
           } else {
             saveSuccess();
+            setData({
+              vendorMasterName: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          setData({});
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      vendorMasterName: "",
+    });
   };
 
   const navigate = useNavigate();
@@ -60,14 +69,14 @@ function EmpanelledVendor() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/empanelled-vendor-list"));
+    }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -145,12 +154,9 @@ function EmpanelledVendor() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/empanelled-vendor-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

@@ -59,7 +59,7 @@ function IrrigationTypeEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -106,7 +106,7 @@ function IrrigationTypeEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 

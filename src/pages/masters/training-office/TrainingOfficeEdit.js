@@ -49,7 +49,7 @@ function TrainingOfficeEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -95,7 +95,7 @@ function TrainingOfficeEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
