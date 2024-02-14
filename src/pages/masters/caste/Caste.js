@@ -73,7 +73,7 @@ function Caste() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors.title);
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -101,7 +101,7 @@ function Caste() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
