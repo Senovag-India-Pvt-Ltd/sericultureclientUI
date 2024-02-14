@@ -41,17 +41,26 @@ function EmpanelledVendorEdit() {
         .post(baseURL + `vendorMaster/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
-            updateError();
+            updateError(response.data.content.error_description);
           } else {
             updateSuccess();
+            setData({
+              vendorMasterName: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          setData({});
           updateError();
         });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      vendorMasterName: "",
+    });
   };
 
   //   to get data from api
@@ -81,14 +90,14 @@ function EmpanelledVendorEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/empanelled-vendor-list"));
+    }).then(() => navigate("#"));
   };
 
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -179,12 +188,9 @@ function EmpanelledVendorEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/empanelled-vendor-list"
-                    className="btn btn-secondary border-0"
-                  >
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

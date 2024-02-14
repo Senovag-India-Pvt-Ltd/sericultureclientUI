@@ -51,7 +51,7 @@ function ExternalUnitType() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -70,13 +70,13 @@ function ExternalUnitType() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/external-unit-type-list"));
+    }).then(() => navigate("#"));
   };
   const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
