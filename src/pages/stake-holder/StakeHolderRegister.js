@@ -814,7 +814,7 @@ function StakeHolderRegister() {
                 }
               })
               .catch((err) => {
-                saveError();
+                saveError(err.response.data.validationErrors);
               });
 
             if (familyMembersList.length > 0) {
@@ -834,7 +834,7 @@ function StakeHolderRegister() {
                     }
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
@@ -852,7 +852,7 @@ function StakeHolderRegister() {
                     setFarmerLandList([]);
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
@@ -870,7 +870,7 @@ function StakeHolderRegister() {
                     setFarmerAddressList([]);
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
@@ -880,7 +880,7 @@ function StakeHolderRegister() {
         })
         .catch((err) => {
           // setData({});
-          // saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -1426,11 +1426,11 @@ function StakeHolderRegister() {
       navigate("/seriui/stake-holder-list");
     });
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 

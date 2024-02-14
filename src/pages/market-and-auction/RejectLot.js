@@ -68,7 +68,7 @@ function RejectLot() {
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -102,6 +102,7 @@ function RejectLot() {
       })
       .catch((err) => {
         setLotRejectionListData([]);
+        searchError(err.response.data.validationErrors);
       });
   };
 

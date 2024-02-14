@@ -72,7 +72,7 @@ function ReelerLicenceEdit() {
         })
         .catch((err) => {
           getVbDetailsList();
-          // saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidatedVbAccount(true);
     }
@@ -85,11 +85,11 @@ function ReelerLicenceEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -217,7 +217,7 @@ function ReelerLicenceEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -445,11 +445,11 @@ function ReelerLicenceEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
-  const updateError = () => {
+  const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

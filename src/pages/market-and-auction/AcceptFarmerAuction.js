@@ -54,7 +54,7 @@ function AcceptFarmerAuction() {
     Swal.fire({
       icon: "error",
       title: "Accept attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -109,6 +109,7 @@ function AcceptFarmerAuction() {
         })
         .catch((err) => {
           // setFarmerAuction({});
+          acceptError(err.response.data.validationErrors);
           setLoading(false);
         })
         .finally(() => {

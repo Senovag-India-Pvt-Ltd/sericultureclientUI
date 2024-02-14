@@ -41,7 +41,7 @@ function Gatepass() {
     Swal.fire({
       icon: "error",
       title: "Gatepass not generated!",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -105,6 +105,7 @@ function Gatepass() {
         })
         .catch((err) => {
           // setFarmerAuction({});
+          acceptError(err.response.data.validationErrors)
           setLoading(false);
         })
         .finally(() => {

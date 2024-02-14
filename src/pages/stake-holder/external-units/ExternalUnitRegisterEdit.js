@@ -43,7 +43,7 @@ function ExternalUnitRegisterEdit() {
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          updateError();
+          updateError(err.response.data.validationErrors);
           setData({});
         });
       setValidated(true);
@@ -120,7 +120,7 @@ function ExternalUnitRegisterEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

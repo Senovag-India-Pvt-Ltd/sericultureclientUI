@@ -142,6 +142,7 @@ function BiddingSlip() {
       })
       .catch((err) => {
         console.error("Error fetching farmer details:", err);
+        searchError(err.response.data.validationErrors);
         setFarmerDetails({});
         setLoading(false);
       });
@@ -594,7 +595,7 @@ function BiddingSlip() {
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 

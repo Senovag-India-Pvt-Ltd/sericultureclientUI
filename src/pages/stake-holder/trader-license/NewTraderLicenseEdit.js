@@ -49,7 +49,7 @@ function NewTraderLicenseEdit() {
         })
         .catch((err) => {
           const message = err.response.data.errorMessages[0].message[0].message;
-          updateError(message);
+          updateError(err.response.data.validationErrors);
           setData({});
         });
       setValidated(true);
@@ -146,8 +146,8 @@ function NewTraderLicenseEdit() {
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
-      title: message,
-      text: "Something went wrong!",
+      title: "Save attempt was not successful",
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

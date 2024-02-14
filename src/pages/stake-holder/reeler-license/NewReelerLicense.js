@@ -307,7 +307,7 @@ function NewReelerLicense() {
                   })
                   .catch((err) => {
                     setVbAccount({});
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             } else {
@@ -317,7 +317,7 @@ function NewReelerLicense() {
         })
         .catch((err) => {
           setData({});
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -523,11 +523,11 @@ function NewReelerLicense() {
       text: `Generated ARN Number is ${arn}`,
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 

@@ -544,7 +544,7 @@ function StakeHolderEdit() {
               })
               .catch((err) => {
                 setBank({});
-                updateError();
+                updateError(err.response.data.validationErrors);
               });
 
             updateSuccess();
@@ -567,7 +567,7 @@ function StakeHolderEdit() {
               })
               .catch((err) => {
                 setBank({});
-                updateError();
+                updateError(err.response.data.validationErrors);
               });
 
             updateSuccess();
@@ -577,7 +577,7 @@ function StakeHolderEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -597,6 +597,7 @@ function StakeHolderEdit() {
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
         setBank({});
+        updateError(err.response.data.validationErrors);
         // editError(message);
         // setLoading(false);
       });
@@ -1275,7 +1276,7 @@ function StakeHolderEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
