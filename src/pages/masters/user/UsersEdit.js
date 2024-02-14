@@ -62,8 +62,14 @@ function UsersEdit() {
           }
         })
         .catch((err) => {
-          const message = err.response.data.errorMessages[0].message[0].message;
-          updateError(message);
+          if (err.response.data.errorMessages[0].message[0].message) {
+            const message =
+              err.response.data.errorMessages[0].message[0].message;
+            updateError(message);
+          }
+          if (err.response.data.validationErrors) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -265,7 +271,7 @@ function UsersEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

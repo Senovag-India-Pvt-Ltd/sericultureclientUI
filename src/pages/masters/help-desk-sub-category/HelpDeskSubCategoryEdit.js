@@ -51,7 +51,7 @@ function HelpDeskSubCategoryEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -145,7 +145,7 @@ function HelpDeskSubCategoryEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

@@ -49,7 +49,7 @@ function Roles() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -74,7 +74,7 @@ function Roles() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 

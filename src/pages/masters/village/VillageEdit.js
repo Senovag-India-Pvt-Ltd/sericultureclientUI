@@ -55,7 +55,7 @@ function VillageEdit() {
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          // updateError(message);
+          updateError(err.response.data.validationErrors);
           // setData({});
         });
       setValidated(true);
@@ -194,7 +194,7 @@ function VillageEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {

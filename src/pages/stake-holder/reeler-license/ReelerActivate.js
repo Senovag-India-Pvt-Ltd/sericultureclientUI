@@ -81,7 +81,7 @@ function ReelerActivate() {
         })
 
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
 
           // if (err.response && err.response.data.content) {
           //   Swal.fire({
@@ -134,23 +134,23 @@ function ReelerActivate() {
     }
   }, [reelerList.userTypeId]);
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       reelerId: "",
-    username: "",
-    password: "",
-    phoneNumber: "",
-    emailId: "",
-    roleId: "",
-    marketMasterId: "",
-    designationId: "",
-    deviceId: "",
-    walletAMount: "",
-    })
+      username: "",
+      password: "",
+      phoneNumber: "",
+      emailId: "",
+      roleId: "",
+      marketMasterId: "",
+      designationId: "",
+      deviceId: "",
+      walletAMount: "",
+    });
     setListData([]);
-  }
+  };
 
-  const [show,setShow]= useState(false);
+  const [show, setShow] = useState(false);
 
   const getConfigureUser = (e) => {
     api
@@ -331,7 +331,7 @@ function ReelerActivate() {
     Swal.fire({
       icon: "error",
       title: "Attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 

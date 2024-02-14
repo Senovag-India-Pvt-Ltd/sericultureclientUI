@@ -81,7 +81,7 @@ function User() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveUserError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -262,7 +262,7 @@ function User() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
