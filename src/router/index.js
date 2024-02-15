@@ -503,6 +503,8 @@ import ReceiptOfDFLsEdit from "../pages/garden-management/ReceiptOfDFLsEdit";
 import SeedCuttingBankList from "../pages/garden-management/SeedCuttingBankList";
 import SeedCuttingBankView from "../pages/garden-management/SeedCuttingBankView";
 import SeedCuttingBankEdit from "../pages/garden-management/SeedCuttingBankEdit";
+import ChawkiManagementList from "../pages/chawki-management/ChawkiManagementList";
+import ChawkiManagementView from "../pages/chawki-management/ChawkiManagementView";
 
 // Admin and Reports
 
@@ -894,10 +896,15 @@ function Router() {
               element={<SaleChawkiWormsView />}
             />
             <Route path="chawki-management" element={<ChawkiManagement />} />
+            <Route path="chawki-management-list" element={<ChawkiManagementList />} />
 
             <Route
               path="chawki-management-edit/:id"
               element={<ChawkiManagementEdit />}
+            />
+             <Route
+              path="chawki-management-view/:id"
+              element={<ChawkiManagementView />}
             />
 
             {/* Inspection */}
