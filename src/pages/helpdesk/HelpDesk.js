@@ -29,6 +29,7 @@ function HelpDesk() {
     hdAttachFiles: "",
     ticketNumber: "",
     hdStatusId: "6",
+    hdSeverityId: "8",
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
@@ -110,6 +111,7 @@ function HelpDesk() {
               hdCreatedBy: "",
               ticketNumber: "",
               hdStatusId: "6",
+              hdSeverityId: "8",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
             setValidated(false);
@@ -136,6 +138,7 @@ function HelpDesk() {
       hdCreatedBy: "",
       ticketNumber: "",
       hdStatusId: "6",
+      hdSeverityId: "8",
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");

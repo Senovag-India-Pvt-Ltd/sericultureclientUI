@@ -261,6 +261,13 @@ function HelpdeskDashboard() {
       hide: "md",
     },
     {
+      name: "Status",
+      selector: (row) => row.hdStatusName,
+      cell: (row) => <span>{row.hdStatusName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Query Details",
       selector: (row) => row.queryDetails,
       cell: (row) => <span>{row.queryDetails}</span>,
