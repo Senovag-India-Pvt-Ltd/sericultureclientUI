@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, CardBody } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView"
-
+import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView";
+import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
@@ -52,25 +52,23 @@ function RaiseTicketView() {
     getIdList();
   }, [id]);
 
+  //   const handleListInput = (e, row) => {
+  //     // debugger;
+  //     let { name, value } = e.target;
+  //     const updatedRow = { ...row, [name]: value };
+  //     const updatedDataList = raiseTicket.map((rowData) =>
+  //       rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
+  //     );
+  //     setRaiseTicket(updatedDataList);
+  //   };
 
-
-//   const handleListInput = (e, row) => {
-//     // debugger;
-//     let { name, value } = e.target;
-//     const updatedRow = { ...row, [name]: value };
-//     const updatedDataList = raiseTicket.map((rowData) =>
-//       rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
-//     );
-//     setRaiseTicket(updatedDataList);
-//   };
-
-let name, value;
-const handleListInput = (e) => {
-  // debugger;
-  name = e.target.name;
-  value = e.target.value;
-  setRaiseTicket({ ...raiseTicket, [name]: value });
-};
+  let name, value;
+  const handleListInput = (e) => {
+    // debugger;
+    name = e.target.name;
+    value = e.target.value;
+    setRaiseTicket({ ...raiseTicket, [name]: value });
+  };
 
   // to get Severity
   const [severityListData, setSeverityListData] = useState([]);
@@ -155,9 +153,7 @@ const handleListInput = (e) => {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>
-                          {raiseTicket.hdTicketId}
-                        </td>
+                        <td>{raiseTicket.hdTicketId}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Module Name:</td>
@@ -177,9 +173,7 @@ const handleListInput = (e) => {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sub Category:</td>
-                        <td>
-                          {raiseTicket.hdSubCategoryName}
-                        </td>
+                        <td>{raiseTicket.hdSubCategoryName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Users Affected:</td>
@@ -246,57 +240,68 @@ const handleListInput = (e) => {
                             </div>
                         </td>
                         </tr> */}
-                        <Card>
-                        <Card.Body>
-                            <Row className="g-gs">
-                            <Col lg="4">
-                            <Form.Group className="form-group">
-                        <div className="form-control-wrap">
-                         <Form.Select
-                            name="hdStatusId"
-                            value={raiseTicket.hdStatusId}
-                            onChange={() => handleListInput}
-                            // onBlur={() => handleInputs}
-                        >
-                            <option value="">Select Status</option>
-                            {hdStatusListData.map((list) => (
-                            <option key={list.hdStatusId} value={list.hdStatusId}>
-                                {list.hdStatusName}
-                            </option>
-                            ))}
-                        </Form.Select>
-                        </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                  <Form.Group className="form-group">
-                    <div className="form-control-wrap">
-                        <Form.Select
-                            name="hdSeverityId"
-                            value={raiseTicket.hdSeverityId}
-                            onChange={() => handleListInput}
-                            // onBlur={() => handleInputs}
-                        >
-                            <option value="">Select Severity</option>
-                            {severityListData.map((list) => (
-                            <option key={list.hdSeverityId} value={list.hdSeverityId}>
-                                {list.hdSeverityName}
-                            </option>
-                            ))}
-                        </Form.Select>
-                        </div>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                </Card.Body>
-                </Card>
                     </tbody>
                   </table>
-                  {/* <HelpDeskFaqView/> */}
                 </Col>
               </Row>
             )}
+          </Card.Body>
+        </Card>
+      </Block>
+      <Block className="mt-2">
+        <Card>
+          <Card.Body>
+            <Row className="g-gs">
+              <Col lg="4">
+                <Form.Group className="form-group">
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="hdStatusId"
+                      value={raiseTicket.hdStatusId}
+                      onChange={() => handleListInput}
+                      // onBlur={() => handleInputs}
+                    >
+                      <option value="">Select Status</option>
+                      {hdStatusListData.map((list) => (
+                        <option key={list.hdStatusId} value={list.hdStatusId}>
+                          {list.hdStatusName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="4">
+                <Form.Group className="form-group">
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="hdSeverityId"
+                      value={raiseTicket.hdSeverityId}
+                      onChange={() => handleListInput}
+                      // onBlur={() => handleInputs}
+                    >
+                      <option value="">Select Severity</option>
+                      {severityListData.map((list) => (
+                        <option
+                          key={list.hdSeverityId}
+                          value={list.hdSeverityId}
+                        >
+                          {list.hdSeverityName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </Block>
+      <Block className="mt-2">
+        <Card>
+          <Card.Body>
+            <HelpDeskFaqComponent />
           </Card.Body>
         </Card>
       </Block>
