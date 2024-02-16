@@ -104,7 +104,10 @@ function TransferReelerLicense() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `reeler/add`, {...data,transferReelerId:data.reelingLicenseNumber})
+        .post(baseURL2 + `reeler/add`, {
+          ...data,
+          transferReelerId: data.reelingLicenseNumber,
+        })
         .then((response) => {
           saveSuccess();
           api
@@ -163,10 +166,16 @@ function TransferReelerLicense() {
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
