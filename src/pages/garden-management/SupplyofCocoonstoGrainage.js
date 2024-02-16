@@ -428,7 +428,7 @@ const handleDateChange = (date, type) => {
                                 value={data.lotNumber}
                                 onChange={handleInputs}
                                 type="text"
-                                placeholder="  Lot Number "
+                                placeholder="Lot Number "
                                 required
                               />
                             </div>
