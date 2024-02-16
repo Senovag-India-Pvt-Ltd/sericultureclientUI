@@ -15,7 +15,9 @@ import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
 import { Colors } from "../../utilities/index";
 import { useState, useEffect } from "react";
+
 import Layout from "../../layout/default";
+import { useNavigate } from "react-router-dom";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
 
@@ -185,6 +187,11 @@ function UserDashboard() {
     },
   };
 
+  const navigate = useNavigate();
+  const handleView = (_id) => {
+    navigate(`/seriui/user-ticket-view/${_id}`);
+  };
+
   const HelpdeskDataColumns = [
     {
       name: "Ticket No.",
@@ -267,6 +274,26 @@ function UserDashboard() {
       name: "Attachments",
       selector: (row) => row.hdAttachFiles,
       cell: (row) => <span>{row.hdAttachFiles}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Action",
+      cell: (row) => (
+        <div text-start w-100>
+          {/* <Button variant="primary" size="sm" onClick={() => edit(row)}>
+            Update
+          </Button> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.hdTicketId, row)}
+          >
+            View
+          </Button>
+        </div>
+      ),
       sortable: true,
       hide: "md",
     },

@@ -294,6 +294,27 @@ function RaiseTicketView() {
                   </div>
                 </Form.Group>
               </Col>
+
+              <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Question&Answer">
+                        Solution 
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="Question&Answer"
+                          name="hdQuestionAnswerName"
+                          value={raiseTicket.hdQuestionAnswerName}
+                          onChange={handleListInput}
+                          // type="text"
+                          as="textarea"
+                          rows={4}
+                          placeholder="Enter Solutions"
+                        />
+                       
+                      </div>
+                    </Form.Group>
+                  </Col>
             </Row>
           </Card.Body>
         </Card>
