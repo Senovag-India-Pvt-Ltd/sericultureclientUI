@@ -724,6 +724,16 @@ function StakeHolderRegister() {
     value = e.target.value;
     setData({ ...data, [name]: value });
     // setFarmerId({ ...farmerId, farmerId: value });
+
+    if (
+      name === "mobileNumber" &&
+      (value.length < 10 || value.length > 10)
+    ) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleBankInputs = (e) => {
@@ -1896,6 +1906,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name is required.
@@ -1917,6 +1928,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name in Kannada is required.
@@ -1938,6 +1950,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_fathers_husbands_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name is required.
@@ -1961,6 +1974,7 @@ function StakeHolderRegister() {
                               "enter_fathers_husbands_name_in_kannada"
                             )}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name in Kannada is required.
@@ -1983,6 +1997,7 @@ function StakeHolderRegister() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            className="form-control"
                           />
                         </div>
                       </Form.Group>
@@ -1994,6 +2009,7 @@ function StakeHolderRegister() {
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
@@ -2010,6 +2026,7 @@ function StakeHolderRegister() {
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="0">Select Caste</option>
                             {casteListData.map((list) => (
@@ -2028,6 +2045,7 @@ function StakeHolderRegister() {
                             name="differentlyAbled"
                             value={data.differentlyAbled}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select")}</option>
                             <option value="true">Yes</option>
@@ -2067,7 +2085,7 @@ function StakeHolderRegister() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required.
+                            Mobile Number is required or Number is greater than and less than 10 Digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2190,6 +2208,7 @@ function StakeHolderRegister() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
+                            disabled
                             isInvalid={
                               data.farmerTypeId === undefined ||
                               data.farmerTypeId === "0"
@@ -2225,7 +2244,8 @@ function StakeHolderRegister() {
                             value={data.farmerNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("enter_farmer_number")}
+                            // placeholder={t("enter_farmer_number")}
+                            placeholder="eg: TTH00001"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -3097,6 +3117,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3586,6 +3607,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3613,6 +3635,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3629,6 +3652,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3651,6 +3675,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_number")}
+                          readOnly
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -3669,6 +3694,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3798,6 +3824,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3812,6 +3839,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -5021,6 +5049,7 @@ function StakeHolderRegister() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required

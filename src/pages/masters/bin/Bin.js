@@ -134,7 +134,7 @@ function Bin() {
     api
       .post(baseURL1 + `addAllMaster/addBinCounterMaster?${parameters}`, {})
       .then((response) => {
-        axios
+        api
           .post(
             baseURL1 + `addAllMaster/addBinMaster?${parameters1}`,
             {},
