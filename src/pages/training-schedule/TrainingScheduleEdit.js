@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -18,7 +18,142 @@ function TrainingScheduleEdit() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const [trainerUserList, setTrainerUserList] = useState([]);
+  const [trainerUser, setTrainerUser] = useState({
+    trScheduleId: "",
+    userMasterId: "",
+    trainerName: "",
+  });
+
   const [validated, setValidated] = useState(false);
+  const [validatedTrainerUser, setValidatedTrainerUser] = useState(false);
+  const [validatedTrainerUserEdit, setValidatedTrainerUserEdit] = useState(false);
+
+  const getTrainerUserDetailsList = () => {
+    api
+      .get(baseURL2 + `trainingScheduleUser/get-by-tr-schedule-id-join/${id}`)
+      .then((response) => {
+        setTrainerUserList(response.data.content.trainingScheduleUser);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setTrainerUserList([]);
+        // editError(message);
+      });
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleAdd = (event) => {
+    const withTrScheduleId = {
+      ...trainerUser,
+      trScheduleId: id,
+    };
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedTrainerUser(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL2 + `trainingScheduleUser/add`, withTrScheduleId)
+        .then((response) => {
+          getTrainerUserDetailsList();
+          setShowModal(false);
+        })
+        .catch((err) => {
+          getTrainerUserDetailsList();
+          saveError(err.response.data.validationErrors);
+        });
+      setValidatedTrainerUser(true);
+    }
+  };
+
+  const saveError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: Object.values(message).join("<br>"),
+    });
+  };
+
+  // TrainerUser
+  const handleTrainerUserOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setTrainerUser({
+      ...trainerUser,
+      userMasterId: chooseId,
+      username: chooseName,
+    });
+  };
+
+  const handleDelete = (i) => {
+    api
+      .delete(baseURL2 + `trainingScheduleUser/delete/${i}`)
+      .then((response) => {
+        getTrainerUserDetailsList();
+      })
+      .catch((err) => {
+        getTrainerUserDetailsList();
+      });
+  };
+
+  const handleTrainerUserGet = (i) => {
+    api
+      .get(baseURL2 + `trainingScheduleUser/get/${i}`)
+      .then((response) => {
+        setTrainerUser(response.data.content);
+        setShowModal2(true);
+      })
+      .catch((err) => {
+        setTrainerUser({});
+      });
+  };
+
+  const handleEdit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedTrainerUserEdit(true);
+    } else {
+      event.preventDefault();
+      api
+        .post(baseURL2 + `trainingScheduleUser/edit`, trainerUser)
+        .then((response) => {
+          getTrainerUserDetailsList();
+          setShowModal2(false);
+        })
+        .catch((err) => {
+          getTrainerUserDetailsList();
+        });
+      setValidatedTrainerUserEdit(true);
+    }
+  };
+
+  const handleTrainerUserInputs = (e) => {
+    const { name, value } = e.target;
+    setTrainerUser({ ...trainerUser, [name]: value });
+  };
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setTrainerUser({
+      trScheduleId: "",
+      userMasterId: "",
+      trainerName: "",
+    });
+  };
+
+
 
   let name, value;
   const handleInputs = (e) => {
@@ -356,7 +491,7 @@ function TrainingScheduleEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           User<span className="text-danger">*</span>
@@ -388,7 +523,7 @@ function TrainingScheduleEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group">
@@ -609,8 +744,62 @@ function TrainingScheduleEdit() {
                           />
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group mt-3">
+                        <Form.Label column sm={2}>
+                          Training Period Start Date
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                          <Col sm={2}>
+                            <div className="form-control-wrap">
+                              {isDataStartSet && (
+                                <DatePicker
+                                  selected={new Date(data.trStartDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "trStartDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              )}
+                            </div>
+                          </Col>
+                        {/* </Row> */}
+                        {/* </Form.Group> */}
+
+                        {/* <Row> */}
+                          {/* <Col lg="6"> */}
+                            {/* <Form.Group className="form-group"> */}
+                            <Form.Label column sm={2}>
+                              Expected Date of Completion
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={2}>
+                            <div className="form-control-wrap">
+                              {isDataCompletionSet && (
+                                <DatePicker
+                                  selected={new Date(data.trDateOfCompletion)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "trDateOfCompletion")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              )}
+                            </div>
+                          </Col>
+                       
+
+                    <Col lg = "4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
                           Upload PPt/Video
                         </Form.Label>
@@ -641,64 +830,116 @@ function TrainingScheduleEdit() {
                         )}
                       </Form.Group>
                     </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label>
-                          Training Period Start Date
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <Row>
-                          <Col lg="6">
-                            <div className="form-control-wrap">
-                              {isDataStartSet && (
-                                <DatePicker
-                                  selected={new Date(data.trStartDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "trStartDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                />
-                              )}
-                            </div>
-                          </Col>
-                        </Row>
-                        {/* </Form.Group> */}
-
-                        <Row>
-                          <Col lg="6">
-                            {/* <Form.Group className="form-group"> */}
-                            <Form.Label>
-                              Expected Date of Completion
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              {isDataCompletionSet && (
-                                <DatePicker
-                                  selected={new Date(data.trDateOfCompletion)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "trDateOfCompletion")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                />
-                              )}
-                            </div>
-                          </Col>
-                        </Row>
-                      </Form.Group>
-                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
+
+            <Block className="mt-3">
+              <Card>
+                <Card.Header>Add Trainer</Card.Header>
+                <Card.Body>
+                  {/* <h3>Virtual Bank account</h3> */}
+                  <Row className="g-gs mb-1">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-1">
+                        <div className="form-control-wrap"></div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-3">
+                        <div className="form-control-wrap">
+                          <ul className="">
+                            <li>
+                              <Button
+                                className="d-md-none"
+                                size="md"
+                                variant="primary"
+                                onClick={handleShowModal}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button>
+                            </li>
+                            <li>
+                              <Button
+                                className="d-none d-md-inline-flex"
+                                variant="primary"
+                                onClick={handleShowModal}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button>
+                            </li>
+                          </ul>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  {trainerUserList && trainerUserList.length > 0 ? (
+                    <Row className="g-gs">
+                      <Block>
+                        <Card>
+                          <div
+                            className="table-responsive"
+                            // style={{ paddingBottom: "30px" }}
+                          >
+                            <table className="table small">
+                              <thead>
+                                <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                  {/* <th></th> */}
+                                  <th>Action</th>
+                                  <th>User Name</th>
+                                  <th>Trainer Name</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {trainerUserList.map((item, i) => (
+                                  <tr>
+                                    <td>
+                                      <div>
+                                        <Button
+                                          variant="primary"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleTrainerUserGet(
+                                              item.trainingScheduleUserId
+                                            )
+                                          }
+                                        >
+                                          Edit
+                                        </Button>
+                                        <Button
+                                          variant="danger"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleDelete(
+                                              item.trainingScheduleUserId
+                                            )
+                                          }
+                                          className="ms-2"
+                                        >
+                                          Delete
+                                        </Button>
+                                      </div>
+                                    </td>
+                                    <td>{item.trainerName}</td>
+                                    <td>{item.username}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </Card>
+                      </Block>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                </Card.Body>
+              </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -718,6 +959,194 @@ function TrainingScheduleEdit() {
           </Row>
         </Form>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Add Trainer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form noValidate validated={validatedTrainerUser} onSubmit={handleAdd}>
+            <Row className="g-5 px-5">
+            <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="userMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${trainerUser.userMasterId}_${trainerUser.username}`}
+                      onChange={handleTrainerUserOption}
+                      onBlur={() => handleTrainerUserOption}
+                      required
+                      isInvalid={
+                        trainerUser.userMasterId === undefined ||
+                        trainerUser.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Trainer</option>
+                      {trUserListData.length
+                        ? trUserListData.map((list) => (
+                            <option
+                              key={list.userMasterId}
+                              value={`${list.userMasterId}_${list.username}`}
+                            >
+                              {list.username}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg = "6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label htmlFor="trainerName">
+                    Trainer Name<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="trainerName"
+                      name="trainerName"
+                      value={trainerUser.trainerName}
+                      onChange={handleTrainerUserInputs}
+                      type="text"
+                      placeholder="Enter Trainer Name"
+                      // required
+                    />
+                    {/* <Form.Control.Feedback type="invalid">
+                      Virtual Account Number is required
+                    </Form.Control.Feedback> */}
+                  </div>
+                </Form.Group>
+              </Col>
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="primary">
+                      Add
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button variant="danger" onClick={handleCloseModal1}>
+                      Reject
+                    </Button>
+                  </div> */}
+                  <div className="gap-col">
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Trainer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedTrainerUserEdit}
+            onSubmit={handleEdit}
+          >
+          <Row className="g-5 px-5">
+            <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="userMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${trainerUser.userMasterId}_${trainerUser.username}`}
+                      onChange={handleTrainerUserOption}
+                      onBlur={() => handleTrainerUserOption}
+                      required
+                      isInvalid={
+                        trainerUser.userMasterId === undefined ||
+                        trainerUser.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Trainer</option>
+                      {trUserListData.length
+                        ? trUserListData.map((list) => (
+                            <option
+                              key={list.userMasterId}
+                              value={`${list.userMasterId}_${list.username}`}
+                            >
+                              {list.username}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg = "6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label htmlFor="trainerName">
+                    Trainer Name<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="trainerName"
+                      name="trainerName"
+                      value={trainerUser.trainerName}
+                      onChange={handleTrainerUserInputs}
+                      type="text"
+                      placeholder="Enter Trainer Name"
+                      // required
+                    />
+                    {/* <Form.Control.Feedback type="invalid">
+                      Virtual Account Number is required
+                    </Form.Control.Feedback> */}
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleEdit}> */}
+                    <Button type="submit" variant="success">
+                      Update
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button variant="danger" onClick={handleCloseModal1}>
+                      Reject
+                    </Button>
+                  </div> */}
+                  <div className="gap-col">
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+            
     </Layout>
   );
 }

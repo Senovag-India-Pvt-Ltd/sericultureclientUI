@@ -187,6 +187,14 @@ function TrainerPageEdit() {
   const handleTrainerInputs = (e) => {
     const { name, value } = e.target;
     setTrDetails({ ...trDetails, [name]: value });
+
+    if (name === "preTestScore" || name === "postTestScore") {
+      const preTestScore = name === "preTestScore" ? parseInt(value) : trDetails.preTestScore;
+      const postTestScore = name === "postTestScore" ? parseInt(value) : trDetails.postTestScore;
+      const calculatedPrice = (postTestScore-preTestScore);
+      setTrDetails(prevData => ({ ...prevData, percentageImproved: calculatedPrice }));
+      
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -1088,100 +1096,97 @@ function TrainerPageEdit() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="6">
-                  <Form.Group className="form-group mt-3">
-                    <Form.Label htmlFor="photoPath">
-                      Upload PPt/Video
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="trUploadPath"
-                        name="trUploadPath"
-                        onChange={handlePPtChange}
-                        disabled
-                      />
-                    </div>
-                  </Form.Group>
-
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {ppt ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(ppt)}
-                      />
-                    ) : (
-                      selectedPPtFile && (
-                        <img
-                          style={{ height: "100px", width: "100px" }}
-                          src={selectedPPtFile}
-                          alt="Selected File"
-                        />
-                      )
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Col lg="6">
-                  <Form.Group className="form-group">
-                    <Form.Label>
-                      Training Period Start Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Row>
-                      <Col lg="6">
-                        <div className="form-control-wrap">
-                          {isDataStartSet && (
-                            <DatePicker
-                              selected={new Date(data.trStartDate)}
-                              onChange={(date) =>
-                                handleDateChange(date, "trStartDate")
-                              }
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                            />
-                          )}
-                        </div>
-                      </Col>
-                    </Row>
-                    {/* </Form.Group> */}
-
-                    <Row>
-                      <Col lg="6">
-                        {/* <Form.Group className="form-group"> */}
-                        <Form.Label>
-                          Date of Completion
+                <Form.Label column sm={2}>
+                          Training Period Start Date
                           <span className="text-danger">*</span>
                         </Form.Label>
+                          <Col sm={2}>
+                            <div className="form-control-wrap">
+                              {isDataStartSet && (
+                                <DatePicker
+                                  selected={new Date(data.trStartDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "trStartDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              )}
+                            </div>
+                          </Col>
+                        {/* </Row> */}
+                        {/* </Form.Group> */}
+
+                        {/* <Row> */}
+                          {/* <Col lg="6"> */}
+                            {/* <Form.Group className="form-group"> */}
+                            <Form.Label column sm={2}>
+                              Expected Date of Completion
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <Col sm={2}>
+                            <div className="form-control-wrap">
+                              {isDataCompletionSet && (
+                                <DatePicker
+                                  selected={new Date(data.trDateOfCompletion)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "trDateOfCompletion")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              )}
+                            </div>
+                          </Col>
+                       
+
+                    <Col lg = "4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="photoPath">
+                          Upload PPt/Video
+                        </Form.Label>
                         <div className="form-control-wrap">
-                          {isDataCompletionSet && (
-                            <DatePicker
-                              selected={new Date(data.trDateOfCompletion)}
-                              onChange={(date) =>
-                                handleDateChange(date, "trDateOfCompletion")
-                              }
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                            />
-                          )}
+                          <Form.Control
+                            type="file"
+                            id="trUploadPath"
+                            name="trUploadPath"
+                            onChange={handlePPtChange}
+                          />
                         </div>
-                      </Col>
-                    </Row>
-                  </Form.Group>
-                </Col>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {ppt ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(ppt)}
+                          />
+                        ) : (
+                          selectedPPtFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedPPtFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
+                    </Col>
               </Row>
             </Card.Body>
           </Card>
 
           <Block className="mt-3">
             <Card>
-              <Card.Header>Trainer Details</Card.Header>
+              <Card.Header>Trainee Details</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -1307,7 +1312,7 @@ function TrainerPageEdit() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Trainer Details</Modal.Title>
+          <Modal.Title>Add Trainee Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1598,23 +1603,7 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Pre Test Score</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="preTestScore"
-                      name="preTestScore"
-                      value={trDetails.preTestScore}
-                      onChange={handleTrainerInputs}
-                      type="text"
-                      placeholder="Enter Pre Test Score"
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="6">
-                <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Post Test Score</Form.Label>
+                  <Form.Label htmlFor="place">Post Test Score(Out Of 100)</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="postTestScore"
@@ -1630,6 +1619,24 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
+                  <Form.Label htmlFor="place">Pre Test Score(Out Of 100)</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="preTestScore"
+                      name="preTestScore"
+                      value={trDetails.preTestScore}
+                      onChange={handleTrainerInputs}
+                      type="text"
+                      placeholder="Enter Pre Test Score"
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+
+              
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">Percentage Improved</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1639,6 +1646,7 @@ function TrainerPageEdit() {
                       onChange={handleTrainerInputs}
                       type="text"
                       placeholder="Enter Improved Percentage"
+                      disabled
                     />
                   </div>
                 </Form.Group>
@@ -1674,7 +1682,7 @@ function TrainerPageEdit() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Trainer Details</Modal.Title>
+          <Modal.Title>Edit Trainee Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -1968,22 +1976,6 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Pre Test Score</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="preTestScore"
-                      name="preTestScore"
-                      value={trDetails.preTestScore}
-                      onChange={handleTrainerInputs}
-                      type="text"
-                      placeholder="Enter Pre Test Score"
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="6">
-                <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">Post Test Score</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2000,6 +1992,24 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
+                  <Form.Label htmlFor="place">Pre Test Score</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="preTestScore"
+                      name="preTestScore"
+                      value={trDetails.preTestScore}
+                      onChange={handleTrainerInputs}
+                      type="text"
+                      placeholder="Enter Pre Test Score"
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+
+              
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">Percentage Improved</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2009,6 +2019,7 @@ function TrainerPageEdit() {
                       onChange={handleTrainerInputs}
                       type="text"
                       placeholder="Enter Improved Percentage"
+                      disabled
                     />
                   </div>
                 </Form.Group>

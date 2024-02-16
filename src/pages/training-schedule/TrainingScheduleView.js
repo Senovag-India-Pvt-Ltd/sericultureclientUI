@@ -47,6 +47,24 @@ function TrainingScheduleView() {
       });
   };
 
+  const [trainerUserList, setTrainerUserList] = useState([]);
+  const getTrainerUserList = () => {
+    api
+      .get(baseURL + `trainingScheduleUser/get-by-tr-schedule-id-join/${id}`)
+      .then((response) => {
+        setTrainerUserList(response.data.content.trainingScheduleUser);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setTrainerUserList([]);
+        // editError(message);
+      });
+  };
+  useEffect(() => {
+    getIdList();
+    getTrainerUserList();
+  }, [id]);
+
   // To get Photo
   const [selectedPPtFile, setSelectedPPtFile] = useState(null);
 
@@ -184,6 +202,45 @@ function TrainingScheduleView() {
                 </Col>
               </Row>
             )}
+          </Card.Body>
+        </Card>
+
+        <Card className="mt-3">
+          <Card.Header>Trainers List</Card.Header>
+          <Card.Body>
+            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
+          {vbAccountList && vbAccountList.length > 0 ? (
+            vbAccountList.map((vbAccount) => (
+              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
+            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
+            {/* <Row className="g-gs"> */}
+            {trainerUserList && trainerUserList.length > 0
+              ? trainerUserList.map((trainerUser) => (
+                  <Row className="g-gs">
+                    {console.log(trainerUser.trainingScheduleUserId)}
+                    <Col lg="4">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}> Training Schedule User ID:</td>
+                            <td>{trainerUser.trainingScheduleUserId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Training Schedule Id:</td>
+                            <td>{trainerUser.trScheduleId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              User Name:
+                            </td>
+                            <td>{trainerUser.trainerName}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                ))
+              : ""}
           </Card.Body>
         </Card>
       </Block>

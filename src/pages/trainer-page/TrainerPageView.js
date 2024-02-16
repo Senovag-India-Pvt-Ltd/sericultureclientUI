@@ -210,7 +210,7 @@ function TrainerPageView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Trainer Details</Card.Header>
+          <Card.Header>Trainee Details</Card.Header>
           <Card.Body>
             {/* {console.log('Virtual Bank Account List:', vbAccountList)}
           {vbAccountList && vbAccountList.length > 0 ? (
