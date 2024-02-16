@@ -97,7 +97,7 @@ function ChawkiManagementView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{chawkiManagement.chawki_id}</td>
+                        <td>{chawkiManagement.chawkiId}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Fruits ID:</td>
@@ -133,23 +133,23 @@ function ChawkiManagementView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> State:</td>
-                        <td>{chawkiManagement.stateId}</td>
+                        <td>{chawkiManagement.stateName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>District:</td>
-                        <td>{chawkiManagement.districtId}</td>
+                        <td>{chawkiManagement.districtName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Taluk:</td>
-                        <td>{chawkiManagement.talukId}</td>
+                        <td>{chawkiManagement.talukName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Hobli:</td>
-                        <td>{chawkiManagement.hobliId}</td>
+                        <td>{chawkiManagement.hobliName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Village:</td>
-                        <td>{chawkiManagement.villageId}</td>
+                        <td>{chawkiManagement.villageName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Dispatch Date:</td>

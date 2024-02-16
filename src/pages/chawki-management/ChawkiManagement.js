@@ -85,7 +85,7 @@ function ChawkiManagement() {
           if (response.data.error) {
             saveError();
           } else {
-            saveSuccess();
+            saveSuccess(response.data.receiptNo);
             setData({
               farmerName: "",
               fatherName: "",
@@ -242,6 +242,24 @@ function ChawkiManagement() {
     setData({ ...data, [type]: date });
   };
 
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+
+  const getRaceList = () => {
+    const response = api
+      .get(baseURL2 + `raceMaster/get-all`)
+      .then((response) => {
+       setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+       setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+   getRaceList();
+  }, []);
+
    // to get User
    const [chawkiListData, setChawkiListData] = useState([]);
 
@@ -363,11 +381,11 @@ function ChawkiManagement() {
   }, [data.hobli]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: `Receipt Number ${message}`,
     }).then(() => {
       // navigate("/seriui/caste-list");
     });
@@ -600,7 +618,7 @@ function ChawkiManagement() {
                                   value={data.dflsSource}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" District"
+                                  placeholder=" Enter Source"
                                   required
                                 />
                               </div>
@@ -608,23 +626,32 @@ function ChawkiManagement() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Race of DFLs
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="raceOfDfls"
-                                  name="raceOfDfls"
-                                  value={data.raceOfDfls}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder=" Race of DFLs"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Race<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceOfDfls"
+                            value={data.raceOfDfls}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                          >
+                            <option value="">Select Race</option>
+                            {raceListData.map((list) => (
+                              <option
+                                key={list.raceMasterId}
+                                value={list.raceMasterId}
+                              >
+                                {list.raceMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
                           
 
