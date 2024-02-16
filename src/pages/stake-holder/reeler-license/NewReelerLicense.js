@@ -163,6 +163,7 @@ function NewReelerLicense() {
     licenseRenewalDate: "",
     reelerNumber: "",
     reelerTypeMasterId: "",
+    transferReelerId: "0",
   });
 
   const search = () => {
