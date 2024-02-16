@@ -216,6 +216,18 @@ function MarketView() {
                       <td style={styles.ctstyle}> Taluk:</td>
                       <td>{MarketMaster.talukName}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Snorkel Request Path:</td>
+                      <td>{MarketMaster.snorkelRequestPath}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Snorkel Response Path:</td>
+                      <td>{MarketMaster.snorkelResponsePath}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Client Code:</td>
+                      <td>{MarketMaster.clientCode}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>

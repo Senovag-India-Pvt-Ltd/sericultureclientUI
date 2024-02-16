@@ -72,6 +72,9 @@ function MarketEdit() {
               marketLongitude: "",
               radius: "",
               clientId: "",
+              snorkelRequestPath: "",
+              snorkelResponsePath: "",
+              clientCode: "",
             });
             setValidated(false);
           }
@@ -114,6 +117,9 @@ function MarketEdit() {
       marketLongitude: "",
       radius: "",
       clientId: "",
+      snorkelRequestPath: "",
+      snorkelResponsePath: "",
+      clientCode: "",
     });
   };
 
@@ -842,6 +848,65 @@ function MarketEdit() {
                   </Col>
 
                   <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="name">
+                        Snorkel Request Path
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="name"
+                          name="snorkelRequestPath"
+                          value={data.snorkelRequestPath}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Market"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Snorkel Request Path is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="name">
+                        Snorkel Response Path
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="name"
+                          name="snorkelResponsePath"
+                          value={data.snorkelResponsePath}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Market"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Snorkel Response Path is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="name">
+                        Client Code<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="name"
+                          name="clientCode"
+                          value={data.clientCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Market"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Market Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
                         Client ID<span className="text-danger">*</span>

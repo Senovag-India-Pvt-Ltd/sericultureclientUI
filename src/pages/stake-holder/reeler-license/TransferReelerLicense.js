@@ -779,7 +779,7 @@ function TransferReelerLicense() {
                         <div className="form-control-wrap">
                           <Form.Select
                             name="relationshipId"
-                            value={data.passbookNumber}
+                            value={data.relationshipId}
                             // value={familyMembers.relationshipId}
                             onChange={handleInputs}
                             required
