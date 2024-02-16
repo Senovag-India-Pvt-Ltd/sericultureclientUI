@@ -379,12 +379,11 @@ function HelpdeskDashboard() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.hdTicketId)}
+            onClick={() => handleView(row.hdTicketId, row)}
           >
             View
           </Button>
         </div>
-
       ),
       sortable: true,
       hide: "md",
@@ -392,7 +391,20 @@ function HelpdeskDashboard() {
   ];
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
+  const handleView = (_id, row) => {
+    if (row.hdStatusName === "New Tickets") {
+      api
+        .post(baseURL2 + `hdTicket/edit`, {
+          ...row,
+          hdStatusId: "4",
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     navigate(`/seriui/raise-ticket-view/${_id}`);
   };
 
