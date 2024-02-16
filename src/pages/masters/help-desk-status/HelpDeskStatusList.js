@@ -196,7 +196,7 @@ function HelpDeskStatusList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/hd-status"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -205,7 +205,7 @@ function HelpDeskStatusList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/hd-status"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
