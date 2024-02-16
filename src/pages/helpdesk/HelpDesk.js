@@ -570,7 +570,7 @@ function HelpDesk() {
                   <Col lg="4">
                     <Form.Group as={Row} className="form-group mt-2">
                       <Form.Label column sm={3} className="mt-n2">
-                        for Others
+                        On Behalf Of
                       </Form.Label>
                       <Col sm={1}>
                         <Form.Check

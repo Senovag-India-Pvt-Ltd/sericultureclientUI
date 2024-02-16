@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -119,7 +118,7 @@ function TrainingGroupEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/trGroupMaster-list"
+                  to="/seriui/training-group-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +127,7 @@ function TrainingGroupEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/trGroupMaster-list"
+                  to="/seriui/training-group-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

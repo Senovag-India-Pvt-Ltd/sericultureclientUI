@@ -148,13 +148,13 @@ function HelpDeskFaqList() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.hdQuestionId)}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"

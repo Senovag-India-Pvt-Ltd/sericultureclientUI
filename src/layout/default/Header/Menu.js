@@ -263,7 +263,6 @@ function Menu() {
     GardenManagement_Seed_Cutting_Bank: false,
 
     ChawkiManagement: false,
-    ChawkiManagement_Chawki_Worms: false,
 
     TargetSetting: false,
     TargetSetting_Assigning_Yearly_Targets: false,
@@ -1232,21 +1231,14 @@ function Menu() {
           sub
         />
         <MenuSub>
-          {showMenu.ChawkiManagement_Chawki_Worms ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Sale of Chawki Worms"
-                to="/seriui/sale-chawki-worms"
-              />
-            </MenuItem>
-          ) : null}
-
+          {showMenu.ChawkiManagement ? (
           <MenuItem>
             <MenuItemLink
               text="Chawki Management"
               to="/seriui/chawki-management"
             />
           </MenuItem>
+          ) : null}
         </MenuSub>
       </MenuItem>
 
@@ -1370,11 +1362,11 @@ function Menu() {
               <MenuItemLink text="User Dashboard" to="/seriui/user-dashboard" />
             </MenuItem>
           ) : null}
-          {showMenu.Helpdesk_My_Tickets ? (
+          {/* {showMenu.Helpdesk_My_Tickets ? (
             <MenuItem>
               <MenuItemLink text="My Tickets" to="/seriui/my-tickets" />
             </MenuItem>
-          ) : null}
+          ) : null} */}
           {showMenu.Helpdesk_FAQ ? (
             <MenuItem>
               <MenuItemLink text="KEDB" to="/seriui/help-desk-faq-view" />

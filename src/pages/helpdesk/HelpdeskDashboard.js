@@ -15,6 +15,7 @@ import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
 import { Colors } from "../../utilities/index";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import api from "../../services/auth/api";
 import { Icon } from "../../components";
@@ -294,86 +295,99 @@ function HelpdeskDashboard() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Status",
-      cell: (row) => (
-        <div className="text-start w-100">
-          <Form.Group className="form-group">
-            <div className="form-control-wrap">
-              <Form.Select
-                name="hdStatusId"
-                value={row.hdStatusId}
-                onChange={(e) => handleListInput(e, row)}
-                // onBlur={() => handleInputs}
-              >
-                <option value="">Select Status</option>
-                {hdStatusListData.map((list) => (
-                  <option key={list.hdStatusId} value={list.hdStatusId}>
-                    {list.hdStatusName}
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </div>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Severity",
-      selector: (row) => row.hdSeverityId,
-      cell: (row) => (
-        <div className="text-start w-100">
-          <Form.Group className="form-group">
-            <div className="form-control-wrap">
-              <Form.Select
-                name="hdSeverityId"
-                value={row.hdSeverityId}
-                onChange={(e) => handleListInput(e, row)}
-                // onBlur={() => handleInputs}
-              >
-                <option value="">Select Severity</option>
-                {severityListData.map((list) => (
-                  <option key={list.hdSeverityId} value={list.hdSeverityId}>
-                    {list.hdSeverityName}
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </div>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Assigned To",
-      selector: (row) => row.assignedTo,
-      cell: (row) => <span>{row.assignedTo}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Attachments",
-      selector: (row) => row.hdAttachFiles,
-      cell: (row) => <span>{row.hdAttachFiles}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Status",
+    //   cell: (row) => (
+    //     <div className="text-start w-100">
+    //       <Form.Group className="form-group">
+    //         <div className="form-control-wrap">
+    //           <Form.Select
+    //             name="hdStatusId"
+    //             value={row.hdStatusId}
+    //             onChange={(e) => handleListInput(e, row)}
+    //             // onBlur={() => handleInputs}
+    //           >
+    //             <option value="">Select Status</option>
+    //             {hdStatusListData.map((list) => (
+    //               <option key={list.hdStatusId} value={list.hdStatusId}>
+    //                 {list.hdStatusName}
+    //               </option>
+    //             ))}
+    //           </Form.Select>
+    //         </div>
+    //       </Form.Group>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Severity",
+    //   selector: (row) => row.hdSeverityId,
+    //   cell: (row) => (
+    //     <div className="text-start w-100">
+    //       <Form.Group className="form-group">
+    //         <div className="form-control-wrap">
+    //           <Form.Select
+    //             name="hdSeverityId"
+    //             value={row.hdSeverityId}
+    //             onChange={(e) => handleListInput(e, row)}
+    //             // onBlur={() => handleInputs}
+    //           >
+    //             <option value="">Select Severity</option>
+    //             {severityListData.map((list) => (
+    //               <option key={list.hdSeverityId} value={list.hdSeverityId}>
+    //                 {list.hdSeverityName}
+    //               </option>
+    //             ))}
+    //           </Form.Select>
+    //         </div>
+    //       </Form.Group>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Assigned To",
+    //   selector: (row) => row.assignedTo,
+    //   cell: (row) => <span>{row.assignedTo}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Attachments",
+    //   selector: (row) => row.hdAttachFiles,
+    //   cell: (row) => <span>{row.hdAttachFiles}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Action",
       cell: (row) => (
         <div text-start w-100>
-          <Button variant="primary" size="sm" onClick={() => edit(row)}>
+          {/* <Button variant="primary" size="sm" onClick={() => edit(row)}>
             Update
+          </Button> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.hdTicketId)}
+          >
+            View
           </Button>
         </div>
+
       ),
       sortable: true,
       hide: "md",
     },
   ];
+
+  const navigate = useNavigate();
+  const handleView = (_id) => {
+    navigate(`/seriui/raise-ticket-view/${_id}`);
+  };
 
   return (
     <Layout title="Help desk Dashboard">

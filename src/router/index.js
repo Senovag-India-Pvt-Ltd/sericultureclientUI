@@ -505,6 +505,7 @@ import SeedCuttingBankView from "../pages/garden-management/SeedCuttingBankView"
 import SeedCuttingBankEdit from "../pages/garden-management/SeedCuttingBankEdit";
 import ChawkiManagementList from "../pages/chawki-management/ChawkiManagementList";
 import ChawkiManagementView from "../pages/chawki-management/ChawkiManagementView";
+import RaiseTicketView from "../pages/helpdesk/RaiseTicketViewPage";
 
 // Admin and Reports
 
@@ -945,6 +946,7 @@ function Router() {
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
             <Route path="help-desk" element={<HelpDesk />} />
             <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
+            <Route path="raise-ticket-view/:id" element={<RaiseTicketView />} />
 
             {/* Garden Management */}
 

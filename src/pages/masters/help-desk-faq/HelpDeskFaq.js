@@ -135,6 +135,8 @@ function HelpDeskFaq() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Questions"
+                          as="textarea"
+                          rows={4}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -155,8 +157,10 @@ function HelpDeskFaq() {
                           name="hdQuestionAnswerName"
                           value={data.hdQuestionAnswerName}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Question and Answer"
+                          // type="text"
+                          as="textarea"
+                          rows={4}
+                          placeholder="Enter Answers"
                           required
                         />
                         <Form.Control.Feedback type="invalid">

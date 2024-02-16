@@ -154,49 +154,53 @@ function HelpDeskFaqEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="hdQuestion">
-                          Question<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="hdQuestion"
-                            name="hdQuestionName"
-                            value={data.hdQuestionName}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Questions"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            QuestionName is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Hd Question">
+                        Questions<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="hdQuestion"
+                          name="hdQuestionName"
+                          value={data.hdQuestionName}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Questions"
+                          as="textarea"
+                          rows={4}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Questions is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="Question&Answer">
-                          Answers<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="Question&Answer"
-                            name="hdQuestionAnswerName"
-                            value={data.hdQuestionAnswerName}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Answers"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Answers is Required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Question&Answer">
+                        Answers <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="Question&Answer"
+                          name="hdQuestionAnswerName"
+                          value={data.hdQuestionAnswerName}
+                          onChange={handleInputs}
+                          // type="text"
+                          as="textarea"
+                          rows={4}
+                          placeholder="Enter Answers"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Answers is Required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group">
