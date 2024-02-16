@@ -161,6 +161,24 @@ function ChawkiManagementEdit() {
     getChawkiList();
   }, []);
 
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL2 + `raceMaster/get-all`)
+       .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+        setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+    getRaceList();
+   }, []);
+
  // to get State
  const [stateListData, setStateListData] = useState([]);
 
@@ -195,10 +213,10 @@ function ChawkiManagementEdit() {
  };
 
  useEffect(() => {
-   if (data.stateId) {
-     getDistrictList(data.stateId);
+   if (data.state) {
+     getDistrictList(data.state);
    }
- }, [data.stateId]);
+ }, [data.state]);
 
  // to get taluk
  const [talukListData, setTalukListData] = useState([]);
@@ -216,10 +234,10 @@ function ChawkiManagementEdit() {
  };
 
  useEffect(() => {
-   if (data.districtId) {
-     getTalukList(data.districtId);
+   if (data.district) {
+     getTalukList(data.district);
    }
- }, [data.districtId]);
+ }, [data.district]);
 
  // to get hobli
  const [hobliListData, setHobliListData] = useState([]);
@@ -237,10 +255,10 @@ function ChawkiManagementEdit() {
  };
 
  useEffect(() => {
-   if (data.talukId) {
-     getHobliList(data.talukId);
+   if (data.taluk) {
+     getHobliList(data.taluk);
    }
- }, [data.talukId]);
+ }, [data.taluk]);
 
  // to get Village
  const [villageListData, setVillageListData] = useState([]);
@@ -258,10 +276,10 @@ function ChawkiManagementEdit() {
  };
 
  useEffect(() => {
-   if (data.hobliId) {
-     getVillageList(data.hobliId);
+   if (data.hobli) {
+     getVillageList(data.hobli);
    }
- }, [data.hobliId]);
+ }, [data.hobli]);
 
   const isDataDispatchSet = !!data.dispatchDate;
   const isDataHatchingSet = !!data.hatchingDate;
@@ -506,24 +524,33 @@ function ChawkiManagementEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Race of DFLs
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="raceOfDfls"
-                                  name="raceOfDfls"
-                                  value={data.raceOfDfls}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder=" Race of DFLs"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Race<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceOfDfls"
+                            value={data.raceOfDfls}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                          >
+                            <option value="">Select Race</option>
+                            {raceListData.map((list) => (
+                              <option
+                                key={list.raceMasterId}
+                                value={list.raceMasterId}
+                              >
+                                {list.raceMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -542,7 +569,7 @@ function ChawkiManagementEdit() {
                             </Form.Group>
                           </Col> */}
 
-                          <Col lg="4">
+                  <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         TSC<span className="text-danger">*</span>

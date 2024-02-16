@@ -121,9 +121,8 @@ useEffect(() => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        console.log("hello");
         const response = api
-          .get(baseURL + `chowkimanagement/delete-info/${_id}`)
+          .delete(baseURL + `chowkimanagement/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -210,22 +209,22 @@ useEffect(() => {
     },
     {
       name: "Village",
-      selector: (row) => row.village,
-      cell: (row) => <span>{row.village}</span>,
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "District",
-      selector: (row) => row.district,
-      cell: (row) => <span>{row.district}</span>,
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "State",
-      selector: (row) => row.state,
-      cell: (row) => <span>{row.state}</span>,
+      selector: (row) => row.stateName,
+      cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
