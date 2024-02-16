@@ -91,7 +91,7 @@ function RenewReelerLicense() {
       })
       .catch((err) => {
         setData({});
-        saveError(err.response.data.validationErrors);
+        saveError();
       });
       setValidated(true);
     }
