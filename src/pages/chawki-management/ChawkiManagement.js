@@ -107,6 +107,7 @@ function ChawkiManagement() {
               dispatchDate: "",
               hatchingDate: "",
             });
+            setValidated(false);
           }
         })
         .catch((err) => {
@@ -503,7 +504,7 @@ function ChawkiManagement() {
                                   value={data.fatherName}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Father8 Name"
+                                  placeholder="Enter Father Name"
                                   required
                                 />
                               </div>
@@ -625,41 +626,26 @@ function ChawkiManagement() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">TSC</Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="tsc"
-                                  name="tsc"
-                                  value={data.tsc}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="TSC"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          
 
-                    {/* <Col lg="4">
+                    <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         TSC<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="userMasterId"
+                          name="tsc"
                           value={data.tsc}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
+                            data.tsc === undefined ||
+                            data.tsc === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">Select TSC</option>
                           {chawkiListData.map((list) => (
                             <option
                               key={list.userMasterId}
@@ -674,7 +660,7 @@ function ChawkiManagement() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col> */}
+                  </Col>
       
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">

@@ -67,17 +67,19 @@ function ChawkiManagementEdit() {
               numbersOfDfls: "",
               lotNumberRsp: "",
               lotNumberCrc: "",
-              villageId: "",
-              districtId: "",
-              stateId: "",
-              talukId: "",
-              hobliId:"",
+              village: "",
+              district: "",
+              state: "",
+              taluk: "",
+              hobli:"",
               tsc: "",
               soldAfter1stOr2ndMould: "",
               ratePer100Dfls: "",
               price: "",
-              dispatchDate: "", 
+              dispatchDate: "",
+              hatchingDate: "", 
               });
+              setValidated(false);
           }
         })
         .catch((err) => {
@@ -97,16 +99,17 @@ function ChawkiManagementEdit() {
       numbersOfDfls: "",
       lotNumberRsp: "",
       lotNumberCrc: "",
-      villageId: "",
-      districtId: "",
-      stateId: "",
-      talukId: "",
-      hobliId:"",
+      village: "",
+      district: "",
+      state: "",
+      taluk: "",
+      hobli:"",
       tsc: "",
       soldAfter1stOr2ndMould: "",
       ratePer100Dfls: "",
       price: "",
-      dispatchDate: "", 
+      dispatchDate: "",
+      hatchingDate: "",  
     });
   }
 
@@ -397,7 +400,7 @@ function ChawkiManagementEdit() {
                                   value={data.fatherName}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" fatherName"
+                                  placeholder="Enter Father name"
                                   required
                                 />
                               </div>
@@ -539,24 +542,24 @@ function ChawkiManagementEdit() {
                             </Form.Group>
                           </Col> */}
 
-                    <Col lg="4">
+                          <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                        TSC<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
+                          name="tsc"
+                          value={data.tsc}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
+                            data.tsc === undefined ||
+                            data.tsc === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">Select TSC</option>
                           {chawkiListData.map((list) => (
                             <option
                               key={list.userMasterId}
@@ -677,13 +680,13 @@ function ChawkiManagementEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="stateId"
-                            value={data.stateId}
+                            name="state"
+                            value={data.state}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.stateId === undefined || data.stateId === "0"
+                              data.state === undefined || data.state === "0"
                             }
                           >
                             <option value="">Select State</option>
@@ -706,14 +709,14 @@ function ChawkiManagementEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="districtId"
-                            value={data.districtId}
+                            name="district"
+                            value={data.district}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.districtId === undefined ||
-                              data.districtId === "0"
+                              data.district === undefined ||
+                              data.district === "0"
                             }
                           >
                             <option value="">Select District</option>
@@ -742,13 +745,13 @@ function ChawkiManagementEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="talukId"
-                            value={data.talukId}
+                            name="taluk"
+                            value={data.taluk}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.talukId === undefined || data.talukId === "0"
+                              data.taluk === undefined || data.taluk === "0"
                             }
                           >
                             <option value="">Select Taluk</option>
@@ -776,13 +779,13 @@ function ChawkiManagementEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="hobliId"
-                            value={data.hobliId}
+                            name="hobli"
+                            value={data.hobli}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.hobliId === undefined || data.hobliId === "0"
+                              data.hobli === undefined || data.hobli === "0"
                             }
                           >
                             <option value="">Select Hobli</option>
@@ -811,14 +814,14 @@ function ChawkiManagementEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="villageId"
-                            value={data.villageId}
+                            name="village"
+                            value={data.village}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.villageId === undefined ||
-                              data.villageId === "0"
+                              data.village === undefined ||
+                              data.village === "0"
                             }
                           >
                             <option value="">Select Village</option>
