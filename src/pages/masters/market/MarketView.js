@@ -59,7 +59,7 @@ function MarketView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +68,7 @@ function MarketView() {
               </li>
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -117,11 +117,17 @@ function MarketView() {
                       <td>{MarketMaster.lotWeight}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Issue Bidding Slip Start Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        Issue Bidding Slip Start Time
+                      </td>
                       <td>{MarketMaster.issueBidSlipStartTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Issue Bidding Slip End Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        Issue Bidding Slip End Time
+                      </td>
                       <td>{MarketMaster.issueBidSlipEndTime}</td>
                     </tr>
                     <tr>
@@ -149,27 +155,45 @@ function MarketView() {
                       <td>{MarketMaster.auction3EndTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 1st Round auction Acceptance Start Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        1st Round auction Acceptance Start Time
+                      </td>
                       <td>{MarketMaster.auctionAcceptance1StartTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 2nd Round auction Acceptance Start Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        2nd Round auction Acceptance Start Time
+                      </td>
                       <td>{MarketMaster.auctionAcceptance2StartTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 3rd Round auction Acceptance Start Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        3rd Round auction Acceptance Start Time
+                      </td>
                       <td>{MarketMaster.auctionAcceptance3StartTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 1st Round auction Acceptance End Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        1st Round auction Acceptance End Time
+                      </td>
                       <td>{MarketMaster.auctionAcceptance1EndTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 2nd Round auction Acceptance End Time </td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        2nd Round auction Acceptance End Time{" "}
+                      </td>
                       <td>{MarketMaster.auctionAcceptance2EndTime}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> 3rd Round auction Acceptance  End Time</td>
+                      <td style={styles.ctstyle}>
+                        {" "}
+                        3rd Round auction Acceptance End Time
+                      </td>
                       <td>{MarketMaster.auctionAcceptance3EndTime}</td>
                     </tr>
                     <tr>

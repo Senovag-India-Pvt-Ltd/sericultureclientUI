@@ -38,12 +38,12 @@ function MulberryVariety() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `mulberry-variety/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `mulberry-variety/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               mulberryVarietyName: "",
@@ -51,20 +51,20 @@ function MulberryVariety() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       mulberryVarietyName: "",
       mulberryVarietyNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -72,19 +72,19 @@ function MulberryVariety() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/mulberry-variety-list"));
+    }).then(() => navigate("/seriui/mulberry-variety-list"));
   };
 
   const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
   return (
-    <Layout title="Mulberry Variety" >
+    <Layout title="Mulberry Variety">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -94,7 +94,7 @@ function MulberryVariety() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function MulberryVariety() {
               </li>
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +148,8 @@ function MulberryVariety() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="variety">
-                        Mulberry Variety Name in Kannada<span className="text-danger">*</span>
+                        Mulberry Variety Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -179,7 +180,7 @@ function MulberryVariety() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

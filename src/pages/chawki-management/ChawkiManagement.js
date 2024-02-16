@@ -5,48 +5,45 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
 
-
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ChawkiManagement() {
-  
   const [data, setData] = useState({
     farmerName: "",
     fatherName: "",
     fruitsId: "",
     dflsSource: "",
     raceOfDfls: "",
-    numbersOfDfls: 0,
+    numbersOfDfls: "",
     lotNumberRsp: "",
     lotNumberCrc: "",
     village: "",
     district: "",
     state: "",
+    taluk: "",
+    hobli:"",
     tsc: "",
     soldAfter1stOr2ndMould: "",
-    ratePer100Dfls: 0,
-    price: 0,
-    dispatchDate: ""
-    
+    ratePer100Dfls: "",
+    price: "",
+    dispatchDate: "",
+    hatchingDate: "",
   });
 
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
-      width:"20%",
+      width: "20%",
     },
   };
 
@@ -57,6 +54,13 @@ function ChawkiManagement() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "numbersOfDfls" || name === "ratePer100Dfls") {
+      const numberOfDfls = name === "numbersOfDfls" ? parseInt(value) : data.numbersOfDfls;
+      const ratePer100Dfls = name === "ratePer100Dfls" ? parseInt(value) : data.ratePer100Dfls;
+      const calculatedPrice = (numberOfDfls * ratePer100Dfls) / 100;
+      setData(prevData => ({ ...prevData, price: calculatedPrice }));
+    }
   };
 
   const _header = {
@@ -65,35 +69,297 @@ function ChawkiManagement() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  const postData = (event) =>{
-  const form = event.currentTarget;
+  const postData = (event) => {
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
     } else {
-      
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `chowkimanagement/add-info`, data)
-      .then((response) => {
-        debugger;
-        if(response.data.error){
+      api
+        .post(baseURL + `chowkimanagement/add-info`, data)
+        .then((response) => {
+          // debugger;
+          if (response.data.error) {
+            saveError();
+          } else {
+            saveSuccess();
+            setData({
+              farmerName: "",
+              fatherName: "",
+              fruitsId: "",
+              dflsSource: "",
+              raceOfDfls: "",
+              numbersOfDfls: "",
+              lotNumberRsp: "",
+              lotNumberCrc: "",
+              village: "",
+              district: "",
+              state: "",
+              taluk: "",
+              hobli:"",
+              tsc: "",
+              soldAfter1stOr2ndMould: "",
+              ratePer100Dfls: "",
+              price: "",
+              dispatchDate: "",
+              hatchingDate: "",
+            });
+          }
+        })
+        .catch((err) => {
           saveError();
-        }else{
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+        });
       setValidated(true);
     }
   };
 
-  
+  const clear = () =>{
+    setData({
+      farmerName: "",
+      fatherName: "",
+      fruitsId: "",
+      dflsSource: "",
+      raceOfDfls: "",
+      numbersOfDfls: "",
+      lotNumberRsp: "",
+      lotNumberCrc: "",
+      village: "",
+      district: "",
+      state: "",
+      taluk: "",
+      hobli:"",
+      tsc: "",
+      soldAfter1stOr2ndMould: "",
+      ratePer100Dfls: "",
+      price: "",
+      dispatchDate: "",
+      hatchingDate: "",
+    });
+  }
+
+  // const search = () => {
+  //   api
+  //     .post(
+  //       "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
+  //       { fruitsId: data.fruitsId }
+  //       // {
+  //       //   headers: _header,
+  //       // }
+  //     )
+  //     .then((response) => {
+  //       // console.log("Hello");
+  //       if (!response.data.content.isFruitService) {
+  //         const reelerId = response.data.content.farmerResponse.reelerId;
+  //         navigate(`/seriui/reeler-license-edit/${reelerId}`);
+  //       } else {
+  //         api
+  //           .post(
+  //             "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+  //             { fruitsId: data.fruitsId }
+  //             // {
+  //             //   headers: _header,
+  //             // }
+  //           )
+  //           .then((result) => {
+  //             const dump = result.data.content.farmerResponse;
+  //             let dump1 = "";
+  //             if (
+  //               result.data.content.farmerAddressList &&
+  //               result.data.content.farmerAddressList.length
+  //             ) {
+  //               dump1 = result.data.content.farmerAddressList[0];
+  //             }
+
+  //             setData((prev) => ({
+  //               ...prev,
+  //               // ...result.data.content.farmerResponse,
+  //               reelerName: dump.firstName,
+  //               fatherName: dump.fatherName,
+  //               gender: dump.genderId,
+  //               casteId: dump.casteId,
+  //               address: dump1.addressText,
+  //             }));
+  //             // setFarmerAddressList((prev) => [
+  //             //   ...prev,
+  //             //   ...result.data.content.farmerAddressList,
+  //             // ]);
+  //             // setFarmerLandList((prev) => [
+  //             //   ...prev,
+  //             //   ...result.data.content.farmerLandDetailsList,
+  //             // ]);
+  //           })
+  //           .catch((error) => {});
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       api
+  //         .post(
+  //           "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+  //           { fruitsId: data.fruitsId }
+  //           // {
+  //           //   headers: _header,
+  //           // }
+  //         )
+  //         .then((result) => {
+  //           // console.log(result);
+  //           // console.log("result",result);
+  //           const dump = result.data.content.farmerResponse;
+  //           let dump1 = "";
+  //           if (
+  //             result.data.content.farmerAddressList &&
+  //             result.data.content.farmerAddressList.length
+  //           ) {
+  //             dump1 = result.data.content.farmerAddressList[0];
+  //           }
+
+  //           setData((prev) => ({
+  //             ...prev,
+  //             // ...result.data.content.farmerResponse,
+  //             reelerName: dump.firstName,
+  //             fatherName: dump.fatherName,
+  //             gender: dump.genderId,
+  //             casteId: dump.casteId,
+  //             address: dump1 ? dump1.addressText : "",
+  //           }));
+  //           // setFarmerAddressList((prev) => [
+  //           //   ...prev,
+  //           //   ...result.data.content.farmerAddressList,
+  //           // ]);
+  //           // setFarmerLandList((prev) => [
+  //           //   ...prev,
+  //           //   ...result.data.content.farmerLandDetailsList,
+  //           // ]);
+  //         })
+  //         .catch((error) => {});
+  //     });
+  // };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+   // to get User
+   const [chawkiListData, setChawkiListData] = useState([]);
+
+   const getChawkiList = () => {
+     const response = api
+       .get(baseURL2 + `userMaster/get-all`)
+       .then((response) => {
+         setChawkiListData(response.data.content.userMaster);
+       })
+       .catch((err) => {
+        setChawkiListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getChawkiList();
+   }, []);
+
+  // to get State
+  const [stateListData, setStateListData] = useState([]);
+
+  const getStateList = () => {
+    api
+      .get(baseURL2 + `state/get-all`)
+      .then((response) => {
+        setStateListData(response.data.content.state);
+      })
+      .catch((err) => {
+        setStateListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getStateList();
+  }, []);
+
+  // to get district
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = (_id) => {
+    api
+      .get(baseURL2 + `district/get-by-state-id/${_id}`)
+      .then((response) => {
+        setDistrictListData(response.data.content.district);
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.state) {
+      getDistrictList(data.state);
+    }
+  }, [data.state]);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        setTalukListData(response.data.content.taluk);
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.district) {
+      getTalukList(data.district);
+    }
+  }, [data.district]);
+
+  // to get hobli
+  const [hobliListData, setHobliListData] = useState([]);
+
+  const getHobliList = (_id) => {
+    api
+      .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
+      .then((response) => {
+        setHobliListData(response.data.content.hobli);
+      })
+      .catch((err) => {
+        setHobliListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.taluk) {
+      getHobliList(data.taluk);
+    }
+  }, [data.taluk]);
+
+  // to get Village
+  const [villageListData, setVillageListData] = useState([]);
+
+  const getVillageList = (_id) => {
+    api
+      .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
+      .then((response) => {
+        setVillageListData(response.data.content.village);
+      })
+      .catch((err) => {
+        setVillageListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.hobli) {
+      getVillageList(data.hobli);
+    }
+  }, [data.hobli]);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -102,7 +368,7 @@ function ChawkiManagement() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      // navigate("/caste-list");
+      // navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -115,345 +381,18 @@ function ChawkiManagement() {
 
 
 
-
-/* get table detais */
-
-
-
-
- const [listData, setListData] = useState([]);
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-
-
-
-const getList = () => {
-    setLoading(true);
-
-    const response = api
-      .get(baseURL+`chowkimanagement/get-info`)
-      .then((response) => {
-        console.log(response.data)
-        setListData(response.data);
-        // setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        setLoading(false);
-      });
-
-    // axios
-    //   .get(baseURL + `caste/list`, _params , {
-    //     headers: _header,
-    //   })
-    //   .then((response) => {
-    //     setListData(response.data.content.caste);
-    //     setTotalRows(response.data.content.totalItems);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     setListData({});
-    //     setLoading(false);
-    //   });
-  };
-
- useEffect(() => {
-    getList();
-  }, []);
-
-createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      }, 
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
-const customStyles = {
-    rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-
-   
-  const handleView = (_id) => {
-    navigate(`/chawki-management-view/${_id}`);
-  };
-
-
-  const handleEdit = (_id) => {
-    navigate(`/chawki-management-edit/${_id}`);
-    // navigate("/state");
-  };
-
-  
-
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
- 
-  const deleteConfirm = (_id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        console.log("hello");
-        const response = api
-          .get(baseURL + `chowkimanagement/delete-info/${_id}`) 
-          .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
- const ChawkiDataColumns = [
- 
-    {
-      name: "Fruits ID",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Farmer's Name",
-      selector: (row) => row.farmerName,
-      cell: (row) => <span>{row.farmerName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "Source of DFLs",
-      selector: (row) => row.dflsSource,
-      cell: (row) => <span>{row.dflsSource}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Numbers Of DFLs",
-      selector: (row) => row.numbersOfDfls,
-      cell: (row) => <span>{row.numbersOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot Number (of the RSP)",
-      selector: (row) => row.lotNumberRsp,
-      cell: (row) => <span>{row.lotNumberRsp}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "Village",
-      selector: (row) => row.village,
-      cell: (row) => <span>{row.village}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "District",
-      selector: (row) => row.district,
-      cell: (row) => <span>{row.district}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "State",
-      selector: (row) => row.state,
-      cell: (row) => <span>{row.state}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "TSC",
-      selector: (row) => row.tsc,
-      cell: (row) => <span>{row.tsc}</span>,
-      sortable: true,
-      hide: "md",
-    },
-   {
-      name: "Sold after 1st/2nd Moult",
-      selector: (row) => row.soldAfter1stOr2ndMould,
-      cell: (row) => <span>{row.soldAfter1stOr2ndMould}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Rate per 100 DFLs(optional)",
-      selector: (row) => row.ratePer100Dfls,
-      cell: (row) => <span>{row.ratePer100Dfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-
-    {
-      name: "price",
-      selector: (row) => row.price,
-      cell: (row) => <span>{row.price}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    
-    {
-      name: "Dispatch date",
-      selector: (row) => row.dispatchDate,
-      cell: (row) => <span>{row.dispatchDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-     {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-           
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.chowki_id)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.chowki_id)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
-
-   
-
-
-
-  ];
-   
   return (
-    <Layout title="Chawki-Management">
+    <Layout title="Chawki Management">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Chawki-Management</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                 Chawki-Management
-                </li>
-              </ol>
-            </nav>
+            <Block.Title tag="h2">Chawki Management</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/chawki-management-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -462,7 +401,7 @@ const customStyles = {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/chawki-management-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -474,352 +413,554 @@ const customStyles = {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
+        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 "> 
-            <div  >
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Block >
-                    <Card>
-                      <Card.Header> Create / Add Farmer </Card.Header>
-                      <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              FRUITS-ID
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="fruitsId"
-                                name="fruitsId"
-                                value={data.fruitsId}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="FRUITS-ID"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Lot No. (CRC)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="lotNumberCrc"
-                                name="lotNumberCrc"
-                                value={data.lotNumberCrc}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="Lot No. (CRC)"
-                                required
-                                
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Price (in Rupees) (optional)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="price"
-                                name="price"
-                                value={data.price}
-                                onChange={handleInputs}
-                                type="number"
-                                placeholder=" Price (in Rupees) (optional)"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Farmer’s name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                 id="farmerName"
-                                name="farmerName"
-                                value={data.farmerName}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="Farmer’s name"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Village
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                 id="village"
-                                name="village"
-                                value={data.village}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" Village"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Dispatch date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                                                          </div>
-                          </Form.Group>
-                         </Col  > 
-
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Father’s Name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="fatherName"
-                                name="fatherName"
-                                value={data.fatherName}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" fatherName"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             District
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="district"
-                                name="district"
-                                value={data.district}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" District"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Source of DFLs
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="dflsSource"
-                                name="dflsSource"
-                                value={data.dflsSource}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" District"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              State
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="state"
-                                name="state"
-                                value={data.state}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" State"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Race of DFLs
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="raceOfDfls"
-                                name="raceOfDfls"
-                                value={data.raceOfDfls}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" Race of DFLs"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             TSC
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="tsc"
-                                name="tsc"
-                                value={data.tsc}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="TSC"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >
-
-
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Number of DFL’s
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="numbersOfDfls"
-                                name="numbersOfDfls"
-                                value={data.numbersOfDfls}
-                                onChange={handleInputs}
-                                type="number"
-                                placeholder=" Number of DFL’s"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Sold after 1st/2nd Moult
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="soldAfter1stOr2ndMould"
-                                name="soldAfter1stOr2ndMould"
-                                value={data.soldAfter1stOr2ndMould}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder=" Sold after 1st/2nd Moult"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Lot Number (of the RSP)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="lotNumberRsp"
-                                name="lotNumberRsp"
-                                value={data.lotNumberRsp}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="  Lot Number (of the RSP)"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Rate per 100 DFLs(optional)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="ratePer100Dfls"
-                                name="ratePer100Dfls"
-                                value={data.ratePer100Dfls}
-                                onChange={handleInputs}
-                                type="number"
-                                placeholder="    Rate per 100 DFLs(optional)"
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >
-
-                         <Col lg="12" className="text-center">
-                        <Button type="submit" variant="primary" > Submit  </Button>  
+          <Row className="g-1 ">
+            <Card>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="12">
+                    <Form.Group as={Row} className="form-group" controlId="fid">
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        FRUITS ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control
+                          type="fruitsId"
+                          name="fruitsId"
+                          value={data.fruitsId}
+                          onChange={handleInputs}
+                          placeholder="Enter FRUITS ID"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Fruits ID is required.
+                        </Form.Control.Feedback>
                       </Col>
- 
-                      </Row>
-                        
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                </Col>
-                <Col lg="12">
-                <div> .</div>
-                  
-                      <Block className= "mt-n4">
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ChawkiDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
-      </Block>
-                       
+                      {/* <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          onClick={search}
+                        >
+                          Search
+                        </Button>
+                      </Col>
+                      <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                          target="_blank"
+                          // onClick={search}
+                        >
+                          Generate FRUITS ID
+                        </Button>
+                      </Col> */}
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+            <Block className="mt-3">
+              <Card>
+                <Card.Header>Chawki Sales Details</Card.Header>
+                  <Card.Body>
+                      <Row className="g-gs">
+                      <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Farmer’s name<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="farmerName"
+                                  name="farmerName"
+                                  value={data.farmerName}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Farmer’s name"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                            <Form.Control.Feedback type="invalid">
+                            Farmer Name is required
+                          </Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Father’s Name<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="fatherName"
+                                  name="fatherName"
+                                  value={data.fatherName}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Father8 Name"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                            <Form.Control.Feedback type="invalid">
+                            Father Name is required
+                          </Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="lotNumberCrc">
+                                Lot No. (CRC)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="lotNumberCrc"
+                                  name="lotNumberCrc"
+                                  value={data.lotNumberCrc}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Lot No. (CRC)"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Number of DFL’s
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="numbersOfDfls"
+                                  name="numbersOfDfls"
+                                  value={data.numbersOfDfls}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder=" Number of DFL’s"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Rate per 100 DFLs
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="ratePer100Dfls"
+                                  name="ratePer100Dfls"
+                                  value={data.ratePer100Dfls}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder=" Enter Rate per 100 DFL"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Price (in Rupees)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="price"
+                                  name="price"
+                                  value={data.price}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder=" Price (in Rupees)"
+                                  disabled
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Source of DFLs
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="dflsSource"
+                                  name="dflsSource"
+                                  value={data.dflsSource}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder=" District"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Race of DFLs
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="raceOfDfls"
+                                  name="raceOfDfls"
+                                  value={data.raceOfDfls}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder=" Race of DFLs"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">TSC</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="tsc"
+                                  name="tsc"
+                                  value={data.tsc}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="TSC"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                    {/* <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        TSC<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="userMasterId"
+                          value={data.tsc}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.userMasterId === undefined ||
+                            data.userMasterId === "0"
+                          }
+                        >
+                          <option value="">Select User</option>
+                          {chawkiListData.map((list) => (
+                            <option
+                              key={list.userMasterId}
+                              value={list.userMasterId}
+                            >
+                              {list.username}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          User is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col> */}
+      
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Sold after 1st/2nd Moult
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="soldAfter1stOr2ndMould"
+                                  name="soldAfter1stOr2ndMould"
+                                  value={data.soldAfter1stOr2ndMould}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder=" Sold after 1st/2nd Moult"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number (of the RSP)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="lotNumberRsp"
+                                  name="lotNumberRsp"
+                                  value={data.lotNumberRsp}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="  Lot Number (of the RSP)"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                                   
+                  <Form.Label column sm={2}>
+                    Dispatch Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {/* <DatePicker
+                          selected={data.dob}
+                          onChange={(date) => handleDateChange(date, "dob")}
+                        /> */}
+                      <DatePicker
+                        selected={data.dispatchDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "dispatchDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
+                  <Form.Label column sm={2}>
+                   Hatching Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {/* <DatePicker
+                          selected={data.dob}
+                          onChange={(date) => handleDateChange(date, "dob")}
+                        /> */}
+                      <DatePicker
+                        selected={data.hatchingDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "hatchingDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
+
+            <Block className="mt-3">
+              <Card>
+                <Card.Header>Address</Card.Header>
+                <Card.Body>
+                  <Row className="g-gs">
+                    <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          State<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="state"
+                            value={data.state}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.state === undefined || data.state === "0"
+                            }
+                          >
+                            <option value="">Select State</option>
+                            {stateListData.map((list) => (
+                              <option key={list.stateId} value={list.stateId}>
+                                {list.stateName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            State Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
                       
-                   
-                </Col>
-              </Row>
+
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          District<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="district"
+                            value={data.district}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.district === undefined ||
+                              data.district === "0"
+                            }
+                          >
+                            <option value="">Select District</option>
+                            {districtListData && districtListData.length
+                              ? districtListData.map((list) => (
+                                  <option
+                                    key={list.districtId}
+                                    value={list.districtId}
+                                  >
+                                    {list.districtName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            District Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                      </Col>
+
+                      <Col lg = "4">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="taluk"
+                            value={data.taluk}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.taluk === undefined || data.taluk === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {talukListData && talukListData.length
+                              ? talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    
+    
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Hobli<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hobli"
+                            value={data.hobli}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hobli === undefined || data.hobli === "0"
+                            }
+                          >
+                            <option value="">Select Hobli</option>
+                            {hobliListData && hobliListData.length
+                              ? hobliListData.map((list) => (
+                                  <option
+                                    key={list.hobliId}
+                                    value={list.hobliId}
+                                  >
+                                    {list.hobliName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Hobli Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                      </Col>
+
+                      <Col lg = "4">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Village<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="village"
+                            value={data.village}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.village === undefined ||
+                              data.village === "0"
+                            }
+                          >
+                            <option value="">Select Village</option>
+                            {villageListData && villageListData.length
+                              ? villageListData.map((list) => (
+                                  <option
+                                    key={list.villageId}
+                                    value={list.villageId}
+                                  >
+                                    {list.villageName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Village Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+              </Block>
+
+              <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li>
+              </ul>
             </div>
           </Row>
         </Form>

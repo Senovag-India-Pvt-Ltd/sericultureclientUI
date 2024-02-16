@@ -38,33 +38,33 @@ function SubsidyDetails() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `subsidy/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `subsidy/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               subsidyName: "",
-              subsidyNameInKannada: "", 
+              subsidyNameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       subsidyName: "",
-      subsidyNameInKannada: "", 
-    })
-  }
+      subsidyNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -79,7 +79,7 @@ function SubsidyDetails() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -94,7 +94,7 @@ function SubsidyDetails() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function SubsidyDetails() {
               </li>
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -125,7 +125,9 @@ function SubsidyDetails() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="subsidy">Subsidy Details<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="subsidy">
+                        Subsidy Details<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="subsidy"
@@ -145,7 +147,10 @@ function SubsidyDetails() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="subsidy">Subsidy Details in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="subsidy">
+                        Subsidy Details in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="subsidy"

@@ -41,12 +41,12 @@ function ScComponentList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/sc-component-view/${_id}`);
+    navigate(`/seriui/sc-component-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/sc-component-edit/${_id}`);
-    // navigate("/soil-type");
+    navigate(`/seriui/sc-component-edit/${_id}`);
+    // navigate("/seriui/soil-type");
   };
 
   const deleteError = () => {
@@ -141,9 +141,9 @@ function ScComponentList() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/crm/case-task">Soil Type List</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Soil Type List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   List
                 </li>
@@ -154,7 +154,7 @@ function ScComponentList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-component"
+                  to="/seriui/sc-component"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -163,7 +163,7 @@ function ScComponentList() {
               </li>
               <li>
                 <Link
-                  to="/sc-component"
+                  to="/seriui/sc-component"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

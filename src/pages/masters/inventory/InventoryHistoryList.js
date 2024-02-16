@@ -1,56 +1,70 @@
-import { Card, Form, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Layout from '../../../layout/default';
-import Block from '../../../components/Block/Block';
-import DataTable from '../../../components/DataTable/DataTable';
-import { Select } from '../../../components';
-import InventoryHistoryData, { iventoryHistoryColumns } from '../../../store/masters/inventory/InventoryHistoryData';
+import { Card, Form, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
+import DataTable from "../../../components/DataTable/DataTable";
+import { Select } from "../../../components";
+import InventoryHistoryData, {
+  iventoryHistoryColumns,
+} from "../../../store/masters/inventory/InventoryHistoryData";
 
 function InventoryHistoryListPage() {
-    return (
-        <Layout title="Inventory History List" content="container">
-            <Block.Head>
-                <Block.HeadBetween>
-                    <Block.HeadContent>
-                        <Block.Title tag="h2">Inventory History</Block.Title>
-                        <nav>
-                            <ol className="breadcrumb breadcrumb-arrow mb-0">
-                                <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                                <li className="breadcrumb-item"><Link to="/masters/inventory-history">Inventory History List</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">Inventory History</li>
-                            </ol>
-                        </nav>
-                    </Block.HeadContent>
-                </Block.HeadBetween>
-            </Block.Head>
+  return (
+    <Layout title="Inventory History List" content="container">
+      <Block.Head>
+        <Block.HeadBetween>
+          <Block.HeadContent>
+            <Block.Title tag="h2">Inventory History</Block.Title>
+            <nav>
+              <ol className="breadcrumb breadcrumb-arrow mb-0">
+                <li className="breadcrumb-item">
+                  <Link to="/seriui/">Home</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link to="/seriui/masters/inventory-history">
+                    Inventory History List
+                  </Link>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
+                  Inventory History
+                </li>
+              </ol>
+            </nav>
+          </Block.HeadContent>
+        </Block.HeadBetween>
+      </Block.Head>
 
-            <div>
-                <Form action="#">
-                    <Row className="g-2 flex-left">
-                        <Col lg="4">
-                            <Form.Group className="form-group">
-                                <Form.Label>Select Store</Form.Label>
-                                <div className="form-control-wrap">
-                                    <Select removeItemButton>
-                                        <option value="">Select</option>
-                                        <option value="1">Store1</option>
-                                        <option value="2">Store2</option>
-                                        <option value="3">Store3</option>
-                                    </Select>
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
+      <div>
+        <Form action="#">
+          <Row className="g-2 flex-left">
+            <Col lg="4">
+              <Form.Group className="form-group">
+                <Form.Label>Select Store</Form.Label>
+                <div className="form-control-wrap">
+                  <Select removeItemButton>
+                    <option value="">Select</option>
+                    <option value="1">Store1</option>
+                    <option value="2">Store2</option>
+                    <option value="3">Store3</option>
+                  </Select>
+                </div>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Form>
+      </div>
 
-            <Block>
-                <Card>
-                    <DataTable tableClassName="data-table-head-light table-responsive" data={InventoryHistoryData} columns={iventoryHistoryColumns} />
-                </Card>
-            </Block>
+      <Block>
+        <Card>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            data={InventoryHistoryData}
+            columns={iventoryHistoryColumns}
+          />
+        </Card>
+      </Block>
 
-            {/* <Modal show={showModal} onHide={handleCloseModal}>
+      {/* <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Item</Modal.Title>
                 </Modal.Header>
@@ -190,9 +204,8 @@ function InventoryHistoryListPage() {
                     </Form>
                 </Modal.Body>
             </Modal> */}
-
-        </Layout>
-    )
+    </Layout>
+  );
 }
 
 export default InventoryHistoryListPage;

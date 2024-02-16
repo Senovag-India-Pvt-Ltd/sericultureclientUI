@@ -47,7 +47,7 @@ function TrainingInstitutionView() {
   }, [id]);
 
   return (
-    <Layout title="Training Institution View" >
+    <Layout title="Training Institution View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -57,7 +57,7 @@ function TrainingInstitutionView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function TrainingInstitutionView() {
               </li>
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -96,12 +96,20 @@ function TrainingInstitutionView() {
                         <td>{trainingInstitution.trInstitutionMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Institution Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Training Institution Name in Kannada:
+                        </td>
                         <td>{trainingInstitution.trInstitutionMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Institution Name in Kannada:</td>
-                        <td>{trainingInstitution.trInstitutionNameInKannada}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Training Institution Name in Kannada:
+                        </td>
+                        <td>
+                          {trainingInstitution.trInstitutionNameInKannada}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

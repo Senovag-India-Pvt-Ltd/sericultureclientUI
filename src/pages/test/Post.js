@@ -41,12 +41,12 @@ function PostListPage() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/education-view/${_id}`);
+    navigate(`/seriui/education-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    // navigate(`/education/${_id}`);
-    navigate("/education");
+    // navigate(`/seriui/education/${_id}`);
+    navigate("/seriui/education");
   };
 
   const deleteConfirm = () => {
@@ -116,7 +116,7 @@ function PostListPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
 
                 <li className="breadcrumb-item active" aria-current="page">
@@ -129,7 +129,7 @@ function PostListPage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/education"
+                  to="/seriui/education"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -138,7 +138,7 @@ function PostListPage() {
               </li>
               <li>
                 <Link
-                  to="/education"
+                  to="/seriui/education"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

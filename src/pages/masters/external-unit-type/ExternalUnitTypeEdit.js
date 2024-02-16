@@ -35,12 +35,12 @@ function ExternalUnitTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `externalUnitType/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `externalUnitType/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               externalUnitTypeName: "",
@@ -49,19 +49,19 @@ function ExternalUnitTypeEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       externalUnitTypeName: "",
-      externalUnitTypeNameInKannada: "", 
-    })
-  }
+      externalUnitTypeNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -85,19 +85,19 @@ function ExternalUnitTypeEdit() {
   }, [id]);
 
   const navigate = useNavigate();
-  
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/external-unit-type-list"));
+    }).then(() => navigate("#"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -105,7 +105,7 @@ function ExternalUnitTypeEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/external-unit-type-list"));
+    }).then(() => navigate("/seriui/external-unit-type-list"));
   };
 
   return (
@@ -119,7 +119,7 @@ function ExternalUnitTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/external-unit-type-list"
+                  to="/seriui/external-unit-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +128,7 @@ function ExternalUnitTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/external-unit-type-list"
+                  to="/seriui/external-unit-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -154,7 +154,10 @@ function ExternalUnitTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="externalUnitType">External Unit Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="externalUnitType">
+                          External Unit Type
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="externalUnitType"
@@ -164,33 +167,36 @@ function ExternalUnitTypeEdit() {
                             type="text"
                             placeholder="Enter External Unit Type"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                               External Unit Type is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            External Unit Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="externalUnitType">External Unit Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="externalUnitType"
-                          name="externalUnitTypeNameInKannada"
-                          value={data.externalUnitTypeNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter External Unit Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                           External Unit Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="externalUnitType">
+                          External Unit Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="externalUnitType"
+                            name="externalUnitTypeNameInKannada"
+                            value={data.externalUnitTypeNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter External Unit Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            External Unit Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -205,7 +211,7 @@ function ExternalUnitTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                  {/* <Link to="/external-unit-type-list" className="btn btn-secondary border-0">
+                  {/* <Link to="/seriui/external-unit-type-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>

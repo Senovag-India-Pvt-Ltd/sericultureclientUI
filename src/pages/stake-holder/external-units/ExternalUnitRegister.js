@@ -35,7 +35,7 @@ function ExternalUnitRegister() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-      const form = event.currentTarget;
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -43,36 +43,36 @@ function ExternalUnitRegister() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `external-unit-registration/add`, data)
-      .then((response) => {
-        saveSuccess();
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+      api
+        .post(baseURL2 + `external-unit-registration/add`, data)
+        .then((response) => {
+          saveSuccess();
+        })
+        .catch((err) => {
+          setData({});
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-   // to get Race
-   const [raceListData, setRaceListData] = useState([]);
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
 
-   const getRaceList = () => {
+  const getRaceList = () => {
     const response = api
-       .get(baseURL + `raceMaster/get-all`)
-       .then((response) => {
-         setRaceListData(response.data.content.raceMaster);
-       })
-       .catch((err) => {
-         setRaceListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getRaceList();
-   }, []);
+      .get(baseURL + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
+  }, []);
 
   // to get external Unit
   const [externalUnitTypeListData, setExternalUnitTypeListData] = useState([]);
@@ -99,21 +99,19 @@ function ExternalUnitRegister() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/external-unit-registration-list");
+      navigate("/seriui/external-unit-registration-list");
     });
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
   return (
-    <Layout
-      title="External Units Registration(CRC,RSP,NSSO)"
-    >
+    <Layout title="External Units Registration(CRC,RSP,NSSO)">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -125,7 +123,7 @@ function ExternalUnitRegister() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/external-unit-registration-list"
+                  to="/seriui/external-unit-registration-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -134,7 +132,7 @@ function ExternalUnitRegister() {
               </li>
               <li>
                 <Link
-                  to="/external-unit-registration-list"
+                  to="/seriui/external-unit-registration-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -176,15 +174,21 @@ function ExternalUnitRegister() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Select External Unit<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Select External Unit
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="externalUnitTypeId"
                           value={data.externalUnitTypeId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.externalUnitTypeId === undefined || data.externalUnitTypeId === "0"}
+                          isInvalid={
+                            data.externalUnitTypeId === undefined ||
+                            data.externalUnitTypeId === "0"
+                          }
                         >
                           <option value="">Select External Unit</option>
                           {externalUnitTypeListData.map((list) => (
@@ -197,11 +201,11 @@ function ExternalUnitRegister() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        External Unit Type is required
-                      </Form.Control.Feedback>
+                          External Unit Type is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    
+
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">Name of the Unit</Form.Label>
                       <div className="form-control-wrap">
@@ -215,9 +219,11 @@ function ExternalUnitRegister() {
                         />
                       </div>
                     </Form.Group>
-                    
+
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">Name of the Owner/Organisation</Form.Label>
+                      <Form.Label htmlFor="name">
+                        Name of the Owner/Organisation
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="organisationName"
@@ -264,8 +270,7 @@ function ExternalUnitRegister() {
                   </Col>
 
                   <Col lg="6">
-
-                  <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                       <Form.Label>Select Race</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -330,7 +335,7 @@ function ExternalUnitRegister() {
                 </li>
                 <li>
                   <Link
-                    to="/external-unit-registration-list"
+                    to="/seriui/external-unit-registration-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

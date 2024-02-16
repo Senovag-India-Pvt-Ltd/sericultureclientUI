@@ -35,35 +35,35 @@ function HelpDeskSubCategoryEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdSubCategoryMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdSubCategoryMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
-                hdBoardCategoryId: "",
-                hdCategoryId: "",
-                hdSubCategoryName: "",
+              hdBoardCategoryId: "",
+              hdCategoryId: "",
+              hdSubCategoryName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdBoardCategoryId: "",
-        hdCategoryId: "",
-        hdSubCategoryName: "", 
-    })
-  }
+      hdBoardCategoryId: "",
+      hdCategoryId: "",
+      hdSubCategoryName: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -86,16 +86,16 @@ function HelpDeskSubCategoryEdit() {
     getIdList();
   }, [id]);
 
-   // to get hdCategory
+  // to get hdCategory
   const [hdCategoryListData, setHdCategoryListData] = useState([]);
 
   const getHdCategoryList = (_id) => {
     const response = api
       .get(baseURL + `hdCategoryMaster/get-by-hd-board-category-id/${_id}`)
       .then((response) => {
-        if(response.data.content.hdCategoryMaster){
+        if (response.data.content.hdCategoryMaster) {
           setHdCategoryListData(response.data.content.hdCategoryMaster);
-          }
+        }
       })
       .catch((err) => {
         setHdCategoryListData([]);
@@ -108,29 +108,29 @@ function HelpDeskSubCategoryEdit() {
       getHdCategoryList(data.hdBoardCategoryId);
     }
   }, [data.hdBoardCategoryId]);
- 
-   // to get BoardCategory
-   const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
- 
-   const getHdBoardCategoryList = (_id) => {
-     const response = api
-       .get(baseURL + `hdBoardCategoryMaster/get-all`)
-       .then((response) => {
-         if(response.data.content.hdBoardCategoryMaster){
-           setHdBoardCategoryListData(response.data.content.hdBoardCategoryMaster);
-           }
-       })
-       .catch((err) => {
-         setHdBoardCategoryListData([]);
-         // alert(err.response.data.errorMessages[0].message[0].message);
-       });
-   };
- 
-   useEffect(() => {
-     getHdBoardCategoryList();
-   }, []);
- 
- 
+
+  // to get BoardCategory
+  const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
+
+  const getHdBoardCategoryList = (_id) => {
+    const response = api
+      .get(baseURL + `hdBoardCategoryMaster/get-all`)
+      .then((response) => {
+        if (response.data.content.hdBoardCategoryMaster) {
+          setHdBoardCategoryListData(
+            response.data.content.hdBoardCategoryMaster
+          );
+        }
+      })
+      .catch((err) => {
+        setHdBoardCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getHdBoardCategoryList();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -145,7 +145,7 @@ function HelpDeskSubCategoryEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -167,7 +167,7 @@ function HelpDeskSubCategoryEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-sub-category-list"
+                  to="/seriui/hd-sub-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -176,7 +176,7 @@ function HelpDeskSubCategoryEdit() {
               </li>
               <li>
                 <Link
-                  to="/hd-sub-category-list"
+                  to="/seriui/hd-sub-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -200,106 +200,118 @@ function HelpDeskSubCategoryEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Broad Category<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="hdBoardCategoryId"
-                          value={data.hdBoardCategoryId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.hdBoardCategoryId === undefined || data.hdBoardCategoryId === "0"}
-                        >
-                         <option value="">Select Broad Category</option>
-                          {hdBoardCategoryListData.map((list) => (
-                            <option
-                              key={list.hdBoardCategoryId}
-                              value={list.hdBoardCategoryId}
-                            >
-                              {list.hdBoardCategoryName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Broad Category name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Broad Category<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hdBoardCategoryId"
+                            value={data.hdBoardCategoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hdBoardCategoryId === undefined ||
+                              data.hdBoardCategoryId === "0"
+                            }
+                          >
+                            <option value="">Select Broad Category</option>
+                            {hdBoardCategoryListData.map((list) => (
+                              <option
+                                key={list.hdBoardCategoryId}
+                                value={list.hdBoardCategoryId}
+                              >
+                                {list.hdBoardCategoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Broad Category name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Category<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="hdCategoryId"
-                          value={data.hdCategoryId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.hdCategoryId === undefined || data.hdCategoryId === "0"}
-                        >
-                         <option value="">Select Category</option>
-                          {hdCategoryListData.map((list) => (
-                            <option
-                              key={list.hdCategoryId}
-                              value={list.hdCategoryId}
-                            >
-                              {list.hdCategoryName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Category name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Category<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hdCategoryId"
+                            value={data.hdCategoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hdCategoryId === undefined ||
+                              data.hdCategoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {hdCategoryListData.map((list) => (
+                              <option
+                                key={list.hdCategoryId}
+                                value={list.hdCategoryId}
+                              >
+                                {list.hdCategoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Hd Sub Category">Sub Category<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="hdSubCategory"
-                          name="hdSubCategoryName"
-                          value={data.hdSubCategoryName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Sub Category"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Sub Category Name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="Hd Sub Category">
+                          Sub Category<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="hdSubCategory"
+                            name="hdSubCategoryName"
+                            value={data.hdSubCategoryName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Sub Category"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Sub Category Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

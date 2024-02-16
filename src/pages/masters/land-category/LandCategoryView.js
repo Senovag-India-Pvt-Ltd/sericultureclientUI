@@ -60,7 +60,7 @@ function LandCategoryView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/land-category-list"
+                  to="/seriui/land-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function LandCategoryView() {
               </li>
               <li>
                 <Link
-                  to="/land-category-list"
+                  to="/seriui/land-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,10 @@ function LandCategoryView() {
                         <td>{LandCategory.landCategoryName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Land Holding Category Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Land Holding Category Name in Kannada:
+                        </td>
                         <td>{LandCategory.landCategoryNameInKannada}</td>
                       </tr>
                     </tbody>

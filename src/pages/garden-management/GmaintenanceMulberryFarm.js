@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "../../components/Form/DatePicker";
-import {
-  Icon,
-} from "../../components";
+import { Icon } from "../../components";
 
 function GmaintenanceMulberryFarm() {
   return (
-    <Layout title="Attributes Maintenance of mulberry farm" >
+    <Layout title="Attributes Maintenance of mulberry farm">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -19,7 +17,7 @@ function GmaintenanceMulberryFarm() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

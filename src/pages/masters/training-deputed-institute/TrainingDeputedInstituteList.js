@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function TrainingDeputedInstituteList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/deputed-institute-view/${_id}`);
+    navigate(`/seriui/deputed-institute-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/deputed-institute-edit/${_id}`);
-    // navigate("/deputedInstituteMaster");
+    navigate(`/seriui/deputed-institute-edit/${_id}`);
+    // navigate("/seriui/deputedInstituteMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function TrainingDeputedInstituteList() {
     },
   };
 
-
   const DeputedInstituteMasterDataColumns = [
     {
       name: "Action",
@@ -196,14 +195,17 @@ function TrainingDeputedInstituteList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/deputed-institute" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/deputed-institute"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/deputed-institute"
+                  to="/seriui/deputed-institute"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -215,7 +217,7 @@ function TrainingDeputedInstituteList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

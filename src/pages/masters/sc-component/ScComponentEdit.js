@@ -66,7 +66,7 @@ function ScComponentEdit() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/sc-component-list"));
+    }).then(() => navigate("/seriui/sc-component-list"));
   };
 
   const updateError = () => {
@@ -82,7 +82,7 @@ function ScComponentEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/sc-component-list"));
+    }).then(() => navigate("/seriui/sc-component-list"));
   };
 
   return (
@@ -94,7 +94,7 @@ function ScComponentEdit() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -109,7 +109,7 @@ function ScComponentEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,7 +118,7 @@ function ScComponentEdit() {
               </li>
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -139,7 +139,7 @@ function ScComponentEdit() {
                   <h1 className="d-flex justify-content-center align-items-center">
                     Loading...
                   </h1>
-                    ) : (
+                ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-3">
@@ -170,7 +170,7 @@ function ScComponentEdit() {
                 </li>
                 <li>
                   <Link
-                    to="/sc-component-list"
+                    to="/seriui/sc-component-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

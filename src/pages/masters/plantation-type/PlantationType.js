@@ -39,33 +39,33 @@ function PlantationType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `plantationType/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `plantationType/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               plantationTypeName: "",
-              plantationTypeNameInKannada: "", 
+              plantationTypeNameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       plantationTypeName: "",
-      plantationTypeNameInKannada: "", 
-    })
-  }
+      plantationTypeNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -80,12 +80,12 @@ function PlantationType() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
   return (
-    <Layout title="Plantation Type" >
+    <Layout title="Plantation Type">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -95,7 +95,7 @@ function PlantationType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -104,7 +104,7 @@ function PlantationType() {
               </li>
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -149,7 +149,8 @@ function PlantationType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="plantation">
-                        Plantation Type Name in Kannada<span className="text-danger">*</span>
+                        Plantation Type Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -180,7 +181,7 @@ function PlantationType() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

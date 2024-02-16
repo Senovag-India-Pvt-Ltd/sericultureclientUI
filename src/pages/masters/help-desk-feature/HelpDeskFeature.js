@@ -37,33 +37,33 @@ function HelpDeskFeature() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdFeatureMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdFeatureMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
-                hdModuleId: "",
-                hdFeatureName: "",
+              hdModuleId: "",
+              hdFeatureName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdModuleId: "",
-        hdFeatureName: "", 
-    })
-  }
+      hdModuleId: "",
+      hdFeatureName: "",
+    });
+  };
 
   // to get Module
   const [hdModuleListData, setHdModuleListData] = useState([]);
@@ -83,7 +83,6 @@ function HelpDeskFeature() {
     getList();
   }, []);
 
-
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -96,7 +95,7 @@ function HelpDeskFeature() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -110,7 +109,7 @@ function HelpDeskFeature() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -119,7 +118,7 @@ function HelpDeskFeature() {
               </li>
               <li>
                 <Link
-                  to="/hd-feature-list"
+                  to="/seriui/hd-feature-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -139,20 +138,24 @@ function HelpDeskFeature() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-
-                <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Modules<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Modules<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="hdModuleId"
                           value={data.hdModuleId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.hdModuleId === undefined || data.hdModuleId === "0"}
+                          isInvalid={
+                            data.hdModuleId === undefined ||
+                            data.hdModuleId === "0"
+                          }
                         >
-                         <option value="">Select Module</option>
+                          <option value="">Select Module</option>
                           {hdModuleListData.map((list) => (
                             <option
                               key={list.hdModuleId}
@@ -163,16 +166,17 @@ function HelpDeskFeature() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Module name is required
-                      </Form.Control.Feedback>
+                          Module name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Hd Feature">Features<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Hd Feature">
+                        Features<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hdFeature"
@@ -195,22 +199,22 @@ function HelpDeskFeature() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

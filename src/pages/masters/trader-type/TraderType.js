@@ -36,33 +36,33 @@ function TraderType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `traderTypeMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
-        saveSuccess();
-        setData({
-          traderTypeMasterName: "",
-          traderTypeNameInKannada: "",
+      api
+        .post(baseURL + `traderTypeMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            setData({
+              traderTypeMasterName: "",
+              traderTypeNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
         });
-        setValidated(false);
-        }
-      })
-      .catch((err) => {
-        saveError();
-      });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       traderTypeMasterName: "",
-      traderTypeNameInKannada: "", 
-    })
-  }
+      traderTypeNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -76,7 +76,7 @@ function TraderType() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -90,7 +90,7 @@ function TraderType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -99,7 +99,7 @@ function TraderType() {
               </li>
               <li>
                 <Link
-                  to="/trader-type-list"
+                  to="/seriui/trader-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -121,7 +121,9 @@ function TraderType() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="traderTypeMasterName">Trader Type<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="traderTypeMasterName">
+                        Trader Type<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="traderTypeMasterName"
@@ -141,7 +143,10 @@ function TraderType() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="traderTypeMasterName">Trader Type Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="traderTypeMasterName">
+                        Trader Type Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="traderTypeNameInKannada"
@@ -171,7 +176,7 @@ function TraderType() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -38,12 +38,12 @@ function SilkWormVariety() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `silk-worm-variety/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `silk-worm-variety/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               silkWormVarietyName: "",
@@ -52,19 +52,19 @@ function SilkWormVariety() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        saveError();
-      });
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       silkWormVarietyName: "",
-      silkWormVarietyNameInKannada: "", 
-    })
-  }
+      silkWormVarietyNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -79,7 +79,7 @@ function SilkWormVariety() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -94,7 +94,7 @@ function SilkWormVariety() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function SilkWormVariety() {
               </li>
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -125,7 +125,9 @@ function SilkWormVariety() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="sworm">Silk Worm Variety<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="sworm">
+                        Silk Worm Variety<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="sworm"
@@ -145,7 +147,10 @@ function SilkWormVariety() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="sworm">Silk Worm Variety Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="sworm">
+                        Silk Worm Variety Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="sworm"
@@ -175,7 +180,7 @@ function SilkWormVariety() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

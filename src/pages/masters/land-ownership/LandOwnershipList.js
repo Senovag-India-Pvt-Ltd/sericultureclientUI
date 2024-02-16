@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -90,7 +90,6 @@ function LandOwnershipList() {
     },
   };
 
-
   const LandOwnershipDataColumns = [
     {
       name: "action",
@@ -144,12 +143,12 @@ function LandOwnershipList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/land-ownership-view/${_id}`);
+    navigate(`/seriui/land-ownership-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/land-ownership-edit/${_id}`);
-    // navigate("/land-ownership");
+    navigate(`/seriui/land-ownership-edit/${_id}`);
+    // navigate("/seriui/land-ownership");
   };
 
   const deleteError = () => {
@@ -202,7 +201,7 @@ function LandOwnershipList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/land-ownership"
+                  to="/seriui/land-ownership"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -211,7 +210,7 @@ function LandOwnershipList() {
               </li>
               <li>
                 <Link
-                  to="/land-ownership"
+                  to="/seriui/land-ownership"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +222,7 @@ function LandOwnershipList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

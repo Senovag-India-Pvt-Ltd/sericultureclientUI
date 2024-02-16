@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function FarmerTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/farmer-type-view/${_id}`);
+    navigate(`/seriui/farmer-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/farmer-type-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/farmer-type-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -202,14 +202,17 @@ function FarmerTypeList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/farmer-type" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/farmer-type"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/farmer-type"
+                  to="/seriui/farmer-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -221,7 +224,7 @@ function FarmerTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

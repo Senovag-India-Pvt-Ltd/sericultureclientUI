@@ -48,8 +48,8 @@ function Caste() {
   //     });
   // };
 
-  const postData = (event) =>{
-  const form = event.currentTarget;
+  const postData = (event) => {
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -57,35 +57,35 @@ function Caste() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `caste/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-        saveError(response.data.content.error_description);
-        }else{
-          saveSuccess();
-          setData({
-            title: "",
-            code: "",
-            nameInKannada: "", 
-          });
-          setValidated(false);
-        }
-      })
-      .catch((err) => {
-        saveError();
-      });
+      api
+        .post(baseURL + `caste/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            setData({
+              title: "",
+              code: "",
+              nameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-     title: "",
-    code: "",
-    nameInKannada: "", 
-    })
-  }
+      title: "",
+      code: "",
+      nameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -101,7 +101,7 @@ function Caste() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -115,7 +115,7 @@ function Caste() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -124,7 +124,7 @@ function Caste() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -147,7 +147,7 @@ function Caste() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Title<span className="text-danger">*</span>
+                        Title<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -169,7 +169,8 @@ function Caste() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Title Name in Kannada<span className="text-danger">*</span>
+                        Title Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -182,7 +183,7 @@ function Caste() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Title Name in Kannada is required.
+                          Title Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -215,7 +216,7 @@ function Caste() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

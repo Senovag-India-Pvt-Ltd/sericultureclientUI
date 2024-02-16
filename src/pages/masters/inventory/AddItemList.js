@@ -2,10 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import {
-  Select,
-  FileUpload,
-} from "../../../components";
+import { Select, FileUpload } from "../../../components";
 
 function AddItemPage() {
   return (
@@ -17,10 +14,10 @@ function AddItemPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/masters/item">Item List</Link>
+                  <Link to="/seriui/masters/item">Item List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Add List
@@ -265,7 +262,7 @@ function AddItemPage() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/masters/item" className="btn border-0">
+                  <Link to="/seriui/masters/item" className="btn border-0">
                     Cancel
                   </Link>
                 </li>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { Dropdown, Offcanvas } from "react-bootstrap";
 import SimpleBar from "simplebar-react";
@@ -31,11 +32,6 @@ import { logout } from "../../../services/authService";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function handleLogout() {
-  localStorage.clear();
-  // logout();
-}
-
 function QuickNav({ className, ...props }) {
   const compClass = classNames({
     "nk-quick-nav": true,
@@ -53,6 +49,7 @@ function QuickNavItem({ className, ...props }) {
 }
 
 function Header() {
+  const navigate = useNavigate();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
@@ -60,6 +57,11 @@ function Header() {
       ? localStorage.getItem("godownId")
       : "",
   });
+
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/seriui/");
+  }
 
   const handleInputs = (e) => {
     // debugger;
@@ -166,7 +168,8 @@ function Header() {
         <div style={{ padding: "14px 10px 14px 20px" }}>
           <div className="d-flex align-items-center">
             <img
-              src="../images/logo/KG.png"
+              // src="../images/logo/KG.png"
+              src={process.env.PUBLIC_URL + "/images/logo/KG.png"}
               alt="Government of Karnataka"
               style={{ height: 35, width: 35 }}
             />
@@ -362,32 +365,30 @@ function Header() {
                       </div>
                       <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                         <LinkList>
-                          <LinkListItem to="/admin/profile">
+                          <LinkListItem to="/seriui/admin/profile">
                             <Icon name="user"></Icon>
                             <span>My Profile</span>
                           </LinkListItem>
-                          {/* <LinkListItem to="/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
-                          {/* <LinkListItem to="/admin/profile-settings">
+                          {/* <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
+                          {/* <LinkListItem to="/seriui/admin/profile-settings">
                             <Icon name="setting-alt"></Icon>
                             <span>Account Settings</span>
                           </LinkListItem> */}
-                          <LinkListItem to="/change-password">
+                          <LinkListItem to="/seriui/change-password">
                             <Icon name="lock-alt"></Icon>
                             <span>Change Password</span>
                           </LinkListItem>
-                          <LinkListItem to="/help-desk">
+                          <LinkListItem to="/seriui/help-desk">
                             <Icon name="question-alt"></Icon>
                             <span>Raise a ticket</span>
                           </LinkListItem>
                         </LinkList>
                       </div>
                       <div className="dropdown-content dropdown-content-x-lg py-3">
-                        <LinkList>
-                          <LinkListItem to="/" onClick={handleLogout}>
-                            <Icon name="signout"></Icon>
-                            <span>Log Out</span>
-                          </LinkListItem>
-                        </LinkList>
+                        <Button variant="link" onClick={handleLogout}>
+                          <Icon name="signout"></Icon>
+                          <span>Log Out</span>
+                        </Button>
                       </div>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -562,14 +563,14 @@ function Header() {
                                     </div>
                                     <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                                         <LinkList>
-                                            <LinkListItem to="/admin/profile"><Icon name="user"></Icon><span>My Profile</span></LinkListItem>
-                                            <LinkListItem to="/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem>
-                                            <LinkListItem to="/admin/profile-settings"><Icon name="setting-alt"></Icon><span>Account Settings</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile"><Icon name="user"></Icon><span>My Profile</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem>
+                                            <LinkListItem to="/seriui/admin/profile-settings"><Icon name="setting-alt"></Icon><span>Account Settings</span></LinkListItem>
                                         </LinkList>
                                     </div>
                                     <div className="dropdown-content dropdown-content-x-lg py-3">
                                         <LinkList>
-                                            <LinkListItem to="/"><Icon name="signout"></Icon><span>Log Out</span></LinkListItem>
+                                            <LinkListItem to="/seriui/"><Icon name="signout"></Icon><span>Log Out</span></LinkListItem>
                                         </LinkList>
                                     </div>
                                 </Dropdown.Menu>

@@ -85,12 +85,12 @@ function BinList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/bin-view/${_id}`);
+    navigate(`/seriui/bin-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    // navigate(`/village/${_id}`);
-    navigate("/bin");
+    // navigate(`/seriui/village/${_id}`);
+    navigate("/seriui/bin");
   };
 
   const deleteConfirm = () => {
@@ -118,9 +118,9 @@ function BinList() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/crm/case-task">Village List</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Village List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   List
                 </li>
@@ -130,14 +130,17 @@ function BinList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/bin" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/bin"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/bin"
+                  to="/seriui/bin"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

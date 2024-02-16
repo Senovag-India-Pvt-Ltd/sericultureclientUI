@@ -37,12 +37,12 @@ function SilkWormVarietyEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `silk-worm-variety/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `silk-worm-variety/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               silkWormVarietyName: "",
@@ -51,19 +51,19 @@ function SilkWormVarietyEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       silkWormVarietyName: "",
-      silkWormVarietyNameInKannada: "", 
-    })
-  }
+      silkWormVarietyNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -98,7 +98,7 @@ function SilkWormVarietyEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -120,7 +120,7 @@ function SilkWormVarietyEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -129,7 +129,7 @@ function SilkWormVarietyEdit() {
               </li>
               <li>
                 <Link
-                  to="/silk-worm-variety-list"
+                  to="/seriui/silk-worm-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +156,8 @@ function SilkWormVarietyEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sworm">
-                          Silk Worm Variety<span className="text-danger">*</span>
+                          Silk Worm Variety
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -167,33 +168,36 @@ function SilkWormVarietyEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Silk Worm Variety"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Silk Worm Variety is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Silk Worm Variety is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="sworm">Silk Worm Variety Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="sworm"
-                          name="silkWormVarietyNameInKannada"
-                          type="text"
-                          value={data.silkWormVarietyNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Silk Worm Variety Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Silk Worm Variety Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="sworm">
+                          Silk Worm Variety Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="sworm"
+                            name="silkWormVarietyNameInKannada"
+                            type="text"
+                            value={data.silkWormVarietyNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Silk Worm Variety Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Silk Worm Variety Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -208,7 +212,7 @@ function SilkWormVarietyEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

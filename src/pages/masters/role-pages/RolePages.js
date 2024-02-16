@@ -431,7 +431,7 @@ function RolePages() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -455,7 +455,7 @@ function RolePages() {
               </li>
               <li>
                 {/* <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

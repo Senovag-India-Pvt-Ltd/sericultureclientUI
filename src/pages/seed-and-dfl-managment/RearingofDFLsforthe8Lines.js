@@ -5,23 +5,18 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-  
-
- 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RearingofDFLsforthe8Lines() {
- 
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -37,7 +32,7 @@ function RearingofDFLsforthe8Lines() {
     },
   };
 
-   // Virtual Bank Account
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -390,7 +385,7 @@ function RearingofDFLsforthe8Lines() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -412,8 +407,6 @@ function RearingofDFLsforthe8Lines() {
     });
   };
 
-
-  
   return (
     <Layout title=" Rearing of DFLs for the 8 lines">
       <Block.Head>
@@ -423,13 +416,13 @@ function RearingofDFLsforthe8Lines() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                 Rearing of DFLs for the 8 lines
+                  Rearing of DFLs for the 8 lines
                 </li>
               </ol>
             </nav>
@@ -438,7 +431,7 @@ function RearingofDFLsforthe8Lines() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -447,7 +440,7 @@ function RearingofDFLsforthe8Lines() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -461,208 +454,208 @@ function RearingofDFLsforthe8Lines() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>  Rearing of DFLs for the 8 lines  </Card.Header>
+                      <Card.Header>
+                        {" "}
+                        Rearing of DFLs for the 8 lines{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Disinfectant usage details
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Disinfectant usage details"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Crop Detail
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Crop Detail"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Crop number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Crop number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                          
-                          
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Lot number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Disinfectant usage details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Disinfectant usage details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Crop Detail
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Crop Detail"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                             Number of DFLs
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Number of DFLs"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Crop number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Crop number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Laid on (L/O) date
-                            </Form.Label>
-                               <div className="form-control-wrap">
-                              <DatePicker />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Released on</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of DFLs
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of DFLs"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Laid on (L/O) date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Released on</Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
-                         
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Chawki percentage
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Chawki percentage "
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Worm weight (In grms)
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Worm weight (In grms)"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Spun on date
-                            </Form.Label>
-                            <div className="form-control-wrap">
                                 <DatePicker />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                            <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         Worm test dates and results
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Chawki percentage
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Chawki percentage "
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                        Cocoon assessment details
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Cocoon assessment details"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Worm weight (In grms)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Worm weight (In grms)"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                             <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      Crop failure details
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Crop failure details"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
- 
- 
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary"  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Spun on date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Worm test dates and results
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Cocoon assessment details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Cocoon assessment details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Crop failure details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Crop failure details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="12" className="text-center">
+                            <Button type="button" variant="primary">
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -672,58 +665,72 @@ function RearingofDFLsforthe8Lines() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Disinfectant usage details</th>   
-                                  <th style={styles.ctstyle}>Crop Detail</th> 
-                                  <th style={styles.ctstyle}>Crop number</th> 
-                                   <th style={styles.ctstyle}>Lot number</th> 
+                                  <th style={styles.ctstyle}>
+                                    Disinfectant usage details
+                                  </th>
+                                  <th style={styles.ctstyle}>Crop Detail</th>
+                                  <th style={styles.ctstyle}>Crop number</th>
+                                  <th style={styles.ctstyle}>Lot number</th>
                                   <th style={styles.ctstyle}>Number of DFLs</th>
-                                   <th style={styles.ctstyle}>Laid on (L/O) date</th>
-                                    <th style={styles.ctstyle}>Cold storage details</th> 
+                                  <th style={styles.ctstyle}>
+                                    Laid on (L/O) date
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Cold storage details
+                                  </th>
                                   <th style={styles.ctstyle}>Released on </th>
-                                   <th style={styles.ctstyle}>Chawki percentage</th>
-                                     <th style={styles.ctstyle}>Worm weight (In grms)</th> 
+                                  <th style={styles.ctstyle}>
+                                    Chawki percentage
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Worm weight (In grms)
+                                  </th>
                                   <th style={styles.ctstyle}>Spun on date</th>
-                                   <th style={styles.ctstyle}>Worm test dates and results</th>
-                                    <th style={styles.ctstyle}>Cocoon assessment details</th>
-                                     <th style={styles.ctstyle}>Crop failure details</th>
+                                  <th style={styles.ctstyle}>
+                                    Worm test dates and results
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Cocoon assessment details
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Crop failure details
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Disinfectant usage details data </td>  
-                                    <td>Crop Detail data</td> 
-                                    <td>Crop number data</td> 
-                                     <td>Spun on Date</td> 
-                                    <td>Lot number data</td> 
-                                    <td>12/20/2023</td>  
-                                    <td>Cold storage details data </td> 
-                                    <td>Released on data</td> 
-                                    <td>Chawki percentage data</td>  
-                                     <td  >Worm weight (In grms)</td>  
-                                       <td  >12/20/2023</td> 
-                                    <td >12/20/2023</td> 
-                                    <td  >Average Weight of 25 Cocoon's , Average Weight of 25 Pupa , Average Weight of 25 Shells, Shell Percentage , ERR,No of Cocoon's Formed /Worms Brushed </td>  
-                                    <td  >Crop failure details data</td>  
+                                <tr>
+                                  <td>Disinfectant usage details data </td>
+                                  <td>Crop Detail data</td>
+                                  <td>Crop number data</td>
+                                  <td>Spun on Date</td>
+                                  <td>Lot number data</td>
+                                  <td>12/20/2023</td>
+                                  <td>Cold storage details data </td>
+                                  <td>Released on data</td>
+                                  <td>Chawki percentage data</td>
+                                  <td>Worm weight (In grms)</td>
+                                  <td>12/20/2023</td>
+                                  <td>12/20/2023</td>
+                                  <td>
+                                    Average Weight of 25 Cocoon's , Average
+                                    Weight of 25 Pupa , Average Weight of 25
+                                    Shells, Shell Percentage , ERR,No of
+                                    Cocoon's Formed /Worms Brushed{" "}
+                                  </td>
+                                  <td>Crop failure details data</td>
                                 </tr>
-                                
                               </tbody>
                             </table>
-
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                  
-
                 </Col>
               </Row>
             </div>

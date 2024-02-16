@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function StateList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/state-view/${_id}`);
+    navigate(`/seriui/state-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/state-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/state-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function StateList() {
     },
   };
 
-
   const StateDataColumns = [
     {
       name: "action",
@@ -203,14 +202,17 @@ function StateList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/state" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/state"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/state"
+                  to="/seriui/state"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

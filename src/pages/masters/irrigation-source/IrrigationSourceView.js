@@ -60,7 +60,7 @@ function IrrigationSourceView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function IrrigationSourceView() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,8 +103,13 @@ function IrrigationSourceView() {
                         <td>{IrrigationSource.irrigationSourceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Irrigation Source Name in Kannada:</td>
-                        <td>{IrrigationSource.irrigationSourceNameInKannada}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Irrigation Source Name in Kannada:
+                        </td>
+                        <td>
+                          {IrrigationSource.irrigationSourceNameInKannada}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

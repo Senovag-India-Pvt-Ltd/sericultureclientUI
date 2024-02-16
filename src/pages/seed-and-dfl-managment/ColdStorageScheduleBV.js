@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -13,12 +13,10 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ColdStorageScheduleBV() {
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -33,8 +31,8 @@ function ColdStorageScheduleBV() {
       color: "#fff",
     },
   };
- 
- // Virtual Bank Account
+
+  // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
@@ -387,7 +385,7 @@ function ColdStorageScheduleBV() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -409,7 +407,6 @@ function ColdStorageScheduleBV() {
     });
   };
 
-  
   return (
     <Layout title=" Cold-Storage-Schedule-BV">
       <Block.Head>
@@ -419,13 +416,13 @@ function ColdStorageScheduleBV() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                Cold-Storage-Schedule-BV
+                  Cold-Storage-Schedule-BV
                 </li>
               </ol>
             </nav>
@@ -434,7 +431,7 @@ function ColdStorageScheduleBV() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +440,7 @@ function ColdStorageScheduleBV() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -457,104 +454,101 @@ function ColdStorageScheduleBV() {
 
       <Block className="mt-4">
         <Form action="#">
-          <Row className="g-3 "> 
-            <div  >
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>  Cold-Storage-Schedule-BV </Card.Header>
+                      <Card.Header> Cold-Storage-Schedule-BV </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                              Grainage
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="Grainage"
-                                type="text"
-                                placeholder="Grainage"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           Lot number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="sordfl"
-                                type="text"
-                                placeholder="Lot number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         
-                      
-  
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">Grainage</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="Grainage"
+                                  type="text"
+                                  placeholder="Grainage"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Laid on date</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Laid on date</Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                           <Form.Group className="form-group ">
-                      <Form.Label> Date of deposit</Form.Label>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker selected={formValues.remark}
+                          <Col lg="4">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Date of deposit</Form.Label>
+                              <div className="form-control-wrap">
+                                {/* <DatePicker selected={formValues.remark}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
                               remark: e.target.value,
                             })
                           } /> */}
-                        <DatePicker />
-                      </div>
-                    </Form.Group>
-                         </Col  > 
-                         
-                          
+                                <DatePicker />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                           <Col lg="4" >
-                          <Form.Group className="form-group  ">
-                        <Form.Label>Schedule Type</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="gender"
-                            value={data.gender}
-                            onChange={handleInputs}
-                          >
-                            <option value="">4 Months</option>
-                            <option value="1">6 Months </option> 
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                         </Col  > 
-                         
- 
-                         <Col lg="12" className="text-center">
-                        <Button type="button" variant="primary" onClick={handleShowModal}  > Submit  </Button>  
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>Schedule Type</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">4 Months</option>
+                                  <option value="1">6 Months </option>
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="12" className="text-center">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              {" "}
+                              Submit{" "}
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -564,111 +558,119 @@ function ColdStorageScheduleBV() {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">
+                        <Col lg="12">
                           <div className="table-responsive">
                             <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Grainage</th>   
-                                  <th style={styles.ctstyle}>Lot number</th> 
-                                  <th style={styles.ctstyle}>Laid on date</th> 
-                                   <th style={styles.ctstyle}>Date of deposit</th> 
+                                  <th style={styles.ctstyle}>Grainage</th>
+                                  <th style={styles.ctstyle}>Lot number</th>
+                                  <th style={styles.ctstyle}>Laid on date</th>
+                                  <th style={styles.ctstyle}>
+                                    Date of deposit
+                                  </th>
                                   <th style={styles.ctstyle}>Schedule Type</th>
-                                   <th style={styles.ctstyle}>Storage Temperature</th>
-                                    <th style={styles.ctstyle}>Storage Duration</th> 
-                                  <th style={styles.ctstyle}>Remaining Duration </th>
-                                   <th style={styles.ctstyle}>Date of release</th>
-                                  
-                                   
+                                  <th style={styles.ctstyle}>
+                                    Storage Temperature
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Storage Duration
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Remaining Duration{" "}
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Date of release
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Line/Year data </td>  
-                                    <td>Source</td> 
-                                    <td   >Generation No. ( 1 to 15)</td> 
-                                     <td  >Spun on Date</td> 
-                                    <td  >Lot Number</td> 
-                                    <td  >Number of Cocoons Dispatched</td>  
-                                       <td  >12/20/2023</td> 
-                                    <td >Dispatch </td> 
-                                    <td  >Invoice No amd Date</td>  
+                                <tr>
+                                  <td>Line/Year data </td>
+                                  <td>Source</td>
+                                  <td>Generation No. ( 1 to 15)</td>
+                                  <td>Spun on Date</td>
+                                  <td>Lot Number</td>
+                                  <td>Number of Cocoons Dispatched</td>
+                                  <td>12/20/2023</td>
+                                  <td>Dispatch </td>
+                                  <td>Invoice No amd Date</td>
                                 </tr>
-                                 <tr>
-                                   <td>Line/Year data </td>  
-                                    <td>Source</td> 
-                                    <td   >Generation No. ( 1 to 15)</td> 
-                                     <td  >Spun on Date</td> 
-                                    <td  >Lot Number</td> 
-                                    <td  >Number of Cocoons Dispatched</td>  
-                                       <td  >12/20/2023</td> 
-                                    <td >Dispatch </td> 
-                                    <td  >Invoice No amd Date</td>  
+                                <tr>
+                                  <td>Line/Year data </td>
+                                  <td>Source</td>
+                                  <td>Generation No. ( 1 to 15)</td>
+                                  <td>Spun on Date</td>
+                                  <td>Lot Number</td>
+                                  <td>Number of Cocoons Dispatched</td>
+                                  <td>12/20/2023</td>
+                                  <td>Dispatch </td>
+                                  <td>Invoice No amd Date</td>
                                 </tr>
                               </tbody>
                             </table>
-
-                            </div>
-                          </Col>
-                        </Row>
-                       
-                      
-
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                  
-                      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title> Status of Cold Storage Schedule (BV)</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="#">
-            <Row className="g-5 px-5">
-               
-              <div className="table-responsive">
-                          <table className="table small table-bordered">
+
+                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        {" "}
+                        Status of Cold Storage Schedule (BV)
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form action="#">
+                        <Row className="g-5 px-5">
+                          <div className="table-responsive">
+                            <table className="table small table-bordered">
                               <thead>
                                 <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>   
-                                  <th style={styles.ctstyle}>Lot number</th> 
-                                  <th style={styles.ctstyle}>Laid on date</th> 
-                                   <th style={styles.ctstyle}>Date of deposit</th> 
-                                  <th style={styles.ctstyle}>Remaining Duration</th>
-                                   <th style={styles.ctstyle}>Status</th>
-                                  
-                                   
+                                  <th style={styles.ctstyle}>Grainage Name</th>
+                                  <th style={styles.ctstyle}>Lot number</th>
+                                  <th style={styles.ctstyle}>Laid on date</th>
+                                  <th style={styles.ctstyle}>
+                                    Date of deposit
+                                  </th>
+                                  <th style={styles.ctstyle}>
+                                    Remaining Duration
+                                  </th>
+                                  <th style={styles.ctstyle}>Status</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td >Line Name data</td> 
-                                   <td >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                   
-                                     <td style={styles.actionredtstyle}>Pending</td>   
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+
+                                  <td style={styles.actionredtstyle}>
+                                    Pending
+                                  </td>
                                 </tr>
-                                 <tr>
-                                   <td>Grainage Name data</td>  
-                                    <td>Number of DFLs received data</td> 
-                                    <td    >Line Name data</td> 
-                                     <td  >Lot  Number data</td> 
-                                    <td >Invoice no data</td> 
-                                    
-                                     <td style={styles.actiongreentstyle}>Changed</td>   
+                                <tr>
+                                  <td>Grainage Name data</td>
+                                  <td>Number of DFLs received data</td>
+                                  <td>Line Name data</td>
+                                  <td>Lot Number data</td>
+                                  <td>Invoice no data</td>
+
+                                  <td style={styles.actiongreentstyle}>
+                                    Changed
+                                  </td>
                                 </tr>
                               </tbody>
                             </table>
-                             
-                            </div>
-
-              
-            </Row>
-          </Form>
-        </Modal.Body>
-      </Modal>
-
+                          </div>
+                        </Row>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </Col>
               </Row>
             </div>

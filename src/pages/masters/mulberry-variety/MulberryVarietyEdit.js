@@ -35,12 +35,12 @@ function MulberryVarietyEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `mulberry-variety/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `mulberry-variety/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               mulberryVarietyName: "",
@@ -49,19 +49,19 @@ function MulberryVarietyEdit() {
             setValidated(false);
           }
         })
-      .catch((err) => {
-        updateError();
-      });
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       mulberryVarietyName: "",
       mulberryVarietyNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -90,13 +90,13 @@ function MulberryVarietyEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/mulberry-variety-list"));
+    }).then(() => navigate("/seriui/mulberry-variety-list"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -104,7 +104,7 @@ function MulberryVarietyEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/mulberry-variety-list"));
+    }).then(() => navigate("/seriui/mulberry-variety-list"));
   };
 
   return (
@@ -118,7 +118,7 @@ function MulberryVarietyEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +127,7 @@ function MulberryVarietyEdit() {
               </li>
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +153,9 @@ function MulberryVarietyEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mulberryVariety">Mulberry Variety<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mulberryVariety">
+                          Mulberry Variety<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="Mulberry Variety"
@@ -163,35 +165,36 @@ function MulberryVarietyEdit() {
                             type="text"
                             placeholder="Enter Mulberry Variety"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                             Mulberry Variety is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Mulberry Variety is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="variety">
-                        Mulberry Variety Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="variety"
-                          name="mulberryVarietyNameInKannada"
-                          type="text"
-                          value={data.mulberryVarietyNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Mulberry Variety Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Mulberry Variety Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="variety">
+                          Mulberry Variety Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="variety"
+                            name="mulberryVarietyNameInKannada"
+                            type="text"
+                            value={data.mulberryVarietyNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Mulberry Variety Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Mulberry Variety Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -206,7 +209,7 @@ function MulberryVarietyEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

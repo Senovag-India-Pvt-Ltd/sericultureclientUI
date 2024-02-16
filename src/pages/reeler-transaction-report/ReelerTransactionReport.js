@@ -1,15 +1,11 @@
-import { Card, Form, Row, Col,Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "../../components/Form/DatePicker";
-import {
-  Select,
-} from "../../components";
-
+import { Select } from "../../components";
 
 function ReelerTransactionReport() {
-
   const display = () => {
     // Define the display function logic here
     console.log("Displaying data");
@@ -24,13 +20,13 @@ function ReelerTransactionReport() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                    Reeler Transaction Reports
+                  Reeler Transaction Reports
                 </li>
               </ol>
             </nav>

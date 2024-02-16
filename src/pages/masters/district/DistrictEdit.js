@@ -28,42 +28,42 @@ function DistrictEdit() {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURL + `district/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-      }else{
-        updateSuccess();
-        setData({
-          stateId: "",
-          districtName: "",
-          districtNameInKannada: "", 
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL + `district/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              stateId: "",
+              districtName: "",
+              districtNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
         });
-        setValidated(false);
-        }
-      })
-      .catch((err) => {
-        updateError();
-      });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       stateId: "",
       districtName: "",
-      districtNameInKannada: "", 
-    })
-  }
+      districtNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -117,7 +117,7 @@ function DistrictEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -138,7 +138,7 @@ function DistrictEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/district-list"
+                  to="/seriui/district-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -147,7 +147,7 @@ function DistrictEdit() {
               </li>
               <li>
                 <Link
-                  to="/district-list"
+                  to="/seriui/district-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -173,16 +173,20 @@ function DistrictEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          State<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="stateId"
                             value={data.stateId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.stateId === undefined || data.stateId === "0"}
-                            >
+                            isInvalid={
+                              data.stateId === undefined || data.stateId === "0"
+                            }
+                          >
                             <option value="">Select State</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
@@ -191,14 +195,16 @@ function DistrictEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          State name is required
-                        </Form.Control.Feedback>
+                            State name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="district">District<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="district">
+                          District<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="district"
@@ -208,33 +214,36 @@ function DistrictEdit() {
                             onChange={handleInputs}
                             placeholder="Enter District"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          District Name is required
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            District Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="district">District name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="district"
-                          type="text"
-                          name="districtNameInKannada"
-                          value={data.districtNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter District name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          District name in Kannada is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="district">
+                          District name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="district"
+                            type="text"
+                            name="districtNameInKannada"
+                            value={data.districtNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter District name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            District name in Kannada is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -250,7 +259,7 @@ function DistrictEdit() {
                 </li>
                 <li>
                   {/* <Link
-                    to="/district-list"
+                    to="/seriui/district-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

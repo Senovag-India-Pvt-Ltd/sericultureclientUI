@@ -58,10 +58,10 @@ function EducationView() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/education-list">Education List</Link>
+                  <Link to="/seriui/education-list">Education List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Education View
@@ -73,7 +73,7 @@ function EducationView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +82,7 @@ function EducationView() {
               </li>
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -116,7 +116,10 @@ function EducationView() {
                         <td>{Education.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Education Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Education Name in Kannada:
+                        </td>
                         <td>{Education.educationNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -1,13 +1,10 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useState, useEffect } from "react";
 // import axios from "axios";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -64,7 +61,7 @@ function ExternalUnitRegisterView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/external-unit-registration-list"
+                  to="/seriui/external-unit-registration-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -73,7 +70,7 @@ function ExternalUnitRegisterView() {
               </li>
               <li>
                 <Link
-                  to="/external-unit-registration-list"
+                  to="/seriui/external-unit-registration-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -98,9 +95,11 @@ function ExternalUnitRegisterView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                    <tr>
+                      <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{ExternalUnitRegister.externalUnitRegistrationId}</td>
+                        <td>
+                          {ExternalUnitRegister.externalUnitRegistrationId}
+                        </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>External Unit Type:</td>
@@ -123,14 +122,15 @@ function ExternalUnitRegisterView() {
                         <td>{ExternalUnitRegister.externalUnitNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name of the Organisation:</td>
+                        <td style={styles.ctstyle}>
+                          Name of the Organisation:
+                        </td>
                         <td>{ExternalUnitRegister.organisationName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race:</td>
                         <td>{ExternalUnitRegister.raceMasterName}</td>
                       </tr>
-                    
                     </tbody>
                   </table>
                 </Col>

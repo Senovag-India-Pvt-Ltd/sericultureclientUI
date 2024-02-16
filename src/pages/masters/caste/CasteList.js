@@ -33,7 +33,7 @@ function CasteList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL+`caste/list`, _params)
+      .get(baseURL + `caste/list`, _params)
       .then((response) => {
         setListData(response.data.content.caste);
         setTotalRows(response.data.content.totalItems);
@@ -65,17 +65,17 @@ function CasteList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/caste-view/${_id}`);
+    navigate(`/seriui/caste-view/${_id}`);
   };
 
   // const handleEdit = (_id) => {
-  //   // navigate(`/caste/${_id}`);
-  //   navigate("/caste-edit");
+  //   // navigate(`/seriui/caste/${_id}`);
+  //   navigate("/seriui/caste-edit");
   // };
 
   const handleEdit = (_id) => {
-    navigate(`/caste-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/caste-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -235,7 +235,7 @@ function CasteList() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   List
@@ -246,14 +246,17 @@ function CasteList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/caste" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/caste"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/caste"
+                  to="/seriui/caste"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -265,7 +268,7 @@ function CasteList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

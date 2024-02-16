@@ -38,12 +38,12 @@ function IrrigationType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `irrigationType/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `irrigationType/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               irrigationTypeName: "",
@@ -51,20 +51,20 @@ function IrrigationType() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       irrigationTypeName: "",
       irrigationTypeNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -79,7 +79,7 @@ function IrrigationType() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -94,7 +94,7 @@ function IrrigationType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,7 @@ function IrrigationType() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-type-list"
+                  to="/seriui/irrigation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +148,8 @@ function IrrigationType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="irrigationTypeName">
-                        Irrigation Type Name in Kannada<span className="text-danger">*</span>
+                        Irrigation Type Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -179,7 +180,7 @@ function IrrigationType() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

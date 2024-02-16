@@ -104,7 +104,7 @@ function UnitCounterReport() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    })
+    });
   };
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
@@ -124,7 +124,7 @@ function UnitCounterReport() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -133,7 +133,7 @@ function UnitCounterReport() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -327,7 +327,6 @@ function UnitCounterReport() {
                               )}
                             </td>
                             <td>---</td>
-                            
                           </tr>
                         ))}
                         {/* {

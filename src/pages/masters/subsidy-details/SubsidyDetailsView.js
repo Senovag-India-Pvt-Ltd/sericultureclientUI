@@ -60,7 +60,7 @@ function SubsidyDetailsView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function SubsidyDetailsView() {
               </li>
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,10 @@ function SubsidyDetailsView() {
                         <td>{Subsidy.subsidyName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Subsidy Details in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Subsidy Details in Kannada:
+                        </td>
                         <td>{Subsidy.subsidyNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -48,18 +48,17 @@ function WorkingInstitutionView() {
   }, [id]);
 
   return (
-    <Layout title="WorkingInstitutions View" >
+    <Layout title="WorkingInstitutions View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">WorkingInstitution View</Block.Title>
-         
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +67,7 @@ function WorkingInstitutionView() {
               </li>
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,8 +101,13 @@ function WorkingInstitutionView() {
                         <td>{WorkingInstitutions.workingInstitutionName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> workingInstitutionNameInKannada:</td>
-                        <td>{WorkingInstitutions.workingInstitutionNameInKannada}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          workingInstitutionNameInKannada:
+                        </td>
+                        <td>
+                          {WorkingInstitutions.workingInstitutionNameInKannada}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

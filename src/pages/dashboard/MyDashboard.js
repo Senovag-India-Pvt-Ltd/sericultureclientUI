@@ -49,13 +49,13 @@ function MyDashboard() {
     // console.log(e.target.name);
     e.preventDefault();
     if (e.target.name === "verification") {
-      navigate("/subsidy-approval-verification");
+      navigate("/seriui/subsidy-approval-verification");
     } else if (e.target.name === "sanction") {
-      navigate("/subsidy-sanction");
+      navigate("/seriui/subsidy-sanction");
     } else if (e.target.name === "drawing") {
-      navigate("/subsidy-drawing");
+      navigate("/seriui/subsidy-drawing");
     } else if (e.target.name === "counter") {
-      navigate("/subsidy-counter-sign");
+      navigate("/seriui/subsidy-counter-sign");
     }
   };
 

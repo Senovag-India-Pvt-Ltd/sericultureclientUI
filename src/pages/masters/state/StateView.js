@@ -57,7 +57,7 @@ function StateView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/state-list"
+                  to="/seriui/state-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function StateView() {
               </li>
               <li>
                 <Link
-                  to="/state-list"
+                  to="/seriui/state-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

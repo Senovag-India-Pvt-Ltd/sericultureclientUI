@@ -46,7 +46,7 @@ function ScComponent() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/sc-component-list"));
+    }).then(() => navigate("/seriui/sc-component-list"));
   };
 
   const saveError = () => {
@@ -66,13 +66,13 @@ function ScComponent() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-                    Component
+                  Component
                 </li>
               </ol>
             </nav>
@@ -81,7 +81,7 @@ function ScComponent() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -90,7 +90,7 @@ function ScComponent() {
               </li>
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -136,7 +136,10 @@ function ScComponent() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/sc-component-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/sc-component-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

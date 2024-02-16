@@ -35,38 +35,38 @@ function SubsidyDetailsEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    const datas = {
-      subsidyId: id,
-      subsidyName: data.subsidyName,
-      subsidyNameInKannada: data.subsidyNameInKannada,
-    };
-    api
-      .post(baseURL + `subsidy/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      const datas = {
+        subsidyId: id,
+        subsidyName: data.subsidyName,
+        subsidyNameInKannada: data.subsidyNameInKannada,
+      };
+      api
+        .post(baseURL + `subsidy/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               subsidyName: "",
-              subsidyNameInKannada: "", 
+              subsidyNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       subsidyName: "",
-      subsidyNameInKannada: "",  
-    })
-  }
+      subsidyNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -103,7 +103,7 @@ function SubsidyDetailsEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -125,7 +125,7 @@ function SubsidyDetailsEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -134,7 +134,7 @@ function SubsidyDetailsEdit() {
               </li>
               <li>
                 <Link
-                  to="/subsidy-details-list"
+                  to="/seriui/subsidy-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -160,7 +160,9 @@ function SubsidyDetailsEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="subsidy">Subsidy Details<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="subsidy">
+                          Subsidy Details<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="subsidy"
@@ -170,17 +172,20 @@ function SubsidyDetailsEdit() {
                             type="text"
                             placeholder="Enter Subsidy Details"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Subsidy Details is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Subsidy Details is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="subsidy">Subsidy Details in Kannada<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="subsidy">
+                          Subsidy Details in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="subsidy"
@@ -190,10 +195,10 @@ function SubsidyDetailsEdit() {
                             type="text"
                             placeholder="Enter Subsidy Details in Kannada"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Subsidy Details  in Kannada is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Subsidy Details in Kannada is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>

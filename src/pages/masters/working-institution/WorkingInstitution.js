@@ -36,32 +36,32 @@ function WorkingInstitution() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `workingInstitution/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `workingInstitution/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
             saveError(response.data.content.error_description);
-            }else{
-              saveSuccess();
-              setData({
-                workingInstitutionName: "",
-                workingInstitutionNameInKannada: "", 
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        saveError();
-      });
+          } else {
+            saveSuccess();
+            setData({
+              workingInstitutionName: "",
+              workingInstitutionNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
-  const clear = () =>{
+  const clear = () => {
     setData({
       workingInstitutionName: "",
-      workingInstitutionNameInKannada: "", 
-    })
-  }
+      workingInstitutionNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -76,7 +76,7 @@ function WorkingInstitution() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -86,13 +86,12 @@ function WorkingInstitution() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Working Institution</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -101,7 +100,7 @@ function WorkingInstitution() {
               </li>
               <li>
                 <Link
-                  to="/workingInstitutions-list"
+                  to="/seriui/workingInstitutions-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -150,7 +149,10 @@ function WorkingInstitution() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Working Institution Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="title">
+                        Working Institution Name
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
@@ -170,7 +172,10 @@ function WorkingInstitution() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Working Institution Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="title">
+                        Working Institution Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="workingInstitutionNameInKannada"
@@ -200,7 +205,7 @@ function WorkingInstitution() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

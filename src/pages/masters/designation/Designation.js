@@ -14,7 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function Designation() {
   const [data, setData] = useState({
     name: "",
-    designationNameInKannada:"",
+    designationNameInKannada: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -26,7 +26,6 @@ function Designation() {
     setData({ ...data, [name]: value });
   };
 
-  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   // const postData = (e) => {
@@ -51,33 +50,33 @@ function Designation() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `designation/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `designation/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               name: "",
-              designationNameInKannada:"",
+              designationNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {   
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       name: "",
-      designationNameInKannada:"",
-    })
-  }
+      designationNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -91,7 +90,7 @@ function Designation() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -103,7 +102,7 @@ function Designation() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -118,7 +117,7 @@ function Designation() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/designation-list"
+                  to="/seriui/designation-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +126,7 @@ function Designation() {
               </li>
               <li>
                 <Link
-                  to="/designation-list"
+                  to="/seriui/designation-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -163,7 +162,7 @@ function Designation() {
                     </Form.Group> */}
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="designation">
-                      Designation<span className="text-danger">*</span>
+                        Designation<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -185,7 +184,8 @@ function Designation() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Designation Name in Kannada<span className="text-danger">*</span>
+                        Designation Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -198,7 +198,7 @@ function Designation() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Designation Name in Kannada is required.
+                          Designation Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -207,24 +207,24 @@ function Designation() {
               </Card.Body>
             </Card>
 
-        <Card>
-          <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+            <Card>
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

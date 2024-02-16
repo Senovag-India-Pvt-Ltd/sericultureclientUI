@@ -42,34 +42,33 @@ function LandOwnershipEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `landOwnership/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
-        setData({
-          landOwnershipName: "",
-          landOwnershipNameInKannada: "", 
-        });
-        setValidated(false);
+      api
+        .post(baseURL + `landOwnership/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              landOwnershipName: "",
+              landOwnershipNameInKannada: "",
+            });
+            setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       landOwnershipName: "",
       landOwnershipNameInKannada: "",
-    })
-  }
-
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -98,13 +97,13 @@ function LandOwnershipEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/land-ownership-list"));
+    }).then(() => navigate("/seriui/land-ownership-list"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -112,7 +111,7 @@ function LandOwnershipEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/state-list"));
+    }).then(() => navigate("/seriui/state-list"));
   };
 
   return (
@@ -126,7 +125,7 @@ function LandOwnershipEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/land-ownership-list"
+                  to="/seriui/land-ownership-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -135,7 +134,7 @@ function LandOwnershipEdit() {
               </li>
               <li>
                 <Link
-                  to="/land-ownership-list"
+                  to="/seriui/land-ownership-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -161,7 +160,9 @@ function LandOwnershipEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="land">Land Ownership<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="land">
+                          Land Ownership<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="land"
@@ -171,33 +172,36 @@ function LandOwnershipEdit() {
                             onChange={handleInputs}
                             placeholder="Enter Land Ownership"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Land Ownership is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Land Ownership is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="land">Land Ownership Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="land"
-                          name="landOwnershipNameInKannada"
-                          type="text"
-                          value={data.landOwnershipNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Land Ownership Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Land Ownership Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="land">
+                          Land Ownership Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="land"
+                            name="landOwnershipNameInKannada"
+                            type="text"
+                            value={data.landOwnershipNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Land Ownership Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Land Ownership Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -212,7 +216,7 @@ function LandOwnershipEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

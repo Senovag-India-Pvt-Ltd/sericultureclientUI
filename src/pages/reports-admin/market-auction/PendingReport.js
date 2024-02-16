@@ -104,7 +104,7 @@ function PendingReport() {
   //   }
   // };
 
-  const [pendingData,setPendingData] = useState([]);
+  const [pendingData, setPendingData] = useState([]);
 
   const postData = (event) => {
     const { marketId, godownId, reportFromDate } = data;
@@ -151,7 +151,7 @@ function PendingReport() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    })
+    });
   };
   const saveError = (message = "Something went wrong!") => {
     Swal.fire({
@@ -171,7 +171,7 @@ function PendingReport() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -180,7 +180,7 @@ function PendingReport() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -379,14 +379,14 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                           Balance
+                            Balance
                           </th>
                         </tr>
                       </thead>
                       <tbody>
                         {pendingData.map((list, i) => (
                           <tr key={i}>
-                            <td>{i+1}</td>
+                            <td>{i + 1}</td>
                             <td>{list.allottedLotId}</td>
                             <td>---</td>
                             <td>---</td>

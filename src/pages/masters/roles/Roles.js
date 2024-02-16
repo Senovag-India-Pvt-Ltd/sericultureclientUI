@@ -35,31 +35,31 @@ function Roles() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `role/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `role/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               roleName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       roleName: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -74,7 +74,7 @@ function Roles() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -89,7 +89,7 @@ function Roles() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -98,7 +98,7 @@ function Roles() {
               </li>
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -114,14 +114,15 @@ function Roles() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Roles Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="title">
+                        Roles Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
@@ -156,23 +157,23 @@ function Roles() {
             </Card>
 
             <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

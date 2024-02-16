@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -46,12 +45,12 @@ function RolesList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/roles-view/${_id}`);
+    navigate(`/seriui/roles-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/roles-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/roles-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -142,7 +141,6 @@ function RolesList() {
     },
   };
 
-
   const RolesDataColumns = [
     {
       name: "action",
@@ -197,14 +195,17 @@ function RolesList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/roles" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/roles"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/roles"
+                  to="/seriui/roles"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

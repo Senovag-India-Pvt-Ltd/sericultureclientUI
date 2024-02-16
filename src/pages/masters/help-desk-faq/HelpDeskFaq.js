@@ -16,7 +16,6 @@ function HelpDeskFaq() {
     hdQuestionName: "",
     hdQuestionAnswerName: "",
     hdFaqUploadPath: "",
-
   });
 
   const [validated, setValidated] = useState(false);
@@ -38,35 +37,35 @@ function HelpDeskFaq() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdQuestionMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdQuestionMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
-                hdQuestionName: "",
-                hdQuestionAnswerName: "",
-                hdFaqUploadPath: "",
+              hdQuestionName: "",
+              hdQuestionAnswerName: "",
+              hdFaqUploadPath: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdQuestionName: "",
-        hdQuestionAnswerName: "",
-        hdFaqUploadPath: "",
-    })
-  }
+      hdQuestionName: "",
+      hdQuestionAnswerName: "",
+      hdFaqUploadPath: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -80,7 +79,7 @@ function HelpDeskFaq() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -94,7 +93,7 @@ function HelpDeskFaq() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-question-list"
+                  to="/seriui/hd-question-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +102,7 @@ function HelpDeskFaq() {
               </li>
               <li>
                 <Link
-                  to="/hd-question-list"
+                  to="/seriui/hd-question-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -125,7 +124,9 @@ function HelpDeskFaq() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Hd Question">Questions<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Hd Question">
+                        Questions<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hdQuestion"
@@ -137,7 +138,7 @@ function HelpDeskFaq() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Questions is required
+                          Questions is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -145,7 +146,8 @@ function HelpDeskFaq() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Question&Answer">Answers  <span className="text-danger">*</span>
+                      <Form.Label htmlFor="Question&Answer">
+                        Answers <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -158,7 +160,7 @@ function HelpDeskFaq() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Answers is Required.
+                          Answers is Required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -166,7 +168,8 @@ function HelpDeskFaq() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="FAQ Upload Path">FAQ Upload Path  <span className="text-danger">*</span>
+                      <Form.Label htmlFor="FAQ Upload Path">
+                        FAQ Upload Path <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -190,22 +193,22 @@ function HelpDeskFaq() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

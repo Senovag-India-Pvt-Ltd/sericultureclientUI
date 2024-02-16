@@ -10,7 +10,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -43,12 +43,12 @@ function PlantationTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/plantation-type-view/${_id}`);
+    navigate(`/seriui/plantation-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/plantation-type-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/plantation-type-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -139,7 +139,6 @@ function PlantationTypeList() {
     },
   };
 
-
   const PlantationTypeDataColumns = [
     {
       name: "Action",
@@ -202,7 +201,7 @@ function PlantationTypeList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/plantation-type"
+                  to="/seriui/plantation-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -211,7 +210,7 @@ function PlantationTypeList() {
               </li>
               <li>
                 <Link
-                  to="/plantation-type"
+                  to="/seriui/plantation-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +222,7 @@ function PlantationTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

@@ -50,10 +50,10 @@ function ScHeadAccountView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                    Head of Account View
+                  Head of Account View
                 </li>
               </ol>
             </nav>
@@ -62,7 +62,7 @@ function ScHeadAccountView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-head-account-list"
+                  to="/seriui/sc-head-account-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -71,7 +71,7 @@ function ScHeadAccountView() {
               </li>
               <li>
                 <Link
-                  to="/sc-head-account-list"
+                  to="/seriui/sc-head-account-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -91,7 +91,7 @@ function ScHeadAccountView() {
               <h1 className="d-flex justify-content-center align-items-center">
                 Loading...
               </h1>
-                ) : (
+            ) : (
               <Row className="g-gs">
                 <Col lg="12">
                   <table className="table small table-bordered">

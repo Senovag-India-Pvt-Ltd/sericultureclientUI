@@ -107,11 +107,11 @@ function RenewReelerLicense() {
       navigate("#");
     });
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 

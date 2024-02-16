@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function HelpDeskBoardCategoryList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-board-category-view/${_id}`);
+    navigate(`/seriui/hd-board-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-board-category-edit/${_id}`);
-    // navigate("/hdBoardCategoryMaster");
+    navigate(`/seriui/hd-board-category-edit/${_id}`);
+    // navigate("/seriui/hdBoardCategoryMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function HelpDeskBoardCategoryList() {
     },
   };
 
-
   const HdBoardCategoryDataColumns = [
     {
       name: "Action",
@@ -196,14 +195,17 @@ function HelpDeskBoardCategoryList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/hd-board-category" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/hd-board-category"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hd-board-category"
+                  to="/seriui/hd-board-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -215,7 +217,7 @@ function HelpDeskBoardCategoryList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

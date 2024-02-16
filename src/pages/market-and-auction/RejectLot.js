@@ -68,7 +68,7 @@ function RejectLot() {
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -102,6 +102,7 @@ function RejectLot() {
       })
       .catch((err) => {
         setLotRejectionListData([]);
+        searchError(err.response.data.validationErrors);
       });
   };
 
@@ -151,7 +152,7 @@ function RejectLot() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

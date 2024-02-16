@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function ReelerTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reeler-type-view/${_id}`);
+    navigate(`/seriui/reeler-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reeler-type-edit/${_id}`);
-    // navigate("/releerTypeMaster");
+    navigate(`/seriui/reeler-type-edit/${_id}`);
+    // navigate("/seriui/releerTypeMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function ReelerTypeList() {
     },
   };
 
-
   const ReleerTypeMasterDataColumns = [
     {
       name: "Action",
@@ -210,14 +209,17 @@ function ReelerTypeList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/reeler-type" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/reeler-type"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/reeler-type"
+                  to="/seriui/reeler-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

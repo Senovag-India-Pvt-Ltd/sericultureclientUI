@@ -35,35 +35,33 @@ function SourceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `sourceMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `sourceMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               sourceMasterName: "",
-              sourceNameInKannada: "", 
+              sourceNameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       sourceMasterName: "",
-      sourceNameInKannada: "", 
-    })
-  }
-
+      sourceNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -87,7 +85,7 @@ function SourceEdit() {
   }, [id]);
 
   const navigate = useNavigate();
-  
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -99,7 +97,7 @@ function SourceEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -121,7 +119,7 @@ function SourceEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/source-list"
+                  to="/seriui/source-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +128,7 @@ function SourceEdit() {
               </li>
               <li>
                 <Link
-                  to="/source-list"
+                  to="/seriui/source-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +154,9 @@ function SourceEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="source">Source<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="source">
+                          Source<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="source"
@@ -166,33 +166,36 @@ function SourceEdit() {
                             type="text"
                             placeholder="Enter Source"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Source is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Source is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="source">Source Name In Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="source"
-                          name="sourceNameInKannada"
-                          value={data.sourceNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Source Name In Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Source Name In Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="source">
+                          Source Name In Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="source"
+                            name="sourceNameInKannada"
+                            value={data.sourceNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Source Name In Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Source Name In Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -207,7 +210,7 @@ function SourceEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

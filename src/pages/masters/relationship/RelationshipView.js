@@ -61,7 +61,7 @@ function RelationshipView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function RelationshipView() {
               </li>
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -104,7 +104,10 @@ function RelationshipView() {
                         <td>{Relationship.relationshipName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Relationship Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Relationship Name in Kannada:
+                        </td>
                         <td>{Relationship.relationshipNameInKannada}</td>
                       </tr>
                     </tbody>

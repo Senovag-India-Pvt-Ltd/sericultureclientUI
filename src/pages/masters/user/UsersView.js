@@ -53,7 +53,7 @@ function UsersView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/users-list"
+                  to="/seriui/users-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -62,7 +62,7 @@ function UsersView() {
               </li>
               <li>
                 <Link
-                  to="/users-list"
+                  to="/seriui/users-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

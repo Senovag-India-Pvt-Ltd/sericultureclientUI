@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -43,12 +43,12 @@ function IrrigationSourceList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/irrigation-source-view/${_id}`);
+    navigate(`/seriui/irrigation-source-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/irrigation-source-edit/${_id}`);
-    // navigate("/irrigation-source");
+    navigate(`/seriui/irrigation-source-edit/${_id}`);
+    // navigate("/seriui/irrigation-source");
   };
 
   const deleteError = () => {
@@ -139,7 +139,6 @@ function IrrigationSourceList() {
     },
   };
 
-
   const IrrigationSourceDataColumns = [
     {
       name: "Action",
@@ -202,7 +201,7 @@ function IrrigationSourceList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-source"
+                  to="/seriui/irrigation-source"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -211,7 +210,7 @@ function IrrigationSourceList() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-source"
+                  to="/seriui/irrigation-source"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +222,7 @@ function IrrigationSourceList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

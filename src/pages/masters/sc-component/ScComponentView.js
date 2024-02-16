@@ -49,10 +49,10 @@ function ScComponentView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                    Component View
+                  Component View
                 </li>
               </ol>
             </nav>
@@ -61,7 +61,7 @@ function ScComponentView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function ScComponentView() {
               </li>
               <li>
                 <Link
-                  to="/sc-component-list"
+                  to="/seriui/sc-component-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -90,7 +90,7 @@ function ScComponentView() {
               <h1 className="d-flex justify-content-center align-items-center">
                 Loading...
               </h1>
-                ) : (
+            ) : (
               <Row className="g-gs">
                 <Col lg="12">
                   <table className="table small table-bordered">

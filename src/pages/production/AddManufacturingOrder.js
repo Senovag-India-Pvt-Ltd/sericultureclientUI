@@ -18,10 +18,10 @@ function AddManufacturingOrderPage() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/ecommerce/products">Production</Link>
+                  <Link to="/seriui/ecommerce/products">Production</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Add Manufacturing Order
@@ -33,7 +33,7 @@ function AddManufacturingOrderPage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/production/manufacturing-order"
+                  to="/seriui/production/manufacturing-order"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="eye" />
@@ -42,7 +42,7 @@ function AddManufacturingOrderPage() {
               </li>
               <li>
                 <Link
-                  to="/production/manufacturing-order"
+                  to="/seriui/production/manufacturing-order"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="eye" />
@@ -192,7 +192,7 @@ function AddManufacturingOrderPage() {
                     </li>
                     <li>
                       <Link
-                        to="/production/manufacturing-order"
+                        to="/seriui/production/manufacturing-order"
                         className="btn border-0"
                       >
                         Cancel

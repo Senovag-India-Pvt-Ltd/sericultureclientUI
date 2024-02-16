@@ -16,11 +16,11 @@ import api from "../../../src/services/auth/api";
 import DataTable, { createTheme } from "react-data-table-component";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_SEED_DFLS;
- 
+
 
 function DispatchofCocoonstoP4Grainage() {
 
-   
+
    const [data, setData] = useState({
     id:"",
     lineYear: "",
@@ -29,10 +29,10 @@ function DispatchofCocoonstoP4Grainage() {
     generationNumber: "",
     spunOnDate: "",
     lotNumber: "",
-    numberOfCocoonsDispatched: "", 
-    dateOfSupply: "", 
-    dispatch: "", 
-    invoiceNoAndDate: "", 
+    numberOfCocoonsDispatched: "",
+    dateOfSupply: "",
+    dispatch: "",
+    invoiceNoAndDate: "",
   });
 
   const styles = {
@@ -65,7 +65,7 @@ function DispatchofCocoonstoP4Grainage() {
       event.stopPropagation();
       setValidated(true);
     } else {
-      
+
       event.preventDefault();
       // event.stopPropagation();
     api
@@ -86,7 +86,7 @@ function DispatchofCocoonstoP4Grainage() {
     }
   };
 
-   
+
 
 
 /* get table detais */
@@ -147,7 +147,7 @@ createTheme(
       },
       background: {
         default: "#fff",
-      }, 
+      },
       context: {
         background: "#cb4b16",
         text: "#FFFFFF",
@@ -188,7 +188,7 @@ const customStyles = {
   };
 
 
-   
+
   const handleView = (_id) => {
     navigate(`/SupplyofCocoonstoGrainage-view/${_id}`);
   };
@@ -199,7 +199,7 @@ const customStyles = {
     // navigate("/state");
   };
 
-  
+
 
  const deleteError = () => {
     Swal.fire({
@@ -241,7 +241,7 @@ const customStyles = {
     });
   };
  const GardenDataColumns = [
- 
+
 
     {
       name: "lot Number",
@@ -299,9 +299,9 @@ const customStyles = {
       sortable: true,
       hide: "md",
     },
-     
-    
-      
+
+
+
 
      {
       name: "Action",
@@ -338,12 +338,12 @@ const customStyles = {
       hide: "md",
     },
 
-   
+
 
 
 
   ];
-   
+
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -441,7 +441,7 @@ const handleDateChange = (date, type) => {
                                 type="text"
                                 placeholder="Line/Year"
                               />
-                              
+
                             </div>
                           </Form.Group>
                          </Col  > 

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function TrainingInstitutionList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-institution-view/${_id}`);
+    navigate(`/seriui/training-institution-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/training-institution-edit/${_id}`);
-    // navigate("/trInstitutionMaster");
+    navigate(`/seriui/training-institution-edit/${_id}`);
+    // navigate("/seriui/trInstitutionMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function TrainingInstitutionList() {
     },
   };
 
-
   const TrInstitutionMasterDataColumns = [
     {
       name: "Action",
@@ -186,12 +185,12 @@ function TrainingInstitutionList() {
     },
 
     {
-        name: "Training Institution",
-        selector: (row) => row.trInstitutionNameInKannada,
-        cell: (row) => <span>{row.trInstitutionNameInKannada}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      name: "Training Institution",
+      selector: (row) => row.trInstitutionNameInKannada,
+      cell: (row) => <span>{row.trInstitutionNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -204,14 +203,17 @@ function TrainingInstitutionList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/training-institution" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/training-institution"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/training-institution"
+                  to="/seriui/training-institution"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +225,7 @@ function TrainingInstitutionList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

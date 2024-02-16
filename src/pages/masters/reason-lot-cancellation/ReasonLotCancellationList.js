@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
@@ -43,12 +43,12 @@ function ReasonLotCancellationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reason-lot-cancellation-view/${_id}`);
+    navigate(`/seriui/reason-lot-cancellation-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reason-lot-cancellation-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/reason-lot-cancellation-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -197,7 +197,7 @@ function ReasonLotCancellationList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reason-lot-cancellation"
+                  to="/seriui/reason-lot-cancellation"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -206,7 +206,7 @@ function ReasonLotCancellationList() {
               </li>
               <li>
                 <Link
-                  to="/reason-lot-cancellation"
+                  to="/seriui/reason-lot-cancellation"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

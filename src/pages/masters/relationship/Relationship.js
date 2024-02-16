@@ -42,47 +42,46 @@ function Relationship() {
       event.preventDefault();
       // event.stopPropagation();
       api
-      .post(baseURL + `relationship/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+        .post(baseURL + `relationship/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               relationshipName: "",
-              relationshipNameInKannada: "", 
+              relationshipNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       relationshipName: "",
       relationshipNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-    })
-     .then(() => navigate("#"));
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -97,7 +96,7 @@ function Relationship() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -106,7 +105,7 @@ function Relationship() {
               </li>
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -150,7 +149,8 @@ function Relationship() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Relationship Name in Kannada<span className="text-danger">*</span>
+                        Relationship Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -173,26 +173,26 @@ function Relationship() {
             </Card>
 
             <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  {/* <Link to="/relationship-list" className="btn btn-secondary border-0">
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      {/* <Link to="/seriui/relationship-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

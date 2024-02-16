@@ -1,9 +1,9 @@
-import { Card, Button,Col,Row,Form  } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import StakeHolderDatas from "../../store/stakeHolder/StakeHolderData";
 import { useNavigate } from "react-router-dom";
@@ -16,176 +16,180 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function StakeHolderList() {
-    const [listData, setListData] = useState({});
-    const [page, setPage] = useState(0);
-    const countPerPage = 5;
-    const [totalRows, setTotalRows] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const _params = { params: { pageNumber: page, size: countPerPage } };
-    const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-    const [data, setData] = useState({
-      text: "",
-      searchBy: "fruitsId",
-    });
-  
-    const handleInputs = (e) => {
-      // debugger;
-      let { name, value } = e.target;
-      setData({ ...data, [name]: value });
-    };
-  
-    // Search
-    const search = (e) => {
-      let joinColumn;
-      if (data.searchBy === "fruitsId") {
-        joinColumn = "farmer.fruitsId";
-      }
-      if (data.searchBy === "farmerNumber") {
-        joinColumn = "farmer.farmerNumber";
-      }
-      if (data.searchBy === "mobileNumber") {
-        joinColumn = "farmer.mobileNumber";
-      }
-      // console.log(joinColumn);
-      api
-        .post(baseURL2 + `farmer/search`, {
+  const [data, setData] = useState({
+    text: "",
+    searchBy: "fruitsId",
+  });
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "fruitsId") {
+      joinColumn = "farmer.fruitsId";
+    }
+    if (data.searchBy === "farmerNumber") {
+      joinColumn = "farmer.farmerNumber";
+    }
+    if (data.searchBy === "mobileNumber") {
+      joinColumn = "farmer.mobileNumber";
+    }
+    // console.log(joinColumn);
+    api
+      .post(
+        baseURL2 + `farmer/search`,
+        {
           searchText: data.text,
           joinColumn: joinColumn,
-        }, {
+        },
+        {
           headers: _header,
-        })
-        .then((response) => {
-          setListData(response.data.content.farmer);
-  
-          // if (response.data.content.error) {
-          //   // saveError();
-          // } else {
-          //   console.log(response);
-          //   // saveSuccess();
-          // }
-        })
-        .catch((err) => {
-          // saveError();
-        });
-    };
-  
-    const getList = () => {
-      setLoading(true);
-      api
-        .get(baseURL2 + `farmer/list-with-join`, _params)
-        .then((response) => {
-          setListData(response.data.content.farmer);
-          setTotalRows(response.data.content.totalItems);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setListData({});
-          setLoading(false);
-        });
-    };
-  
-    useEffect(() => {
-      getList();
-    }, [page]);
-  
-    const navigate = useNavigate();
-    const handleView = (_id) => {
-      navigate(`/stake-holder-view/${_id}`);
-    };
-  
-    const handleEdit = (_id) => {
-      navigate(`/stake-holder-edit/${_id}`);
-      // navigate("/state");
-    };
-  
-    const deleteError = () => {
-      Swal.fire({
-        icon: "error",
-        title: "Delete attempt was not successful",
-        text: "Something went wrong!",
-      });
-    };
-  
-    const deleteConfirm = (_id) => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "It will delete permanently!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.value) {
-          api
-            .delete(baseURL2 + `farmer/delete/${_id}`)
-            .then((response) => {
-              // deleteConfirm(_id);
-              getList();
-              Swal.fire(
-                "Deleted",
-                "You successfully deleted this record",
-                "success"
-              );
-            })
-            .catch((err) => {
-              deleteError();
-            });
-          // Swal.fire("Deleted", "You successfully deleted this record", "success");
-        } else {
-          console.log(result.value);
-          Swal.fire("Cancelled", "Your record is not deleted", "info");
         }
-      });
-    };
+      )
+      .then((response) => {
+        setListData(response.data.content.farmer);
 
-    createTheme(
-      "solarized",
-      {
-        text: {
-          primary: "#004b8e",
-          secondary: "#2aa198",
-        },
-        background: {
-          default: "#fff",
-        },
-        context: {
-          background: "#cb4b16",
-          text: "#FFFFFF",
-        },
-        divider: {
-          default: "#d3d3d3",
-        },
-        action: {
-          button: "rgba(0,0,0,.54)",
-          hover: "rgba(0,0,0,.02)",
-          disabled: "rgba(0,0,0,.12)",
-        },
+        // if (response.data.content.error) {
+        //   // saveError();
+        // } else {
+        //   console.log(response);
+        //   // saveSuccess();
+        // }
+      })
+      .catch((err) => {
+        // saveError();
+      });
+  };
+
+  const getList = () => {
+    setLoading(true);
+    api
+      .get(baseURL2 + `farmer/list-with-join`, _params)
+      .then((response) => {
+        setListData(response.data.content.farmer);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, [page]);
+
+  const navigate = useNavigate();
+  const handleView = (_id) => {
+    navigate(`/seriui/stake-holder-view/${_id}`);
+  };
+
+  const handleEdit = (_id) => {
+    navigate(`/seriui/stake-holder-edit/${_id}`);
+    // navigate("/seriui/state");
+  };
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        api
+          .delete(baseURL2 + `farmer/delete/${_id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#004b8e",
+        secondary: "#2aa198",
       },
-      "light"
-    );
-  
-    const customStyles = {
-      rows: {
-        style: {
-          minHeight: "45px", // override the row height
-        },
+      background: {
+        default: "#fff",
       },
-      headCells: {
-        style: {
-          backgroundColor: "#1e67a8",
-          color: "#fff",
-          fontSize: "14px",
-          paddingLeft: "8px", // override the cell padding for head cells
-          paddingRight: "8px",
-        },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
       },
-      cells: {
-        style: {
-          paddingLeft: "8px", // override the cell padding for data cells
-          paddingRight: "8px",
-        },
+      divider: {
+        default: "#d3d3d3",
       },
-    };  
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.02)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "light"
+  );
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
 
   const StakeHolderDataColumns = [
     {
@@ -212,14 +216,14 @@ function StakeHolderList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.farmerId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -306,7 +310,7 @@ function StakeHolderList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -315,7 +319,7 @@ function StakeHolderList() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -329,7 +333,7 @@ function StakeHolderList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -349,7 +353,7 @@ function StakeHolderList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="farmerId"

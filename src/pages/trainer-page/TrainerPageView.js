@@ -38,8 +38,8 @@ function TrainerPageView() {
       .get(baseURL2 + `trSchedule/get-join/${id}`)
       .then((response) => {
         setTrTrainer(response.data.content);
-        if(response.data.content.trUploadPath){
-          getPPtFile(response.data.content.trUploadPath)
+        if (response.data.content.trUploadPath) {
+          getPPtFile(response.data.content.trUploadPath);
         }
         setLoading(false);
       })
@@ -48,7 +48,6 @@ function TrainerPageView() {
         setLoading(false);
       });
   };
-
 
   const [trDetailsList, setTrDetailsList] = useState([]);
   const getTrDetailsList = () => {
@@ -68,19 +67,21 @@ function TrainerPageView() {
   const [selectedPPtFile, setSelectedPPtFile] = useState(null);
 
   const getPPtFile = async (file) => {
-    const parameters = `fileName=${file}`
+    const parameters = `fileName=${file}`;
     try {
-      const response = await api.get(baseURL2+`api/s3/download?${parameters}`, {
-        responseType: 'arraybuffer',
-      }); 
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
       setSelectedPPtFile(url);
     } catch (error) {
-      console.error('Error fetching file:', error);
+      console.error("Error fetching file:", error);
     }
-  }
-
+  };
 
   // console.log(getIdList());
 
@@ -94,13 +95,13 @@ function TrainerPageView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page  View</Block.Title>
+            <Block.Title tag="h2">Trainer Page View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainer-page-list"
+                  to="/seriui/trainer-page-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -109,7 +110,7 @@ function TrainerPageView() {
               </li>
               <li>
                 <Link
-                  to="/trainer-page-list"
+                  to="/seriui/trainer-page-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,13 +124,13 @@ function TrainerPageView() {
 
       <Block className="mt-n4">
         <Card>
-        <Card.Header>Training Schedule Details</Card.Header>
+          <Card.Header>Training Schedule Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
-                  <tr>
+                    <tr>
                       <td style={styles.ctstyle}> Schedule ID:</td>
                       <td>{trTrainer.trScheduleId}</td>
                     </tr>
@@ -137,10 +138,10 @@ function TrainerPageView() {
                       <td style={styles.ctstyle}> Stake Holder Type:</td>
                       <td>
                         {trTrainer.trStakeholderType === 1
-                          ? 'Training For Internal Stake Holders'
+                          ? "Training For Internal Stake Holders"
                           : trTrainer.trStakeholderType === 2
-                          ? 'Training For External Stake Holders'
-                          : 'Other'}
+                          ? "Training For External Stake Holders"
+                          : "Other"}
                       </td>
                     </tr>
                     <tr>
@@ -159,7 +160,7 @@ function TrainerPageView() {
                       <td style={styles.ctstyle}> Program:</td>
                       <td>{trTrainer.trProgramMasterName}</td>
                     </tr>
-                    
+
                     <tr>
                       <td style={styles.ctstyle}>Course Name:</td>
                       <td>{trTrainer.trCourseMasterName}</td>
@@ -192,10 +193,16 @@ function TrainerPageView() {
                       <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
                       <td>
                         {" "}
-                         {selectedPPtFile && <img style={{ height: "100px", width: "100px" }} src={selectedPPtFile} alt="Selected File" />}
+                        {selectedPPtFile && (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={selectedPPtFile}
+                            alt="Selected File"
+                          />
+                        )}
                       </td>
                     </tr>
-                    </tbody>
+                  </tbody>
                 </table>
               </Col>
             </Row>
@@ -205,93 +212,98 @@ function TrainerPageView() {
         <Card className="mt-3">
           <Card.Header>Trainer Details</Card.Header>
           <Card.Body>
-          {/* {console.log('Virtual Bank Account List:', vbAccountList)}
+            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
           {vbAccountList && vbAccountList.length > 0 ? (
             vbAccountList.map((vbAccount) => (
               <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-                {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
+            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
             {/* <Row className="g-gs"> */}
-            {trDetailsList && trDetailsList.length>0?(trDetailsList.map((trDetails)=>(
+            {trDetailsList && trDetailsList.length > 0
+              ? trDetailsList.map((trDetails) => (
                   <Row className="g-gs">
-                  {console.log(trDetails.trTraineeId)}
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}> ID:</td>
-                      <td>{trDetails.trTraineeId}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Schedule ID:</td>
-                      <td>{trDetails.trScheduleId}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Training Trainee Name:</td>
-                      <td>{trDetails.trTraineeName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Designation:</td>
-                      <td>{trDetails.name}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Office Name:</td>
-                      <td>{trDetails.trOfficeName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Gender:</td>
-                      <td>
-                        {trDetails.gender === 1
-                          ? 'Male'
-                          : trDetails.gender === 2
-                          ? 'Female'
-                          : 'Other'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Mobile Number:</td>
-                      <td>{trDetails.mobileNumber}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Place:</td>
-                      <td>{trDetails.place}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>State:</td>
-                      <td>{trDetails.stateName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>District:</td>
-                      <td>{trDetails.districtName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Taluk:</td>
-                      <td>{trDetails.talukName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Hobli:</td>
-                      <td>{trDetails.hobliName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Village:</td>
-                      <td>{trDetails.villageName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Pre Test Score:</td>
-                      <td>{trDetails.preTestScore}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Post Test Score:</td>
-                      <td>{trDetails.postTestScore}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Percentage Improved:</td>
-                      <td>{trDetails.percentageImproved}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
-            ))):""} 
+                    {console.log(trDetails.trTraineeId)}
+                    <Col lg="12">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}> ID:</td>
+                            <td>{trDetails.trTraineeId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Schedule ID:</td>
+                            <td>{trDetails.trScheduleId}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Training Trainee Name:
+                            </td>
+                            <td>{trDetails.trTraineeName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Designation:</td>
+                            <td>{trDetails.name}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Office Name:</td>
+                            <td>{trDetails.trOfficeName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Gender:</td>
+                            <td>
+                              {trDetails.gender === 1
+                                ? "Male"
+                                : trDetails.gender === 2
+                                ? "Female"
+                                : "Other"}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Mobile Number:</td>
+                            <td>{trDetails.mobileNumber}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Place:</td>
+                            <td>{trDetails.place}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>State:</td>
+                            <td>{trDetails.stateName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>District:</td>
+                            <td>{trDetails.districtName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Taluk:</td>
+                            <td>{trDetails.talukName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Hobli:</td>
+                            <td>{trDetails.hobliName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Village:</td>
+                            <td>{trDetails.villageName}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Pre Test Score:</td>
+                            <td>{trDetails.preTestScore}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Post Test Score:</td>
+                            <td>{trDetails.postTestScore}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Percentage Improved:</td>
+                            <td>{trDetails.percentageImproved}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                ))
+              : ""}
           </Card.Body>
         </Card>
       </Block>

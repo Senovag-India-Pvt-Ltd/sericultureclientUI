@@ -53,13 +53,12 @@ function TrainingProgramView() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Training Program View</Block.Title>
-         
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +67,7 @@ function TrainingProgramView() {
               </li>
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,7 +101,10 @@ function TrainingProgramView() {
                         <td>{TrainingPrograms.trProgramMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Training Program Name In Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Training Program Name In Kannada:
+                        </td>
                         <td>{TrainingPrograms.trProgramNameInKannada}</td>
                       </tr>
                     </tbody>

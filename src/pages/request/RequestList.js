@@ -17,9 +17,9 @@ function RequestList() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/ecommerce/products">Production</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/ecommerce/products">Production</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   Request
                 </li>
@@ -30,7 +30,7 @@ function RequestList() {
             <ul className="d-flex">
               {/* <li>
                 <Link
-                  to="/production/add-bill-of-material"
+                  to="/seriui/production/add-bill-of-material"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -39,7 +39,7 @@ function RequestList() {
               </li> */}
               <li>
                 <Link
-                  to="/add-request"
+                  to="/seriui/add-request"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

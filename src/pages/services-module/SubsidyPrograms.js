@@ -4,18 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import {
-  Media,
-  MediaGroup,
-  MediaText,
-  Icon,
-} from "../../components";
+import { Media, MediaGroup, MediaText, Icon } from "../../components";
 
 function SubsidyPrograms() {
   const navigate = useNavigate();
 
   const onClickProgram = () => {
-    navigate("/providing-subsidy");
+    navigate("/seriui/providing-subsidy");
   };
 
   return (
@@ -27,7 +22,7 @@ function SubsidyPrograms() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

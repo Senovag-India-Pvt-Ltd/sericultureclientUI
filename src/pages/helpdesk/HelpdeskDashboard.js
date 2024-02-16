@@ -386,7 +386,7 @@ function HelpdeskDashboard() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/help-desk"
+                  to="/seriui/help-desk"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -395,7 +395,7 @@ function HelpdeskDashboard() {
               </li>
               <li>
                 <Link
-                  to="/help-desk"
+                  to="/seriui/help-desk"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

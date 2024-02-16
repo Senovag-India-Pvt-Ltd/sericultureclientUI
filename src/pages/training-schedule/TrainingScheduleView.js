@@ -1,14 +1,11 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -39,8 +36,8 @@ function TrainingScheduleView() {
       .get(baseURL + `trSchedule/get-join/${id}`)
       .then((response) => {
         setTrainingSchedule(response.data.content);
-        if(response.data.content.trUploadPath){
-          getPPtFile(response.data.content.trUploadPath)
+        if (response.data.content.trUploadPath) {
+          getPPtFile(response.data.content.trUploadPath);
         }
         setLoading(false);
       })
@@ -54,18 +51,21 @@ function TrainingScheduleView() {
   const [selectedPPtFile, setSelectedPPtFile] = useState(null);
 
   const getPPtFile = async (file) => {
-    const parameters = `fileName=${file}`
+    const parameters = `fileName=${file}`;
     try {
-      const response = await api.get(baseURL+`api/s3/download?${parameters}`, {
-        responseType: 'arraybuffer',
-      }); 
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
       setSelectedPPtFile(url);
     } catch (error) {
-      console.error('Error fetching file:', error);
+      console.error("Error fetching file:", error);
     }
-  }
+  };
 
   //console.log(Caste);
 
@@ -84,7 +84,7 @@ function TrainingScheduleView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-schedule-list"
+                  to="/seriui/training-schedule-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -93,7 +93,7 @@ function TrainingScheduleView() {
               </li>
               <li>
                 <Link
-                  to="/training-schedule-list"
+                  to="/seriui/training-schedule-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,7 +118,7 @@ function TrainingScheduleView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                    <tr>
+                      <tr>
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{trainingSchedule.trScheduleId}</td>
                       </tr>
@@ -167,12 +167,18 @@ function TrainingScheduleView() {
                         <td>{trainingSchedule.trDateOfCompletion}</td>
                       </tr>
                       <tr>
-                      <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
-                      <td>
-                        {" "}
-                         {selectedPPtFile && <img style={{ height: "100px", width: "100px" }} src={selectedPPtFile} alt="Selected File" />}
-                      </td>
-                    </tr>
+                        <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
+                        <td>
+                          {" "}
+                          {selectedPPtFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedPPtFile}
+                              alt="Selected File"
+                            />
+                          )}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -44,12 +44,12 @@ function RelationshipList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/relationship-view/${_id}`);
+    navigate(`/seriui/relationship-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/relationship-edit/${_id}`);
-    // navigate("/relationship");
+    navigate(`/seriui/relationship-edit/${_id}`);
+    // navigate("/seriui/relationship");
   };
 
   const deleteError = () => {
@@ -140,7 +140,6 @@ function RelationshipList() {
     },
   };
 
-
   const RelationshipDataColumns = [
     {
       name: "Action",
@@ -204,7 +203,7 @@ function RelationshipList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/relationship"
+                  to="/seriui/relationship"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -213,7 +212,7 @@ function RelationshipList() {
               </li>
               <li>
                 <Link
-                  to="/relationship"
+                  to="/seriui/relationship"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -225,7 +224,7 @@ function RelationshipList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

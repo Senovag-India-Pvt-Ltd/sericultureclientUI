@@ -3,10 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import DatePicker from "../../../components/Form/DatePicker";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +13,14 @@ import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-
 function TransferReelerLicense() {
-
   const [data, setData] = useState({
     reelerName: "",
     wardNumber: "",
     passbookNumber: "",
     fatherName: "",
     educationId: "",
+    relationshipId: "",
     reelingUnitBoundary: "",
     dob: "",
     rationCard: "",
@@ -76,7 +72,10 @@ function TransferReelerLicense() {
     ifscCode: "",
     status: "",
     licenseRenewalDate: "",
+    transferReelerId: "",
   });
+
+  const [existingReelerName, setExistingReelerName] = useState("");
 
   const [validated, setValidated] = useState(false);
 
@@ -92,8 +91,7 @@ function TransferReelerLicense() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  
-  
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -105,27 +103,22 @@ function TransferReelerLicense() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `reeler/add`,data)
-      .then((response) => {
-        saveSuccess();
-        api
-          .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
-          .then((response) => {
-           
-          })
-          .catch((err) => {
-          
-          });
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+      api
+        .post(baseURL2 + `reeler/add`, {...data,transferReelerId:data.reelingLicenseNumber})
+        .then((response) => {
+          saveSuccess();
+          api
+            .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
+            .then((response) => {})
+            .catch((err) => {});
+        })
+        .catch((err) => {
+          setData({});
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
-
 
   const [isActive, setIsActive] = useState(false);
   const display = () => {
@@ -137,6 +130,7 @@ function TransferReelerLicense() {
       )
       .then((response) => {
         setData(response.data.content);
+        setExistingReelerName(response.data.content.reelerName);
         setLoading(false);
       })
       .catch((err) => {
@@ -148,13 +142,13 @@ function TransferReelerLicense() {
 
   console.log(data);
 
-  const [licenseTransfer,setLicenseTransfer] = useState({
-    reelingLicenseNumber:""
-  })
+  const [licenseTransfer, setLicenseTransfer] = useState({
+    reelingLicenseNumber: "",
+  });
 
   const handleLicenseTransferInputs = (e) => {
     // debugger;
-    let{name,value} = e.target;
+    let { name, value } = e.target;
     setLicenseTransfer({ ...licenseTransfer, [name]: value });
   };
 
@@ -168,11 +162,11 @@ function TransferReelerLicense() {
       navigate("#");
     });
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -331,8 +325,27 @@ function TransferReelerLicense() {
       getVillageList(data.hobliId);
     }
   }, [data.hobliId]);
+
+  // to get Relationship
+  const [relationshipListData, setRelationshipListData] = useState([]);
+
+  const getRelationshipList = () => {
+    api
+      .get(baseURL + `relationship/get-all`)
+      .then((response) => {
+        setRelationshipListData(response.data.content.relationship);
+      })
+      .catch((err) => {
+        setRelationshipListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRelationshipList();
+  }, []);
+
   return (
-    <Layout title="Transfer of Reeler License" >
+    <Layout title="Transfer of Reeler License">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -370,7 +383,7 @@ function TransferReelerLicense() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2}>
-                      License Transfer<span className="text-danger">*</span>
+                        License Transfer<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
@@ -383,10 +396,10 @@ function TransferReelerLicense() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          License Transfer  is required.
+                          License Transfer is required.
                         </Form.Control.Feedback>
-                  </Col>
-                  <Col sm={2}>
+                      </Col>
+                      <Col sm={2}>
                         <Button
                           type="button"
                           variant="primary"
@@ -395,8 +408,8 @@ function TransferReelerLicense() {
                           Search
                         </Button>
                       </Col>
-                      </Form.Group>
-                      </Col>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -408,20 +421,23 @@ function TransferReelerLicense() {
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="reelerName">Name<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="reelerName">
+                          Existing Reeler Name
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="reelerName"
                             name="reelerName"
-                            value={data.reelerName}
-                            onChange={handleInputs}
+                            value={existingReelerName}
                             type="text"
                             placeholder="Enter Reeler Name"
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
-                          Reeler Name is required.
-                        </Form.Control.Feedback>
+                            Reeler Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -438,7 +454,8 @@ function TransferReelerLicense() {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="fatherName">
-                          Father's/Husband's Name<span className="text-danger">*</span>
+                          Father's/Husband's Name
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -451,8 +468,8 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Fathers/Husband Name is required.
-                        </Form.Control.Feedback>
+                            Fathers/Husband Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -515,7 +532,7 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number  is required
+                            Mobile Number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -550,7 +567,9 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="arnNumber">ARN Number<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="arnNumber">
+                          ARN Number<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="arnNumber"
@@ -561,14 +580,12 @@ function TransferReelerLicense() {
                             placeholder="Enter ARN Number"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                          ARN Number is required.
-                        </Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            ARN Number is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
 
-                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="wnumber">Ward Number</Form.Label>
                         <div className="form-control-wrap">
@@ -580,6 +597,29 @@ function TransferReelerLicense() {
                             type="text"
                             placeholder="Enter Ward Number"
                           />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="reelerName">
+                          License Transferred Name
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reelerName"
+                            name="reelerName"
+                            // value={data.reelerName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Reeler Name"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Transferred Reeler Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -733,6 +773,38 @@ function TransferReelerLicense() {
 
                     <Col lg="4">
                       <Form.Group className="form-group">
+                        <Form.Label>
+                          Relationship<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="relationshipId"
+                            value={data.passbookNumber}
+                            // value={familyMembers.relationshipId}
+                            onChange={handleInputs}
+                            required
+                            isInvalid={
+                              data.relationshipId === undefined ||
+                              data.relationshipId === "0"
+                            }
+                          >
+                            <option value="">Select Relationship</option>
+                            {relationshipListData.map((list) => (
+                              <option
+                                key={list.relationshipId}
+                                value={list.relationshipId}
+                              >
+                                {list.relationshipName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Relationship is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="passbook">
                           Passbook Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -747,8 +819,8 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                         Passbook Number is required.
-                        </Form.Control.Feedback>
+                            Passbook Number is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
@@ -768,15 +840,20 @@ function TransferReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label>Machine Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Machine Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="machineTypeId"
                             value={data.machineTypeId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.machineTypeId === undefined || data.machineTypeId === "0"}
+                            isInvalid={
+                              data.machineTypeId === undefined ||
+                              data.machineTypeId === "0"
+                            }
                           >
                             <option value="">Select Machine Type</option>
                             {machineTypeListData.map((list) => (
@@ -789,8 +866,8 @@ function TransferReelerLicense() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                        Machine Type is required
-                      </Form.Control.Feedback>
+                            Machine Type is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -881,15 +958,19 @@ function TransferReelerLicense() {
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          State<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="stateId"
                             value={data.stateId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.stateId === undefined || data.stateId === "0"}
+                            isInvalid={
+                              data.stateId === undefined || data.stateId === "0"
+                            }
                           >
                             <option value="">Select State</option>
                             {stateListData.map((list) => (
@@ -905,15 +986,20 @@ function TransferReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label>District<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          District<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="districtId"
                             value={data.districtId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.districtId === undefined || data.districtId === "0"}
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
                           >
                             <option value="">Select District</option>
                             {districtListData && districtListData.length
@@ -933,15 +1019,19 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
-                        <Form.Label>Taluk<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Taluk<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="talukId"
                             value={data.talukId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.talukId === undefined || data.talukId === "0"}
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
                           >
                             <option value="">Select Taluk</option>
                             {talukListData && talukListData.length
@@ -956,22 +1046,26 @@ function TransferReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Taluk Name is required
-                        </Form.Control.Feedback>
+                            Taluk Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label>Hobli<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Hobli<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="hobliId"
                             value={data.hobliId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.hobliId === undefined || data.hobliId === "0"}
+                            isInvalid={
+                              data.hobliId === undefined || data.hobliId === "0"
+                            }
                           >
                             <option value="">Select Hobli</option>
                             {hobliListData && hobliListData.length
@@ -986,20 +1080,25 @@ function TransferReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Hobli Name is required
-                        </Form.Control.Feedback>
+                            Hobli Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       <Form.Group className="form-group">
-                        <Form.Label>Village<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Village<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="villageId"
                             value={data.villageId}
                             onChange={handleInputs}
-                            onBlur={() => handleInputs} 
+                            onBlur={() => handleInputs}
                             required
-                            isInvalid={data.villageId === undefined || data.villageId === "0"}
+                            isInvalid={
+                              data.villageId === undefined ||
+                              data.villageId === "0"
+                            }
                           >
                             <option value="">Select Village</option>
                             {villageListData && villageListData.length
@@ -1014,13 +1113,15 @@ function TransferReelerLicense() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Village Name is required
-                        </Form.Control.Feedback>
+                            Village Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="address">Address<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="address">
+                          Address<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             as="textarea"
@@ -1042,7 +1143,9 @@ function TransferReelerLicense() {
 
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="pincode">Pin Code<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="pincode">
+                          Pin Code<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="pincode"
@@ -1052,10 +1155,10 @@ function TransferReelerLicense() {
                             type="text"
                             placeholder="Enter Pin Code"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Pincode is required
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Pincode is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -1070,7 +1173,7 @@ function TransferReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                    <Form.Group className="form-group ">
+                      <Form.Group className="form-group ">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1084,8 +1187,8 @@ function TransferReelerLicense() {
                             placeholder="Enter Receipt number"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                           Receipt number is required
+                          <Form.Control.Feedback type="invalid">
+                            Receipt number is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1104,7 +1207,8 @@ function TransferReelerLicense() {
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelingLicenseNumber">
-                          Reeling License Number<span className="text-danger">*</span>
+                          Reeling License Number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1115,10 +1219,10 @@ function TransferReelerLicense() {
                             type="text"
                             placeholder="Enter Reeling License Number"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Reeling License Number is required
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeling License Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1192,7 +1296,9 @@ function TransferReelerLicense() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarEast">East<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarEast">
+                          East<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarEast"
@@ -1208,11 +1314,13 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarWest">West<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarWest">
+                          West<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarWest"
@@ -1228,11 +1336,13 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarNorth">North<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarNorth">
+                          North<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarNorth"
@@ -1248,11 +1358,13 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="mahajarSouth">South<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="mahajarSouth">
+                          South<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="mahajarSouth"
@@ -1281,7 +1393,9 @@ function TransferReelerLicense() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                      <Form.Label htmlFor="bankName">Bank Name<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="bankName">
+                          Bank Name<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="bankName"
@@ -1293,14 +1407,14 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bank Name is required
-                        </Form.Control.Feedback>
+                            Bank Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="branchName">
-                        Branch Name<span className="text-danger">*</span>
+                          Branch Name<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1313,8 +1427,8 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Branch Name is required
-                        </Form.Control.Feedback>
+                            Branch Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -1322,7 +1436,8 @@ function TransferReelerLicense() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="accno">
-                        Bank Account Number<span className="text-danger">*</span>
+                          Bank Account Number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1335,13 +1450,15 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bank Account Number is required
-                        </Form.Control.Feedback>
+                            Bank Account Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                      <Form.Label htmlFor="ifsc">IFSC Code<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="ifsc">
+                          IFSC Code<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="ifscCode"
@@ -1362,9 +1479,6 @@ function TransferReelerLicense() {
                 </Card.Body>
               </Card>
             </Block>
-
-
-            
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

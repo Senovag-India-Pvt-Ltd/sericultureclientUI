@@ -60,7 +60,7 @@ function PlantationTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function PlantationTypeView() {
               </li>
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,7 +103,10 @@ function PlantationTypeView() {
                         <td>{PlantationType.plantationTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Plantation Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Plantation Type Name in Kannada:
+                        </td>
                         <td>{PlantationType.plantationTypeNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function HelpDeskCategoryList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-category-view/${_id}`);
+    navigate(`/seriui/hd-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-category-edit/${_id}`);
-    // navigate("/hdCategoryMaster");
+    navigate(`/seriui/hd-category-edit/${_id}`);
+    // navigate("/seriui/hdCategoryMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function HelpDeskCategoryList() {
     },
   };
 
-
   const HdCategoryDataColumns = [
     {
       name: "Action",
@@ -186,12 +185,12 @@ function HelpDeskCategoryList() {
     },
 
     {
-        name: "Category",
-        selector: (row) => row.hdCategoryName,
-        cell: (row) => <span>{row.hdCategoryName}</span>,
-        sortable: true,
-        hide: "md",
-      },
+      name: "Category",
+      selector: (row) => row.hdCategoryName,
+      cell: (row) => <span>{row.hdCategoryName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -204,14 +203,17 @@ function HelpDeskCategoryList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/hd-category" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/hd-category"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hd-category"
+                  to="/seriui/hd-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +225,7 @@ function HelpDeskCategoryList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

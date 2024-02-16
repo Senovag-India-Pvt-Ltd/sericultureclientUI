@@ -25,9 +25,9 @@ function BidDashboard() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/crm/case-task">Subsidy Verification List</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Subsidy Verification List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   List
                 </li>

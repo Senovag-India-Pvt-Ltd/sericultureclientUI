@@ -37,19 +37,19 @@ function ReasonLotCancellation() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reason-lot-reject-master/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
-        saveSuccess();
+      api
+        .post(baseURL + `reason-lot-reject-master/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
           }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+        })
+        .catch((err) => {
+          setData({});
+          saveError();
+        });
       setValidated(true);
     }
   };
@@ -60,7 +60,7 @@ function ReasonLotCancellation() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reason-lot-cancellation-list"));
+    }).then(() => navigate("/seriui/reason-lot-cancellation-list"));
   };
 
   const saveError = (message) => {
@@ -82,7 +82,7 @@ function ReasonLotCancellation() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -91,7 +91,7 @@ function ReasonLotCancellation() {
               </li>
               <li>
                 <Link
-                  to="/reason-lot-cancellation-list"
+                  to="/seriui/reason-lot-cancellation-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -114,7 +114,8 @@ function ReasonLotCancellation() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="rear">
-                        Reason for Lot Cancellation<span className="text-danger">*</span>
+                        Reason for Lot Cancellation
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -126,8 +127,8 @@ function ReasonLotCancellation() {
                           placeholder="Enter Reason for Lot Cancellation"
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                         Reason for Lot Cancellation is required
+                        <Form.Control.Feedback type="invalid">
+                          Reason for Lot Cancellation is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -139,13 +140,16 @@ function ReasonLotCancellation() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                <Button type="submit" variant="primary">
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
                     Save
                   </Button>
                 </li>
                 <li>
-                  <Link to="/reason-lot-cancellation-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/reason-lot-cancellation-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

@@ -15,7 +15,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function Education() {
   const [data, setData] = useState({
     name: "",
-    educationNameInKannada:"",
+    educationNameInKannada: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -37,33 +37,33 @@ function Education() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `education/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `education/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               name: "",
-              educationNameInKannada:"", 
+              educationNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       name: "",
-      educationNameInKannada:"", 
-    })
-  }
+      educationNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -77,7 +77,7 @@ function Education() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -91,7 +91,7 @@ function Education() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -100,7 +100,7 @@ function Education() {
               </li>
               <li>
                 <Link
-                  to="/education-list"
+                  to="/seriui/education-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,7 +123,7 @@ function Education() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                      Education<span className="text-danger">*</span>
+                        Education<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -145,7 +145,8 @@ function Education() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Education Name in Kannada<span className="text-danger">*</span>
+                        Education Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -158,7 +159,7 @@ function Education() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Education Name in Kannada is required.
+                          Education Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -167,24 +168,23 @@ function Education() {
               </Card.Body>
             </Card>
 
-
-          <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+            <Card>
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

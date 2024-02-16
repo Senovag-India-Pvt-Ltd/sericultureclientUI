@@ -13,17 +13,17 @@ function Payment() {
     },
   };
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
-//   const rejectSuccess = () => {
-//     Swal.fire({
-//       icon: "success",
-//       title: "Rejected successfully",
-//       text: "Lot-002 has been Rejected!",
-//     }).then(() => {
-//       navigate("#");
-//     });
-//   };
+  //   const rejectSuccess = () => {
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Rejected successfully",
+  //       text: "Lot-002 has been Rejected!",
+  //     }).then(() => {
+  //       navigate("#");
+  //     });
+  //   };
 
   const [isActive, setIsActive] = useState(false);
   const display = () => {
@@ -39,7 +39,7 @@ function Payment() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -107,7 +107,7 @@ function Payment() {
             <div className={isActive ? "" : "d-none"}>
               <Row className="g-gs">
                 <Col lg="6">
-                <Card>
+                  <Card>
                     <div
                       className="table-responsive"
                       // style={{ paddingBottom: "30px" }}
@@ -127,7 +127,6 @@ function Payment() {
                             <td>&#8377;12000</td>
                             <td>10Kg</td>
                           </tr>
-                          
                         </tbody>
                       </table>
                     </div>
@@ -135,7 +134,7 @@ function Payment() {
                 </Col>
 
                 <Col lg="6">
-                <Card>
+                  <Card>
                     <Card.Header>Farmer Details</Card.Header>
                     <Card.Body>
                       <Row className="g-gs">

@@ -14,12 +14,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import {
-  Image,
-  Icon,
-  Media,
-  Select,
-} from "../../components";
+import { Image, Icon, Media, Select } from "../../components";
 
 function ProfileSettingsPage() {
   // delete account alert
@@ -119,14 +114,17 @@ function ProfileSettingsPage() {
           <div className="gap-col">
             <ul className="d-flex gap g-2">
               <li className="d-none d-md-block">
-                <Link to="/admin/profile" className="btn btn-soft btn-primary">
+                <Link
+                  to="/seriui/admin/profile"
+                  className="btn btn-soft btn-primary"
+                >
                   <Icon name="user"></Icon>
                   <span>View Profile</span>
                 </Link>
               </li>
               <li className="d-md-none">
                 <Link
-                  to="/admin/profile"
+                  to="/seriui/admin/profile"
                   className="btn btn-soft btn-primary btn-icon"
                 >
                   <Icon name="user"></Icon>
@@ -339,7 +337,7 @@ function ProfileSettingsPage() {
                             </div>
                             <div className="gap-col">
                               <Link
-                                to="/auths/auth-reset"
+                                to="/seriui/auths/auth-reset"
                                 className="text-light small"
                                 target="_blank"
                               >

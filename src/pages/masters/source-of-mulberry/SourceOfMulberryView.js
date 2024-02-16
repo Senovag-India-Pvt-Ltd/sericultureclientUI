@@ -54,7 +54,7 @@ function SourceOfMulberryView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/source-of-mulberry-list"
+                  to="/seriui/source-of-mulberry-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -63,7 +63,7 @@ function SourceOfMulberryView() {
               </li>
               <li>
                 <Link
-                  to="/source-of-mulberry-list"
+                  to="/seriui/source-of-mulberry-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -97,7 +97,10 @@ function SourceOfMulberryView() {
                         <td>{SourceOfMulberry.mulberrySourceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Source Of Mulberry in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Source Of Mulberry in Kannada:
+                        </td>
                         <td>{SourceOfMulberry.mulberrySourceNameInKannada}</td>
                       </tr>
                     </tbody>

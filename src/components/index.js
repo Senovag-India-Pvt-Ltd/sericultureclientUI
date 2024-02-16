@@ -35,7 +35,6 @@ import Timeline from "./Timeline/Timeline";
 import ChartLabel from "./Chart/ChartLabel";
 import WorldMap from "./WorldMap/WorldMap";
 import CodePreview from "./CodePreview/CodePreview";
-import PreviewIcon from "./PreviewIcon/PreviewIcon";
 import ChatList from "./Apps/chat/ChatList";
 import Message from "./Apps/chat/Message";
 import ChatMedia from "./Apps/chat/ChatMedia";
@@ -81,7 +80,6 @@ export {
     ChartLabel,
     WorldMap,
     CodePreview,
-    PreviewIcon,
     ChatList,
     Message,
     ChatMedia,

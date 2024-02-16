@@ -60,7 +60,7 @@ function ExternalUnitTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/external-unit-type-list"
+                  to="/seriui/external-unit-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +69,7 @@ function ExternalUnitTypeView() {
               </li>
               <li>
                 <Link
-                  to="/external-unit-type-list"
+                  to="/seriui/external-unit-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -103,8 +103,13 @@ function ExternalUnitTypeView() {
                         <td>{ExternalUnitType.externalUnitTypeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> External Unit Type Name in Kannada:</td>
-                        <td>{ExternalUnitType.externalUnitTypeNameInKannada}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          External Unit Type Name in Kannada:
+                        </td>
+                        <td>
+                          {ExternalUnitType.externalUnitTypeNameInKannada}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

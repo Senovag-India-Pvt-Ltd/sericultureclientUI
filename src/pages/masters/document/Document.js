@@ -43,7 +43,7 @@ function Document() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/documents-list"));
+    }).then(() => navigate("/seriui/documents-list"));
   };
 
   const saveError = () => {
@@ -63,7 +63,7 @@ function Document() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -78,7 +78,7 @@ function Document() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -87,7 +87,7 @@ function Document() {
               </li>
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -165,7 +165,6 @@ function Document() {
               </Card.Body>
             </Card>
 
-
             {/* <Card>
               <Card.Body>
                
@@ -189,8 +188,6 @@ function Document() {
               </Card.Body>
             </Card> */}
 
-
-
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
@@ -199,7 +196,10 @@ function Document() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/documents-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/documents-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

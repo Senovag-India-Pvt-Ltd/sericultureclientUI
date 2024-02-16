@@ -32,9 +32,9 @@ function SubsidyDrawing() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/crm/case-task">Subsidy Drawing List</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Subsidy Drawing List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   List
                 </li>
@@ -45,7 +45,7 @@ function SubsidyDrawing() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -54,7 +54,7 @@ function SubsidyDrawing() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

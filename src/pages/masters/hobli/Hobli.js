@@ -32,19 +32,19 @@ function Hobli() {
 
   const postData = (event) => {
     const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURL + `hobli/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL + `hobli/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               stateId: "",
@@ -55,23 +55,23 @@ function Hobli() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       stateId: "",
       districtId: "",
       talukId: "",
       hobliName: "",
       hobliNameInKannada: "",
-    })
-  }
+    });
+  };
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -80,9 +80,9 @@ function Hobli() {
     const response = api
       .get(baseURL + `state/get-all`)
       .then((response) => {
-        if(response.data.content.state){
+        if (response.data.content.state) {
           setStateListData(response.data.content.state);
-          }
+        }
       })
       .catch((err) => {
         setStateListData([]);
@@ -100,9 +100,9 @@ function Hobli() {
     const response = api
       .get(baseURL + `district/get-by-state-id/${_id}`)
       .then((response) => {
-        if(response.data.content.district){
+        if (response.data.content.district) {
           setDistrictListData(response.data.content.district);
-          }
+        }
       })
       .catch((err) => {
         setDistrictListData([]);
@@ -123,8 +123,8 @@ function Hobli() {
     const response = api
       .get(baseURL + `taluk/get-by-district-id/${_id}`)
       .then((response) => {
-        if(response.data.content.taluk){
-        setTalukListData(response.data.content.taluk);
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
         }
       })
       .catch((err) => {
@@ -153,7 +153,7 @@ function Hobli() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -167,7 +167,7 @@ function Hobli() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hobli-list"
+                  to="/seriui/hobli-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -176,7 +176,7 @@ function Hobli() {
               </li>
               <li>
                 <Link
-                  to="/hobli-list"
+                  to="/seriui/hobli-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -198,15 +198,19 @@ function Hobli() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        State<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
                           value={data.stateId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.stateId === undefined || data.stateId === "0"}
+                          isInvalid={
+                            data.stateId === undefined || data.stateId === "0"
+                          }
                         >
                           <option value="">Select State</option>
                           {stateListData.map((list) => (
@@ -216,24 +220,29 @@ function Hobli() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        State Name is required
-                      </Form.Control.Feedback>
+                          State Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>District<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        District<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="districtId"
                           value={data.districtId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.districtId === undefined || data.districtId === "0"}
+                          isInvalid={
+                            data.districtId === undefined ||
+                            data.districtId === "0"
+                          }
                         >
-                           <option value="">Select District</option>
+                          <option value="">Select District</option>
                           {districtListData && districtListData.length
                             ? districtListData.map((list) => (
                                 <option
@@ -246,44 +255,47 @@ function Hobli() {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        District Name is required
-                      </Form.Control.Feedback>
+                          District Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Taluk<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Taluk<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="talukId"
                           value={data.talukId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.talukId === undefined || data.talukId === "0"}
+                          isInvalid={
+                            data.talukId === undefined || data.talukId === "0"
+                          }
                         >
                           <option value="">Select Taluk</option>
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
-                                <option
-                                  key={list.talukId}
-                                  value={list.talukId}
-                                >
+                                <option key={list.talukId} value={list.talukId}>
                                   {list.talukName}
                                 </option>
                               ))
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                       Taluk Name is required
-                      </Form.Control.Feedback>
+                          Taluk Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="hobli">Hobli<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="hobli">
+                        Hobli<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hobli"
@@ -303,7 +315,10 @@ function Hobli() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="hobli">Hobli Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="hobli">
+                        Hobli Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="hobli"
@@ -333,7 +348,7 @@ function Hobli() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -16,9 +16,9 @@ function AddRequest() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item"><Link to="/crm/case">Case List</Link></li> */}
+                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case">Case List</Link></li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   Add Request
                 </li>
@@ -85,7 +85,7 @@ function AddRequest() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/request" className="btn border-0">
+                  <Link to="/seriui/request" className="btn border-0">
                     Cancel
                   </Link>
                 </li>

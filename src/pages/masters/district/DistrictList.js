@@ -87,12 +87,12 @@ function DistrictList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/district-view/${_id}`);
+    navigate(`/seriui/district-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/district-edit/${_id}`);
-    // navigate("/district");
+    navigate(`/seriui/district-edit/${_id}`);
+    // navigate("/seriui/district");
   };
 
   const deleteError = () => {
@@ -252,7 +252,7 @@ function DistrictList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/district"
+                  to="/seriui/district"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -261,7 +261,7 @@ function DistrictList() {
               </li>
               <li>
                 <Link
-                  to="/district"
+                  to="/seriui/district"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -284,7 +284,7 @@ function DistrictList() {
         </Card>
       </Block> */}
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <Row className="m-2">
             <Col>
@@ -305,7 +305,7 @@ function DistrictList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="fruitsId"

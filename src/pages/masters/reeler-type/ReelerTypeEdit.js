@@ -35,12 +35,12 @@ function ReelerTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reelerTypeMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError();
-          }else{
+      api
+        .post(baseURL + `reelerTypeMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError();
+          } else {
             updateSuccess();
             setData({
               reelerTypeMasterName: "",
@@ -49,21 +49,21 @@ function ReelerTypeEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       reelerTypeMasterName: "",
       reelerTypeNameInKannada: "",
       noOfDeviceAllowed: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -99,7 +99,7 @@ function ReelerTypeEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -121,7 +121,7 @@ function ReelerTypeEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-type-list"
+                  to="/seriui/reeler-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +130,7 @@ function ReelerTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/reeler-type-list"
+                  to="/seriui/reeler-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +156,9 @@ function ReelerTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="reelerTypeMaster">Releer Type <span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="reelerTypeMaster">
+                          Releer Type <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="reelerTypeMaster"
@@ -166,76 +168,82 @@ function ReelerTypeEdit() {
                             type="text"
                             placeholder="Enter Reeler Type"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Reeler Type Name is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Type Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Releer Type">Releer Type Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reeler"
-                          name="reelerTypeNameInKannada"
-                          value={data.reelerTypeNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Reeler Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Reeler Type Name in Kannada is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="Releer Type">
+                          Releer Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reeler"
+                            name="reelerTypeNameInKannada"
+                            value={data.reelerTypeNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Reeler Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Type Name in Kannada is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="noOfDeviceAllowed">Number of device Allowed<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reeler"
-                          name="noOfDeviceAllowed"
-                          value={data.noOfDeviceAllowed}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter No Of Device "
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Number of device is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="noOfDeviceAllowed">
+                          Number of device Allowed
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reeler"
+                            name="noOfDeviceAllowed"
+                            value={data.noOfDeviceAllowed}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter No Of Device "
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Number of device is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

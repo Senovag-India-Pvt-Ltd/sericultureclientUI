@@ -35,12 +35,12 @@ function StateEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `state/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `state/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               stateName: "",
@@ -48,20 +48,20 @@ function StateEdit() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       stateName: "",
-      stateNameInKannada: "", 
-    })
-  }
+      stateNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -97,7 +97,7 @@ function StateEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -119,7 +119,7 @@ function StateEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/state-list"
+                  to="/seriui/state-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +128,7 @@ function StateEdit() {
               </li>
               <li>
                 <Link
-                  to="/state-list"
+                  to="/seriui/state-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -154,7 +154,9 @@ function StateEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="state">State<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="state">
+                          State<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="state"
@@ -164,58 +166,59 @@ function StateEdit() {
                             type="text"
                             placeholder="Enter State"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              State Name is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            State Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        State Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="stateNameInKannada"
-                          value={data.stateNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter State Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          State Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          State Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="stateNameInKannada"
+                            value={data.stateNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter State Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            State Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

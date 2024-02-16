@@ -53,7 +53,7 @@ function MulberryVarietyView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -62,7 +62,7 @@ function MulberryVarietyView() {
               </li>
               <li>
                 <Link
-                  to="/mulberry-variety-list"
+                  to="/seriui/mulberry-variety-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -96,7 +96,10 @@ function MulberryVarietyView() {
                         <td>{MulberryVariety.mulberryVarietyName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Mulberry Variety Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Mulberry Variety Name in Kannada:
+                        </td>
                         <td>{MulberryVariety.mulberryVarietyNameInKannada}</td>
                       </tr>
                     </tbody>

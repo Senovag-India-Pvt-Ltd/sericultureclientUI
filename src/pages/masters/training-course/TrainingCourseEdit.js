@@ -39,33 +39,33 @@ function TrainingCourseEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `trCourseMaster/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `trCourseMaster/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
             updateError(response.data.content.error_description);
-            }else{
-              updateSuccess();
-              setData({
-                trCourseMasterName: "",
-                trCourseNameInKannada: "",
-              });
-              setValidated(false);
-            }
-          })
-      .catch((err) => {
-        updateError();
-      });
+          } else {
+            updateSuccess();
+            setData({
+              trCourseMasterName: "",
+              trCourseNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trCourseMasterName: "",
       trCourseNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -87,7 +87,6 @@ function TrainingCourseEdit() {
     getIdList();
   }, [id]);
 
-
   const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
@@ -100,7 +99,7 @@ function TrainingCourseEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -117,13 +116,12 @@ function TrainingCourseEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Edit Training Course</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainingCourses-list"
+                  to="/seriui/trainingCourses-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -132,7 +130,7 @@ function TrainingCourseEdit() {
               </li>
               <li>
                 <Link
-                  to="/trainingCourses-list"
+                  to="/seriui/trainingCourses-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -158,7 +156,10 @@ function TrainingCourseEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="trainingCourse">Training Course Name<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="trainingCourse">
+                          Training Course Name
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="trainingCourse"
@@ -168,35 +169,36 @@ function TrainingCourseEdit() {
                             type="text"
                             placeholder="Enter Training Course Name"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Training Course Name is required
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Course Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Training Course Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="trCourseNameInKannada"
-                          value={data.trCourseNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Course Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Training Course Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Training Course Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="trCourseNameInKannada"
+                            value={data.trCourseNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Training Course Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Course Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -211,7 +213,7 @@ function TrainingCourseEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

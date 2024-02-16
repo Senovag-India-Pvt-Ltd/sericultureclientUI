@@ -38,31 +38,31 @@ function RolesEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `role/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `role/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               roleName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       roleName: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -96,7 +96,7 @@ function RolesEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -118,7 +118,7 @@ function RolesEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -127,7 +127,7 @@ function RolesEdit() {
               </li>
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +153,9 @@ function RolesEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="role">Role<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="role">
+                          Role<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="role"
@@ -163,10 +165,10 @@ function RolesEdit() {
                             type="text"
                             placeholder="Enter Roles"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                         Roles Name is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Roles Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -177,22 +179,22 @@ function RolesEdit() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

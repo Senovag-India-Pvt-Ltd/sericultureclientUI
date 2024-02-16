@@ -4,9 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import {
-  Select,
-} from "../../components";
+import { Select } from "../../components";
 
 import React, { useState } from "react";
 
@@ -45,7 +43,7 @@ function RejectBid() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

@@ -35,33 +35,33 @@ function HelpDeskCategoryEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdCategoryMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdCategoryMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
-                hdBoardCategoryId:"",
-                hdCategoryName: "",
+              hdBoardCategoryId: "",
+              hdCategoryName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdBoardCategoryId:"",
-        hdCategoryName: "", 
-    })
-  }
+      hdBoardCategoryId: "",
+      hdCategoryName: "",
+    });
+  };
 
   // to get BoardCategory
   const [hdBoardCategoryListData, setHdBoardCategoryListData] = useState([]);
@@ -70,9 +70,11 @@ function HelpDeskCategoryEdit() {
     const response = api
       .get(baseURL + `hdBoardCategoryMaster/get-all`)
       .then((response) => {
-        if(response.data.content.hdBoardCategoryMaster){
-          setHdBoardCategoryListData(response.data.content.hdBoardCategoryMaster);
-          }
+        if (response.data.content.hdBoardCategoryMaster) {
+          setHdBoardCategoryListData(
+            response.data.content.hdBoardCategoryMaster
+          );
+        }
       })
       .catch((err) => {
         setHdBoardCategoryListData([]);
@@ -118,7 +120,7 @@ function HelpDeskCategoryEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -140,7 +142,7 @@ function HelpDeskCategoryEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-category-list"
+                  to="/seriui/hd-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -149,7 +151,7 @@ function HelpDeskCategoryEdit() {
               </li>
               <li>
                 <Link
-                  to="/hd-category-list"
+                  to="/seriui/hd-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -173,38 +175,45 @@ function HelpDeskCategoryEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Broad Category<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="hdBoardCategoryId"
-                          value={data.hdBoardCategoryId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs} 
-                          required
-                          isInvalid={data.hdBoardCategoryId === undefined || data.hdBoardCategoryId === "0"}
-                        >
-                         <option value="">Select Broad Category</option>
-                          {hdBoardCategoryListData.map((list) => (
-                            <option
-                              key={list.hdBoardCategoryId}
-                              value={list.hdBoardCategoryId}
-                            >
-                              {list.hdBoardCategoryName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Broad Category name is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Broad Category<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hdBoardCategoryId"
+                            value={data.hdBoardCategoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hdBoardCategoryId === undefined ||
+                              data.hdBoardCategoryId === "0"
+                            }
+                          >
+                            <option value="">Select Broad Category</option>
+                            {hdBoardCategoryListData.map((list) => (
+                              <option
+                                key={list.hdBoardCategoryId}
+                                value={list.hdBoardCategoryId}
+                              >
+                                {list.hdBoardCategoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Broad Category name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="hdCategory">Category<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="hdCategory">
+                          Category<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="hdCategory"
@@ -214,36 +223,36 @@ function HelpDeskCategoryEdit() {
                             type="text"
                             placeholder="Enter Category"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
+                          />
+                          <Form.Control.Feedback type="invalid">
                             Category Name is required.
-                            </Form.Control.Feedback>
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>    
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

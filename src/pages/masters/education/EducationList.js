@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -44,12 +44,12 @@ function EducationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/education-view/${_id}`);
+    navigate(`/seriui/education-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/education-edit/${_id}`);
-    // navigate("/education");
+    navigate(`/seriui/education-edit/${_id}`);
+    // navigate("/seriui/education");
   };
 
   // const handleDelete = (_id) => {
@@ -151,7 +151,6 @@ function EducationList() {
     },
   };
 
-
   const EducationDataColumns = [
     {
       name: "action",
@@ -212,9 +211,9 @@ function EducationList() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
-                <li className="breadcrumb-item"><Link to="/crm/case-task">Caste List</Link></li>
+                <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Caste List</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">
                   List
                 </li>
@@ -225,7 +224,7 @@ function EducationList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/education"
+                  to="/seriui/education"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -234,7 +233,7 @@ function EducationList() {
               </li>
               <li>
                 <Link
-                  to="/education"
+                  to="/seriui/education"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -257,7 +256,7 @@ function EducationList() {
         </Card>
       </Block> */}
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             // title="Education List"

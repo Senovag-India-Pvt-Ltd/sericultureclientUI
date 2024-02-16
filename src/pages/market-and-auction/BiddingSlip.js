@@ -142,6 +142,7 @@ function BiddingSlip() {
       })
       .catch((err) => {
         console.error("Error fetching farmer details:", err);
+        searchError(err.response.data.validationErrors);
         setFarmerDetails({});
         setLoading(false);
       });
@@ -594,7 +595,7 @@ function BiddingSlip() {
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -607,7 +608,7 @@ function BiddingSlip() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Bidding Slip
@@ -681,7 +682,7 @@ function BiddingSlip() {
                       </Col>
                       <Col sm={2} style={{ marginLeft: "-280px" }}>
                         <Link
-                          to="/stake-holder-registration"
+                          to="/seriui/stake-holder-registration"
                           className="btn btn-primary border-0"
                         >
                           Add New

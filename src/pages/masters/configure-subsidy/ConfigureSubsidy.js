@@ -13,10 +13,7 @@ import K2StateShares, {
 import BankCentralShares, {
   BankCentralSharesColumns,
 } from "../../../store/masters/subsidy-shares/BankCentralSharesData";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 
 function ConfigureSubsidy() {
   const [showModal, setShowModal] = useState(false);
@@ -36,7 +33,7 @@ function ConfigureSubsidy() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

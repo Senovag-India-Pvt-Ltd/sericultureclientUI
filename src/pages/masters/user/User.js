@@ -35,12 +35,12 @@ function User() {
   const handleInputs = (e) => {
     // debugger;
     name = e.target.name;
-    value = e.target.value; 
-  // Restrict the input to 10 digits for the phone number
-  if (name === "phoneNumber" && value.length > 10) {
-    // Trim the value to only include the first 10 digits
-    value = value.slice(0, 10);
-  }
+    value = e.target.value;
+    // Restrict the input to 10 digits for the phone number
+    if (name === "phoneNumber" && value.length > 10) {
+      // Trim the value to only include the first 10 digits
+      value = value.slice(0, 10);
+    }
     setData({ ...data, [name]: value });
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -54,12 +54,12 @@ function User() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `userMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveUserError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `userMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveUserError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               firstName: "",
@@ -79,15 +79,15 @@ function User() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveUserError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       firstName: "",
       middleName: "",
@@ -102,81 +102,83 @@ function User() {
       username: "",
       designationId: "",
       phoneNumber: "",
-      workingInstitutionId: "", 
-    })
-  }
+      workingInstitutionId: "",
+    });
+  };
 
   // to get designation
-const [designationListData, setDesignationListData] = useState([]);
+  const [designationListData, setDesignationListData] = useState([]);
 
-const getDesignationList = () => {
-  const response = api
-    .get(baseURL + `designation/get-all`)
-    .then((response) => {
-      setDesignationListData(response.data.content.designation);
-    })
-    .catch((err) => {
-      setDesignationListData([]);
-    });
-};
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURL + `designation/get-all`)
+      .then((response) => {
+        setDesignationListData(response.data.content.designation);
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+      });
+  };
 
-useEffect(() => {
-  getDesignationList();
-}, []);
+  useEffect(() => {
+    getDesignationList();
+  }, []);
 
-// to get working Institution
-const [workingInstitutionListData, setWorkingInstitutionListData] = useState([]);
+  // to get working Institution
+  const [workingInstitutionListData, setWorkingInstitutionListData] = useState(
+    []
+  );
 
-const getWorkingInstitutionList = () => {
-  const response = api
-    .get(baseURL + `workingInstitution/get-all`)
-    .then((response) => {
-      setWorkingInstitutionListData(response.data.content.workingInstitution);
-    })
-    .catch((err) => {
-      setWorkingInstitutionListData([]);
-    });
-};
+  const getWorkingInstitutionList = () => {
+    const response = api
+      .get(baseURL + `workingInstitution/get-all`)
+      .then((response) => {
+        setWorkingInstitutionListData(response.data.content.workingInstitution);
+      })
+      .catch((err) => {
+        setWorkingInstitutionListData([]);
+      });
+  };
 
-useEffect(() => {
-  getWorkingInstitutionList();
-}, []);
+  useEffect(() => {
+    getWorkingInstitutionList();
+  }, []);
 
-// to get role
-const [roleListData, setRoleListData] = useState([]);
+  // to get role
+  const [roleListData, setRoleListData] = useState([]);
 
-const getRoleList = () => {
-  const response = api
-    .get(baseURL + `role/get-all`)
-    .then((response) => {
-      setRoleListData(response.data.content.role);
-    })
-    .catch((err) => {
-      setRoleListData([]);
-    });
-};
+  const getRoleList = () => {
+    const response = api
+      .get(baseURL + `role/get-all`)
+      .then((response) => {
+        setRoleListData(response.data.content.role);
+      })
+      .catch((err) => {
+        setRoleListData([]);
+      });
+  };
 
-useEffect(() => {
-  getRoleList();
-}, []);
+  useEffect(() => {
+    getRoleList();
+  }, []);
 
-// to get Market
-const [marketListData, setMarketListData] = useState([]);
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
 
-const getMarketList = () => {
-  const response = api
-    .get(baseURL + `marketMaster/get-all`)
-    .then((response) => {
-      setMarketListData(response.data.content.marketMaster);
-    })
-    .catch((err) => {
-      setMarketListData([]);
-    });
-};
+  const getMarketList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
 
-useEffect(() => {
-  getMarketList();
-}, []);
+  useEffect(() => {
+    getMarketList();
+  }, []);
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -238,7 +240,6 @@ useEffect(() => {
     }
   }, [data.districtId]);
 
-
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -261,7 +262,7 @@ useEffect(() => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -276,7 +277,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/users-list"
+                  to="/seriui/users-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -285,7 +286,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/users-list"
+                  to="/seriui/users-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -306,8 +307,10 @@ useEffect(() => {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                  <Form.Group className="form-group">
-                      <Form.Label htmlFor="username">User Name<span className="text-danger">*</span></Form.Label>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="username">
+                        User Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="username"
@@ -323,11 +326,13 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
                   <Col lg="6">
-                  <Form.Group className="form-group">
-                      <Form.Label htmlFor="firstName">First Name<span className="text-danger">*</span></Form.Label>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="firstName">
+                        First Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="firstName"
@@ -343,11 +348,13 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="middleName">Middle Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="middleName">
+                        Middle Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="middleName"
@@ -359,15 +366,17 @@ useEffect(() => {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Middle Name is required
+                          Middle Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="lastName">Last Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="lastName">
+                        Last Name<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="lastName"
@@ -383,11 +392,13 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="emailID">Email<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="emailID">
+                        Email<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="emailID"
@@ -403,39 +414,49 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Designation<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Designation<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="designationId"
                           value={data.designationId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.designationId === undefined || data.designationId === "0"}
+                          isInvalid={
+                            data.designationId === undefined ||
+                            data.designationId === "0"
+                          }
                         >
                           <option value="">Select Designation</option>
                           {designationListData && designationListData.length
                             ? designationListData.map((list) => (
-                                <option key={list.designationId} value={list.designationId}>
+                                <option
+                                  key={list.designationId}
+                                  value={list.designationId}
+                                >
                                   {list.name}
                                 </option>
                               ))
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                       Designation is required
-                      </Form.Control.Feedback>
+                          Designation is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="emailID">Mobile Number<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="emailID">
+                        Mobile Number<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="phoneNumber"
@@ -451,11 +472,13 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="password">Password<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="password">
+                        Password<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="password"
@@ -471,19 +494,23 @@ useEffect(() => {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Role<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Role<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="roleId"
                           value={data.roleId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.roleId === undefined || data.roleId === "0"}
+                          isInvalid={
+                            data.roleId === undefined || data.roleId === "0"
+                          }
                         >
                           <option value="">Select Role</option>
                           {roleListData && roleListData.length
@@ -495,53 +522,68 @@ useEffect(() => {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Role Name is required
-                      </Form.Control.Feedback>
+                          Role Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
-                  <Form.Group className="form-group">
-                      <Form.Label>Market<span className="text-danger">*</span></Form.Label>
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="marketMasterId"
                           value={data.marketMasterId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.marketMasterId === undefined || data.marketMasterId === "0"}
+                          isInvalid={
+                            data.marketMasterId === undefined ||
+                            data.marketMasterId === "0"
+                          }
                         >
                           <option value="">Select Market</option>
                           {marketListData && marketListData.length
                             ? marketListData.map((list) => (
-                                <option key={list.marketMasterId} value={list.marketMasterId}>
+                                <option
+                                  key={list.marketMasterId}
+                                  value={list.marketMasterId}
+                                >
                                   {list.marketMasterName}
                                 </option>
                               ))
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Market Name is required
-                      </Form.Control.Feedback>
+                          Market Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Working Institution<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Working Institution
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="workingInstitutionId"
                           value={data.workingInstitutionId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.workingInstitutionId === undefined || data.workingInstitutionId === "0"}
+                          isInvalid={
+                            data.workingInstitutionId === undefined ||
+                            data.workingInstitutionId === "0"
+                          }
                         >
                           <option value="">Select Working Institution</option>
-                          {workingInstitutionListData && workingInstitutionListData.length
+                          {workingInstitutionListData &&
+                          workingInstitutionListData.length
                             ? workingInstitutionListData.map((list) => (
                                 <option
                                   key={list.workingInstitutionId}
@@ -553,23 +595,27 @@ useEffect(() => {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Working Institution Name is required
-                      </Form.Control.Feedback>
+                          Working Institution Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        State<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="stateId"
                           value={data.stateId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.stateId === undefined || data.stateId === "0"}
+                          isInvalid={
+                            data.stateId === undefined || data.stateId === "0"
+                          }
                         >
                           <option value="">Select State</option>
                           {stateListData.map((list) => (
@@ -579,23 +625,28 @@ useEffect(() => {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        State Name is required
-                      </Form.Control.Feedback>
+                          State Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>District<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        District<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="districtId"
                           value={data.districtId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.districtId === undefined || data.districtId === "0"}
+                          isInvalid={
+                            data.districtId === undefined ||
+                            data.districtId === "0"
+                          }
                         >
                           <option value="">Select District</option>
                           {districtListData && districtListData.length
@@ -610,23 +661,27 @@ useEffect(() => {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        District Name is required
-                      </Form.Control.Feedback>
+                          District Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>Taluk<span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Taluk<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="talukId"
                           value={data.talukId}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs} 
+                          onBlur={() => handleInputs}
                           required
-                          isInvalid={data.talukId === undefined || data.talukId === "0"}
+                          isInvalid={
+                            data.talukId === undefined || data.talukId === "0"
+                          }
                         >
                           <option value="">Select Taluk</option>
                           {talukListData && talukListData.length
@@ -638,12 +693,11 @@ useEffect(() => {
                             : ""}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                       Taluk Name is required
-                      </Form.Control.Feedback>
+                          Taluk Name is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
-                  
                 </Row>
               </Card.Body>
             </Card>
@@ -657,7 +711,7 @@ useEffect(() => {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -31,25 +31,24 @@ function ScProgram() {
     api
       .post(baseURL + `scProgram/add`, data)
       .then((response) => {
-        if(response.data.content.error){
+        if (response.data.content.error) {
           saveError(response.data.content.error_description);
-          }else{
-        saveSuccess();
-        setData({
-          scProgramName: "",
-        });
-      }
+        } else {
+          saveSuccess();
+          setData({
+            scProgramName: "",
+          });
+        }
       })
       .catch((err) => {
         saveError();
       });
   };
-  const clear = () =>{
+  const clear = () => {
     setData({
       scProgramName: "",
-    })
-  }
-
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -79,7 +78,7 @@ function ScProgram() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -88,7 +87,7 @@ function ScProgram() {
               </li>
               <li>
                 <Link
-                  to="/sc-program-list"
+                  to="/seriui/sc-program-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -134,7 +133,7 @@ function ScProgram() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function TrainingGroupList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/training-group-view/${_id}`);
+    navigate(`/seriui/training-group-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/training-group-edit/${_id}`);
-    // navigate("/trGroupMaster");
+    navigate(`/seriui/training-group-edit/${_id}`);
+    // navigate("/seriui/trGroupMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function TrainingGroupList() {
     },
   };
 
-
   const TrGroupMasterDataColumns = [
     {
       name: "Action",
@@ -185,13 +184,12 @@ function TrainingGroupList() {
       hide: "md",
     },
     {
-        name: "Training Group Name in Kannada",
-        selector: (row) => row.trGroupNameInKannada,
-        cell: (row) => <span>{row.trGroupNameInKannada}</span>,
-        sortable: true,
-        hide: "md",
-      },
-
+      name: "Training Group Name in Kannada",
+      selector: (row) => row.trGroupNameInKannada,
+      cell: (row) => <span>{row.trGroupNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -204,14 +202,17 @@ function TrainingGroupList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/training-group" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/training-group"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/training-group"
+                  to="/seriui/training-group"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +224,7 @@ function TrainingGroupList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

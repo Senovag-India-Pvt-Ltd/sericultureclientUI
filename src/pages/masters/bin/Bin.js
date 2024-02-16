@@ -134,19 +134,23 @@ function Bin() {
     api
       .post(baseURL1 + `addAllMaster/addBinCounterMaster?${parameters}`, {})
       .then((response) => {
-        axios
-        .post(baseURL1 + `addAllMaster/addBinMaster?${parameters1}`, {}, {
-          headers: _header,
-        })
-        .then((response)=>{
-          // console.log("hello...");
-        })
+        api
+          .post(
+            baseURL1 + `addAllMaster/addBinMaster?${parameters1}`,
+            {},
+            {
+              headers: _header,
+            }
+          )
+          .then((response) => {
+            // console.log("hello...");
+          });
 
         api
-        .post(baseURL1 + `addAllMaster/addBinMaster?${parameters2}`, {})
-        .then((response)=>{
-          // console.log("hello2...");
-        })
+          .post(baseURL1 + `addAllMaster/addBinMaster?${parameters2}`, {})
+          .then((response) => {
+            // console.log("hello2...");
+          });
         saveSuccess();
       })
       .catch((err) => {
@@ -266,10 +270,9 @@ function Bin() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/bin-list");
+      navigate("/seriui/bin-list");
     });
   };
-
 
   const [marketListData, setMarketListData] = useState([]);
   const [godownListData, setGodownListData] = useState([]);
@@ -294,7 +297,7 @@ function Bin() {
         setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     getList();
   }, [page]);
@@ -316,13 +319,13 @@ function Bin() {
         // alert(err.response.data.errorMessages[0].message[0].message);
         setLoading(false);
       });
-  };  
+  };
 
   useEffect(() => {
     if (data.marketId) {
       getGodownList(data.marketId);
     }
-  }, [data.marketId ]);
+  }, [data.marketId]);
 
   return (
     <Layout title="Bin">
@@ -333,7 +336,7 @@ function Bin() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -348,7 +351,7 @@ function Bin() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -357,7 +360,7 @@ function Bin() {
               </li>
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -691,14 +694,14 @@ function Bin() {
         </Form>
       </Block>
 
-    {/* <Row >
+      {/* <Row >
     <Col lg="6" >
       <Card>
         <Card.Header>Small Bin Status</Card.Header>
         <Card.Body>
           {/* <Row className="g-gs">
             <Col lg="12"> */}
-              {/* <table className="table small table-bordered">
+      {/* <table className="table small table-bordered">
                 <tbody>
                   <tr>
                     <td style={styles.ctstyle}> Market:</td>
@@ -732,8 +735,8 @@ function Bin() {
               </Card.Body>
             </Card>
           </Col>  */}
-                      
-    {/* <Col lg="6" >
+
+      {/* <Col lg="6" >
       <Card className="card-gutter-md mt-4">
         <Card.Header>Big Bin Status</Card.Header>
         <Card.Body >

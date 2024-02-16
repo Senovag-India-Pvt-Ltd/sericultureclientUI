@@ -35,31 +35,31 @@ function HelpDeskModuleEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdModuleMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdModuleMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
-                hdModuleName: "",
+              hdModuleName: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdModuleName: "", 
-    })
-  }
+      hdModuleName: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -95,7 +95,7 @@ function HelpDeskModuleEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -117,7 +117,7 @@ function HelpDeskModuleEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -126,7 +126,7 @@ function HelpDeskModuleEdit() {
               </li>
               <li>
                 <Link
-                  to="/hd-module-list"
+                  to="/seriui/hd-module-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -152,7 +152,9 @@ function HelpDeskModuleEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="hdModule">Modules<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="hdModule">
+                          Modules<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="hdModule"
@@ -162,10 +164,10 @@ function HelpDeskModuleEdit() {
                             type="text"
                             placeholder="Enter Modules"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                Module Name is required.
-                            </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Module Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -173,25 +175,25 @@ function HelpDeskModuleEdit() {
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

@@ -1,9 +1,9 @@
-import { Card, Button,Col,Row,Form  } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,6 @@ function ReelerLicenseList() {
   const [data, setData] = useState({
     text: "",
     searchBy: "mobileNumber",
-    
   });
 
   const handleInputs = (e) => {
@@ -37,8 +36,8 @@ function ReelerLicenseList() {
     setData({ ...data, [name]: value });
   };
 
-   // Search
-   const search = (e) => {
+  // Search
+  const search = (e) => {
     let joinColumn;
     if (data.searchBy === "mobileNumber") {
       joinColumn = "reeler.mobileNumber";
@@ -48,12 +47,16 @@ function ReelerLicenseList() {
     }
     // console.log(joinColumn);
     api
-      .post(baseURL2 + `reeler/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      }, {
-        headers: _header,
-      })
+      .post(
+        baseURL2 + `reeler/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         setListData(response.data.content.reeler);
 
@@ -68,7 +71,6 @@ function ReelerLicenseList() {
         // saveError();
       });
   };
-
 
   const getList = () => {
     setLoading(true);
@@ -112,12 +114,12 @@ function ReelerLicenseList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/reeler-license-view/${_id}`);
+    navigate(`/seriui/reeler-license-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/reeler-license-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/reeler-license-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -207,7 +209,6 @@ function ReelerLicenseList() {
     },
   };
 
-
   const ReelerLicenseDataColumns = [
     {
       name: "Action",
@@ -233,14 +234,14 @@ function ReelerLicenseList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.reelerId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -270,11 +271,11 @@ function ReelerLicenseList() {
     {
       name: "Gender",
       selector: (row) => row.gender,
-      cell: (row) => <span>{row.gender === 1
-        ? 'Male'
-        : row.gender === 2
-        ? 'Female'
-        : 'Other'}</span>,
+      cell: (row) => (
+        <span>
+          {row.gender === 1 ? "Male" : row.gender === 2 ? "Female" : "Other"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -298,7 +299,7 @@ function ReelerLicenseList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/issue-new-reeler-license"
+                  to="/seriui/issue-new-reeler-license"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -307,7 +308,7 @@ function ReelerLicenseList() {
               </li>
               <li>
                 <Link
-                  to="/issue-new-reeler-license"
+                  to="/seriui/issue-new-reeler-license"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -321,7 +322,7 @@ function ReelerLicenseList() {
 
       <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -336,12 +337,14 @@ function ReelerLicenseList() {
                     >
                       {/* <option value="">Select</option> */}
                       <option value="mobileNumber">Mobile Number</option>
-                      <option value="reelingLicenseNumber"> Reeling License Number</option>
-                      
+                      <option value="reelingLicenseNumber">
+                        {" "}
+                        Reeling License Number
+                      </option>
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="reelerId"

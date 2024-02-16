@@ -35,10 +35,10 @@ function SaleChawkiWormsView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/sale-chawki-worms-list">
+                  <Link to="/seriui/sale-chawki-worms-list">
                     Sale of Chawki Worms List
                   </Link>
                 </li>
@@ -52,7 +52,7 @@ function SaleChawkiWormsView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +61,7 @@ function SaleChawkiWormsView() {
               </li>
               <li>
                 <Link
-                  to="/sale-chawki-worms-list"
+                  to="/seriui/sale-chawki-worms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

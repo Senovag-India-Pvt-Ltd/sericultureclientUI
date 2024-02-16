@@ -24,10 +24,10 @@ function ServiceTypeList() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
-                  <Link to="/user-manage/user-list">User Manage</Link>
+                  <Link to="/seriui/user-manage/user-list">User Manage</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   Service Type

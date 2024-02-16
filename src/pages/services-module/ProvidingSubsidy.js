@@ -11,10 +11,7 @@ import K2StateShares, {
 import BankCentralShares, {
   BankCentralSharesColumns,
 } from "../../store/masters/subsidy-shares/BankCentralSharesData";
-import {
-  Icon,
-  Select,
-} from "../../components";
+import { Icon, Select } from "../../components";
 import ProvidingSubsidyData, {
   ProvidingSubsidyColumns,
 } from "../../store/masters/servicemodule/ProvidingSubsidyData";
@@ -28,7 +25,7 @@ function ProvidingSubsidy() {
   };
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/subsidy-acknowledge");
+    navigate("/seriui/subsidy-acknowledge");
   };
   return (
     <Layout title="Apply Subsidy">
@@ -39,7 +36,7 @@ function ProvidingSubsidy() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>

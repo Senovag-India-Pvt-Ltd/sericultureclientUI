@@ -37,12 +37,12 @@ function ReelerType() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `reelerTypeMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `reelerTypeMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               reelerTypeMasterName: "",
@@ -51,21 +51,21 @@ function ReelerType() {
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       reelerTypeMasterName: "",
       reelerTypeNameInKannada: "",
       noOfDeviceAllowed: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -79,7 +79,7 @@ function ReelerType() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -93,7 +93,7 @@ function ReelerType() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-type-list"
+                  to="/seriui/reeler-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,7 +102,7 @@ function ReelerType() {
               </li>
               <li>
                 <Link
-                  to="/reeler-type-list"
+                  to="/seriui/reeler-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -124,7 +124,9 @@ function ReelerType() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Releer Type">Releer Type<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Releer Type">
+                        Releer Type<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="reeler"
@@ -144,7 +146,10 @@ function ReelerType() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="Releer Type">Releer Type Name in Kannada<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="Releer Type">
+                        Releer Type Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="reeler"
@@ -164,7 +169,10 @@ function ReelerType() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="noOfDeviceAllowed">Number of device Allowed<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="noOfDeviceAllowed">
+                        Number of device Allowed
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="reeler"
@@ -187,22 +195,22 @@ function ReelerType() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>
@@ -212,4 +220,3 @@ function ReelerType() {
 }
 
 export default ReelerType;
-

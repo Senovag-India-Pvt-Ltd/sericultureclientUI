@@ -88,7 +88,7 @@ function FlexTime() {
         activityType: "ISSUEBIDSLIP",
       })
       .then((response) => {
-        if(response.data.content === null || !response.data.content.start){
+        if (response.data.content === null || !response.data.content.start) {
           setBiddingSlipStatus(false);
         }
 
@@ -108,7 +108,7 @@ function FlexTime() {
         activityType: "AUCTION",
       })
       .then((response) => {
-        if(response.data.content === null || !response.data.content.start){
+        if (response.data.content === null || !response.data.content.start) {
           setAuctionStatus(false);
         }
 
@@ -128,7 +128,7 @@ function FlexTime() {
         activityType: "AUCTIONACCEPT",
       })
       .then((response) => {
-        if(response.data.content === null || !response.data.content.start){
+        if (response.data.content === null || !response.data.content.start) {
           setAuctionAcceptStatus(false);
         }
 
@@ -280,7 +280,7 @@ function FlexTime() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/farmer-type-list"));
+    }).then(() => navigate("/seriui/farmer-type-list"));
   };
   const saveError = () => {
     Swal.fire({
@@ -300,7 +300,7 @@ function FlexTime() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -309,7 +309,7 @@ function FlexTime() {
               </li>
               <li>
                 <Link
-                  to="/farmer-type-list"
+                  to="/seriui/farmer-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -500,7 +500,7 @@ function FlexTime() {
                 </li>
                 <li>
                   <Link
-                    to="/farmer-type-list"
+                    to="/seriui/farmer-type-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

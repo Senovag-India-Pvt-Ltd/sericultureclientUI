@@ -135,14 +135,19 @@ function ReadyForPayment() {
         console.log(response);
         if (response.data.content) {
           setTotalAmount(
-            response.data.content.farmerReadyForPaymentResponse.totalAmountToFarmer
+            response.data.content.farmerReadyForPaymentResponse
+              .totalAmountToFarmer
           );
         } else {
           setWeighmentCompletedList([]);
         }
-        if (response.data.content.farmerReadyForPaymentResponse.farmerPaymentInfoResponseList) {
+        if (
+          response.data.content.farmerReadyForPaymentResponse
+            .farmerPaymentInfoResponseList
+        ) {
           setWeighmentCompletedList(
-            response.data.content.farmerReadyForPaymentResponse.farmerPaymentInfoResponseList
+            response.data.content.farmerReadyForPaymentResponse
+              .farmerPaymentInfoResponseList
           );
           // if (!res.ifscCode) {
           //   setShowBankError(true);
@@ -342,7 +347,7 @@ function ReadyForPayment() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -351,7 +356,7 @@ function ReadyForPayment() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

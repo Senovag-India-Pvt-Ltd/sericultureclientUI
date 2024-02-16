@@ -81,40 +81,40 @@ function MarketExceptionTime() {
     // } else {
     //   event.preventDefault();
     //   // event.stopPropagation();
-      api
-        .post(baseURLMarket + `auction/misc/updateExceptionalTime`, data)
-        .then((response) => {
-          if (response.data.errorCode === 0) {
-            saveSuccess();
-          } else if (response.data.errorCode === -1) {
-            saveError(response.data.errorMessages[0].message[0].message);
-          }
-          //   if (response.data.content.error) {
-          //     saveError(response.data.content.error_description);
-          //   } else {
-          //     saveSuccess();
-          //     setData({
-          //       issueBidSlipStartTime: "",
-          //       issueBidSlipEndTime: "",
-          //       auction1StartTime: "",
-          //       auction2StartTime: "",
-          //       auction3StartTime: "",
-          //       auction1EndTime: "",
-          //       auction2EndTime: "",
-          //       auction3EndTime: "",
-          //       auctionAcceptance1StartTime: "",
-          //       auctionAcceptance2StartTime: "",
-          //       auctionAcceptance3StartTime: "",
-          //       auctionAcceptance1EndTime: "",
-          //       auctionAcceptance2EndTime: "",
-          //       auctionAcceptance3EndTime: "",
-          //     });
-          //     setValidated(false);
-          //   }
-        })
-        .catch((err) => {
-          saveError();
-        });
+    api
+      .post(baseURLMarket + `auction/misc/updateExceptionalTime`, data)
+      .then((response) => {
+        if (response.data.errorCode === 0) {
+          saveSuccess();
+        } else if (response.data.errorCode === -1) {
+          saveError(response.data.errorMessages[0].message[0].message);
+        }
+        //   if (response.data.content.error) {
+        //     saveError(response.data.content.error_description);
+        //   } else {
+        //     saveSuccess();
+        //     setData({
+        //       issueBidSlipStartTime: "",
+        //       issueBidSlipEndTime: "",
+        //       auction1StartTime: "",
+        //       auction2StartTime: "",
+        //       auction3StartTime: "",
+        //       auction1EndTime: "",
+        //       auction2EndTime: "",
+        //       auction3EndTime: "",
+        //       auctionAcceptance1StartTime: "",
+        //       auctionAcceptance2StartTime: "",
+        //       auctionAcceptance3StartTime: "",
+        //       auctionAcceptance1EndTime: "",
+        //       auctionAcceptance2EndTime: "",
+        //       auctionAcceptance3EndTime: "",
+        //     });
+        //     setValidated(false);
+        //   }
+      })
+      .catch((err) => {
+        saveError();
+      });
     //   setValidated(true);
     // }
   };
@@ -164,7 +164,7 @@ function MarketExceptionTime() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -173,7 +173,7 @@ function MarketExceptionTime() {
               </li>
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -186,7 +186,7 @@ function MarketExceptionTime() {
       </Block.Head>
 
       <Block className="mt-n5">
-        <Form >
+        <Form>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -506,7 +506,7 @@ function MarketExceptionTime() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="button" variant="primary" onClick={postData}>
-                  {/* <Button type="submit" variant="primary"> */}
+                    {/* <Button type="submit" variant="primary"> */}
                     Save
                   </Button>
                 </li>

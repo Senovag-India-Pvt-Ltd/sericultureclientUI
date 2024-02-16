@@ -42,33 +42,33 @@ function IrrigationSourceEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `irrigationSource/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
-        updateSuccess();
-        setData({
-          irrigationSourceName: "",
-          irrigationSourceNameInKannada: "",
-        });
-        setValidated(false);
+      api
+        .post(baseURL + `irrigationSource/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              irrigationSourceName: "",
+              irrigationSourceNameInKannada: "",
+            });
+            setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-    irrigationSourceName: "",
-    irrigationSourceNameInKannada: "",
-    })
-  }
+      irrigationSourceName: "",
+      irrigationSourceNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -104,7 +104,7 @@ function IrrigationSourceEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -127,7 +127,7 @@ function IrrigationSourceEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -136,7 +136,7 @@ function IrrigationSourceEdit() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-source-list"
+                  to="/seriui/irrigation-source-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -163,7 +163,8 @@ function IrrigationSourceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="irrigation">
-                          Irrigation Source<span className="text-danger">*</span>
+                          Irrigation Source
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -174,33 +175,36 @@ function IrrigationSourceEdit() {
                             onChange={handleInputs}
                             placeholder="Enter irrigation Source"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Irrigation Source is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Irrigation Source is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="land">Irrigation Source Name in Kannada<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="land"
-                          name="irrigationSourceNameInKannada"
-                          type="text"
-                          value={data.irrigationSourceNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Irrigation Source Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Irrigation Source Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="land">
+                          Irrigation Source Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="land"
+                            name="irrigationSourceNameInKannada"
+                            type="text"
+                            value={data.irrigationSourceNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Irrigation Source Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Irrigation Source Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -216,7 +220,7 @@ function IrrigationSourceEdit() {
                 </li>
                 <li>
                   {/* <Link
-                    to="/irrigation-source-list"
+                    to="/seriui/irrigation-source-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

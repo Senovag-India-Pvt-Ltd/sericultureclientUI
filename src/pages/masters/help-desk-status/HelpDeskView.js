@@ -57,7 +57,7 @@ function HelpDeskStatusView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-status-list"
+                  to="/seriui/hd-status-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function HelpDeskStatusView() {
               </li>
               <li>
                 <Link
-                  to="/hd-status-list"
+                  to="/seriui/hd-status-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -110,6 +110,5 @@ function HelpDeskStatusView() {
     </Layout>
   );
 }
-
 
 export default HelpDeskStatusView;

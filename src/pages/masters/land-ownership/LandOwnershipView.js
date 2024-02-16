@@ -52,7 +52,7 @@ function LandOwnershipView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/land-ownership-list"
+                  to="/seriui/land-ownership-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +61,7 @@ function LandOwnershipView() {
               </li>
               <li>
                 <Link
-                  to="/land-ownership-list"
+                  to="/seriui/land-ownership-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -95,7 +95,10 @@ function LandOwnershipView() {
                         <td>{LandOwnership.landOwnershipName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Land Ownership In Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Land Ownership In Kannada:
+                        </td>
                         <td>{LandOwnership.landOwnershipNameInKannada}</td>
                       </tr>
                     </tbody>

@@ -758,7 +758,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Farmer Registration"
-                to="/stake-holder-registration"
+                to="/seriui/stake-holder-registration"
               />
             </MenuItem>
           ) : null}
@@ -766,7 +766,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Reeler License"
-                to="/issue-new-reeler-license"
+                to="/seriui/issue-new-reeler-license"
               />
             </MenuItem>
           ) : null}
@@ -774,7 +774,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Renewal of Reeler License"
-                to="/renew-reeler-license"
+                to="/seriui/renew-reeler-license"
               />
             </MenuItem>
           ) : null}
@@ -782,7 +782,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Transfer of Reeler License"
-                to="/transfer-reeler-license"
+                to="/seriui/transfer-reeler-license"
               />
             </MenuItem>
           ) : null}
@@ -791,7 +791,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Trader License"
-                to="/issue-new-trader-license"
+                to="/seriui/issue-new-trader-license"
               />
             </MenuItem>
           ) : null}
@@ -799,7 +799,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="RSP/CRC/NSSO Registration"
-                to="/external-unit-registration"
+                to="/seriui/external-unit-registration"
               />
             </MenuItem>
           ) : null}
@@ -816,14 +816,17 @@ function Menu() {
         <MenuSub>
           {showMenu.Services_Subsidy_Programmes ? (
             <MenuItem>
-              <MenuItemLink text="Subsidy Programmes" to="/subsidy-programs" />
+              <MenuItemLink
+                text="Subsidy Programmes"
+                to="/seriui/subsidy-programs"
+              />
             </MenuItem>
           ) : null}
           {showMenu.Services_Track_the_DFL_procurement ? (
             <MenuItem>
               <MenuItemLink
                 text="Track DFL Procurement"
-                to="/track-dfl-procurement"
+                to="/seriui/track-dfl-procurement"
               />
             </MenuItem>
           ) : null}
@@ -831,7 +834,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Track Mulberry Status"
-                to="/track-mulberry-status"
+                to="/seriui/track-mulberry-status"
               />
             </MenuItem>
           ) : null}
@@ -839,7 +842,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Supply of Disinfection"
-                to="/supply-disinfectants"
+                to="/seriui/supply-disinfectants"
               />
             </MenuItem>
           ) : null}
@@ -847,20 +850,23 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Apply Incentives"
-                to="/providing-incentives"
+                to="/seriui/providing-incentives"
               />
             </MenuItem>
           ) : null}
           {showMenu.Services_Apply_Subsidy ? (
             <MenuItem>
-              <MenuItemLink text="Apply Subsidy" to="/providing-subsidy" />
+              <MenuItemLink
+                text="Apply Subsidy"
+                to="/seriui/providing-subsidy"
+              />
             </MenuItem>
           ) : null}
           {showMenu.Services_Providing_Chawki_Rearing_Incentives ? (
             <MenuItem>
               <MenuItemLink
                 text="Providing Chawki Rearing incentives"
-                to="/providing-chawki-incentives"
+                to="/seriui/providing-chawki-incentives"
               />
             </MenuItem>
           ) : null}
@@ -868,7 +874,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Apply incentives to Reelers"
-                to="/providing-reeler-incentives"
+                to="/seriui/providing-reeler-incentives"
               />
             </MenuItem>
           ) : null}
@@ -876,7 +882,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Apply subsidy to the Reelers"
-                to="/providing-reeler-subsidy"
+                to="/seriui/providing-reeler-subsidy"
               />
             </MenuItem>
           ) : null}
@@ -895,25 +901,31 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Subsidy Verification"
-                to="/subsidy-approval-verification"
+                to="/seriui/subsidy-approval-verification"
               />
             </MenuItem>
           ) : null}
           {showMenu.DBT_Subsidy_Sanction ? (
             <MenuItem>
-              <MenuItemLink text="Subsidy Sanction" to="/subsidy-sanction" />
+              <MenuItemLink
+                text="Subsidy Sanction"
+                to="/seriui/subsidy-sanction"
+              />
             </MenuItem>
           ) : null}
           {showMenu.DBT_Subsidy_Drawing ? (
             <MenuItem>
-              <MenuItemLink text="Subsidy Drawing" to="/subsidy-drawing" />
+              <MenuItemLink
+                text="Subsidy Drawing"
+                to="/seriui/subsidy-drawing"
+              />
             </MenuItem>
           ) : null}
           {showMenu.DBT_Subsidy_Counter_Signing ? (
             <MenuItem>
               <MenuItemLink
                 text="Subsidy Counter Signing"
-                to="/subsidy-counter-sign"
+                to="/seriui/subsidy-counter-sign"
               />
             </MenuItem>
           ) : null}
@@ -935,27 +947,30 @@ function Menu() {
           ) : null} */}
           {showMenu.Market_Bidding ? (
             <MenuItem>
-              <MenuItemLink text="e-Inward" to="/bidding-slip" />
+              <MenuItemLink text="e-Inward" to="/seriui/bidding-slip" />
             </MenuItem>
           ) : null}
           {showMenu.Market_Accept_Farmer_Auction ? (
             <MenuItem>
-              <MenuItemLink text="e-Acceptance" to="/accept-former-auction" />
+              <MenuItemLink
+                text="e-Acceptance"
+                to="/seriui/accept-former-auction"
+              />
             </MenuItem>
           ) : null}
           {/* {showMenu.Market_Auction ? (
             <MenuItem>
-              <MenuItemLink text="e-Auction" to="/reject-lot" />
+              <MenuItemLink text="e-Auction" to="/seriui/reject-lot" />
             </MenuItem>
           ) : null} */}
           {showMenu.Market_Weighment ? (
             <MenuItem>
-              <MenuItemLink text="e-Weighment" to="/weighment" />
+              <MenuItemLink text="e-Weighment" to="/seriui/weighment" />
             </MenuItem>
           ) : null}
           {showMenu.Market_Gatepass ? (
             <MenuItem>
-              <MenuItemLink text="Gatepass" to="/gatepass" />
+              <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
             </MenuItem>
           ) : null}
           <MenuItem>
@@ -972,7 +987,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Ready for Payment"
-                        to="/ready-for-payment"
+                        to="/seriui/ready-for-payment"
                       />
                     </MenuItem>
                   ) : null}
@@ -980,7 +995,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Bulk Send to Bank"
-                        to="/bulk-send-to-bank"
+                        to="/seriui/bulk-send-to-bank"
                       />
                     </MenuItem>
                   ) : null}
@@ -988,13 +1003,16 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Bank Statement"
-                        to="/bank-statement"
+                        to="/seriui/bank-statement"
                       />
                     </MenuItem>
                   ) : null}
                   {showMenu.Market_Payment_IFSC_Update ? (
                     <MenuItem>
-                      <MenuItemLink text="IFSC Update" to="/ifsc-update" />
+                      <MenuItemLink
+                        text="IFSC Update"
+                        to="/seriui/ifsc-update"
+                      />
                     </MenuItem>
                   ) : null}
                 </MenuSub>
@@ -1003,12 +1021,15 @@ function Menu() {
           </MenuItem>
           {showMenu.Market_Reject ? (
             <MenuItem>
-              <MenuItemLink text="Reject Lot" to="/reject-lot" />
+              <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
             </MenuItem>
           ) : null}
           {showMenu.Market_Reject ? (
             <MenuItem>
-              <MenuItemLink text="Show Lot Details" to="/display-all-lot" />
+              <MenuItemLink
+                text="Show Lot Details"
+                to="/seriui/display-all-lot"
+              />
             </MenuItem>
           ) : null}
           {/* {showMenu.Market_Permit ? (
@@ -1020,7 +1041,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Reject Farmer Auction"
-                to="/reject-farmer-auction"
+                to="/seriui/reject-farmer-auction"
               />
             </MenuItem>
           ) : null} */}
@@ -1028,13 +1049,13 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Generate Bidding Slip"
-                to="/generate-bidding-slip"
+                to="/seriui/generate-bidding-slip"
               />
             </MenuItem>
           ) : null} */}
           {/* {showMenu.Market_Update_Lot_Weight ? (
             <MenuItem>
-              <MenuItemLink text="Update Lot Weight" to="/update-lot-weight" />
+              <MenuItemLink text="Update Lot Weight" to="/seriui/update-lot-weight" />
             </MenuItem>
           ) : null} */}
         </MenuSub>
@@ -1049,77 +1070,76 @@ function Menu() {
         />
         <MenuSub>
           {showMenu.SeedDFL_Kunigal ? (
-             <MenuItem>
+            <MenuItem>
               <MenuItemLink
                 text="Maintenance of mulberry Garden in the Farms"
-                to="/garden-mulberry-farm"
+                to="/seriui/garden-mulberry-farm"
               />
-            </MenuItem>   
+            </MenuItem>
           ) : null}
 
-             <MenuItem>
-             <MenuItemLink
-                text="Receipt of DFLs from the P4 grainage"
-                to="/Receipt-of-DFLs-from-the-P4-grainage"
-              />
-            </MenuItem>
+          <MenuItem>
+            <MenuItemLink
+              text="Receipt of DFLs from the P4 grainage"
+              to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+            />
+          </MenuItem>
 
-             <MenuItem>
-             <MenuItemLink
-                text="Maintenance of Line Records for Each Race"
-                to="/Maintenance-of-Line-Records-for-Each-Race"
-              />
-            </MenuItem>
-            
-             <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Maintenance of Screening Batch Records"
-                to="/Maintenance-of-Screening-Batch-Records"
-              />
-            </MenuItem>
+              text="Maintenance of Line Records for Each Race"
+              to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+            />
+          </MenuItem>
 
-            <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Dispatch of Cocoons to P4 Grainage"
-                to="/Dispatch-of-Cocoons-to-P4-Grainage"
-              />
-            </MenuItem>
+              text="Maintenance of Screening Batch Records"
+              to="/seriui/Maintenance-of-Screening-Batch-Records"
+            />
+          </MenuItem>
 
-             <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Rearing of DFLs for the 8 Lines"
-                to="/Rearing-of-DFLs-for-the-8-Lines"
-              />
-            </MenuItem>
- 
-             <MenuItem>
-            <MenuItemLink
-                text="Preservation of seed cocoon for processing"
-                to="/Preservation-of-seed-cocoon-for-processing"
-              />
-            </MenuItem>
+              text="Dispatch of Cocoons to P4 Grainage"
+              to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+            />
+          </MenuItem>
 
-             <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Preparation of eggs DFLs"
-                to="/Preparation-of-eggs-DFLs"
-              />
-            </MenuItem>
+              text="Rearing of DFLs for the 8 Lines"
+              to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+            />
+          </MenuItem>
 
-              <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Maintenance of eggs at cold storage"
-                to="/Maintenance-of-eggs-at-cold-storage"
-              />
-            </MenuItem>
+              text="Preservation of seed cocoon for processing"
+              to="/seriui/Preservation-of-seed-cocoon-for-processing"
+            />
+          </MenuItem>
 
-            <MenuItem>
+          <MenuItem>
             <MenuItemLink
-                text="Cold Storage Schedule BV"
-                to="/Cold-Storage-Schedule-BV"
-              />
-            </MenuItem>
- 
+              text="Preparation of eggs DFLs"
+              to="/seriui/Preparation-of-eggs-DFLs"
+            />
+          </MenuItem>
+
+          <MenuItem>
+            <MenuItemLink
+              text="Maintenance of eggs at cold storage"
+              to="/seriui/Maintenance-of-eggs-at-cold-storage"
+            />
+          </MenuItem>
+
+          <MenuItem>
+            <MenuItemLink
+              text="Cold Storage Schedule BV"
+              to="/seriui/Cold-Storage-Schedule-BV"
+            />
+          </MenuItem>
 
           {showMenu.SeedDFL_Grainages ? (
             <MenuItem sub>
@@ -1129,7 +1149,6 @@ function Menu() {
                 onMouseEnter={menuHover}
                 sub
               />
-             
             </MenuItem>
           ) : null}
 
@@ -1141,9 +1160,7 @@ function Menu() {
                 onMouseEnter={menuHover}
                 sub
               />
-              <MenuSub>
-                
-              </MenuSub>
+              <MenuSub></MenuSub>
             </MenuItem>
           ) : null}
         </MenuSub>
@@ -1157,39 +1174,53 @@ function Menu() {
           sub
         />
         <MenuSub>
-         
-           
-            <MenuItem>
-              <MenuItemLink text="mainenanc of mulberrygardern" to="/mainenanc-of-mulberrygardern" />
-            </MenuItem>
-
-             <MenuItem>
-              <MenuItemLink text="Receipt of DFLs from the grainage" to="/Receipt-of-DFLs-from-the-grainage" />
-            </MenuItem>
-
-               <MenuItem>
-              <MenuItemLink text="Rearing of DFLs" to="/Rearing-of-DFLs" />
-            </MenuItem>
-
-                <MenuItem>
-              <MenuItemLink text="Supply of Cocoons to Grainagee" to="/Supply-of-Cocoons-to-Grainagee" />
-            </MenuItem>
+          <MenuItem>
+            <MenuItemLink
+              text="Maintenance Of Mulberry Garden"
+              to="/seriui/maintenance-of-mulberry-garden"
+            />
+          </MenuItem>
 
           <MenuItem>
-              <MenuItemLink text="Maintenance and Sale of Nursery to Farmers" to="/Maintenance-and-Sale-of-Nursery-to-Farmers" />
-            </MenuItem>
+            <MenuItemLink
+              text="Receipt of DFLs from the grainage"
+              to="/seriui/receipt-of-dfls"
+            />
+          </MenuItem>
 
-             
+          <MenuItem>
+            <MenuItemLink text="Rearing of DFLs" to="/seriui/rearing-of-dfls" />
+          </MenuItem>
+
+          <MenuItem>
+            <MenuItemLink
+              text="Supply of Cocoons to Grainagee"
+              to="/seriui/Supply-of-Cocoons-to-Grainagee"
+            />
+          </MenuItem>
+
+          <MenuItem>
+            <MenuItemLink
+              text="Maintenance and Sale of Nursery to Farmers"
+              to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+            />
+          </MenuItem>
+
           {showMenu.GardenManagement_Seed_Cutting_Bank ? (
             <MenuItem>
-              <MenuItemLink text="Seed cutting bank" to="/seed-cutting-bank" />
+              <MenuItemLink
+                text="Seed cutting bank"
+                to="/seriui/seed-cutting-bank"
+              />
             </MenuItem>
           ) : null}
 
-             <MenuItem>
-              <MenuItemLink text="Chawki distribution to Farmers" to="/Chawki-distribution-to-Farmers" />
-            </MenuItem>
-         
+          <MenuItem>
+            <MenuItemLink
+              text="Chawki distribution to Farmers"
+              to="/seriui/Chawki-distribution-to-Farmers"
+            />
+          </MenuItem>
         </MenuSub>
       </MenuItem>
 
@@ -1205,22 +1236,18 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Sale of Chawki Worms"
-                to="/sale-chawki-worms"
-              />
-            </MenuItem> 
-          ) : null}
-
-            <MenuItem>
-              <MenuItemLink
-                text="Chawki Management"
-                to="/chawki-management"
+                to="/seriui/sale-chawki-worms"
               />
             </MenuItem>
+          ) : null}
 
-            
-             
+          <MenuItem>
+            <MenuItemLink
+              text="Chawki Management"
+              to="/seriui/chawki-management"
+            />
+          </MenuItem>
         </MenuSub>
-        
       </MenuItem>
 
       <MenuItem sub>
@@ -1235,7 +1262,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Assigning Yearly Targets"
-                to="/attribute-assigning"
+                to="/seriui/attribute-assigning"
               />
             </MenuItem>
           ) : null}
@@ -1254,7 +1281,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Tracking status of Mulberry"
-                to="/track-current-status"
+                to="/seriui/track-current-status"
               />
             </MenuItem>
           ) : null}
@@ -1262,7 +1289,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Supply of disinfectants to farmers"
-                to="/inspect-supply-disinfectants"
+                to="/seriui/inspect-supply-disinfectants"
               />
             </MenuItem>
           ) : null}
@@ -1270,7 +1297,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Implementation of MGNREGA"
-                to="/implementation-mgnrega"
+                to="/seriui/implementation-mgnrega"
               />
             </MenuItem>
           ) : null}
@@ -1287,19 +1314,25 @@ function Menu() {
         <MenuSub>
           {showMenu.Training_Schedule ? (
             <MenuItem>
-              <MenuItemLink text="Schedule Training" to="/training-schedule" />
+              <MenuItemLink
+                text="Schedule Training"
+                to="/seriui/training-schedule"
+              />
             </MenuItem>
           ) : null}
           {showMenu.Training_Page ? (
             <MenuItem>
-              <MenuItemLink text="Trainer Page" to="/trainer-page-list" />
+              <MenuItemLink
+                text="Trainer Page"
+                to="/seriui/trainer-page-list"
+              />
             </MenuItem>
           ) : null}
           {showMenu.Training_Deputation_Tracker ? (
             <MenuItem>
               <MenuItemLink
                 text="Training Deputation Tracker"
-                to="/training-deputation-tracker"
+                to="/seriui/training-deputation-tracker"
               />
             </MenuItem>
           ) : null}
@@ -1321,27 +1354,30 @@ function Menu() {
         <MenuSub>
           {showMenu.Helpdesk_Raise_a_Ticket ? (
             <MenuItem>
-              <MenuItemLink text="Raise a Ticket" to="/help-desk" />
+              <MenuItemLink text="Raise a Ticket" to="/seriui/help-desk" />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_Dashboard ? (
             <MenuItem>
-              <MenuItemLink text="Helpdesk Dashboard" to="/helpdesk-dashboard" />
+              <MenuItemLink
+                text="Helpdesk Dashboard"
+                to="/seriui/helpdesk-dashboard"
+              />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_User_Dashboard ? (
             <MenuItem>
-              <MenuItemLink text="User Dashboard" to="/user-dashboard" />
+              <MenuItemLink text="User Dashboard" to="/seriui/user-dashboard" />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_My_Tickets ? (
             <MenuItem>
-              <MenuItemLink text="My Tickets" to="/my-tickets" />
+              <MenuItemLink text="My Tickets" to="/seriui/my-tickets" />
             </MenuItem>
           ) : null}
           {showMenu.Helpdesk_FAQ ? (
             <MenuItem>
-              <MenuItemLink text="KEDB" to="/help-desk-faq-view" />
+              <MenuItemLink text="KEDB" to="/seriui/help-desk-faq-view" />
             </MenuItem>
           ) : null}
         </MenuSub>
@@ -1375,78 +1411,90 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_Registration_Caste ? (
                         <MenuItem>
-                          <MenuItemLink text="Caste" to="/caste" />
+                          <MenuItemLink text="Caste" to="/seriui/caste" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Roles ? (
                         <MenuItem>
-                          <MenuItemLink text="Roles" to="/roles" />
+                          <MenuItemLink text="Roles" to="/seriui/roles" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Education ? (
                         <MenuItem>
-                          <MenuItemLink text="Education" to="/education" />
+                          <MenuItemLink
+                            text="Education"
+                            to="/seriui/education"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Relationship ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Relationship"
-                            to="/relationship"
+                            to="/seriui/relationship"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_State ? (
                         <MenuItem>
-                          <MenuItemLink text="State" to="/state" />
+                          <MenuItemLink text="State" to="/seriui/state" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_District ? (
                         <MenuItem>
-                          <MenuItemLink text="District" to="/district" />
+                          <MenuItemLink text="District" to="/seriui/district" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Taluk ? (
                         <MenuItem>
-                          <MenuItemLink text="Taluk" to="/taluk" />
+                          <MenuItemLink text="Taluk" to="/seriui/taluk" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Hobli ? (
                         <MenuItem>
-                          <MenuItemLink text="Hobli" to="/hobli" />
+                          <MenuItemLink text="Hobli" to="/seriui/hobli" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Village ? (
                         <MenuItem>
-                          <MenuItemLink text="Village" to="/village" />
+                          <MenuItemLink text="Village" to="/seriui/village" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Trader_Type ? (
                         <MenuItem>
-                          <MenuItemLink text="Trader Type" to="/trader-type" />
+                          <MenuItemLink
+                            text="Trader Type"
+                            to="/seriui/trader-type"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Farmer_Type ? (
                         <MenuItem>
-                          <MenuItemLink text="Farmer Type" to="/farmer-type" />
+                          <MenuItemLink
+                            text="Farmer Type"
+                            to="/seriui/farmer-type"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Working_Institution ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Working Institution"
-                            to="/working-institution"
+                            to="/seriui/working-institution"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_User ? (
                         <MenuItem>
-                          <MenuItemLink text="User" to="/user" />
+                          <MenuItemLink text="User" to="/seriui/user" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Registration_Designation ? (
                         <MenuItem>
-                          <MenuItemLink text="Designation" to="/designation" />
+                          <MenuItemLink
+                            text="Designation"
+                            to="/seriui/designation"
+                          />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
@@ -1466,7 +1514,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Land Holding Category"
-                            to="/land-category"
+                            to="/seriui/land-category"
                           />
                         </MenuItem>
                       ) : null}
@@ -1474,7 +1522,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Irrigation Source"
-                            to="/irrigation-source"
+                            to="/seriui/irrigation-source"
                           />
                         </MenuItem>
                       ) : null}
@@ -1482,7 +1530,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Irrigation Type"
-                            to="/irrigation-type"
+                            to="/seriui/irrigation-type"
                           />
                         </MenuItem>
                       ) : null}
@@ -1490,20 +1538,23 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Land Ownership"
-                            to="/land-ownership"
+                            to="/seriui/land-ownership"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Land_Soil_Type ? (
                         <MenuItem>
-                          <MenuItemLink text="Soil Type" to="/soil-type" />
+                          <MenuItemLink
+                            text="Soil Type"
+                            to="/seriui/soil-type"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Land_Rear_House_Roof_Type ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Rear House Roof Type"
-                            to="/rear-house-roof-type"
+                            to="/seriui/rear-house-roof-type"
                           />
                         </MenuItem>
                       ) : null}
@@ -1511,7 +1562,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Silk Worm Variety"
-                            to="/silk-worm-variety"
+                            to="/seriui/silk-worm-variety"
                           />
                         </MenuItem>
                       ) : null}
@@ -1519,7 +1570,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Source of Mulberry"
-                            to="/source-of-mulberry"
+                            to="/seriui/source-of-mulberry"
                           />
                         </MenuItem>
                       ) : null}
@@ -1527,7 +1578,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Mulberry Variety"
-                            to="/mulberry-variety"
+                            to="/seriui/mulberry-variety"
                           />
                         </MenuItem>
                       ) : null}
@@ -1535,7 +1586,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Subsidy Details"
-                            to="/subsidy-details"
+                            to="/seriui/subsidy-details"
                           />
                         </MenuItem>
                       ) : null}
@@ -1543,7 +1594,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Plantation Type"
-                            to="/plantation-type"
+                            to="/seriui/plantation-type"
                           />
                         </MenuItem>
                       ) : null}
@@ -1551,7 +1602,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Machine Type"
-                            to="/machine-type"
+                            to="/seriui/machine-type"
                           />
                         </MenuItem>
                       ) : null}
@@ -1570,19 +1621,25 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_Service_Program ? (
                         <MenuItem>
-                          <MenuItemLink text="Program" to="/sc-program" />
+                          <MenuItemLink
+                            text="Program"
+                            to="/seriui/sc-program"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Service_Component ? (
                         <MenuItem>
-                          <MenuItemLink text="Component" to="/sc-component" />
+                          <MenuItemLink
+                            text="Component"
+                            to="/seriui/sc-component"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Service_Head_of_Account ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Head of Account"
-                            to="/sc-head-account"
+                            to="/seriui/sc-head-account"
                           />
                         </MenuItem>
                       ) : null}
@@ -1590,7 +1647,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Reason for lot Cancellation"
-                            to="/reason-lot-cancellation"
+                            to="/seriui/reason-lot-cancellation"
                           />
                         </MenuItem>
                       ) : null}
@@ -1598,7 +1655,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Reason for bid Rejection"
-                            to="/reason-bid-rejection"
+                            to="/seriui/reason-bid-rejection"
                           />
                         </MenuItem>
                       ) : null}
@@ -1619,7 +1676,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Program"
-                            to="/trainingProgram"
+                            to="/seriui/trainingProgram"
                           />
                         </MenuItem>
                       ) : null}
@@ -1627,7 +1684,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Course"
-                            to="/trainingCourse"
+                            to="/seriui/trainingCourse"
                           />
                         </MenuItem>
                       ) : null}
@@ -1635,7 +1692,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Deputed Institute Training"
-                            to="/deputed-institute"
+                            to="/seriui/deputed-institute"
                           />
                         </MenuItem>
                       ) : null}
@@ -1643,7 +1700,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Group"
-                            to="/training-group"
+                            to="/seriui/training-group"
                           />
                         </MenuItem>
                       ) : null}
@@ -1651,7 +1708,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Institution"
-                            to="/training-institution"
+                            to="/seriui/training-institution"
                           />
                         </MenuItem>
                       ) : null}
@@ -1659,7 +1716,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Mode"
-                            to="/training-mode"
+                            to="/seriui/training-mode"
                           />
                         </MenuItem>
                       ) : null}
@@ -1667,7 +1724,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Training Office"
-                            to="/training-office"
+                            to="/seriui/training-office"
                           />
                         </MenuItem>
                       ) : null}
@@ -1686,32 +1743,38 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_HelpDesk_Module ? (
                         <MenuItem>
-                          <MenuItemLink text="Modules" to="/hd-module" />
+                          <MenuItemLink text="Modules" to="/seriui/hd-module" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Feature ? (
                         <MenuItem>
-                          <MenuItemLink text="Feature" to="/hd-feature" />
+                          <MenuItemLink
+                            text="Feature"
+                            to="/seriui/hd-feature"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Board_Category ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Broad Category"
-                            to="/hd-board-category"
+                            to="/seriui/hd-board-category"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Category ? (
                         <MenuItem>
-                          <MenuItemLink text="Category" to="/hd-category" />
+                          <MenuItemLink
+                            text="Category"
+                            to="/seriui/hd-category"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Sub Category"
-                            to="/hd-sub-category"
+                            to="/seriui/hd-sub-category"
                           />
                         </MenuItem>
                       ) : null}
@@ -1719,7 +1782,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Help Desk Status"
-                            to="/hd-status"
+                            to="/seriui/hd-status"
                           />
                         </MenuItem>
                       ) : null}
@@ -1727,7 +1790,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Help Desk Severity"
-                            to="/hd-severity"
+                            to="/seriui/hd-severity"
                           />
                         </MenuItem>
                       ) : null}
@@ -1735,7 +1798,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Help Desk FAQ"
-                            to="/hd-question"
+                            to="/seriui/hd-question"
                           />
                         </MenuItem>
                       ) : null}
@@ -1754,70 +1817,79 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_Auction_Bin ? (
                         <MenuItem>
-                          <MenuItemLink text="Bin" to="/bin" />
+                          <MenuItemLink text="Bin" to="/seriui/bin" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Market ? (
                         <MenuItem>
-                          <MenuItemLink text="Market" to="/market" />
+                          <MenuItemLink text="Market" to="/seriui/market" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Godown ? (
                         <MenuItem>
-                          <MenuItemLink text="Godown" to="/godawn" />
+                          <MenuItemLink text="Godown" to="/seriui/godawn" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Activate_Reeler ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Activate Reeler"
-                            to="/activate-reeler"
+                            to="/seriui/activate-reeler"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Race ? (
                         <MenuItem>
-                          <MenuItemLink text="Race" to="/race" />
+                          <MenuItemLink text="Race" to="/seriui/race" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Source ? (
                         <MenuItem>
-                          <MenuItemLink text="Source" to="/source" />
+                          <MenuItemLink text="Source" to="/seriui/source" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Crate ? (
                         <MenuItem>
-                          <MenuItemLink text="Crate" to="/crate" />
+                          <MenuItemLink text="Crate" to="/seriui/crate" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Flex_Time ? (
                         <MenuItem>
-                          <MenuItemLink text="Flex Time" to="/flex-time" />
+                          <MenuItemLink
+                            text="Flex Time"
+                            to="/seriui/flex-time"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Exception_Time ? (
                         <MenuItem>
                           <MenuItemLink
                             text="Exception Time"
-                            to="/market-exception-time"
+                            to="/seriui/market-exception-time"
                           />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Market_Type ? (
                         <MenuItem>
-                          <MenuItemLink text="Market Type" to="/market-type" />
+                          <MenuItemLink
+                            text="Market Type"
+                            to="/seriui/market-type"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_Reeler_Type ? (
                         <MenuItem>
-                          <MenuItemLink text="Reeler Type" to="/reeler-type" />
+                          <MenuItemLink
+                            text="Reeler Type"
+                            to="/seriui/reeler-type"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Auction_External_Unit ? (
                         <MenuItem>
                           <MenuItemLink
                             text="External Unit"
-                            to="/external-unit-type"
+                            to="/seriui/external-unit-type"
                           />
                         </MenuItem>
                       ) : null}
@@ -1825,7 +1897,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Empaneled Vendors"
-                            to="/empanelled-vendor"
+                            to="/seriui/empanelled-vendor"
                           />
                         </MenuItem>
                       ) : null}
@@ -1833,7 +1905,7 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Reeler Device Mapping"
-                            to="/reeler-device-mapping"
+                            to="/seriui/reeler-device-mapping"
                           />
                         </MenuItem>
                       ) : null}
@@ -1841,13 +1913,13 @@ function Menu() {
                         <MenuItem>
                           <MenuItemLink
                             text="Race Mapping"
-                            to="/race-mapping"
+                            to="/seriui/race-mapping"
                           />
                         </MenuItem>
                       ) : null}
                       {/* {showMenu.Admin_Master_Auction_Accept_Bid ? (
                         <MenuItem>
-                          <MenuItemLink text="Accept Bid" to="/accept-bid" />
+                          <MenuItemLink text="Accept Bid" to="/seriui/accept-bid" />
                         </MenuItem>
                       ) : null} */}
                     </MenuSub>
@@ -1865,12 +1937,15 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_General_Pages ? (
                         <MenuItem>
-                          <MenuItemLink text="Pages" to="/role-pages" />
+                          <MenuItemLink text="Pages" to="/seriui/role-pages" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_General_Config_Role ? (
                         <MenuItem>
-                          <MenuItemLink text="Config Role" to="/role-config" />
+                          <MenuItemLink
+                            text="Config Role"
+                            to="/seriui/role-config"
+                          />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
@@ -1891,38 +1966,44 @@ function Menu() {
               <MenuSub>
                 {showMenu.Admin_Report_Admin ? (
                   <MenuItem>
-                    <MenuItemLink text="Admin Report" to="/report-admin" />
+                    <MenuItemLink
+                      text="Admin Report"
+                      to="/seriui/report-admin"
+                    />
                   </MenuItem>
                 ) : null}
                 {showMenu.Admin_Report_Transaction ? (
                   <MenuItem>
                     <MenuItemLink
                       text="Reeler Transaction Report"
-                      to="/reeler-transaction-report"
+                      to="/seriui/reeler-transaction-report"
                     />
                   </MenuItem>
                 ) : null}
                 {showMenu.Admin_Report_Dashboard ? (
                   <MenuItem>
-                    <MenuItemLink text="Dashboard" to="/bid-dashboard" />
+                    <MenuItemLink text="Dashboard" to="/seriui/bid-dashboard" />
                   </MenuItem>
                 ) : null}
                 {showMenu.Admin_Report_DTR ? (
                   <MenuItem>
-                    <MenuItemLink text="DTR Online" to="/dtr-online" />
+                    <MenuItemLink text="DTR Online" to="/seriui/dtr-online" />
                   </MenuItem>
                 ) : null}
                 {showMenu.Admin_Report_Unit ? (
                   <MenuItem>
                     <MenuItemLink
                       text="Unit Counter Report"
-                      to="/unit-counter-report"
+                      to="/seriui/unit-counter-report"
                     />
                   </MenuItem>
                 ) : null}
                 {showMenu.Admin_Report_Pending ? (
                   <MenuItem>
-                    <MenuItemLink text="Pending Report" to="/pending-reports" />
+                    <MenuItemLink
+                      text="Pending Report"
+                      to="/seriui/pending-reports"
+                    />
                   </MenuItem>
                 ) : null}
               </MenuSub>

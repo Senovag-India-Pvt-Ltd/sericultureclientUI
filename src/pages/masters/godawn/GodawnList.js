@@ -1,11 +1,11 @@
-import { Card, Button,Col,Row,Form } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import React from "react";
 import Swal from "sweetalert2";
 import { useState } from "react";
@@ -65,7 +65,6 @@ function GodawnList() {
       });
   };
 
-
   const getList = () => {
     setLoading(true);
     const response = api
@@ -87,12 +86,12 @@ function GodawnList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/godawn-view/${_id}`);
+    navigate(`/seriui/godawn-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/godawn-edit/${_id}`);
-    // navigate("/district");
+    navigate(`/seriui/godawn-edit/${_id}`);
+    // navigate("/seriui/district");
   };
 
   const deleteError = () => {
@@ -238,7 +237,6 @@ function GodawnList() {
       sortable: true,
       hide: "md",
     },
-    
   ];
 
   return (
@@ -250,15 +248,18 @@ function GodawnList() {
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
-            <li>
-                <Link to="/godawn" className="btn btn-primary btn-md d-md-none">
+              <li>
+                <Link
+                  to="/seriui/godawn"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/godawn"
+                  to="/seriui/godawn"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -270,9 +271,9 @@ function GodawnList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -291,7 +292,7 @@ function GodawnList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="godownId"

@@ -111,7 +111,7 @@ function PrintBidSlip() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/caste-list");
+      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -132,7 +132,7 @@ function PrintBidSlip() {
             {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -141,7 +141,7 @@ function PrintBidSlip() {
               </li>
               <li>
                 <Link
-                  to="/caste-list"
+                  to="/seriui/caste-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -233,7 +233,7 @@ function PrintBidSlip() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/caste-list" className="btn btn-secondary border-0">
+                  <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link>
                 </li>

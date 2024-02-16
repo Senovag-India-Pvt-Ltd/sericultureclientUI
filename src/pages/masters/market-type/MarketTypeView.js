@@ -41,7 +41,7 @@ function MarketTypeView() {
     getIdList();
   }, [id]);
   return (
-    <Layout title="Market Type View" >
+    <Layout title="Market Type View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -51,7 +51,7 @@ function MarketTypeView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -60,7 +60,7 @@ function MarketTypeView() {
               </li>
               <li>
                 <Link
-                  to="/market-type-list"
+                  to="/seriui/market-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -94,7 +94,9 @@ function MarketTypeView() {
                         <td>{marketType.marketTypeMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Market Type Name in Kannada:</td>
+                        <td style={styles.ctstyle}>
+                          Market Type Name in Kannada:
+                        </td>
                         <td>{marketType.marketTypeNameInKannada}</td>
                       </tr>
                       <tr>

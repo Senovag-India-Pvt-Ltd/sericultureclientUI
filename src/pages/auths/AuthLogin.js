@@ -63,7 +63,7 @@ const AuthLoginPage = () => {
       const isLoginSuccess = await login(input, pass);
       // Store the token in local storage or a secure storage mechanism
       if (isLoginSuccess) {
-        navigate("/stake-holder-registration");
+        navigate("/seriui/stake-holder-registration");
       } else {
         // alert("Login Failed");
         Swal.fire({
@@ -83,21 +83,21 @@ const AuthLoginPage = () => {
     // ) {
     //   localStorage.setItem("role", input);
     //   localStorage.setItem("sidemenu", "my-dashboard");
-    //   navigate("/stake-holder-registration");
+    //   navigate("/seriui/stake-holder-registration");
     // } else if (input === "ads" && pass === "*India*12") {
     //   localStorage.setItem("role", input);
     //   localStorage.setItem("sidemenu", "my-dashboard");
-    //   navigate("/my-dashboard");
+    //   navigate("/seriui/my-dashboard");
     // } else if (input === "crm") {
     //   localStorage.setItem("role", input);
-    //   navigate("/home");
+    //   navigate("/seriui/home");
     // } else if (input === "account") {
     //   localStorage.setItem("role", input);
-    //   navigate("/home");
+    //   navigate("/seriui/home");
     // } else if (input === "customer") {
-    //   navigate("/add-request");
+    //   navigate("/seriui/add-request");
     // } else if (input === "technician") {
-    //   navigate("/technician-dashboard");
+    //   navigate("/seriui/technician-dashboard");
     // } else if (!pass) {
     //   alert("Please enter your Password");
     // } else {
@@ -120,9 +120,13 @@ const AuthLoginPage = () => {
 
   const resendOTP = () => {
     axios
-      .post(baseURL + `userMaster/generate-otp-by-user-name-and-password`, data, {
-        headers: _header,
-      })
+      .post(
+        baseURL + `userMaster/generate-otp-by-user-name-and-password`,
+        data,
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         // debugger;
         const temp = response.data.content;
@@ -162,9 +166,13 @@ const AuthLoginPage = () => {
       event.preventDefault();
       // event.stopPropagation();
       axios
-        .post(baseURL + `userMaster/generate-otp-by-user-name-and-password`, data, {
-          headers: _header,
-        })
+        .post(
+          baseURL + `userMaster/generate-otp-by-user-name-and-password`,
+          data,
+          {
+            headers: _header,
+          }
+        )
         .then((response) => {
           // debugger;
           const temp = response.data.content;
@@ -229,9 +237,13 @@ const AuthLoginPage = () => {
       const isLoginSuccess = await login(data.username, data.password);
       // Store the token in local storage or a secure storage mechanism
       if (isLoginSuccess) {
-        navigate("/stake-holder-registration");
+        navigate("/seriui/stake-holder-registration");
       } else {
-        alert("Login Failed");
+        Swal.fire({
+          icon: "warning",
+          title: "Login failed!!!",
+          // text: "You clicked the button!",
+        });
       }
     } catch (error) {
       console.error("Login failed:", error.message);
@@ -291,7 +303,7 @@ const AuthLoginPage = () => {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/roles-list"));
+    }).then(() => navigate("/seriui/roles-list"));
   };
 
   const saveError = () => {
@@ -379,7 +391,10 @@ const AuthLoginPage = () => {
                               // Optional: disable the checkbox in view mode
                               // defaultChecked
                             />
-                            <Link to="/auths/auth-reset" className="small">
+                            <Link
+                              to="/seriui/auths/auth-reset"
+                              className="small"
+                            >
                               Forgot Password?
                             </Link>
                           </div>

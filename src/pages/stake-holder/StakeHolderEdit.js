@@ -119,7 +119,7 @@ function StakeHolderEdit() {
     } else {
       e.preventDefault();
       api
-        .post(baseURL2 + `farmer-family/edit`, familyMembers,)
+        .post(baseURL2 + `farmer-family/edit`, familyMembers)
         .then((response) => {
           getFMDetailsList();
           setShowModal1(false);
@@ -215,7 +215,7 @@ function StakeHolderEdit() {
     } else {
       e.preventDefault();
       api
-        .post(baseURL2 + `farmer-land-details/add`, withFarmerId,)
+        .post(baseURL2 + `farmer-land-details/add`, withFarmerId)
         .then((response) => {
           getFLDetailsList();
           setShowModal2(false);
@@ -261,7 +261,7 @@ function StakeHolderEdit() {
     } else {
       e.preventDefault();
       api
-        .post(baseURL2 + `farmer-land-details/edit`, farmerLand,)
+        .post(baseURL2 + `farmer-land-details/edit`, farmerLand)
         .then((response) => {
           getFLDetailsList();
           setShowModal3(false);
@@ -440,26 +440,29 @@ function StakeHolderEdit() {
   };
 
   const [bank, setBank] = useState({
-      accountImagePath: "",
-      farmerId: "",
-      farmerBankName: "",
-      farmerBankAccountNumber: "",
-      farmerBankBranchName: "",
-      farmerBankIfscCode: "",
+    accountImagePath: "",
+    farmerId: "",
+    farmerBankName: "",
+    farmerBankAccountNumber: "",
+    farmerBankBranchName: "",
+    farmerBankIfscCode: "",
   });
 
   const handleBankInputs = (e) => {
     const { name } = e.target;
     let value = e.target.value;
-    
+
     // if (name === "farmerBankIfscCode" && value.length > 11) {
     //   value = value.slice(0, 11);
     // }
-    if (name === "farmerBankIfscCode" && (value.length < 11 || value.length > 11) ) {
-        e.target.classList.add("is-invalid");
+    if (
+      name === "farmerBankIfscCode" &&
+      (value.length < 11 || value.length > 11)
+    ) {
+      e.target.classList.add("is-invalid");
     } else {
-        e.target.classList.remove("is-invalid");
-        e.target.classList.add("is-valid");
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
     }
     setBank({ ...bank, [name]: value });
   };
@@ -473,7 +476,7 @@ function StakeHolderEdit() {
   //     icon: "success",
   //     title: "Saved successfully",
   //     // text: "You clicked the button!",
-  //   }).then(() => navigate("/stake-holder-list"));
+  //   }).then(() => navigate("/seriui/stake-holder-list"));
   // };
   // const saveError = () => {
   //   Swal.fire({
@@ -521,7 +524,7 @@ function StakeHolderEdit() {
             api
               .post(
                 baseURL2 + `farmer-bank-account/edit`,
-                { ...bank, farmerId },
+                { ...bank, farmerId }
                 // {
                 //   headers: _header,
                 // }
@@ -534,15 +537,14 @@ function StakeHolderEdit() {
                 }
                 if (response.data.content.error) {
                   const bankError = response.data.content.error_description;
-                    updateError(bankError);
-                  }else{
-                
-                updateSuccess();
-                  }
+                  updateError(bankError);
+                } else {
+                  updateSuccess();
+                }
               })
               .catch((err) => {
                 setBank({});
-                updateError();
+                updateError(err.response.data.validationErrors);
               });
 
             updateSuccess();
@@ -550,7 +552,7 @@ function StakeHolderEdit() {
             api
               .post(
                 baseURL2 + `farmer-bank-account/add`,
-                { ...bank, farmerId },
+                { ...bank, farmerId }
                 // {
                 //   headers: _header,
                 // }
@@ -558,14 +560,14 @@ function StakeHolderEdit() {
               .then((response) => {
                 if (response.data.content.error) {
                   const bankError = response.data.content.error_description;
-                    updateError(bankError);
-                  }else{
-                    updateSuccess();
-                  }
+                  updateError(bankError);
+                } else {
+                  updateSuccess();
+                }
               })
               .catch((err) => {
                 setBank({});
-                updateError();
+                updateError(err.response.data.validationErrors);
               });
 
             updateSuccess();
@@ -575,7 +577,7 @@ function StakeHolderEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -595,6 +597,7 @@ function StakeHolderEdit() {
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
         setBank({});
+        updateError(err.response.data.validationErrors);
         // editError(message);
         // setLoading(false);
       });
@@ -1267,13 +1270,13 @@ function StakeHolderEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/stake-holder-list"));
+    }).then(() => navigate("/seriui/stake-holder-list"));
   };
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -1281,7 +1284,7 @@ function StakeHolderEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/stake-holder-list"));
+    }).then(() => navigate("/seriui/stake-holder-list"));
   };
 
   //Display Document
@@ -1400,7 +1403,7 @@ function StakeHolderEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -1409,7 +1412,7 @@ function StakeHolderEdit() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -2430,7 +2433,7 @@ function StakeHolderEdit() {
                 </li>
                 <li>
                   <Link
-                    to="/stake-holder-list"
+                    to="/seriui/stake-holder-list"
                     className="btn btn-secondary border-0"
                   >
                     {t("cancel")}

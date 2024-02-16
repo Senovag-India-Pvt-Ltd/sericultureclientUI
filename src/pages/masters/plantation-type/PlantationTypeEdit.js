@@ -35,34 +35,33 @@ function PlantationTypeEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `plantationType/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `plantationType/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               plantationTypeName: "",
-              plantationTypeNameInKannada: "", 
+              plantationTypeNameInKannada: "",
             });
             setValidated(false);
           }
         })
-      .catch((err) => {
-        setData({});
-        updateError();
-      });
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       plantationTypeName: "",
-      plantationTypeNameInKannada: "", 
-    })
-  }
+      plantationTypeNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -97,7 +96,7 @@ function PlantationTypeEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -114,13 +113,12 @@ function PlantationTypeEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Edit Plantation Type</Block.Title>
-          
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -129,7 +127,7 @@ function PlantationTypeEdit() {
               </li>
               <li>
                 <Link
-                  to="/plantation-type-list"
+                  to="/seriui/plantation-type-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -155,7 +153,9 @@ function PlantationTypeEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="plantationType">Plantation Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="plantationType">
+                          Plantation Type<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="plantationType"
@@ -165,35 +165,36 @@ function PlantationTypeEdit() {
                             type="text"
                             placeholder="Enter Plantation Type"
                             required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Plantation Type is required.
-                        </Form.Control.Feedback>
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Plantation Type is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plantation">
-                        Plantation Type Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="plantation"
-                          name="plantationTypeNameInKannada"
-                          type="text"
-                          value={data.plantationTypeNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Plantation Type Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Plantation Type Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="plantation">
+                          Plantation Type Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="plantation"
+                            name="plantationTypeNameInKannada"
+                            type="text"
+                            value={data.plantationTypeNameInKannada}
+                            onChange={handleInputs}
+                            placeholder="Enter Plantation Type Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Plantation Type Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -208,7 +209,7 @@ function PlantationTypeEdit() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

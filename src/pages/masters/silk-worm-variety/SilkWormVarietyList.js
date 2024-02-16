@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -43,12 +43,12 @@ function SilkWormVarietyList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/silk-worm-variety-view/${_id}`);
+    navigate(`/seriui/silk-worm-variety-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/silk-worm-variety-edit/${_id}`);
-    // navigate("/silk-worm-variety");
+    navigate(`/seriui/silk-worm-variety-edit/${_id}`);
+    // navigate("/seriui/silk-worm-variety");
   };
 
   const deleteError = () => {
@@ -201,7 +201,7 @@ function SilkWormVarietyList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/silk-worm-variety"
+                  to="/seriui/silk-worm-variety"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -210,7 +210,7 @@ function SilkWormVarietyList() {
               </li>
               <li>
                 <Link
-                  to="/silk-worm-variety"
+                  to="/seriui/silk-worm-variety"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -222,7 +222,7 @@ function SilkWormVarietyList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

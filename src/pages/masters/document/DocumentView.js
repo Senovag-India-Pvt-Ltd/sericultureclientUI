@@ -56,10 +56,10 @@ function DocumentsView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/documents-list">State List</Link>
+                  <Link to="/seriui/documents-list">State List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Documents View
@@ -71,7 +71,7 @@ function DocumentsView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,7 +80,7 @@ function DocumentsView() {
               </li>
               <li>
                 <Link
-                  to="/documents-list"
+                  to="/seriui/documents-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -45,12 +45,12 @@ function HelpDeskModuleList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hd-module-view/${_id}`);
+    navigate(`/seriui/hd-module-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hd-module-edit/${_id}`);
-    // navigate("/hdModuleMaster");
+    navigate(`/seriui/hd-module-edit/${_id}`);
+    // navigate("/seriui/hdModuleMaster");
   };
 
   const deleteError = () => {
@@ -141,7 +141,6 @@ function HelpDeskModuleList() {
     },
   };
 
-
   const HdModuleDataColumns = [
     {
       name: "action",
@@ -196,14 +195,17 @@ function HelpDeskModuleList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/hd-module" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/hd-module"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hd-module"
+                  to="/seriui/hd-module"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -215,7 +217,7 @@ function HelpDeskModuleList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

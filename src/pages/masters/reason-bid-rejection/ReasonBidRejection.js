@@ -45,7 +45,7 @@ function ReasonBidRejection() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/reason-bid-rejection-list"));
+    }).then(() => navigate("/seriui/reason-bid-rejection-list"));
   };
 
   const saveError = () => {
@@ -65,7 +65,7 @@ function ReasonBidRejection() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -80,7 +80,7 @@ function ReasonBidRejection() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reason-bid-rejection-list"
+                  to="/seriui/reason-bid-rejection-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -89,7 +89,7 @@ function ReasonBidRejection() {
               </li>
               <li>
                 <Link
-                  to="/reason-bid-rejection-list"
+                  to="/seriui/reason-bid-rejection-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -137,7 +137,10 @@ function ReasonBidRejection() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/reason-bid-rejection-list" className="btn btn-secondary border-0">
+                  <Link
+                    to="/seriui/reason-bid-rejection-list"
+                    className="btn btn-secondary border-0"
+                  >
                     Cancel
                   </Link>
                 </li>

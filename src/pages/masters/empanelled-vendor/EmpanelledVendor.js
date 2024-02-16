@@ -37,21 +37,30 @@ function EmpanelledVendor() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `vendorMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError();
-          }else{
+      api
+        .post(baseURL + `vendorMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
+            setData({
+              vendorMasterName: "",
+            });
+            setValidated(false);
           }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      vendorMasterName: "",
+    });
   };
 
   const navigate = useNavigate();
@@ -60,14 +69,14 @@ function EmpanelledVendor() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/empanelled-vendor-list"));
+    }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -82,7 +91,7 @@ function EmpanelledVendor() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -91,7 +100,7 @@ function EmpanelledVendor() {
               </li>
               <li>
                 <Link
-                  to="/empanelled-vendor-list"
+                  to="/seriui/empanelled-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -113,7 +122,9 @@ function EmpanelledVendor() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="vendorMaster">Empaneled Vendor<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="vendorMaster">
+                        Empaneled Vendor<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="vendorMaster"
@@ -143,9 +154,9 @@ function EmpanelledVendor() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="/empanelled-vendor-list" className="btn btn-secondary border-0">
+                <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>

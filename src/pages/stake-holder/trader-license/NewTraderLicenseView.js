@@ -1,14 +1,11 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import {
-  Icon,
-  Select,
-} from "../../../components";
+import { Icon, Select } from "../../../components";
 import NewTraderLicense from "./NewTraderLicense";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -65,7 +62,7 @@ function NewTraderLicenseView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/issue-new-trader-license-list"
+                  to="/seriui/issue-new-trader-license-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -74,7 +71,7 @@ function NewTraderLicenseView() {
               </li>
               <li>
                 <Link
-                  to="/issue-new-trader-license-list"
+                  to="/seriui/issue-new-trader-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -99,7 +96,7 @@ function NewTraderLicenseView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                    <tr>
+                      <tr>
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{NewTraderLicense.traderLicenseId}</td>
                       </tr>

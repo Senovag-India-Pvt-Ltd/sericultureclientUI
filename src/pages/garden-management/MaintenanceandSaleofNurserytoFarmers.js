@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
- 
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
@@ -16,35 +16,32 @@ import api from "../../../src/services/auth/api";
 
 import DataTable, { createTheme } from "react-data-table-component";
 
- const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
- 
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+
 function MaintenanceandSaleofNurserytoFarmers() {
-  
-   const [data, setData] = useState({
+  const [data, setData] = useState({
     id: 0,
-    fruitsId:"",
+    fruitsId: "",
     farmerName: "",
     mulberryVariety: "",
-    area:"",
+    area: "",
     dateOfPlanting: "",
     nurserySaleDetails: "",
     quantity: 0,
-    date: "", 
-     rate: 0, 
-      saplingAge: "", 
-      generateRecipt: "", 
-     receiptNumber: "", 
-      remittanceDetails: "", 
-        challanUpload: "", 
-    
-    
+    date: "",
+    rate: 0,
+    saplingAge: "",
+    generateRecipt: "",
+    receiptNumber: "",
+    remittanceDetails: "",
+    challanUpload: "",
   });
 
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
-      width:"20%",
+      width: "20%",
     },
   };
 
@@ -63,37 +60,33 @@ function MaintenanceandSaleofNurserytoFarmers() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  const postData = (event) =>{
-  const form = event.currentTarget;
+  const postData = (event) => {
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
     } else {
-      
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `Maintenance-sale/add-info`, data)
-      .then((response) => {
-        debugger;
-        if(response.data.error){
+      api
+        .post(baseURL + `Maintenance-sale/add-info`, data)
+        .then((response) => {
+          // debugger;
+          if (response.data.error) {
+            saveError();
+          } else {
+            saveSuccess();
+          }
+        })
+        .catch((err) => {
+          setData({});
           saveError();
-        }else{
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+        });
       setValidated(true);
     }
   };
 
-  
-
-  
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -101,7 +94,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      // navigate("/caste-list");
+      // navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -112,7 +105,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
     });
   };
 
-/* get table detais */
+  /* get table detais */
 
   const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
@@ -121,15 +114,13 @@ function MaintenanceandSaleofNurserytoFarmers() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-
-
-const getList = () => {
+  const getList = () => {
     setLoading(true);
 
     const response = api
-      .get(baseURL+`Maintenance-sale/get-info`)
+      .get(baseURL + `Maintenance-sale/get-info`)
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setListData(response.data);
         // setTotalRows(response.data.content.totalItems);
         setLoading(false);
@@ -154,11 +145,11 @@ const getList = () => {
     //   });
   };
 
- useEffect(() => {
+  useEffect(() => {
     getList();
   }, []);
 
-createTheme(
+  createTheme(
     "solarized",
     {
       text: {
@@ -167,7 +158,7 @@ createTheme(
       },
       background: {
         default: "#fff",
-      }, 
+      },
       context: {
         background: "#cb4b16",
         text: "#FFFFFF",
@@ -184,7 +175,7 @@ createTheme(
     "light"
   );
 
-const customStyles = {
+  const customStyles = {
     rows: {
       style: {
         minHeight: "45px", // override the row height
@@ -207,16 +198,13 @@ const customStyles = {
     },
   };
 
-
-   
   const handleView = (_id) => {
-    navigate(`/MaintenanceandSaleofNurserytoFarmers-view/${_id}`);
+    navigate(`/seriui/MaintenanceandSaleofNurserytoFarmers-view/${_id}`);
   };
 
-
   const handleEdit = (_id) => {
-    navigate(`/MaintenanceandSaleofNurserytoFarmers-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/MaintenanceandSaleofNurserytoFarmers-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -258,9 +246,7 @@ const customStyles = {
       }
     });
   };
- const GardenNursaryDataColumns = [
- 
-
+  const GardenNursaryDataColumns = [
     {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
@@ -275,7 +261,7 @@ const customStyles = {
       sortable: true,
       hide: "md",
     },
-     {
+    {
       name: "Mulberry Variety",
       selector: (row) => row.mulberryVariety,
       cell: (row) => <span>{row.mulberryVariety}</span>,
@@ -317,8 +303,8 @@ const customStyles = {
       sortable: true,
       hide: "md",
     },
-    
-     {
+
+    {
       name: "Date",
       selector: (row) => row.date,
       cell: (row) => <span>{row.date}</span>,
@@ -326,7 +312,7 @@ const customStyles = {
       hide: "md",
     },
 
-      {
+    {
       name: "Rate",
       selector: (row) => row.rate,
       cell: (row) => <span>{row.rate}</span>,
@@ -334,15 +320,15 @@ const customStyles = {
       hide: "md",
     },
 
-     {
+    {
       name: "Sapling Age",
       selector: (row) => row.saplingAge,
       cell: (row) => <span>{row.saplingAge}</span>,
       sortable: true,
       hide: "md",
     },
-    
-     {
+
+    {
       name: "Generate Recipt",
       selector: (row) => row.generateRecipt,
       cell: (row) => <span>{row.generateRecipt}</span>,
@@ -350,7 +336,7 @@ const customStyles = {
       hide: "md",
     },
 
-      {
+    {
       name: "Receipt Number",
       selector: (row) => row.receiptNumber,
       cell: (row) => <span>{row.receiptNumber}</span>,
@@ -358,7 +344,7 @@ const customStyles = {
       hide: "md",
     },
 
-      {
+    {
       name: "Remittance Details",
       selector: (row) => row.remittanceDetails,
       cell: (row) => <span>{row.remittanceDetails}</span>,
@@ -366,17 +352,15 @@ const customStyles = {
       hide: "md",
     },
 
-      {
+    {
       name: "Challan Upload",
       selector: (row) => row.challanUpload,
       cell: (row) => <span>{row.challanUpload}</span>,
       sortable: true,
       hide: "md",
     },
-      
-      
 
-     {
+    {
       name: "Action",
       cell: (row) => (
         //   Button style
@@ -410,31 +394,30 @@ const customStyles = {
       sortable: false,
       hide: "md",
     },
-
-  
   ];
-  
-  const handleDateChange = (date, type) => {
-  setData({ ...data, [type]: date });
-};
 
-  
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   return (
     <Layout title="Maintenance and Sale of Nursery to Farmers ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Maintenance and Sale of Nursery to Farmers</Block.Title>
+            <Block.Title tag="h2">
+              Maintenance and Sale of Nursery to Farmers
+            </Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
                 </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
-           Maintenance and Sale of Nursery to Farmers
+                  Maintenance and Sale of Nursery to Farmers
                 </li>
               </ol>
             </nav>
@@ -442,17 +425,14 @@ const customStyles = {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link
-                  to="#"
-                  className="btn btn-primary btn-md d-md-none"
-                >
+                <Link to="#" className="btn btn-primary btn-md d-md-none">
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/#"
+                  to="/seriui/#"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -465,298 +445,275 @@ const customStyles = {
       </Block.Head>
 
       <Block className="mt-4">
-        <Form noValidate validated={validated} onSubmit={postData}> 
-          <Row className="g-3 "> 
-            <div  >
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-3 ">
+            <div>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block >
+                  <Block>
                     <Card>
-                      <Card.Header>Maintenance and Sale of Nursery to Farmers </Card.Header>
+                      <Card.Header>
+                        Maintenance and Sale of Nursery to Farmers{" "}
+                      </Card.Header>
                       <Card.Body>
-                         <Row className="g-gs">
-                        <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            FRUITS-ID
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="fruitsId"
-                                name="fruitsId"
-                                 type="text"
-                                value={data.fruitsId}
-                                onChange={handleInputs}
-                                placeholder=" FRUITS-ID"
-                                                               required
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                FRUITS-ID
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="fruitsId"
+                                  name="fruitsId"
+                                  type="text"
+                                  value={data.fruitsId}
+                                  onChange={handleInputs}
+                                  placeholder=" FRUITS-ID"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Farmer’s name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="farmerName"
+                                  name="farmerName"
+                                  type="text"
+                                  value={data.farmerName}
+                                  onChange={handleInputs}
+                                  placeholder="Farmer’s name"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      Farmer’s name
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="farmerName"
-                                name="farmerName"
-                                 type="text"
-                                value={data.farmerName}
-                                onChange={handleInputs}
-                                placeholder="Farmer’s name"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Mulberry variety
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="mulberryVariety"
+                                  name="mulberryVariety"
+                                  type="text"
+                                  value={data.mulberryVariety}
+                                  onChange={handleInputs}
+                                  placeholder="Mulberry variety"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Mulberry variety
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="mulberryVariety"
-                                name="mulberryVariety"
-                                 type="text"
-                                value={data.mulberryVariety}
-                                onChange={handleInputs}
-                                placeholder="Mulberry variety"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
-
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                            Area
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                 id="area"
-                                name="area"
-                                 type="text"
-                                value={data.area}
-                                onChange={handleInputs}
-                                placeholder="Area"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      Date of planting
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                               
-
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">Area</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="area"
+                                  name="area"
+                                  type="text"
+                                  value={data.area}
+                                  onChange={handleInputs}
+                                  placeholder="Area"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Date of planting
+                              </Form.Label>
+                              <div className="form-control-wrap">
                                 <DatePicker
-                          selected={data.dateOfPlanting}
-                          onChange={(date) => handleDateChange(date, "dateOfPlanting")}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
+                                  selected={data.dateOfPlanting}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfPlanting")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                        
-                        />
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Nursery sale details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="nurserySaleDetails"
+                                  name="nurserySaleDetails"
+                                  type="text"
+                                  value={data.nurserySaleDetails}
+                                  onChange={handleInputs}
+                                  placeholder="Nursery sale details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                              
-                            </div>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">quantity</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="quantity"
+                                  name="quantity"
+                                  type="text"
+                                  value={data.quantity}
+                                  onChange={handleInputs}
+                                  placeholder=" quantity"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          </Form.Group>
-                         </Col  >  
-
-                         <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                          Nursery sale details
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="nurserySaleDetails"
-                                name="nurserySaleDetails"
-                                 type="text"
-                                value={data.nurserySaleDetails}
-                                onChange={handleInputs}
-                                placeholder="Nursery sale details"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-
-                             <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                           quantity
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="quantity"
-                                name="quantity"
-                                 type="text"
-                                value={data.quantity}
-                                 onChange={handleInputs}
-                                placeholder=" quantity"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                       
-
-                            <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                         date
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">date</Form.Label>
+                              <div className="form-control-wrap">
                                 <DatePicker
-                          selected={data.date}
-                          onChange={(date) => handleDateChange(date, "date")}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
+                                  selected={data.date}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "date")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                        
-                        />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                       
-
-                           <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      rate
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">rate</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
                                   id="rate"
-                                name="rate"
-                                 type="text"
-                                value={data.rate}
-                                 onChange={handleInputs}
-                                placeholder="rate"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
-                       
-                       
+                                  name="rate"
+                                  type="text"
+                                  value={data.rate}
+                                  onChange={handleInputs}
+                                  placeholder="rate"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                      sapling age in Month/Year
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                sapling age in Month/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
                                   id="saplingAge"
-                                name="saplingAge"
-                                 type="text"
-                                value={data.saplingAge}
-                                 onChange={handleInputs}
-                                placeholder="sapling age in Month/Year"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                                  name="saplingAge"
+                                  type="text"
+                                  value={data.saplingAge}
+                                  onChange={handleInputs}
+                                  placeholder="sapling age in Month/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                             <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                   Generate Recipt
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                               id="generateRecipt"
-                                name="generateRecipt"
-                                 type="text"
-                                value={data.generateRecipt}
-                                 onChange={handleInputs}
-                                placeholder="Generate Recipt"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  > 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Generate Recipt
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="generateRecipt"
+                                  name="generateRecipt"
+                                  type="text"
+                                  value={data.generateRecipt}
+                                  onChange={handleInputs}
+                                  placeholder="Generate Recipt"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                             <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                  Receipt number
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="receiptNumber"
-                                name="receiptNumber"
-                                 type="text"
-                                value={data.receiptNumber}
-                                 onChange={handleInputs}
-                                placeholder="Receipt number"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Receipt number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="receiptNumber"
+                                  name="receiptNumber"
+                                  type="text"
+                                  value={data.receiptNumber}
+                                  onChange={handleInputs}
+                                  placeholder="Receipt number"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                          <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                  Remittance details
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                 id="remittanceDetails"
-                                name="remittanceDetails"
-                                 type="text"
-                                value={data.remittanceDetails}
-                                 onChange={handleInputs}
-                                placeholder="Remittance details"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Remittance details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="remittanceDetails"
+                                  name="remittanceDetails"
+                                  type="text"
+                                  value={data.remittanceDetails}
+                                  onChange={handleInputs}
+                                  placeholder="Remittance details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                            <Col lg="4" >
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="sordfl">
-                 Challan Upload
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                 id="challanUpload"
-                                name="challanUpload"
-                                 type="text"
-                                value={data.challanUpload}
-                                 onChange={handleInputs}
-                                placeholder="Challan Upload"
-                              />
-                            </div>
-                          </Form.Group>
-                         </Col  >  
- 
- 
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Challan Upload
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="challanUpload"
+                                  name="challanUpload"
+                                  type="text"
+                                  value={data.challanUpload}
+                                  onChange={handleInputs}
+                                  placeholder="Challan Upload"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                         <Col lg="12" className="text-center">
-                        <Button type="submit" variant="primary">
-                           Save
-                      </Button>
-                      </Col>
- 
-                      </Row>
-                        
+                          <Col lg="12" className="text-center">
+                            <Button type="submit" variant="primary">
+                              Save
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Card>
                   </Block>
@@ -766,43 +723,32 @@ const customStyles = {
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
-                          <Col lg="12">    
-                             
-   <Block className= "mt-n4 m-4">
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={GardenNursaryDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
-      </Block>
-
-                          
-                          </Col>
-                        </Row>
-                       
-                      
-
+                        <Col lg="12">
+                          <Block className="mt-n4 m-4">
+                            <Card>
+                              <DataTable
+                                tableClassName="data-table-head-light table-responsive"
+                                columns={GardenNursaryDataColumns}
+                                data={listData}
+                                highlightOnHover
+                                pagination
+                                paginationServer
+                                paginationTotalRows={totalRows}
+                                paginationPerPage={countPerPage}
+                                paginationComponentOptions={{
+                                  noRowsPerPage: true,
+                                }}
+                                onChangePage={(page) => setPage(page - 1)}
+                                progressPending={loading}
+                                theme="solarized"
+                                customStyles={customStyles}
+                              />
+                            </Card>
+                          </Block>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
-                 
-                
-                 
-
-
                 </Col>
               </Row>
             </div>

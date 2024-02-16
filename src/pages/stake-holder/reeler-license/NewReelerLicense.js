@@ -176,9 +176,9 @@ function NewReelerLicense() {
       )
       .then((response) => {
         // console.log("Hello");
-        if (!response.data.content.isFruitService) {
-          const reelerId = response.data.content.farmerResponse.reelerId;
-          navigate(`/reeler-license-edit/${reelerId}`);
+        if (response.data.content) {
+          const reelerId = response.data.content.reelerResponse.reelerId;
+          navigate(`/seriui/reeler-license-edit/${reelerId}`);
         } else {
           api
             .post(
@@ -307,7 +307,7 @@ function NewReelerLicense() {
                   })
                   .catch((err) => {
                     setVbAccount({});
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             } else {
@@ -317,7 +317,7 @@ function NewReelerLicense() {
         })
         .catch((err) => {
           setData({});
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -521,13 +521,13 @@ function NewReelerLicense() {
       icon: "success",
       title: "Saved successfully",
       text: `Generated ARN Number is ${arn}`,
-    }).then(() => navigate("/reeler-license-list"));
+    }).then(() => navigate("/seriui/reeler-license-list"));
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -587,7 +587,7 @@ function NewReelerLicense() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -596,7 +596,7 @@ function NewReelerLicense() {
               </li>
               <li>
                 <Link
-                  to="/reeler-license-list"
+                  to="/seriui/reeler-license-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -1894,7 +1894,7 @@ function NewReelerLicense() {
                 </li>
                 <li>
                   <Link
-                    to="/reeler-license-list"
+                    to="/seriui/reeler-license-list"
                     className="btn btn-secondary border-0"
                   >
                     Cancel

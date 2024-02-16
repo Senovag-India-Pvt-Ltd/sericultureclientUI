@@ -131,25 +131,37 @@ function UpdateBin() {
     const parameters1 = `type=big&marketId=${marketId}&godownId=${godownId}&startNumber=${bigBinstart}&EndNumber=${bigBinEnd}`;
     const parameters2 = `type=small&marketId=${marketId}&godownId=${godownId}&startNumber=${smallBinStart}&EndNumber=${smallBinEnd}`;
     axios
-      .post(baseURL1 + `addAllMaster/addBinCounterMaster?${parameters}`, {}, {
-        headers: _header,
-      })
+      .post(
+        baseURL1 + `addAllMaster/addBinCounterMaster?${parameters}`,
+        {},
+        {
+          headers: _header,
+        }
+      )
       .then((response) => {
         axios
-        .post(baseURL1 + `addAllMaster/addBinMaster?${parameters1}`, {}, {
-          headers: _header,
-        })
-        .then((response)=>{
-          // console.log("hello...");
-        })
+          .post(
+            baseURL1 + `addAllMaster/addBinMaster?${parameters1}`,
+            {},
+            {
+              headers: _header,
+            }
+          )
+          .then((response) => {
+            // console.log("hello...");
+          });
 
         axios
-        .post(baseURL1 + `addAllMaster/addBinMaster?${parameters2}`, {}, {
-          headers: _header,
-        })
-        .then((response)=>{
-          // console.log("hello2...");
-        })
+          .post(
+            baseURL1 + `addAllMaster/addBinMaster?${parameters2}`,
+            {},
+            {
+              headers: _header,
+            }
+          )
+          .then((response) => {
+            // console.log("hello2...");
+          });
         saveSuccess();
       })
       .catch((err) => {
@@ -243,7 +255,7 @@ function UpdateBin() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/bin-list");
+      navigate("/seriui/bin-list");
     });
   };
 
@@ -274,7 +286,7 @@ function UpdateBin() {
         setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     getList();
   }, [page]);
@@ -296,13 +308,13 @@ function UpdateBin() {
         // alert(err.response.data.errorMessages[0].message[0].message);
         setLoading(false);
       });
-  };  
+  };
 
   useEffect(() => {
     if (data.marketId) {
       getGodownList(data.marketId);
     }
-  }, [data.marketId ]);
+  }, [data.marketId]);
 
   return (
     <Layout title="Bin">
@@ -313,7 +325,7 @@ function UpdateBin() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 {/* <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -328,7 +340,7 @@ function UpdateBin() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -337,7 +349,7 @@ function UpdateBin() {
               </li>
               <li>
                 <Link
-                  to="/bin-list"
+                  to="/seriui/bin-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -442,27 +454,24 @@ function UpdateBin() {
                   </Col>
                   <Col lg="3">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="smallBinEnd">
-                        Status
-                      </Form.Label>
+                      <Form.Label htmlFor="smallBinEnd">Status</Form.Label>
                       <div className="form-control-wrap">
-                      <Form.Select
-                            name="status"
-                            value={data.status}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Select Status</option>
-                            <option value="1">Available</option>
-                            <option value="2">Unavailable</option>
-    
-                          </Form.Select>
+                        <Form.Select
+                          name="status"
+                          value={data.status}
+                          onChange={handleInputs}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="1">Available</option>
+                          <option value="2">Unavailable</option>
+                        </Form.Select>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="3">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="binbigstart">
-                        Big Bin  Number
+                        Big Bin Number
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -478,20 +487,17 @@ function UpdateBin() {
                   </Col>
                   <Col lg="3">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="binbigend">
-                        Status
-                      </Form.Label>
+                      <Form.Label htmlFor="binbigend">Status</Form.Label>
                       <div className="form-control-wrap">
-                      <Form.Select
-                            name="status"
-                            value={data.status}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Select Status</option>
-                            <option value="1">Available</option>
-                            <option value="2">Unavailable</option>
-    
-                          </Form.Select>
+                        <Form.Select
+                          name="status"
+                          value={data.status}
+                          onChange={handleInputs}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="1">Available</option>
+                          <option value="2">Unavailable</option>
+                        </Form.Select>
                       </div>
                     </Form.Group>
                   </Col>

@@ -45,7 +45,6 @@ function Market() {
     marketLongitude: "",
     radius: "",
     clientId: "",
-    
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -118,13 +117,13 @@ function Market() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       marketMasterName: "",
       marketMasterAddress: "",
@@ -155,8 +154,8 @@ function Market() {
       marketLongitude: "",
       radius: "",
       clientId: "",
-    })
-  }
+    });
+  };
 
   // to get State
   const [stateListData, setStateListData] = useState([]);
@@ -254,7 +253,7 @@ function Market() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -266,7 +265,7 @@ function Market() {
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
@@ -281,7 +280,7 @@ function Market() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -290,7 +289,7 @@ function Market() {
               </li>
               <li>
                 <Link
-                  to="/market-list"
+                  to="/seriui/market-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -333,7 +332,8 @@ function Market() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="name">
-                        Market Name in Kannada<span className="text-danger">*</span>
+                        Market Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -387,7 +387,7 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Crate Weight(In Kg) is required
+                          Crate Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -410,10 +410,11 @@ function Market() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    
+
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Reeler Minimum Balance<span className="text-danger">*</span>
+                        Reeler Minimum Balance
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -426,7 +427,7 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Reeler Minimum Balance is required
+                          Reeler Minimum Balance is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -483,7 +484,7 @@ function Market() {
                           </div>
                         </Form.Group>
                       </Col>
-                      
+
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
@@ -749,7 +750,6 @@ function Market() {
                         </Form.Group>
                       </Col>
 
-                      
                       <Col lg="6">
                         <Form.Group className="form-group">
                           <Form.Label htmlFor="bidstart">
@@ -803,7 +803,7 @@ function Market() {
                   </Col>
 
                   <Col lg="6">
-                  <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
                         Client ID<span className="text-danger">*</span>
                       </Form.Label>
@@ -818,7 +818,7 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Client Id is required
+                          Client Id is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -946,38 +946,38 @@ function Market() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="chakbandi">
-                          Market Coordinates
-                        </Form.Label>
-                        <Row>
-                          <Col lg="6">
-                            <Form.Control
-                              id="marketLongitude"
-                              name="marketLongitude"
-                              value={data.marketLongitude}
-                              onChange={handleInputs}
-                              placeholder="Enter Longitude"
-                            />
-                          </Col>
 
-                          <Col lg="6">
-                            <Form.Control
-                              id="marketLatitude"
-                              name="marketLatitude"
-                              value={data.marketLatitude}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Latitude"
-                            />
-                          </Col>
-                        </Row>
-                      </Form.Group>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="chakbandi">
+                        Market Coordinates
+                      </Form.Label>
+                      <Row>
+                        <Col lg="6">
+                          <Form.Control
+                            id="marketLongitude"
+                            name="marketLongitude"
+                            value={data.marketLongitude}
+                            onChange={handleInputs}
+                            placeholder="Enter Longitude"
+                          />
+                        </Col>
 
-                      <Form.Group className="form-group">
+                        <Col lg="6">
+                          <Form.Control
+                            id="marketLatitude"
+                            name="marketLatitude"
+                            value={data.marketLatitude}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Latitude"
+                          />
+                        </Col>
+                      </Row>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="address">
-                       Radius<span className="text-danger">*</span>
+                        Radius<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -1030,7 +1030,7 @@ function Market() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

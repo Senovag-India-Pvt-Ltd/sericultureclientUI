@@ -57,10 +57,10 @@ function RolesView() {
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
-                  <Link to="/">Home</Link>
+                  <Link to="/seriui/">Home</Link>
                 </li>
                 <li className="breadcrumb-item">
-                  <Link to="/roles-list">State List</Link>
+                  <Link to="/seriui/roles-list">State List</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Roles View
@@ -72,7 +72,7 @@ function RolesView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,7 +81,7 @@ function RolesView() {
               </li>
               <li>
                 <Link
-                  to="/roles-list"
+                  to="/seriui/roles-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

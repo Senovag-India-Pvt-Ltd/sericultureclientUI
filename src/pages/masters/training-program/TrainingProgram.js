@@ -36,33 +36,33 @@ function TrainingProgram() {
       setValidated(true);
     } else {
       event.preventDefault();
-    api
-      .post(baseURL + `trProgramMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `trProgramMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
             saveError(response.data.content.error_description);
-            }else{
-              saveSuccess();
-              setData({
-                trProgramMasterName: "",
-                trProgramNameInKannada: "",
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        saveError();
-      });
+          } else {
+            saveSuccess();
+            setData({
+              trProgramMasterName: "",
+              trProgramNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trProgramMasterName: "",
       trProgramNameInKannada: "",
-    })
-  }
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -73,11 +73,11 @@ function TrainingProgram() {
     }).then(() => navigate("#"));
   };
 
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -87,13 +87,12 @@ function TrainingProgram() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Training Program</Block.Title>
-            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -102,7 +101,7 @@ function TrainingProgram() {
               </li>
               <li>
                 <Link
-                  to="/trainingPrograms-list"
+                  to="/seriui/trainingPrograms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -118,14 +117,16 @@ function TrainingProgram() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">Training Program Name<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="title">
+                        Training Program Name
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
@@ -146,7 +147,8 @@ function TrainingProgram() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Training Program Name in Kannada<span className="text-danger">*</span>
+                        Training Program Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -177,7 +179,7 @@ function TrainingProgram() {
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
                 </li>

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -44,12 +44,12 @@ function SourceList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/source-view/${_id}`);
+    navigate(`/seriui/source-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/source-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/source-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -201,14 +201,17 @@ function SourceList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/source" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/source"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/source"
+                  to="/seriui/source"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -220,7 +223,7 @@ function SourceList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

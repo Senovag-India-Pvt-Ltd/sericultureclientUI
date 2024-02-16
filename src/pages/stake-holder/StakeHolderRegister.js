@@ -55,7 +55,7 @@ function StakeHolderRegister() {
     nameKan: "",
   });
 
-//  console.log("data",data.photoPath);
+  //  console.log("data",data.photoPath);
 
   const search = () => {
     setData({
@@ -107,7 +107,7 @@ function StakeHolderRegister() {
       .then((response) => {
         if (!response.data.content.isFruitService) {
           const farmerId = response.data.content.farmerResponse.farmerId;
-          navigate(`/stake-holder-edit/${farmerId}`);
+          navigate(`/seriui/stake-holder-edit/${farmerId}`);
         } else {
           api
             .post(
@@ -166,7 +166,7 @@ function StakeHolderRegister() {
   //     .then((response) => {
   //       if (!response.data.content.isFruitService) {
   //         const farmerId = response.data.content.farmerResponse.farmerId;
-  //         navigate(`/stake-holder-edit/${farmerId}`);
+  //         navigate(`/seriui/stake-holder-edit/${farmerId}`);
   //       } else {
   //         axios
   //           .post('http://13.200.62.144:8000/farmer-registration/fuits-api/get-farmer-by-fid',farmerId, {
@@ -706,12 +706,12 @@ function StakeHolderRegister() {
   };
 
   const [bank, setBank] = useState({
-      accountImagePath: "",
-      farmerId: "",
-      farmerBankName: "",
-      farmerBankAccountNumber: "",
-      farmerBankBranchName: "",
-      farmerBankIfscCode: "",
+    accountImagePath: "",
+    farmerId: "",
+    farmerBankName: "",
+    farmerBankAccountNumber: "",
+    farmerBankBranchName: "",
+    farmerBankIfscCode: "",
   });
 
   // const [farmerId, setFarmerId] = useState({
@@ -724,20 +724,33 @@ function StakeHolderRegister() {
     value = e.target.value;
     setData({ ...data, [name]: value });
     // setFarmerId({ ...farmerId, farmerId: value });
+
+    if (
+      name === "mobileNumber" &&
+      (value.length < 10 || value.length > 10)
+    ) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleBankInputs = (e) => {
     const { name } = e.target;
     let value = e.target.value;
-    
+
     // if (name === "farmerBankIfscCode" && value.length > 11) {
     //   value = value.slice(0, 11);
     // }
-    if (name === "farmerBankIfscCode" && (value.length < 11 || value.length > 11) ) {
-        e.target.classList.add("is-invalid");
+    if (
+      name === "farmerBankIfscCode" &&
+      (value.length < 11 || value.length > 11)
+    ) {
+      e.target.classList.add("is-invalid");
     } else {
-        e.target.classList.remove("is-invalid");
-        e.target.classList.add("is-valid");
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
     }
     setBank({ ...bank, [name]: value });
   };
@@ -773,7 +786,7 @@ function StakeHolderRegister() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `farmer/add`, data,)
+        .post(baseURL2 + `farmer/add`, data)
         .then((response) => {
           const farmerId = response.data.content.farmerId;
           if (response.data.content.error) {
@@ -791,30 +804,27 @@ function StakeHolderRegister() {
                 // }
               )
               .then((response) => {
-                if(response.data.content.farmerBankAccountId){
+                if (response.data.content.farmerBankAccountId) {
                   const bankId = response.data.content.farmerBankAccountId;
                   handleFileDocumentUpload(bankId);
                 }
                 if (response.data.content.error) {
                   const bankError = response.data.content.error_description;
-                    saveFarmerError(bankError);
-                  }else{
-                
-                saveSuccess();
-                setBank({
-                  accountImagePath: "",
-                  farmerId: "",
-                  farmerBankName: "",
-                  farmerBankAccountNumber: "",
-                  farmerBankBranchName: "",
-                  farmerBankIfscCode: "",
-              });
-              }
+                  saveFarmerError(bankError);
+                } else {
+                  saveSuccess();
+                  setBank({
+                    accountImagePath: "",
+                    farmerId: "",
+                    farmerBankName: "",
+                    farmerBankAccountNumber: "",
+                    farmerBankBranchName: "",
+                    farmerBankIfscCode: "",
+                  });
+                }
               })
               .catch((err) => {
-               
-                saveError();
-                
+                saveError(err.response.data.validationErrors);
               });
 
             if (familyMembersList.length > 0) {
@@ -824,18 +834,17 @@ function StakeHolderRegister() {
                   farmerId: farmerId,
                 };
                 api
-                  .post(baseURL2 + `farmer-family/add`, updatedFM,)
+                  .post(baseURL2 + `farmer-family/add`, updatedFM)
                   .then((response) => {
-                    if(response.data.content.error){
+                    if (response.data.content.error) {
                       saveFarmerError(response.data.content.error_description);
-                      }
-                      else{
+                    } else {
                       saveSuccess();
                       setFamilyMembers([]);
-                      }
+                    }
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
@@ -847,13 +856,13 @@ function StakeHolderRegister() {
                   farmerId: farmerId,
                 };
                 api
-                  .post(baseURL2 + `farmer-land-details/add`, updatedFL,)
+                  .post(baseURL2 + `farmer-land-details/add`, updatedFL)
                   .then((response) => {
                     saveSuccess();
                     setFarmerLandList([]);
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
@@ -865,23 +874,23 @@ function StakeHolderRegister() {
                   farmerId: farmerId,
                 };
                 api
-                  .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress,)
+                  .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress)
                   .then((response) => {
                     saveSuccess();
                     setFarmerAddressList([]);
                   })
                   .catch((err) => {
-                    saveError();
+                    saveError(err.response.data.validationErrors);
                   });
               });
             }
 
-            handleFileUpload(farmerId);  
+            handleFileUpload(farmerId);
           }
         })
         .catch((err) => {
           // setData({});
-          // saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -1203,7 +1212,6 @@ function StakeHolderRegister() {
     getAddressList();
   }, []);
 
-
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
 
@@ -1317,7 +1325,6 @@ function StakeHolderRegister() {
     }
   }, [farmerAddress.districtId]);
 
-
   // to get hobli
   const [hobliListData, setHobliListData] = useState([]);
 
@@ -1426,14 +1433,14 @@ function StakeHolderRegister() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     }).then(() => {
-      navigate("/stake-holder-list");
+      navigate("/seriui/stake-holder-list");
     });
   };
-  const saveError = () => {
+  const saveError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -1730,30 +1737,31 @@ function StakeHolderRegister() {
   const handleDocumentChange = (e) => {
     const file = e.target.files[0];
     setDocument(file);
-    setBank(prev=>({...prev,accountImagePath:file.name}))
+    setBank((prev) => ({ ...prev, accountImagePath: file.name }));
     // setPhotoFile(file);
   };
 
-   // Upload Image to S3 Bucket
-   const handleFileDocumentUpload = async (farmerBankAccountid)=>{
-    const parameters = `farmerBankAccountId=${farmerBankAccountid}`
-    try{
+  // Upload Image to S3 Bucket
+  const handleFileDocumentUpload = async (farmerBankAccountid) => {
+    const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
+    try {
       const formData = new FormData();
-      formData.append("multipartFile",document);
+      formData.append("multipartFile", document);
 
-      const response = await api.post(baseURL2 +`farmer-bank-account/upload-photo?${parameters}`,formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data', 
-        },
-      });
-      console.log('File upload response:', response.data);
-
-    }catch(error){
-      console.error('Error uploading file:', error);
+      const response = await api.post(
+        baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
-  }
-
-
+  };
 
   // Display Image
   const [image, setImage] = useState("");
@@ -1762,28 +1770,31 @@ function StakeHolderRegister() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
-    setData(prev=>({...prev,photoPath:file.name}))
+    setData((prev) => ({ ...prev, photoPath: file.name }));
     // setPhotoFile(file);
   };
 
   // Upload Image to S3 Bucket
-  const handleFileUpload = async (fid)=>{
-    const parameters = `farmerId=${fid}`
-    try{
+  const handleFileUpload = async (fid) => {
+    const parameters = `farmerId=${fid}`;
+    try {
       const formData = new FormData();
-      formData.append("multipartFile",image);
+      formData.append("multipartFile", image);
 
-      const response = await api.post(baseURL2 +`farmer/upload-photo?${parameters}`,formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data', 
-        },
-      });
-      console.log('File upload response:', response.data);
-
-    }catch(error){
-      console.error('Error uploading file:', error);
+      const response = await api.post(
+        baseURL2 + `farmer/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
-  }
+  };
 
   // Translation
   const { t } = useTranslation();
@@ -1799,7 +1810,7 @@ function StakeHolderRegister() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -1808,7 +1819,7 @@ function StakeHolderRegister() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-list"
+                  to="/seriui/stake-holder-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -1895,6 +1906,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name is required.
@@ -1916,6 +1928,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name in Kannada is required.
@@ -1937,6 +1950,7 @@ function StakeHolderRegister() {
                             type="text"
                             placeholder={t("enter_fathers_husbands_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name is required.
@@ -1960,6 +1974,7 @@ function StakeHolderRegister() {
                               "enter_fathers_husbands_name_in_kannada"
                             )}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name in Kannada is required.
@@ -1982,6 +1997,7 @@ function StakeHolderRegister() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            className="form-control"
                           />
                         </div>
                       </Form.Group>
@@ -1993,6 +2009,7 @@ function StakeHolderRegister() {
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
@@ -2003,14 +2020,13 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>
-                          Caste
-                        </Form.Label>
+                        <Form.Label>Caste</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="0">Select Caste</option>
                             {casteListData.map((list) => (
@@ -2029,6 +2045,7 @@ function StakeHolderRegister() {
                             name="differentlyAbled"
                             value={data.differentlyAbled}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select")}</option>
                             <option value="true">Yes</option>
@@ -2068,7 +2085,7 @@ function StakeHolderRegister() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required.
+                            Mobile Number is required or Number is greater than and less than 10 Digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2191,6 +2208,7 @@ function StakeHolderRegister() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
+                            disabled
                             isInvalid={
                               data.farmerTypeId === undefined ||
                               data.farmerTypeId === "0"
@@ -2226,7 +2244,8 @@ function StakeHolderRegister() {
                             value={data.farmerNumber}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("enter_farmer_number")}
+                            // placeholder={t("enter_farmer_number")}
+                            placeholder="eg: TTH00001"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -2706,9 +2725,8 @@ function StakeHolderRegister() {
                           <Form.Control.Feedback type="invalid">
                             Branch Name is required
                           </Form.Control.Feedback>
-                          </div>
+                        </div>
                       </Form.Group>
-                       
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="farmerBankIfscCode">
@@ -2729,10 +2747,8 @@ function StakeHolderRegister() {
                           <Form.Control.Feedback type="invalid">
                             IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
-                          </div>
+                        </div>
                       </Form.Group>
-
-                      
                     </Col>
 
                     <Col lg="6">
@@ -2758,8 +2774,8 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="accountImagePath">   
-                        Upload Bank Passbok
+                        <Form.Label htmlFor="accountImagePath">
+                          Upload Bank Passbok
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2798,7 +2814,7 @@ function StakeHolderRegister() {
                 </li>
                 <li>
                   <Link
-                    to="/stake-holder-list"
+                    to="/seriui/stake-holder-list"
                     className="btn btn-secondary border-0"
                   >
                     {t("cancel")}
@@ -3101,6 +3117,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3590,6 +3607,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3617,6 +3635,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3633,6 +3652,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3655,6 +3675,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_number")}
+                          readOnly
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -3673,6 +3694,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3802,6 +3824,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3816,6 +3839,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4112,7 +4136,6 @@ function StakeHolderRegister() {
                     />
                   </div>
                 </Form.Group> */}
-                
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="spacing">
@@ -4417,7 +4440,7 @@ function StakeHolderRegister() {
                   </div>
                 </Form.Group>
 
-                 {/* {selected === "yes" && (
+                {/* {selected === "yes" && (
                   <Form.Group className="form-group mt-3">
                     <Form.Label>{t("programs")}</Form.Label>
                     <div className="form-control-wrap">
@@ -5026,6 +5049,7 @@ function StakeHolderRegister() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -43,12 +43,12 @@ function IrrigationTypeList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/irrigation-type-view/${_id}`);
+    navigate(`/seriui/irrigation-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/irrigation-type-edit/${_id}`);
-    // navigate("/irrigation-source");
+    navigate(`/seriui/irrigation-type-edit/${_id}`);
+    // navigate("/seriui/irrigation-source");
   };
 
   const deleteError = () => {
@@ -139,7 +139,6 @@ function IrrigationTypeList() {
     },
   };
 
-
   const IrrigationTypeDataColumns = [
     {
       name: "action",
@@ -202,7 +201,7 @@ function IrrigationTypeList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/irrigation-type"
+                  to="/seriui/irrigation-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -211,7 +210,7 @@ function IrrigationTypeList() {
               </li>
               <li>
                 <Link
-                  to="/irrigation-type"
+                  to="/seriui/irrigation-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -223,7 +222,7 @@ function IrrigationTypeList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             title="Irrigation Type List"

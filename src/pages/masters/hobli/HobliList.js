@@ -1,9 +1,9 @@
-import { Card, Button,Col,Row,Form } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import HobliDatas from "../../../store/masters/hobli/HobliData";
 import { useNavigate } from "react-router-dom";
@@ -42,10 +42,10 @@ function HobliList() {
     if (data.searchBy === "district") {
       joinColumn = "district.districtName";
     }
-    if(data.searchBy === "taluk"){
+    if (data.searchBy === "taluk") {
       joinColumn = "taluk.talukName";
     }
-    if(data.searchBy === "hobli"){
+    if (data.searchBy === "hobli") {
       joinColumn = "hobli.hobliName";
     }
     // console.log(joinColumn);
@@ -69,7 +69,6 @@ function HobliList() {
       });
   };
 
-
   const getList = () => {
     setLoading(true);
     const response = api
@@ -91,12 +90,12 @@ function HobliList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/hobli-view/${_id}`);
+    navigate(`/seriui/hobli-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/hobli-edit/${_id}`);
-    // navigate("/state");
+    navigate(`/seriui/hobli-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -269,14 +268,17 @@ function HobliList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/hobli" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/hobli"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hobli"
+                  to="/seriui/hobli"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -288,9 +290,9 @@ function HobliList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
-        <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -311,7 +313,7 @@ function HobliList() {
                     </Form.Select>
                   </div>
                 </Col>
-              
+
                 <Col sm={3}>
                   <Form.Control
                     id="fruitsId"

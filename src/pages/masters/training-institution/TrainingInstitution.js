@@ -36,33 +36,33 @@ function TrainingInstitution() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `trInstitutionMaster/add`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          saveError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `trInstitutionMaster/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
             saveSuccess();
             setData({
               trInstitutionMasterName: "",
-              trInstitutionNameInKannada: "", 
+              trInstitutionNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        saveError();
-      });
+        })
+        .catch((err) => {
+          saveError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trInstitutionMasterName: "",
-      trInstitutionNameInKannada: "",   
-    })
-  }
+      trInstitutionNameInKannada: "",
+    });
+  };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -76,7 +76,7 @@ function TrainingInstitution() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   return (
@@ -90,7 +90,7 @@ function TrainingInstitution() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -99,7 +99,7 @@ function TrainingInstitution() {
               </li>
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -121,7 +121,10 @@ function TrainingInstitution() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="trInstitutionMaster">Training Institution<span className="text-danger">*</span></Form.Label>
+                      <Form.Label htmlFor="trInstitutionMaster">
+                        Training Institution
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="trInstitutionMaster"
@@ -133,7 +136,7 @@ function TrainingInstitution() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Training Institution Name is required
+                          Training Institution Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -142,7 +145,8 @@ function TrainingInstitution() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Training Institution Name in Kannada<span className="text-danger">*</span>
+                        Training Institution Name in Kannada
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -166,22 +170,22 @@ function TrainingInstitution() {
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Save
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

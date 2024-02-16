@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from 'react-data-table-component';
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -39,7 +38,7 @@ function DesignationList() {
     //     setLoading(false);
     //   });
     const response = api
-      .get(baseURL+`designation/list`, _params)
+      .get(baseURL + `designation/list`, _params)
       .then((response) => {
         setListData(response.data.content.designation);
         setTotalRows(response.data.content.totalItems);
@@ -57,12 +56,12 @@ function DesignationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/designation-view/${_id}`);
+    navigate(`/seriui/designation-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/designation-edit/${_id}`);
-    // navigate("/designation");
+    navigate(`/seriui/designation-edit/${_id}`);
+    // navigate("/seriui/designation");
   };
 
   const deleteError = () => {
@@ -153,7 +152,6 @@ function DesignationList() {
     },
   };
 
-
   const DesignationDataColumns = [
     {
       name: "action",
@@ -215,14 +213,17 @@ function DesignationList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link to="/designation" className="btn btn-primary btn-md d-md-none">
+                <Link
+                  to="/seriui/designation"
+                  className="btn btn-primary btn-md d-md-none"
+                >
                   <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/designation"
+                  to="/seriui/designation"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -234,7 +235,7 @@ function DesignationList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

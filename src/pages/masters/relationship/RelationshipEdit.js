@@ -42,33 +42,33 @@ function RelationshipEdit() {
     } else {
       event.preventDefault();
 
-    api
-      .post(baseURL + `relationship/edit`, datas)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `relationship/edit`, datas)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
               relationshipName: "",
-              relationshipNameInKannada: "", 
+              relationshipNameInKannada: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       relationshipName: "",
       relationshipNameInKannada: "",
-    })
-  }
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -97,14 +97,14 @@ function RelationshipEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/relationship-list"));
+    }).then(() => navigate("/seriui/relationship-list"));
   };
 
   const updateError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
 
@@ -113,7 +113,7 @@ function RelationshipEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/relationship-list"));
+    }).then(() => navigate("/seriui/relationship-list"));
   };
 
   return (
@@ -127,7 +127,7 @@ function RelationshipEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -136,7 +136,7 @@ function RelationshipEdit() {
               </li>
               <li>
                 <Link
-                  to="/relationship-list"
+                  to="/seriui/relationship-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -176,59 +176,60 @@ function RelationshipEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Relationship Name is required.
-                        </Form.Control.Feedback>
+                            Relationship Name is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Relationship Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="relationshipNameInKannada"
-                          value={data.relationshipNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Relationship Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Relationship Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Relationship Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="relationshipNameInKannada"
+                            value={data.relationshipNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Relationship Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Relationship Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
 
             <Card>
-            <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  {/* <Link to="/relationship-list" className="btn btn-secondary border-0">
+              <Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      {/* <Link to="/seriui/relationship-list" className="btn btn-secondary border-0">
                     Cancel
                   </Link> */}
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

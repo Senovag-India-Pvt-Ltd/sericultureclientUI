@@ -124,7 +124,7 @@ function BulkSendToBank() {
       // text: "You clicked the button!",
     });
     // .then(() => {
-    //   navigate("/caste-list");
+    //   navigate("/seriui/caste-list");
     // });
   };
 
@@ -151,7 +151,7 @@ function BulkSendToBank() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -160,7 +160,7 @@ function BulkSendToBank() {
               </li>
               <li>
                 <Link
-                  to="/stake-holder-registration"
+                  to="/seriui/stake-holder-registration"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

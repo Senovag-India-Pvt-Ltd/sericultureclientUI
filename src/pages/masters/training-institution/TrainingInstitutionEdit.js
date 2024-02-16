@@ -36,33 +36,33 @@ function TrainingInstitutionEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `trInstitutionMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
+      api
+        .post(baseURL + `trInstitutionMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
             updateError(response.data.content.error_description);
-            }else{
-              updateSuccess();
-              setData({
-                trInstitutionMasterName: "",
-                trInstitutionNameInKannada: "",   
-              });
-              setValidated(false);
-            }
-      })
-      .catch((err) => {
-        updateError();
-      });
+          } else {
+            updateSuccess();
+            setData({
+              trInstitutionMasterName: "",
+              trInstitutionNameInKannada: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
       trInstitutionMasterName: "",
-      trInstitutionNameInKannada: "",   
-    })
-  }
+      trInstitutionNameInKannada: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -85,8 +85,6 @@ function TrainingInstitutionEdit() {
     getIdList();
   }, [id]);
 
-
-
   const navigate = useNavigate();
 
   const updateSuccess = () => {
@@ -100,7 +98,7 @@ function TrainingInstitutionEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -122,7 +120,7 @@ function TrainingInstitutionEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -131,7 +129,7 @@ function TrainingInstitutionEdit() {
               </li>
               <li>
                 <Link
-                  to="/training-institution-list"
+                  to="/seriui/training-institution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,69 +154,73 @@ function TrainingInstitutionEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="trInstitutionMaster">Training Institution<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="trInstitutionMaster"
-                          name="trInstitutionMasterName"
-                          value={data.trInstitutionMasterName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Institution"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Training Institution Name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="trInstitutionMaster">
+                          Training Institution
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="trInstitutionMaster"
+                            name="trInstitutionMasterName"
+                            value={data.trInstitutionMasterName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Training Institution"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Institution Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Training Institution Name in Kannada<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="trInstitutionNameInKannada"
-                          value={data.trInstitutionNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Training Institution Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Training Institution Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Training Institution Name in Kannada
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="title"
+                            name="trInstitutionNameInKannada"
+                            value={data.trInstitutionNameInKannada}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Training Institution Name in Kannada"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Training Institution Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                 )}
               </Card.Body>
             </Card>
 
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                   Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>

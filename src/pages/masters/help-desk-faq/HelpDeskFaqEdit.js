@@ -35,35 +35,35 @@ function HelpDeskFaqEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL + `hdQuestionMaster/edit`, data)
-      .then((response) => {
-        if(response.data.content.error){
-          updateError(response.data.content.error_description);
-          }else{
+      api
+        .post(baseURL + `hdQuestionMaster/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
             updateSuccess();
             setData({
-                hdQuestionName: "",
-                hdQuestionAnswerName: "",
-                hdFaqUploadPath: "",
+              hdQuestionName: "",
+              hdQuestionAnswerName: "",
+              hdFaqUploadPath: "",
             });
             setValidated(false);
           }
-      })
-      .catch((err) => {
-        updateError();
-      });
+        })
+        .catch((err) => {
+          updateError(err.response.data.validationErrors);
+        });
       setValidated(true);
     }
   };
 
-  const clear = () =>{
+  const clear = () => {
     setData({
-        hdQuestionName: "",
-        hdQuestionAnswerName: "",
-        hdFaqUploadPath: "", 
-    })
-  }
+      hdQuestionName: "",
+      hdQuestionAnswerName: "",
+      hdFaqUploadPath: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -99,7 +99,7 @@ function HelpDeskFaqEdit() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: Object.values(message).join("<br>"),
     });
   };
   const editError = (message) => {
@@ -121,7 +121,7 @@ function HelpDeskFaqEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/hd-question-list"
+                  to="/seriui/hd-question-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +130,7 @@ function HelpDeskFaqEdit() {
               </li>
               <li>
                 <Link
-                  to="/hd-question-list"
+                  to="/seriui/hd-question-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +156,9 @@ function HelpDeskFaqEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="hdQuestion">Question<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="hdQuestion">
+                          Question<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="hdQuestion"
@@ -166,80 +168,80 @@ function HelpDeskFaqEdit() {
                             type="text"
                             placeholder="Enter Questions"
                             required
-                            />
-                            <Form.Control.Feedback type="invalid">
+                          />
+                          <Form.Control.Feedback type="invalid">
                             QuestionName is required.
-                            </Form.Control.Feedback>
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
-                
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="Question&Answer">
+                          Answers<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Question&Answer"
+                            name="hdQuestionAnswerName"
+                            value={data.hdQuestionAnswerName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Answers"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Answers is Required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Question&Answer">Answers<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="Question&Answer"
-                          name="hdQuestionAnswerName"
-                          value={data.hdQuestionAnswerName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Answers"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Answers is Required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="FAQ Upload Path">FAQ Upload Path  <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="FAQUploadPath"
-                          name="hdFaqUploadPath"
-                          value={data.hdFaqUploadPath}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter FAQ Upload Path"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        FAQ Upload Path is Required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="FAQ Upload Path">
+                          FAQ Upload Path <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="FAQUploadPath"
+                            name="hdFaqUploadPath"
+                            value={data.hdFaqUploadPath}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter FAQ Upload Path"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            FAQ Upload Path is Required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
             </Card>
-            
+
             <Card>
               <Card.Body>
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">    
-                    Update
-                  </Button>
-                </li>
-                <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-            </Card.Body>
+                <div className="gap-col">
+                  <ul className="d-flex align-items-center justify-content-center gap g-3">
+                    <li>
+                      {/* <Button type="button" variant="primary" onClick={postData}> */}
+                      <Button type="submit" variant="primary">
+                        Update
+                      </Button>
+                    </li>
+                    <li>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                        Cancel
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
+              </Card.Body>
             </Card>
           </Row>
         </Form>
