@@ -23,6 +23,7 @@ function TrainingScheduleEdit() {
     trScheduleId: "",
     userMasterId: "",
     trainerName: "",
+    trInstitutionMasterId: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -94,6 +95,17 @@ function TrainingScheduleEdit() {
     });
   };
 
+ // TrainerUser
+ const handleTrainerInstitutionOption = (e) => {
+  const value = e.target.value;
+  const [chooseId, chooseName] = value.split("_");
+  setTrainerUser({
+    ...trainerUser,
+    trInstitutionMasterId: chooseId,
+    trInstitutionMasterName: chooseName,
+  });
+};
+
   const handleDelete = (i) => {
     api
       .delete(baseURL2 + `trainingScheduleUser/delete/${i}`)
@@ -150,6 +162,7 @@ function TrainingScheduleEdit() {
       trScheduleId: "",
       userMasterId: "",
       trainerName: "",
+      trInstitutionMasterId: "",
     });
   };
 
@@ -262,7 +275,7 @@ function TrainingScheduleEdit() {
     getIdList();
   }, [id]);
 
-  // to get TrInstitutionMaster
+  // to get Tr User
   const [trUserListData, setTrUserListData] = useState([]);
 
   const getTrUserList = () => {
@@ -525,7 +538,7 @@ function TrainingScheduleEdit() {
                       </Form.Group>
                     </Col> */}
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Training Institution
@@ -554,7 +567,7 @@ function TrainingScheduleEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group">
@@ -728,8 +741,8 @@ function TrainingScheduleEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="trNoOfParticipant">
                           Training No Of Participant
                         </Form.Label>
@@ -891,7 +904,7 @@ function TrainingScheduleEdit() {
                                   {/* <th></th> */}
                                   <th>Action</th>
                                   <th>User Name</th>
-                                  <th>Trainer Name</th>
+                                  <th>Training Institution</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -924,8 +937,8 @@ function TrainingScheduleEdit() {
                                         </Button>
                                       </div>
                                     </td>
-                                    <td>{item.trainerName}</td>
                                     <td>{item.username}</td>
+                                    <td>{item.trInstitutionMasterName}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1005,7 +1018,81 @@ function TrainingScheduleEdit() {
                 </Form.Group>
               </Col>
 
-              <Col lg = "6">
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label>
+                    User<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="userMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${trainerUser.userMasterId}_${trainerUser.username}`}
+                      onChange={handleTrainerUserOption}
+                      onBlur={() => handleTrainerUserOption}
+                      required
+                      isInvalid={
+                        trainerUser.userMasterId === undefined ||
+                        trainerUser.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Trainer</option>
+                      {trUserListData.length
+                        ? trUserListData.map((list) => (
+                            <option
+                              key={list.userMasterId}
+                              value={`${list.userMasterId}_${list.username}`}
+                            >
+                              {list.username}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      User is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label>
+                    Training Institution<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="trInstitutionMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${trainerUser.trInstitutionMasterId}_${trainerUser.trInstitutionMasterName}`}
+                      onChange={handleTrainerInstitutionOption}
+                      onBlur={() => handleTrainerInstitutionOption}
+                      required
+                      isInvalid={
+                        trainerUser.userMasterId === undefined ||
+                        trainerUser.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Training Institution</option>
+                      {trInstituteListData.length
+                        ? trInstituteListData.map((list) => (
+                            <option
+                              key={list.trInstitutionMasterId}
+                              value={`${list.trInstitutionMasterId}_${list.trInstitutionMasterName}`}
+                            >
+                              {list.trInstitutionMasterName}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Training Institution is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              {/* <Col lg = "6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="trainerName">
                     Trainer Name<span className="text-danger">*</span>
@@ -1020,12 +1107,9 @@ function TrainingScheduleEdit() {
                       placeholder="Enter Trainer Name"
                       // required
                     />
-                    {/* <Form.Control.Feedback type="invalid">
-                      Virtual Account Number is required
-                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
-              </Col>
+              </Col> */}
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
@@ -1100,24 +1184,41 @@ function TrainingScheduleEdit() {
                 </Form.Group>
               </Col>
 
-              <Col lg = "6">
+             
+
+              <Col lg="6">
                 <Form.Group className="form-group mt-3">
-                  <Form.Label htmlFor="trainerName">
-                    Trainer Name<span className="text-danger">*</span>
+                  <Form.Label>
+                    Training Institution<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
-                    <Form.Control
-                      id="trainerName"
-                      name="trainerName"
-                      value={trainerUser.trainerName}
-                      onChange={handleTrainerUserInputs}
-                      type="text"
-                      placeholder="Enter Trainer Name"
-                      // required
-                    />
-                    {/* <Form.Control.Feedback type="invalid">
-                      Virtual Account Number is required
-                    </Form.Control.Feedback> */}
+                    <Form.Select
+                      name="trInstitutionMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${trainerUser.trInstitutionMasterId}_${trainerUser.trInstitutionMasterName}`}
+                      onChange={handleTrainerInstitutionOption}
+                      onBlur={() => handleTrainerInstitutionOption}
+                      required
+                      isInvalid={
+                        trainerUser.userMasterId === undefined ||
+                        trainerUser.userMasterId === "0"
+                      }
+                    >
+                      <option value="">Select Training Institution</option>
+                      {trInstituteListData.length
+                        ? trInstituteListData.map((list) => (
+                            <option
+                              key={list.trInstitutionMasterId}
+                              value={`${list.trInstitutionMasterId}_${list.trInstitutionMasterName}`}
+                            >
+                              {list.trInstitutionMasterName}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Training Institution is required
+                    </Form.Control.Feedback>
                   </div>
                 </Form.Group>
               </Col>
