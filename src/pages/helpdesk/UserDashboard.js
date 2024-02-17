@@ -258,8 +258,8 @@ function UserDashboard() {
     },
     {
       name: "Severity",
-      selector: (row) => row.hdSeverityId,
-      cell: (row) => <span>{row.hdSeverityId}</span>,
+      selector: (row) => row.hdSeverityName,
+      cell: (row) => <span>{row.hdSeverityName}</span>,
       sortable: true,
       hide: "md",
     },

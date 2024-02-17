@@ -70,8 +70,6 @@ function UserTicketView() {
     setRaiseTicket({ ...raiseTicket, [name]: value });
   };
 
- 
-
   return (
     <Layout title="View User Ticket Details">
       <Block.Head>
@@ -156,6 +154,14 @@ function UserTicketView() {
                       <tr>
                         <td style={styles.ctstyle}>Ticket Number:</td>
                         <td>{raiseTicket.ticketNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ ...styles.ctstyle, fontWeight: "bold" }}>
+                          Solution:
+                        </td>
+                        <td style={{ fontWeight: "bold", color: "green" }}>
+                          {raiseTicket.solution}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

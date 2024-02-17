@@ -8,6 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
+import Swal from "sweetalert2";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
@@ -23,7 +24,10 @@ function RaiseTicketView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [raiseTicket, setRaiseTicket] = useState({});
+  const [raiseTicket, setRaiseTicket] = useState({
+    solution: "",
+    hdSeverityId: "",
+  });
   const [loading, setLoading] = useState(false);
 
   // grabsthe id form the url and loads the corresponding data
@@ -34,10 +38,10 @@ function RaiseTicketView() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
+    api
       .get(baseURL + `hdTicket/get-join/${id}`)
       .then((response) => {
-        setRaiseTicket(response.data.content);
+        setRaiseTicket((prev) => ({ ...prev, ...response.data.content }));
         setLoading(false);
       })
       .catch((err) => {
@@ -63,7 +67,7 @@ function RaiseTicketView() {
   //   };
 
   let name, value;
-  const handleListInput = (e) => {
+  const handleInput = (e) => {
     // debugger;
     name = e.target.name;
     value = e.target.value;
@@ -105,6 +109,41 @@ function RaiseTicketView() {
   useEffect(() => {
     getStatusList();
   }, []);
+
+  // Submit
+  const submit = () => {
+    const { solution, hdSeverityId, hdTicketId } = raiseTicket;
+    api
+      .post(baseURL + `hdTicket/edit`, {
+        ...raiseTicket,
+        hdTicketId,
+        solution,
+        hdSeverityId,
+      })
+      .then((response) => {
+        saveSuccess();
+        setRaiseTicket({
+          solution: "",
+          hdSeverityId: "",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const [show, setShow] = useState(false);
+  const displaySeverity = () => {
+    setShow((prev) => !prev);
+  };
+
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Solution sent to User",
+      // text: "You clicked the button!",
+    });
+  };
 
   return (
     <Layout title="View Raised Ticket Details">
@@ -250,6 +289,14 @@ function RaiseTicketView() {
       </Block>
       <Block className="mt-2">
         <Card>
+          <Card.Header>
+            <div className="d-flex justify-content-between">
+              <div>solution</div>
+              <div style={{ cursor: "pointer" }} onClick={displaySeverity}>
+                <Icon name="view-row-wd"></Icon>
+              </div>
+            </div>
+          </Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="4">
@@ -258,7 +305,8 @@ function RaiseTicketView() {
                     <Form.Select
                       name="hdStatusId"
                       value={raiseTicket.hdStatusId}
-                      onChange={() => handleListInput}
+                      onChange={() => handleInput}
+                      disabled
                       // onBlur={() => handleInputs}
                     >
                       <option value="">Select Status</option>
@@ -272,49 +320,62 @@ function RaiseTicketView() {
                 </Form.Group>
               </Col>
 
-              <Col lg="4">
+              {show ? (
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="hdSeverityId"
+                        value={raiseTicket.hdSeverityId}
+                        onChange={() => handleInput}
+                        // onBlur={() => handleInputs}
+                      >
+                        <option value="">Select Severity</option>
+                        {severityListData.map((list) => (
+                          <option
+                            key={list.hdSeverityId}
+                            value={list.hdSeverityId}
+                          >
+                            {list.hdSeverityName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </div>
+                  </Form.Group>
+                </Col>
+              ) : (
+                ""
+              )}
+            </Row>
+            <Row className="mt-2">
+              <Col lg="6">
                 <Form.Group className="form-group">
+                  <Form.Label htmlFor="solution">Solution</Form.Label>
                   <div className="form-control-wrap">
-                    <Form.Select
-                      name="hdSeverityId"
-                      value={raiseTicket.hdSeverityId}
-                      onChange={() => handleListInput}
-                      // onBlur={() => handleInputs}
-                    >
-                      <option value="">Select Severity</option>
-                      {severityListData.map((list) => (
-                        <option
-                          key={list.hdSeverityId}
-                          value={list.hdSeverityId}
-                        >
-                          {list.hdSeverityName}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    <Form.Control
+                      id="solution"
+                      name="solution"
+                      value={raiseTicket.solution}
+                      onChange={handleInput}
+                      // type="text"
+                      as="textarea"
+                      rows={4}
+                      placeholder="Enter Solutions"
+                    />
                   </div>
                 </Form.Group>
               </Col>
-
-              <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="Question&Answer">
-                        Solution 
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="Question&Answer"
-                          name="hdQuestionAnswerName"
-                          value={raiseTicket.hdQuestionAnswerName}
-                          onChange={handleListInput}
-                          // type="text"
-                          as="textarea"
-                          rows={4}
-                          placeholder="Enter Solutions"
-                        />
-                       
-                      </div>
-                    </Form.Group>
-                  </Col>
+            </Row>
+            <Row>
+              <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-start gap g-3 mt-3">
+                  <li>
+                    <Button type="button" variant="primary" onClick={submit}>
+                      Submit
+                    </Button>
+                  </li>
+                </ul>
+              </div>
             </Row>
           </Card.Body>
         </Card>
