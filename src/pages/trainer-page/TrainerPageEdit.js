@@ -842,7 +842,7 @@ function TrainerPageEdit() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
                       User<span className="text-danger">*</span>
@@ -874,7 +874,29 @@ function TrainerPageEdit() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
+
+                <Col lg = "6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="trainerName">
+                    Trainer Name<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="trName"
+                      name="trName"
+                      value={data.trName}
+                      onChange={data}
+                      type="text"
+                      placeholder="Enter Trainer Name"
+                      // required
+                    />
+                    {/* <Form.Control.Feedback type="invalid">
+                      Virtual Account Number is required
+                    </Form.Control.Feedback> */}
+                  </div>
+                </Form.Group>
+              </Col>
 
                 <Col lg="6">
                   <Form.Group className="form-group">
