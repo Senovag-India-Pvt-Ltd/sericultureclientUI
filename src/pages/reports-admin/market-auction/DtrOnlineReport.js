@@ -115,6 +115,43 @@ function DtrOnlineReport() {
   const [listData, setListData] = useState([]);
   const [listDetails, setListDetails] = useState([]);
 
+  const generateDtrReport = async () => {
+    const { fromDate, toDate } = data;
+    const formattedFromDate =
+      fromDate.getFullYear() +
+      "-" +
+      (fromDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      fromDate.getDate().toString().padStart(2, "0");
+    const formattedToDate =
+      toDate.getFullYear() +
+      "-" +
+      (toDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      toDate.getDate().toString().padStart(2, "0");
+
+    try {
+      const response = await api.post(
+        `https://api.senovagseri.com/reports-uat/marketreport/dtr-online-report`,
+        {
+          marketId: data.marketId,
+          reelerId: data.reelerId,
+          fromDate: formattedFromDate,
+          toDate: formattedToDate,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const postData = (event) => {
     const { marketId, godownId, reelerId, fromDate, toDate } = data;
     const fDate = new Date(fromDate);
@@ -321,6 +358,23 @@ function DtrOnlineReport() {
               <div
               //  className={isActive ? "" : "d-none"}
               >
+                <Row className="d-flex justify-content-end mt-2">
+                  <Col sm={2}>
+                    {/* <Button
+                          type="button"
+                          variant="primary"
+                          onClick={display}
+                        > */}
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="sm"
+                      onClick={generateDtrReport}
+                    >
+                      Print
+                    </Button>
+                  </Col>
+                </Row>
                 <Row className="g-gs pt-2">
                   <Col lg="12">
                     <table className="table table-striped table-bordered">
