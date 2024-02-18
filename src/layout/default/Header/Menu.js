@@ -1236,7 +1236,7 @@ function Menu() {
             <MenuItem>
               <MenuItemLink
                 text="Chawki distribution to Farmers"
-                to="/seriui/Chawki-distribution-to-Farmers"
+                to="/seriui/chawki-distribution"
               />
             </MenuItem>
           ) : null}
