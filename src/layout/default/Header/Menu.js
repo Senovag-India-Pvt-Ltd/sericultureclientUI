@@ -209,24 +209,23 @@ function Menu() {
     DBT_Subsidy_Counter_Signing: false,
 
     Market: false,
-    Market_Register: false,
     Market_Bidding: false,
-    Market_Auction: false,
+    Market_Accept_Farmer_Auction: false,
     Market_Weighment: false,
     Market_Gatepass: false,
     Market_Reject: false,
+    Market_Show_Lot: false,
 
     Market_Payment: false,
     Market_Payment_Ready_for_Payment: false,
     Market_Payment_Bulk_Send_To_Bank: false,
     Market_Payment_Bank_Statement: false,
-    Market_Payment_IFSC_Update: false,
+    // Market_Payment_IFSC_Update: false,
 
-    Market_Permit: false,
-    Market_Reject_Farmer_Auction: false,
-    Market_Generate_Bidding_Slip: false,
-    Market_Update_Lot_Weight: false,
-    Market_Accept_Farmer_Auction: false,
+    // Market_Permit: false,
+    // Market_Reject_Farmer_Auction: false,
+    // Market_Generate_Bidding_Slip: false,
+    // Market_Update_Lot_Weight: false,
 
     SeedDFL: false,
     SeedDFL_Garden_Farms: false,
@@ -994,14 +993,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Market_Payment_IFSC_Update ? (
+                  {/* {showMenu.Market_Payment_IFSC_Update ? (
                     <MenuItem>
                       <MenuItemLink
                         text="IFSC Update"
                         to="/seriui/ifsc-update"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -1011,7 +1010,7 @@ function Menu() {
               <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
             </MenuItem>
           ) : null}
-          {showMenu.Market_Reject ? (
+          {showMenu.Market_Show_Lot ? (
             <MenuItem>
               <MenuItemLink
                 text="Show Lot Details"
@@ -1770,7 +1769,7 @@ function Menu() {
                       {showMenu.Admin_Master_HelpDesk_Board_Category ? (
                         <MenuItem>
                           <MenuItemLink
-                            text="Broad Category"
+                            text="Board Category"
                             to="/seriui/hd-board-category"
                           />
                         </MenuItem>
