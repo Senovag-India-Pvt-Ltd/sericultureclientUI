@@ -229,40 +229,28 @@ function Menu() {
     Market_Accept_Farmer_Auction: false,
 
     SeedDFL: false,
-    SeedDFL_Kunigal: false,
-    SeedDFL_Kunigal_mulberry_farm: false,
-    SeedDFL_Kunigal_DFLs_from_the_P4_grainage: false,
-    SeedDFL_Kunigal_Line_record_maintenance: false,
-    SeedDFL_Kunigal_Screening_batch_record: false,
-    SeedDFL_Kunigal_Cocoons_to_P4_Grainage: false,
-    SeedDFL_Kunigal_DFLs_for_the_8_lines: false,
-
-    SeedDFL_Grainages: false,
-    SeedDFL_Grainages_Preservation_of_Cocoon: false,
-    SeedDFL_Grainages_Preparation_of_Eggs: false,
-    SeedDFL_Grainages_Eggs_At_Cold_Storage: false,
-    SeedDFL_Cold_Storage_Schedule: false,
-    SeedDFL_Grainages_Disposal_of_DFL: false,
-    SeedDFL_Grainages_Testing_of_Moth: false,
-    SeedDFL_Grainages_Maintenance_of_Pierced_Cocoons: false,
-    SeedDFL_Grainages__Pierced_Cocoons: false,
-    SeedDFL_Grainages_Egg_Layings_Sheets: false,
-    SeedDFL_Grainages_Remittance: false,
-
-    SeedDFL_Seed: false,
-    SeedDFL_Seed_Preparation_of_Eggs: false,
-    SeedDFL_Seed_Disposal_of_DFL: false,
-    SeedDFL_Seed_Cold_Storage: false,
+    SeedDFL_Garden_Farms: false,
+    SeedDFL_DFLs_from_P4_Grainage: false,
+    SeedDFL_Line_Records_Each_race: false,
+    SeedDFL_Screening_batch_record: false,
+    SeedDFL_Cocoons_to_P4_Grainage: false,
+    SeedDFL_DFLs_for_the_8_lines: false,
+    SeedDFL_Seed_Cocoon_Processing: false,
+    SeedDFL_Preparation_Egg_DFLs: false,
+    SeedDFL_Eggs_Cold_storage: false,
+    SeedDFL_Cold_Storage_Schedule_BV: false,
 
     GardenManagement: false,
-    GardenManagement_Mulberry_Farm: false,
+    GardenManagement_Mulberry_Garden: false,
     GardenManagement_DFL_From_The_Grainage: false,
     GardenManagement_Rearing_of_DFL: false,
     GardenManagement_Cocoons_to_Grainage: false,
     GardenManagement_Sale_of_Nursery_to_Farmers: false,
     GardenManagement_Seed_Cutting_Bank: false,
+    GardenManagement_Distribution_Farmers: false,
 
     ChawkiManagement: false,
+    ChawkiManagement_ChawkiManagement: false,
 
     TargetSetting: false,
     TargetSetting_Assigning_Yearly_Targets: false,
@@ -1068,7 +1056,7 @@ function Menu() {
           sub
         />
         <MenuSub>
-          {showMenu.SeedDFL_Kunigal ? (
+          {showMenu.SeedDFL_Garden_Farms ? (
             <MenuItem>
               <MenuItemLink
                 text="Maintenance of mulberry Garden in the Farms"
@@ -1077,70 +1065,88 @@ function Menu() {
             </MenuItem>
           ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Receipt of DFLs from the P4 grainage"
-              to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_DFLs_from_P4_Grainage ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Receipt of DFLs from the P4 grainage"
+                to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Maintenance of Line Records for Each Race"
-              to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Line_Records_Each_race ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Maintenance of Line Records for Each Race"
+                to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Maintenance of Screening Batch Records"
-              to="/seriui/Maintenance-of-Screening-Batch-Records"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Screening_batch_record ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Maintenance of Screening Batch Records"
+                to="/seriui/Maintenance-of-Screening-Batch-Records"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Dispatch of Cocoons to P4 Grainage"
-              to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Cocoons_to_P4_Grainage ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Dispatch of Cocoons to P4 Grainage"
+                to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Rearing of DFLs for the 8 Lines"
-              to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_DFLs_for_the_8_lines ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Rearing of DFLs for the 8 Lines"
+                to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Preservation of seed cocoon for processing"
-              to="/seriui/Preservation-of-seed-cocoon-for-processing"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Seed_Cocoon_Processing ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Preservation of seed cocoon for processing"
+                to="/seriui/Preservation-of-seed-cocoon-for-processing"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Preparation of eggs DFLs"
-              to="/seriui/Preparation-of-eggs-DFLs"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Preparation_Egg_DFLs ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Preparation of eggs DFLs"
+                to="/seriui/Preparation-of-eggs-DFLs"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Maintenance of eggs at cold storage"
-              to="/seriui/Maintenance-of-eggs-at-cold-storage"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Eggs_Cold_storage ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Maintenance of eggs at cold storage"
+                to="/seriui/Maintenance-of-eggs-at-cold-storage"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Cold Storage Schedule BV"
-              to="/seriui/Cold-Storage-Schedule-BV"
-            />
-          </MenuItem>
+          {showMenu.SeedDFL_Cold_Storage_Schedule_BV ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Cold Storage Schedule BV"
+                to="/seriui/Cold-Storage-Schedule-BV"
+              />
+            </MenuItem>
+          ) : null}
 
-          {showMenu.SeedDFL_Grainages ? (
+          {/* {showMenu.SeedDFL_Grainages ? (
             <MenuItem sub>
               <MenuItemLink
                 text="Grainages"
@@ -1161,7 +1167,7 @@ function Menu() {
               />
               <MenuSub></MenuSub>
             </MenuItem>
-          ) : null}
+          ) : null} */}
         </MenuSub>
       </MenuItem>
 
@@ -1173,37 +1179,50 @@ function Menu() {
           sub
         />
         <MenuSub>
-          <MenuItem>
-            <MenuItemLink
-              text="Maintenance Of Mulberry Garden"
-              to="/seriui/maintenance-of-mulberry-garden"
-            />
-          </MenuItem>
+          {showMenu.GardenManagement_Mulberry_Garden ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Maintenance Of Mulberry Garden"
+                to="/seriui/maintenance-of-mulberry-garden"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Receipt of DFLs from the grainage"
-              to="/seriui/receipt-of-dfls"
-            />
-          </MenuItem>
+          {showMenu.GardenManagement_DFL_From_The_Grainage ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Receipt of DFLs from the grainage"
+                to="/seriui/receipt-of-dfls"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink text="Rearing of DFLs" to="/seriui/rearing-of-dfls" />
-          </MenuItem>
+          {showMenu.GardenManagement_Rearing_of_DFL ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Rearing of DFLs"
+                to="/seriui/rearing-of-dfls"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Supply of Cocoons to Grainagee"
-              to="/seriui/Supply-of-Cocoons-to-Grainagee"
-            />
-          </MenuItem>
+          {showMenu.GardenManagement_Cocoons_to_Grainage ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Supply of Cocoons to Grainagee"
+                to="/seriui/Supply-of-Cocoons-to-Grainagee"
+              />
+            </MenuItem>
+          ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Maintenance and Sale of Nursery to Farmers"
-              to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
-            />
-          </MenuItem>
+          {showMenu.GardenManagement_Sale_of_Nursery_to_Farmers ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Maintenance and Sale of Nursery to Farmers"
+                to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+              />
+            </MenuItem>
+          ) : null}
 
           {showMenu.GardenManagement_Seed_Cutting_Bank ? (
             <MenuItem>
@@ -1214,12 +1233,14 @@ function Menu() {
             </MenuItem>
           ) : null}
 
-          <MenuItem>
-            <MenuItemLink
-              text="Chawki distribution to Farmers"
-              to="/seriui/chawki-distribution"
-            />
-          </MenuItem>
+          {showMenu.GardenManagement_Distribution_Farmers ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Chawki distribution to Farmers"
+                to="/seriui/Chawki-distribution-to-Farmers"
+              />
+            </MenuItem>
+          ) : null}
         </MenuSub>
       </MenuItem>
 
@@ -1231,13 +1252,13 @@ function Menu() {
           sub
         />
         <MenuSub>
-          {showMenu.ChawkiManagement ? (
-          <MenuItem>
-            <MenuItemLink
-              text="Chawki Management"
-              to="/seriui/chawki-management"
-            />
-          </MenuItem>
+          {showMenu.ChawkiManagement_ChawkiManagement ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Chawki Management"
+                to="/seriui/chawki-management"
+              />
+            </MenuItem>
           ) : null}
         </MenuSub>
       </MenuItem>

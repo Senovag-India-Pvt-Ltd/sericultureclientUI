@@ -337,7 +337,7 @@ function BiddingSlip() {
 
   const getRaceList = (_id) => {
     api
-      .get(baseURL1 + `raceMaster/get-by-market-master-id/${_id}`)
+      .get(baseURL1 + `raceMarketMaster/get-by-market-master-id/${_id}`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
       })

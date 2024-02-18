@@ -199,15 +199,21 @@ function NewReelerLicense() {
                 dump1 = result.data.content.farmerAddressList[0];
               }
 
-              setData((prev) => ({
-                ...prev,
-                // ...result.data.content.farmerResponse,
-                reelerName: dump.firstName,
-                fatherName: dump.fatherName,
-                gender: dump.genderId,
-                casteId: dump.casteId,
-                address: dump1.addressText,
-              }));
+              if (dump) {
+                setData((prev) => ({
+                  ...prev,
+                  // ...result.data.content.farmerResponse,
+                  reelerName: dump.firstName,
+                  fatherName: dump.fatherName,
+                  gender: dump.genderId,
+                  casteId: dump.casteId,
+                  address: dump1 ? dump1.addressText : "",
+                }));
+              }
+
+              if (result.data.content.error) {
+                saveError(result.data.content.error_description);
+              }
               // setFarmerAddressList((prev) => [
               //   ...prev,
               //   ...result.data.content.farmerAddressList,
@@ -240,16 +246,22 @@ function NewReelerLicense() {
             ) {
               dump1 = result.data.content.farmerAddressList[0];
             }
+            if (dump) {
+              setData((prev) => ({
+                ...prev,
+                // ...result.data.content.farmerResponse,
+                reelerName: dump.firstName,
+                fatherName: dump.fatherName,
+                gender: dump.genderId,
+                casteId: dump.casteId,
+                address: dump1 ? dump1.addressText : "",
+              }));
+            }
 
-            setData((prev) => ({
-              ...prev,
-              // ...result.data.content.farmerResponse,
-              reelerName: dump.firstName,
-              fatherName: dump.fatherName,
-              gender: dump.genderId,
-              casteId: dump.casteId,
-              address: dump1 ? dump1.addressText : "",
-            }));
+            if (result.data.content.error) {
+              saveError(result.data.content.error_description);
+            }
+
             // setFarmerAddressList((prev) => [
             //   ...prev,
             //   ...result.data.content.farmerAddressList,
@@ -525,10 +537,16 @@ function NewReelerLicense() {
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
