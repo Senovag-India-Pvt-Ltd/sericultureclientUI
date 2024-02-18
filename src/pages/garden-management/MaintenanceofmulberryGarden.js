@@ -121,7 +121,7 @@ function MaintenanceofmulberryGarden() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      text: `Dates ${message}`,
+      text: message,
     });
   };
 

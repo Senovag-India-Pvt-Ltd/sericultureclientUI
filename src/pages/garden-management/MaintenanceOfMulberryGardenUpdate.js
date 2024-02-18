@@ -113,7 +113,7 @@ function MaintenanceOfMulberryGardenUpdate() {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
-      text: `Dates ${message}`,
+      text: message,
     });
   };
   const updateError = (message) => {
