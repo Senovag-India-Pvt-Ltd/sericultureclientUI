@@ -75,7 +75,7 @@ function RearingOfDFLsEdit() {
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -120,6 +120,24 @@ function RearingOfDFLsEdit() {
     getIdList();
   }, [id]);
 
+  // to get Lot Number
+  const [lotNumberListData, setLotNumberListData] = useState([]);
+
+  const getLotNumberList = () => {
+    const response = api
+      .get(baseURL2 + `lot-number-master/get-info`)
+      .then((response) => {
+        setLotNumberListData(response.data);
+      })
+      .catch((err) => {
+        setLotNumberListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotNumberList();
+  }, []);
+
   const navigate = useNavigate();
 
   const updateSuccess = () => {
@@ -130,10 +148,16 @@ function RearingOfDFLsEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -251,7 +275,7 @@ function RearingOfDFLsEdit() {
                       </Form.Control.Feedback>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="plotNumber">
                           Lot Number<span className="text-danger">*</span>
@@ -271,6 +295,34 @@ function RearingOfDFLsEdit() {
                       <Form.Control.Feedback type="invalid">
                         Lot Number is required
                       </Form.Control.Feedback>
+                    </Col> */}
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Lot Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lotNumber"
+                              value={data.lotNumber}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                            >
+                              <option value="">Select Lot Number</option>
+                              {lotNumberListData.map((list) => (
+                                <option
+                                  key={list.lotNumber}
+                                  value={list.lotNumber}
+                                >
+                                  {list.lotNumber}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                        </Col>
+                      </Form.Group>
                     </Col>
 
                     <Col lg="4">

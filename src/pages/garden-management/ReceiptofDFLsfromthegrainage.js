@@ -13,19 +13,18 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ReceiptofDFLsfromthegrainage() {
   const [data, setData] = useState({
-    lineNumber: "",
-    lineOfDFLs: "",
+    raceOfDfls: "",
     laidOnDate: "",
+    grainage: "",
     lotNumber: "",
     numberOfDFLsReceived: "",
+    dflsRecDate: "",
     invoiceDetails: "",
-    wormTestDetails: "",
     generationDetails: "",
     viewReceipt: "",
   });
@@ -61,13 +60,13 @@ function ReceiptofDFLsfromthegrainage() {
           } else {
             saveSuccess();
             setData({
-              lineNumber: "",
-              lineOfDFLs: "",
+              raceOfDfls: "",
               laidOnDate: "",
+              grainage: "",
               lotNumber: "",
               numberOfDFLsReceived: "",
+              dflsRecDate: "",
               invoiceDetails: "",
-              wormTestDetails: "",
               generationDetails: "",
               viewReceipt: "",
             });
@@ -75,7 +74,7 @@ function ReceiptofDFLsfromthegrainage() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -83,13 +82,13 @@ function ReceiptofDFLsfromthegrainage() {
 
   const clear = () => {
     setData({
-      lineNumber: "",
-      lineOfDFLs: "",
+      raceOfDfls: "",
       laidOnDate: "",
+      grainage: "",
       lotNumber: "",
       numberOfDFLsReceived: "",
+      dflsRecDate: "",
       invoiceDetails: "",
-      wormTestDetails: "",
       generationDetails: "",
       viewReceipt: "",
     });
@@ -98,6 +97,45 @@ function ReceiptofDFLsfromthegrainage() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL + `raceMaster/get-all`)
+       .then((response) => {
+         setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+         setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getRaceList();
+   }, []);
+
+    // to get Race
+    const [grainageListData, setGrainageListData] = useState([]);
+
+    const getGrainageList = () => {
+      const response = api
+        .get(baseURL + `grainageMaster/get-all`)
+        .then((response) => {
+          setGrainageListData(response.data.content.grainageMaster);
+        })
+        .catch((err) => {
+          setGrainageListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getGrainageList();
+    }, []);
+
+
+
 
   const postDataReceipt = (event) => {
     const { marketId, godownId, allottedLotId, auctionDate } = data;
@@ -150,15 +188,19 @@ function ReceiptofDFLsfromthegrainage() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
 
@@ -204,52 +246,64 @@ function ReceiptofDFLsfromthegrainage() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Line Number<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="lineNumber"
-                          name="lineNumber"
-                          value={data.lineNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Line Number"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Line Number is required
-                    </Form.Control.Feedback>
-                  </Col>
+                <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Race<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="raceOfDfls"
+                              value={data.raceOfDfls}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                            >
+                              <option value="">Select Race</option>
+                              {raceListData.map((list) => (
+                                <option
+                                  key={list.raceMasterId}
+                                  value={list.raceMasterId}
+                                >
+                                  {list.raceMasterName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Grainage<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="grainage"
+                              value={data.grainage}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                            >
+                              <option value="">Select Grainage</option>
+                              {grainageListData.map((list) => (
+                                <option
+                                  key={list.grainageMasterId}
+                                  value={list.grainageMasterId}
+                                >
+                                  {list.grainageMasterName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Line Of DFLs<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="lineOfDFLs"
-                          name="lineOfDFLs"
-                          value={data.lineOfDFLs}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Line Of DFLs"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Line Of DFLs is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
                         Lot Number<span className="text-danger">*</span>
                       </Form.Label>
@@ -294,14 +348,31 @@ function ReceiptofDFLsfromthegrainage() {
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
                       <DatePicker
                         selected={data.laidOnDate}
                         onChange={(date) =>
                           handleDateChange(date, "laidOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
+
+                  <Form.Label column sm={2}>
+                    DFLs received Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.dflsRecDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "dflsRecDate")
                         }
                         peekNextMonth
                         showMonthDropdown
@@ -331,23 +402,7 @@ function ReceiptofDFLsfromthegrainage() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Worm Test Details and result
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="wormTestDetails"
-                          name="wormTestDetails"
-                          value={data.wormTestDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Worm Test Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
@@ -367,11 +422,11 @@ function ReceiptofDFLsfromthegrainage() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="2">
+                  {/* <Col lg="2">
                     <Button type="button" onClick={postDataReceipt}>
                       View Invoice
                     </Button>
-                  </Col>
+                  </Col> */}
 
                   {/* <Col lg="4">
                           <Form.Group className="form-group">

@@ -10,7 +10,7 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenEdit() {
@@ -32,10 +32,7 @@ function MaintenanceOfMulberryGardenEdit() {
   };
 
   const isDataPruningSet = !!data.pruningDate;
-  const isDataFertilizerSet = !!data.fertilizerApplicationDate;
-  const isDataFymSet = !!data.fymApplicationDate;
-  const isDataIrrigationSet = !!data.irrigationDate;
-  const isDataBrushingSet = !!data.brushingDate;
+  
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -66,7 +63,6 @@ function MaintenanceOfMulberryGardenEdit() {
               fymApplicationDate: "",
               irrigationDate: "",
               brushingDate: "",
-              remarks: "",
             });
             setValidated(false);
           }
@@ -89,7 +85,6 @@ function MaintenanceOfMulberryGardenEdit() {
       fymApplicationDate: "",
       irrigationDate: "",
       brushingDate: "",
-      remarks: "",
     });
   };
 
@@ -114,6 +109,25 @@ function MaintenanceOfMulberryGardenEdit() {
     getIdList();
   }, [id]);
 
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURL + `mulberry-variety/get-all`)
+      .then((response) => {
+        setVarietyListData(response.data.content.mulberryVariety);
+      })
+      .catch((err) => {
+        setVarietyListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getVarietyList();
+  }, []);
+
+
   const navigate = useNavigate();
 
   const updateSuccess = () => {
@@ -121,15 +135,28 @@ function MaintenanceOfMulberryGardenEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
-  };
-  const updateError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
     });
   };
+  const updateError = (message) => {
+  //   Swal.fire({
+  //     icon: "error",
+  //     title: "Save attempt was not successful",
+  //     text: message,
+  //   });
+  // };
+  let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
   const editError = (message) => {
     Swal.fire({
       icon: "error",
@@ -206,7 +233,7 @@ function MaintenanceOfMulberryGardenEdit() {
                     </Col>
 
                     <Col lg="4">
-                      {/* <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                     <Form.Label>
                       Mulberry Variety<span className="text-danger">*</span>
                     </Form.Label>
@@ -221,7 +248,7 @@ function MaintenanceOfMulberryGardenEdit() {
                         isInvalid={data.variety === undefined || data.variety === "0"} 
                       >
                         <option value="">Select Mulberry Variety</option>
-                        {mulberryVarietyListData.map((list) => (
+                        {varietyListData.map((list) => (
                           <option
                             key={list.mulberryVarietyId}
                             value={list.mulberryVarietyId}
@@ -234,27 +261,8 @@ function MaintenanceOfMulberryGardenEdit() {
                         Mulberry Variety is required
                       </Form.Control.Feedback>
                     </div>
-                  </Form.Group> */}
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="trDuration">
-                          Mulberry Variety<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="variety"
-                            name="variety"
-                            value={data.variety}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Mulberry Variety"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Mulberry Variety is required
-                      </Form.Control.Feedback>
-                    </Col>
+                  </Form.Group>
+                  </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group">
@@ -297,7 +305,7 @@ function MaintenanceOfMulberryGardenEdit() {
                       </div>
                     </Col>
 
-                    <Form.Label column sm={2}>
+                    {/* <Form.Label column sm={2}>
                       Fertilizer Application Date
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -322,8 +330,7 @@ function MaintenanceOfMulberryGardenEdit() {
                         )}
                       </div>
                     </Col>
-                    {/* </Form.Group>
-                  </Col> */}
+                    
 
                     <Form.Label column sm={2}>
                       Farm Yard Manure Application Date
@@ -391,23 +398,7 @@ function MaintenanceOfMulberryGardenEdit() {
                           />
                         )}
                       </div>
-                    </Col>
-
-                    <Col lg="4" className="mt-n1">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="plotNumber">Remarks</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="remarks"
-                            name="remarks"
-                            value={data.remarks}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Remarks"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    </Col> */}
                   </Row>
                 )}
               </Card.Body>

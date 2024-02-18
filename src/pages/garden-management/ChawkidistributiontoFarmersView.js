@@ -6,12 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import ChawkiManagement from "./ChawkiManagement";
+import ChawkidistributiontoFarmers from "./ChawkidistributiontoFarmers";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
-function ChawkiManagementView() {
+function ChawkidistributiontoFarmersView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -61,7 +61,7 @@ function ChawkiManagementView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/chawki-management-list"
+                  to="/seriui/chawki-distribution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function ChawkiManagementView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/chawki-management-list"
+                  to="/seriui/chawki-distribution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -133,23 +133,23 @@ function ChawkiManagementView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> State:</td>
-                        <td>{chawkiManagement.state}</td>
+                        <td>{chawkiManagement.stateName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>District:</td>
-                        <td>{chawkiManagement.district}</td>
+                        <td>{chawkiManagement.districtName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Taluk:</td>
-                        <td>{chawkiManagement.taluk}</td>
+                        <td>{chawkiManagement.talukName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Hobli:</td>
-                        <td>{chawkiManagement.hobli}</td>
+                        <td>{chawkiManagement.hobliName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Village:</td>
-                        <td>{chawkiManagement.village}</td>
+                        <td>{chawkiManagement.villageName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Dispatch Date:</td>
@@ -183,4 +183,4 @@ function ChawkiManagementView() {
   );
 }
 
-export default ChawkiManagementView;
+export default ChawkidistributiontoFarmersView;

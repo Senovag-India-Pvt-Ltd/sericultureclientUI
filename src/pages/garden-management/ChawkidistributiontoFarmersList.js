@@ -10,11 +10,11 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
-import ChawkiManagement from "./ChawkiManagement";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
-function ChawkiManagementList() {
+function ChawkidistributiontoFarmersList() {
 /* get table detais */
 
 const [listData, setListData] = useState([]);
@@ -96,11 +96,11 @@ useEffect(() => {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/chawki-management-view/${_id}`);
+    navigate(`/seriui/chawki-distribution-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/chawki-management-edit/${_id}`);
+    navigate(`/seriui/chawki-distribution-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
@@ -173,13 +173,6 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Numbers Of DFLs",
       selector: (row) => row.numbersOfDfls,
       cell: (row) => <span>{row.numbersOfDfls}</span>,
@@ -215,20 +208,6 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
@@ -239,13 +218,6 @@ useEffect(() => {
       name: "State",
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "TSC",
-      selector: (row) => row.tsc,
-      cell: (row) => <span>{row.tsc}</span>,
       sortable: true,
       hide: "md",
     },
@@ -327,7 +299,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/chawki-management"
+                  to="/seriui/chawki-distribution"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -336,7 +308,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/seriui/chawki-management"
+                  to="/seriui/chawki-distribution"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -373,5 +345,5 @@ useEffect(() => {
   );
 }
 
-export default ChawkiManagementList;
+export default ChawkidistributiontoFarmersList;
 

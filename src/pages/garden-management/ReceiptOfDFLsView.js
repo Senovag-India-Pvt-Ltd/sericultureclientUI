@@ -100,12 +100,12 @@ function ReceiptOfDFLsView() {
                         <td>{receiptOfDFLs.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Line Number:</td>
-                        <td>{receiptOfDFLs.lineNumber}</td>
+                        <td style={styles.ctstyle}>Race Of DFLs:</td>
+                        <td>{receiptOfDFLs.raceOfDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Line Of DFLs:</td>
-                        <td>{receiptOfDFLs.lineOfDFLs}</td>
+                        <td style={styles.ctstyle}>Grainage:</td>
+                        <td>{receiptOfDFLs.grainage}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Laid On Date:</td>
@@ -124,17 +124,17 @@ function ReceiptOfDFLsView() {
                         <td>{receiptOfDFLs.invoiceDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Worm Test Details:</td>
-                        <td>{receiptOfDFLs.wormTestDetails}</td>
+                        <td style={styles.ctstyle}>DFLs Received Date:</td>
+                        <td>{receiptOfDFLs.dflsRecDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Generation Details:</td>
                         <td>{receiptOfDFLs.generationDetails}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>View Receipt:</td>
                         <td>{receiptOfDFLs.viewReceipt}</td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </Col>

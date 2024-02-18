@@ -13,7 +13,7 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceofmulberryGarden() {
@@ -26,7 +26,6 @@ function MaintenanceofmulberryGarden() {
     fymApplicationDate: "",
     irrigationDate: "",
     brushingDate: "",
-    remarks: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -94,43 +93,49 @@ function MaintenanceofmulberryGarden() {
     });
   };
 
-  // to get Mulberry Variety
-  // const [mulberryVarietyListData, setMulberryVarietyListData] = useState([]);
-
-  // const getMulberryVarietyList = () => {
-  //   const response = api
-  //     .get(baseURL + `mulberry-variety/get-all`)
-  //     .then((response) => {
-  //       setMulberryVarietyListData(response.data);
-  //     })
-  //     .catch((err) => {
-  //       setMulberryVarietyListData([]);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getMulberryVarietyList();
-  // }, []);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURL + `mulberry-variety/get-all`)
+      .then((response) => {
+        setVarietyListData(response.data.content.mulberryVariety);
+      })
+      .catch((err) => {
+        setVarietyListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getVarietyList();
+  }, []);
+
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
+      text: `Dates ${message}`,
     });
   };
+
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
 
@@ -197,7 +202,7 @@ function MaintenanceofmulberryGarden() {
                   </Col>
 
                   <Col lg="4">
-                    {/* <Form.Group className="form-group">
+                    <Form.Group className="form-group">
                     <Form.Label>
                       Mulberry Variety<span className="text-danger">*</span>
                     </Form.Label>
@@ -212,7 +217,7 @@ function MaintenanceofmulberryGarden() {
                         isInvalid={data.variety === undefined || data.variety === "0"} 
                       >
                         <option value="">Select Mulberry Variety</option>
-                        {mulberryVarietyListData.map((list) => (
+                        {varietyListData.map((list) => (
                           <option
                             key={list.mulberryVarietyId}
                             value={list.mulberryVarietyId}
@@ -225,8 +230,9 @@ function MaintenanceofmulberryGarden() {
                         Mulberry Variety is required
                       </Form.Control.Feedback>
                     </div>
-                  </Form.Group> */}
-                    <Form.Group className="form-group">
+                  </Form.Group>
+                  </Col>
+                    {/* <Form.Group className="form-group">
                       <Form.Label htmlFor="trDuration">
                         Mulberry Variety<span className="text-danger">*</span>
                       </Form.Label>
@@ -245,7 +251,7 @@ function MaintenanceofmulberryGarden() {
                     <Form.Control.Feedback type="invalid">
                       Mulberry Variety is required
                     </Form.Control.Feedback>
-                  </Col>
+                   */}
 
                   <Col lg="4">
                     <Form.Group className="form-group">
@@ -289,16 +295,16 @@ function MaintenanceofmulberryGarden() {
                       />
                     </div>
                   </Col>
-                  <Form.Label column sm={2}>
+                  {/* <Form.Label column sm={2}>
                     Fertilizer Application Date
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
+                      <DatePicker
                           selected={data.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        />
                       <DatePicker
                         selected={data.fertilizerApplicationDate}
                         onChange={(date) =>
@@ -313,8 +319,8 @@ function MaintenanceofmulberryGarden() {
                       />
                     </div>
                   </Col>
-                  {/* </Form.Group>
-                  </Col> */}
+                  </Form.Group>
+                  </Col>
 
                   <Form.Label column sm={2}>
                     Farm Yard Manure Application Date
@@ -322,10 +328,10 @@ function MaintenanceofmulberryGarden() {
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
+                      <DatePicker
                           selected={data.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        />
                       <DatePicker
                         selected={data.fymApplicationDate}
                         onChange={(date) =>
@@ -347,10 +353,10 @@ function MaintenanceofmulberryGarden() {
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
+                      <DatePicker
                           selected={data.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        />
                       <DatePicker
                         selected={data.irrigationDate}
                         onChange={(date) =>
@@ -371,10 +377,10 @@ function MaintenanceofmulberryGarden() {
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
+                      <DatePicker
                           selected={data.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        />
                       <DatePicker
                         selected={data.brushingDate}
                         onChange={(date) =>
@@ -404,7 +410,7 @@ function MaintenanceofmulberryGarden() {
                         />
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>

@@ -507,6 +507,11 @@ import ChawkiManagementList from "../pages/chawki-management/ChawkiManagementLis
 import ChawkiManagementView from "../pages/chawki-management/ChawkiManagementView";
 import RaiseTicketView from "../pages/helpdesk/RaiseTicketViewPage";
 import UserTicketView from "../pages/helpdesk/UserTicketViewPage";
+import ChawkidistributiontoFarmersList from "../pages/garden-management/ChawkidistributiontoFarmersList";
+import ChawkidistributiontoFarmersView from "../pages/garden-management/ChawkidistributiontoFarmersView";
+import MaintenanceOfMulberryGardenUpdate from "../pages/garden-management/MaintenanceOfMulberryGardenUpdate";
+import MaintenanceOfMulberryGardenAlert from "../pages/garden-management/MaintenanceOfMulberryGardenAlert";
+
 
 // Admin and Reports
 
@@ -982,6 +987,15 @@ function Router() {
               element={<MaintenanceOfMulberryGardenEdit />}
             />
             <Route
+              path="maintenance-of-mulberry-garden-update/:id"
+              element={<MaintenanceOfMulberryGardenUpdate />}
+            />
+            <Route
+              path="maintenance-of-mulberry-garden-alert/:id"
+              element={<MaintenanceOfMulberryGardenAlert />}
+            />
+          
+            <Route
               path="receipt-of-dfls"
               element={<ReceiptofDFLsfromthegrainage />}
             />
@@ -1019,15 +1033,18 @@ function Router() {
               path="Maintenance-and-Sale-of-Nursery-to-Farmers"
               element={<MaintenanceandSaleofNurserytoFarmers />}
             />
-            <Route
-              path="Chawki-distribution-to-Farmers"
-              element={<ChawkidistributiontoFarmers />}
-            />
+           <Route path="chawki-distribution" element={<ChawkidistributiontoFarmers />} />
+            <Route path="chawki-distribution-list" element={<ChawkidistributiontoFarmersList />} />
 
             <Route
-              path="SupplyofCocoonstoGrainage-edit/:id"
-              element={<SupplyofCocoonstoGrainageEdit />}
+              path="chawki-distribution-edit/:id"
+              element={<ChawkidistributiontoFarmersEdit />}
             />
+             <Route
+              path="chawki-distribution-view/:id"
+              element={<ChawkidistributiontoFarmersView />}
+            />
+
 
             <Route
               path="MaintenanceandSaleofNurserytoFarmers-edit/:id"

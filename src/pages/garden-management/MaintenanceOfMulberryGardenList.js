@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button,Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -16,12 +17,19 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenList() {
   const [listData, setListData] = useState({});
+  const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 5; 
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const getList = () => {
     setLoading(true);
@@ -44,6 +52,24 @@ function MaintenanceOfMulberryGardenList() {
     getList();
   }, []);
 
+  const getLogsList = (_id,plot) => {
+    setLoading(true);
+    setShowModal(true);
+
+    api
+    .get(baseURL2 + `Mulberry-garden/get-logs/${_id}/${plot}`)
+      .then((response) => {
+        // console.log(response.data)
+        setListLogsData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
+
   const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
@@ -54,6 +80,18 @@ function MaintenanceOfMulberryGardenList() {
     // navigate("/seriui/training Schedule");
   };
 
+  const handleUpdate = (_id) => {
+    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
+  };
+
+  const handleAlert = (_id) => {
+    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
+  };
+
+  const handleLogs = (_id) => {
+    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
+  };
+
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -62,7 +100,7 @@ function MaintenanceOfMulberryGardenList() {
     });
   };
 
-  const deleteConfirm = (_id) => {
+  const deleteConfirm = (_id,plot) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -73,7 +111,7 @@ function MaintenanceOfMulberryGardenList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}`)
+          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}/${plot}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -166,18 +204,35 @@ function MaintenanceOfMulberryGardenList() {
             Edit
           </Button>
           <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleUpdate(row.id)}
+          >
+            Update
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleAlert(row.id)}
+          >
+            Alert
+          </Button>
+          <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id)}
+            onClick={() => deleteConfirm(row.id,row.plotNumber)}
             className="ms-2"
           >
             Delete
           </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+          </div>
+    ),
+    sortable: false,
+    hide: "md",
+  },
+ 
     {
       name: "Plot Number",
       selector: (row) => row.plotNumber,
@@ -206,20 +261,150 @@ function MaintenanceOfMulberryGardenList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Fertilizer Application Date",
+    //   selector: (row) => row.fertilizerApplicationDate,
+    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Activity Logs",
+    //   cell: (row) => (
+    //     <div className="text-end">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => handleLogs(row.id)}
+    //       >
+    //         Activity Logs
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
+    {
+      name: "Activity Logs",
+      cell: (row) => (
+        <div className="text-end">
+          <AiOutlineInfoCircle // Use the information icon instead of Button
+            size={20}
+            style={{ cursor: 'pointer' }}
+            onClick={() => getLogsList(row.id,row.plotNumber)}
+          />
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    
+  ];
+
+  const MaintenanceofmulberryGardenLogsDataColumns = [
+
+    {
+      name: "Plot Number",
+      selector: (row) => row.plotNumber,
+      cell: (row) => <span>{row.plotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Variety",
+      selector: (row) => row.mulberryVarietyName,
+      cell: (row) => <span>{row.mulberryVarietyName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Area Under Each Variety",
+      selector: (row) => row.areaUnderEachVariety,
+      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Pruning Date",
+      selector: (row) => row.pruningDate,
+      cell: (row) => <span>{row.pruningDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Fertilizer Application Date",
       selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fymApplicationDate}</span>,
+      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Remarks",
-      selector: (row) => row.remarks,
-      cell: (row) => <span>{row.remarks}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "FYM Date",
+        selector: (row) => row.fymApplicationDate,
+        cell: (row) => <span>{row.fymApplicationDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Irrigation Date",
+        selector: (row) => row.irrigationDate,
+        cell: (row) => <span>{row.irrigationDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Brushing Date",
+        selector: (row) => row.brushingDate,
+        cell: (row) => <span>{row.brushingDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Fertilizer Application Status",
+        selector: (row) => row.fertilizerApplicationStatus,
+        cell: (row) => <span>{row.fertilizerApplicationStatus === 0
+          ? 'Pending'
+          : row.fertilizerApplicationStatus === 1
+          ? 'Completed'
+          : 'Other'}
+      </span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "FYM Application Status",
+        selector: (row) => row.fymApplicationStatus,
+        cell: (row) => <span>{row.fymApplicationStatus === 0
+         ? 'Pending'
+          : row.fymApplicationStatus === 1
+          ? 'Completed'
+          : 'Other'}
+          </span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Irrigation Status",
+        selector: (row) => row.irrigationStatus,
+        cell: (row) => <span>{row.irrigationStatus===0
+          ? 'Pending'
+          : row.irrigationStatus === 1
+          ? 'Completed'
+          : 'Other'}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Brushing Status",
+        selector: (row) => row.brushingStatus,
+        cell: (row) => <span>{row.brushingStatus === 0
+        ? 'Pending'
+          : row.brushingStatus === 1
+          ? 'Completed'
+          : 'Other'}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
@@ -278,6 +463,38 @@ function MaintenanceOfMulberryGardenList() {
           />
         </Card>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Activity Logs</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Block className="mt-2">
+
+        <Card>
+          <DataTable
+            // title="New Trader License List"
+            tableClassName="data-table-head-light table-responsive"
+            columns={MaintenanceofmulberryGardenLogsDataColumns}
+            data={listLogsData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </Card>
+      </Block>
+          
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
