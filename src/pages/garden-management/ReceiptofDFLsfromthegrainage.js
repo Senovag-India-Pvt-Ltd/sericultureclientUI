@@ -183,11 +183,11 @@ function ReceiptofDFLsfromthegrainage() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = message => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: message,
     });
   };
   const saveError = (message) => {

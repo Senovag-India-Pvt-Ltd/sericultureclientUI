@@ -194,12 +194,12 @@ function ReceiptOfDFLsEdit() {
 
   const navigate = useNavigate();
 
-  const updateSuccess = () => {
+  const updateSuccess = message => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+      text: message,
+    });
   };
   const updateError = (message) => {
     let errorMessage;

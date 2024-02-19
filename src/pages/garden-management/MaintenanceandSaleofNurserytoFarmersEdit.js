@@ -45,27 +45,57 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
         .post(baseURL + `Maintenance-sale/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
+            setData({
+              fruitsId: "",
+              farmerName: "",
+              mulberryVariety: "",
+              area: "",
+              dateOfPlanting: "",
+              nurserySaleDetails: "",
+              quantity: "",
+              date: "",
+              rate: "",
+              saplingAge: "",
+              generateRecipt: "",
+              receiptNumber: "",
+              remittanceDetails: "",
+              challanUpload: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          setData({});
           updateError();
         });
       setValidated(true);
     }
   };
 
-  // const [chawkiList ,setChawkiList]= useState({
-  //   chawki_id: "",
-  // })
+  const clear = () => {
+    setData({
+      fruitsId: "",
+      farmerName: "",
+      mulberryVariety: "",
+      area: "",
+      dateOfPlanting: "",
+      nurserySaleDetails: "",
+      quantity: "",
+      date: "",
+      rate: "",
+      saplingAge: "",
+      generateRecipt: "",
+      receiptNumber: "",
+      remittanceDetails: "",
+      challanUpload: "",
+    });
+  };
 
-  //   to get data from api
+  
   const getIdList = () => {
     setLoading(true);
-    // const chowki_id = chawkiList.chowki_id;
     const response = api
       .get(baseURL + `Maintenance-sale/get-info-by-id/${id}`)
       .then((response) => {
@@ -90,13 +120,19 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    });
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -119,25 +155,12 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
             <Block.Title tag="h2">
               Maintenance and Sale of Nursery to Farmers
             </Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Maintenance and Sale of Nursery to Farmers
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+                  to="/seriui/maintenance-and-sale-of-nursery-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -146,7 +169,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+                  to="/seriui/maintenance-and-sale-of-nursery-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -161,15 +184,16 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       <Block className="mt-4">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <div>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header>
-                        Maintenance and Sale of Nursery to Farmers{" "}
-                      </Card.Header>
+            <Card>
+              <Card.Header>
+                Maintenance and Sale of Nursery to Farmers{" "}
+              </Card.Header>
                       <Card.Body>
+                      {loading ? (
+                        <h1 className="d-flex justify-content-center align-items-center">
+                          Loading...
+                        </h1>
+                      ) : (
                         <Row className="g-gs">
                           <Col lg="4">
                             <Form.Group className="form-group">
@@ -421,29 +445,26 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+                          </Row>
+                          )}
+                          </Card.Body>
+                      </Card>
 
-                          <Col lg="12" className="text-center">
-                            <Button type="submit" variant="primary">
-                              Update
-                            </Button>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12"></Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
+                  <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
+                    <Button type="submit" variant="primary">
+                      Update
+                    </Button>
+                  </li>
+                  <li>
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </li>
+                </ul>
+              </div>
           </Row>
         </Form>
       </Block>

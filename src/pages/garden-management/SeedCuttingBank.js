@@ -75,7 +75,7 @@ function SeedCuttingBank() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -178,20 +178,24 @@ function SeedCuttingBank() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+      text: message,
+    })
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
 

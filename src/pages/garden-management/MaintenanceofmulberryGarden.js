@@ -73,7 +73,7 @@ function MaintenanceofmulberryGarden() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }

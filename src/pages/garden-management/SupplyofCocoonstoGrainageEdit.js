@@ -44,22 +44,41 @@ function SupplyofCocoonstoGrainage() {
         .post(baseURL + `supply-cocoons/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
+            setData({
+              lotNumber: "",
+              raceOfCocoons: "",
+              spunOnDate: "",
+              numberOfCocoonsDispatched: "",
+              generationDetails: "",
+              dispatchDate: "",
+              generateInvoice: "",
+              viewReciept: "", 
+              });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          setData({});
-          updateError();
+          updateError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
   };
 
-  // const [chawkiList ,setChawkiList]= useState({
-  //   chawki_id: "",
-  // })
+  const clear = () => {
+    setData({
+      lotNumber: "",
+      raceOfCocoons: "",
+      spunOnDate: "",
+      numberOfCocoonsDispatched: "",
+      generationDetails: "",
+      dispatchDate: "",
+      generateInvoice: "",
+      viewReciept: "",
+    });
+  };
 
   //   to get data from api
   const getIdList = () => {
@@ -84,18 +103,24 @@ function SupplyofCocoonstoGrainage() {
   }, []);
 
   const navigate = useNavigate();
-  const updateSuccess = () => {
+  const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+      text: message,
+    });
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -111,11 +136,11 @@ function SupplyofCocoonstoGrainage() {
   };
 
   return (
-    <Layout title="Supply of Cocoons to Grainage ">
+    <Layout title="Edit Supply of Cocoons to Grainage ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Supply of Cocoons to Grainage</Block.Title>
+            <Block.Title tag="h2">Edit Supply of Cocoons to Grainage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -142,35 +167,32 @@ function SupplyofCocoonstoGrainage() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <div>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header>Supply of Cocoons to Grainage </Card.Header>
-                      <Card.Body>
-                        <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Lot Number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="lotNumber"
-                                  name="lotNumber"
-                                  value={data.lotNumber}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="  Lot Number "
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+          <Row className="g-0 ">
+              <Card>
+                <Card.Header>Edit Supply of Cocoons to Grainage </Card.Header>
+                  <Card.Body>
+                    <Row className="g-gs">
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="sordfl">
+                            Lot Number
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="lotNumber"
+                              name="lotNumber"
+                              value={data.lotNumber}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="  Lot Number "
+                              required
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
@@ -303,30 +325,24 @@ function SupplyofCocoonstoGrainage() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button type="submit" variant="primary">
-                              Update
-                            </Button>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
-                  </Block>
-                </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive"></div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
+
+              <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li>
+              </ul>
             </div>
           </Row>
         </Form>

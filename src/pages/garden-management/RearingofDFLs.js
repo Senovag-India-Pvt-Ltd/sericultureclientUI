@@ -129,13 +129,11 @@ function RearingofDFLs() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
+      text: message,
     });
   };
   const saveError = (message) => {
