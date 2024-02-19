@@ -253,11 +253,12 @@ function ReceiptOfDFLsEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+               Edit Receipt Of DFLs From The Grainage
+              </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -361,6 +362,44 @@ function ReceiptOfDFLsEdit() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="invoiceDetails">
+                          Invoice No
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="invoiceDetails"
+                            name="invoiceDetails"
+                            value={data.invoiceDetails}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Invoice No"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                   
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="invoiceDetails">
+                          Generation Details
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="generationDetails"
+                            name="generationDetails"
+                            value={data.generationDetails}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Generation Details"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                     <Form.Label column sm={2}>
                       Laid On Date
                       <span className="text-danger">*</span>
@@ -408,43 +447,7 @@ function ReceiptOfDFLsEdit() {
                   </Col>
 
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="invoiceDetails">
-                          Invoice No
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="invoiceDetails"
-                            name="invoiceDetails"
-                            value={data.invoiceDetails}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Invoice No"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                   
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="invoiceDetails">
-                          Generation Details
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="generationDetails"
-                            name="generationDetails"
-                            value={data.generationDetails}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Generation Details"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    
 
                     {/* <Col lg="2">
                       <Button type="button" onClick={postDataReceipt}>
@@ -488,7 +491,7 @@ function ReceiptOfDFLsEdit() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

@@ -182,11 +182,14 @@ function RearingofDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+               Rearing Of DFLs
+              </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
@@ -342,6 +345,79 @@ function RearingofDFLs() {
                     </Form.Group>
                   </Col>
 
+                  
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Chawki Percentage
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="chawkiPercentage"
+                          name="chawkiPercentage"
+                          value={data.chawkiPercentage}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Chawki Percentage"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Worm Weight(In Grams)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="wormWeight"
+                          name="wormWeight"
+                          value={data.wormWeight}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter  Cold Storage Details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Worm Test Details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="wormTestDetails"
+                          name="wormTestDetails"
+                          value={data.wormTestDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Worm Test Details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Cocoon Assessment Details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="cocoonAssessmentDetails"
+                          name="cocoonAssessmentDetails"
+                          value={data.cocoonAssessmentDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Cocoon Assessment Details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Form.Label column sm={2}>
                     Laid On Date
                     <span className="text-danger">*</span>
@@ -417,77 +493,6 @@ function RearingofDFLs() {
                     </div>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Chawki Percentage
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="chawkiPercentage"
-                          name="chawkiPercentage"
-                          value={data.chawkiPercentage}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Chawki Percentage"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Worm Weight(In Grams)
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="wormWeight"
-                          name="wormWeight"
-                          value={data.wormWeight}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Cold Storage Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Worm Test Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="wormTestDetails"
-                          name="wormTestDetails"
-                          value={data.wormTestDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Worm Test Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Cocoon Assessment Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="cocoonAssessmentDetails"
-                          name="cocoonAssessmentDetails"
-                          value={data.cocoonAssessmentDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Cocoon Assessment Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -507,7 +512,7 @@ function RearingofDFLs() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
