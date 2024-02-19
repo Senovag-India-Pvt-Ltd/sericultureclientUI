@@ -52,7 +52,9 @@ function CasteEdit() {
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -76,9 +78,13 @@ function CasteEdit() {
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        let message;
+        if (err.response.data.errorMessages.length > 0) {
+          message = err.response.data.errorMessages[0].message[0].message;
+          editError(message);
+        }
         setData({});
-        editError(message);
+
         setLoading(false);
       });
   };
@@ -95,11 +101,18 @@ function CasteEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
+
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
   const editError = (message) => {

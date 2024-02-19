@@ -54,7 +54,9 @@ function District() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -96,13 +98,21 @@ function District() {
       navigate("#");
     });
   };
+
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
+  
   return (
     <Layout title="District">
       <Block.Head>

@@ -54,7 +54,9 @@ function HobliEdit() {
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
           setData({});
         });
       setValidated(true);
@@ -168,13 +170,21 @@ function HobliEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
+
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: message,
-      html: Object.values(message).join("<br>"),
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
+
   const editError = (message) => {
     Swal.fire({
       icon: "error",

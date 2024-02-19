@@ -28,7 +28,8 @@ function TrainingScheduleEdit() {
 
   const [validated, setValidated] = useState(false);
   const [validatedTrainerUser, setValidatedTrainerUser] = useState(false);
-  const [validatedTrainerUserEdit, setValidatedTrainerUserEdit] = useState(false);
+  const [validatedTrainerUserEdit, setValidatedTrainerUserEdit] =
+    useState(false);
 
   const getTrainerUserDetailsList = () => {
     api
@@ -77,10 +78,16 @@ function TrainingScheduleEdit() {
   };
 
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
@@ -95,16 +102,16 @@ function TrainingScheduleEdit() {
     });
   };
 
- // TrainerUser
- const handleTrainerInstitutionOption = (e) => {
-  const value = e.target.value;
-  const [chooseId, chooseName] = value.split("_");
-  setTrainerUser({
-    ...trainerUser,
-    trInstitutionMasterId: chooseId,
-    trInstitutionMasterName: chooseName,
-  });
-};
+  // TrainerUser
+  const handleTrainerInstitutionOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setTrainerUser({
+      ...trainerUser,
+      trInstitutionMasterId: chooseId,
+      trInstitutionMasterName: chooseName,
+    });
+  };
 
   const handleDelete = (i) => {
     api
@@ -165,8 +172,6 @@ function TrainingScheduleEdit() {
       trInstitutionMasterId: "",
     });
   };
-
-
 
   let name, value;
   const handleInputs = (e) => {
@@ -446,10 +451,16 @@ function TrainingScheduleEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: message,
-      html: Object.values(message).join("<br>"),
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -759,59 +770,58 @@ function TrainingScheduleEdit() {
                       </Form.Group>
                     </Col>
 
-                        <Form.Label column sm={2}>
-                          Training Period Start Date
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                          <Col sm={2}>
-                            <div className="form-control-wrap">
-                              {isDataStartSet && (
-                                <DatePicker
-                                  selected={new Date(data.trStartDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "trStartDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              )}
-                            </div>
-                          </Col>
-                        {/* </Row> */}
-                        {/* </Form.Group> */}
+                    <Form.Label column sm={2}>
+                      Training Period Start Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {isDataStartSet && (
+                          <DatePicker
+                            selected={new Date(data.trStartDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "trStartDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Col>
+                    {/* </Row> */}
+                    {/* </Form.Group> */}
 
-                        {/* <Row> */}
-                          {/* <Col lg="6"> */}
-                            {/* <Form.Group className="form-group"> */}
-                            <Form.Label column sm={2}>
-                              Expected Date of Completion
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <Col sm={2}>
-                            <div className="form-control-wrap">
-                              {isDataCompletionSet && (
-                                <DatePicker
-                                  selected={new Date(data.trDateOfCompletion)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "trDateOfCompletion")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              )}
-                            </div>
-                          </Col>
-                       
+                    {/* <Row> */}
+                    {/* <Col lg="6"> */}
+                    {/* <Form.Group className="form-group"> */}
+                    <Form.Label column sm={2}>
+                      Expected Date of Completion
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {isDataCompletionSet && (
+                          <DatePicker
+                            selected={new Date(data.trDateOfCompletion)}
+                            onChange={(date) =>
+                              handleDateChange(date, "trDateOfCompletion")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Col>
 
-                    <Col lg = "4">
+                    <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
                           Upload PPt/Video
@@ -979,9 +989,13 @@ function TrainingScheduleEdit() {
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
-          <Form noValidate validated={validatedTrainerUser} onSubmit={handleAdd}>
+          <Form
+            noValidate
+            validated={validatedTrainerUser}
+            onSubmit={handleAdd}
+          >
             <Row className="g-5 px-5">
-            <Col lg="6">
+              <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     User<span className="text-danger">*</span>
@@ -1146,8 +1160,8 @@ function TrainingScheduleEdit() {
             validated={validatedTrainerUserEdit}
             onSubmit={handleEdit}
           >
-          <Row className="g-5 px-5">
-            <Col lg="6">
+            <Row className="g-5 px-5">
+              <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     User<span className="text-danger">*</span>
@@ -1183,8 +1197,6 @@ function TrainingScheduleEdit() {
                   </div>
                 </Form.Group>
               </Col>
-
-             
 
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
@@ -1247,7 +1259,6 @@ function TrainingScheduleEdit() {
           </Form>
         </Modal.Body>
       </Modal>
-            
     </Layout>
   );
 }

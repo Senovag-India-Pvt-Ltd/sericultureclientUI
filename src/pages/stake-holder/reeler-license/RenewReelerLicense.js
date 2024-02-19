@@ -46,17 +46,17 @@ function RenewReelerLicense() {
   // };
 
   // const YourFormComponent = ({ data, handleDateChange }) => {
-    const handleRenewedDateChange = (date) => {
-      // Calculate expiration date by adding 3 years to the renewed date
-      const expirationDate = new Date(date);
-      expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-  
-      setData({
-        ...data,
-        licenseRenewalDate: date,
-        licenseExpiryDate: expirationDate,
-      });
-    };
+  const handleRenewedDateChange = (date) => {
+    // Calculate expiration date by adding 3 years to the renewed date
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+
+    setData({
+      ...data,
+      licenseRenewalDate: date,
+      licenseExpiryDate: expirationDate,
+    });
+  };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -77,22 +77,22 @@ function RenewReelerLicense() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-    api
-      .post(baseURL2 + `reeler/update-reeler-license`, withReelerid)
-      .then((response) => {
-        saveSuccess();
-        setData({
-          reelerId: "",
-          status: 0,
-          feeAmount: "",
-          licenseRenewalDate: "",
-          licenseExpiryDate: "",
+      api
+        .post(baseURL2 + `reeler/update-reeler-license`, withReelerid)
+        .then((response) => {
+          saveSuccess();
+          setData({
+            reelerId: "",
+            status: 0,
+            feeAmount: "",
+            licenseRenewalDate: "",
+            licenseExpiryDate: "",
+          });
+        })
+        .catch((err) => {
+          setData({});
+          saveError();
         });
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
       setValidated(true);
     }
   };
@@ -108,10 +108,16 @@ function RenewReelerLicense() {
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
@@ -171,7 +177,8 @@ function RenewReelerLicense() {
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={4}>
-                        FRUITS ID / LICENSE NUMBER<span className="text-danger">*</span>
+                        FRUITS ID / LICENSE NUMBER
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={6}>
                         <Form.Control
@@ -184,8 +191,8 @@ function RenewReelerLicense() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        FRUITS ID is required
-                      </Form.Control.Feedback>
+                          FRUITS ID is required
+                        </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
                         <Button
@@ -211,7 +218,9 @@ function RenewReelerLicense() {
                       <Row className="g-gs">
                         <Col lg="12">
                           <Form.Group className="form-group">
-                            <Form.Label htmlFor="Fee">Fee Amount<span className="text-danger">*</span></Form.Label>
+                            <Form.Label htmlFor="Fee">
+                              Fee Amount<span className="text-danger">*</span>
+                            </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
                                 id="Fee"
@@ -223,7 +232,7 @@ function RenewReelerLicense() {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                  Fee Amount is required
+                                Fee Amount is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -236,7 +245,9 @@ function RenewReelerLicense() {
                                 // onChange={(date) =>
                                 //   handleDateChange(date, "licenseRenewalDate")
                                 // }
-                                onChange={(date) => handleRenewedDateChange(date)}
+                                onChange={(date) =>
+                                  handleRenewedDateChange(date)
+                                }
                               />
                             </div>
                           </Form.Group>
@@ -246,12 +257,13 @@ function RenewReelerLicense() {
                             <div className="form-control-wrap">
                               <DatePicker
                                 selected={data.licenseExpiryDate}
-                                onChange={(date) => handleDateChange(date, "licenseExpiryDate")}
+                                onChange={(date) =>
+                                  handleDateChange(date, "licenseExpiryDate")
+                                }
                                 disabled={data.licenseRenewalDate !== null} // Disable if Renewed Date is selected
                                 // onChange={(date) =>
                                 //   handleDateChange(date, "licenseExpiryDate")
                                 // }
-    
                               />
                             </div>
                           </Form.Group>
@@ -307,7 +319,10 @@ function RenewReelerLicense() {
                                 <td>{reeler.reelerName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}> Reeler Father Name:</td>
+                                <td style={styles.ctstyle}>
+                                  {" "}
+                                  Reeler Father Name:
+                                </td>
                                 <td>{reeler.fatherName}</td>
                               </tr>
                               <tr>
@@ -329,15 +344,11 @@ function RenewReelerLicense() {
                                 <td>{reeler.assignToInspectId}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>
-                                {" "}
-                                  GPS Details:
-                                </td>
+                                <td style={styles.ctstyle}> GPS Details:</td>
                                 <td>
-                                Latitude:{reeler.chakbandiLat},
-                                
-                                Longitude:{reeler.chakbandiLng}
-                                 </td>
+                                  Latitude:{reeler.chakbandiLat}, Longitude:
+                                  {reeler.chakbandiLng}
+                                </td>
                               </tr>
                               {/* <tr>
                                 <td style={styles.ctstyle}>
@@ -358,19 +369,27 @@ function RenewReelerLicense() {
                                 <td>{reeler.machineTypeName}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Date Of Machine Installation:</td>
+                                <td style={styles.ctstyle}>
+                                  Date Of Machine Installation:
+                                </td>
                                 <td>{reeler.dateOfMachineInstallation}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Number Of Basins/Charaka:</td>
+                                <td style={styles.ctstyle}>
+                                  Number Of Basins/Charaka:
+                                </td>
                                 <td>{reeler.numberOfBasins}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Electricity RR Number:</td>
+                                <td style={styles.ctstyle}>
+                                  Electricity RR Number:
+                                </td>
                                 <td>{reeler.electricityRrNumber}</td>
                               </tr>
                               <tr>
-                                <td style={styles.ctstyle}>Revenue Document:</td>
+                                <td style={styles.ctstyle}>
+                                  Revenue Document:
+                                </td>
                                 <td>{reeler.revenueDocument}</td>
                               </tr>
                               <tr>

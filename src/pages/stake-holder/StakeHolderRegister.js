@@ -725,10 +725,7 @@ function StakeHolderRegister() {
     setData({ ...data, [name]: value });
     // setFarmerId({ ...farmerId, farmerId: value });
 
-    if (
-      name === "mobileNumber" &&
-      (value.length < 10 || value.length > 10)
-    ) {
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
       e.target.classList.add("is-invalid");
     } else {
       e.target.classList.remove("is-invalid");
@@ -1437,10 +1434,16 @@ function StakeHolderRegister() {
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
@@ -2085,7 +2088,8 @@ function StakeHolderRegister() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required or Number is greater than and less than 10 Digit
+                            Mobile Number is required or Number is greater than
+                            and less than 10 Digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

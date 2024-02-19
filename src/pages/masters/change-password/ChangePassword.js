@@ -58,7 +58,7 @@ function ChangePassword() {
 
         .catch((err) => {
           setData({});
-          saveError();
+          saveValidationError(err.response.data.validationErrors);
 
           // if (err.response && err.response.data.content) {
           //   Swal.fire({
@@ -125,6 +125,22 @@ function ChangePassword() {
       text: message,
     });
   };
+
+
+  const saveValidationError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
 
   return (
     <Layout title="Change Password">
