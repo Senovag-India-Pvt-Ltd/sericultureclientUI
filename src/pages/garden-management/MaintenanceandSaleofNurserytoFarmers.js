@@ -1,11 +1,8 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
@@ -424,7 +421,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of planting
+                                Date
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
