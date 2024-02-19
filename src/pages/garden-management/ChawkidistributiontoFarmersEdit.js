@@ -387,7 +387,7 @@ function ChawkidistributiontoFarmersEdit() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>Chawki Sales Details</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>Chawki Sales Details</Card.Header>
                   <Card.Body>
                       <Row className="g-gs">
                       <Col lg="4">
@@ -703,7 +703,7 @@ function ChawkidistributiontoFarmersEdit() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>Address</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>Address</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">

@@ -84,7 +84,7 @@ function ChawkidistributiontoFarmersView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Chawki Management (Sale Of Chawki Worms) Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Chawki Management (Sale Of Chawki Worms) Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

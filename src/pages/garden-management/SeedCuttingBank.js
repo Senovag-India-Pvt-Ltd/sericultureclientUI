@@ -231,11 +231,12 @@ function SeedCuttingBank() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>Seed Cutting Bank</Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
@@ -306,31 +307,7 @@ function SeedCuttingBank() {
                     </Form.Control.Feedback>
                   </Col>
 
-                  <Form.Label column sm={2}>
-                    Date Of Pruning
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
-                    <div className="form-control-wrap">
-                      {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
-                      <DatePicker
-                        selected={data.dateOfPruning}
-                        onChange={(date) =>
-                          handleDateChange(date, "dateOfPruning")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-
+                  
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="ratePerTonne">
@@ -412,6 +389,28 @@ function SeedCuttingBank() {
                       )}
                     </Form.Group>
                   </Col>
+                  <Form.Label column sm={2}>
+                    Date Of Pruning
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      
+                      <DatePicker
+                        selected={data.dateOfPruning}
+                        onChange={(date) =>
+                          handleDateChange(date, "dateOfPruning")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
+
 
                   <Col lg="2">
                     <Button type="button" onClick={postDataReceipt}>
@@ -437,7 +436,7 @@ function SeedCuttingBank() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
