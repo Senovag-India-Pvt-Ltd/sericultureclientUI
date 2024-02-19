@@ -51,11 +51,11 @@ function ReceiptOfDFLsView() {
   }, [id]);
 
   return (
-    <Layout title="Receipt of DFLs View">
+    <Layout title="View Receipt of DFLs Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Receipt of DFLs View</Block.Title>
+            <Block.Title tag="h2">View Receipt of DFLs Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -84,7 +84,7 @@ function ReceiptOfDFLsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Receipt of DFLs Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Receipt of DFLs Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

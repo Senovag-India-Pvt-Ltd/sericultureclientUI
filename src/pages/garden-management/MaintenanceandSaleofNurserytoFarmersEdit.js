@@ -1,9 +1,8 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
+// import "react-datepicker/dist/react-datepicker.css";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
@@ -45,27 +44,59 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
         .post(baseURL + `Maintenance-sale/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
+            setData({
+              fruitsId: "",
+              farmerName: "",
+              mulberryVariety: "",
+              area: "",
+              dateOfPlanting: "",
+              nurserySaleDetails: "",
+              quantity: "",
+              date: "",
+              rate: "",
+              saplingAge: "",
+              generateRecipt: "",
+              receiptNumber: "",
+              remittanceDetails: "",
+              challanUpload: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          setData({});
           updateError();
         });
       setValidated(true);
     }
   };
 
-  // const [chawkiList ,setChawkiList]= useState({
-  //   chawki_id: "",
-  // })
+  const clear = () => {
+    setData({
+      fruitsId: "",
+      farmerName: "",
+      mulberryVariety: "",
+      area: "",
+      dateOfPlanting: "",
+      nurserySaleDetails: "",
+      quantity: "",
+      date: "",
+      rate: "",
+      saplingAge: "",
+      generateRecipt: "",
+      receiptNumber: "",
+      remittanceDetails: "",
+      challanUpload: "",
+    });
+  };
 
-  //   to get data from api
+  const isDataPlantingSet = !!data.dateOfPlanting;
+  const isDataDateSet = !!data.date;
+  
   const getIdList = () => {
     setLoading(true);
-    // const chowki_id = chawkiList.chowki_id;
     const response = api
       .get(baseURL + `Maintenance-sale/get-info-by-id/${id}`)
       .then((response) => {
@@ -90,13 +121,19 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    });
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -119,25 +156,12 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
             <Block.Title tag="h2">
               Maintenance and Sale of Nursery to Farmers
             </Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Maintenance and Sale of Nursery to Farmers
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+                  to="/seriui/maintenance-and-sale-of-nursery-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -146,7 +170,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+                  to="/seriui/maintenance-and-sale-of-nursery-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -158,39 +182,40 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <div>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header>
-                        Maintenance and Sale of Nursery to Farmers{" "}
-                      </Card.Header>
+          {/* <Row className="g-3 "> */}
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Maintenance and Sale of Nursery to Farmers
+              </Card.Header>
                       <Card.Body>
+                      {loading ? (
+                        <h1 className="d-flex justify-content-center align-items-center">
+                          Loading...
+                        </h1>
+                      ) : (
                         <Row className="g-gs">
+                        <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                            FRUITS-ID
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="fruitsId"
+                              name="fruitsId"
+                              type="text"
+                              value={data.fruitsId}
+                              onChange={handleInputs}
+                              placeholder=" Enter FRUITS-ID"
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                FRUITS-ID
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="fruitsId"
-                                  name="fruitsId"
-                                  type="text"
-                                  value={data.fruitsId}
-                                  onChange={handleInputs}
-                                  placeholder=" FRUITS-ID"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Farmer’s name
                               </Form.Label>
@@ -201,14 +226,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.farmerName}
                                   onChange={handleInputs}
-                                  placeholder="Farmer’s name"
+                                  placeholder="Enter Farmer’s name"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Mulberry variety
                               </Form.Label>
@@ -219,14 +244,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.mulberryVariety}
                                   onChange={handleInputs}
-                                  placeholder="Mulberry variety"
+                                  placeholder="Enter Mulberry variety"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">Area</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -235,35 +260,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.area}
                                   onChange={handleInputs}
-                                  placeholder="Area"
+                                  placeholder="Enter Area"
                                 />
                               </div>
                             </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Date of planting
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.dateOfPlanting}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dateOfPlanting")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          </Col>                
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Nursery sale details
                               </Form.Label>
@@ -274,15 +278,15 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.nurserySaleDetails}
                                   onChange={handleInputs}
-                                  placeholder="Nursery sale details"
+                                  placeholder="Enter Nursery sale details"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">quantity</Form.Label>
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">Quantity</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="quantity"
@@ -290,35 +294,16 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.quantity}
                                   onChange={handleInputs}
-                                  placeholder=" quantity"
+                                  placeholder=" Enter Quantity"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
+                          
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">date</Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.date}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "date")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">rate</Form.Label>
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">Rate</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="rate"
@@ -326,16 +311,16 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.rate}
                                   onChange={handleInputs}
-                                  placeholder="rate"
+                                  placeholder="Enter Rate"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                sapling age in Month/Year
+                                Sapling age in Month/Year
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -344,14 +329,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.saplingAge}
                                   onChange={handleInputs}
-                                  placeholder="sapling age in Month/Year"
+                                  placeholder="Enter Sapling age in Month/Year"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Generate Recipt
                               </Form.Label>
@@ -369,7 +354,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Receipt number
                               </Form.Label>
@@ -380,14 +365,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.receiptNumber}
                                   onChange={handleInputs}
-                                  placeholder="Receipt number"
+                                  placeholder="Enter Receipt number"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Remittance details
                               </Form.Label>
@@ -398,14 +383,14 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                   type="text"
                                   value={data.remittanceDetails}
                                   onChange={handleInputs}
-                                  placeholder="Remittance details"
+                                  placeholder="Enter Remittance details"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Challan Upload
                               </Form.Label>
@@ -422,29 +407,73 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="12" className="text-center">
-                            <Button type="submit" variant="primary">
-                              Update
-                            </Button>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of planting
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataPlantingSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfPlanting)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfPlanting")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
                           </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12"></Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-          </Row>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">Date</Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataDateSet && (
+                                <DatePicker
+                                  selected={new Date(data.date)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "date")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          </Row>
+                          )}
+                          </Card.Body>
+                      </Card>
+
+                  <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
+                    <Button type="submit" variant="primary">
+                      Update
+                    </Button>
+                  </li>
+                  <li>
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </li>
+                </ul>
+              </div>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

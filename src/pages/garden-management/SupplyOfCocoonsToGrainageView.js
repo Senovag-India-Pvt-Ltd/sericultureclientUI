@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
+import SeedCuttingBank from "./SeedCuttingBank";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-function MaintenanceOfMulberryGardenView() {
+function SupplyOfCocoonsToGrainageView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -20,19 +22,25 @@ function MaintenanceOfMulberryGardenView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [maintenanceGarden, setMaintenanceGarden] = useState({});
+  const [supplyOfCoocons, setSupplyOfCocoons] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // grabs the id form the url and loads the corresponding data
+  // useEffect(() => {
+  // let findUser = data.find((item) => item.id === id);
+  // setCaste(findUser);
+  // }, [id, data]);
 
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `Mulberry-garden/get-info-by-id/${id}`)
+      .get(baseURL2 + `supply-cocoons/get-info-by-id/${id}`)
       .then((response) => {
-        setMaintenanceGarden(response.data);
+        setSupplyOfCocoons(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setMaintenanceGarden({});
+        setSupplyOfCocoons({});
         setLoading(false);
       });
   };
@@ -44,19 +52,17 @@ function MaintenanceOfMulberryGardenView() {
   }, [id]);
 
   return (
-    <Layout title="Maintenance of Mulberry Garden View">
+    <Layout title="Supply Of Cocoons To Grainage View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              View Maintenance of Mulberry Garden Details
-            </Block.Title>
+            <Block.Title tag="h2">Supply Of Cocoons To Grainage View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/supply-of-cocoons-to-grainage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -65,7 +71,7 @@ function MaintenanceOfMulberryGardenView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/supply-of-cocoons-to-grainage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -79,7 +85,7 @@ function MaintenanceOfMulberryGardenView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Mulberry Garden Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Supply Of Cocoons To Grainage Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -92,43 +98,38 @@ function MaintenanceOfMulberryGardenView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{maintenanceGarden.id}</td>
+                        <td>{supplyOfCoocons.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Plot Number:</td>
-                        <td>{maintenanceGarden.plotNumber}</td>
+                        <td style={styles.ctstyle}>Lot Number:</td>
+                        <td>{supplyOfCoocons.lotNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mulberry Variety:</td>
-                        <td>{maintenanceGarden.variety}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Area Under Each Variety:</td>
-                        <td>{maintenanceGarden.areaUnderEachVariety}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Pruning Date:</td>
-                        <td>{maintenanceGarden.pruningDate}</td>
+                        <td style={styles.ctstyle}>Race Of Cocoons:</td>
+                        <td>{supplyOfCoocons.raceOfCocoons}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Fertilizer Application Date:
+                          Spun On Date:
                         </td>
-                        <td>{maintenanceGarden.fertilizerApplicationDate}</td>
+                        <td>{supplyOfCoocons.spunOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>FYM Date:</td>
-                        <td>{maintenanceGarden.fymApplicationDate}</td>
+                        <td style={styles.ctstyle}>Number Of Cocoons Dispatched:</td>
+                        <td>{supplyOfCoocons.numberOfCocoonsDispatched}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Irrigation Date:</td>
-                        <td>{maintenanceGarden.irrigationDate}</td>
+                        <td style={styles.ctstyle}>Generation Details:</td>
+                        <td>{supplyOfCoocons.generationDetails}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Brushing Date:</td>
-                        <td>{maintenanceGarden.brushingDate}</td>
+                        <td style={styles.ctstyle}>Dispatch Date:</td>
+                        <td>{supplyOfCoocons.dispatchDate}</td>
                       </tr>
-                     
+                      <tr>
+                        <td style={styles.ctstyle}>Generation Invoice:</td>
+                        <td>{supplyOfCoocons.generateInvoice}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>
@@ -141,4 +142,4 @@ function MaintenanceOfMulberryGardenView() {
   );
 }
 
-export default MaintenanceOfMulberryGardenView;
+export default SupplyOfCocoonsToGrainageView;

@@ -183,11 +183,11 @@ function ReceiptofDFLsfromthegrainage() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = message => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: message,
     });
   };
   const saveError = (message) => {
@@ -238,41 +238,44 @@ function ReceiptofDFLsfromthegrainage() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+                Receipt Of DFLs From The Grainage
+              </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                 <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Race<span className="text-danger">*</span>
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="raceOfDfls"
-                              value={data.raceOfDfls}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Race<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="raceOfDfls"
+                          value={data.raceOfDfls}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Race</option>
+                          {raceListData.map((list) => (
+                            <option
+                              key={list.raceMasterId}
+                              value={list.raceMasterId}
                             >
-                              <option value="">Select Race</option>
-                              {raceListData.map((list) => (
-                                <option
-                                  key={list.raceMasterId}
-                                  value={list.raceMasterId}
-                                >
-                                  {list.raceMasterName}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </div>
-                        </Col>
-                      </Form.Group>
+                              {list.raceMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
                     </Col>
+                  </Form.Group>
+                </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -342,6 +345,44 @@ function ReceiptofDFLsfromthegrainage() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="invoiceDetails">
+                        Invoice No
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="invoiceDetails"
+                          name="invoiceDetails"
+                          value={data.invoiceDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Invoice No"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="invoiceDetails">
+                        Generation Details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="generationDetails"
+                          name="generationDetails"
+                          value={data.generationDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Generation Details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Form.Label column sm={2}>
                     Laid On Date
                     <span className="text-danger">*</span>
@@ -383,67 +424,6 @@ function ReceiptofDFLsfromthegrainage() {
                       />
                     </div>
                   </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Invoice No
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="invoiceDetails"
-                          name="invoiceDetails"
-                          value={data.invoiceDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Invoice No"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Generation Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
-                          name="generationDetails"
-                          value={data.generationDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Generation Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  {/* <Col lg="2">
-                    <Button type="button" onClick={postDataReceipt}>
-                      View Invoice
-                    </Button>
-                  </Col> */}
-
-                  {/* <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="viewReceipt">Worm Test Details and result</Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="viewReceipt"
-                                name="viewReceipt"
-                                value={data.viewReceipt}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="View Receipt"
-                              />
-                            </div>
-                          </Form.Group>
-                          <Button type="button" onClick={postDataReceipt}>Generate Receipt</Button>
-                        </Col> */}
                 </Row>
               </Card.Body>
             </Card>
@@ -463,7 +443,7 @@ function ReceiptofDFLsfromthegrainage() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

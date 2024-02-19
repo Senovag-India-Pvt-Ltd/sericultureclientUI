@@ -73,7 +73,7 @@ function MaintenanceofmulberryGarden() {
           }
         })
         .catch((err) => {
-          saveError();
+          saveError(err.response.data.validationErrors);
         });
       setValidated(true);
     }
@@ -171,11 +171,13 @@ function MaintenanceofmulberryGarden() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+                  Maintenance Of Mulberry Garden
+                </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
@@ -430,7 +432,7 @@ function MaintenanceofmulberryGarden() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

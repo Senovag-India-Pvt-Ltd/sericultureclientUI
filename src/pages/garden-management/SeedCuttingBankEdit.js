@@ -175,10 +175,16 @@ function SeedCuttingBankEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -221,11 +227,12 @@ function SeedCuttingBankEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>Edit Seed Cutting Bank Details</Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -300,29 +307,7 @@ function SeedCuttingBankEdit() {
                       </Form.Control.Feedback>
                     </Col>
 
-                    <Form.Label column sm={2}>
-                      Date Of Pruning
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataPruningSet && (
-                          <DatePicker
-                            selected={new Date(data.dateOfPruning)}
-                            onChange={(date) =>
-                              handleDateChange(date, "dateOfPruning")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col>
-
+                   
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="ratePerTonne">
@@ -406,6 +391,30 @@ function SeedCuttingBankEdit() {
                       </Form.Group>
                     </Col>
 
+                    <Form.Label column sm={2}>
+                      Date Of Pruning
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {isDataPruningSet && (
+                          <DatePicker
+                            selected={new Date(data.dateOfPruning)}
+                            onChange={(date) =>
+                              handleDateChange(date, "dateOfPruning")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Col>
+
+
                     <Col lg="2">
                       <Button type="button" onClick={postDataReceipt}>
                         View Invoice
@@ -431,7 +440,7 @@ function SeedCuttingBankEdit() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

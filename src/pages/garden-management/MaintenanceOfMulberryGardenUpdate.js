@@ -142,7 +142,7 @@ function MaintenanceOfMulberryGardenUpdate() {
     <Block.HeadBetween>
       <Block.HeadContent>
         <Block.Title tag="h2">
-        Update Pruning Date
+        Pruning Date
         </Block.Title>
       </Block.HeadContent>
       <Block.HeadContent>
@@ -170,11 +170,14 @@ function MaintenanceOfMulberryGardenUpdate() {
     </Block.HeadBetween>
   </Block.Head>
 
-  <Block className="mt-n5">
+  <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+               Update Pruning Date
+              </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -206,10 +209,7 @@ function MaintenanceOfMulberryGardenUpdate() {
                         </Col>
                         </Row>
                         )}
-              </Card.Body>
-            </Card>
-
-            <div className="gap-col">
+                        <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
@@ -224,7 +224,9 @@ function MaintenanceOfMulberryGardenUpdate() {
                     </li>
               </ul>
             </div>
-          </Row>
+              </Card.Body>
+            </Card>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

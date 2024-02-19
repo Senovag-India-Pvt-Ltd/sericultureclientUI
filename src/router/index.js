@@ -511,6 +511,10 @@ import ChawkidistributiontoFarmersList from "../pages/garden-management/Chawkidi
 import ChawkidistributiontoFarmersView from "../pages/garden-management/ChawkidistributiontoFarmersView";
 import MaintenanceOfMulberryGardenUpdate from "../pages/garden-management/MaintenanceOfMulberryGardenUpdate";
 import MaintenanceOfMulberryGardenAlert from "../pages/garden-management/MaintenanceOfMulberryGardenAlert";
+import SupplyOfCocoonsToGrainageList from "../pages/garden-management/SupplyOfCocoonsToGrainageList";
+import SupplyOfCocoonsToGrainageView from "../pages/garden-management/SupplyOfCocoonsToGrainageView";
+import MaintenanceAndSaleOfNurseryToFarmersView from "../pages/garden-management/MaintenanceAndSaleOfNurseryToFarmersView";
+import MaintenanceandSaleofNurserytoFarmersList from "../pages/garden-management/MaintenanceAndSaleOfNurseryToFarmersList";
 
 
 // Admin and Reports
@@ -1029,10 +1033,31 @@ function Router() {
               path="Supply-of-Cocoons-to-Grainagee"
               element={<SupplyofCocoonstoGrainage />}
             />
+            <Route path="supply-of-cocoons-to-grainage-list" element={<SupplyOfCocoonsToGrainageList />} />
+            <Route
+              path="supply-of-cocoons-to-grainage-edit/:id"
+              element={<SupplyofCocoonstoGrainageEdit />}
+            />
+            <Route
+              path="supply-of-cocoons-to-grainage-view/:id"
+              element={<SupplyOfCocoonsToGrainageView />}
+            />
             <Route
               path="Maintenance-and-Sale-of-Nursery-to-Farmers"
               element={<MaintenanceandSaleofNurserytoFarmers />}
+
+            />      
+            <Route
+              path="maintenance-and-sale-of-nursery-edit/:id"
+              element={<MaintenanceandSaleofNurserytoFarmersEdit />}
             />
+             <Route
+              path="maintenance-and-sale-of-nursery-edit/:id"
+              element={<MaintenanceandSaleofNurserytoFarmersEdit />}
+            />
+
+          <Route path="maintenance-and-sale-of-nursery-list" element={<MaintenanceandSaleofNurserytoFarmersList />} />
+
            <Route path="chawki-distribution" element={<ChawkidistributiontoFarmers />} />
             <Route path="chawki-distribution-list" element={<ChawkidistributiontoFarmersList />} />
 
@@ -1043,12 +1068,6 @@ function Router() {
              <Route
               path="chawki-distribution-view/:id"
               element={<ChawkidistributiontoFarmersView />}
-            />
-
-
-            <Route
-              path="MaintenanceandSaleofNurserytoFarmers-edit/:id"
-              element={<MaintenanceandSaleofNurserytoFarmersEdit />}
             />
 
             <Route

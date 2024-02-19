@@ -188,8 +188,8 @@ function ReceiptOfDFLsList() {
     },
     {
       name: "Grainage",
-      selector: (row) => row.grainage,
-      cell: (row) => <span>{row.grainage}</span>,
+      selector: (row) => row.grainageMasterName,
+      cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },

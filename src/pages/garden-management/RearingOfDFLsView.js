@@ -50,11 +50,11 @@ function RearingOfDFLsView() {
   }, [id]);
 
   return (
-    <Layout title="Rearing of DFLs View">
+    <Layout title="View Rearing of DFLs Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Rearing of DFLs View</Block.Title>
+            <Block.Title tag="h2"> View Rearing of DFLs Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -83,7 +83,7 @@ function RearingOfDFLsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Rearing of DFLs Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Rearing of DFLs Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

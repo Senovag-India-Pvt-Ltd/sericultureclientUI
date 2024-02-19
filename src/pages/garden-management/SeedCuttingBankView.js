@@ -52,11 +52,11 @@ function SeedCuttingBankView() {
   }, [id]);
 
   return (
-    <Layout title="Seed Cutting Bank View">
+    <Layout title="View Seed Cutting Bank Details ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seed Cutting Bank View</Block.Title>
+            <Block.Title tag="h2">View Seed Cutting Bank Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -85,7 +85,7 @@ function SeedCuttingBankView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Seed Cutting Bank Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Seed Cutting Bank Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

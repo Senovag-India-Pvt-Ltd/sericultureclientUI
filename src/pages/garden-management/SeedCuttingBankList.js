@@ -10,7 +10,6 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
-import ReceiptOfDFLsEdit from "./ReceiptOfDFLsEdit";
 import SeedCuttingBank from "./SeedCuttingBank";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
