@@ -198,11 +198,14 @@ function MaintenanceOfMulberryGardenEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+                Edit Maintenance Of Mulberry Garden
+              </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -419,7 +422,7 @@ function MaintenanceOfMulberryGardenEdit() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
