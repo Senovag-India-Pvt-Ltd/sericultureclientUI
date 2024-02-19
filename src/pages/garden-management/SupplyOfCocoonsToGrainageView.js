@@ -85,7 +85,7 @@ function SupplyOfCocoonsToGrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Supply Of Cocoons To Grainage Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Supply Of Cocoons To Grainage Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTable, { createTheme } from "react-data-table-component";
@@ -66,6 +66,9 @@ function SupplyofCocoonstoGrainage() {
       setValidated(true);
     }
   };
+
+  const isDataSpunSet = !!data.spunOnDate;
+  const isDataDispatchSet = !!data.dispatchDate;
 
   const clear = () => {
     setData({
@@ -171,11 +174,11 @@ function SupplyofCocoonstoGrainage() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-0 ">
               <Card>
-                <Card.Header>Edit Supply of Cocoons to Grainage </Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>Edit Supply of Cocoons to Grainage </Card.Header>
                   <Card.Body>
                     <Row className="g-gs">
                       <Col lg="4">
-                        <Form.Group className="form-group">
+                        <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
                             Lot Number
                           </Form.Label>
@@ -194,7 +197,7 @@ function SupplyofCocoonstoGrainage() {
                       </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Race of Cocoons
                               </Form.Label>
@@ -211,30 +214,10 @@ function SupplyofCocoonstoGrainage() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Spun on date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.spunOnDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "spunOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Number of Cocoons Dispatched
                               </Form.Label>
@@ -252,7 +235,7 @@ function SupplyofCocoonstoGrainage() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Generation details
                               </Form.Label>
@@ -268,30 +251,10 @@ function SupplyofCocoonstoGrainage() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Dispatch Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.dispatchDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dispatchDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Genarate Invoice
                               </Form.Label>
@@ -309,7 +272,7 @@ function SupplyofCocoonstoGrainage() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 View Reciept
                               </Form.Label>
@@ -322,6 +285,54 @@ function SupplyofCocoonstoGrainage() {
                                   type="text"
                                   placeholder="View Reciept"
                                 />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Spun on date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataSpunSet && (
+                                <DatePicker
+                                  selected={new Date(data.spunOnDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "spunOnDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Dispatch Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataDispatchSet && (
+                                <DatePicker
+                                  selected={new Date(data.dispatchDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dispatchDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
