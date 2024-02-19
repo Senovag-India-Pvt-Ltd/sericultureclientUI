@@ -515,6 +515,26 @@ import SupplyOfCocoonsToGrainageList from "../pages/garden-management/SupplyOfCo
 import SupplyOfCocoonsToGrainageView from "../pages/garden-management/SupplyOfCocoonsToGrainageView";
 import MaintenanceAndSaleOfNurseryToFarmersView from "../pages/garden-management/MaintenanceAndSaleOfNurseryToFarmersView";
 import MaintenanceandSaleofNurserytoFarmersList from "../pages/garden-management/MaintenanceAndSaleOfNurseryToFarmersList";
+import LineName from "../pages/masters/line-name/LineName";
+import LineNameList from "../pages/masters/line-name/lineNameList";
+import LineNameView from "../pages/masters/line-name/LineNameView";
+import LineNameEdit from "../pages/masters/line-name/LineNameEdit";
+import Disinfectant from "../pages/masters/disinfectant/Disinfectant";
+import DisinfectantList from "../pages/masters/disinfectant/DisinfectantList";
+import DisinfectantView from "../pages/masters/disinfectant/DisinfectantView";
+import DisinfectantEdit from "../pages/masters/disinfectant/DisinfectantEdit";
+import Grainage from "../pages/masters/grainage/Grainage";
+import GrainageList from "../pages/masters/grainage/GrainageList";
+import GrainageView from "../pages/masters/grainage/GrainageView";
+import GrainageEdit from "../pages/masters/grainage/GrainageEdit";
+import GenerationNumber from "../pages/masters/generation-number/GenerationNumber";
+import GenerationNumberList from "../pages/masters/generation-number/GenerationNumberList";
+import GenerationNumberView from "../pages/masters/generation-number/GenerationNumberView";
+import GenerationNumberEdit from "../pages/masters/generation-number/GenerationNumberEdit";
+import Farm from "../pages/masters/farm/Farm";
+import FarmList from "../pages/masters/farm/FarmList";
+import FarmView from "../pages/masters/farm/FarmView";
+import FarmEdit from "../pages/masters/farm/FarmEdit";
 
 
 // Admin and Reports
@@ -1302,6 +1322,26 @@ function Router() {
             <Route path="bin-list" element={<BinList />} />
             <Route path="bin-view/:id" element={<BinView />} />
             <Route path="external-unit-type" element={<ExternalUnitType />} />
+            <Route path="lineName" element={<LineName />} />
+            <Route path="lineName-list" element={<LineNameList />} />
+            <Route path="lineName-view/:id" element={<LineNameView />} />
+            <Route path="lineName-edit/:id" element={<LineNameEdit />} />
+            <Route path="disinfectant" element={<Disinfectant/>} />
+            <Route path="disinfectant-list" element={<DisinfectantList />} />
+            <Route path="disinfectant-view/:id" element={<DisinfectantView />} />
+            <Route path="disinfectant-edit/:id" element={<DisinfectantEdit />} />
+            <Route path="grainage" element={<Grainage />} />
+            <Route path="grainage-list" element={<GrainageList />} />
+            <Route path="grainage-view/:id" element={<GrainageView />} />
+            <Route path="grainage-edit/:id" element={<GrainageEdit />} />
+            <Route path="generation-number" element={<GenerationNumber />} />
+            <Route path="generation-number-list" element={<GenerationNumberList />} />
+            <Route path="generation-number-view/:id" element={<GenerationNumberView />} />
+            <Route path="generation-number-edit/:id" element={<GenerationNumberEdit />} />
+            <Route path="farm" element={<Farm />} />
+            <Route path="farm-list" element={<FarmList />} />
+            <Route path="farm-view/:id" element={<FarmView />} />
+            <Route path="farm-edit/:id" element={<FarmEdit />} />
             <Route
               path="external-unit-type-list"
               element={<ExternalUnitTypeList />}
