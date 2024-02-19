@@ -102,10 +102,9 @@ function DisinfectantView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
                           Disinfectant Name In Kannada:
                         </td>
-                        <td>{Disinfectant.tdisinfectantMasterNameInKannada}</td>
+                        <td>{Disinfectant.disinfectantMasterNameInKannada}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -99,10 +99,16 @@ function LineNameEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -114,11 +120,11 @@ function LineNameEdit() {
   };
 
   return (
-    <Layout title="Edit LineName">
+    <Layout title="Edit Line Name">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit LineName</Block.Title>
+            <Block.Title tag="h2">Edit Line Name</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -196,7 +202,7 @@ function LineNameEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          line Name  in Kannada is required.
+                          Line Name  in Kannada is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -193,11 +193,11 @@ function LineNameList() {
   ];
 
   return (
-    <Layout title="line Name List">
+    <Layout title="Line Name List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">LineName List</Block.Title>
+            <Block.Title tag="h2">Line Name List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

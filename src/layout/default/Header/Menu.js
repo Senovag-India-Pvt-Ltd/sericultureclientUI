@@ -332,6 +332,13 @@ function Menu() {
     Admin_Master_HelpDesk_Severity: false,
     Admin_Master_HelpDesk_Faq: false,
 
+    Admin_Master_Garden: false,
+    Admin_Master_Garden_Line: false,
+    Admin_Master_Garden_Grainage: false,
+    Admin_Master_Garden_Disinfectant: false,
+    Admin_Master_Garden_Generation_Number: false,
+    Admin_Master_Garden_Farm: false,
+
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
     Admin_Master_Auction_Market: false,
@@ -1811,6 +1818,56 @@ function Menu() {
                           <MenuItemLink
                             text="Help Desk FAQ"
                             to="/seriui/hd-question"
+                          />
+                        </MenuItem>
+                      ) : null}
+                    </MenuSub>
+                  </MenuItem>
+                ) : null}
+
+                {showMenu.Admin_Master_Garden ? (
+                  <MenuItem sub>
+                    <MenuItemLink
+                      text="Garden Management"
+                      onClick={menuToggle}
+                      onMouseEnter={menuHover}
+                      sub
+                    />
+                    <MenuSub>
+                      {showMenu.Admin_Master_Garden_Line ? (
+                        <MenuItem>
+                          <MenuItemLink text="Line Name" to="/seriui/lineName" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Garden_Grainage ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Grainage"
+                            to="/seriui/grainage"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Garden_Disinfectant ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Disinfectant Usage Details"
+                            to="/seriui/disinfectant"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Garden_Generation_Number ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Generation Number"
+                            to="/seriui/generation-number"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Garden_Farm ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Farm"
+                            to="/seriui/farm"
                           />
                         </MenuItem>
                       ) : null}

@@ -70,23 +70,29 @@ function LineName() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    });
   };
 
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
   return (
-    <Layout title="LineName">
+    <Layout title="Line Name">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">LineName</Block.Title>
+            <Block.Title tag="h2">Line Name</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -124,7 +130,7 @@ function LineName() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      lineName Master
+                      Line Name
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">

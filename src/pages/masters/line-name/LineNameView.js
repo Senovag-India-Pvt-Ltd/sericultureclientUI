@@ -48,11 +48,11 @@ function LineNameView() {
   }, [id]);
 
   return (
-    <Layout title="Line Name View">
+    <Layout title="View Line Name">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Line Name View</Block.Title>
+            <Block.Title tag="h2">View Line Name</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
