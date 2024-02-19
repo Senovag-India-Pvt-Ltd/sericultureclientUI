@@ -309,7 +309,7 @@ function MaintenanceandSaleofNurserytoFarmersList() {
             <ul className="d-flex">
               <li>
                 <Link to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers" className="btn btn-primary btn-md d-md-none">
-                  <Icon name="arrow-long-left" />
+                  <Icon name="plus" />
                   <span>Create</span>
                 </Link>
               </li>
@@ -318,8 +318,8 @@ function MaintenanceandSaleofNurserytoFarmersList() {
                   to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <Icon name="plus" />
+                  <span>Create</span>
                 </Link>
               </li>
             </ul>

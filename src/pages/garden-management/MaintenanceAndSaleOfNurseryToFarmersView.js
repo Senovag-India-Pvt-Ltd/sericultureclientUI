@@ -23,12 +23,6 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
   const [maintenanceNursery, setMaintenanceNursery] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
-
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -50,12 +44,12 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
   }, [id]);
 
   return (
-    <Layout title="Maintenance And Sale Of Nursery To Farmers View">
+    <Layout title="View Maintenance And Sale Of Nursery To Farmers Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-            Maintenance And Sale Of Nursery To Farmers View
+            View Maintenance And Sale Of Nursery To Farmers Details
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -85,7 +79,7 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header> Maintenance And Sale Of Nursery To Farmers  Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}> Maintenance And Sale Of Nursery To Farmers  Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
