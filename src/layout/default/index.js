@@ -11,7 +11,7 @@ import Header from './Header'
 import Footer from './Footer'
 import LayoutProvider from './LayoutProvider'
 
-function Default({title,content,...props}) {
+function Default({title,content,show,...props}) {
 
   useLayoutEffect(() => {
     document.title = `${title} - Department of Sericulture`;
@@ -25,7 +25,7 @@ function Default({title,content,...props}) {
               {/* <Sidebar/> */}
               
               <AppWrap>
-                  <Header/>
+                  <Header show={show}/>
                   <AppContent content={content}>
                       {props.children}
                   </AppContent>

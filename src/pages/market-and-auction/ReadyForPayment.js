@@ -337,7 +337,7 @@ function ReadyForPayment() {
   ];
 
   return (
-    <Layout title="Ready for Payment">
+    <Layout title="Ready for Payment" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>

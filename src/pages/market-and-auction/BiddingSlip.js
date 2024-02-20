@@ -600,7 +600,7 @@ function BiddingSlip() {
   };
 
   return (
-    <Layout title="Bidding Slip">
+    <Layout title="Bidding Slip" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
