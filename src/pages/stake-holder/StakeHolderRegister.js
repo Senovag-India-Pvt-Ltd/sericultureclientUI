@@ -821,7 +821,11 @@ function StakeHolderRegister() {
                 }
               })
               .catch((err) => {
-                saveError(err.response.data.validationErrors);
+                if (
+                  Object.keys(err.response.data.validationErrors).length > 0
+                ) {
+                  saveError(err.response.data.validationErrors);
+                }
               });
 
             if (familyMembersList.length > 0) {
@@ -841,7 +845,11 @@ function StakeHolderRegister() {
                     }
                   })
                   .catch((err) => {
-                    saveError(err.response.data.validationErrors);
+                    if (
+                      Object.keys(err.response.data.validationErrors).length > 0
+                    ) {
+                      saveError(err.response.data.validationErrors);
+                    }
                   });
               });
             }
@@ -859,7 +867,11 @@ function StakeHolderRegister() {
                     setFarmerLandList([]);
                   })
                   .catch((err) => {
-                    saveError(err.response.data.validationErrors);
+                    if (
+                      Object.keys(err.response.data.validationErrors).length > 0
+                    ) {
+                      saveError(err.response.data.validationErrors);
+                    }
                   });
               });
             }
@@ -877,7 +889,11 @@ function StakeHolderRegister() {
                     setFarmerAddressList([]);
                   })
                   .catch((err) => {
-                    saveError(err.response.data.validationErrors);
+                    if (
+                      Object.keys(err.response.data.validationErrors).length > 0
+                    ) {
+                      saveError(err.response.data.validationErrors);
+                    }
                   });
               });
             }
@@ -887,7 +903,9 @@ function StakeHolderRegister() {
         })
         .catch((err) => {
           // setData({});
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }

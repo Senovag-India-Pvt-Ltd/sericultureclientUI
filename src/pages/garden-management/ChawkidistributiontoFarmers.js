@@ -166,7 +166,9 @@ function ChawkidistributiontoFarmers() {
         }
       })
       .catch((err) => {
-        saveError(err.response.data.validationErrors);
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          saveError(err.response.data.validationErrors);
+        }
       });
   };
 
@@ -420,7 +422,9 @@ function ChawkidistributiontoFarmers() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>Chawki Sales Details</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Chawki Sales Details
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
@@ -712,7 +716,9 @@ function ChawkidistributiontoFarmers() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>Address</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Address
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
@@ -909,8 +915,3 @@ function ChawkidistributiontoFarmers() {
 }
 
 export default ChawkidistributiontoFarmers;
-
-
-
-
-

@@ -112,7 +112,7 @@ function District() {
       html: errorMessage,
     });
   };
-  
+
   return (
     <Layout title="District">
       <Block.Head>

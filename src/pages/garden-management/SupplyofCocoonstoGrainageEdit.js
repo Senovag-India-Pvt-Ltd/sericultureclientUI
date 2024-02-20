@@ -55,13 +55,15 @@ function SupplyofCocoonstoGrainage() {
               generationDetails: "",
               dispatchDate: "",
               generateInvoice: "",
-              viewReciept: "", 
-              });
+              viewReciept: "",
+            });
             setValidated(false);
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -143,7 +145,9 @@ function SupplyofCocoonstoGrainage() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Supply of Cocoons to Grainage</Block.Title>
+            <Block.Title tag="h2">
+              Edit Supply of Cocoons to Grainage
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -173,174 +177,161 @@ function SupplyofCocoonstoGrainage() {
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-0 ">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>Edit Supply of Cocoons to Grainage </Card.Header>
-                  <Card.Body>
-                    <Row className="g-gs">
-                      <Col lg="4">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="sordfl">
-                            Lot Number
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="lotNumber"
-                              name="lotNumber"
-                              value={data.lotNumber}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="  Lot Number "
-                              required
-                            />
-                          </div>
-                        </Form.Group>
-                      </Col>
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Edit Supply of Cocoons to Grainage{" "}
+              </Card.Header>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">Lot Number</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lotNumber"
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="  Lot Number "
+                          required
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Race of Cocoons
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="raceOfCocoons"
-                                  name="raceOfCocoons"
-                                  value={data.raceOfCocoons}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Race of Cocoons"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">Race of Cocoons</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="raceOfCocoons"
+                          name="raceOfCocoons"
+                          value={data.raceOfCocoons}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Race of Cocoons"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Number of Cocoons Dispatched
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="numberOfCocoonsDispatched"
+                          name="numberOfCocoonsDispatched"
+                          value={data.numberOfCocoonsDispatched}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Number of Cocoons Dispatched"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Generation details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="generationDetails"
+                          name="generationDetails"
+                          value={data.generationDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Generation details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Number of Cocoons Dispatched
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="numberOfCocoonsDispatched"
-                                  name="numberOfCocoonsDispatched"
-                                  value={data.numberOfCocoonsDispatched}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Number of Cocoons Dispatched"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">Genarate Invoice</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="generateInvoice"
+                          name="generateInvoice"
+                          value={data.generateInvoice}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Genarate Invoice"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Generation details
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="generationDetails"
-                                  name="generationDetails"
-                                  value={data.generationDetails}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Generation details"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">View Reciept</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="viewReciept"
+                          name="viewReciept"
+                          value={data.viewReciept}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="View Reciept"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Genarate Invoice
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="generateInvoice"
-                                  name="generateInvoice"
-                                  value={data.generateInvoice}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Genarate Invoice"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">Spun on date</Form.Label>
+                      <div className="form-control-wrap">
+                        {isDataSpunSet && (
+                          <DatePicker
+                            selected={new Date(data.spunOnDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "spunOnDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                View Reciept
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="viewReciept"
-                                  name="viewReciept"
-                                  value={data.viewReciept}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="View Reciept"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">Dispatch Date</Form.Label>
+                      <div className="form-control-wrap">
+                        {isDataDispatchSet && (
+                          <DatePicker
+                            selected={new Date(data.dispatchDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "dispatchDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Spun on date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {isDataSpunSet && (
-                                <DatePicker
-                                  selected={new Date(data.spunOnDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "spunOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Dispatch Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {isDataDispatchSet && (
-                                <DatePicker
-                                  selected={new Date(data.dispatchDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dispatchDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-
-              <div className="gap-col">
+            <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}

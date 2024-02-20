@@ -14,7 +14,6 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 
 function TrainingSchedule() {
-
   const [trainerUserList, setTrainerUserList] = useState([]);
   const [trainerUser, setTrainerUser] = useState({
     trScheduleId: "",
@@ -25,7 +24,8 @@ function TrainingSchedule() {
 
   const [validated, setValidated] = useState(false);
   const [validatedTrainerUser, setValidatedTrainerUser] = useState(false);
-  const [validatedTrainerUserEdit, setValidatedTrainerUserEdit] = useState(false);
+  const [validatedTrainerUserEdit, setValidatedTrainerUserEdit] =
+    useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -119,8 +119,6 @@ function TrainingSchedule() {
     trDateOfCompletion: "",
   });
 
-  
-
   let name, value;
   const handleInputs = (e) => {
     // debugger;
@@ -162,10 +160,14 @@ function TrainingSchedule() {
                   trScheduleId: trScheduleId,
                 };
                 api
-                  .post(baseURL2 + `trainingScheduleUser/add`, updatedTrainerUser)
+                  .post(
+                    baseURL2 + `trainingScheduleUser/add`,
+                    updatedTrainerUser
+                  )
                   .then((response) => {
                     if (response.data.content.error) {
-                      const trainerUserError = response.data.content.error_description;
+                      const trainerUserError =
+                        response.data.content.error_description;
                       saveError(trainerUserError);
                     } else {
                       saveSuccess();
@@ -173,10 +175,14 @@ function TrainingSchedule() {
                   })
                   .catch((err) => {
                     setTrainerUser({});
-                    saveError(err.response.data.validationErrors);
+                    if (
+                      Object.keys(err.response.data.validationErrors).length > 0
+                    ) {
+                      saveError(err.response.data.validationErrors);
+                    }
                   });
               });
-            } 
+            }
             saveSuccess();
             setData({
               userMasterId: "",
@@ -198,7 +204,9 @@ function TrainingSchedule() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -227,12 +235,11 @@ function TrainingSchedule() {
   const trainerUserClear = () => {
     setTrainerUser({
       trScheduleId: "",
-        userMasterId: "",
-        trainerName: "",
-        trInstitutionMasterId: "",
+      userMasterId: "",
+      trainerName: "",
+      trInstitutionMasterId: "",
     });
   };
-
 
   // Handle Options
   // TrainerUser
@@ -735,67 +742,65 @@ function TrainingSchedule() {
                     </Form.Group>
                   </Col>
 
-                
-
                   {/* <Col lg="6">
                     <Form.Group className="form-group"> */}
-                      <Form.Label column sm={2}>
-                        Training Period Start Date
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      {/* <Row> */}
-                        <Col sm={2}>
-                          <div className="form-control-wrap">
-                            {/* <DatePicker
+                  <Form.Label column sm={2}>
+                    Training Period Start Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  {/* <Row> */}
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                           /> */}
-                            <DatePicker
-                              selected={data.trStartDate}
-                              onChange={(date) =>
-                                handleDateChange(date, "trStartDate")
-                              }
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                              className="form-control"
-                            />
-                          </div>
-                        </Col>
-                      {/* </Row> */}
-                      {/* </Form.Group> */}
+                      <DatePicker
+                        selected={data.trStartDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "trStartDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
+                  {/* </Row> */}
+                  {/* </Form.Group> */}
 
-                      {/* <Row> */}
-                        {/* <Col lg="6"> */}
-                          {/* <Form.Group className="form-group"> */}
-                          <Form.Label column sm={2}>
-                            Expected Date of Completion
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <Col sm={2}>
-                          <div className="form-control-wrap">
-                            {/* <DatePicker
+                  {/* <Row> */}
+                  {/* <Col lg="6"> */}
+                  {/* <Form.Group className="form-group"> */}
+                  <Form.Label column sm={2}>
+                    Expected Date of Completion
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                           /> */}
-                            <DatePicker
-                              selected={data.trDateOfCompletion}
-                              onChange={(date) =>
-                                handleDateChange(date, "trDateOfCompletion")
-                              }
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                              className="form-control"
-                            />
-                          </div>
-                        </Col>
+                      <DatePicker
+                        selected={data.trDateOfCompletion}
+                        onChange={(date) =>
+                          handleDateChange(date, "trDateOfCompletion")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    </div>
+                  </Col>
 
-                        <Col lg= "4">
+                  <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
                         Upload PPT/Video
@@ -822,8 +827,8 @@ function TrainingSchedule() {
                       )}
                     </Form.Group>
                   </Col>
-                      </Row>
-                    {/* </Form.Group>
+                </Row>
+                {/* </Form.Group>
                   </Col>
                 </Row> */}
               </Card.Body>
@@ -954,7 +959,11 @@ function TrainingSchedule() {
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
-          <Form noValidate validated={validatedTrainerUser} onSubmit={handleAdd}>
+          <Form
+            noValidate
+            validated={validatedTrainerUser}
+            onSubmit={handleAdd}
+          >
             <Row className="g-5 px-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
@@ -1067,9 +1076,13 @@ function TrainingSchedule() {
                     {/* <Button variant="secondary" onClick={handleCloseModal}>
                       Cancel
                     </Button> */}
-                    <Button type="button" variant="secondary" onClick={trainerUserClear}>
-                    Cancel
-                  </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={trainerUserClear}
+                    >
+                      Cancel
+                    </Button>
                   </div>
                 </div>
               </Col>
@@ -1090,7 +1103,7 @@ function TrainingSchedule() {
             onSubmit={(e) => handleUpdate(e, trUserId, trainerUser)}
           >
             <Row className="g-5 px-5">
-            <Col lg="6">
+              <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     User<span className="text-danger">*</span>
@@ -1184,9 +1197,13 @@ function TrainingSchedule() {
                     {/* <Button variant="secondary" onClick={handleCloseModal2}>
                       Cancel
                     </Button> */}
-                    <Button type="button" variant="secondary" onClick={trainerUserClear}>
-                    Cancel
-                  </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={trainerUserClear}
+                    >
+                      Cancel
+                    </Button>
                   </div>
                 </div>
               </Col>

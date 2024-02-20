@@ -74,7 +74,9 @@ function ReceiptofDFLsfromthegrainage() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -98,44 +100,41 @@ function ReceiptofDFLsfromthegrainage() {
     setData({ ...data, [type]: date });
   };
 
-   // to get Race
-   const [raceListData, setRaceListData] = useState([]);
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
 
-   const getRaceList = () => {
-     const response = api
-       .get(baseURL + `raceMaster/get-all`)
-       .then((response) => {
-         setRaceListData(response.data.content.raceMaster);
-       })
-       .catch((err) => {
-         setRaceListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getRaceList();
-   }, []);
+  const getRaceList = () => {
+    const response = api
+      .get(baseURL + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
 
-    // to get Race
-    const [grainageListData, setGrainageListData] = useState([]);
+  useEffect(() => {
+    getRaceList();
+  }, []);
 
-    const getGrainageList = () => {
-      const response = api
-        .get(baseURL + `grainageMaster/get-all`)
-        .then((response) => {
-          setGrainageListData(response.data.content.grainageMaster);
-        })
-        .catch((err) => {
-          setGrainageListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getGrainageList();
-    }, []);
+  // to get Race
+  const [grainageListData, setGrainageListData] = useState([]);
 
+  const getGrainageList = () => {
+    const response = api
+      .get(baseURL + `grainageMaster/get-all`)
+      .then((response) => {
+        setGrainageListData(response.data.content.grainageMaster);
+      })
+      .catch((err) => {
+        setGrainageListData([]);
+      });
+  };
 
-
+  useEffect(() => {
+    getGrainageList();
+  }, []);
 
   const postDataReceipt = (event) => {
     const { marketId, godownId, allottedLotId, auctionDate } = data;
@@ -183,7 +182,7 @@ function ReceiptofDFLsfromthegrainage() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = message => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
@@ -242,13 +241,13 @@ function ReceiptofDFLsfromthegrainage() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-            <Card>
+          <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-                Receipt Of DFLs From The Grainage
-              </Card.Header>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
+              Receipt Of DFLs From The Grainage
+            </Card.Header>
+            <Card.Body>
+              {/* <h3>Farmers Details</h3> */}
+              <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -277,172 +276,164 @@ function ReceiptofDFLsfromthegrainage() {
                   </Form.Group>
                 </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Grainage<span className="text-danger">*</span>
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="grainage"
-                              value={data.grainage}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Grainage<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="grainage"
+                          value={data.grainage}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Grainage</option>
+                          {grainageListData.map((list) => (
+                            <option
+                              key={list.grainageMasterId}
+                              value={list.grainageMasterId}
                             >
-                              <option value="">Select Grainage</option>
-                              {grainageListData.map((list) => (
-                                <option
-                                  key={list.grainageMasterId}
-                                  value={list.grainageMasterId}
-                                >
-                                  {list.grainageMasterName}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </div>
-                        </Col>
-                      </Form.Group>
+                              {list.grainageMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
                     </Col>
+                  </Form.Group>
+                </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Lot Number<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="lotNumber"
-                          name="lotNumber"
-                          value={data.lotNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Lot Number"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Lot Number is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="numberOfDFLsReceived">
-                        Number Of DFLs received
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="numberOfDFLsReceived"
-                          name="numberOfDFLsReceived"
-                          value={data.numberOfDFLsReceived}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Number Of DFLs received"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Invoice No
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="invoiceDetails"
-                          name="invoiceDetails"
-                          value={data.invoiceDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Invoice No"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Generation Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
-                          name="generationDetails"
-                          value={data.generationDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Generation Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Form.Label column sm={2}>
-                    Laid On Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="plotNumber">
+                      Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      <DatePicker
-                        selected={data.laidOnDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "laidOnDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
+                      <Form.Control
+                        id="lotNumber"
+                        name="lotNumber"
+                        value={data.lotNumber}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Lot Number"
+                        required
                       />
                     </div>
-                  </Col>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Lot Number is required
+                  </Form.Control.Feedback>
+                </Col>
 
-                  <Form.Label column sm={2}>
-                    DFLs received Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                      Number Of DFLs received
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      <DatePicker
-                        selected={data.dflsRecDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "dflsRecDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
+                      <Form.Control
+                        id="numberOfDFLsReceived"
+                        name="numberOfDFLsReceived"
+                        value={data.numberOfDFLsReceived}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Number Of DFLs received"
                       />
                     </div>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                  </Form.Group>
+                </Col>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">Invoice No</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="invoiceDetails"
+                        name="invoiceDetails"
+                        value={data.invoiceDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Invoice No"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                      Generation Details
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="generationDetails"
+                        name="generationDetails"
+                        value={data.generationDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Generation Details"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Form.Label column sm={2}>
+                  Laid On Date
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.laidOnDate}
+                      onChange={(date) => handleDateChange(date, "laidOnDate")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                    />
+                  </div>
+                </Col>
+
+                <Form.Label column sm={2}>
+                  DFLs received Date
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.dflsRecDate}
+                      onChange={(date) => handleDateChange(date, "dflsRecDate")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                    />
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>

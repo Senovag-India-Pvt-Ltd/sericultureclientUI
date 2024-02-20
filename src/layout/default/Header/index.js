@@ -48,15 +48,26 @@ function QuickNavItem({ className, ...props }) {
   return <li className={compClass}>{props.children}</li>;
 }
 
-function Header() {
+function Header({ show, ...props }) {
   const navigate = useNavigate();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const [showMark, setShowMark] = useState("");
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: localStorage.getItem("godownId")
       ? localStorage.getItem("godownId")
       : "",
   });
+  // console.log("show", typeof show);
+
+  useEffect(() => {
+    if (show) {
+      setShowMark(show === "true");
+      console.log("hello",show === "true");
+    } else {
+      setShowMark(false);
+    }
+  }, [show]);
 
   function handleLogout() {
     localStorage.clear();
@@ -255,31 +266,39 @@ function Header() {
                                     </div>
                                 </Dropdown.Menu>
                             </Dropdown> */}
-                  <span className="me-5 d-flex align-items-center">
-                    <span style={{ fontWeight: "bold" }}>Market Name: </span>
-                    <span style={{ fontWeight: "bold", color: "green" }}>
-                      {marketName}
-                    </span>
-                  </span>
-                  <div className="me-5 d-flex justify-content-between align-items-center">
-                    <Form.Label column sm={2}>
-                      Godown:
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Select
-                        name="godownId"
-                        value={data.godownId}
-                        onChange={handleInputs}
-                      >
-                        <option value="">Select Godown</option>
-                        {godownListData.map((list) => (
-                          <option key={list.godownId} value={list.godownId}>
-                            {list.godownName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Col>
-                  </div>
+                  {showMark ? (
+                    <>
+                      <span className="me-5 d-flex align-items-center">
+                        <span style={{ fontWeight: "bold" }}>
+                          Market Name:{" "}
+                        </span>
+                        <span style={{ fontWeight: "bold", color: "green" }}>
+                          {marketName}
+                        </span>
+                      </span>
+                      <div className="me-5 d-flex justify-content-between align-items-center">
+                        <Form.Label column sm={2}>
+                          Godown:
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Select
+                            name="godownId"
+                            value={data.godownId}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select Godown</option>
+                            {godownListData.map((list) => (
+                              <option key={list.godownId} value={list.godownId}>
+                                {list.godownName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Col>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
                   <QuickNavItem>
                     <span className="me-5 d-flex align-items-center">
                       <a

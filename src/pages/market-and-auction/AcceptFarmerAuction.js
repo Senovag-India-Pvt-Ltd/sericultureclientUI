@@ -51,10 +51,16 @@ function AcceptFarmerAuction() {
   };
 
   const acceptError = (message = "Something went wrong!") => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Accept attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
@@ -109,7 +115,9 @@ function AcceptFarmerAuction() {
         })
         .catch((err) => {
           // setFarmerAuction({});
-          acceptError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            acceptError(err.response.data.validationErrors);
+          } 
           setLoading(false);
         })
         .finally(() => {
@@ -241,7 +249,7 @@ function AcceptFarmerAuction() {
   // }, [highestBid.marketId]);
 
   return (
-    <Layout title="Accept Farmer Auction">
+    <Layout title="Accept Farmer Auction" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>

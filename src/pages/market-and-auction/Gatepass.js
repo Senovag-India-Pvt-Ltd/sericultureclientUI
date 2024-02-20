@@ -180,7 +180,7 @@ function Gatepass() {
   }, []);
 
   return (
-    <Layout title="Gatepass">
+    <Layout title="Gatepass" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>

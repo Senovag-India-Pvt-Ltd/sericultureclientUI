@@ -141,7 +141,7 @@ function BulkSendToBank() {
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
   return (
-    <Layout title="Bulk Send To Bank">
+    <Layout title="Bulk Send To Bank" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>

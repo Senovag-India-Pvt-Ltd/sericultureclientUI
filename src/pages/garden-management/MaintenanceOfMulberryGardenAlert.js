@@ -1,5 +1,5 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 // import DatePicker from "../../../components/Form/DatePicker";
@@ -15,9 +15,7 @@ import api from "../../../src/services/auth/api";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-
 function MaintenanceOfMulberryGardenAlert() {
-
   const { id } = useParams();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -28,21 +26,22 @@ function MaintenanceOfMulberryGardenAlert() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [pruningDate, setPruningDate] = useState({
-    "id": "",
-    "fertilizerApplicationStatus": "0",
-    "fymApplicationStatus": "0",
-    "irrigationStatus": "0",
-    "brushingStatus": "0",
+    id: "",
+    fertilizerApplicationStatus: "0",
+    fymApplicationStatus: "0",
+    irrigationStatus: "0",
+    brushingStatus: "0",
   });
 
-  const [validatedPruningDateEdit, setValidatedPruningDateEdit] = useState(false);
+  const [validatedPruningDateEdit, setValidatedPruningDateEdit] =
+    useState(false);
 
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
- const getList = () => {
+  const getList = () => {
     setLoading(true);
 
     const response = api
@@ -63,8 +62,6 @@ function MaintenanceOfMulberryGardenAlert() {
     getList();
   }, []);
 
-  
-
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -80,18 +77,18 @@ function MaintenanceOfMulberryGardenAlert() {
           // getVbDetailsList();
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidatedPruningDateEdit(true);
     }
   };
 
-
   const handlePruningInputs = (e) => {
     const { name, value } = e.target;
     setPruningDate({ ...pruningDate, [name]: value });
   };
-
 
   const navigate = useNavigate();
   const updateSuccess = (message) => {
@@ -102,7 +99,7 @@ function MaintenanceOfMulberryGardenAlert() {
     });
   };
 
-const updateError = (message) => {
+  const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -122,22 +119,23 @@ const updateError = (message) => {
 
   const clear = () => {
     setPruningDate({
-        "fertilizerApplicationStatus": "",
-        "fymApplicationStatus": "",
-        "irrigationStatus": "",
-        "brushingStatus": "",
+      fertilizerApplicationStatus: "",
+      fymApplicationStatus: "",
+      irrigationStatus: "",
+      brushingStatus: "",
     });
   };
 
-  
   const handleEdit = (row) => {
-   setShowModal(true);
-   setPruningDate(prev=>({...prev,
-    id:row.id,
-    fertilizerApplicationStatus:row.fertilizerApplicationStatus,
-    fymApplicationStatus:row.fymApplicationStatus,
-    irrigationStatus:row.irrigationStatus,
-    brushingStatus:row.brushingStatus}))
+    setShowModal(true);
+    setPruningDate((prev) => ({
+      ...prev,
+      id: row.id,
+      fertilizerApplicationStatus: row.fertilizerApplicationStatus,
+      fymApplicationStatus: row.fymApplicationStatus,
+      irrigationStatus: row.irrigationStatus,
+      brushingStatus: row.brushingStatus,
+    }));
 
     // navigate("/seriui/training Schedule");
   };
@@ -197,7 +195,6 @@ const updateError = (message) => {
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-         
           <Button
             variant="primary"
             size="sm"
@@ -247,46 +244,60 @@ const updateError = (message) => {
     {
       name: "Fertilizer Application Status",
       selector: (row) => row.fertilizerApplicationStatus,
-      cell: (row) => <span>{row.fertilizerApplicationStatus === 0
-        ? 'Pending'
-        : row.fertilizerApplicationStatus === 1
-        ? 'Completed'
-        : 'Other'}
-    </span>,
+      cell: (row) => (
+        <span>
+          {row.fertilizerApplicationStatus === 0
+            ? "Pending"
+            : row.fertilizerApplicationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
     {
       name: "FYM Application Status",
       selector: (row) => row.fymApplicationStatus,
-      cell: (row) => <span>{row.fymApplicationStatus === 0
-       ? 'Pending'
-        : row.fymApplicationStatus === 1
-        ? 'Completed'
-        : 'Other'}
-        </span>,
+      cell: (row) => (
+        <span>
+          {row.fymApplicationStatus === 0
+            ? "Pending"
+            : row.fymApplicationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
     {
       name: "Irrigation Status",
       selector: (row) => row.irrigationStatus,
-      cell: (row) => <span>{row.irrigationStatus===0
-        ? 'Pending'
-        : row.irrigationStatus === 1
-        ? 'Completed'
-        : 'Other'}</span>,
+      cell: (row) => (
+        <span>
+          {row.irrigationStatus === 0
+            ? "Pending"
+            : row.irrigationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
     {
       name: "Brushing Status",
       selector: (row) => row.brushingStatus,
-      cell: (row) => <span>{row.brushingStatus === 0
-      ? 'Pending'
-        : row.brushingStatus === 1
-        ? 'Completed'
-        : 'Other'}</span>,
+      cell: (row) => (
+        <span>
+          {row.brushingStatus === 0
+            ? "Pending"
+            : row.brushingStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -345,7 +356,6 @@ const updateError = (message) => {
           />
         </Card>
       </Block>
-        
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
@@ -353,94 +363,84 @@ const updateError = (message) => {
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
-          <Form noValidate validated={validatedPruningDateEdit} onSubmit={postData}>
+          <Form
+            noValidate
+            validated={validatedPruningDateEdit}
+            onSubmit={postData}
+          >
             <Row className="g-5 px-5">
               <Col lg="6">
-              <Form.Group className="form-group">
-                    <Form.Label>Fertilizer Application Status</Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="fertilizerApplicationStatus"
-                        value={pruningDate.fertilizerApplicationStatus}
-                        onChange={handlePruningInputs}
-                      >
-                        <option value="">Select Fertilizer Application Status</option>
-                        <option value="0">
-                          Pending
-                        </option>
-                        <option value="1">
-                          Completed
-                        </option>
-                        {/* <option value="3">Other</option> */}
-                      </Form.Select>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="6">
                 <Form.Group className="form-group">
-                    <Form.Label>Farm Yard Manure Application Status</Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="fymApplicationStatus"
-                        value={pruningDate.fymApplicationStatus}
-                        onChange={handlePruningInputs}
-                      >
-                        <option value="">Select FYM Status</option>
-                        <option value="0">
-                          Pending
-                        </option>
-                        <option value="1">
-                          Completed
-                        </option>
-                        {/* <option value="3">Other</option> */}
-                      </Form.Select>
-                    </div>
-                  </Form.Group>
+                  <Form.Label>Fertilizer Application Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="fertilizerApplicationStatus"
+                      value={pruningDate.fertilizerApplicationStatus}
+                      onChange={handlePruningInputs}
+                    >
+                      <option value="">
+                        Select Fertilizer Application Status
+                      </option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      {/* <option value="3">Other</option> */}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
               </Col>
 
               <Col lg="6">
-              <Form.Group className="form-group">
-              <Form.Label>Irrigation Status</Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="irrigationStatus"
-                        value={pruningDate.irrigationStatus}
-                        onChange={handlePruningInputs}
-                      >
-                        <option value="">Select Irrigation Status</option>
-                        <option value="0">
-                          Pending
-                        </option>
-                        <option value="1">
-                          Completed
-                        </option>
-                        {/* <option value="3">Other</option> */}
-                      </Form.Select>
-                    </div>
-                  </Form.Group>
-            </Col>
+                <Form.Group className="form-group">
+                  <Form.Label>Farm Yard Manure Application Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="fymApplicationStatus"
+                      value={pruningDate.fymApplicationStatus}
+                      onChange={handlePruningInputs}
+                    >
+                      <option value="">Select FYM Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      {/* <option value="3">Other</option> */}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
 
-            <Col lg="6">
-            <Form.Group className="form-group">
-            <Form.Label>Brushing Status</Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="brushingStatus"
-                        value={pruningDate.brushingStatus}
-                        onChange={handlePruningInputs}
-                      >
-                        <option value="">Select Brushing Status</option>
-                        <option value="0">
-                          Pending
-                        </option>
-                        <option value="1">
-                          Completed
-                        </option>
-                        {/* <option value="3">Other</option> */}
-                      </Form.Select>
-                    </div>
-                  </Form.Group>
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Irrigation Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="irrigationStatus"
+                      value={pruningDate.irrigationStatus}
+                      onChange={handlePruningInputs}
+                    >
+                      <option value="">Select Irrigation Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      {/* <option value="3">Other</option> */}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Brushing Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="brushingStatus"
+                      value={pruningDate.brushingStatus}
+                      onChange={handlePruningInputs}
+                    >
+                      <option value="">Select Brushing Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      {/* <option value="3">Other</option> */}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
               </Col>
 
               <Col lg="12">
@@ -452,9 +452,9 @@ const updateError = (message) => {
                     </Button>
                   </div>
                   <div className="gap-col">
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
                   </div>
                 </div>
               </Col>
@@ -467,4 +467,3 @@ const updateError = (message) => {
 }
 
 export default MaintenanceOfMulberryGardenAlert;
-

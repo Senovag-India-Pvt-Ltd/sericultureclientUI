@@ -544,7 +544,11 @@ function StakeHolderEdit() {
               })
               .catch((err) => {
                 setBank({});
-                updateError(err.response.data.validationErrors);
+                if (
+                  Object.keys(err.response.data.validationErrors).length > 0
+                ) {
+                  updateError(err.response.data.validationErrors);
+                }
               });
 
             updateSuccess();
@@ -567,7 +571,11 @@ function StakeHolderEdit() {
               })
               .catch((err) => {
                 setBank({});
-                updateError(err.response.data.validationErrors);
+                if (
+                  Object.keys(err.response.data.validationErrors).length > 0
+                ) {
+                  updateError(err.response.data.validationErrors);
+                }
               });
 
             updateSuccess();
@@ -577,7 +585,9 @@ function StakeHolderEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -597,7 +607,9 @@ function StakeHolderEdit() {
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
         setBank({});
-        updateError(err.response.data.validationErrors);
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          updateError(err.response.data.validationErrors);
+        }
         // editError(message);
         // setLoading(false);
       });

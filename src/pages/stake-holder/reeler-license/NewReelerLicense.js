@@ -320,7 +320,11 @@ function NewReelerLicense() {
                   })
                   .catch((err) => {
                     setVbAccount({});
-                    saveError(err.response.data.validationErrors);
+                    if (
+                      Object.keys(err.response.data.validationErrors).length > 0
+                    ) {
+                      saveError(err.response.data.validationErrors);
+                    }
                   });
               });
             } else {
@@ -330,7 +334,9 @@ function NewReelerLicense() {
         })
         .catch((err) => {
           setData({});
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }

@@ -144,7 +144,7 @@ function RejectLot() {
   };
 
   return (
-    <Layout title="Reject Lot">
+    <Layout title="Reject Lot" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>

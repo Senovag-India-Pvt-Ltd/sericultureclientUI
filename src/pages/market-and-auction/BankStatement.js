@@ -472,7 +472,7 @@ function BankStatement() {
   // };
 
   return (
-    <Layout title="Bank Statement">
+    <Layout title="Bank Statement" show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
