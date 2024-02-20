@@ -13,7 +13,7 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
- const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceofmulberryGarden() {
@@ -73,7 +73,9 @@ function MaintenanceofmulberryGarden() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -92,7 +94,6 @@ function MaintenanceofmulberryGarden() {
       remarks: "",
     });
   };
-
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -174,37 +175,37 @@ function MaintenanceofmulberryGarden() {
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-            <Card>
+          <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-                  Maintenance Of Mulberry Garden
-                </Card.Header>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Plot Number<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="plotNumber"
-                          name="plotNumber"
-                          value={data.plotNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Plot Number"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Plot Number is required
-                    </Form.Control.Feedback>
-                  </Col>
+              Maintenance Of Mulberry Garden
+            </Card.Header>
+            <Card.Body>
+              {/* <h3>Farmers Details</h3> */}
+              <Row className="g-gs">
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="plotNumber">
+                      Plot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="plotNumber"
+                        name="plotNumber"
+                        value={data.plotNumber}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Plot Number"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Plot Number is required
+                  </Form.Control.Feedback>
+                </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group">
+                <Col lg="4">
+                  <Form.Group className="form-group">
                     <Form.Label>
                       Mulberry Variety<span className="text-danger">*</span>
                     </Form.Label>
@@ -213,10 +214,12 @@ function MaintenanceofmulberryGarden() {
                         name="variety"
                         value={data.variety}
                         onChange={handleInputs}
-                        onBlur={() => handleInputs} 
+                        onBlur={() => handleInputs}
                         // multiple
                         required
-                        isInvalid={data.variety === undefined || data.variety === "0"} 
+                        isInvalid={
+                          data.variety === undefined || data.variety === "0"
+                        }
                       >
                         <option value="">Select Mulberry Variety</option>
                         {varietyListData.map((list) => (
@@ -233,8 +236,8 @@ function MaintenanceofmulberryGarden() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                  </Col>
-                    {/* <Form.Group className="form-group">
+                </Col>
+                {/* <Form.Group className="form-group">
                       <Form.Label htmlFor="trDuration">
                         Mulberry Variety<span className="text-danger">*</span>
                       </Form.Label>
@@ -255,49 +258,47 @@ function MaintenanceofmulberryGarden() {
                     </Form.Control.Feedback>
                    */}
 
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="areaUnderEachVariety">
-                        Area Under Each Variety
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="areaUnderEachVariety"
-                          name="areaUnderEachVariety"
-                          value={data.areaUnderEachVariety}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Area Under Each Variety"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Form.Label column sm={2}>
-                    Pruning Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="areaUnderEachVariety">
+                      Area Under Each Variety
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
+                      <Form.Control
+                        id="areaUnderEachVariety"
+                        name="areaUnderEachVariety"
+                        value={data.areaUnderEachVariety}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Area Under Each Variety"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Form.Label column sm={2}>
+                  Pruning Date
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    {/* <DatePicker
                           selected={data.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
                         /> */}
-                      <DatePicker
-                        selected={data.pruningDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "pruningDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-                  {/* <Form.Label column sm={2}>
+                    <DatePicker
+                      selected={data.pruningDate}
+                      onChange={(date) => handleDateChange(date, "pruningDate")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                    />
+                  </div>
+                </Col>
+                {/* <Form.Label column sm={2}>
                     Fertilizer Application Date
                     <span className="text-danger">*</span>
                   </Form.Label>
@@ -413,25 +414,25 @@ function MaintenanceofmulberryGarden() {
                       </div>
                     </Form.Group>
                   </Col> */}
-                </Row>
-              </Card.Body>
-            </Card>
+              </Row>
+            </Card.Body>
+          </Card>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>

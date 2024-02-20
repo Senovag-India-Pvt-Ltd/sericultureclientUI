@@ -52,7 +52,9 @@ function SoilTypeEdit() {
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }

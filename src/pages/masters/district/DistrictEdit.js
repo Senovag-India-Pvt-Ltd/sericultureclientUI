@@ -115,7 +115,7 @@ function DistrictEdit() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
-  
+
   const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {

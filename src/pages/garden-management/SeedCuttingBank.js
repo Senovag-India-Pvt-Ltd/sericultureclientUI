@@ -75,7 +75,9 @@ function SeedCuttingBank() {
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -183,7 +185,7 @@ function SeedCuttingBank() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -235,207 +237,206 @@ function SeedCuttingBank() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-            <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>Seed Cutting Bank</Card.Header>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Fruits Id<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Fruits Id"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Fruits Id is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Farmer Name<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="farmerName"
-                          name="farmerName"
-                          value={data.farmerName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Farmer Name"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Farmer Name is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Quantity Of Seed Cuttings
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="quantityOfSeedCuttings"
-                          name="quantityOfSeedCuttings"
-                          value={data.quantityOfSeedCuttings}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Quantity Of Seed Cuttings"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Quantity Of Seed Cuttings is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="ratePerTonne">
-                        Rate Per Tonne
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="ratePerTonne"
-                          name="ratePerTonne"
-                          value={data.ratePerTonne}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Rate Per Tonne"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="ratePerTonne">
-                        Receipt Number
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="receiptNumber"
-                          name="receiptNumber"
-                          value={data.receiptNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Receipt Number"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="ratePerTonne">
-                        Remittance Details<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="remittanceDetails"
-                          name="remittanceDetails"
-                          value={data.remittanceDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Remittance Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="challanUpload">
-                        Challan Upload
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          type="file"
-                          id="challanUpload"
-                          name="challanUpload"
-                          // value={data.photoPath}
-                          onChange={handlePPtChange}
-                        />
-                      </div>
-                    </Form.Group>
-
-                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                      {ppt ? (
-                        <img
-                          style={{ height: "100px", width: "100px" }}
-                          src={URL.createObjectURL(ppt)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Form.Label column sm={2}>
-                    Date Of Pruning
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Seed Cutting Bank
+            </Card.Header>
+            <Card.Body>
+              {/* <h3>Farmers Details</h3> */}
+              <Row className="g-gs">
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="plotNumber">
+                      Fruits Id<span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      
-                      <DatePicker
-                        selected={data.dateOfPruning}
-                        onChange={(date) =>
-                          handleDateChange(date, "dateOfPruning")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
+                      <Form.Control
+                        id="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Fruits Id"
+                        required
                       />
                     </div>
-                  </Col>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Fruits Id is required
+                  </Form.Control.Feedback>
+                </Col>
 
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="plotNumber">
+                      Farmer Name<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="farmerName"
+                        name="farmerName"
+                        value={data.farmerName}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Farmer Name"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Farmer Name is required
+                  </Form.Control.Feedback>
+                </Col>
 
-                  <Col lg="2">
-                    <Button type="button" onClick={postDataReceipt}>
-                      View Invoice
-                    </Button>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="plotNumber">
+                      Quantity Of Seed Cuttings
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="quantityOfSeedCuttings"
+                        name="quantityOfSeedCuttings"
+                        value={data.quantityOfSeedCuttings}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Quantity Of Seed Cuttings"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Quantity Of Seed Cuttings is required
+                  </Form.Control.Feedback>
+                </Col>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="ratePerTonne">
+                      Rate Per Tonne
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="ratePerTonne"
+                        name="ratePerTonne"
+                        value={data.ratePerTonne}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Rate Per Tonne"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="ratePerTonne">
+                      Receipt Number
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="receiptNumber"
+                        name="receiptNumber"
+                        value={data.receiptNumber}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter  Receipt Number"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="ratePerTonne">
+                      Remittance Details<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="remittanceDetails"
+                        name="remittanceDetails"
+                        value={data.remittanceDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter  Remittance Details"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="challanUpload">
+                      Challan Upload
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id="challanUpload"
+                        name="challanUpload"
+                        // value={data.photoPath}
+                        onChange={handlePPtChange}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {ppt ? (
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={URL.createObjectURL(ppt)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </Form.Group>
+                </Col>
+                <Form.Label column sm={2}>
+                  Date Of Pruning
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.dateOfPruning}
+                      onChange={(date) =>
+                        handleDateChange(date, "dateOfPruning")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                    />
+                  </div>
+                </Col>
+
+                <Col lg="2">
+                  <Button type="button" onClick={postDataReceipt}>
+                    View Invoice
                   </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>

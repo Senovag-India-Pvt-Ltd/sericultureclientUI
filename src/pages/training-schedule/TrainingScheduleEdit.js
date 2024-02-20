@@ -71,7 +71,9 @@ function TrainingScheduleEdit() {
         })
         .catch((err) => {
           getTrainerUserDetailsList();
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidatedTrainerUser(true);
     }
@@ -230,7 +232,9 @@ function TrainingScheduleEdit() {
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }

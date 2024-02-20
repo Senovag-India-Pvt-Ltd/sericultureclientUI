@@ -72,7 +72,9 @@ function ReelerLicenceEdit() {
         })
         .catch((err) => {
           getVbDetailsList();
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidatedVbAccount(true);
     }
@@ -223,7 +225,9 @@ function ReelerLicenceEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
