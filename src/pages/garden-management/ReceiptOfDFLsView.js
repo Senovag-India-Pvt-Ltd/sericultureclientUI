@@ -101,11 +101,11 @@ function ReceiptOfDFLsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race Of DFLs:</td>
-                        <td>{receiptOfDFLs.raceOfDfls}</td>
+                        <td>{receiptOfDFLs.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Grainage:</td>
-                        <td>{receiptOfDFLs.grainage}</td>
+                        <td>{receiptOfDFLs.grainageName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Laid On Date:</td>

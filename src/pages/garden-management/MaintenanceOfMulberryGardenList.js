@@ -310,8 +310,8 @@ function MaintenanceOfMulberryGardenList() {
     },
     {
       name: "Variety",
-      selector: (row) => row.mulberryVarietyName,
-      cell: (row) => <span>{row.mulberryVarietyName}</span>,
+      selector: (row) => row.variety,
+      cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
     },

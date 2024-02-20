@@ -10,7 +10,7 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsEdit() {
@@ -56,14 +56,12 @@ function RearingOfDFLsEdit() {
           } else {
             updateSuccess();
             setData({
-              disinfectantUsageDetails: "",
-              cropDetail: "",
+              disinfectantMasterId: "",
               cropNumber: "",
-              lotNumber: "",
-              numberOfDFLs: "",
-              laidOnDate: "",
+              lotNumberId: "",
               coldStorageDetails: "",
               releasedOnDate: "",
+              brushingDate: "",
               chawkiPercentage: "",
               wormWeight: "",
               spunOnDate: "",
@@ -85,14 +83,12 @@ function RearingOfDFLsEdit() {
 
   const clear = () => {
     setData({
-      disinfectantUsageDetails: "",
-      cropDetail: "",
+      disinfectantMasterId: "",
       cropNumber: "",
-      lotNumber: "",
-      numberOfDFLs: "",
-      laidOnDate: "",
+      lotNumberId: "",
       coldStorageDetails: "",
       releasedOnDate: "",
+      brushingDate: "",
       chawkiPercentage: "",
       wormWeight: "",
       spunOnDate: "",
@@ -138,6 +134,24 @@ function RearingOfDFLsEdit() {
 
   useEffect(() => {
     getLotNumberList();
+  }, []);
+
+  // to get DisInfactant Variety
+  const [disinfactantListData, setDisinfactantListData] = useState([]);
+
+  const getDisinfactantList = () => {
+    const response = api
+      .get(baseURL + `disinfectantMaster/get-all`)
+      .then((response) => {
+        setDisinfactantListData(response.data.content.disinfectantMaster);
+      })
+      .catch((err) => {
+        setDisinfactantListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDisinfactantList();
   }, []);
 
   const navigate = useNavigate();
@@ -217,47 +231,37 @@ function RearingOfDFLsEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">
-                        Disinfectant Usage Details
-                        <span className="text-danger">*</span>
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Disinfactant Usage Details<span className="text-danger">*</span>
                       </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="disinfectantUsageDetails"
-                          name="disinfectantUsageDetails"
-                          value={data.disinfectantUsageDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Disinfectant Usage Details"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Disinfectant Usage Details is required
-                    </Form.Control.Feedback>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">Crop Details</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="cropDetail"
-                          name="cropDetail"
-                          value={data.cropDetail}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Crop Details"
-                        />
-                      </div>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="disinfectantMasterId"
+                            value={data.disinfectantMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                          >
+                            <option value="">Select Disinfactant Usage</option>
+                            {disinfactantListData.map((list) => (
+                              <option
+                                key={list.disinfectantMasterId}
+                                value={list.disinfectantMasterId}
+                              >
+                                {list.disinfectantMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                      </Col>
                     </Form.Group>
                   </Col>
 
+
                   <Col lg="4">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
                         Crop Number<span className="text-danger">*</span>
                       </Form.Label>
@@ -300,16 +304,16 @@ function RearingOfDFLsEdit() {
                       </Form.Control.Feedback>
                     </Col> */}
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                  {/* <Col lg="4">
+                    <Form.Group className="form-group">
                       <Form.Label>
                         Lot Number<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="lotNumber"
-                            value={data.lotNumber}
+                            name="lotNumberId"
+                            value={data.lotNumberId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                           >
@@ -326,9 +330,9 @@ function RearingOfDFLsEdit() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="plotNumber">
                         Number Of DFLs<span className="text-danger">*</span>
@@ -348,7 +352,7 @@ function RearingOfDFLsEdit() {
                     <Form.Control.Feedback type="invalid">
                       Number Of DFLs is required
                     </Form.Control.Feedback>
-                  </Col>
+                  </Col> */}
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
@@ -442,16 +446,16 @@ function RearingOfDFLsEdit() {
                   </Col>
 
                   <Form.Label column sm={2}>
-                    Laid On Date
+                    Brushing Date
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
                       {isDataLaidSet && (
                         <DatePicker
-                          selected={new Date(data.laidOnDate)}
+                          selected={new Date(data.brushingDate)}
                           onChange={(date) =>
-                            handleDateChange(date, "laidOnDate")
+                            handleDateChange(date, "brushingDate")
                           }
                           peekNextMonth
                           showMonthDropdown

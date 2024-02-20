@@ -118,7 +118,7 @@ function ReceiptofDFLsfromthegrainage() {
     getRaceList();
   }, []);
 
-  // to get Race
+  // to get Grainage
   const [grainageListData, setGrainageListData] = useState([]);
 
   const getGrainageList = () => {
@@ -134,6 +134,24 @@ function ReceiptofDFLsfromthegrainage() {
 
   useEffect(() => {
     getGrainageList();
+  }, []);
+
+  // to get Grainage
+  const [generationListData, setGenerationListData] = useState([]);
+
+  const getGenerationList = () => {
+    const response = api
+      .get(baseURL + `generationNumberMaster/get-all`)
+      .then((response) => {
+        setGenerationListData(response.data.content.generationNumberMaster);
+      })
+      .catch((err) => {
+        setGenerationListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGenerationList();
   }, []);
 
   const postDataReceipt = (event) => {
@@ -362,19 +380,29 @@ function ReceiptofDFLsfromthegrainage() {
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="invoiceDetails">
-                      Generation Details
+                    <Form.Label>
+                      Generation Details<span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="generationDetails"
-                        name="generationDetails"
-                        value={data.generationDetails}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Generation Details"
-                      />
-                    </div>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="generationDetails"
+                          value={data.generationDetails}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Generation Details</option>
+                          {generationListData.map((list) => (
+                            <option
+                              key={list.generationNumberId}
+                              value={list.generationNumberId}
+                            >
+                              {list.generationNumber}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
                   </Form.Group>
                 </Col>
 

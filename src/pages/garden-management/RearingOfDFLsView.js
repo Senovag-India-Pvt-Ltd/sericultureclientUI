@@ -102,12 +102,12 @@ function RearingOfDFLsView() {
                         <td style={styles.ctstyle}>
                           Disinfectant Usage Details:
                         </td>
-                        <td>{rearingOfDFLs.disinfectantUsageDetails}</td>
+                        <td>{rearingOfDFLs.disinfectantMasterName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Crop Details:</td>
                         <td>{rearingOfDFLs.cropDetail}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Crop Number:</td>
                         <td>{rearingOfDFLs.cropNumber}</td>
@@ -116,14 +116,14 @@ function RearingOfDFLsView() {
                         <td style={styles.ctstyle}>Lot Number:</td>
                         <td>{rearingOfDFLs.lotNumber}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Number Of DFLs:</td>
                         <td>{rearingOfDFLs.numberOfDFLs}</td>
-                      </tr>
-                      <tr>
+                      </tr> */}
+                      {/* <tr>
                         <td style={styles.ctstyle}>Laid On Date:</td>
                         <td>{rearingOfDFLs.laidOnDate}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Cold Storage Details:</td>
                         <td>{rearingOfDFLs.coldStorageDetails}</td>

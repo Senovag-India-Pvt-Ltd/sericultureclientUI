@@ -67,7 +67,6 @@ function MaintenanceofmulberryGarden() {
               fymApplicationDate: "",
               irrigationDate: "",
               brushingDate: "",
-              remarks: "",
             });
             setValidated(false);
           }
@@ -91,7 +90,6 @@ function MaintenanceofmulberryGarden() {
       fymApplicationDate: "",
       irrigationDate: "",
       brushingDate: "",
-      remarks: "",
     });
   };
 

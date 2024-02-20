@@ -180,18 +180,18 @@ function RearingOfDFLsList() {
     },
     {
       name: " Disinfectant Usage Details",
-      selector: (row) => row.disinfectantUsageDetails,
-      cell: (row) => <span>{row.disinfectantUsageDetails}</span>,
+      selector: (row) => row.disinfectantMasterName,
+      cell: (row) => <span>{row.disinfectantMasterName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: " Crop Details",
-      selector: (row) => row.cropDetail,
-      cell: (row) => <span>{row.cropDetail}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: " Crop Details",
+    //   selector: (row) => row.cropDetail,
+    //   cell: (row) => <span>{row.cropDetail}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Crop Number",
       selector: (row) => row.cropNumber,
@@ -206,6 +206,7 @@ function RearingOfDFLsList() {
       sortable: true,
       hide: "md",
     },
+    
     {
       name: " Number Of DFLs",
       selector: (row) => row.numberOfDFLs,

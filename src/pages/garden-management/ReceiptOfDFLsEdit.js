@@ -128,6 +128,24 @@ function ReceiptOfDFLsEdit() {
     getGrainageList();
   }, []);
 
+  // to get Grainage
+  const [generationListData, setGenerationListData] = useState([]);
+
+  const getGenerationList = () => {
+    const response = api
+      .get(baseURL + `generationNumberMaster/get-all`)
+      .then((response) => {
+        setGenerationListData(response.data.content.generationNumberMaster);
+      })
+      .catch((err) => {
+        setGenerationListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGenerationList();
+  }, []);
+
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
@@ -381,22 +399,33 @@ function ReceiptOfDFLsEdit() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="invoiceDetails">
-                        Generation Details
-                      </Form.Label>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Generation Details<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
+                        <Form.Select
                           name="generationDetails"
                           value={data.generationDetails}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Generation Details"
-                        />
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Generation Details</option>
+                          {generationListData.map((list) => (
+                            <option
+                              key={list.generationNumberId}
+                              value={list.generationNumberId}
+                            >
+                              {list.generationNumber}
+                            </option>
+                          ))}
+                        </Form.Select>
                       </div>
-                    </Form.Group>
-                  </Col>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
 
                   <Form.Label column sm={2}>
                     Laid On Date
