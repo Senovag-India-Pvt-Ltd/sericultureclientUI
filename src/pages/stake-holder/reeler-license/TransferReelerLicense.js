@@ -73,6 +73,7 @@ function TransferReelerLicense() {
     status: "",
     licenseRenewalDate: "",
     transferReelerId: "",
+    reelerNumber:""
   });
 
   const [existingReelerName, setExistingReelerName] = useState("");
@@ -109,11 +110,15 @@ function TransferReelerLicense() {
           transferReelerId: data.reelingLicenseNumber,
         })
         .then((response) => {
-          saveSuccess();
-          api
-            .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
-            .then((response) => {})
-            .catch((err) => {});
+          if (!response.data.content.error) {
+            saveSuccess(response.data.content.arnNumber);
+            api
+              .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
+              .then((response) => {})
+              .catch((err) => {});
+          } else {
+            saveError(response.data.content.error_description);
+          }
         })
         .catch((err) => {
           setData({});
@@ -134,9 +139,13 @@ function TransferReelerLicense() {
           `reeler/get-by-reeling-license-number/${reelingLicenseNumber}`
       )
       .then((response) => {
-        setData(response.data.content);
-        setExistingReelerName(response.data.content.reelerName);
-        setLoading(false);
+        if (!response.data.content.error) {
+          setData(response.data.content);
+          setExistingReelerName(response.data.content.reelerName);
+          setLoading(false);
+        } else {
+          saveError(response.data.content.error_description);
+        }
       })
       .catch((err) => {
         setData({});
@@ -158,14 +167,12 @@ function TransferReelerLicense() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+      text: message,
+    })
   };
   const saveError = (message) => {
     let errorMessage;
@@ -176,7 +183,7 @@ function TransferReelerLicense() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -942,6 +949,26 @@ function TransferReelerLicense() {
                             type="text"
                             placeholder="Enter Number of Loan Details"
                           />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="reelerNumber">
+                          Reeler Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reelerNumber"
+                            name="reelerNumber"
+                            value={data.reelerNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Reeler Number"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Number is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
