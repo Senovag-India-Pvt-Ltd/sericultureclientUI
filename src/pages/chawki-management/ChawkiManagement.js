@@ -35,7 +35,7 @@ function ChawkiManagement() {
     soldAfter1stOr2ndMould: "",
     ratePer100Dfls: "",
     price: "",
-    dispatchDate: "",
+    dispatchDate: null,
     hatchingDate: "",
   });
 
@@ -106,7 +106,7 @@ function ChawkiManagement() {
               soldAfter1stOr2ndMould: "",
               ratePer100Dfls: "",
               price: "",
-              dispatchDate: "",
+              dispatchDate: null,
               hatchingDate: "",
             });
             setValidated(false);
@@ -138,7 +138,7 @@ function ChawkiManagement() {
       soldAfter1stOr2ndMould: "",
       ratePer100Dfls: "",
       price: "",
-      dispatchDate: "",
+      dispatchDate: null,
       hatchingDate: "",
     });
   };
@@ -658,39 +658,12 @@ function ChawkiManagement() {
                     </Col>
 
                     <Form.Label column sm={2}>
-                      Dispatch Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
-                        <DatePicker
-                          selected={data.dispatchDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "dispatchDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                        />
-                      </div>
-                    </Col>
-                    <Form.Label column sm={2}>
                       Hatching Date
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={2}>
                       <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
+                        
                         <DatePicker
                           selected={data.hatchingDate}
                           onChange={(date) =>
@@ -705,6 +678,29 @@ function ChawkiManagement() {
                         />
                       </div>
                     </Col>
+
+                    <Form.Label column sm={2}>
+                      Dispatch Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.dispatchDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "dispatchDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          minDate={new Date()}
+                        />
+                      </div>
+                    </Col>
+                  
                   </Row>
                 </Card.Body>
               </Card>

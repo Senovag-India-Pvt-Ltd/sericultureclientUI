@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import ChawkiManagement from "./ChawkiManagement";
+import { format } from 'date-fns';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 
@@ -143,6 +144,12 @@ useEffect(() => {
     });
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   const ChawkiDataColumns = [
     {
       name: "Fruits ID",
@@ -167,15 +174,8 @@ useEffect(() => {
     },
     {
       name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -190,13 +190,6 @@ useEffect(() => {
       name: "Lot Number (of the RSP)",
       selector: (row) => row.lotNumberRsp,
       cell: (row) => <span>{row.lotNumberRsp}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
       sortable: true,
       hide: "md",
     },
@@ -244,8 +237,8 @@ useEffect(() => {
     },
     {
       name: "TSC",
-      selector: (row) => row.tsc,
-      cell: (row) => <span>{row.tsc}</span>,
+      selector: (row) => row.tscName,
+      cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -257,7 +250,7 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Rate per 100 DFLs(optional)",
+      name: "Rate per 100 DFLs",
       selector: (row) => row.ratePer100Dfls,
       cell: (row) => <span>{row.ratePer100Dfls}</span>,
       sortable: true,
@@ -272,10 +265,39 @@ useEffect(() => {
       hide: "md",
     },
 
+    // {
+    //   name: "Hatching date",
+    //   selector: (row) => row.hatchingDate,
+    //   cell: (row) => <span>{row.hatchingDate}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+
+    // {
+    //   name: "Dispatch date",
+    //   selector: (row) => row.dispatchDate,
+    //   cell: (row) => <span>{row.dispatchDate}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name: "Hatching date",
+      selector: (row) => row.hatchingDate,
+      cell: (row) => <span>{formatDate(row.hatchingDate)}</span>, // Format hatchingDate
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Dispatch date",
       selector: (row) => row.dispatchDate,
-      cell: (row) => <span>{row.dispatchDate}</span>,
+      cell: (row) => <span>{formatDate(row.dispatchDate)}</span>, // Format dispatchDate
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Receipt No",
+      selector: (row) => row.receiptNo,
+      cell: (row) => <span>{row.receiptNo}</span>,
       sortable: true,
       hide: "md",
     },
@@ -293,26 +315,27 @@ useEffect(() => {
           >
             View
           </Button>
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             className="ms-2"
             onClick={() => handleEdit(row.chowkiId)}
           >
             Edit
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.chowkiId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
+      // grow: 2,
     },
   ];
 

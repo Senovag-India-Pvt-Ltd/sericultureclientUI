@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import ChawkiManagement from "./ChawkiManagement";
+import { format } from 'date-fns';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
@@ -25,12 +26,11 @@ function ChawkiManagementView() {
   const [chawkiManagement, setChawkiManagement] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabsthe id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
-
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -97,7 +97,7 @@ function ChawkiManagementView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{chawkiManagement.chawkiId}</td>
+                        <td>{chawkiManagement.chowkiId}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Fruits ID:</td>
@@ -151,14 +151,23 @@ function ChawkiManagementView() {
                         <td style={styles.ctstyle}>Village:</td>
                         <td>{chawkiManagement.village}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Dispatch Date:</td>
                         <td>{chawkiManagement.dispatchDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Hatching Date:</td>
                         <td>{chawkiManagement.hatchingDate}</td>
-                    </tr>
+                    </tr> */}
+                    <tr>
+                    <td style={styles.ctstyle}>Hatching Date:</td>
+                    <td>{formatDate(chawkiManagement.hatchingDate)}</td> 
+                  </tr>
+                    <tr>
+                    <td style={styles.ctstyle}>Dispatch Date:</td>
+                    <td>{formatDate(chawkiManagement.dispatchDate)}</td> 
+                  </tr>
+                  
                     <tr>
                         <td style={styles.ctstyle}>Number of DFL’s:</td>
                         <td>{chawkiManagement.numbersOfDfls}</td>
@@ -170,6 +179,10 @@ function ChawkiManagementView() {
                       <tr>
                         <td style={styles.ctstyle}>Price (in Rupees):</td>
                         <td>{chawkiManagement.price}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Receipt No:</td>
+                        <td>{chawkiManagement.receiptNo}</td>
                       </tr>
                     </tbody>
                   </table>

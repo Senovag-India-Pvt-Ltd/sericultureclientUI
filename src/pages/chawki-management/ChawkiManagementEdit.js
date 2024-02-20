@@ -642,29 +642,6 @@ function ChawkiManagementEdit() {
                           </Col>
 
                           <Form.Label column sm={2}>
-                     Dispatch Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataDispatchSet && (
-                          <DatePicker
-                            selected={new Date(data.dispatchDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "dispatchDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col>
-
-                    <Form.Label column sm={2}>
                       Hatching Date
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -678,6 +655,29 @@ function ChawkiManagementEdit() {
                                 date,
                                 "hatchingDate"
                               )
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                          />
+                        )}
+                      </div>
+                    </Col>
+
+                    <Form.Label column sm={2}>
+                     Dispatch Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {isDataDispatchSet && (
+                          <DatePicker
+                            selected={new Date(data.dispatchDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "dispatchDate")
                             }
                             peekNextMonth
                             showMonthDropdown
