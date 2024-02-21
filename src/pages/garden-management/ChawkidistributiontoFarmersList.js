@@ -287,7 +287,7 @@ useEffect(() => {
           >
             View
           </Button>
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             className="ms-2"
@@ -302,7 +302,7 @@ useEffect(() => {
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
