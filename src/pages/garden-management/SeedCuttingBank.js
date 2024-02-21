@@ -24,8 +24,6 @@ function SeedCuttingBank() {
     quantityOfSeedCuttings: "",
     dateOfPruning: "",
     ratePerTonne: "",
-    generateReceipt: "",
-    receiptNumber: "",
     remittanceDetails: "",
     challanUpload: "",
   });
@@ -59,15 +57,13 @@ function SeedCuttingBank() {
           if (response.data.error) {
             saveError(response.data.message);
           } else {
-            saveSuccess();
+            saveSuccess(response.data.receiptNo);
             setData({
               fruitsId: "",
               farmerName: "",
               quantityOfSeedCuttings: "",
               dateOfPruning: "",
               ratePerTonne: "",
-              generateReceipt: "",
-              receiptNumber: "",
               remittanceDetails: "",
               challanUpload: "",
             });
@@ -90,8 +86,6 @@ function SeedCuttingBank() {
       quantityOfSeedCuttings: "",
       dateOfPruning: "",
       ratePerTonne: "",
-      generateReceipt: "",
-      receiptNumber: "",
       remittanceDetails: "",
       challanUpload: "",
     });
@@ -101,50 +95,35 @@ function SeedCuttingBank() {
     setData({ ...data, [type]: date });
   };
 
-  const postDataReceipt = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
-
-    const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    // } else {
-    //   event.preventDefault();
-    // event.stopPropagation();
+  const search = () => {
     api
       .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
-        {
-          marketId: marketId,
-          godownId: godownId,
-          allottedLotId: allottedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
-        }
+        "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+        { fruitsId: data.fruitsId }
       )
       .then((response) => {
-        //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
+        console.log(response);
+        if (!response.data.content.error) {
+          if (response.data.content.farmerResponse) {
+            const firstName = response.data.content.farmerResponse.firstName;
+            const fatherName = response.data.content.farmerResponse.fatherName;
+            setData((prev) => ({
+              ...prev,
+              farmerName: firstName,
+              fatherName: fatherName,
+            }));
+          }
+        } else {
+          saveError(response.data.content.error_description);
+        }
       })
-      .catch((error) => {
-        // console.log("error", error);
+      .catch((err) => {
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          saveError(err.response.data.validationErrors);
+        }
       });
   };
+
 
   // Display Image
   const [ppt, setPPt] = useState("");
@@ -184,7 +163,7 @@ function SeedCuttingBank() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      text: message,
+      text:`Receipt Number ${message}`,
     });
   };
   const saveError = (message) => {
@@ -236,7 +215,45 @@ function SeedCuttingBank() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          {/* <Row className="g-3 "> */}
+          <Row className="g-1 ">
+            <Card>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="12">
+                    <Form.Group as={Row} className="form-group" controlId="fid">
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        FRUITS ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control
+                          type="fruitsId"
+                          name="fruitsId"
+                          value={data.fruitsId}
+                          onChange={handleInputs}
+                          placeholder="Enter FRUITS ID"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Fruits ID is required.
+                        </Form.Control.Feedback>
+                      </Col>
+                      <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          onClick={search}
+                        >
+                          Search
+                        </Button>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+
+        <Block className="mt-3">
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
               Seed Cutting Bank
@@ -244,27 +261,6 @@ function SeedCuttingBank() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="plotNumber">
-                      Fruits Id<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="fruitsId"
-                        name="fruitsId"
-                        value={data.fruitsId}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Fruits Id"
-                        required
-                      />
-                    </div>
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    Fruits Id is required
-                  </Form.Control.Feedback>
-                </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group">
@@ -312,7 +308,7 @@ function SeedCuttingBank() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
+                  <Form.Group className="form-group">
                     <Form.Label htmlFor="ratePerTonne">
                       Rate Per Tonne
                     </Form.Label>
@@ -329,23 +325,6 @@ function SeedCuttingBank() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="ratePerTonne">
-                      Receipt Number
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="receiptNumber"
-                        name="receiptNumber"
-                        value={data.receiptNumber}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter  Receipt Number"
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -413,14 +392,15 @@ function SeedCuttingBank() {
                   </div>
                 </Col>
 
-                <Col lg="2">
+                {/* <Col lg="2">
                   <Button type="button" onClick={postDataReceipt}>
                     View Invoice
                   </Button>
-                </Col>
+                </Col> */}
               </Row>
             </Card.Body>
           </Card>
+          </Block>
 
           <div className="gap-col">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -437,7 +417,7 @@ function SeedCuttingBank() {
               </li>
             </ul>
           </div>
-          {/* </Row> */}
+          </Row>
         </Form>
       </Block>
     </Layout>
