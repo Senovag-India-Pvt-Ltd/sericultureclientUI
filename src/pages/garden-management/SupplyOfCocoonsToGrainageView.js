@@ -106,7 +106,7 @@ function SupplyOfCocoonsToGrainageView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race Of Cocoons:</td>
-                        <td>{supplyOfCoocons.raceOfCocoons}</td>
+                        <td>{supplyOfCoocons.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
@@ -118,17 +118,17 @@ function SupplyOfCocoonsToGrainageView() {
                         <td style={styles.ctstyle}>Number Of Cocoons Dispatched:</td>
                         <td>{supplyOfCoocons.numberOfCocoonsDispatched}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Generation Details:</td>
                         <td>{supplyOfCoocons.generationDetails}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Dispatch Date:</td>
                         <td>{supplyOfCoocons.dispatchDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Generation Invoice:</td>
-                        <td>{supplyOfCoocons.generateInvoice}</td>
+                        <td style={styles.ctstyle}>Grainage:</td>
+                        <td>{supplyOfCoocons.grainageName}</td>
                       </tr>
                     </tbody>
                   </table>
