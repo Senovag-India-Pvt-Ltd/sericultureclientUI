@@ -259,7 +259,7 @@ function MaintenanceofmulberryGarden() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="areaUnderEachVariety">
-                      Area Under Each Variety
+                      Area(In Hectares)
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -268,7 +268,7 @@ function MaintenanceofmulberryGarden() {
                         value={data.areaUnderEachVariety}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Area Under Each Variety"
+                        placeholder="Enter Area(In Hectares)"
                       />
                     </div>
                   </Form.Group>

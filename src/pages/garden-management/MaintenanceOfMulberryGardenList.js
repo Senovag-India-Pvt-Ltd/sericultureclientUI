@@ -248,7 +248,7 @@ function MaintenanceOfMulberryGardenList() {
       hide: "md",
     },
     {
-      name: "Area Under Each Variety",
+      name: " Area(In Hectares)",
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,

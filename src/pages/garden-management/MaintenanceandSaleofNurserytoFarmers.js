@@ -500,10 +500,55 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             </Form.Group>
                           </Col>
 
-                    <Col lg="4">
+                    
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of planting
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.dateOfPlanting}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfPlanting")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                            <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.date}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "date")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                />
+                              </div>
+                              </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
-                        Upload PPT/Video
+                        Upload Challan
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -528,49 +573,6 @@ function MaintenanceandSaleofNurserytoFarmers() {
                     </Form.Group>
                   </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date of planting
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.dateOfPlanting}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dateOfPlanting")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                            <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.date}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "date")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                />
-                              </div>
-                              </Form.Group>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>

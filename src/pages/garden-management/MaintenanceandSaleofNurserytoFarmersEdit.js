@@ -496,35 +496,9 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="trUploadPath">
-                        Upload PPT/Video
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          type="file"
-                          id="trUploadPath"
-                          name="trUploadPath"
-                          // value={data.photoPath}
-                          onChange={handlePPtChange}
-                        />
-                      </div>
-                    </Form.Group>
+                       
 
-                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                      {ppt ? (
-                        <img
-                          style={{ height: "100px", width: "100px" }}
-                          src={URL.createObjectURL(ppt)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </Form.Group>
-                  </Col>
-
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Date of planting
@@ -548,7 +522,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">Date</Form.Label>
                               <div className="form-control-wrap">
@@ -569,6 +543,34 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trUploadPath">
+                        Upload Challan
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          type="file"
+                          id="trUploadPath"
+                          name="trUploadPath"
+                          // value={data.photoPath}
+                          onChange={handlePPtChange}
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                      {ppt ? (
+                        <img
+                          style={{ height: "100px", width: "100px" }}
+                          src={URL.createObjectURL(ppt)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Form.Group>
+                  </Col>
 
                           </Row>
                           )}
