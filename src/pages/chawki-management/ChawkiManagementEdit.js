@@ -614,7 +614,7 @@ function ChawkiManagementEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Sold after 1st/2nd Moult
+                              Sold after 1st/2nd/3rd Moult
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -623,7 +623,7 @@ function ChawkiManagementEdit() {
                                   value={data.soldAfter1stOr2ndMould}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Sold after 1st/2nd Moult"
+                                  placeholder="Enter Sold after 1st/2nd/3rd Moult"
                                   required
                                 />
                               </div>
