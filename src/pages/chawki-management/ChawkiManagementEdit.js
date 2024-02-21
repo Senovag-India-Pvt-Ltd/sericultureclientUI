@@ -55,7 +55,7 @@ function ChawkiManagementEdit() {
         .post(baseURL + `chowkimanagement/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
@@ -83,7 +83,9 @@ function ChawkiManagementEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -290,13 +292,19 @@ function ChawkiManagementEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/chawki-management"));
+    });
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {

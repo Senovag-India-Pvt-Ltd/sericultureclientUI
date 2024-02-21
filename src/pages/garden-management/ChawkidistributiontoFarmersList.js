@@ -10,9 +10,10 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { format } from 'date-fns';
 
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ChawkidistributiontoFarmersList() {
 /* get table detais */
@@ -28,7 +29,7 @@ const getList = () => {
   setLoading(true);
 
   const response = api
-    .get(baseURL + `chowkimanagement/get-info`)
+    .get(baseURL + `Chawki-distribution/get-info`)
     .then((response) => {
       console.log(response.data);
       setListData(response.data);
@@ -159,6 +160,13 @@ useEffect(() => {
       hide: "md",
     },
     {
+      name: "Father Name",
+      selector: (row) => row.fatherName,
+      cell: (row) => <span>{row.fatherName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Source of DFLs",
       selector: (row) => row.dflsSource,
       cell: (row) => <span>{row.dflsSource}</span>,
@@ -167,8 +175,8 @@ useEffect(() => {
     },
     {
       name: "Race of DFLs",
-      selector: (row) => row.raceOfDfls,
-      cell: (row) => <span>{row.raceOfDfls}</span>,
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -243,11 +251,25 @@ useEffect(() => {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Hatching  date",
+      selector: (row) => row.hatchingDate,
+      cell: (row) => <span>{row.hatchingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     {
       name: "Dispatch date",
       selector: (row) => row.dispatchDate,
       cell: (row) => <span>{row.dispatchDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Receipt Number",
+      selector: (row) => row.receiptNo,
+      cell: (row) => <span>{row.receiptNo}</span>,
       sortable: true,
       hide: "md",
     },
@@ -285,6 +307,7 @@ useEffect(() => {
       ),
       sortable: false,
       hide: "md",
+      grow: "2",
     },
   ];
 

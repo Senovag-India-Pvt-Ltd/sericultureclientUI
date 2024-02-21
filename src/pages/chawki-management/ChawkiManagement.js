@@ -1,14 +1,11 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
 import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
@@ -85,7 +82,7 @@ function ChawkiManagement() {
         .then((response) => {
           // debugger;
           if (response.data.error) {
-            saveError();
+            saveError(response.data.message);
           } else {
             saveSuccess(response.data.receiptNo);
             setData({
@@ -113,7 +110,9 @@ function ChawkiManagement() {
           }
         })
         .catch((err) => {
-          saveError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -338,11 +337,11 @@ function ChawkiManagement() {
   };
 
   return (
-    <Layout title="Chawki Management">
+    <Layout title="Sale Of Chawki Worms To Farmers">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Chawki Management</Block.Title>
+            <Block.Title tag="h2">Sale Of Chawki Worms To Farmers</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

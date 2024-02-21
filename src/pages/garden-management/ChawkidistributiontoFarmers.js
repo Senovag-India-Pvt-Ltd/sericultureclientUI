@@ -13,7 +13,7 @@ import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ChawkidistributiontoFarmers() {
@@ -35,7 +35,7 @@ function ChawkidistributiontoFarmers() {
     soldAfter1stOr2ndMould: "",
     ratePer100Dfls: "",
     price: "",
-    dispatchDate: "",
+    dispatchDate: null,
     hatchingDate: "",
   });
 
@@ -81,11 +81,11 @@ function ChawkidistributiontoFarmers() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `chowkimanagement/add-info`, data)
+        .post(baseURL + `Chawki-distribution/add-info`, data)
         .then((response) => {
           // debugger;
           if (response.data.error) {
-            saveError();
+            saveError(response.data.message);
           } else {
             saveSuccess(response.data.receiptNo);
             setData({
@@ -106,14 +106,16 @@ function ChawkidistributiontoFarmers() {
               soldAfter1stOr2ndMould: "",
               ratePer100Dfls: "",
               price: "",
-              dispatchDate: "",
+              dispatchDate: null,
               hatchingDate: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          saveError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -138,7 +140,7 @@ function ChawkidistributiontoFarmers() {
       soldAfter1stOr2ndMould: "",
       ratePer100Dfls: "",
       price: "",
-      dispatchDate: "",
+      dispatchDate: null,
       hatchingDate: "",
     });
   };
@@ -338,11 +340,11 @@ function ChawkidistributiontoFarmers() {
   };
 
   return (
-    <Layout title="Chawki Management">
+    <Layout title="Sale Of Chawki Worms To Farmers">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Chawki Management</Block.Title>
+            <Block.Title tag="h2">Sale Of Chawki Worms To Farmers</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -484,7 +486,6 @@ function ChawkidistributiontoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="Lot No. (CRC)"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -556,7 +557,6 @@ function ChawkidistributiontoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             placeholder=" Enter Source"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -636,7 +636,6 @@ function ChawkidistributiontoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             placeholder=" Sold after 1st/2nd Moult"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -655,36 +654,11 @@ function ChawkidistributiontoFarmers() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="  Lot Number (of the RSP)"
-                            required
                           />
                         </div>
                       </Form.Group>
                     </Col>
 
-                    <Form.Label column sm={2}>
-                      Dispatch Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
-                        <DatePicker
-                          selected={data.dispatchDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "dispatchDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                        />
-                      </div>
-                    </Col>
                     <Form.Label column sm={2}>
                       Hatching Date
                       <span className="text-danger">*</span>
@@ -709,6 +683,33 @@ function ChawkidistributiontoFarmers() {
                         />
                       </div>
                     </Col>
+
+                    <Form.Label column sm={2}>
+                      Dispatch Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {/* <DatePicker
+                          selected={data.dob}
+                          onChange={(date) => handleDateChange(date, "dob")}
+                        /> */}
+                        <DatePicker
+                          selected={data.dispatchDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "dispatchDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          minDate={new Date()}
+                        />
+                      </div>
+                    </Col>
+                   
                   </Row>
                 </Card.Body>
               </Card>
