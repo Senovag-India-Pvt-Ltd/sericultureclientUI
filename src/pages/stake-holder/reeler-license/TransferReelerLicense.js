@@ -577,7 +577,7 @@ function TransferReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="arnNumber">
                           ARN Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -595,7 +595,7 @@ function TransferReelerLicense() {
                             ARN Number is required.
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="wnumber">Ward Number</Form.Label>
@@ -731,7 +731,7 @@ function TransferReelerLicense() {
                           />
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="gpsLat">
                           GPS Coordinates of reeling unit
                         </Form.Label>
@@ -745,7 +745,7 @@ function TransferReelerLicense() {
                             placeholder="Enter GPS Coordinates of reeling unit"
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="chakbandi">
                           Chakbandi Details(GPS Details)
