@@ -39,9 +39,7 @@ function RearingofDFLs() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
-console.log(name);
     if(name=== "lotNumberId"){
-      console.log("hello hello hello");
       getSourceList(value);
     }
   };
@@ -103,7 +101,11 @@ console.log(name);
       wormTestDetails: "",
       cocoonAssessmentDetails: "",
     });
-    setLot("");
+    setLot({
+    raceOfDfls: "",
+    grainage: "",
+    numberOfDFLsReceived: "",
+    laidOnDate: "",});
   };
 
  
@@ -116,7 +118,6 @@ console.log(name);
   })
 
   const [lotNumberListData, setLotNumberListData] = useState([]);
-  // const [lot, setLot] = useState({});
 
   const getLotNumberList = () => {
     const response = api
