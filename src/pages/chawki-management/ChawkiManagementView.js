@@ -117,7 +117,7 @@ function ChawkiManagementView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race of DFLs:</td>
-                        <td>{chawkiManagement.raceOfDfls}</td>
+                        <td>{chawkiManagement.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number Of DFLs:</td>
@@ -133,32 +133,25 @@ function ChawkiManagementView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> State:</td>
-                        <td>{chawkiManagement.state}</td>
+                        <td>{chawkiManagement.stateName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>District:</td>
-                        <td>{chawkiManagement.district}</td>
+                        <td>{chawkiManagement.districtName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Taluk:</td>
-                        <td>{chawkiManagement.taluk}</td>
+                        <td>{chawkiManagement.talukName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Hobli:</td>
-                        <td>{chawkiManagement.hobli}</td>
+                        <td>{chawkiManagement.hobliName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Village:</td>
-                        <td>{chawkiManagement.village}</td>
+                        <td>{chawkiManagement.villageName}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Dispatch Date:</td>
-                        <td>{chawkiManagement.dispatchDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Hatching Date:</td>
-                        <td>{chawkiManagement.hatchingDate}</td>
-                    </tr> */}
+                      
                     <tr>
                     <td style={styles.ctstyle}>Hatching Date:</td>
                     <td>{formatDate(chawkiManagement.hatchingDate)}</td> 

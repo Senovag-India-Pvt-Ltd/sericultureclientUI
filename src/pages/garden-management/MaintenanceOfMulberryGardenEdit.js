@@ -57,6 +57,7 @@ function MaintenanceOfMulberryGardenEdit() {
             setData({
               plotNumber: "",
               variety: "",
+              varietyId: "",
               areaUnderEachVariety: "",
               pruningDate: "",
               fertilizerApplicationDate: "",
@@ -79,6 +80,7 @@ function MaintenanceOfMulberryGardenEdit() {
     setData({
       plotNumber: "",
       variety: "",
+      varietyId: "",
       areaUnderEachVariety: "",
       pruningDate: "",
       fertilizerApplicationDate: "",
@@ -242,8 +244,8 @@ function MaintenanceOfMulberryGardenEdit() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="variety"
-                        value={data.variety}
+                        name="varietyId"
+                        value={data.varietyId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs} 
                         // multiple
@@ -270,7 +272,7 @@ function MaintenanceOfMulberryGardenEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="areaUnderEachVariety">
-                          Area Under Each Variety
+                         Area(In Hectares)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -279,7 +281,7 @@ function MaintenanceOfMulberryGardenEdit() {
                             value={data.areaUnderEachVariety}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Area Under Each Variety"
+                            placeholder="Enter Area(In Hectares)"
                           />
                         </div>
                       </Form.Group>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTable, { createTheme } from "react-data-table-component";
@@ -16,7 +16,7 @@ import { Icon, Select } from "../../components";
 
 import api from "../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ChawkidistributiontoFarmersEdit() {
@@ -52,10 +52,10 @@ function ChawkidistributiontoFarmersEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `chowkimanagement/update-info`, data)
+        .post(baseURL + `Chawki-distribution/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
@@ -83,7 +83,9 @@ function ChawkidistributiontoFarmersEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -122,7 +124,7 @@ function ChawkidistributiontoFarmersEdit() {
     setLoading(true);
     // const chowki_id = chawkiList.chowki_id;
     const response = api
-      .get(baseURL + `chowkimanagement/get-info-by-id/${id}`)
+      .get(baseURL + `Chawki-distribution/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -314,11 +316,11 @@ function ChawkidistributiontoFarmersEdit() {
   };
 
   return (
-    <Layout title="Edit Chawki Management">
+    <Layout title="Edit Chawki Distribution">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Chawki Management</Block.Title>
+            <Block.Title tag="h2">Edit Chawki Distribution</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -447,7 +449,6 @@ function ChawkidistributiontoFarmersEdit() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Lot No. (CRC)"
-                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -466,7 +467,6 @@ function ChawkidistributiontoFarmersEdit() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder=" Number of DFL’s"
-                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -485,7 +485,6 @@ function ChawkidistributiontoFarmersEdit() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder=" Enter Rate per 100 DFL"
-                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -504,7 +503,6 @@ function ChawkidistributiontoFarmersEdit() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder=" Price (in Rupees)"
-                                  required
                                   disabled
                                 />
                               </div>
@@ -523,8 +521,7 @@ function ChawkidistributiontoFarmersEdit() {
                                   value={data.dflsSource}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" District"
-                                  required
+                                  placeholder="Enter Source"
                                 />
                               </div>
                             </Form.Group>
@@ -603,7 +600,7 @@ function ChawkidistributiontoFarmersEdit() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User is required
+                          TSC is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -612,7 +609,7 @@ function ChawkidistributiontoFarmersEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Sold after 1st/2nd Moult
+                                Sold after 1st/2nd/3rd Moult
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -621,8 +618,7 @@ function ChawkidistributiontoFarmersEdit() {
                                   value={data.soldAfter1stOr2ndMould}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Sold after 1st/2nd Moult"
-                                  required
+                                  placeholder="Enter Sold after 1st/2nd Moult"
                                 />
                               </div>
                             </Form.Group>
@@ -641,36 +637,12 @@ function ChawkidistributiontoFarmersEdit() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="  Lot Number (of the RSP)"
-                                  required
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Form.Label column sm={2}>
-                     Dispatch Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataDispatchSet && (
-                          <DatePicker
-                            selected={new Date(data.dispatchDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "dispatchDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col>
-
-                    <Form.Label column sm={2}>
+                           <Form.Label column sm={2}>
                       Hatching Date
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -695,6 +667,30 @@ function ChawkidistributiontoFarmersEdit() {
                         )}
                       </div>
                     </Col>
+
+                          <Form.Label column sm={2}>
+                     Dispatch Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        {isDataDispatchSet && (
+                          <DatePicker
+                            selected={new Date(data.dispatchDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "dispatchDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            minDate={new Date()}
+                          />
+                        )}
+                      </div>
+                    </Col>          
                     </Row>
                 </Card.Body>
               </Card>

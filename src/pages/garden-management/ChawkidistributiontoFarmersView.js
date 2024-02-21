@@ -9,7 +9,7 @@ import { Icon, Select } from "../../components";
 import ChawkidistributiontoFarmers from "./ChawkidistributiontoFarmers";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function ChawkidistributiontoFarmersView() {
   const styles = {
@@ -34,7 +34,7 @@ function ChawkidistributiontoFarmersView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `chowkimanagement/get-info-by-id/${id}`)
+      .get(baseURL + `Chawki-distribution/get-info-by-id/${id}`)
       .then((response) => {
         setChawkiManagement(response.data);
         setLoading(false);
@@ -97,7 +97,7 @@ function ChawkidistributiontoFarmersView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{chawkiManagement.chawkiId}</td>
+                        <td>{chawkiManagement.chowkiId}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Fruits ID:</td>
@@ -170,6 +170,10 @@ function ChawkidistributiontoFarmersView() {
                       <tr>
                         <td style={styles.ctstyle}>Price (in Rupees):</td>
                         <td>{chawkiManagement.price}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Receipt Number:</td>
+                        <td>{chawkiManagement.receiptNo}</td>
                       </tr>
                     </tbody>
                   </table>

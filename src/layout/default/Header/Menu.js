@@ -1265,7 +1265,7 @@ function Menu() {
           {showMenu.ChawkiManagement_ChawkiManagement ? (
             <MenuItem>
               <MenuItemLink
-                text="Chawki Management"
+                text="Sale Of Chawki Worms"
                 to="/seriui/chawki-management"
               />
             </MenuItem>

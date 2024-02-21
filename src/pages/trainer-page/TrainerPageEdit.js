@@ -270,7 +270,9 @@ function TrainerPageEdit() {
                   })
                   .catch((err) => {
                     setTrDetails({});
-                    updateError();
+                    if (Object.keys(err.response.data.validationErrors).length > 0) {
+                      updateError(err.response.data.validationErrors);
+                    }
                   });
               });
             } else {
@@ -280,7 +282,9 @@ function TrainerPageEdit() {
         })
         .catch((err) => {
           setData({});
-          updateError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+          updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -768,10 +772,16 @@ function TrainerPageEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -879,14 +889,14 @@ function TrainerPageEdit() {
                 <Col lg = "6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="trainerName">
-                    Trainer Name<span className="text-danger">*</span>
+                    Trainer Name
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="trName"
                       name="trName"
                       value={data.trName}
-                      onChange={data}
+                      onChange={handleInputs}
                       type="text"
                       placeholder="Enter Trainer Name"
                       // required
