@@ -170,13 +170,6 @@ function MaintenanceandSaleofNurserytoFarmersList() {
       hide: "md",
     },
     {
-      name: "Number Of Cocoons Dispatched",
-      selector: (row) => row.numberOfCocoonsDispatched,
-      cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Area",
       selector: (row) => row.area,
       cell: (row) => <span>{row.area}</span>,
@@ -230,14 +223,6 @@ function MaintenanceandSaleofNurserytoFarmersList() {
     },
 
     {
-      name: "Generate Recipt",
-      selector: (row) => row.generateRecipt,
-      cell: (row) => <span>{row.generateRecipt}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
       name: "Receipt Number",
       selector: (row) => row.receiptNumber,
       cell: (row) => <span>{row.receiptNumber}</span>,
@@ -249,14 +234,6 @@ function MaintenanceandSaleofNurserytoFarmersList() {
       name: "Remittance Details",
       selector: (row) => row.remittanceDetails,
       cell: (row) => <span>{row.remittanceDetails}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Challan Upload",
-      selector: (row) => row.challanUpload,
-      cell: (row) => <span>{row.challanUpload}</span>,
       sortable: true,
       hide: "md",
     },

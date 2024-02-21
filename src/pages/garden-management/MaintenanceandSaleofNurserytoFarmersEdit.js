@@ -13,6 +13,7 @@ import api from "../../../src/services/auth/api";
 
 import { Link, useParams } from "react-router-dom";
 
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceandSaleofNurserytoFarmersEdit() {
@@ -50,7 +51,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
             setData({
               fruitsId: "",
               farmerName: "",
-              mulberryVariety: "",
+              mulberryVarietyId: "",
               area: "",
               dateOfPlanting: "",
               nurserySaleDetails: "",
@@ -58,16 +59,15 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
               date: "",
               rate: "",
               saplingAge: "",
-              generateRecipt: "",
-              receiptNumber: "",
               remittanceDetails: "",
-              challanUpload: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          updateError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -77,7 +77,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
     setData({
       fruitsId: "",
       farmerName: "",
-      mulberryVariety: "",
+      mulberryVarietyId: "",
       area: "",
       dateOfPlanting: "",
       nurserySaleDetails: "",
@@ -85,10 +85,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       date: "",
       rate: "",
       saplingAge: "",
-      generateRecipt: "",
-      receiptNumber: "",
       remittanceDetails: "",
-      challanUpload: "",
     });
   };
 
@@ -114,6 +111,77 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
   useEffect(() => {
     getIdList();
   }, []);
+
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURL2 + `mulberry-variety/get-all`)
+      .then((response) => {
+        setVarietyListData(response.data.content.mulberryVariety);
+      })
+      .catch((err) => {
+        setVarietyListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getVarietyList();
+  }, []);
+
+   // Display Image
+   const [ppt, setPPt] = useState("");
+   // const [photoFile,setPhotoFile] = useState("")
+ 
+   const handlePPtChange = (e) => {
+     const file = e.target.files[0];
+     setPPt(file);
+     setData((prev) => ({ ...prev, trUploadPath: file.name }));
+     // setPhotoFile(file);
+   };
+ 
+   // Upload Image to S3 Bucket
+   const handlePPtUpload = async (trScheduleid) => {
+     const parameters = `trScheduleId=${trScheduleid}`;
+     try {
+       const formData = new FormData();
+       formData.append("multipartFile", ppt);
+ 
+       const response = await api.post(
+         baseURL + `trSchedule/upload-path?${parameters}`,
+         formData,
+         {
+           headers: {
+             "Content-Type": "multipart/form-data",
+           },
+         }
+       );
+       console.log("File upload response:", response.data);
+     } catch (error) {
+       console.error("Error uploading file:", error);
+     }
+   };
+ 
+   // To get Photo from S3 Bucket
+   const [selectedPPtFile, setPPtFile] = useState(null);
+ 
+   const getPPtFile = async (file) => {
+     const parameters = `fileName=${file}`;
+     try {
+       const response = await api.get(
+         baseURL + `api/s3/download?${parameters}`,
+         {
+           responseType: "arraybuffer",
+         }
+       );
+       const blob = new Blob([response.data]);
+       const url = URL.createObjectURL(blob);
+       setPPtFile(url);
+     } catch (error) {
+       console.error("Error fetching file:", error);
+     }
+   };
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -183,7 +251,46 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       </Block.Head>
 
       <Block className="mt-n4">
+        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
+            <Card>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        FRUITS ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control
+                          type="fruitsId"
+                          name="fruitsId"
+                          value={data.fruitsId}
+                          onChange={handleInputs}
+                          placeholder="Enter FRUITS ID "
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Fruits ID is required.
+                        </Form.Control.Feedback>
+                      </Col>
+                      {/* <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          // onClick={display}
+                        >
+                          Search
+                        </Button>
+                      </Col> */}
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+        <Block className="mt-3">
           {/* <Row className="g-3 "> */}
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
@@ -196,23 +303,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                         </h1>
                       ) : (
                         <Row className="g-gs">
-                        <Col lg="4">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="sordfl">
-                            FRUITS-ID
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="fruitsId"
-                              name="fruitsId"
-                              type="text"
-                              value={data.fruitsId}
-                              onChange={handleInputs}
-                              placeholder=" Enter FRUITS-ID"
-                            />
-                          </div>
-                        </Form.Group>
-                      </Col>
+                       
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -233,22 +324,38 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Mulberry variety
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="mulberryVariety"
-                                  name="mulberryVariety"
-                                  type="text"
-                                  value={data.mulberryVariety}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Mulberry variety"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Mulberry Variety<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="mulberryVarietyId"
+                        value={data.mulberryVarietyId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        required
+                        isInvalid={
+                          data.mulberryVarietyId === undefined || data.mulberryVarietyId === "0"
+                        }
+                      >
+                        <option value="">Select Mulberry Variety</option>
+                        {varietyListData.map((list) => (
+                          <option
+                            key={list.mulberryVarietyId}
+                            value={list.mulberryVarietyId}
+                          >
+                            {list.mulberryVarietyName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Mulberry Variety is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -335,7 +442,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Generate Recipt
@@ -369,7 +476,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                                 />
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -390,22 +497,32 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Challan Upload
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="challanUpload"
-                                  name="challanUpload"
-                                  type="text"
-                                  value={data.challanUpload}
-                                  onChange={handleInputs}
-                                  placeholder="Challan Upload"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trUploadPath">
+                        Upload PPT/Video
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          type="file"
+                          id="trUploadPath"
+                          name="trUploadPath"
+                          // value={data.photoPath}
+                          onChange={handlePPtChange}
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                      {ppt ? (
+                        <img
+                          style={{ height: "100px", width: "100px" }}
+                          src={URL.createObjectURL(ppt)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Form.Group>
+                  </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -457,6 +574,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                           )}
                           </Card.Body>
                       </Card>
+                    </Block>
 
                   <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -473,7 +591,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                   </li>
                 </ul>
               </div>
-          {/* </Row> */}
+          </Row>
         </Form>
       </Block>
     </Layout>
