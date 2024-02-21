@@ -28,8 +28,8 @@ function HelpDesk() {
     queryDetails: "",
     hdAttachFiles: "",
     ticketNumber: "",
-    hdStatusId: "6",
-    hdSeverityId: "8",
+    hdStatusId: "1",
+    hdSeverityId: "4",
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
@@ -110,8 +110,8 @@ function HelpDesk() {
               hdAttachFiles: "",
               hdCreatedBy: "",
               ticketNumber: "",
-              hdStatusId: "6",
-              hdSeverityId: "8",
+              hdStatusId: "1",
+              hdSeverityId: "4",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
             setValidated(false);
@@ -139,8 +139,8 @@ function HelpDesk() {
       hdAttachFiles: "",
       hdCreatedBy: "",
       ticketNumber: "",
-      hdStatusId: "6",
-      hdSeverityId: "8",
+      hdStatusId: "1",
+      hdSeverityId: "4",
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");

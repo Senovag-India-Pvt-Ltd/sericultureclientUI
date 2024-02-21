@@ -27,6 +27,7 @@ function RaiseTicketView() {
   const [raiseTicket, setRaiseTicket] = useState({
     solution: "",
     hdSeverityId: "",
+    assignedTo: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -74,6 +75,13 @@ function RaiseTicketView() {
     setRaiseTicket({ ...raiseTicket, [name]: value });
   };
 
+  const [escalate, setEscalate] = useState("0");
+  const handleEscalateInput = (e) => {
+    // debugger;
+    let value = e.target.value;
+    setEscalate(value);
+  };
+
   // to get Severity
   const [severityListData, setSeverityListData] = useState([]);
 
@@ -111,21 +119,41 @@ function RaiseTicketView() {
   }, []);
 
   // Submit
-  const submit = () => {
+  const submit = (esc) => {
     const { solution, hdSeverityId, hdTicketId } = raiseTicket;
+    console.log(esc);
+    let escalateDetails;
+    if (esc === "0") {
+      escalateDetails = {
+        hdStatusId: 3,
+      };
+    } else {
+      escalateDetails = {
+        hdStatusId: 2,
+      };
+    }
     api
       .post(baseURL + `hdTicket/edit`, {
         ...raiseTicket,
         hdTicketId,
         solution,
         hdSeverityId,
+        ...escalateDetails,
       })
       .then((response) => {
-        saveSuccess();
-        setRaiseTicket({
-          solution: "",
-          hdSeverityId: "",
-        });
+        if (esc === "1") {
+          escalateSuccess();
+          setRaiseTicket({
+            assignedTo: "",
+          });
+        }
+        if (esc === "0") {
+          saveSuccess();
+          setRaiseTicket({
+            solution: "",
+            hdSeverityId: "",
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -141,6 +169,14 @@ function RaiseTicketView() {
     Swal.fire({
       icon: "success",
       title: "Solution sent to User",
+      // text: "You clicked the button!",
+    });
+  };
+
+  const escalateSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Issue has been escalated!",
       // text: "You clicked the button!",
     });
   };
@@ -301,6 +337,7 @@ function RaiseTicketView() {
             <Row className="g-gs">
               <Col lg="4">
                 <Form.Group className="form-group">
+                  <Form.Label htmlFor="status">Status</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="hdStatusId"
@@ -320,9 +357,28 @@ function RaiseTicketView() {
                 </Form.Group>
               </Col>
 
+              <Col lg="4">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="escalation">
+                    Escalation Required
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="escalate"
+                      value={escalate}
+                      onChange={handleEscalateInput}
+                    >
+                      <option value="0">No</option>
+                      <option value="1">Yes</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
               {show ? (
                 <Col lg="4">
                   <Form.Group className="form-group">
+                    <Form.Label htmlFor="severity">Severity</Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
                         name="hdSeverityId"
@@ -347,30 +403,55 @@ function RaiseTicketView() {
                 ""
               )}
             </Row>
-            <Row className="mt-2">
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label htmlFor="solution">Solution</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="solution"
-                      name="solution"
-                      value={raiseTicket.solution}
-                      onChange={handleInput}
-                      // type="text"
-                      as="textarea"
-                      rows={4}
-                      placeholder="Enter Solutions"
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-            </Row>
+            {escalate === "1" ? (
+              <Row className="mt-2">
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="assignedTo">Assign To</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="assignedTo"
+                        name="assignedTo"
+                        value={raiseTicket.assignedTo}
+                        onChange={handleInput}
+                        type="text"
+                        placeholder="Enter Name"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+            ) : (
+              <Row className="mt-2">
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="solution">Solution</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="solution"
+                        name="solution"
+                        value={raiseTicket.solution}
+                        onChange={handleInput}
+                        // type="text"
+                        as="textarea"
+                        rows={4}
+                        placeholder="Enter Solutions"
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+            )}
+
             <Row>
               <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-start gap g-3 mt-3">
                   <li>
-                    <Button type="button" variant="primary" onClick={submit}>
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={() => submit(escalate)}
+                    >
                       Submit
                     </Button>
                   </li>

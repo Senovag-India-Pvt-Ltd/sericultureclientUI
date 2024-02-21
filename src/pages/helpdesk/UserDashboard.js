@@ -257,20 +257,6 @@ function UserDashboard() {
       hide: "md",
     },
     {
-      name: "Severity",
-      selector: (row) => row.hdSeverityName,
-      cell: (row) => <span>{row.hdSeverityName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Assigned To",
-      selector: (row) => row.assignedTo,
-      cell: (row) => <span>{row.assignedTo}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Attachments",
       selector: (row) => row.hdAttachFiles,
       cell: (row) => <span>{row.hdAttachFiles}</span>,

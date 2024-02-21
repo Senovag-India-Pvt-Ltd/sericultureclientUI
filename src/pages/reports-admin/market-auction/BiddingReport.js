@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -76,27 +76,32 @@ function BiddingReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
+      api
         .post(
-          `https://api.senovagseri.com/reports/gettripletpdf`,
+          `https://api.senovagseri.com/reports-uat/marketreport/get-bidding-report`,
           {
             marketId: marketId,
             godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
+            lotId: allottedLotId,
+            reportFromDate: formattedDate,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
           }
         )
         .then((response) => {
+          console.log(response.data.size);
+          if (response.data.size > 200) {
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "No Record Found",
+            });
+          }
           //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
         })
         .catch((error) => {
           // console.log("error", error);
