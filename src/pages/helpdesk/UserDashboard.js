@@ -43,7 +43,7 @@ function UserDashboard() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "username",
+    searchBy: "ticketArn",
   });
 
   const handleInputs = (e) => {
@@ -55,17 +55,8 @@ function UserDashboard() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "hdModuleName") {
-      joinColumn = "hdModuleMaster.hdModuleName";
-    }
-    if (data.searchBy === "username") {
-      joinColumn = "userMaster.username";
-    }
-    if (data.searchBy === "hdFeatureName") {
-      joinColumn = "hdModuleMaster.hdFeatureName";
-    }
-    if (data.searchBy === "hdBoardCategoryName") {
-      joinColumn = "hdBoardCategoryMaster.hdBoardCategoryName";
+    if (data.searchBy === "ticketArn") {
+      joinColumn = "hdTicket.ticketArn";
     }
     // console.log(joinColumn);
     api
@@ -74,13 +65,15 @@ function UserDashboard() {
         {
           searchText: data.text,
           joinColumn: joinColumn,
+          userId: localStorage.getItem("userMasterId"),
         },
         {
           headers: _header,
         }
       )
       .then((response) => {
-        setListData(response.data.content.hdTicket);
+        setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -148,6 +141,24 @@ function UserDashboard() {
     getTicketDataList();
   }, [page]);
 
+  const getOtherTicketDataList = (text) => {
+    // setLoading(true);
+    api
+      .post(baseURL2 + `hdTicket/get-by-on-behalf-of`, {
+        onBehalfOf: localStorage.getItem("userMasterId"),
+        ticketType: text,
+      })
+      .then((response) => {
+        setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        // setLoading(false);
+      });
+  };
+
   // let sessionsDevice = {
   //   labels: ["Total Tickets", "Pending", "Closed Ticket", "Others"],
   //   datasets: [
@@ -195,8 +206,8 @@ function UserDashboard() {
   const HelpdeskDataColumns = [
     {
       name: "Ticket No.",
-      selector: (row) => row.hdTicketId,
-      cell: (row) => <span>{row.hdTicketId}</span>,
+      selector: (row) => row.ticketArn,
+      cell: (row) => <span>{row.ticketArn}</span>,
       sortable: true,
       hide: "md",
     },
@@ -333,9 +344,14 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  {/* <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("New Tickets")}
+                  >
                     View
-                  </Button> */}
+                  </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -361,9 +377,14 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  {/* <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Open Tickets")}
+                  >
                     View
-                  </Button> */}
+                  </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -388,9 +409,14 @@ function UserDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  {/* <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Closed Tickets")}
+                  >
                     View
-                  </Button> */}
+                  </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
                           <Image src="/images/award/a.png" alt=""/>
@@ -437,12 +463,7 @@ function UserDashboard() {
                           value={data.searchBy}
                           onChange={handleInputs}
                         >
-                          <option value="hdModuleName">Module</option>
-                          <option value="username">User name</option>
-                          <option value="hdFeatureName">Feature</option>
-                          <option value="hdBoardCategoryName">
-                            Board Category
-                          </option>
+                          <option value="ticketArn">Ticket Number</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -460,6 +481,15 @@ function UserDashboard() {
                     <Col sm={3}>
                       <Button type="button" variant="primary" onClick={search}>
                         Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={getTicketDataList}
+                      >
+                        <Icon name="reload-alt"></Icon>
                       </Button>
                     </Col>
                   </Form.Group>

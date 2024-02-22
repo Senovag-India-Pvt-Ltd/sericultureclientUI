@@ -38,7 +38,7 @@ function HelpdeskDashboard() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "hdModuleName",
+    searchBy: "ticketArn",
   });
 
   const handleInputs = (e) => {
@@ -67,18 +67,13 @@ function HelpdeskDashboard() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "hdModuleName") {
-      joinColumn = "hdModuleMaster.hdModuleName";
+    if (data.searchBy === "ticketArn") {
+      joinColumn = "hdTicket.ticketArn";
     }
-    if (data.searchBy === "username") {
-      joinColumn = "userMaster.username";
+    if (data.searchBy === "hdSeverityName") {
+      joinColumn = "hdSeverityMaster.hdSeverityName";
     }
-    if (data.searchBy === "hdFeatureName") {
-      joinColumn = "hdModuleMaster.hdFeatureName";
-    }
-    if (data.searchBy === "hdBoardCategoryName") {
-      joinColumn = "hdBoardCategoryMaster.hdBoardCategoryName";
-    }
+
     // console.log(joinColumn);
     api
       .post(
@@ -93,6 +88,7 @@ function HelpdeskDashboard() {
       )
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -184,6 +180,25 @@ function HelpdeskDashboard() {
     getSeverityList();
   }, []);
 
+  // get list of other ticket
+  const getOtherTicketDataList = (text) => {
+    // setLoading(true);
+    const newParams = {
+      params: { pageNumber: page, size: countPerPage, ticketType: text },
+    };
+    api
+      .get(baseURL2 + `hdTicket/list-with-join`, newParams)
+      .then((response) => {
+        setHdTicketDataList(response.data.content.hdTicket);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        // setLoading(false);
+      });
+  };
+
   // Update details
   const edit = (rowData) => {
     console.log(rowData);
@@ -241,8 +256,8 @@ function HelpdeskDashboard() {
   const HelpdeskDataColumns = [
     {
       name: "Ticket No.",
-      selector: (row) => row.hdTicketId,
-      cell: (row) => <span>{row.hdTicketId}</span>,
+      selector: (row) => row.ticketArn,
+      cell: (row) => <span>{row.ticketArn}</span>,
       sortable: true,
       hide: "md",
     },
@@ -299,6 +314,13 @@ function HelpdeskDashboard() {
       name: "Feature",
       selector: (row) => row.hdFeatureName,
       cell: (row) => <span>{row.hdFeatureName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Severity",
+      selector: (row) => row.hdSeverityName,
+      cell: (row) => <span>{row.hdSeverityName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -455,7 +477,12 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("New Tickets")}
+                  >
                     View
                   </Button>
                 </div>
@@ -482,7 +509,12 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Open Tickets")}
+                  >
                     View
                   </Button>
                 </div>
@@ -509,7 +541,12 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Closed Tickets")}
+                  >
                     View
                   </Button>
                 </div>
@@ -536,7 +573,12 @@ function HelpdeskDashboard() {
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
-                  <Button href="#" size="sm" variant="primary">
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Pending Tickets")}
+                  >
                     View
                   </Button>
                 </div>
@@ -565,12 +607,8 @@ function HelpdeskDashboard() {
                           value={data.searchBy}
                           onChange={handleInputs}
                         >
-                          <option value="hdModuleName">Module</option>
-                          <option value="username">User name</option>
-                          <option value="hdFeatureName">Feature</option>
-                          <option value="hdBoardCategoryName">
-                            Board Category
-                          </option>
+                          <option value="ticketArn">Ticket Number</option>
+                          <option value="hdSeverityName">Severity</option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -588,6 +626,15 @@ function HelpdeskDashboard() {
                     <Col sm={3}>
                       <Button type="button" variant="primary" onClick={search}>
                         Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={getTicketDataList}
+                      >
+                        <Icon name="reload-alt"></Icon>
                       </Button>
                     </Col>
                   </Form.Group>

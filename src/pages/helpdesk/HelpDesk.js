@@ -97,7 +97,7 @@ function HelpDesk() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-            saveSuccess();
+            saveSuccess(response.data.content.ticketArn);
             setData({
               hdModuleId: "",
               hdFeatureId: "",
@@ -347,14 +347,12 @@ function HelpDesk() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+      text: `Ticket Number is ${message}`,
+    })
   };
   const saveError = (message) => {
     let errorMessage;
