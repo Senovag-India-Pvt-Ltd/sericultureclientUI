@@ -308,7 +308,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Farmer’s name
+                                Farmer Name
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control

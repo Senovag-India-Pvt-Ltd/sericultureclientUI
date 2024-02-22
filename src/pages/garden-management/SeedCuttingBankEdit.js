@@ -121,13 +121,7 @@ function SeedCuttingBankEdit() {
       newDate.getDate().toString().padStart(2, "0");
 
     const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    // } else {
-    //   event.preventDefault();
-    // event.stopPropagation();
+   
     api
       .post(
         `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
@@ -230,7 +224,44 @@ function SeedCuttingBankEdit() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          {/* <Row className="g-3 "> */}
+          <Row className="g-1 ">
+            <Card>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        FRUITS ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control
+                          type="fruitsId"
+                          name="fruitsId"
+                          value={data.fruitsId}
+                          onChange={handleInputs}
+                          placeholder="Enter FRUITS ID "
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Fruits ID is required.
+                        </Form.Control.Feedback>
+                      </Col>
+                      {/* <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          // onClick={display}
+                        >
+                          Search
+                        </Button>
+                      </Col> */}
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+        <Block className="mt-3">
             <Card>
             <Card.Header style={{ fontWeight: "bold" }}>Edit Seed Cutting Bank Details</Card.Header>
               <Card.Body>
@@ -240,27 +271,6 @@ function SeedCuttingBankEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="plotNumber">
-                          Fruits Id<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="fruitsId"
-                            name="fruitsId"
-                            value={data.fruitsId}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Fruits Id"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Fruits Id is required
-                      </Form.Control.Feedback>
-                    </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group">
@@ -309,7 +319,7 @@ function SeedCuttingBankEdit() {
 
                    
                     <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="ratePerTonne">
                           Rate Per Tonne
                         </Form.Label>
@@ -321,24 +331,6 @@ function SeedCuttingBankEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Rate Per Tonne"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="ratePerTonne">
-                          Receipt Number
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="receiptNumber"
-                            name="receiptNumber"
-                            value={data.receiptNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter  Receipt Number"
                           />
                         </div>
                       </Form.Group>
@@ -415,15 +407,16 @@ function SeedCuttingBankEdit() {
                     </Col>
 
 
-                    <Col lg="2">
+                    {/* <Col lg="2">
                       <Button type="button" onClick={postDataReceipt}>
                         View Invoice
                       </Button>
-                    </Col>
+                    </Col> */}
                   </Row>
                 )}
               </Card.Body>
             </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -440,7 +433,7 @@ function SeedCuttingBankEdit() {
                 </li>
               </ul>
             </div>
-          {/* </Row> */}
+          </Row>
         </Form>
       </Block>
     </Layout>

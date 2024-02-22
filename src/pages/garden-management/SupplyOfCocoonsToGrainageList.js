@@ -183,7 +183,7 @@ function SupplyOfCocoonsToGrainageList(){
         },
 
     {
-      name: "lot Number",
+      name: "Lot Number",
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -191,8 +191,8 @@ function SupplyOfCocoonsToGrainageList(){
     },
     {
       name: "Race Of Cocoons",
-      selector: (row) => row.raceOfCocoons,
-      cell: (row) => <span>{row.raceOfCocoons}</span>,
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -210,13 +210,13 @@ function SupplyOfCocoonsToGrainageList(){
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Generation Details",
-      selector: (row) => row.generationDetails,
-      cell: (row) => <span>{row.generationDetails}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Generation Details",
+    //   selector: (row) => row.generationDetails,
+    //   cell: (row) => <span>{row.generationDetails}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Dispatch Date",
       selector: (row) => row.dispatchDate,
@@ -224,20 +224,27 @@ function SupplyOfCocoonsToGrainageList(){
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Generate Invoice",
-      selector: (row) => row.generateInvoice,
-      cell: (row) => <span>{row.generateInvoice}</span>,
+     {
+      name: "Grainage Name",
+      selector: (row) => row.grainageName,
+      cell: (row) => <span>{row.grainageName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "View Reciept",
-      selector: (row) => row.viewReciept,
-      cell: (row) => <span>{row.viewReciept}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Generate Invoice",
+    //   selector: (row) => row.generateInvoice,
+    //   cell: (row) => <span>{row.generateInvoice}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "View Reciept",
+    //   selector: (row) => row.viewReciept,
+    //   cell: (row) => <span>{row.viewReciept}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
  
  ];
 return(
