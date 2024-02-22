@@ -45,10 +45,10 @@ function SeedCuttingBankEdit() {
       api
         .post(baseURL2 + `seed-cutting/update-info`, data)
         .then((response) => {
-          //   const trScheduleId = response.data.content.trScheduleId;
-          //   if (trScheduleId) {
-          //     handlePPtUpload(trScheduleId);
-          //   }
+            const seedCuttingBankId = response.data.seedCuttingBankId;
+            if (seedCuttingBankId) {
+              handleChallanUpload(seedCuttingBankId);
+            }
           if (response.data.error) {
             updateError(response.data.message);
           } else {
@@ -87,6 +87,7 @@ function SeedCuttingBankEdit() {
       remittanceDetails: "",
       challanUpload: "",
     });
+    setChallanFile({challanUpload: ""});
   };
 
   //   to get data from api
@@ -97,6 +98,9 @@ function SeedCuttingBankEdit() {
       .then((response) => {
         setData(response.data);
         setLoading(false);
+        if (response.data.challanUpload) {
+          getChallanFile(response.data.challanUpload);
+        }
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -110,54 +114,61 @@ function SeedCuttingBankEdit() {
     getIdList();
   }, [id]);
 
-  const postDataReceipt = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
-
-    const form = event.currentTarget;
+  
    
-    api
-      .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
-        {
-          marketId: marketId,
-          godownId: godownId,
-          allottedLotId: allottedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
-        }
-      )
-      .then((response) => {
-        //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
-      })
-      .catch((error) => {
-        // console.log("error", error);
-      });
-  };
+   
+  // Display Image
+  const [challan, setChallan] = useState("");
 
-  const [ppt, setPPt] = useState("");
-  // const [photoFile,setPhotoFile] = useState("")
-
-  const handlePPtChange = (e) => {
+  const handleChallanChange = (e) => {
     const file = e.target.files[0];
-    setPPt(file);
-    setData((prev) => ({ ...prev, trUploadPath: file.name }));
+    setChallan(file);
+    setData((prev) => ({ ...prev, challanUpload: file.name }));
     // setPhotoFile(file);
   };
+
+   // Upload Image to S3 Bucket
+   const handleChallanUpload = async (seedChallanid) => {
+    const parameters = `seedCuttingBankId=${seedChallanid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", challan);
+
+      const response = await api.post(
+        baseURL2 + `seed-cutting/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  // To get Photo from S3 Bucket
+  const [selectedChallanFile, setChallanFile] = useState(null);
+
+  const getChallanFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `v1/api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setChallanFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
 
   const navigate = useNavigate();
 
@@ -366,19 +377,25 @@ function SeedCuttingBankEdit() {
                             id="challanUpload"
                             name="challanUpload"
                             // value={data.photoPath}
-                            onChange={handlePPtChange}
+                            onChange={handleChallanChange}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {ppt ? (
+                        {challan ? (
                           <img
                             style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(ppt)}
+                            src={URL.createObjectURL(challan)}
                           />
                         ) : (
-                          ""
+                          selectedChallanFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedChallanFile}
+                              alt="Selected File"
+                            />
+                          )
                         )}
                       </Form.Group>
                     </Col>

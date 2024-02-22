@@ -54,6 +54,10 @@ function SeedCuttingBank() {
       api
         .post(baseURL2 + `seed-cutting/add-info`, data)
         .then((response) => {
+          if (response.data.seedCuttingBankId) {
+            const seedUploadId = response.data.seedCuttingBankId;
+            handleChallanUpload(seedUploadId);
+          }
           if (response.data.error) {
             saveError(response.data.message);
           } else {
@@ -89,6 +93,7 @@ function SeedCuttingBank() {
       remittanceDetails: "",
       challanUpload: "",
     });
+    setChallan("");
   };
 
   const handleDateChange = (date, type) => {
@@ -126,25 +131,25 @@ function SeedCuttingBank() {
 
 
   // Display Image
-  const [ppt, setPPt] = useState("");
+  const [challan, setChallan] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
 
-  const handlePPtChange = (e) => {
+  const handleChallanChange = (e) => {
     const file = e.target.files[0];
-    setPPt(file);
-    setData((prev) => ({ ...prev, trUploadPath: file.name }));
+    setChallan(file);
+    setData((prev) => ({ ...prev, challanUpload: file.name }));
     // setPhotoFile(file);
   };
 
   // Upload Image to S3 Bucket
-  const handlePPtUpload = async (trScheduleid) => {
-    const parameters = `trScheduleId=${trScheduleid}`;
+  const handleChallanUpload = async (seedChallanid) => {
+    const parameters = `seedCuttingBankId=${seedChallanid}`;
     try {
       const formData = new FormData();
-      formData.append("multipartFile", ppt);
+      formData.append("multipartFile", challan);
 
       const response = await api.post(
-        baseURL2 + `trSchedule/upload-path?${parameters}`,
+        baseURL2 + `seed-cutting/upload-photo?${parameters}`,
         formData,
         {
           headers: {
@@ -355,22 +360,23 @@ function SeedCuttingBank() {
                         id="challanUpload"
                         name="challanUpload"
                         // value={data.photoPath}
-                        onChange={handlePPtChange}
+                        onChange={handleChallanChange}
                       />
                     </div>
                   </Form.Group>
 
                   <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {ppt ? (
+                    {challan ? (
                       <img
                         style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(ppt)}
+                        src={URL.createObjectURL(challan)}
                       />
                     ) : (
                       ""
                     )}
                   </Form.Group>
                 </Col>
+
                 <Form.Label column sm={2}>
                   Date Of Pruning
                   <span className="text-danger">*</span>

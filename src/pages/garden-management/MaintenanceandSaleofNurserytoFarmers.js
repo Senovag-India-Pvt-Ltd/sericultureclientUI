@@ -29,6 +29,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
     rate: "",
     saplingAge: "",
     remittanceDetails: "",
+    challanUploadKey: "",
   });
 
   const styles = {
@@ -66,7 +67,10 @@ function MaintenanceandSaleofNurserytoFarmers() {
       api
         .post(baseURL + `Maintenance-sale/add-info`, data)
         .then((response) => {
-          // debugger;
+          if (response.data.mainAndSaleOfNurseryId) {
+            const nurseryId = response.data.mainAndSaleOfNurseryId;
+            handleChallanUpload(nurseryId);
+          }
           if (response.data.error) {
             saveError(response.data.message);
           } else {
@@ -83,6 +87,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
               rate: "",
               saplingAge: "",
               remittanceDetails: "",
+              challanUploadKey: "",
             });
             setValidated(false);
           }
@@ -109,7 +114,9 @@ function MaintenanceandSaleofNurserytoFarmers() {
       rate: "",
       saplingAge: "",
       remittanceDetails: "",
+      challanUploadKey: "",
     });
+    setChallan("");
   };
 
   const search = () => {
@@ -160,25 +167,25 @@ function MaintenanceandSaleofNurserytoFarmers() {
   }, []);
 
    // Display Image
-   const [ppt, setPPt] = useState("");
+   const [challan, setChallan] = useState("");
    // const [photoFile,setPhotoFile] = useState("")
  
-   const handlePPtChange = (e) => {
+   const handleChallanChange = (e) => {
      const file = e.target.files[0];
-     setPPt(file);
-     setData((prev) => ({ ...prev, trUploadPath: file.name }));
+     setChallan(file);
+     setData((prev) => ({ ...prev, challanUploadKey: file.name }));
      // setPhotoFile(file);
    };
  
    // Upload Image to S3 Bucket
-   const handlePPtUpload = async (trScheduleid) => {
-     const parameters = `trScheduleId=${trScheduleid}`;
+   const handleChallanUpload = async (nurseryFarmerid) => {
+     const parameters = `mainAndSaleOfNurseryId=${nurseryFarmerid}`;
      try {
        const formData = new FormData();
-       formData.append("multipartFile", ppt);
+       formData.append("multipartFile", challan);
  
        const response = await api.post(
-         baseURL2 + `trSchedule/upload-path?${parameters}`,
+         baseURL + `Maintenance-sale/upload-photo?${parameters}`,
          formData,
          {
            headers: {
@@ -547,25 +554,25 @@ function MaintenanceandSaleofNurserytoFarmers() {
 
                           <Col lg="4">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="trUploadPath">
+                      <Form.Label htmlFor="challanUploadKey">
                         Upload Challan
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           type="file"
-                          id="trUploadPath"
-                          name="trUploadPath"
+                          id="challanUploadKey"
+                          name="challanUploadKey"
                           // value={data.photoPath}
-                          onChange={handlePPtChange}
+                          onChange={handleChallanChange}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                      {ppt ? (
+                      {challan ? (
                         <img
                           style={{ height: "100px", width: "100px" }}
-                          src={URL.createObjectURL(ppt)}
+                          src={URL.createObjectURL(challan)}
                         />
                       ) : (
                         ""
