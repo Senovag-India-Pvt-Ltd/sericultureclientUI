@@ -81,7 +81,7 @@ function UserTicketView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/user-dashboard"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -90,7 +90,7 @@ function UserTicketView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/user-dashboard"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +153,7 @@ function UserTicketView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Ticket Number:</td>
-                        <td>{raiseTicket.ticketNumber}</td>
+                        <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       <tr>
                         <td style={{ ...styles.ctstyle, fontWeight: "bold" }}>

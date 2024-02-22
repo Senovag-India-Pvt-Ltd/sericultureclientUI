@@ -192,7 +192,7 @@ function RaiseTicketView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/helpdesk-dashboard"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -201,7 +201,7 @@ function RaiseTicketView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/help-desk"
+                  to="/seriui/helpdesk-dashboard"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -264,7 +264,7 @@ function RaiseTicketView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Ticket Number:</td>
-                        <td>{raiseTicket.ticketNumber}</td>
+                        <td>{raiseTicket.ticketArn}</td>
                       </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>Status:</td>
