@@ -44,6 +44,10 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       api
         .post(baseURL + `Maintenance-sale/update-info`, data)
         .then((response) => {
+          const mainAndSaleOfNurseryId = response.data.mainAndSaleOfNurseryId;
+          if (mainAndSaleOfNurseryId) {
+            handleChallanUpload(mainAndSaleOfNurseryId);
+          }
           if (response.data.error) {
             updateError(response.data.message);
           } else {
@@ -60,6 +64,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
               rate: "",
               saplingAge: "",
               remittanceDetails: "",
+              challanUploadKey: "",
             });
             setValidated(false);
           }
@@ -86,7 +91,9 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       rate: "",
       saplingAge: "",
       remittanceDetails: "",
+      challanUploadKey: "",
     });
+    setChallanFile("");
   };
 
   const isDataPlantingSet = !!data.dateOfPlanting;
@@ -99,6 +106,9 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       .then((response) => {
         setData(response.data);
         setLoading(false);
+        if (response.data.challanUploadKey) {
+          getChallanFile(response.data.challanUploadKey);
+        }
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -110,7 +120,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
 
   useEffect(() => {
     getIdList();
-  }, []);
+  }, [id]);
 
   // to get Mulberry Variety
   const [varietyListData, setVarietyListData] = useState([]);
@@ -131,25 +141,25 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
   }, []);
 
    // Display Image
-   const [ppt, setPPt] = useState("");
+   const [challan, setChallan] = useState("");
    // const [photoFile,setPhotoFile] = useState("")
  
-   const handlePPtChange = (e) => {
+   const handleChallanChange = (e) => {
      const file = e.target.files[0];
-     setPPt(file);
-     setData((prev) => ({ ...prev, trUploadPath: file.name }));
+     setChallan(file);
+     setData((prev) => ({ ...prev, challanUploadKey: file.name }));
      // setPhotoFile(file);
    };
  
    // Upload Image to S3 Bucket
-   const handlePPtUpload = async (trScheduleid) => {
-     const parameters = `trScheduleId=${trScheduleid}`;
+   const handleChallanUpload = async (nurseryFarmerid) => {
+     const parameters = `mainAndSaleOfNurseryId=${nurseryFarmerid}`;
      try {
        const formData = new FormData();
-       formData.append("multipartFile", ppt);
+       formData.append("multipartFile", challan);
  
        const response = await api.post(
-         baseURL + `trSchedule/upload-path?${parameters}`,
+         baseURL + `Maintenance-sale/upload-photo?${parameters}`,
          formData,
          {
            headers: {
@@ -164,20 +174,20 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
    };
  
    // To get Photo from S3 Bucket
-   const [selectedPPtFile, setPPtFile] = useState(null);
+   const [selectedChallanFile, setChallanFile] = useState(null);
  
-   const getPPtFile = async (file) => {
+   const getChallanFile = async (file) => {
      const parameters = `fileName=${file}`;
      try {
        const response = await api.get(
-         baseURL + `api/s3/download?${parameters}`,
+         baseURL + `v1/api/s3/download?${parameters}`,
          {
            responseType: "arraybuffer",
          }
        );
        const blob = new Blob([response.data]);
        const url = URL.createObjectURL(blob);
-       setPPtFile(url);
+       setChallanFile(url);
      } catch (error) {
        console.error("Error fetching file:", error);
      }
@@ -546,29 +556,35 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
 
                           <Col lg="4">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="trUploadPath">
+                      <Form.Label htmlFor="challanUploadKey">
                         Upload Challan
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           type="file"
-                          id="trUploadPath"
-                          name="trUploadPath"
+                          id="challanUploadKey"
+                          name="challanUploadKey"
                           // value={data.photoPath}
-                          onChange={handlePPtChange}
+                          onChange={handleChallanChange}
                         />
                       </div>
                     </Form.Group>
 
                     <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                      {ppt ? (
+                      {challan ? (
                         <img
                           style={{ height: "100px", width: "100px" }}
-                          src={URL.createObjectURL(ppt)}
+                          src={URL.createObjectURL(challan)}
                         />
-                      ) : (
-                        ""
-                      )}
+                     ) : (
+                          selectedChallanFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedChallanFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
                     </Form.Group>
                   </Col>
 

@@ -37,6 +37,9 @@ function SeedCuttingBankView() {
       .get(baseURL2 + `seed-cutting/get-info-by-id/${id}`)
       .then((response) => {
         setSeedCuttingBank(response.data);
+        if (response.data.challanUpload) {
+          getChallanFile(response.data.challanUpload);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -45,6 +48,27 @@ function SeedCuttingBankView() {
       });
   };
 
+
+   // To get Photo
+   const [selectedChallanFile, setSelectedChallanFile] = useState(null);
+
+   const getChallanFile = async (file) => {
+     const parameters = `fileName=${file}`;
+     try {
+       const response = await api.get(
+         baseURL2 + `v1/api/s3/download?${parameters}`,
+         {
+           responseType: "arraybuffer",
+         }
+       );
+       const blob = new Blob([response.data]);
+       const url = URL.createObjectURL(blob);
+       setSelectedChallanFile(url);
+     } catch (error) {
+       console.error("Error fetching file:", error);
+     }
+   };
+ 
   //console.log(Caste);
 
   useEffect(() => {
@@ -129,6 +153,20 @@ function SeedCuttingBankView() {
                       <tr>
                         <td style={styles.ctstyle}>Remittance Details:</td>
                         <td>{seedCuttingBank.remittanceDetails}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> Challan:</td>
+                        <td>
+                          {" "}
+                          {selectedChallanFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedChallanFile}
+                              alt="Selected File"
+                            />
+                          )}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
