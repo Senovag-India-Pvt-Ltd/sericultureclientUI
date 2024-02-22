@@ -104,10 +104,6 @@ function RearingOfDFLsView() {
                         </td>
                         <td>{rearingOfDFLs.disinfectantMasterName}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Crop Details:</td>
-                        <td>{rearingOfDFLs.cropDetail}</td>
-                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Crop Number:</td>
                         <td>{rearingOfDFLs.cropNumber}</td>
@@ -116,14 +112,14 @@ function RearingOfDFLsView() {
                         <td style={styles.ctstyle}>Lot Number:</td>
                         <td>{rearingOfDFLs.lotNumber}</td>
                       </tr>
-                      {/* <tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Source:</td>
+                        <td>{rearingOfDFLs.source}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Number Of DFLs:</td>
-                        <td>{rearingOfDFLs.numberOfDFLs}</td>
-                      </tr> */}
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Laid On Date:</td>
-                        <td>{rearingOfDFLs.laidOnDate}</td>
-                      </tr> */}
+                        <td>{rearingOfDFLs.numberOfDfls}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>Cold Storage Details:</td>
                         <td>{rearingOfDFLs.coldStorageDetails}</td>
@@ -131,6 +127,10 @@ function RearingOfDFLsView() {
                       <tr>
                         <td style={styles.ctstyle}>Released On Date:</td>
                         <td>{rearingOfDFLs.releasedOnDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Brushing Date:</td>
+                        <td>{rearingOfDFLs.brushingDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Chawki Percentage:</td>

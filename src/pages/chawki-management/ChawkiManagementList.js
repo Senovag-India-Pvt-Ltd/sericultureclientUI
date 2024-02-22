@@ -243,7 +243,7 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Sold after 1st/2nd Moult",
+      name: "Sold after 1st/2nd/3rd Moult",
       selector: (row) => row.soldAfter1stOr2ndMould,
       cell: (row) => <span>{row.soldAfter1stOr2ndMould}</span>,
       sortable: true,

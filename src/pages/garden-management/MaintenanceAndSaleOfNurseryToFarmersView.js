@@ -136,10 +136,10 @@ function MaintenanceAndSaleOfNurseryToFarmersView() {
                         <td style={styles.ctstyle}>Sapling Age:</td>
                         <td>{maintenanceNursery.saplingAge}</td>
                       </tr> 
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Generate Receipt:</td>
                         <td>{maintenanceNursery.generateRecipt}</td>
-                      </tr> 
+                      </tr>  */}
                       <tr>
                         <td style={styles.ctstyle}>Receipt Number:</td>
                         <td>{maintenanceNursery.receiptNumber}</td>

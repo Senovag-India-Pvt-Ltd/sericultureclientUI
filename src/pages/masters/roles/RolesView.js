@@ -49,24 +49,11 @@ function RolesView() {
   }, [id]);
 
   return (
-    <Layout title="Roles View" content="container">
+    <Layout title="Roles View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Roles View</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/roles-list">State List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Roles View
-                </li>
-              </ol>
-            </nav>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -93,7 +80,7 @@ function RolesView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <Card.Header>Roles Details</Card.Header>
           <Card.Body>

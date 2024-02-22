@@ -9,7 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -22,8 +22,9 @@ function FarmerTransactionReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
-    allottedLotId: "",
-    auctionDate: "",
+    farmerNumber: "",
+    reportFromDate: new Date(),
+    reportToDate: new Date(),
   });
   console.log("printBid", data);
 
@@ -67,11 +68,17 @@ function FarmerTransactionReport() {
     },
   };
 
-  const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+  const handleFromDateChange = (date) => {
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
+
+  const handleToDateChange = (date) => {
+    setData((prev) => ({ ...prev, reportToDate: date }));
+  };
+
   useEffect(() => {
-    handleDateChange(new Date());
+    handleFromDateChange(new Date());
+    handleToDateChange(new Date());
   }, []);
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
@@ -96,14 +103,21 @@ function FarmerTransactionReport() {
   // };
 
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
+    const { marketId, godownId, farmerNumber, reportFromDate, reportToDate } =
+      data;
+    const formattedFromDate =
+      reportFromDate.getFullYear() +
       "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      newDate.getDate().toString().padStart(2, "0");
+      reportFromDate.getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+      reportToDate.getFullYear() +
+      "-" +
+      (reportToDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      reportToDate.getDate().toString().padStart(2, "0");
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -113,27 +127,33 @@ function FarmerTransactionReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
+      api
         .post(
-          `https://api.senovagseri.com/reports/gettripletpdf`,
+          `https://api.senovagseri.com/reports-uat/marketreport/get-farmer-txn-report`,
           {
             marketId: marketId,
             godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
+            reportFromDate: formattedFromDate,
+            reportToDate: formattedToDate,
+            farmerNumber:farmerNumber
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
           }
         )
         .then((response) => {
+          console.log(response.data.size);
+          if (response.data.size > 200) {
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "No Record Found",
+            });
+          }
           //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
         })
         .catch((error) => {
           // console.log("error", error);
@@ -272,9 +292,9 @@ function FarmerTransactionReport() {
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
+                          id="farmerNumber"
+                          name="farmerNumber"
+                          value={data.farmerNumber}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Farmer Number"
@@ -292,8 +312,8 @@ function FarmerTransactionReport() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.reportFromDate}
+                            onChange={handleFromDateChange}
                           />
                         </div>
                       </Col>
@@ -305,8 +325,8 @@ function FarmerTransactionReport() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.reportToDate}
+                            onChange={handleToDateChange}
                           />
                         </div>
                       </Col>
@@ -345,7 +365,7 @@ function FarmerTransactionReport() {
               </Col>
             </Row>
 
-            <Block className="mt-3">
+            {/* <Block className="mt-3">
               <Card>
                 <Card.Header
                   className="d-flex flex-column justify-content-center align-items-center"
@@ -440,7 +460,7 @@ function FarmerTransactionReport() {
                   </Row>
                 </Card.Body>
               </Card>
-            </Block>
+            </Block> */}
 
             {/* <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

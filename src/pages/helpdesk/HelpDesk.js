@@ -28,8 +28,8 @@ function HelpDesk() {
     queryDetails: "",
     hdAttachFiles: "",
     ticketNumber: "",
-    hdStatusId: "6",
-    hdSeverityId: "8",
+    hdStatusId: "1",
+    hdSeverityId: "4",
     onBehalfOf: localStorage.getItem("userMasterId"),
   });
 
@@ -97,7 +97,7 @@ function HelpDesk() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-            saveSuccess();
+            saveSuccess(response.data.content.ticketArn);
             setData({
               hdModuleId: "",
               hdFeatureId: "",
@@ -110,8 +110,8 @@ function HelpDesk() {
               hdAttachFiles: "",
               hdCreatedBy: "",
               ticketNumber: "",
-              hdStatusId: "6",
-              hdSeverityId: "8",
+              hdStatusId: "1",
+              hdSeverityId: "4",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
             setValidated(false);
@@ -139,8 +139,8 @@ function HelpDesk() {
       hdAttachFiles: "",
       hdCreatedBy: "",
       ticketNumber: "",
-      hdStatusId: "6",
-      hdSeverityId: "8",
+      hdStatusId: "1",
+      hdSeverityId: "4",
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");
@@ -347,14 +347,12 @@ function HelpDesk() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => {
-      navigate("#");
-    });
+      text: `Ticket Number is ${message}`,
+    })
   };
   const saveError = (message) => {
     let errorMessage;

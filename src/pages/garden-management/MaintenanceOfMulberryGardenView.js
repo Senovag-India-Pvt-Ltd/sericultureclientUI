@@ -103,7 +103,7 @@ function MaintenanceOfMulberryGardenView() {
                         <td>{maintenanceGarden.variety}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Area Under Each Variety:</td>
+                        <td style={styles.ctstyle}>Area(In Hectares):</td>
                         <td>{maintenanceGarden.areaUnderEachVariety}</td>
                       </tr>
                       <tr>

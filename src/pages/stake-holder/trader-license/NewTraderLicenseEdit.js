@@ -211,7 +211,7 @@ function NewTraderLicenseEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="arnNumber">ARN Number</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -223,7 +223,7 @@ function NewTraderLicenseEdit() {
                             placeholder="Enter ARN Number"
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group">
                         <Form.Label>

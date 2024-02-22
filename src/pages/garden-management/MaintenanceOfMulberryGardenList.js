@@ -218,14 +218,14 @@ function MaintenanceOfMulberryGardenList() {
           >
             Alert
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -248,7 +248,7 @@ function MaintenanceOfMulberryGardenList() {
       hide: "md",
     },
     {
-      name: "Area Under Each Variety",
+      name: " Area(In Hectares)",
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,

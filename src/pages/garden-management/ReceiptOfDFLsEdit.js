@@ -56,6 +56,9 @@ function ReceiptOfDFLsEdit() {
             updateSuccess();
             setData({
               raceOfDfls: "",
+              raceId: "",
+              grainageId: "",
+              generationDetailsId: "",
               laidOnDate: "",
               grainage: "",
               lotNumber: "",
@@ -81,6 +84,9 @@ function ReceiptOfDFLsEdit() {
   const clear = () => {
     setData({
       raceOfDfls: "",
+      raceId: "",
+      grainageId: "",
+      generationDetailsId: "",
       laidOnDate: "",
       grainage: "",
       lotNumber: "",
@@ -292,8 +298,8 @@ function ReceiptOfDFLsEdit() {
                       <Col>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="raceOfDfls"
-                            value={data.raceOfDfls}
+                            name="raceId"
+                            value={data.raceId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                           >
@@ -320,8 +326,8 @@ function ReceiptOfDFLsEdit() {
                       <Col>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="grainage"
-                            value={data.grainage}
+                            name="grainageId"
+                            value={data.grainageId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                           >
@@ -406,8 +412,8 @@ function ReceiptOfDFLsEdit() {
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="generationDetails"
-                          value={data.generationDetails}
+                          name="generationDetailsId"
+                          value={data.generationDetailsId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                         >

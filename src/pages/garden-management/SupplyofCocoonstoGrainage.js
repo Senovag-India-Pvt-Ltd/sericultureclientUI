@@ -13,17 +13,14 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SupplyofCocoonstoGrainage() {
   const [data, setData] = useState({
-    lotNumber: "",
-    raceOfCocoons: "",
-    spunOnDate: "",
+    lotNumberId: "",
     numberOfCocoonsDispatched: "",
-    generationDetails: "",
+    grainageId: "",
     dispatchDate: "",
-    generateInvoice: "",
-    viewReciept: "",
   });
 
   const styles = {
@@ -41,6 +38,10 @@ function SupplyofCocoonstoGrainage() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if(name=== "lotNumberId"){
+      getRearingList(value);
+    }
   };
 
   const _header = {
@@ -66,14 +67,10 @@ function SupplyofCocoonstoGrainage() {
           } else {
             saveSuccess();
             setData({
-              lotNumber: "",
-              raceOfCocoons: "",
-              spunOnDate: "",
+              lotNumberId: "",
               numberOfCocoonsDispatched: "",
-              generationDetails: "",
+              grainageId: "",
               dispatchDate: "",
-              generateInvoice: "",
-              viewReciept: "",
             });
             setValidated(false);
           }
@@ -89,16 +86,74 @@ function SupplyofCocoonstoGrainage() {
 
   const clear = () => {
     setData({
-      lotNumber: "",
-      raceOfCocoons: "",
-      spunOnDate: "",
+      lotNumberId: "",
       numberOfCocoonsDispatched: "",
-      generationDetails: "",
+      grainageId: "",
       dispatchDate: "",
-      generateInvoice: "",
-      viewReciept: "",
+    });
+    setLot({
+      lotNumber: "",
+      raceName: "",
+      generationDetails: "",
+      laidOnDate: "",
     });
   };
+
+  const [lot ,setLot] = useState({
+    lotNumber: "",
+    raceName: "",
+    generationDetails: "",
+    laidOnDate: "",
+  })
+
+  // To Get Lot Number
+  const [lotNumberListData, setLotNumberListData] = useState([]);
+
+  const getLotNumberList = () => {
+    const response = api
+      .get(baseURL + `lot-number-master/get-lot-after-rearing`)
+      .then((response) => {
+        setLotNumberListData(response.data);
+      })
+      .catch((err) => {
+        setLotNumberListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotNumberList();
+  }, []);
+
+  const getRearingList = (_id) => {
+    const response = api
+      .get(baseURL + `lot-number-master/get-lot-after-rearing-by-id/${_id}`)
+      .then((response) => {
+        if (response.data) {
+          setLot(response.data);
+          
+        }
+      })
+      .catch((err) => {
+      });
+  };
+ 
+  // to get Grainage
+  const [grainageListData, setGrainageListData] = useState([]);
+
+  const getGrainageList = () => {
+    const response = api
+      .get(baseURL2 + `grainageMaster/get-all`)
+      .then((response) => {
+        setGrainageListData(response.data.content.grainageMaster);
+      })
+      .catch((err) => {
+        setGrainageListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGrainageList();
+  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = (message) => {
@@ -167,33 +222,82 @@ function SupplyofCocoonstoGrainage() {
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Lot Number</Form.Label>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Lot Number
+                    </Form.Label>
+                    <Col>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="lotNumber"
-                          name="lotNumber"
-                          value={data.lotNumber}
+                        <Form.Select
+                          name="lotNumberId"
+                          value={data.lotNumberId}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Lot Number "
-                          required
-                        />
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotNumberListData.map((list) => (
+                            <option key={list.id} value={list.id}>
+                              {list.lotNumber}
+                            </option>
+                          ))}
+                        </Form.Select>
                       </div>
-                    </Form.Group>
-                  </Col>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">Race of Cocoons</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="raceOfCocoons"
-                          name="raceOfCocoons"
-                          value={data.raceOfCocoons}
+                          id="raceName"
+                          name="raceName"
+                          value={lot.raceName}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Race of Cocoons"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="generationDetails">
+                        Generation details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="generationDetails"
+                          name="generationDetails"
+                          value={lot.generationDetails}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Generation details"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Laid On Date
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="laidOnDate"
+                          name="laidOnDate"
+                          value={lot.laidOnDate}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Laid On Date"
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -217,25 +321,9 @@ function SupplyofCocoonstoGrainage() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Generation details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
-                          name="generationDetails"
-                          value={data.generationDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Generation details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">Generate Invoice</Form.Label>
                       <div className="form-control-wrap">
@@ -249,9 +337,9 @@ function SupplyofCocoonstoGrainage() {
                         />
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">View Reciept</Form.Label>
                       <div className="form-control-wrap">
@@ -265,9 +353,9 @@ function SupplyofCocoonstoGrainage() {
                         />
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">Spun on date</Form.Label>
                       <div className="form-control-wrap">
@@ -285,7 +373,36 @@ function SupplyofCocoonstoGrainage() {
                         />
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
+
+                  <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Grainage<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="grainageId"
+                          value={data.grainageId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                        >
+                          <option value="">Select Grainage</option>
+                          {grainageListData.map((list) => (
+                            <option
+                              key={list.grainageMasterId}
+                              value={list.grainageMasterId}
+                            >
+                              {list.grainageMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">

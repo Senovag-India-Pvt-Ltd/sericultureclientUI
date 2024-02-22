@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -16,8 +16,9 @@ function ReelerTransactionReports() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
-    allottedLotId: "",
-    auctionDate: "",
+    reportFromDate: new Date(),
+    reelerNumber: "",
+    reportToDate:new Date()
   });
   console.log("printBid", data);
 
@@ -30,11 +31,17 @@ function ReelerTransactionReports() {
     setData({ ...data, [name]: value });
   };
 
-  const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+  const handleFromDateChange = (date) => {
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
+
+  const handleToDateChange = (date) => {
+    setData((prev) => ({ ...prev, reportToDate: date }));
+  };
+
   useEffect(() => {
-    handleDateChange(new Date());
+    handleFromDateChange(new Date());
+    handleToDateChange(new Date());
   }, []);
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
@@ -59,14 +66,21 @@ function ReelerTransactionReports() {
   // };
 
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
+    const { marketId, godownId, reelerNumber, reportFromDate, reportToDate } =
+      data;
+    const formattedFromDate =
+      reportFromDate.getFullYear() +
       "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      newDate.getDate().toString().padStart(2, "0");
+      reportFromDate.getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+      reportToDate.getFullYear() +
+      "-" +
+      (reportToDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      reportToDate.getDate().toString().padStart(2, "0");
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -76,27 +90,33 @@ function ReelerTransactionReports() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      axios
+      api
         .post(
-          `https://api.senovagseri.com/reports/gettripletpdf`,
+          `https://api.senovagseri.com/reports-uat/marketreport/get-reeler-txn-report`,
           {
             marketId: marketId,
             godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
+            reportFromDate: formattedFromDate,
+            reportToDate: formattedToDate,
+            reelerNumber: reelerNumber,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
           }
         )
         .then((response) => {
+          console.log(response.data.size);
+          if (response.data.size > 200) {
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "No Record Found",
+            });
+          }
           //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
         })
         .catch((error) => {
           // console.log("error", error);
@@ -168,9 +188,9 @@ function ReelerTransactionReports() {
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
+                          id="reelerNumber"
+                          name="reelerNumber"
+                          value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Reeler Number"
@@ -188,8 +208,8 @@ function ReelerTransactionReports() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.reportFromDate}
+                            onChange={handleFromDateChange}
                           />
                         </div>
                       </Col>
@@ -201,8 +221,8 @@ function ReelerTransactionReports() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.reportToDate}
+                            onChange={handleToDateChange}
                           />
                         </div>
                       </Col>

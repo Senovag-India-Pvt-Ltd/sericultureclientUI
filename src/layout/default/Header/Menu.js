@@ -367,6 +367,10 @@ function Menu() {
     Admin_Report_DTR: false,
     Admin_Report_Unit: false,
     Admin_Report_Pending: false,
+    Admin_Report_Bidding_Report: false,
+    Admin_Report_Bidding_Reeler_Report: false,
+    Admin_Report_Farmer_Transaction_Report:false,
+    Admin_Report_Reeler_Transaction_Report:false,
   });
 
   // Old show menu using mapcode
@@ -1261,7 +1265,7 @@ function Menu() {
           {showMenu.ChawkiManagement_ChawkiManagement ? (
             <MenuItem>
               <MenuItemLink
-                text="Chawki Management"
+                text="Sale Of Chawki Worms"
                 to="/seriui/chawki-management"
               />
             </MenuItem>
@@ -1836,15 +1840,15 @@ function Menu() {
                     <MenuSub>
                       {showMenu.Admin_Master_Garden_Line ? (
                         <MenuItem>
-                          <MenuItemLink text="Line Name" to="/seriui/lineName" />
+                          <MenuItemLink
+                            text="Line Name"
+                            to="/seriui/lineName"
+                          />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Garden_Grainage ? (
                         <MenuItem>
-                          <MenuItemLink
-                            text="Grainage"
-                            to="/seriui/grainage"
-                          />
+                          <MenuItemLink text="Grainage" to="/seriui/grainage" />
                         </MenuItem>
                       ) : null}
                       {showMenu.Admin_Master_Garden_Disinfectant ? (
@@ -1865,10 +1869,7 @@ function Menu() {
                       ) : null}
                       {showMenu.Admin_Master_Garden_Farm ? (
                         <MenuItem>
-                          <MenuItemLink
-                            text="Farm"
-                            to="/seriui/farm"
-                          />
+                          <MenuItemLink text="Farm" to="/seriui/farm" />
                         </MenuItem>
                       ) : null}
                     </MenuSub>
@@ -2041,14 +2042,14 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null}
-                {showMenu.Admin_Report_Transaction ? (
+                {/* {showMenu.Admin_Report_Transaction ? (
                   <MenuItem>
                     <MenuItemLink
                       text="Reeler Transaction Report"
                       to="/seriui/reeler-transaction-report"
                     />
                   </MenuItem>
-                ) : null}
+                ) : null} */}
                 {showMenu.Admin_Report_Dashboard ? (
                   <MenuItem>
                     <MenuItemLink text="Dashboard" to="/seriui/bid-dashboard" />
@@ -2072,6 +2073,38 @@ function Menu() {
                     <MenuItemLink
                       text="Pending Report"
                       to="/seriui/pending-reports"
+                    />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Bidding_Report ? (
+                  <MenuItem>
+                    <MenuItemLink
+                      text="Bidding Report"
+                      to="/seriui/bidding-report"
+                    />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Bidding_Reeler_Report ? (
+                  <MenuItem>
+                    <MenuItemLink
+                      text="Reeler Bidding Report"
+                      to="/seriui/bidding-report-reeler"
+                    />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Farmer_Transaction_Report ? (
+                  <MenuItem>
+                    <MenuItemLink
+                      text="Farmer Transaction Report"
+                      to="/seriui/farmer-transaction-report"
+                    />
+                  </MenuItem>
+                ) : null}
+                {showMenu.Admin_Report_Reeler_Transaction_Report ? (
+                  <MenuItem>
+                    <MenuItemLink
+                      text="Reeler Transaction Report"
+                      to="/seriui/reeler-transaction-reports"
                     />
                   </MenuItem>
                 ) : null}

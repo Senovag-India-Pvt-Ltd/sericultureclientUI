@@ -16,7 +16,7 @@ const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 function PendingReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    godownId: localStorage.getItem("godownId"),
+    godownId: 0,
     reportFromDate: new Date(),
   });
   console.log("printBid", data);
@@ -103,6 +103,37 @@ function PendingReport() {
   //       });
   //   }
   // };
+
+  const generatePendingReport = async () => {
+    const { reportFromDate } = data;
+    const formattedPendingDate =
+      reportFromDate.getFullYear() +
+      "-" +
+      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      reportFromDate.getDate().toString().padStart(2, "0");
+
+    try {
+      const response = await api.post(
+        `https://api.senovagseri.com/reports-uat/marketreport/get-pending-report`,
+        {
+          marketId: data.marketId,
+          godownId: data.godownId,
+          reportFromDate: formattedPendingDate,
+          lotId: 0,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
 
   const [pendingData, setPendingData] = useState([]);
 
@@ -268,6 +299,23 @@ function PendingReport() {
               <div
               //  className={isActive ? "" : "d-none"}
               >
+                <Row className="d-flex justify-content-end mt-2">
+                  <Col sm={2}>
+                    {/* <Button
+                          type="button"
+                          variant="primary"
+                          onClick={display}
+                        > */}
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="sm"
+                      onClick={generatePendingReport}
+                    >
+                      Print
+                    </Button>
+                  </Col>
+                </Row>
                 <Row className="g-gs pt-2">
                   <Col lg="12">
                     <table className="table table-striped table-bordered">

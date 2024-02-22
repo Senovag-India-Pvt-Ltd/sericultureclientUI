@@ -55,7 +55,7 @@ function ChawkiManagementEdit() {
         .post(baseURL + `chowkimanagement/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            updateError();
+            updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
@@ -83,7 +83,9 @@ function ChawkiManagementEdit() {
           }
         })
         .catch((err) => {
-          updateError();
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -290,13 +292,19 @@ function ChawkiManagementEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/chawki-management"));
+    });
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: message,
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
   const editError = (message) => {
@@ -606,7 +614,7 @@ function ChawkiManagementEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Sold after 1st/2nd Moult
+                              Sold after 1st/2nd/3rd Moult
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -615,7 +623,7 @@ function ChawkiManagementEdit() {
                                   value={data.soldAfter1stOr2ndMould}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Sold after 1st/2nd Moult"
+                                  placeholder="Enter Sold after 1st/2nd/3rd Moult"
                                   required
                                 />
                               </div>

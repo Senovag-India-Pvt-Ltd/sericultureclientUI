@@ -1072,8 +1072,8 @@ function Router() {
               element={<MaintenanceandSaleofNurserytoFarmersEdit />}
             />
              <Route
-              path="maintenance-and-sale-of-nursery-edit/:id"
-              element={<MaintenanceandSaleofNurserytoFarmersEdit />}
+              path="maintenance-and-sale-of-nursery-view/:id"
+              element={<MaintenanceAndSaleOfNurseryToFarmersView />}
             />
 
           <Route path="maintenance-and-sale-of-nursery-list" element={<MaintenanceandSaleofNurserytoFarmersList />} />

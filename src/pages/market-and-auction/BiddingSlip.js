@@ -142,7 +142,9 @@ function BiddingSlip() {
       })
       .catch((err) => {
         console.error("Error fetching farmer details:", err);
-        searchError(err.response.data.validationErrors);
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          searchError(err.response.data.validationErrors);
+        }
         setFarmerDetails({});
         setLoading(false);
       });
@@ -592,10 +594,16 @@ function BiddingSlip() {
   };
 
   const searchError = (message = "Something went wrong!") => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 

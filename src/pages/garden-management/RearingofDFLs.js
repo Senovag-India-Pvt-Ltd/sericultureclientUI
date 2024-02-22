@@ -31,6 +31,7 @@ function RearingofDFLs() {
     cocoonAssessmentDetails: "",
   });
 
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -38,11 +39,11 @@ function RearingofDFLs() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+    if(name=== "lotNumberId"){
+      getSourceList(value);
+    }
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
-
+  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -100,9 +101,22 @@ function RearingofDFLs() {
       wormTestDetails: "",
       cocoonAssessmentDetails: "",
     });
+    setLot({
+    raceOfDfls: "",
+    grainage: "",
+    numberOfDFLsReceived: "",
+    laidOnDate: "",});
   };
 
-  // to get Lot Number
+ 
+
+  const [lot ,setLot] = useState({
+    raceOfDfls: "",
+    grainage: "",
+    numberOfDFLsReceived: "",
+    laidOnDate: "",
+  })
+
   const [lotNumberListData, setLotNumberListData] = useState([]);
 
   const getLotNumberList = () => {
@@ -119,6 +133,22 @@ function RearingofDFLs() {
   useEffect(() => {
     getLotNumberList();
   }, []);
+
+  const getSourceList = (_id) => {
+    const response = api
+      .get(baseURL2 + `lot-number-master/get-info-by-id/${_id}`)
+      .then((response) => {
+        if (response.data) {
+          setLot(response.data);
+          
+        }
+      })
+      .catch((err) => {
+      });
+  };
+ 
+  
+
 
   // to get DisInfactant Variety
   const [disinfactantListData, setDisinfactantListData] = useState([]);
@@ -282,7 +312,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Lot Number<span className="text-danger">*</span>
+                      Lot Number
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -294,7 +324,7 @@ function RearingofDFLs() {
                         >
                           <option value="">Select Lot Number</option>
                           {lotNumberListData.map((list) => (
-                            <option key={list.lotNumber} value={list.lotNumber}>
+                            <option key={list.id} value={list.id}>
                               {list.lotNumber}
                             </option>
                           ))}
@@ -306,25 +336,185 @@ function RearingofDFLs() {
 
                 {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="plotNumber">
-                      Number Of DFLs<span className="text-danger">*</span>
+                    <Form.Label>
+                      Source
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="numberOfDFLs"
-                        name="numberOfDFLs"
-                        value={data.numberOfDFLs}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Number Of DFLs"
-                        required
-                      />
-                    </div>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="grainage"
+                          value={lot.grainage}
+                          onChange={handleInputs}
+                          // onBlur={() => handleInputs}
+                          disabled
+                        >
+                          <option value="">Select Source</option>
+                          {sourceListData.map((list) => (
+                            <option key={list.grainage} value={list.grainage}>
+                              {list.grainage}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
                   </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    Number Of DFLs is required
-                  </Form.Control.Feedback>
+                </Col>
+
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Number Of DFLs
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="numberOfDFLsReceived"
+                          value={lot.numberOfDFLsReceived}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          disabled
+                        >
+                          <option value="">Select No Of DFLs</option>
+                          {dflsListData.map((list) => (
+                            <option key={list.numberOfDFLsReceived} value={list.numberOfDFLsReceived}>
+                              {list.numberOfDFLsReceived}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Race Of DFLs
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="raceOfDfls"
+                          value={lot.raceOfDfls}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          disabled
+                        >
+                          <option value="">Select Race Of DFLs</option>
+                          {raceListData.map((list) => (
+                            <option key={list.raceOfDfls} value={list.raceOfDfls}>
+                              {list.raceOfDfls}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Laid On Date
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="laidOnDate"
+                          value={lot.laidOnDate}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          disabled
+                        >
+                          <option value="">Select Laid On Date</option>
+                          {laidListData.map((list) => (
+                            <option key={list.laidOnDate} value={list.laidOnDate}>
+                              {list.laidOnDate}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                  </Form.Group>
                 </Col> */}
+
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Race Of Dfls
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="raceOfDfls"
+                          name="raceOfDfls"
+                          value={lot.raceOfDfls}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Race Of Dfls"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Source
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="grainage"
+                          name="grainage"
+                          value={lot.grainage}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Source"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        No Of DFLs received
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="numberOfDFLsReceived"
+                          name="numberOfDFLsReceived"
+                          value={lot.numberOfDFLsReceived}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Number Of DFLs"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="plotNumber">
+                        Laid On Date
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="laidOnDate"
+                          name="laidOnDate"
+                          value={lot.laidOnDate}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Laid On Date"
+                          readOnly
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
