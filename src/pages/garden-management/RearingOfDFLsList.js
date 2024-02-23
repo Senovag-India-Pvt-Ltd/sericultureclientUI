@@ -177,7 +177,7 @@ function RearingOfDFLsList() {
       ),
       sortable: false,
       hide: "md",
-      grow: "2",
+      grow: 2,
     },
     {
       name: " Disinfectant Usage Details",

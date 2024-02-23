@@ -178,6 +178,7 @@ function ReceiptOfDFLsList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Race Of DFLs",

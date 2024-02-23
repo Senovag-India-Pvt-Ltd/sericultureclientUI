@@ -270,7 +270,7 @@ function MaintenanceandSaleofNurserytoFarmersList() {
       ),
       sortable: false,
       hide: "md",
-      grow:2
+      grow: 2,
     },
   ];
   return (
