@@ -91,7 +91,7 @@ function BiddingReport() {
         )
         .then((response) => {
           console.log(response.data.size);
-          if (response.data.size > 200) {
+          if (response.data.size > 800) {
             const file = new Blob([response.data], { type: "application/pdf" });
             const fileURL = URL.createObjectURL(file);
             window.open(fileURL);

@@ -16,8 +16,8 @@ function BiddingReportReeler() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
-    allottedLotId: "",
-    auctionDate: "",
+    reportFromDate: new Date(),
+    reelerNumber: "",
   });
   console.log("printBid", data);
 
@@ -31,7 +31,7 @@ function BiddingReportReeler() {
   };
 
   const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -59,8 +59,8 @@ function BiddingReportReeler() {
   // };
 
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
+    const { marketId, godownId, reportFromDate, reelerNumber } = data;
+    const newDate = new Date(reportFromDate);
     const formattedDate =
       newDate.getFullYear() +
       "-" +
@@ -83,7 +83,7 @@ function BiddingReportReeler() {
             marketId: marketId,
             godownId: godownId,
             reportFromDate: formattedDate,
-            reelerNumber:0,
+            reelerNumber: reelerNumber,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
@@ -91,7 +91,7 @@ function BiddingReportReeler() {
         )
         .then((response) => {
           console.log(response.data.size);
-          if (response.data.size > 200) {
+          if (response.data.size > 800) {
             const file = new Blob([response.data], { type: "application/pdf" });
             const fileURL = URL.createObjectURL(file);
             window.open(fileURL);
@@ -169,20 +169,20 @@ function BiddingReportReeler() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Lot Number<span className="text-danger">*</span>
+                        Reeler Number<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
+                          id="reelerNumber"
+                          name="reelerNumber"
+                          value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot Number"
+                          placeholder="Enter Reeler Number"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot Number is required.
+                          Reeler Number is required.
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={1}>
@@ -193,7 +193,7 @@ function BiddingReportReeler() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
+                            selected={data.reportFromDate}
                             onChange={handleDateChange}
                           />
                         </div>
