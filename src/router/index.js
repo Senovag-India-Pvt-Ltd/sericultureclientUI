@@ -537,6 +537,8 @@ import FarmView from "../pages/masters/farm/FarmView";
 import FarmEdit from "../pages/masters/farm/FarmEdit";
 import TraineeAttendancePage from "../pages/training-schedule/TraineeAttendancePage";
 
+import OtherStateFarmer from "../pages/stake-holder/OtherStateFarmer";
+import ActivateExternalUnit from "../pages/stake-holder/external-units/ActivateExternalUnit";
 
 // Admin and Reports
 
@@ -694,6 +696,7 @@ function Router() {
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
             />
+            <Route path="other-state-farmer" element={<OtherStateFarmer />} />
             <Route path="stake-holder-list" element={<StakeHolderList />} />
             <Route
               path="stake-holder-view/:id"
@@ -736,6 +739,10 @@ function Router() {
             <Route
               path="issue-new-trader-license-edit/:id"
               element={<NewTraderLicenseEdit />}
+            />
+            <Route
+              path="activate-external-unit"
+              element={<ActivateExternalUnit />}
             />
             <Route
               path="external-unit-registration"
@@ -932,13 +939,16 @@ function Router() {
               element={<SaleChawkiWormsView />}
             />
             <Route path="chawki-management" element={<ChawkiManagement />} />
-            <Route path="chawki-management-list" element={<ChawkiManagementList />} />
+            <Route
+              path="chawki-management-list"
+              element={<ChawkiManagementList />}
+            />
 
             <Route
               path="chawki-management-edit/:id"
               element={<ChawkiManagementEdit />}
             />
-             <Route
+            <Route
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
             />
@@ -1023,7 +1033,7 @@ function Router() {
               path="maintenance-of-mulberry-garden-alert/:id"
               element={<MaintenanceOfMulberryGardenAlert />}
             />
-          
+
             <Route
               path="receipt-of-dfls"
               element={<ReceiptofDFLsfromthegrainage />}
@@ -1058,7 +1068,10 @@ function Router() {
               path="Supply-of-Cocoons-to-Grainagee"
               element={<SupplyofCocoonstoGrainage />}
             />
-            <Route path="supply-of-cocoons-to-grainage-list" element={<SupplyOfCocoonsToGrainageList />} />
+            <Route
+              path="supply-of-cocoons-to-grainage-list"
+              element={<SupplyOfCocoonsToGrainageList />}
+            />
             <Route
               path="supply-of-cocoons-to-grainage-edit/:id"
               element={<SupplyofCocoonstoGrainageEdit />}
@@ -1070,27 +1083,35 @@ function Router() {
             <Route
               path="Maintenance-and-Sale-of-Nursery-to-Farmers"
               element={<MaintenanceandSaleofNurserytoFarmers />}
-
-            />      
+            />
             <Route
               path="maintenance-and-sale-of-nursery-edit/:id"
               element={<MaintenanceandSaleofNurserytoFarmersEdit />}
             />
-             <Route
+            <Route
               path="maintenance-and-sale-of-nursery-view/:id"
               element={<MaintenanceAndSaleOfNurseryToFarmersView />}
             />
 
-          <Route path="maintenance-and-sale-of-nursery-list" element={<MaintenanceandSaleofNurserytoFarmersList />} />
+            <Route
+              path="maintenance-and-sale-of-nursery-list"
+              element={<MaintenanceandSaleofNurserytoFarmersList />}
+            />
 
-           <Route path="chawki-distribution" element={<ChawkidistributiontoFarmers />} />
-            <Route path="chawki-distribution-list" element={<ChawkidistributiontoFarmersList />} />
+            <Route
+              path="chawki-distribution"
+              element={<ChawkidistributiontoFarmers />}
+            />
+            <Route
+              path="chawki-distribution-list"
+              element={<ChawkidistributiontoFarmersList />}
+            />
 
             <Route
               path="chawki-distribution-edit/:id"
               element={<ChawkidistributiontoFarmersEdit />}
             />
-             <Route
+            <Route
               path="chawki-distribution-view/:id"
               element={<ChawkidistributiontoFarmersView />}
             />
@@ -1331,18 +1352,33 @@ function Router() {
             <Route path="lineName-list" element={<LineNameList />} />
             <Route path="lineName-view/:id" element={<LineNameView />} />
             <Route path="lineName-edit/:id" element={<LineNameEdit />} />
-            <Route path="disinfectant" element={<Disinfectant/>} />
+            <Route path="disinfectant" element={<Disinfectant />} />
             <Route path="disinfectant-list" element={<DisinfectantList />} />
-            <Route path="disinfectant-view/:id" element={<DisinfectantView />} />
-            <Route path="disinfectant-edit/:id" element={<DisinfectantEdit />} />
+            <Route
+              path="disinfectant-view/:id"
+              element={<DisinfectantView />}
+            />
+            <Route
+              path="disinfectant-edit/:id"
+              element={<DisinfectantEdit />}
+            />
             <Route path="grainage" element={<Grainage />} />
             <Route path="grainage-list" element={<GrainageList />} />
             <Route path="grainage-view/:id" element={<GrainageView />} />
             <Route path="grainage-edit/:id" element={<GrainageEdit />} />
             <Route path="generation-number" element={<GenerationNumber />} />
-            <Route path="generation-number-list" element={<GenerationNumberList />} />
-            <Route path="generation-number-view/:id" element={<GenerationNumberView />} />
-            <Route path="generation-number-edit/:id" element={<GenerationNumberEdit />} />
+            <Route
+              path="generation-number-list"
+              element={<GenerationNumberList />}
+            />
+            <Route
+              path="generation-number-view/:id"
+              element={<GenerationNumberView />}
+            />
+            <Route
+              path="generation-number-edit/:id"
+              element={<GenerationNumberEdit />}
+            />
             <Route path="farm" element={<Farm />} />
             <Route path="farm-list" element={<FarmList />} />
             <Route path="farm-view/:id" element={<FarmView />} />
