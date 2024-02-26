@@ -535,6 +535,7 @@ import Farm from "../pages/masters/farm/Farm";
 import FarmList from "../pages/masters/farm/FarmList";
 import FarmView from "../pages/masters/farm/FarmView";
 import FarmEdit from "../pages/masters/farm/FarmEdit";
+import TraineeAttendancePage from "../pages/training-schedule/TraineeAttendancePage";
 
 
 // Admin and Reports
@@ -765,6 +766,10 @@ function Router() {
             <Route
               path="training-schedule-edit/:id"
               element={<TrainingScheduleEdit />}
+            />
+            <Route
+              path="trainee-attendance-page/:id"
+              element={<TraineeAttendancePage />}
             />
             <Route path="trainer-page" element={<TrainerPage />} />
             <Route path="trainer-page-edit/:id" element={<TrainerPageEdit />} />

@@ -141,10 +141,6 @@ function TrainingScheduleView() {
                         <td>{trainingSchedule.trScheduleId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{trainingSchedule.username}</td>
-                      </tr>
-                      <tr>
                         <td style={styles.ctstyle}>Training Institution:</td>
                         <td>{trainingSchedule.trInstitutionMasterName}</td>
                       </tr>
@@ -233,7 +229,13 @@ function TrainingScheduleView() {
                             <td style={styles.ctstyle}>
                               User Name:
                             </td>
-                            <td>{trainerUser.trainerName}</td>
+                            <td>{trainerUser.username}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              Institution Name:
+                            </td>
+                            <td>{trainerUser.trInstitutionMasterName}</td>
                           </tr>
                         </tbody>
                       </table>

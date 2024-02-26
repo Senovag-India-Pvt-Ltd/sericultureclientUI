@@ -72,26 +72,14 @@ function TrainingScheduleEdit() {
         .catch((err) => {
           getTrainerUserDetailsList();
           if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+            updateError(err.response.data.validationErrors);
           }
         });
       setValidatedTrainerUser(true);
     }
   };
 
-  const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      html: errorMessage,
-    });
-  };
+  
 
   // TrainerUser
   const handleTrainerUserOption = (e) => {
@@ -282,6 +270,7 @@ function TrainingScheduleEdit() {
 
   useEffect(() => {
     getIdList();
+    getTrainerUserDetailsList();
   }, [id]);
 
   // to get Tr User
@@ -507,11 +496,12 @@ function TrainingScheduleEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-1 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>Schedule Training</Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -585,7 +575,7 @@ function TrainingScheduleEdit() {
                     </Col> */}
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Group<span className="text-danger">*</span>
                         </Form.Label>
@@ -619,7 +609,7 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Program<span className="text-danger">*</span>
                         </Form.Label>
@@ -653,7 +643,7 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Course<span className="text-danger">*</span>
                         </Form.Label>
@@ -687,7 +677,7 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Mode<span className="text-danger">*</span>
                         </Form.Label>
@@ -721,7 +711,7 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="trDuration">
                           Training Duration(In Hours)
                         </Form.Label>
@@ -739,7 +729,7 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="trPeriod">
                           Training Period(In Days)
                         </Form.Label>
@@ -983,7 +973,7 @@ function TrainingScheduleEdit() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
 
@@ -1000,7 +990,7 @@ function TrainingScheduleEdit() {
           >
             <Row className="g-5 px-5">
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     User<span className="text-danger">*</span>
                   </Form.Label>
@@ -1036,45 +1026,9 @@ function TrainingScheduleEdit() {
                 </Form.Group>
               </Col>
 
-              <Col lg="6">
-                <Form.Group className="form-group mt-3">
-                  <Form.Label>
-                    User<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="userMasterId"
-                      // value={vbAccount.marketMasterId}
-                      value={`${trainerUser.userMasterId}_${trainerUser.username}`}
-                      onChange={handleTrainerUserOption}
-                      onBlur={() => handleTrainerUserOption}
-                      required
-                      isInvalid={
-                        trainerUser.userMasterId === undefined ||
-                        trainerUser.userMasterId === "0"
-                      }
-                    >
-                      <option value="">Select Trainer</option>
-                      {trUserListData.length
-                        ? trUserListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={`${list.userMasterId}_${list.username}`}
-                            >
-                              {list.username}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      User is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     Training Institution<span className="text-danger">*</span>
                   </Form.Label>

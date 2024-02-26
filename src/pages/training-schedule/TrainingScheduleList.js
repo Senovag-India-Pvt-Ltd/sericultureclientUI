@@ -236,13 +236,6 @@ function TrainingScheduleList() {
       hide: "md",
     },
     {
-      name: "User Name",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Date",
       selector: (row) => row.trStartDate,
       cell: (row) => <span>{row.trStartDate}</span>,

@@ -109,6 +109,11 @@ function TrainerPageList() {
     // navigate("/seriui/state");
   };
 
+  const handleAttendance = (_id) => {
+    navigate(`/seriui/trainee-attendance-page/${_id}`);
+    // navigate("/seriui/state");
+  };
+
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -221,18 +226,19 @@ function TrainerPageList() {
           >
             Edit
           </Button>
-          {/* <Button
-            variant="danger"
+          <Button
+            variant="primary"
             size="sm"
-            onClick={() => deleteConfirm(row.trScheduleId)}
+            onClick={() => handleAttendance(row.trScheduleId)}
             className="ms-2"
           >
-            Delete
-          </Button> */}
+            Attendance
+          </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
+      grow:2,
     },
     {
       name: "Training Schedule Id",

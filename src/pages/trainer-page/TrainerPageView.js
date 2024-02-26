@@ -212,12 +212,7 @@ function TrainerPageView() {
         <Card className="mt-3">
           <Card.Header>Trainee Details</Card.Header>
           <Card.Body>
-            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
-          {vbAccountList && vbAccountList.length > 0 ? (
-            vbAccountList.map((vbAccount) => (
-              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
-            {/* <Row className="g-gs"> */}
+           
             {trDetailsList && trDetailsList.length > 0
               ? trDetailsList.map((trDetails) => (
                   <Row className="g-gs">
