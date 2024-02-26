@@ -674,9 +674,7 @@ function TrainingSchedule() {
                       
                       <DatePicker
                         selected={data.trStartDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "trStartDate")
-                        }
+                        onChange={(date) => handleDateChange(date, "trStartDate")}
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown
@@ -709,7 +707,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+           Tra         <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
                         Upload PPT/Video
                       </Form.Label>

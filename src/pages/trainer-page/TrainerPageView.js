@@ -5,6 +5,7 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
+import { format } from 'date-fns';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -23,14 +24,11 @@ function TrainerPageView() {
   const [trTrainer, setTrTrainer] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // const [vbAccount, setVbAccount] = useState({});
-  // const [loadingVbAccount, setLoadingVbAccount] = useState(false);
-
-  // // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  //   let findUser = data.find((item) => item.id === id);
-  //   setDistrict(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
 
   const getIdList = () => {
     setLoading(true);
@@ -148,10 +146,10 @@ function TrainerPageView() {
                       <td style={styles.ctstyle}>User Name:</td>
                       <td>{trTrainer.username}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>Institute Name:</td>
                       <td>{trTrainer.trInstitutionMasterName}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}> Group Name:</td>
                       <td>{trTrainer.trGroupMasterName}</td>
@@ -171,11 +169,11 @@ function TrainerPageView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Start Date:</td>
-                      <td>{trTrainer.trStartDate}</td>
+                      <td>{formatDate(trTrainer.trStartDate)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Date Of Completion:</td>
-                      <td>{trTrainer.trDateOfCompletion}</td>
+                      <td>{formatDate(trTrainer.trDateOfCompletion)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Duration:</td>

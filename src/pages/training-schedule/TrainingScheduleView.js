@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { format } from 'date-fns';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -24,11 +25,11 @@ function TrainingScheduleView() {
   const [trainingSchedule, setTrainingSchedule] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabsthe id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
 
   const getIdList = () => {
     setLoading(true);
@@ -140,10 +141,10 @@ function TrainingScheduleView() {
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{trainingSchedule.trScheduleId}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Training Institution:</td>
                         <td>{trainingSchedule.trInstitutionMasterName}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Training Group:</td>
                         <td>{trainingSchedule.trGroupMasterName}</td>
@@ -174,11 +175,11 @@ function TrainingScheduleView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Training Start Date:</td>
-                        <td>{trainingSchedule.trStartDate}</td>
+                        <td>{formatDate(trainingSchedule.trStartDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date Of Completion:</td>
-                        <td>{trainingSchedule.trDateOfCompletion}</td>
+                        <td>{formatDate(trainingSchedule.trDateOfCompletion)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> Uploaded PPt/Video:</td>

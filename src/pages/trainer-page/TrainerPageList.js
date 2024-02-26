@@ -9,7 +9,7 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
-// import axios from "axios";
+import { format } from 'date-fns';
 import api from "../../services/auth/api";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -26,7 +26,7 @@ function TrainerPageList() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "username",
+    searchBy: "trStartDate",
   });
 
   const handleInputs = (e) => {
@@ -38,11 +38,11 @@ function TrainerPageList() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "username") {
-      joinColumn = "userMaster.username";
+    if (data.searchBy === "trStartDate") {
+      joinColumn = "trSchedule.trStartDate";
     }
-    if (data.searchBy === "trScheduleId") {
-      joinColumn = "trSchedule.trScheduleId";
+    if (data.searchBy === "trGroupMasterName") {
+      joinColumn = "trGroupMaster.trGroupMasterName";
     }
     // console.log(joinColumn);
     api
@@ -201,6 +201,12 @@ function TrainerPageList() {
     },
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   const TrTraineeLicenseDataColumns = [
     {
       name: "Action",
@@ -250,17 +256,17 @@ function TrainerPageList() {
     {
       name: "Date",
       selector: (row) => row.trStartDate,
-      cell: (row) => <span>{row.trStartDate}</span>,
+      cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Training Institution Name",
-      selector: (row) => row.trInstitutionMasterName,
-      cell: (row) => <span>{row.trInstitutionMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Training Institution Name",
+    //   selector: (row) => row.trInstitutionMasterName,
+    //   cell: (row) => <span>{row.trInstitutionMasterName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Training Group Name",
       selector: (row) => row.trGroupMasterName,
@@ -339,8 +345,8 @@ function TrainerPageList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="username">User Name</option>
-                      <option value="trScheduleId">Training Schedule</option>
+                      <option value="trStartDate">Start Date</option>
+                      <option value="trGroupMasterName">Training Group</option>
                     </Form.Select>
                   </div>
                 </Col>
