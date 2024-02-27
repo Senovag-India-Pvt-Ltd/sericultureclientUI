@@ -126,9 +126,7 @@ function TrainingSchedule() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
+ 
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -372,18 +370,7 @@ function TrainingSchedule() {
     getTrModeList();
   }, []);
 
-  //  // const YourFormComponent = ({ data, handleDateChange }) => {
-  //   const handleRenewedDateChange = (date) => {
-  //     // Calculate expiration date by adding 3 years to the renewed date
-  //     const expirationDate = new Date(date);
-  //     expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-
-  //     setData({
-  //       ...data,
-  //       receiptDate: date,
-  //       licenseExpiryDate: expirationDate,
-  //     });
-  //   };
+  
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -433,11 +420,6 @@ function TrainingSchedule() {
     });
   };
   const saveError = (message) => {
-    // Swal.fire({
-    //   icon: "error",
-    //   title: "Save attempt was not successful",
-    //   html: Object.values(message).join("<br>"),
-    // });
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -452,11 +434,11 @@ function TrainingSchedule() {
   };
 
   return (
-    <Layout title="Training Schedule">
+    <Layout title="Schedule Training">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule</Block.Title>
+            <Block.Title tag="h2">Schedule Training</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -483,77 +465,18 @@ function TrainingSchedule() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-1 "> */}
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>Schedule Training</Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {trUserListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>Training Institution</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="trInstitutionMasterId"
-                          value={data.trInstitutionMasterId}
-                          onChange={handleInputs}
-                          // onBlur={() => handleInputs}
-                          // required
-                          // isInvalid={data.trInstitutionMasterId === undefined || data.trInstitutionMasterId === "0"}
-                        >
-                          <option value="">Select Institution</option>
-                          {trInstituteListData.map((list) => (
-                            <option
-                              key={list.trInstitutionMasterId}
-                              value={list.trInstitutionMasterId}
-                            >
-                              {list.trInstitutionMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        
-                      </div>
-                    </Form.Group>
-                  </Col> */}
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Group<span className="text-danger">*</span>
                       </Form.Label>
@@ -587,7 +510,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Program<span className="text-danger">*</span>
                       </Form.Label>
@@ -621,7 +544,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Course<span className="text-danger">*</span>
                       </Form.Label>
@@ -655,7 +578,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Mode<span className="text-danger">*</span>
                       </Form.Label>
@@ -689,7 +612,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
                         Training Duration(In Hours)
                       </Form.Label>
@@ -707,7 +630,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trPeriod">
                         Training Period(In Days)
                       </Form.Label>
@@ -742,24 +665,16 @@ function TrainingSchedule() {
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group"> */}
                   <Form.Label column sm={2}>
                     Training Period Start Date
                     <span className="text-danger">*</span>
                   </Form.Label>
-                  {/* <Row> */}
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
+                      
                       <DatePicker
                         selected={data.trStartDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "trStartDate")
-                        }
+                        onChange={(date) => handleDateChange(date, "trStartDate")}
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown
@@ -769,22 +684,13 @@ function TrainingSchedule() {
                       />
                     </div>
                   </Col>
-                  {/* </Row> */}
-                  {/* </Form.Group> */}
-
-                  {/* <Row> */}
-                  {/* <Col lg="6"> */}
-                  {/* <Form.Group className="form-group"> */}
+                  
                   <Form.Label column sm={2}>
                     Expected Date of Completion
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <Col sm={2}>
                     <div className="form-control-wrap">
-                      {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
                       <DatePicker
                         selected={data.trDateOfCompletion}
                         onChange={(date) =>
@@ -801,7 +707,7 @@ function TrainingSchedule() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+           Tra         <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
                         Upload PPT/Video
                       </Form.Label>
@@ -828,9 +734,6 @@ function TrainingSchedule() {
                     </Form.Group>
                   </Col>
                 </Row>
-                {/* </Form.Group>
-                  </Col>
-                </Row> */}
               </Card.Body>
             </Card>
 
@@ -917,8 +820,6 @@ function TrainingSchedule() {
                                     </td>
                                     <td>{item.username}</td>
                                     <td>{item.trInstitutionMasterName}</td>
-                                    {/* <td>{item.ifscCode}</td>
-                                    <td>{item.marketMasterName}</td> */}
                                   </tr>
                                 ))}
                               </tbody>
@@ -949,7 +850,7 @@ function TrainingSchedule() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
 
@@ -966,7 +867,7 @@ function TrainingSchedule() {
           >
             <Row className="g-5 px-5">
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     User<span className="text-danger">*</span>
                   </Form.Label>
@@ -1003,7 +904,7 @@ function TrainingSchedule() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     Training Institution<span className="text-danger">*</span>
                   </Form.Label>
@@ -1091,7 +992,7 @@ function TrainingSchedule() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>Edit Trainer</Modal.Title>
         </Modal.Header>
@@ -1104,7 +1005,7 @@ function TrainingSchedule() {
           >
             <Row className="g-5 px-5">
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     User<span className="text-danger">*</span>
                   </Form.Label>
@@ -1141,7 +1042,7 @@ function TrainingSchedule() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group mt-2">
                   <Form.Label>
                     Training Institution<span className="text-danger">*</span>
                   </Form.Label>
