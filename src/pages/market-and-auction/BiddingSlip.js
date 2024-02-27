@@ -150,6 +150,31 @@ function BiddingSlip() {
       });
   };
 
+  const increment = (_farmerId) => {
+    api
+      .post(
+        baseURL2 + `farmer/update-farmer-without-fruits-id-counter`,
+        {farmerId:_farmerId}
+      )
+      .then((response) => {
+        // if (response.data.content.error) {
+        //   saveError(response.data.content.error_description);
+        // } else {
+        //   saveSuccess();
+        //   setData({
+        //     stateName: "",
+        //     stateNameInKannada: "",
+        //   });
+        //   setValidated(false);
+        // }
+      })
+      .catch((err) => {
+        // if (Object.keys(err.response.data.validationErrors).length > 0) {
+        //   saveError(err.response.data.validationErrors);
+        // }
+      });
+  };
+
   // useEffect(() => {
   //   display();
   // }, []);
@@ -255,6 +280,7 @@ function BiddingSlip() {
         const response = await api.post(baseURL + `auction/allot`, data);
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
+          increment(response.data.content.farmerId);
           if (response.data.content.allotedLotList) {
             setAllotedLotList(response.data.content.allotedLotList);
           } else {

@@ -17,7 +17,7 @@ import { isValidDate } from "@fullcalendar/react";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function OtherStateFarmer() {
+function FarmerWithoutFruits() {
   const [data, setData] = useState({
     fruitsId: "",
     firstName: "",
@@ -300,7 +300,7 @@ function OtherStateFarmer() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL2 + `farmer/add-non-karnataka-farmer`, {
+        .post(baseURL2 + `farmer/add-karnataka-farmer-without-fruits-id`, {
           ...data,
           farmerAddressList: [{ ...farmerAddress }],
           farmerBankAccount: { ...bank },
@@ -309,9 +309,7 @@ function OtherStateFarmer() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-            saveSuccess(
-              `Generated Farmer Number ${response.data.content.farmerNumber}`
-            );
+            saveSuccess(`Generated Farmer Number ${response.data.content.farmerNumber}`);
             handleFileUpload(response.data.content.farmerId);
             handleFileDocumentUpload(response.data.content.farmerBankAccountId);
             setValidated(false);
@@ -693,8 +691,7 @@ function OtherStateFarmer() {
     api
       .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
       .then((response) => {
-        console.log(response.data);
-
+        // console.log(response.data);
         if (response.data.content && response.data.content.error) {
           console.log("Error in API response:", response.data.content.error);
           setAddressHobliListData([]);
@@ -934,11 +931,11 @@ function OtherStateFarmer() {
   const { t } = useTranslation();
 
   return (
-    <Layout title="Other State Registration">
+    <Layout title="Farmers Without Fruits ID">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Other State Registration</Block.Title>
+            <Block.Title tag="h2">Farmers Without Fruits ID</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -2092,4 +2089,4 @@ function OtherStateFarmer() {
   );
 }
 
-export default OtherStateFarmer;
+export default FarmerWithoutFruits;

@@ -537,6 +537,7 @@ import FarmView from "../pages/masters/farm/FarmView";
 import FarmEdit from "../pages/masters/farm/FarmEdit";
 import OtherStateFarmer from "../pages/stake-holder/OtherStateFarmer";
 import ActivateExternalUnit from "../pages/stake-holder/external-units/ActivateExternalUnit";
+import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
 
 // Admin and Reports
 
@@ -695,6 +696,10 @@ function Router() {
               element={<StakeHolderRegister />}
             />
             <Route path="other-state-farmer" element={<OtherStateFarmer />} />
+            <Route
+              path="farmer-without-fruits"
+              element={<FarmerWithoutFruits />}
+            />
             <Route path="stake-holder-list" element={<StakeHolderList />} />
             <Route
               path="stake-holder-view/:id"
