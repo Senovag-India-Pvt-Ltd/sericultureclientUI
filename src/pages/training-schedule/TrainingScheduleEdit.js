@@ -223,7 +223,11 @@ function TrainingScheduleEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `trSchedule/edit`, data)
+        .post(baseURL2 + `trSchedule/edit`, {
+          ...data,
+          trStartDate: formattedFromDate,
+          trDateOfCompletion: formattedToDate,
+        })
         .then((response) => {
           const trScheduleId = response.data.content.trScheduleId;
           if (trScheduleId) {
@@ -247,7 +251,7 @@ function TrainingScheduleEdit() {
               trNoOfParticipant: "",
               trUploadPath: "",
               trStartDate: null,
-              trDateOfCompletion: "",
+              trDateOfCompletion: null,
             });
             setValidated(false);
           }
@@ -277,7 +281,7 @@ function TrainingScheduleEdit() {
       trNoOfParticipant: "",
       trUploadPath: "",
       trStartDate: null,
-      trDateOfCompletion: "",
+      trDateOfCompletion: null,
     });
     setPPtFile("");
     setTrainerUser({
@@ -869,6 +873,7 @@ function TrainingScheduleEdit() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            minDate={new Date()}
                             required
                           />
                         )}
