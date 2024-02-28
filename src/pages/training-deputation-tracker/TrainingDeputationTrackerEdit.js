@@ -631,7 +631,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  minDate={new Date(data.deputedFromDate)}
                                   required
                                 />
                               )}

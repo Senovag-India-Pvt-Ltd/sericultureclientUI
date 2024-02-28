@@ -371,6 +371,7 @@ function TrainerPageEdit() {
                 percentageImproved: "",
               });
               setTrDetailsList([]);
+              document.getElementById("trUploadPath").value = "";
               setValidated(false);
             }
           // }
@@ -1296,7 +1297,7 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  minDate={new Date(data.trStartDate)}
                                   required
                                 />
                               )}

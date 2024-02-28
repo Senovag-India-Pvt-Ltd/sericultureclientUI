@@ -275,6 +275,7 @@ function TrainingScheduleEdit() {
               trInstitutionMasterId: "",
             });
             setTrainerUserList([]);
+            document.getElementById("trUploadPath").value = "";
             setValidated(false);
           }
         })
@@ -896,7 +897,7 @@ function TrainingScheduleEdit() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
-                            minDate={new Date()}
+                            minDate={new Date(data.trStartDate)}
                             required
                           />
                         )}
