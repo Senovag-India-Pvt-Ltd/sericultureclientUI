@@ -213,18 +213,26 @@ function TrainingDeputationTrackerView() {
                         <td>
                           {" "}
                           {selectedUploadFile && (
-                            <img
-                              style={{
-                                height: "100px",
-                                width: "100px",
-                                cursor: "pointer",
-                              }}
-                              src={selectedUploadFile}
-                              alt="Selected File"
-                              onClick={() =>
-                                downloadFile(trainingDeputationTracker.fileUploadPath)
-                              }
-                            />
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedUploadFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(trainingDeputationTracker.fileUploadPath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                           )}
                         </td>
                       </tr>
