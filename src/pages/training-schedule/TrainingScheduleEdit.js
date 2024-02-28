@@ -169,26 +169,29 @@ function TrainingScheduleEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if (name === "trDuration" && (value.length > 2)) {
+    if (name === "trDuration" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trDuration" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trPeriod" && (value.length > 2)) {
+    if (name === "trPeriod" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trPeriod" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trNoOfParticipant" && (value.length > 3)) {
+    if (name === "trNoOfParticipant" && value.length > 3) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trNoOfParticipant" && value.length <= 3) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -214,6 +217,8 @@ function TrainingScheduleEdit() {
     (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
     "-" +
     new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -222,6 +227,15 @@ function TrainingScheduleEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.trDuration.length > 2) {
+        return;
+      }
+      if (data.trPeriod.length > 2) {
+        return;
+      }
+      if (data.trNoOfParticipant.length > 3) {
+        return;
+      }
       api
         .post(baseURL2 + `trSchedule/edit`, {
           ...data,

@@ -61,6 +61,7 @@ function TrainingDeputationTracker() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      
       api
         .post(baseURL2 + `trainingDeputationTracker/add`, data)
         .then((response) => {

@@ -231,26 +231,29 @@ function TrainerPageEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if (name === "trDuration" && (value.length > 2)) {
+    if (name === "trDuration" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trDuration" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trPeriod" && (value.length > 2)) {
+    if (name === "trPeriod" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trPeriod" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trNoOfParticipant" && (value.length > 3)) {
+    if (name === "trNoOfParticipant" && value.length > 3) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trNoOfParticipant" && value.length <= 3) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
   };
 
   
@@ -280,6 +283,15 @@ function TrainerPageEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.trDuration.length > 2) {
+        return;
+      }
+      if (data.trPeriod.length > 2) {
+        return;
+      }
+      if (data.trNoOfParticipant.length > 3) {
+        return;
+      }
       api
         .post(baseURL + `trSchedule/edit`, {...data,trStartDate:formattedFromDate,trDateOfCompletion:formattedToDate})
         .then((response) => {
@@ -851,11 +863,11 @@ function TrainerPageEdit() {
   };
 
   return (
-    <Layout title="Trainer Page Edit">
+    <Layout title="Edit Scheduled Training Details And Add Trainees">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page Edit</Block.Title>
+            <Block.Title tag="h2">Edit Scheduled Training Details And Add Trainees</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

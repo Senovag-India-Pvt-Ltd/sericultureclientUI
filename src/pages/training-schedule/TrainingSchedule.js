@@ -148,27 +148,6 @@ function TrainingSchedule() {
       e.target.classList.add("is-valid");
       e.target.classList.remove("is-invalid");
     }
-
-    // if (name === "trDuration" && value.length > 2) {
-    //   e.target.classList.add("is-invalid");
-    // } else {
-    //   e.target.classList.remove("is-invalid");
-    //   e.target.classList.add("is-valid");
-    // }
-
-    // if (name === "trPeriod" && value.length > 2) {
-    //   e.target.classList.add("is-invalid");
-    // } else {
-    //   e.target.classList.remove("is-invalid");
-    //   e.target.classList.add("is-valid");
-    // }
-
-    // if (name === "trNoOfParticipant" && value.length > 3) {
-    //   e.target.classList.add("is-invalid");
-    // } else {
-    //   e.target.classList.remove("is-invalid");
-    //   e.target.classList.add("is-valid");
-    // }
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
