@@ -110,6 +110,7 @@ function TrainingDeputationTrackerEdit() {
       deputedRemarks: "",
     });
     setSelectedUploadFile("")
+    document.getElementById("fileUploadPath").value = "";
   };
 
   //   to get data from api

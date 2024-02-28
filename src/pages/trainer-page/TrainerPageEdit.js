@@ -420,6 +420,7 @@ function TrainerPageEdit() {
       percentageImproved: "",
     });
     setTrDetailsList([]);
+    document.getElementById("trUploadPath").value = "";
   };
 
   const trClear = () => {

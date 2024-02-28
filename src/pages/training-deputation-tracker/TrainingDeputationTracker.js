@@ -122,6 +122,7 @@ function TrainingDeputationTracker() {
       deputedRemarks: "",
     });
     setFileUpload("")
+    document.getElementById("fileUploadPath").value = "";
   };
 
   // to get Designation
