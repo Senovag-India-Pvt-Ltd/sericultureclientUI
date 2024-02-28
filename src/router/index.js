@@ -543,6 +543,7 @@ import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
 import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmerAllow";
 import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
 import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
+import HomePage from "../pages/stake-holder/HomePage";
 
 // Admin and Reports
 
@@ -696,6 +697,7 @@ function Router() {
             <Route path="*" element={<NotFound />} />
 
             {/* Sericulture */}
+            <Route path="homepage" element={<HomePage />} />
             <Route
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
