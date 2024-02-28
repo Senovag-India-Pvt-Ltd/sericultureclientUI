@@ -201,6 +201,19 @@ function TrainingScheduleEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
+    const formattedFromDate =
+    new Date(data.trStartDate).getFullYear() +
+    "-" +
+    (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trStartDate).getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+    new Date(data.trDateOfCompletion).getFullYear() +
+    "-" +
+    (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -267,6 +280,21 @@ function TrainingScheduleEdit() {
       trDateOfCompletion: "",
     });
     setPPtFile("");
+    setTrainerUser({
+      trScheduleId: "",
+      userMasterId: "",
+      trainerName: "",
+      trInstitutionMasterId: "",
+    });
+  };
+
+  const trainerUserClear = () => {
+    setTrainerUser({
+      trScheduleId: "",
+      userMasterId: "",
+      trainerName: "",
+      trInstitutionMasterId: "",
+    });
   };
 
   //   to get data from api
@@ -734,7 +762,7 @@ function TrainingScheduleEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                      Training Duration Per Day(In Hours)
+                      Training Duration Per Day(In Hours)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -756,7 +784,7 @@ function TrainingScheduleEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trPeriod">
-                        Training Period(In Days)
+                        Training Period(In Days)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -816,6 +844,7 @@ function TrainingScheduleEdit() {
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             minDate={new Date()}
+                            required
                           />
                         )}
                       </div>
@@ -839,6 +868,7 @@ function TrainingScheduleEdit() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            required
                           />
                         )}
                       </div>
@@ -998,7 +1028,7 @@ function TrainingScheduleEdit() {
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    Clear
                   </Button>
                 </li>
               </ul>
@@ -1126,8 +1156,15 @@ function TrainingScheduleEdit() {
                     </Button>
                   </div> */}
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    {/* <Button variant="secondary" onClick={handleCloseModal}>
                       Cancel
+                    </Button> */}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={trainerUserClear}
+                    >
+                      Clear
                     </Button>
                   </div>
                 </div>
@@ -1237,8 +1274,15 @@ function TrainingScheduleEdit() {
                     </Button>
                   </div> */}
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    {/* <Button variant="secondary" onClick={handleCloseModal}>
                       Cancel
+                    </Button> */}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={trainerUserClear}
+                    >
+                      Clear
                     </Button>
                   </div>
                 </div>

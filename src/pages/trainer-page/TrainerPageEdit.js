@@ -1103,7 +1103,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
-                      Training Duration Per Day(In Hours)
+                      Training Duration Per Day(In Hours)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1115,9 +1115,9 @@ function TrainerPageEdit() {
                         placeholder="Enter Training Duration"
                         required
                         />
-                         <Form.Control.Feedback type="invalid">
-                         Training Duration Should Be Less Than 24 Hours
-                          </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                        Training Duration Should Be Less Than 24 Hours
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -1125,7 +1125,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trPeriod">
-                      Training Period(In Days)
+                      Training Period(In Days)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1147,7 +1147,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trNoOfParticipant">
-                      Training No Of Participant
+                      Training No Of Participant<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1184,6 +1184,7 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  required
                                 />
                               )}
                             </div>
@@ -1208,6 +1209,7 @@ function TrainerPageEdit() {
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   minDate={new Date()}
+                                  required
                                 />
                               )}
                             </div>
@@ -1368,7 +1370,7 @@ function TrainerPageEdit() {
                       Cancel
                     </Link> */}
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                Clear
                 </Button>
               </li>
             </ul>
@@ -1736,7 +1738,7 @@ function TrainerPageEdit() {
                       </Button>
                     </div> */}
                   <Button type="button" variant="secondary" onClick={trClear}>
-                    Cancel
+                  Clear
                   </Button>
                 </div>
               </Col>

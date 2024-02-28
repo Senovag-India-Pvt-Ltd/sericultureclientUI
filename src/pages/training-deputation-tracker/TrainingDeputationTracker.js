@@ -565,9 +565,13 @@ function TrainingDeputationTracker() {
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
                               minDate={new Date()}
+                              required
                             />
                           </div>
                           </Form.Group>
+                          <Form.Control.Feedback type="invalid">
+                        Start Date is Required
+                      </Form.Control.Feedback>
                         </Col>
 
                         <Col lg="2">
@@ -587,9 +591,13 @@ function TrainingDeputationTracker() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
+                              required
                             />
                           </div>
                           </Form.Group>
+                          <Form.Control.Feedback type="invalid">
+                          Completion Date is Required
+                        </Form.Control.Feedback>
                         </Col>
 
                   <Col lg="6">

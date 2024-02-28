@@ -11,6 +11,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 import api from "../../services/auth/api";
+import DatePicker from "react-datepicker";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -199,6 +200,10 @@ function TrainerPageList() {
     return format(date, 'dd/MM/yyyy'); 
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const TrTraineeLicenseDataColumns = [
     {
       name: "Action",
@@ -342,7 +347,30 @@ function TrainerPageList() {
                     </Form.Select>
                   </div>
                 </Col>
-
+                {data.searchBy === "trStartDate"?(
+                  <Col sm={2}>
+                    <Form.Group className="form-group">
+                      {/* <Form.Label htmlFor="sordfl">
+                      Training Period Start Date<span className="text-danger">*</span>
+                      </Form.Label> */}
+                      <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.trStartDate}
+                      onChange={(date) =>
+                        handleDateChange(date, "trStartDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      // minDate={new Date()}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+                ):(
                 <Col sm={3}>
                   <Form.Control
                     id="reelerId"
@@ -353,6 +381,8 @@ function TrainerPageList() {
                     placeholder="Search"
                   />
                 </Col>
+                )}
+                
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search

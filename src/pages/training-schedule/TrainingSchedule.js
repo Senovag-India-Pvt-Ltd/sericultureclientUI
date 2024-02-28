@@ -121,7 +121,6 @@ function TrainingSchedule() {
 
   let name, value;
   const handleInputs = (e) => {
-    // debugger;
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
@@ -145,7 +144,28 @@ function TrainingSchedule() {
     } else {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
+     
+    // if (name === "trDuration" && value.length > 2) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
+  
+    // if (name === "trPeriod" && value.length > 2) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
+  
+    // if (name === "trNoOfParticipant" && value.length > 3) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
   };
  
 
@@ -264,6 +284,12 @@ function TrainingSchedule() {
       trDateOfCompletion: "",
     });
     setPPt("");
+    setTrainerUser({
+      trScheduleId: "",
+      userMasterId: "",
+      trainerName: "",
+      trInstitutionMasterId: "",
+    });
   };
 
   const trainerUserClear = () => {
@@ -730,6 +756,7 @@ function TrainingSchedule() {
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
                         minDate={new Date()}
+                        required
                       />
                     </div>
                   </Col>
@@ -751,6 +778,7 @@ function TrainingSchedule() {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
+                        required
                       />
                     </div>
                   </Col>
@@ -894,7 +922,7 @@ function TrainingSchedule() {
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    Clear
                   </Button>
                 </li>
               </ul>
@@ -1031,7 +1059,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Cancel
+                      Clear
                     </Button>
                   </div>
                 </div>
@@ -1152,7 +1180,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Cancel
+                      Clear
                     </Button>
                   </div>
                 </div>

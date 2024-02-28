@@ -284,11 +284,11 @@ function TrainingDeputationTrackerEdit() {
   };
 
   return (
-    <Layout title="Training Deputation Tracker Edit">
+    <Layout title="Edit Training Deputation Tracker Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker Edit</Block.Title>
+            <Block.Title tag="h2">Edit Training Deputation Tracker Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -599,7 +599,8 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  minDate={new Date()}y
+                                  required
                                 />
                               )}
                             </div>
@@ -624,6 +625,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  required
                                 />
                               )}
                             </div>
@@ -640,7 +642,7 @@ function TrainingDeputationTrackerEdit() {
                             type="file"
                             id="fileUploadPath"
                             name="fileUploadPath"
-                            value={data.fileUploadPath}
+                            // value={data.fileUploadPath}
                             onChange={handleUploadChange}
                           />
                         </div>
