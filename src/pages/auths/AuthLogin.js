@@ -63,7 +63,7 @@ const AuthLoginPage = () => {
       const isLoginSuccess = await login(input, pass);
       // Store the token in local storage or a secure storage mechanism
       if (isLoginSuccess) {
-        navigate("/seriui/stake-holder-registration");
+        navigate("/seriui/homepage");
       } else {
         // alert("Login Failed");
         Swal.fire({
@@ -237,7 +237,7 @@ const AuthLoginPage = () => {
       const isLoginSuccess = await login(data.username, data.password);
       // Store the token in local storage or a secure storage mechanism
       if (isLoginSuccess) {
-        navigate("/seriui/stake-holder-registration");
+        navigate("/seriui/homepage");
       } else {
         Swal.fire({
           icon: "warning",
