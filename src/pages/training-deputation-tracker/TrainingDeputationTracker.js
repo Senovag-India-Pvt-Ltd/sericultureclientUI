@@ -22,7 +22,7 @@ function TrainingDeputationTracker() {
     deputedInstitute: "",
     fileUploadPath: "",
     deputedFromDate: null,
-    deputedToDate: "",
+    deputedToDate: null,
     trProgramMasterId: "",
     trCourseMasterId: "",
     deputedAttended: "",
@@ -80,7 +80,7 @@ function TrainingDeputationTracker() {
               deputedInstitute: "",
               fileUploadPath: "",
               deputedFromDate: null,
-              deputedToDate: "",
+              deputedToDate: null,
               trProgramMasterId: "",
               trCourseMasterId: "",
               deputedAttended: "",
@@ -111,7 +111,7 @@ function TrainingDeputationTracker() {
       deputedInstitute: "",
       fileUploadPath: "",
       deputedFromDate: null,
-      deputedToDate: "",
+      deputedToDate: null,
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
@@ -591,6 +591,7 @@ function TrainingDeputationTracker() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
+                              minDate={new Date()}
                               required
                             />
                           </div>

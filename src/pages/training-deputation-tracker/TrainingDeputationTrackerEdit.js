@@ -72,7 +72,7 @@ function TrainingDeputationTrackerEdit() {
               deputedInstitute: "",
               fileUploadPath: "",
               deputedFromDate: null,
-              deputedToDate: "",
+              deputedToDate: null,
               trProgramMasterId: "",
               trCourseMasterId: "",
               deputedAttended: "",
@@ -99,7 +99,7 @@ function TrainingDeputationTrackerEdit() {
       mobileNumber: "",
       deputedInstituteId: "",
       deputedFromDate: null,
-      deputedToDate: "",
+      deputedToDate: null,
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
@@ -599,7 +599,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}y
+                                  minDate={new Date()}
                                   required
                                 />
                               )}
@@ -625,6 +625,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  minDate={new Date()}
                                   required
                                 />
                               )}

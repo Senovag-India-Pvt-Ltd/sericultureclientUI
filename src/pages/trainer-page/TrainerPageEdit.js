@@ -343,7 +343,7 @@ function TrainerPageEdit() {
       trStartDate: null,
       trDuration: "",
       trPeriod: "",
-      trDateOfCompletion: "",
+      trDateOfCompletion: null,
       trUploadPath: "",
       trNoOfParticipant: "",
     });
@@ -1216,6 +1216,7 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  minDate={new Date()}
                                   required
                                 />
                               )}

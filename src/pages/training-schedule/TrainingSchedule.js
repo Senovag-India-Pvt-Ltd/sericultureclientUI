@@ -116,7 +116,7 @@ function TrainingSchedule() {
     trNoOfParticipant: "",
     trUploadPath: "",
     trStartDate: null,
-    trDateOfCompletion: "",
+    trDateOfCompletion: null,
   });
 
   let name, value;
@@ -269,7 +269,7 @@ function TrainingSchedule() {
               trNoOfParticipant: "",
               trUploadPath: "",
               trStartDate: null,
-              trDateOfCompletion: "",
+              trDateOfCompletion: null,
             });
             setValidated(false);
           }
@@ -298,7 +298,7 @@ function TrainingSchedule() {
       trNoOfParticipant: "",
       trUploadPath: "",
       trStartDate: null,
-      trDateOfCompletion: "",
+      trDateOfCompletion: null,
     });
     setPPt("");
     setTrainerUser({
@@ -798,6 +798,7 @@ function TrainingSchedule() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
+                      minDate={new Date()}
                       required
                     />
                   </div>
