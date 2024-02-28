@@ -19,8 +19,9 @@ function TrainingDeputationTracker() {
     designationId: "",
     officialAddress: "",
     mobileNumber: "",
-    deputedInstituteId: "",
-    deputedFromDate: "",
+    deputedInstitute: "",
+    fileUploadPath: "",
+    deputedFromDate: null,
     deputedToDate: "",
     trProgramMasterId: "",
     trCourseMasterId: "",
@@ -36,6 +37,13 @@ function TrainingDeputationTracker() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   // const handleDateChange = (newDate) => {
@@ -56,6 +64,10 @@ function TrainingDeputationTracker() {
       api
         .post(baseURL2 + `trainingDeputationTracker/add`, data)
         .then((response) => {
+          if (response.data.content.trainingDeputationId) {
+            const deputationId = response.data.content.trainingDeputationId;
+            handleUpload(deputationId);
+          }
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
@@ -65,8 +77,9 @@ function TrainingDeputationTracker() {
               designationId: "",
               officialAddress: "",
               mobileNumber: "",
-              deputedInstituteId: "",
-              deputedFromDate: "",
+              deputedInstitute: "",
+              fileUploadPath: "",
+              deputedFromDate: null,
               deputedToDate: "",
               trProgramMasterId: "",
               trCourseMasterId: "",
@@ -80,6 +93,10 @@ function TrainingDeputationTracker() {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
+        // const validationErrors = err.response?.data?.validationErrors; 
+        // if (validationErrors && Object.keys(validationErrors).length > 0) {
+        //   saveError(validationErrors);
+        // }
         });
       setValidated(true);
     }
@@ -91,14 +108,16 @@ function TrainingDeputationTracker() {
       designationId: "",
       officialAddress: "",
       mobileNumber: "",
-      deputedInstituteId: "",
-      deputedFromDate: "",
+      deputedInstitute: "",
+      fileUploadPath: "",
+      deputedFromDate: null,
       deputedToDate: "",
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
       deputedRemarks: "",
     });
+    setFileUpload("")
   };
 
   // to get Designation
@@ -119,25 +138,25 @@ function TrainingDeputationTracker() {
     getDesignationList();
   }, []);
 
-  // to get Deputed
-  const [deputedInstituteListData, setDeputedInstituteListData] = useState([]);
+  // // to get Deputed
+  // const [deputedInstituteListData, setDeputedInstituteListData] = useState([]);
 
-  const getDeputedInstituteList = () => {
-    const response = api
-      .get(baseURL + `deputedInstituteMaster/get-all`)
-      .then((response) => {
-        setDeputedInstituteListData(
-          response.data.content.deputedInstituteMaster
-        );
-      })
-      .catch((err) => {
-        setDeputedInstituteListData([]);
-      });
-  };
+  // const getDeputedInstituteList = () => {
+  //   const response = api
+  //     .get(baseURL + `deputedInstituteMaster/get-all`)
+  //     .then((response) => {
+  //       setDeputedInstituteListData(
+  //         response.data.content.deputedInstituteMaster
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       setDeputedInstituteListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getDeputedInstituteList();
-  }, []);
+  // useEffect(() => {
+  //   getDeputedInstituteList();
+  // }, []);
 
   // to get TrProgram
   const [trProgramListData, setTrProgramListData] = useState([]);
@@ -178,6 +197,37 @@ function TrainingDeputationTracker() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+   // Display Image
+   const [fileUpload, setFileUpload] = useState("");
+ 
+   const handleUploadChange = (e) => {
+     const file = e.target.files[0];
+     setFileUpload(file);
+     setData((prev) => ({ ...prev, fileUploadPath: file.name }));
+   };
+ 
+   // Upload Image to S3 Bucket
+   const handleUpload = async (deputationTrackerid) => {
+     const parameters = `trainingDeputationId=${deputationTrackerid}`;
+     try {
+       const formData = new FormData();
+       formData.append("multipartFile", fileUpload);
+ 
+       const response = await api.post(
+         baseURL2 + `trainingDeputationTracker/upload-path?${parameters}`,
+         formData,
+         {
+           headers: {
+             "Content-Type": "multipart/form-data",
+           },
+         }
+       );
+       console.log("File upload response:", response.data);
+     } catch (error) {
+       console.error("Error uploading file:", error);
+     }
+   };
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -235,13 +285,13 @@ function TrainingDeputationTracker() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Training Deputation Tracker
+            </Card.Header>
               <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group mt-n3">
@@ -257,6 +307,7 @@ function TrainingDeputationTracker() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Name Of the Official"
+                          required
                         />
                       </div>
                     </Form.Group>
@@ -299,7 +350,7 @@ function TrainingDeputationTracker() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group mt-n3">
                       <Form.Label>
                         Deputed to Institute Name and Details
@@ -332,10 +383,28 @@ function TrainingDeputationTracker() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
+                  </Col> */}
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="official Name">
+                        Deputed to Institute Name and Details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="deputedInstitute"
+                          name="deputedInstitute"
+                          value={data.deputedInstitute}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Deputed Institute Details"
+                        />
+                      </div>
+                    </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Program<span className="text-danger">*</span>
                       </Form.Label>
@@ -369,7 +438,7 @@ function TrainingDeputationTracker() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Training Course<span className="text-danger">*</span>
                       </Form.Label>
@@ -403,7 +472,7 @@ function TrainingDeputationTracker() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
                         Official Address
                       </Form.Label>
@@ -421,9 +490,9 @@ function TrainingDeputationTracker() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                        Mobile Number
+                        Mobile Number<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -433,13 +502,17 @@ function TrainingDeputationTracker() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Mobile Number"
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                        Mobile Number Should Contain Only 10 digits
+                      </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>Training Attended</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -457,7 +530,7 @@ function TrainingDeputationTracker() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trNoOfParticipant">
                         Remarks
                       </Form.Label>
@@ -474,41 +547,35 @@ function TrainingDeputationTracker() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n3">
-                      <Form.Label>Training Deputation Start Date</Form.Label>
-                      <Row>
-                        <Col lg="6">
+                    <Col lg="2">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                          Training Period Start Date<span className="text-danger">*</span>
+                          </Form.Label>
                           <div className="form-control-wrap">
-                            {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
-                            <DatePicker
-                              selected={data.deputedFromDate}
-                              onChange={(date) =>
-                                handleDateChange(date, "deputedFromDate")
-                              }
+                        <DatePicker
+                          selected={data.deputedFromDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "deputedFromDate")
+                          }
                               peekNextMonth
                               showMonthDropdown
                               showYearDropdown
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              minDate={new Date()}
                             />
                           </div>
+                          </Form.Group>
                         </Col>
-                      </Row>
-                      {/* </Form.Group> */}
 
-                      <Row>
-                        <Col lg="6">
-                          {/* <Form.Group className="form-group"> */}
-                          <Form.Label>Date of Completion</Form.Label>
-                          <div className="form-control-wrap">
-                            {/* <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date, "dob")}
-                          /> */}
+                        <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date Of Completion<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
                             <DatePicker
                               selected={data.deputedToDate}
                               onChange={(date) =>
@@ -519,12 +586,39 @@ function TrainingDeputationTracker() {
                               showYearDropdown
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
+                              className="form-control"
                             />
                           </div>
+                          </Form.Group>
                         </Col>
-                      </Row>
-                    </Form.Group>
-                  </Col>
+
+                  <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="fileUploadPath">
+                       Upload Document
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id="fileUploadPath"
+                        name="fileUploadPath"
+                        // value={data.photoPath}
+                        onChange={handleUploadChange}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {fileUpload ? (
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={URL.createObjectURL(fileUpload)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </Form.Group>
+                </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -539,12 +633,12 @@ function TrainingDeputationTracker() {
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    Clear
                   </Button>
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

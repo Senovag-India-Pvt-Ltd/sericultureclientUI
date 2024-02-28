@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col,Button} from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
@@ -88,6 +89,13 @@ function TrainerPageView() {
     getTrDetailsList();
   }, [id]);
 
+  const navigate = useNavigate();
+  // const handleEdit = (trScheduleId) => {
+  const handleEdit = (_id) => {
+    navigate(`/seriui/trainer-page-edit/${_id}`);
+    // navigate("/seriui/state");
+  };
+
   return (
     <Layout title="Trainer Page  View">
       <Block.Head>
@@ -142,14 +150,14 @@ function TrainerPageView() {
                           : "Other"}
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>User Name:</td>
                       <td>{trTrainer.username}</td>
-                    </tr>
-                    {/* <tr>
+                    </tr> */}
+                    <tr>
                       <td style={styles.ctstyle}>Institute Name:</td>
                       <td>{trTrainer.trInstitutionMasterName}</td>
-                    </tr> */}
+                    </tr>
                     <tr>
                       <td style={styles.ctstyle}> Group Name:</td>
                       <td>{trTrainer.trGroupMasterName}</td>
@@ -202,6 +210,14 @@ function TrainerPageView() {
                     </tr>
                   </tbody>
                 </table>
+                <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => handleEdit(trTrainer.trScheduleId)}
+              >
+                Start Training
+              </Button>
               </Col>
             </Row>
           </Card.Body>

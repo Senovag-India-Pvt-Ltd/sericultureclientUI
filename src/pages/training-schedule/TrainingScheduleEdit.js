@@ -168,6 +168,27 @@ function TrainingScheduleEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "trDuration" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trPeriod" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trNoOfParticipant" && (value.length > 3)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const handleDateChange = (date, type) => {
@@ -212,7 +233,7 @@ function TrainingScheduleEdit() {
               trPeriod: "",
               trNoOfParticipant: "",
               trUploadPath: "",
-              trStartDate: "",
+              trStartDate: null,
               trDateOfCompletion: "",
             });
             setValidated(false);
@@ -242,7 +263,7 @@ function TrainingScheduleEdit() {
       trPeriod: "",
       trNoOfParticipant: "",
       trUploadPath: "",
-      trStartDate: "",
+      trStartDate: null,
       trDateOfCompletion: "",
     });
     setPPtFile("");
@@ -465,11 +486,11 @@ function TrainingScheduleEdit() {
   };
 
   return (
-    <Layout title="Training Schedule Edit">
+    <Layout title="Edit Scheduled Training">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule Edit</Block.Title>
+            <Block.Title tag="h2">Edit Scheduled Training</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -501,7 +522,7 @@ function TrainingScheduleEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-1 "> */}
             <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>Schedule Training</Card.Header>
+            <Card.Header style={{ fontWeight: "bold" }}>Edit Scheduled Training</Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -711,58 +732,70 @@ function TrainingScheduleEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="trDuration">
-                          Training Duration(In Hours)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="trDuration"
-                            name="trDuration"
-                            value={data.trDuration}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Training Duration"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trDuration">
+                      Training Duration Per Day(In Hours)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="trDuration"
+                          name="trDuration"
+                          value={data.trDuration}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Training Duration"
+                          required
+                        />
+                         <Form.Control.Feedback type="invalid">
+                         Training Duration Should Be Less Than 24 Hours
+                          </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="trPeriod">
-                          Training Period(In Days)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="trPeriod"
-                            name="trPeriod"
-                            value={data.trPeriod}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Training Period"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trPeriod">
+                        Training Period(In Days)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="trPeriod"
+                          name="trPeriod"
+                          value={data.trPeriod}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Training Period"
+                          required
+                        />
+                         <Form.Control.Feedback type="invalid">
+                         Training Period Must Be Limited To 2 Digits or Less
+                          </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="trNoOfParticipant">
-                          Training No Of Participant
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="trNoOfParticipant"
-                            name="trNoOfParticipant"
-                            value={data.trNoOfParticipant}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Training No Of Participant "
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trNoOfParticipant">
+                        Training No Of Participant<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="trNoOfParticipant"
+                          name="trNoOfParticipant"
+                          value={data.trNoOfParticipant}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter No Of Participant "
+                          required
+                        />
+                         <Form.Control.Feedback type="invalid">
+                          Participant Number Must Be Limited To Three Digits or Less
+                          </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                     <Form.Label column sm={2}>
                       Training Period Start Date
@@ -782,16 +815,12 @@ function TrainingScheduleEdit() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            minDate={new Date()}
                           />
                         )}
                       </div>
                     </Col>
-                    {/* </Row> */}
-                    {/* </Form.Group> */}
-
-                    {/* <Row> */}
-                    {/* <Col lg="6"> */}
-                    {/* <Form.Group className="form-group"> */}
+                    
                     <Form.Label column sm={2}>
                       Expected Date of Completion
                       <span className="text-danger">*</span>
@@ -825,6 +854,7 @@ function TrainingScheduleEdit() {
                             type="file"
                             id="trUploadPath"
                             name="trUploadPath"
+                            // value={data.trUploadPath}
                             onChange={handlePPtChange}
                           />
                         </div>

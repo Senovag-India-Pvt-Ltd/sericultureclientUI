@@ -58,16 +58,8 @@ function TrainerPageList() {
       )
       .then((response) => {
         setListData(response.data.content.trSchedule);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
       })
       .catch((err) => {
-        // saveError();
       });
   };
 
@@ -224,14 +216,14 @@ function TrainerPageList() {
           >
             View
           </Button>
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             className="ms-2"
             onClick={() => handleEdit(row.trScheduleId)}
           >
             Edit
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"

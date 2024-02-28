@@ -26,6 +26,13 @@ function TrainingDeputationTrackerEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -49,6 +56,10 @@ function TrainingDeputationTrackerEdit() {
       api
         .post(baseURL2 + `trainingDeputationTracker/edit`, data)
         .then((response) => {
+          const trainingDeputationId = response.data.content.trainingDeputationId;
+          if (trainingDeputationId) {
+            handleUpload(trainingDeputationId);
+          }
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
@@ -58,8 +69,9 @@ function TrainingDeputationTrackerEdit() {
               designationId: "",
               officialAddress: "",
               mobileNumber: "",
-              deputedInstituteId: "",
-              deputedFromDate: "",
+              deputedInstitute: "",
+              fileUploadPath: "",
+              deputedFromDate: null,
               deputedToDate: "",
               trProgramMasterId: "",
               trCourseMasterId: "",
@@ -86,13 +98,14 @@ function TrainingDeputationTrackerEdit() {
       officialAddress: "",
       mobileNumber: "",
       deputedInstituteId: "",
-      deputedFromDate: "",
+      deputedFromDate: null,
       deputedToDate: "",
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
       deputedRemarks: "",
     });
+    setSelectedUploadFile("")
   };
 
   //   to get data from api
@@ -103,11 +116,12 @@ function TrainingDeputationTrackerEdit() {
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
+        if (response.data.content.fileUploadPath) {
+          getUploadFile(response.data.content.fileUploadPath);
+        }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
         setLoading(false);
       });
   };
@@ -134,25 +148,25 @@ function TrainingDeputationTrackerEdit() {
     getDesignationList();
   }, []);
 
-  // to get Deputed Institute
-  const [deputedInstituteListData, setDeputedInstituteListData] = useState([]);
+  // // to get Deputed Institute
+  // const [deputedInstituteListData, setDeputedInstituteListData] = useState([]);
 
-  const getDeputedInstituteList = () => {
-    const response = api
-      .get(baseURL + `deputedInstituteMaster/get-all`)
-      .then((response) => {
-        setDeputedInstituteListData(
-          response.data.content.deputedInstituteMaster
-        );
-      })
-      .catch((err) => {
-        setDeputedInstituteListData([]);
-      });
-  };
+  // const getDeputedInstituteList = () => {
+  //   const response = api
+  //     .get(baseURL + `deputedInstituteMaster/get-all`)
+  //     .then((response) => {
+  //       setDeputedInstituteListData(
+  //         response.data.content.deputedInstituteMaster
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       setDeputedInstituteListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getDeputedInstituteList();
-  }, []);
+  // useEffect(() => {
+  //   getDeputedInstituteList();
+  // }, []);
 
   // to get TrProgram
   const [trProgramListData, setTrProgramListData] = useState([]);
@@ -190,14 +204,63 @@ function TrainingDeputationTrackerEdit() {
     getTrCourseList();
   }, []);
 
-  const navigate = useNavigate();
+  // Display Image
+  const [fileUpload, setFileUpload] = useState("");
+ 
+  const handleUploadChange = (e) => {
+    const file = e.target.files[0];
+    setFileUpload(file);
+    setData((prev) => ({ ...prev, fileUploadPath: file.name }));
+  };
 
+  // Upload Image to S3 Bucket
+  const handleUpload = async (deputationTrackerid) => {
+    const parameters = `trainingDeputationId=${deputationTrackerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", fileUpload);
+
+      const response = await api.post(
+        baseURL2 + `trainingDeputationTracker/upload-path?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+  // To get Photo from S3 Bucket
+  const [selectedUploadFile, setSelectedUploadFile] = useState(null);
+
+  const getUploadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedUploadFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
+  const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    });
   };
   const updateError = (message) => {
     let errorMessage;
@@ -252,11 +315,12 @@ function TrainingDeputationTrackerEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Edit Training Deputation Tracker Details
+            </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -320,7 +384,7 @@ function TrainingDeputationTrackerEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Deputed to Institute Name and Details
@@ -353,10 +417,28 @@ function TrainingDeputationTrackerEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="official Name">
+                        Deputed to Institute Name and Details
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="deputedInstitute"
+                          name="deputedInstitute"
+                          value={data.deputedInstitute}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Deputed Institute Details"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Program<span className="text-danger">*</span>
                         </Form.Label>
@@ -390,7 +472,7 @@ function TrainingDeputationTrackerEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Training Course<span className="text-danger">*</span>
                         </Form.Label>
@@ -424,7 +506,7 @@ function TrainingDeputationTrackerEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="trDuration">
                           Official Address
                         </Form.Label>
@@ -442,25 +524,29 @@ function TrainingDeputationTrackerEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="trDuration">
-                          Mobile Number
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="mobileNumber"
-                            name="mobileNumber"
-                            value={data.mobileNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Mobile Number"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="trDuration">
+                        Mobile Number<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="mobileNumber"
+                          name="mobileNumber"
+                          value={data.mobileNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Mobile Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Mobile Number Should Contain Only 10 digits
+                      </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Training Attended</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -478,7 +564,7 @@ function TrainingDeputationTrackerEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="trNoOfParticipant">
                           Remarks
                         </Form.Label>
@@ -495,12 +581,12 @@ function TrainingDeputationTrackerEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label>Training Period Start Date</Form.Label>
-                        <Row>
-                          <Col lg="6">
-                            <div className="form-control-wrap">
+                    <Col lg="2">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                          Training Period Start Date<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
                               {isDataFromSet && (
                                 <DatePicker
                                   selected={new Date(data.deputedFromDate)}
@@ -512,18 +598,20 @@ function TrainingDeputationTrackerEdit() {
                                   showYearDropdown
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  minDate={new Date()}
                                 />
                               )}
                             </div>
-                          </Col>
-                        </Row>
-                        {/* </Form.Group> */}
+                            </Form.Group>
+                        </Col>
 
-                        <Row>
-                          <Col lg="6">
-                            {/* <Form.Group className="form-group"> */}
-                            <Form.Label>Date of Completion</Form.Label>
-                            <div className="form-control-wrap">
+                        <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date Of Completion<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
                               {isDataToSet && (
                                 <DatePicker
                                   selected={new Date(data.deputedToDate)}
@@ -535,13 +623,47 @@ function TrainingDeputationTrackerEdit() {
                                   showYearDropdown
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
+                                  className="form-control"
                                 />
                               )}
                             </div>
-                          </Col>
-                        </Row>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="fileUploadPath">
+                         Upload Document
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="fileUploadPath"
+                            name="fileUploadPath"
+                            value={data.fileUploadPath}
+                            onChange={handleUploadChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {fileUpload ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(fileUpload)}
+                          />
+                        ) : (
+                          selectedUploadFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedUploadFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
+                    </Col>
+
                   </Row>
                 )}
               </Card.Body>
@@ -557,12 +679,12 @@ function TrainingDeputationTrackerEdit() {
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    Clear
                   </Button>
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
