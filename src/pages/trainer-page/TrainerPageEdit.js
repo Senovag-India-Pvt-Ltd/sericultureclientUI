@@ -314,18 +314,17 @@ function TrainerPageEdit() {
                 const updatedTr = {
                   ...list,
                   trScheduleId: trScheduleId,
-                };
-
-                
+                };          
                 api
                   .post(baseURL + `trTrainee/add`, updatedTr)
                   .then((response) => {
                     if (response.data.content.error) {
                       const bankError = response.data.content.error_description;
                       updateError(bankError);
-                    } else {
-                      updateSuccess();
-                    }
+                    } 
+                    // else {
+                    //   updateSuccess();
+                    // }
                   })
                   .catch((err) => {
                     setTrDetails({});
@@ -334,13 +333,49 @@ function TrainerPageEdit() {
                     }
                   });
               });
-            } else {
+            } 
+            // else {
               updateSuccess();
+              setData({
+                userMasterId: "",
+                trStakeholderType: "",
+                trName: "",
+                trInstitutionMasterId: "",
+                trGroupMasterId: "",
+                trProgramMasterId: "",
+                trCourseMasterId: "",
+                trModeMasterId: "",
+                trDuration: "",
+                trPeriod: "",
+                trNoOfParticipant: "",
+                trUploadPath: "",
+                trStartDate: null,
+                trDateOfCompletion: null,
+              });
+              setPPtFile("");
+              setTrDetails({
+                trScheduleId: "",
+                trTraineeName: "",
+                designationId: "",
+                trOfficeId: "",
+                gender: "",
+                mobileNumber: "",
+                place: "",
+                stateId: "",
+                districtId: "",
+                talukId: "",
+                hobliId: "",
+                villageId: "",
+                preTestScore: "",
+                postTestScore: "",
+                percentageImproved: "",
+              });
+              setTrDetailsList([]);
+              setValidated(false);
             }
-          }
+          // }
         })
         .catch((err) => {
-          setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
           updateError(err.response.data.validationErrors);
           }
