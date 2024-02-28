@@ -295,6 +295,7 @@ function TrainingSchedule() {
       trInstitutionMasterId: "",
     });
     setTrainerUserList([]);
+    document.getElementById("trUploadPath").value = "";
   };
 
   const trainerUserClear = () => {
