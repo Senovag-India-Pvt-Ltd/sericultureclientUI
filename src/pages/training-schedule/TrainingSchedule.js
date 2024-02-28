@@ -258,6 +258,7 @@ function TrainingSchedule() {
               trInstitutionMasterId: "",
             });
             setTrainerUserList([]);
+            document.getElementById("trUploadPath").value = "";
             setValidated(false);
           }
         })
