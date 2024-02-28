@@ -250,6 +250,14 @@ function TrainingSchedule() {
               trStartDate: null,
               trDateOfCompletion: null,
             });
+            setPPt("");
+            setTrainerUser({
+              trScheduleId: "",
+              userMasterId: "",
+              trainerName: "",
+              trInstitutionMasterId: "",
+            });
+            setTrainerUserList([]);
             setValidated(false);
           }
         })

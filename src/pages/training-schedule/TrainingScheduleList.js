@@ -340,9 +340,9 @@ function TrainingScheduleList() {
                       </Form.Label> */}
                       <div className="form-control-wrap">
                     <DatePicker
-                      selected={data.trStartDate}
+                      selected={data.text}
                       onChange={(date) =>
-                        handleDateChange(date, "trStartDate")
+                        handleDateChange(date, "text")
                       }
                       peekNextMonth
                       showMonthDropdown
