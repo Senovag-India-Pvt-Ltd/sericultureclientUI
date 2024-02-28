@@ -127,7 +127,9 @@ function TrainingScheduleView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Scheduled Training and Trainer Details</Block.Title>
+            <Block.Title tag="h2">
+              View Scheduled Training and Trainer Details
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -218,18 +220,26 @@ function TrainingScheduleView() {
                         <td>
                           {" "}
                           {selectedPPtFile && (
-                            <img
-                              style={{
-                                height: "100px",
-                                width: "100px",
-                                cursor: "pointer",
-                              }}
-                              src={selectedPPtFile}
-                              alt="Selected File"
-                              onClick={() =>
-                                downloadFile(trainingSchedule.trUploadPath)
-                              }
-                            />
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedPPtFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(trainingSchedule.trUploadPath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                           )}
                         </td>
                       </tr>
