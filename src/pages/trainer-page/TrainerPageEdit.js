@@ -292,6 +292,8 @@ function TrainerPageEdit() {
       if (data.trNoOfParticipant.length > 3) {
         return;
       }
+
+      
       api
         .post(baseURL + `trSchedule/edit`, {...data,trStartDate:formattedFromDate,trDateOfCompletion:formattedToDate})
         .then((response) => {
@@ -310,6 +312,8 @@ function TrainerPageEdit() {
                   ...list,
                   trScheduleId: trScheduleId,
                 };
+
+                
                 api
                   .post(baseURL + `trTrainee/add`, updatedTr)
                   .then((response) => {

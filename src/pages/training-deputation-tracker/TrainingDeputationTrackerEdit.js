@@ -53,6 +53,10 @@ function TrainingDeputationTrackerEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.mobileNumber.length !== 10) {
+        return;
+    }
+
       api
         .post(baseURL2 + `trainingDeputationTracker/edit`, data)
         .then((response) => {
