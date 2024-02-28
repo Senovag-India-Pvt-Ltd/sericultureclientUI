@@ -244,12 +244,6 @@ function TrainingScheduleView() {
         <Card className="mt-3">
           <Card.Header>Trainers List</Card.Header>
           <Card.Body>
-            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
-          {vbAccountList && vbAccountList.length > 0 ? (
-            vbAccountList.map((vbAccount) => (
-              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
-            {/* <Row className="g-gs"> */}
             {trainerUserList && trainerUserList.length > 0
               ? trainerUserList.map((trainerUser) => (
                   <Row className="g-gs">
