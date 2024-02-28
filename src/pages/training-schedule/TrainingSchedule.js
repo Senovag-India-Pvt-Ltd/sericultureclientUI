@@ -786,7 +786,7 @@ function TrainingSchedule() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
-                      minDate={new Date()}
+                      minDate={new Date(data.trStartDate)}
                       required
                     />
                   </div>
