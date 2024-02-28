@@ -73,8 +73,7 @@ function TrainingDeputationTrackerEdit() {
               designationId: "",
               officialAddress: "",
               mobileNumber: "",
-              deputedInstitute: "",
-              fileUploadPath: "",
+              deputedInstituteId: "",
               deputedFromDate: null,
               deputedToDate: null,
               trProgramMasterId: "",
@@ -82,6 +81,8 @@ function TrainingDeputationTrackerEdit() {
               deputedAttended: "",
               deputedRemarks: "",
             });
+            setSelectedUploadFile("")
+            document.getElementById("fileUploadPath").value = "";
             setValidated(false);
           }
         })

@@ -90,6 +90,8 @@ function TrainingDeputationTracker() {
               deputedAttended: "",
               deputedRemarks: "",
             });
+            setFileUpload("")
+            document.getElementById("fileUploadPath").value = "";
             setValidated(false);
           }
         })
