@@ -123,11 +123,11 @@ function TrainingScheduleView() {
   };
 
   return (
-    <Layout title="Training Schedule View">
+    <Layout title="View Scheduled Training and Trainer Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule View</Block.Title>
+            <Block.Title tag="h2">View Scheduled Training and Trainer Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -156,7 +156,7 @@ function TrainingScheduleView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Schedule Details</Card.Header>
+          <Card.Header>Scheduled Training Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -244,12 +244,6 @@ function TrainingScheduleView() {
         <Card className="mt-3">
           <Card.Header>Trainers List</Card.Header>
           <Card.Body>
-            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
-          {vbAccountList && vbAccountList.length > 0 ? (
-            vbAccountList.map((vbAccount) => (
-              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
-            {/* <Row className="g-gs"> */}
             {trainerUserList && trainerUserList.length > 0
               ? trainerUserList.map((trainerUser) => (
                   <Row className="g-gs">

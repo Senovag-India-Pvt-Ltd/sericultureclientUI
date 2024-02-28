@@ -90,18 +90,46 @@ function TrainerPageView() {
   }, [id]);
 
   const navigate = useNavigate();
-  // const handleEdit = (trScheduleId) => {
   const handleEdit = (_id) => {
     navigate(`/seriui/trainer-page-edit/${_id}`);
-    // navigate("/seriui/state");
+  };
+
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
   };
 
   return (
-    <Layout title="Trainer Page  View">
+    <Layout title="View Scheduled Training and Trainee Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page View</Block.Title>
+            <Block.Title tag="h2">View Scheduled Training and Trainee Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -130,7 +158,7 @@ function TrainerPageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Schedule Details</Card.Header>
+          <Card.Header>Scheduled Training Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
@@ -196,18 +224,25 @@ function TrainerPageView() {
                       <td>{trTrainer.trNoOfParticipant}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
-                      <td>
-                        {" "}
-                        {selectedPPtFile && (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={selectedPPtFile}
-                            alt="Selected File"
-                          />
-                        )}
-                      </td>
-                    </tr>
+                        <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
+                        <td>
+                          {" "}
+                          {selectedPPtFile && (
+                            <img
+                              style={{
+                                height: "100px",
+                                width: "100px",
+                                cursor: "pointer",
+                              }}
+                              src={selectedPPtFile}
+                              alt="Selected File"
+                              onClick={() =>
+                                downloadFile(trTrainer.trUploadPath)
+                              }
+                            />
+                          )}
+                        </td>
+                      </tr>
                   </tbody>
                 </table>
                 <Button
