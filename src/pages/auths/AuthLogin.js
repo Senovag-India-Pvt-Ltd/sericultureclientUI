@@ -381,22 +381,22 @@ const AuthLoginPage = () => {
                                 id="rememberMe"
                                 label="Remember Me"
                               /> */}
-                            <Form.Check
+                            {/* <Form.Check
                               type="checkbox"
                               className="form-check-sm"
                               id="defaultAddress"
                               label="Remember Me"
-                              // checked={checked}
-                              // onChange={handleCheckBox}
-                              // Optional: disable the checkbox in view mode
-                              // defaultChecked
+                              checked={checked}
+                              onChange={handleCheckBox}
+                              Optional: disable the checkbox in view mode
+                              defaultChecked
                             />
                             <Link
                               to="/seriui/auths/auth-reset"
                               className="small"
                             >
                               Forgot Password?
-                            </Link>
+                            </Link> */}
                           </div>
                         </Col>
                         <Col className="col-12">

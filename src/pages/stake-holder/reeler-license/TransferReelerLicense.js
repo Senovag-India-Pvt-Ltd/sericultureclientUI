@@ -105,7 +105,7 @@ function TransferReelerLicense() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `reeler/add`, {
+        .post(baseURL2 + `reeler/transfer-reeler-license`, {
           ...data,
           transferReelerId: data.reelingLicenseNumber,
         })

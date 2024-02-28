@@ -195,6 +195,13 @@ function TrainerPageEdit() {
       setTrDetails(prevData => ({ ...prevData, percentageImproved: calculatedPrice }));
       
     }
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -223,11 +230,30 @@ function TrainerPageEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "trDuration" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trPeriod" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trNoOfParticipant" && (value.length > 3)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
-  //   const handleDateChange = (date, type) => {
-  //     setData({ ...data, [type]: date });
-  //   };
+  
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -300,7 +326,7 @@ function TrainerPageEdit() {
       trProgramMasterId: "",
       trCourseMasterId: "",
       trModeMasterId: "",
-      trStartDate: "",
+      trStartDate: null,
       trDuration: "",
       trPeriod: "",
       trDateOfCompletion: "",
@@ -1077,7 +1103,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trDuration">
-                      Training Duration(In Hours)
+                      Training Duration Per Day(In Hours)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1087,7 +1113,11 @@ function TrainerPageEdit() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Training Duration"
-                      />
+                        required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Training Duration Should Be Less Than 24 Hours
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -1095,7 +1125,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trPeriod">
-                      Training Period(In Days)
+                      Training Period(In Days)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1105,7 +1135,11 @@ function TrainerPageEdit() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Training Period"
-                      />
+                        required
+                        />
+                         <Form.Control.Feedback type="invalid">
+                         Training Period Must Be Limited To 2 Digits or Less
+                          </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -1113,7 +1147,7 @@ function TrainerPageEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trNoOfParticipant">
-                      Training No Of Participant
+                      Training No Of Participant<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -1122,8 +1156,12 @@ function TrainerPageEdit() {
                         value={data.trNoOfParticipant}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Training No Of Participant "
-                      />
+                        placeholder="Enter  No Of Participant "
+                        required
+                        />
+                         <Form.Control.Feedback type="invalid">
+                          Participant Number Must Be Limited To Three Digits or Less
+                          </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -1146,16 +1184,12 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  required
                                 />
                               )}
                             </div>
                           </Col>
-                        {/* </Row> */}
-                        {/* </Form.Group> */}
-
-                        {/* <Row> */}
-                          {/* <Col lg="6"> */}
-                            {/* <Form.Group className="form-group"> */}
+                       
                             <Form.Label column sm={2}>
                               Expected Date of Completion
                               <span className="text-danger">*</span>
@@ -1174,6 +1208,8 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  minDate={new Date()}
+                                  required
                                 />
                               )}
                             </div>
@@ -1183,7 +1219,7 @@ function TrainerPageEdit() {
                     <Col lg = "4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
-                          Upload PPt/Video
+                          Upload PPT/Video
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1289,14 +1325,14 @@ function TrainerPageEdit() {
                                       >
                                         Edit
                                       </Button>
-                                      <Button
+                                      {/* <Button
                                         variant="danger"
                                         size="sm"
                                         onClick={() => handleDelete(i)}
                                         className="ms-2"
                                       >
                                         Delete
-                                      </Button>
+                                      </Button> */}
                                     </div>
                                   </td>
                                   <td>{item.trTraineeName}</td>
@@ -1334,7 +1370,7 @@ function TrainerPageEdit() {
                       Cancel
                     </Link> */}
                 <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
+                Clear
                 </Button>
               </li>
             </ul>
@@ -1480,7 +1516,7 @@ function TrainerPageEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mobile Number is required
+                      Mobile Number Should Contain Only 10 digits
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1635,22 +1671,6 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Post Test Score(Out Of 100)</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="postTestScore"
-                      name="postTestScore"
-                      value={trDetails.postTestScore}
-                      onChange={handleTrainerInputs}
-                      type="text"
-                      placeholder="Enter Post Test Score"
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="6">
-                <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">Pre Test Score(Out Of 100)</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1664,8 +1684,23 @@ function TrainerPageEdit() {
                   </div>
                 </Form.Group>
               </Col>
-
               
+              <Col lg="6">
+                <Form.Group className="form-group mt-n5">
+                  <Form.Label htmlFor="place">Post Test Score(Out Of 100)</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="postTestScore"
+                      name="postTestScore"
+                      value={trDetails.postTestScore}
+                      onChange={handleTrainerInputs}
+                      type="text"
+                      placeholder="Enter Post Test Score"
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+      
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
@@ -1703,7 +1738,7 @@ function TrainerPageEdit() {
                       </Button>
                     </div> */}
                   <Button type="button" variant="secondary" onClick={trClear}>
-                    Cancel
+                  Clear
                   </Button>
                 </div>
               </Col>
@@ -1853,7 +1888,7 @@ function TrainerPageEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mobile Number is required
+                      Mobile Number Should Contain Only 10 digits
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -2008,22 +2043,6 @@ function TrainerPageEdit() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Post Test Score</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="postTestScore"
-                      name="postTestScore"
-                      value={trDetails.postTestScore}
-                      onChange={handleTrainerInputs}
-                      type="text"
-                      placeholder="Enter Post Test Score"
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="6">
-                <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">Pre Test Score</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -2038,7 +2057,21 @@ function TrainerPageEdit() {
                 </Form.Group>
               </Col>
 
-              
+              <Col lg="6">
+                <Form.Group className="form-group mt-n5">
+                  <Form.Label htmlFor="place">Post Test Score</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="postTestScore"
+                      name="postTestScore"
+                      value={trDetails.postTestScore}
+                      onChange={handleTrainerInputs}
+                      type="text"
+                      placeholder="Enter Post Test Score"
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
@@ -2079,7 +2112,7 @@ function TrainerPageEdit() {
                       </Button>
                     </div> */}
                   <Button type="button" variant="secondary" onClick={trClear}>
-                    Cancel
+                    Clear
                   </Button>
                 </div>
               </Col>

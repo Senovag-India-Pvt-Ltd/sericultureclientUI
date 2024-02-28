@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col,Button} from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
 import api from "../../services/auth/api";
+import { format } from 'date-fns';
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_TRAINING;
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -23,14 +25,11 @@ function TrainerPageView() {
   const [trTrainer, setTrTrainer] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // const [vbAccount, setVbAccount] = useState({});
-  // const [loadingVbAccount, setLoadingVbAccount] = useState(false);
-
-  // // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  //   let findUser = data.find((item) => item.id === id);
-  //   setDistrict(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
 
   const getIdList = () => {
     setLoading(true);
@@ -90,6 +89,13 @@ function TrainerPageView() {
     getTrDetailsList();
   }, [id]);
 
+  const navigate = useNavigate();
+  // const handleEdit = (trScheduleId) => {
+  const handleEdit = (_id) => {
+    navigate(`/seriui/trainer-page-edit/${_id}`);
+    // navigate("/seriui/state");
+  };
+
   return (
     <Layout title="Trainer Page  View">
       <Block.Head>
@@ -144,10 +150,10 @@ function TrainerPageView() {
                           : "Other"}
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>User Name:</td>
                       <td>{trTrainer.username}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}>Institute Name:</td>
                       <td>{trTrainer.trInstitutionMasterName}</td>
@@ -171,11 +177,11 @@ function TrainerPageView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Start Date:</td>
-                      <td>{trTrainer.trStartDate}</td>
+                      <td>{formatDate(trTrainer.trStartDate)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Date Of Completion:</td>
-                      <td>{trTrainer.trDateOfCompletion}</td>
+                      <td>{formatDate(trTrainer.trDateOfCompletion)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Duration:</td>
@@ -204,6 +210,14 @@ function TrainerPageView() {
                     </tr>
                   </tbody>
                 </table>
+                <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => handleEdit(trTrainer.trScheduleId)}
+              >
+                Start Training
+              </Button>
               </Col>
             </Row>
           </Card.Body>
@@ -212,12 +226,7 @@ function TrainerPageView() {
         <Card className="mt-3">
           <Card.Header>Trainee Details</Card.Header>
           <Card.Body>
-            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
-          {vbAccountList && vbAccountList.length > 0 ? (
-            vbAccountList.map((vbAccount) => (
-              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
-            {/* <Row className="g-gs"> */}
+           
             {trDetailsList && trDetailsList.length > 0
               ? trDetailsList.map((trDetails) => (
                   <Row className="g-gs">

@@ -190,6 +190,8 @@ function Menu() {
     Registration_Transfer_of_Reeler_License: false,
     Registration_Trader_License: false,
     Registration_Nsso: false,
+    Registration_Farmer_Without_FruitsId: false,
+    Registration_Other_State_Farmer: false,
 
     Services: false,
     Services_Subsidy_Programmes: false,
@@ -290,6 +292,7 @@ function Menu() {
     Admin_Master_Registration_Working_Institution: false,
     Admin_Master_Registration_User: false,
     Admin_Master_Registration_Designation: false,
+    Admin_Master_Registration_No_Fruits_Farmer_Counter: false,
 
     Admin_Master_Land: false,
 
@@ -369,8 +372,8 @@ function Menu() {
     Admin_Report_Pending: false,
     Admin_Report_Bidding_Report: false,
     Admin_Report_Bidding_Reeler_Report: false,
-    Admin_Report_Farmer_Transaction_Report:false,
-    Admin_Report_Reeler_Transaction_Report:false,
+    Admin_Report_Farmer_Transaction_Report: false,
+    Admin_Report_Reeler_Transaction_Report: false,
   });
 
   // Old show menu using mapcode
@@ -470,6 +473,13 @@ function Menu() {
     if (data.includes("Admin")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Admin_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Admin_Report")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Report_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -797,6 +807,22 @@ function Menu() {
               <MenuItemLink
                 text="RSP/CRC/NSSO Registration"
                 to="/seriui/external-unit-registration"
+              />
+            </MenuItem>
+          ) : null}
+          {showMenu.Registration_Farmer_Without_FruitsId ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Farmer Without FruitsId"
+                to="/seriui/farmer-without-fruits"
+              />
+            </MenuItem>
+          ) : null}
+          {showMenu.Registration_Other_State_Farmer ? (
+            <MenuItem>
+              <MenuItemLink
+                text="Other State Farmer"
+                to="/seriui/other-state-farmer"
               />
             </MenuItem>
           ) : null}
@@ -1517,6 +1543,14 @@ function Menu() {
                           <MenuItemLink
                             text="Designation"
                             to="/seriui/designation"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Registration_No_Fruits_Farmer_Counter ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Non Fruits ID Farmer Counter"
+                            to="/seriui/config-farmer-count"
                           />
                         </MenuItem>
                       ) : null}

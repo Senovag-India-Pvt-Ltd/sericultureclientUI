@@ -535,7 +535,14 @@ import Farm from "../pages/masters/farm/Farm";
 import FarmList from "../pages/masters/farm/FarmList";
 import FarmView from "../pages/masters/farm/FarmView";
 import FarmEdit from "../pages/masters/farm/FarmEdit";
+import TraineeAttendancePage from "../pages/training-schedule/TraineeAttendancePage";
 
+import OtherStateFarmer from "../pages/stake-holder/OtherStateFarmer";
+import ActivateExternalUnit from "../pages/stake-holder/external-units/ActivateExternalUnit";
+import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
+import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmerAllow";
+import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
+import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
 
 // Admin and Reports
 
@@ -693,6 +700,19 @@ function Router() {
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
             />
+            <Route path="other-state-farmer" element={<OtherStateFarmer />} />
+            <Route
+              path="other-state-farmer-list"
+              element={<OtherStateFarmerList />}
+            />
+            <Route
+              path="farmer-without-fruits"
+              element={<FarmerWithoutFruits />}
+            />
+            <Route
+              path="farmer-without-fruits-list"
+              element={<FarmerWithoutFruitsList />}
+            />
             <Route path="stake-holder-list" element={<StakeHolderList />} />
             <Route
               path="stake-holder-view/:id"
@@ -737,6 +757,10 @@ function Router() {
               element={<NewTraderLicenseEdit />}
             />
             <Route
+              path="activate-external-unit"
+              element={<ActivateExternalUnit />}
+            />
+            <Route
               path="external-unit-registration"
               element={<ExternalUnitRegister />}
             />
@@ -765,6 +789,10 @@ function Router() {
             <Route
               path="training-schedule-edit/:id"
               element={<TrainingScheduleEdit />}
+            />
+            <Route
+              path="trainee-attendance-page/:id"
+              element={<TraineeAttendancePage />}
             />
             <Route path="trainer-page" element={<TrainerPage />} />
             <Route path="trainer-page-edit/:id" element={<TrainerPageEdit />} />
@@ -927,13 +955,16 @@ function Router() {
               element={<SaleChawkiWormsView />}
             />
             <Route path="chawki-management" element={<ChawkiManagement />} />
-            <Route path="chawki-management-list" element={<ChawkiManagementList />} />
+            <Route
+              path="chawki-management-list"
+              element={<ChawkiManagementList />}
+            />
 
             <Route
               path="chawki-management-edit/:id"
               element={<ChawkiManagementEdit />}
             />
-             <Route
+            <Route
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
             />
@@ -1018,7 +1049,7 @@ function Router() {
               path="maintenance-of-mulberry-garden-alert/:id"
               element={<MaintenanceOfMulberryGardenAlert />}
             />
-          
+
             <Route
               path="receipt-of-dfls"
               element={<ReceiptofDFLsfromthegrainage />}
@@ -1053,7 +1084,10 @@ function Router() {
               path="Supply-of-Cocoons-to-Grainagee"
               element={<SupplyofCocoonstoGrainage />}
             />
-            <Route path="supply-of-cocoons-to-grainage-list" element={<SupplyOfCocoonsToGrainageList />} />
+            <Route
+              path="supply-of-cocoons-to-grainage-list"
+              element={<SupplyOfCocoonsToGrainageList />}
+            />
             <Route
               path="supply-of-cocoons-to-grainage-edit/:id"
               element={<SupplyofCocoonstoGrainageEdit />}
@@ -1065,27 +1099,35 @@ function Router() {
             <Route
               path="Maintenance-and-Sale-of-Nursery-to-Farmers"
               element={<MaintenanceandSaleofNurserytoFarmers />}
-
-            />      
+            />
             <Route
               path="maintenance-and-sale-of-nursery-edit/:id"
               element={<MaintenanceandSaleofNurserytoFarmersEdit />}
             />
-             <Route
+            <Route
               path="maintenance-and-sale-of-nursery-view/:id"
               element={<MaintenanceAndSaleOfNurseryToFarmersView />}
             />
 
-          <Route path="maintenance-and-sale-of-nursery-list" element={<MaintenanceandSaleofNurserytoFarmersList />} />
+            <Route
+              path="maintenance-and-sale-of-nursery-list"
+              element={<MaintenanceandSaleofNurserytoFarmersList />}
+            />
 
-           <Route path="chawki-distribution" element={<ChawkidistributiontoFarmers />} />
-            <Route path="chawki-distribution-list" element={<ChawkidistributiontoFarmersList />} />
+            <Route
+              path="chawki-distribution"
+              element={<ChawkidistributiontoFarmers />}
+            />
+            <Route
+              path="chawki-distribution-list"
+              element={<ChawkidistributiontoFarmersList />}
+            />
 
             <Route
               path="chawki-distribution-edit/:id"
               element={<ChawkidistributiontoFarmersEdit />}
             />
-             <Route
+            <Route
               path="chawki-distribution-view/:id"
               element={<ChawkidistributiontoFarmersView />}
             />
@@ -1326,18 +1368,33 @@ function Router() {
             <Route path="lineName-list" element={<LineNameList />} />
             <Route path="lineName-view/:id" element={<LineNameView />} />
             <Route path="lineName-edit/:id" element={<LineNameEdit />} />
-            <Route path="disinfectant" element={<Disinfectant/>} />
+            <Route path="disinfectant" element={<Disinfectant />} />
             <Route path="disinfectant-list" element={<DisinfectantList />} />
-            <Route path="disinfectant-view/:id" element={<DisinfectantView />} />
-            <Route path="disinfectant-edit/:id" element={<DisinfectantEdit />} />
+            <Route
+              path="disinfectant-view/:id"
+              element={<DisinfectantView />}
+            />
+            <Route
+              path="disinfectant-edit/:id"
+              element={<DisinfectantEdit />}
+            />
             <Route path="grainage" element={<Grainage />} />
             <Route path="grainage-list" element={<GrainageList />} />
             <Route path="grainage-view/:id" element={<GrainageView />} />
             <Route path="grainage-edit/:id" element={<GrainageEdit />} />
             <Route path="generation-number" element={<GenerationNumber />} />
-            <Route path="generation-number-list" element={<GenerationNumberList />} />
-            <Route path="generation-number-view/:id" element={<GenerationNumberView />} />
-            <Route path="generation-number-edit/:id" element={<GenerationNumberEdit />} />
+            <Route
+              path="generation-number-list"
+              element={<GenerationNumberList />}
+            />
+            <Route
+              path="generation-number-view/:id"
+              element={<GenerationNumberView />}
+            />
+            <Route
+              path="generation-number-edit/:id"
+              element={<GenerationNumberEdit />}
+            />
             <Route path="farm" element={<Farm />} />
             <Route path="farm-list" element={<FarmList />} />
             <Route path="farm-view/:id" element={<FarmView />} />
@@ -1430,6 +1487,7 @@ function Router() {
             <Route path="crate-view/:id" element={<CrateView />} />
             <Route path="crate-edit/:id" element={<CrateEdit />} />
             <Route path="updateBinStatus" element={<UpdateBin />} />
+            <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}

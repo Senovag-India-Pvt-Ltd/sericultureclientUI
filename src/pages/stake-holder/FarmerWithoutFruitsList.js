@@ -1,32 +1,32 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
+import StakeHolderDatas from "../../store/stakeHolder/StakeHolderData";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
 // import axios from "axios";
-import Swal from "sweetalert2";
-import { createTheme } from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
-import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
-import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function TrainingDeputationTrackerList() {
+function FarmerWithoutFruitsList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, size: countPerPage, type: 3 } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "officialName",
+    searchBy: "",
   });
 
   const handleInputs = (e) => {
@@ -38,26 +38,28 @@ function TrainingDeputationTrackerList() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "officialName") {
-      joinColumn = "trainingDeputationTracker.officialName";
+    if (data.searchBy === "fruitsId") {
+      joinColumn = "farmer.fruitsId";
+    }
+    if (data.searchBy === "farmerNumber") {
+      joinColumn = "farmer.farmerNumber";
     }
     if (data.searchBy === "mobileNumber") {
-      joinColumn = "trainingDeputationTracker.mobileNumber";
+      joinColumn = "farmer.mobileNumber";
     }
     // console.log(joinColumn);
+    const parameters = {
+      params: {
+        pageNumber: page,
+        size: countPerPage,
+        type: 3,
+        searchText: data.text,
+      },
+    };
     api
-      .post(
-        baseURL + `trainingDeputationTracker/search`,
-        {
-          searchText: data.text,
-          joinColumn: joinColumn,
-        },
-        {
-          headers: _header,
-        }
-      )
+      .get(baseURL2 + `farmer/list-with-join-with-filters`, parameters)
       .then((response) => {
-        setListData(response.data.content.trainingDeputationTracker);
+        setListData(response.data.content.farmer);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -73,10 +75,10 @@ function TrainingDeputationTrackerList() {
 
   const getList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `trainingDeputationTracker/list-with-join`, _params)
+    api
+      .get(baseURL2 + `farmer/list-with-join-with-filters`, _params)
       .then((response) => {
-        setListData(response.data.content.trainingDeputationTracker);
+        setListData(response.data.content.farmer);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -92,17 +94,12 @@ function TrainingDeputationTrackerList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/training-deputation-tracker-view/${_id}`);
+    navigate(`/seriui/stake-holder-view/${_id}`);
   };
 
-  // const handleEdit = (_id) => {
-  //   // navigate(`/seriui/caste/${_id}`);
-  //   navigate("/seriui/caste-edit");
-  // };
-
   const handleEdit = (_id) => {
-    navigate(`/seriui/training-deputation-tracker-edit/${_id}`);
-    // navigate("/seriui/training Schedule");
+    navigate(`/seriui/stake-holder-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -122,9 +119,8 @@ function TrainingDeputationTrackerList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        console.log("hello");
-        const response = api
-          .delete(baseURL + `trainingDeputationTracker/delete/${_id}`)
+        api
+          .delete(baseURL2 + `farmer/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -194,17 +190,20 @@ function TrainingDeputationTrackerList() {
     },
   };
 
-  const TrainingDeputationTrackerDataColumns = [
+  const StakeHolderDataColumns = [
     {
       name: "Action",
+      width: "300px",
+      headerStyle: (selector, id) => {
+        return { textAlign: "center" };
+      },
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+        <div className="text-end w-100 d-flex justify">
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.trainingDeputationId)}
+            onClick={() => handleView(row.farmerId)}
           >
             View
           </Button>
@@ -212,14 +211,14 @@ function TrainingDeputationTrackerList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.trainingDeputationId)}
+            onClick={() => handleEdit(row.farmerId)}
           >
-            Update Date Of Completion
+            Edit
           </Button>
           {/* <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.trainingDeputationId)}
+            onClick={() => deleteConfirm(row.farmerId)}
             className="ms-2"
           >
             Delete
@@ -230,19 +229,48 @@ function TrainingDeputationTrackerList() {
       hide: "md",
     },
     {
-      name: "Official Name",
-      selector: (row) => row.officialName,
-      cell: (row) => <span>{row.officialName}</span>,
+      name: "Name",
+      selector: (row) => row.firstName,
+      cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Designation",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Fruits ID",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Farmer Number",
+      selector: (row) => row.farmerNumber,
+      cell: (row) => <span>{row.farmerNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    // {
+    //   name: "DOB",
+    //   selector: (row) => row.dob,
+    //   cell: (row) => <span>{row.dob}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "District",
+    //   selector: (row) => row.districtName,
+    //   cell: (row) => <span>{row.districtName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Taluk",
+    //   selector: (row) => row.talukName,
+    //   cell: (row) => <span>{row.talukName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+
     {
       name: "Mobile Number",
       selector: (row) => row.mobileNumber,
@@ -251,26 +279,37 @@ function TrainingDeputationTrackerList() {
       hide: "md",
     },
     {
-      name: "Training Program Name",
-      selector: (row) => row.trProgramMasterName,
-      cell: (row) => <span>{row.trProgramMasterName}</span>,
+      name: "Passbook Number",
+      selector: (row) => row.passbookNumber,
+      cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Gender",
+    //   selector: (row) => row.genderId,
+    //   cell: (row) => <span>{row.genderId  === 1
+    //     ? 'Male'
+    //     : row.gender === 2
+    //     ? 'Female'
+    //     : 'Other'}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
   ];
 
   return (
-    <Layout title="Training Deputation Tracker List">
+    <Layout title="Farmer without Fruits Id List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker List</Block.Title>
+            <Block.Title tag="h2">Farmer without Fruits Id List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/training-deputation-tracker"
+                  to="/seriui/farmer-without-fruits"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -279,7 +318,7 @@ function TrainingDeputationTrackerList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/training-deputation-tracker"
+                  to="/seriui/farmer-without-fruits"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -307,15 +346,16 @@ function TrainingDeputationTrackerList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="officialName">Official Name</option>
-                      <option value="mobileNumber">Mobile Number</option>
+                      {/* <option value="fruitsId">Fruits ID</option> */}
+                      <option value="farmerNumber">Farmer Number</option>
+                      {/* <option value="mobileNumber">Mobile Number</option> */}
                     </Form.Select>
                   </div>
                 </Col>
 
                 <Col sm={3}>
                   <Form.Control
-                    id="trScheduleId"
+                    id="farmerId"
                     name="text"
                     value={data.text}
                     onChange={handleInputs}
@@ -332,9 +372,9 @@ function TrainingDeputationTrackerList() {
             </Col>
           </Row>
           <DataTable
-            // title="Training Schedule List"
+            // title="Stake Holder List"
             tableClassName="data-table-head-light table-responsive"
-            columns={TrainingDeputationTrackerDataColumns}
+            columns={StakeHolderDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -355,4 +395,4 @@ function TrainingDeputationTrackerList() {
   );
 }
 
-export default TrainingDeputationTrackerList;
+export default FarmerWithoutFruitsList;

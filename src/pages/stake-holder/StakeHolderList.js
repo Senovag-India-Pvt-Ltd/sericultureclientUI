@@ -21,7 +21,7 @@ function StakeHolderList() {
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _params = { params: { pageNumber: page, size: countPerPage, type: 2 } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [data, setData] = useState({
@@ -48,17 +48,17 @@ function StakeHolderList() {
       joinColumn = "farmer.mobileNumber";
     }
     // console.log(joinColumn);
+    const parameters = {
+      params: {
+        pageNumber: page,
+        size: countPerPage,
+        type: 2,
+        searchText: data.text,
+      },
+    };
+
     api
-      .post(
-        baseURL2 + `farmer/search`,
-        {
-          searchText: data.text,
-          joinColumn: joinColumn,
-        },
-        {
-          headers: _header,
-        }
-      )
+      .get(baseURL2 + `farmer/list-with-join-with-filters`, parameters)
       .then((response) => {
         setListData(response.data.content.farmer);
 
@@ -77,7 +77,7 @@ function StakeHolderList() {
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURL2 + `farmer/list-with-join`, _params)
+      .get(baseURL2 + `farmer/list-with-join-with-filters`, _params)
       .then((response) => {
         setListData(response.data.content.farmer);
         setTotalRows(response.data.content.totalItems);
@@ -347,9 +347,9 @@ function StakeHolderList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="fruitsId">Fruits ID</option>
+                      {/* <option value="fruitsId">Fruits ID</option> */}
                       <option value="farmerNumber">Farmer Number</option>
-                      <option value="mobileNumber">Mobile Number</option>
+                      {/* <option value="mobileNumber">Mobile Number</option> */}
                     </Form.Select>
                   </div>
                 </Col>

@@ -10,6 +10,8 @@ import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
+import { format } from 'date-fns';
+import DatePicker from "react-datepicker";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -25,7 +27,7 @@ function TrainingScheduleList() {
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "username",
+    searchBy: "trStartDate",
   });
 
   const handleInputs = (e) => {
@@ -37,12 +39,13 @@ function TrainingScheduleList() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "username") {
-      joinColumn = "userMaster.username";
+    if (data.searchBy === "trStartDate") {
+      joinColumn = "trSchedule.trStartDate";
     }
-    if (data.searchBy === "trScheduleId") {
-      joinColumn = "trSchedule.trScheduleId";
+    if (data.searchBy === "trGroupMasterName") {
+      joinColumn = "trGroupMaster.trGroupMasterName";
     }
+   
     // console.log(joinColumn);
     api
       .post(
@@ -193,6 +196,16 @@ function TrainingScheduleList() {
     },
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const TrainingScheduleDataColumns = [
     {
       name: "Action",
@@ -236,26 +249,19 @@ function TrainingScheduleList() {
       hide: "md",
     },
     {
-      name: "User Name",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Date",
       selector: (row) => row.trStartDate,
-      cell: (row) => <span>{row.trStartDate}</span>,
+      cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Training Institution Name",
-      selector: (row) => row.trInstitutionMasterName,
-      cell: (row) => <span>{row.trInstitutionMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Training Institution Name",
+    //   selector: (row) => row.trInstitutionMasterName,
+    //   cell: (row) => <span>{row.trInstitutionMasterName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Training Group Name",
       selector: (row) => row.trGroupMasterName,
@@ -320,13 +326,36 @@ function TrainingScheduleList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="username">User Name</option>
-                      <option value="trScheduleId">Training Schedule</option>
+                      <option value="trStartDate">Start Date</option>
+                      <option value="trGroupMasterName">Training Group</option>
                     </Form.Select>
                   </div>
                 </Col>
 
-                <Col sm={3}>
+                {data.searchBy === "trStartDate"?(
+                  <Col sm={2}>
+                    <Form.Group className="form-group">
+                      {/* <Form.Label htmlFor="sordfl">
+                      Training Period Start Date<span className="text-danger">*</span>
+                      </Form.Label> */}
+                      <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.trStartDate}
+                      onChange={(date) =>
+                        handleDateChange(date, "trStartDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      // minDate={new Date()}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+                ):(<Col sm={3}>
                   <Form.Control
                     id="trScheduleId"
                     name="text"
@@ -335,7 +364,10 @@ function TrainingScheduleList() {
                     type="text"
                     placeholder="Search"
                   />
-                </Col>
+                </Col>)}
+
+                
+
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search

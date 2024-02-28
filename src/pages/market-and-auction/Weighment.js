@@ -1011,7 +1011,17 @@ function Weighment() {
                                   textAlign: "center",
                                 }}
                               >
-                                {weigh.date.toDateString()}
+                                {/* {weigh.date.toDateString()} */}
+                                {weigh.date
+                                  .getDate()
+                                  .toString()
+                                  .padStart(2, "0") +
+                                  "/" +
+                                  (weigh.date.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, "0") +
+                                  "/" +
+                                  weigh.date.getFullYear()}
                               </td>
                             </tr>
                             <tr>
@@ -1267,7 +1277,18 @@ function Weighment() {
                           <tbody>
                             <tr>
                               <td style={styles.smallwhiteback}>
-                                Date: {new Date().toDateString()}
+                                {/* Date: {new Date().toDateString()} */}
+                                Date:{" "}
+                                {weigh.date
+                                  .getDate()
+                                  .toString()
+                                  .padStart(2, "0") +
+                                  "/" +
+                                  (weigh.date.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, "0") +
+                                  "/" +
+                                  weigh.date.getFullYear()}
                               </td>
                             </tr>
 

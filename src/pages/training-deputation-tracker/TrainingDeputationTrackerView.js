@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { format } from 'date-fns';
 import TrainingDeputationTracker from "./TrainingDeputationTracker";
 
 // const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -27,11 +28,11 @@ function TrainingDeputationTrackerView() {
   );
   const [loading, setLoading] = useState(false);
 
-  // grabsthe id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
 
   const getIdList = () => {
     setLoading(true);
@@ -39,6 +40,9 @@ function TrainingDeputationTrackerView() {
       .get(baseURL + `trainingDeputationTracker/get-join/${id}`)
       .then((response) => {
         setTrainingDeputationTracker(response.data.content);
+        if (response.data.content.fileUploadPath) {
+          getUploadedFile(response.data.content.fileUploadPath);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -47,18 +51,72 @@ function TrainingDeputationTrackerView() {
       });
   };
 
-  //console.log(Caste);
+  // To get Photo
+  const [selectedUploadFile, setSelectedUploadFile] = useState(null);
+
+  // const getUploadeddFile = async (file) => {
+  //   const parameters = `fileName=${file}`;
+  //   try {
+  //     const response = await api.get(
+  //       baseURL + `api/s3/download?${parameters}`,
+  //       {
+  //         responseType: "arraybuffer",
+  //       }
+  //     );
+  //     const blob = new Blob([response.data]);
+  //     const url = URL.createObjectURL(blob);
+  //     setSelectedUploadFile(url);
+  //   } catch (error) {
+  //     console.error("Error fetching file:", error);
+  //   }
+  // };
+
+  const getUploadedFile = async (trainingDeputationId) => {
+    // const newDate = new Date();
+    // const formattedDate =
+    //   newDate.getFullYear() +
+    //   "-" +
+    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
+    //   "-" +
+    //   newDate.getDate().toString().padStart(2, "0");
+    const parameters = `fileName=${trainingDeputationId}`;
+    try {
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          // marketId: data.marketId,
+          // godownId: data.godownId,
+          // allottedLotId: allotedLotId,
+          // auctionDate: formattedDate,
+          fileUploadPath:trainingDeputationTracker.fileUploadPath
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // window.open(fileURL);
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedUploadFile(url);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
 
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="Training Deputation Tracker View">
+    <Layout title="View Training Deputation Tracker Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Deputation Tracker View</Block.Title>
+            <Block.Title tag="h2">View Training Deputation Tracker Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -121,18 +179,18 @@ function TrainingDeputationTrackerView() {
                         <td>{trainingDeputationTracker.mobileNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Deputed Institute:</td>
+                        <td style={styles.ctstyle}>Deputed Institute Details:</td>
                         <td>
-                          {trainingDeputationTracker.deputedInstituteName}
+                          {trainingDeputationTracker.deputedInstitute}
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Deputed From Date:</td>
-                        <td>{trainingDeputationTracker.deputedFromDate}</td>
+                        <td>{formatDate(trainingDeputationTracker.deputedFromDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Deputed To Date:</td>
-                        <td>{trainingDeputationTracker.deputedToDate}</td>
+                        <td>{formatDate(trainingDeputationTracker.deputedToDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> Training Program:</td>
@@ -155,6 +213,20 @@ function TrainingDeputationTrackerView() {
                       <tr>
                         <td style={styles.ctstyle}>Remarks:</td>
                         <td>{trainingDeputationTracker.deputedRemarks}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Uploaded Document:</td>
+                        <td>
+                          {" "}
+                          {selectedUploadFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedUploadFile}
+                              alt="Selected File"
+                              onClick ={()=>getUploadedFile(trainingDeputationTracker.fileUploadPath)}
+                            />
+                          )}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
