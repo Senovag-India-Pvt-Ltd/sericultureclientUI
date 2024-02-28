@@ -125,11 +125,11 @@ function TrainerPageView() {
   };
 
   return (
-    <Layout title="Trainer Page  View">
+    <Layout title="View Scheduled Training and Trainee Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page View</Block.Title>
+            <Block.Title tag="h2">View Scheduled Training and Trainee Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -158,7 +158,7 @@ function TrainerPageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Schedule Details</Card.Header>
+          <Card.Header>Scheduled Training Details</Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
