@@ -540,6 +540,9 @@ import TraineeAttendancePage from "../pages/training-schedule/TraineeAttendanceP
 import OtherStateFarmer from "../pages/stake-holder/OtherStateFarmer";
 import ActivateExternalUnit from "../pages/stake-holder/external-units/ActivateExternalUnit";
 import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
+import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmerAllow";
+import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
+import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
 
 // Admin and Reports
 
@@ -699,8 +702,16 @@ function Router() {
             />
             <Route path="other-state-farmer" element={<OtherStateFarmer />} />
             <Route
+              path="other-state-farmer-list"
+              element={<OtherStateFarmerList />}
+            />
+            <Route
               path="farmer-without-fruits"
               element={<FarmerWithoutFruits />}
+            />
+            <Route
+              path="farmer-without-fruits-list"
+              element={<FarmerWithoutFruitsList />}
             />
             <Route path="stake-holder-list" element={<StakeHolderList />} />
             <Route
@@ -1476,6 +1487,7 @@ function Router() {
             <Route path="crate-view/:id" element={<CrateView />} />
             <Route path="crate-edit/:id" element={<CrateEdit />} />
             <Route path="updateBinStatus" element={<UpdateBin />} />
+            <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}

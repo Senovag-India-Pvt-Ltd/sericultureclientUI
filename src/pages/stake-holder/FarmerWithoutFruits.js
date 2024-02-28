@@ -309,7 +309,9 @@ function FarmerWithoutFruits() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-            saveSuccess(`Generated Farmer Number ${response.data.content.farmerNumber}`);
+            saveSuccess(
+              `Generated Farmer Number ${response.data.content.farmerNumber}`
+            );
             handleFileUpload(response.data.content.farmerId);
             handleFileDocumentUpload(response.data.content.farmerBankAccountId);
             setValidated(false);
@@ -750,7 +752,7 @@ function FarmerWithoutFruits() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -941,7 +943,7 @@ function FarmerWithoutFruits() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/farmer-without-fruits-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -950,7 +952,7 @@ function FarmerWithoutFruits() {
               </li>
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/farmer-without-fruits-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -15,18 +15,18 @@ import api from "../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-function StakeHolderList() {
+function OtherStateFarmerList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage, type: 2 } };
+  const _params = { params: { pageNumber: page, size: countPerPage, type: 1 } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [data, setData] = useState({
     text: "",
-    searchBy: "fruitsId",
+    searchBy: "",
   });
 
   const handleInputs = (e) => {
@@ -52,11 +52,10 @@ function StakeHolderList() {
       params: {
         pageNumber: page,
         size: countPerPage,
-        type: 2,
+        type: 1,
         searchText: data.text,
       },
     };
-
     api
       .get(baseURL2 + `farmer/list-with-join-with-filters`, parameters)
       .then((response) => {
@@ -300,17 +299,17 @@ function StakeHolderList() {
   ];
 
   return (
-    <Layout title="Farmer Registration List">
+    <Layout title="Other State Farmer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farmer Registration List</Block.Title>
+            <Block.Title tag="h2">Other State Farmer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/stake-holder-registration"
+                  to="/seriui/other-state-farmer"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -319,7 +318,7 @@ function StakeHolderList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/stake-holder-registration"
+                  to="/seriui/other-state-farmer"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -396,4 +395,4 @@ function StakeHolderList() {
   );
 }
 
-export default StakeHolderList;
+export default OtherStateFarmerList;

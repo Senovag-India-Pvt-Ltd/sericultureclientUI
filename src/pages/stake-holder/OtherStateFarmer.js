@@ -753,7 +753,7 @@ function OtherStateFarmer() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -944,7 +944,7 @@ function OtherStateFarmer() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/other-state-farmer-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -953,7 +953,7 @@ function OtherStateFarmer() {
               </li>
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/other-state-farmer-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
