@@ -290,6 +290,7 @@ function TrainingSchedule() {
       trainerName: "",
       trInstitutionMasterId: "",
     });
+    setTrainerUserList([]);
   };
 
   const trainerUserClear = () => {
