@@ -635,7 +635,7 @@ function TrainingDeputationTrackerEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="fileUploadPath">
-                         Upload Document
+                        Upload Pdf/PPt/Video(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

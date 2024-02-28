@@ -215,7 +215,7 @@ function TrainingDeputationTrackerView() {
                         <td>{trainingDeputationTracker.deputedRemarks}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded Document:</td>
+                        <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
                         <td>
                           {" "}
                           {selectedUploadFile && (

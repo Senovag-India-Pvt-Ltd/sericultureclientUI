@@ -196,7 +196,7 @@ function TrainerPageView() {
                       <td>{trTrainer.trNoOfParticipant}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
+                      <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
                       <td>
                         {" "}
                         {selectedPPtFile && (

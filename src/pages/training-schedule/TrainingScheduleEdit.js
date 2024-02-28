@@ -286,6 +286,7 @@ function TrainingScheduleEdit() {
       trainerName: "",
       trInstitutionMasterId: "",
     });
+    setTrainerUserList([]);
   };
 
   const trainerUserClear = () => {
@@ -877,7 +878,7 @@ function TrainingScheduleEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
-                          Upload PPt/Video
+                          Upload Pdf/PPt/Video(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

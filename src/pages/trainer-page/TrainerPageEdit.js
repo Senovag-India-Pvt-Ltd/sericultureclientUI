@@ -258,6 +258,20 @@ function TrainerPageEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
+    const formattedFromDate =
+    new Date(data.trStartDate).getFullYear() +
+    "-" +
+    (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trStartDate).getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+    new Date(data.trDateOfCompletion).getFullYear() +
+    "-" +
+    (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -267,7 +281,7 @@ function TrainerPageEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `trSchedule/edit`, data)
+        .post(baseURL + `trSchedule/edit`, {...data,trStartDate:formattedFromDate,trDateOfCompletion:formattedToDate})
         .then((response) => {
           const trScheduleId = response.data.content.trScheduleId;
           if (trScheduleId) {
@@ -334,6 +348,24 @@ function TrainerPageEdit() {
       trNoOfParticipant: "",
     });
     setPPtFile("");
+    setTrDetails({
+      trScheduleId: "",
+      trTraineeName: "",
+      designationId: "",
+      trOfficeId: "",
+      gender: "",
+      mobileNumber: "",
+      place: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageId: "",
+      preTestScore: "",
+      postTestScore: "",
+      percentageImproved: "",
+    });
+    setTrDetailsList([]);
   };
 
   const trClear = () => {
@@ -1219,7 +1251,7 @@ function TrainerPageEdit() {
                     <Col lg = "4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
-                          Upload PPT/Video
+                          Upload Pdf/PPt/Video(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
