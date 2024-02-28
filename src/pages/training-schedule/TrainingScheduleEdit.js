@@ -267,6 +267,14 @@ function TrainingScheduleEdit() {
               trStartDate: null,
               trDateOfCompletion: null,
             });
+            setPPtFile("");
+            setTrainerUser({
+              trScheduleId: "",
+              userMasterId: "",
+              trainerName: "",
+              trInstitutionMasterId: "",
+            });
+            setTrainerUserList([]);
             setValidated(false);
           }
         })
