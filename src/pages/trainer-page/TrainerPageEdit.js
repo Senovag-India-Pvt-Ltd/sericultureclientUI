@@ -76,6 +76,9 @@ function TrainerPageEdit() {
       setValidatedTrDetails(true);
     } else {
       event.preventDefault();
+      if(trDetails.mobileNumber.length<10 || trDetails.mobileNumber.length>10){
+        return
+      }
       setTrDetailsList((prev) => [...prev, trDetails]);
       setTrDetails({
         trScheduleId: "",
