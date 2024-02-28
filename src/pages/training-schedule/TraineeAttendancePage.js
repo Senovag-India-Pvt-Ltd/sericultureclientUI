@@ -113,7 +113,7 @@ function TraineeAttendancePage() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Attendance Updated Successfully",
     });
   };
 

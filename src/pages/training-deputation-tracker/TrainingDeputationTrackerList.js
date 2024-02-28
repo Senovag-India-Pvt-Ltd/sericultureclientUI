@@ -214,16 +214,16 @@ function TrainingDeputationTrackerList() {
             className="ms-2"
             onClick={() => handleEdit(row.trainingDeputationId)}
           >
-            Edit
+            Update Date Of Completion
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.trainingDeputationId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,

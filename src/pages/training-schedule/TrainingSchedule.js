@@ -115,22 +115,77 @@ function TrainingSchedule() {
     trPeriod: "",
     trNoOfParticipant: "",
     trUploadPath: "",
-    trStartDate: "",
+    trStartDate: null,
     trDateOfCompletion: "",
   });
 
   let name, value;
   const handleInputs = (e) => {
-    // debugger;
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "trDuration" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trPeriod" && (value.length > 2)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
+
+    if (name === "trNoOfParticipant" && (value.length > 3)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+     
+    // if (name === "trDuration" && value.length > 2) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
+  
+    // if (name === "trPeriod" && value.length > 2) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
+  
+    // if (name === "trNoOfParticipant" && value.length > 3) {
+    //   e.target.classList.add("is-invalid");
+    // } else {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // }
   };
  
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
+    const formattedFromDate =
+    new Date(data.trStartDate).getFullYear() +
+    "-" +
+    (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trStartDate).getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+    new Date(data.trDateOfCompletion).getFullYear() +
+    "-" +
+    (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -140,7 +195,7 @@ function TrainingSchedule() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `trSchedule/add`, data)
+        .post(baseURL2 + `trSchedule/add`, {...data,trStartDate:formattedFromDate,trDateOfCompletion:formattedToDate})
         .then((response) => {
           if (response.data.content.trScheduleId) {
             const trUploadId = response.data.content.trScheduleId;
@@ -167,9 +222,10 @@ function TrainingSchedule() {
                       const trainerUserError =
                         response.data.content.error_description;
                       saveError(trainerUserError);
-                    } else {
-                      saveSuccess();
                     }
+                    //  else {
+                    //   saveSuccess();
+                    // }
                   })
                   .catch((err) => {
                     setTrainerUser({});
@@ -195,7 +251,7 @@ function TrainingSchedule() {
               trPeriod: "",
               trNoOfParticipant: "",
               trUploadPath: "",
-              trStartDate: "",
+              trStartDate: null,
               trDateOfCompletion: "",
             });
             setValidated(false);
@@ -224,10 +280,16 @@ function TrainingSchedule() {
       trPeriod: "",
       trNoOfParticipant: "",
       trUploadPath: "",
-      trStartDate: "",
+      trStartDate: null,
       trDateOfCompletion: "",
     });
     setPPt("");
+    setTrainerUser({
+      trScheduleId: "",
+      userMasterId: "",
+      trainerName: "",
+      trInstitutionMasterId: "",
+    });
   };
 
   const trainerUserClear = () => {
@@ -614,7 +676,7 @@ function TrainingSchedule() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                        Training Duration(In Hours)
+                      Training Duration Per Day(In Hours)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -624,7 +686,11 @@ function TrainingSchedule() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Training Duration"
+                          required
                         />
+                         <Form.Control.Feedback type="invalid">
+                         Training Duration Should Be Less Than 24 Hours
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -632,7 +698,7 @@ function TrainingSchedule() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trPeriod">
-                        Training Period(In Days)
+                        Training Period(In Days)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -642,7 +708,11 @@ function TrainingSchedule() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Training Period"
+                          required
                         />
+                         <Form.Control.Feedback type="invalid">
+                         Training Period Must Be Limited To 2 Digits or Less
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -650,7 +720,7 @@ function TrainingSchedule() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trNoOfParticipant">
-                        Training No Of Participant
+                        Training No Of Participant<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -659,8 +729,12 @@ function TrainingSchedule() {
                           value={data.trNoOfParticipant}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Training No Of Participant "
+                          placeholder="Enter No Of Participant "
+                          required
                         />
+                         <Form.Control.Feedback type="invalid">
+                          Participant Number Must Be Limited To Three Digits or Less
+                          </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -681,6 +755,8 @@ function TrainingSchedule() {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
+                        minDate={new Date()}
+                        required
                       />
                     </div>
                   </Col>
@@ -702,12 +778,13 @@ function TrainingSchedule() {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
+                        required
                       />
                     </div>
                   </Col>
 
                   <Col lg="4">
-           Tra         <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
                         Upload PPT/Video
                       </Form.Label>
@@ -845,7 +922,7 @@ function TrainingSchedule() {
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
+                    Clear
                   </Button>
                 </li>
               </ul>
@@ -982,7 +1059,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Cancel
+                      Clear
                     </Button>
                   </div>
                 </div>
@@ -1103,7 +1180,7 @@ function TrainingSchedule() {
                       variant="secondary"
                       onClick={trainerUserClear}
                     >
-                      Cancel
+                      Clear
                     </Button>
                   </div>
                 </div>

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import { format } from 'date-fns';
+import DatePicker from "react-datepicker";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -201,6 +202,10 @@ function TrainingScheduleList() {
     return format(date, 'dd/MM/yyyy'); 
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const TrainingScheduleDataColumns = [
     {
       name: "Action",
@@ -327,7 +332,30 @@ function TrainingScheduleList() {
                   </div>
                 </Col>
 
-                <Col sm={3}>
+                {data.searchBy === "trStartDate"?(
+                  <Col sm={2}>
+                    <Form.Group className="form-group">
+                      {/* <Form.Label htmlFor="sordfl">
+                      Training Period Start Date<span className="text-danger">*</span>
+                      </Form.Label> */}
+                      <div className="form-control-wrap">
+                    <DatePicker
+                      selected={data.trStartDate}
+                      onChange={(date) =>
+                        handleDateChange(date, "trStartDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      // minDate={new Date()}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+                ):(<Col sm={3}>
                   <Form.Control
                     id="trScheduleId"
                     name="text"
@@ -336,7 +364,10 @@ function TrainingScheduleList() {
                     type="text"
                     placeholder="Search"
                   />
-                </Col>
+                </Col>)}
+
+                
+
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
