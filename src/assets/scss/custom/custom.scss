@@ -43,8 +43,14 @@
 .was-validated .form-select:valid,
 .form-select.is-valid {
   border-color: #d2d4e4;
+  box-shadow: none;
 }
 
-.was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .form-select:valid:not([multiple])[size="1"], .form-select.is-valid:not([multiple]):not([size]), .form-select.is-valid:not([multiple])[size="1"]{
+.was-validated .form-select:valid:not([multiple]):not([size]),
+.was-validated .form-select:valid:not([multiple])[size="1"],
+.form-select.is-valid:not([multiple]):not([size]),
+.form-select.is-valid:not([multiple])[size="1"] {
   background-image: none;
+  box-shadow: none;
+  border-color: #d2d4e4;
 }
