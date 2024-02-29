@@ -371,7 +371,7 @@ function TrainingScheduleList() {
                       <div className="form-control-wrap">
                         <DatePicker
                           selected={data.date}
-                          onChange={(date) => handleDateChange(date, "text")}
+                          onChange={(date) => handleDateChange(date, "date")}
                           peekNextMonth
                           showMonthDropdown
                           showYearDropdown
