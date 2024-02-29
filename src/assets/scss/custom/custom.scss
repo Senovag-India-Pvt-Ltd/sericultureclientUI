@@ -32,3 +32,9 @@
   border-color: #d2d4e4;
   box-shadow: none;
 }
+
+.was-validated .form-control:valid, .form-control.is-valid{
+  border-color: #d2d4e4;
+  background-image: none;
+  box-shadow: none;
+}
