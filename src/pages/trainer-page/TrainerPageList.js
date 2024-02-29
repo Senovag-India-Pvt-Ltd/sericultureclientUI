@@ -27,6 +27,7 @@ function TrainerPageList() {
 
   const [data, setData] = useState({
     text: "",
+    date: "",
     searchBy: "trStartDate",
   });
 
@@ -36,32 +37,97 @@ function TrainerPageList() {
     setData({ ...data, [name]: value });
   };
 
+  // // Search
+  // const search = (e) => {
+  //   let joinColumn;
+  //   if (data.searchBy === "trStartDate") {
+  //     joinColumn = "trSchedule.trStartDate";
+  //   }
+  //   if (data.searchBy === "trGroupMasterName") {
+  //     joinColumn = "trGroupMaster.trGroupMasterName";
+  //   }
+  //   // console.log(joinColumn);
+  //   api
+  //     .post(
+  //       baseURL2 + `trSchedule/search`,
+  //       {
+  //         searchText: data.text,
+  //         joinColumn: joinColumn,
+  //       },
+  //       {
+  //         headers: _header,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content.trSchedule);
+  //     })
+  //     .catch((err) => {
+  //     });
+  // };
   // Search
   const search = (e) => {
     let joinColumn;
     if (data.searchBy === "trStartDate") {
       joinColumn = "trSchedule.trStartDate";
+
+      api
+        .post(
+          baseURL2 + `trSchedule/search`,
+          {
+            searchText: data.date,
+            joinColumn: joinColumn,
+          },
+          {
+            headers: _header,
+          }
+        )
+        .then((response) => {
+          setListData(response.data.content.trSchedule);
+          setTotalRows(response.data.content.totalItems);
+          setLoading(false);
+
+          // if (response.data.content.error) {
+          //   // saveError();
+          // } else {
+          //   console.log(response);
+          //   // saveSuccess();
+          // }
+        })
+        .catch((err) => {
+          // saveError();
+        });
     }
     if (data.searchBy === "trGroupMasterName") {
       joinColumn = "trGroupMaster.trGroupMasterName";
+      api
+        .post(
+          baseURL2 + `trSchedule/search`,
+          {
+            searchText: data.text,
+            joinColumn: joinColumn,
+          },
+          {
+            headers: _header,
+          }
+        )
+        .then((response) => {
+          setListData(response.data.content.trSchedule);
+          setTotalRows(response.data.content.totalItems);
+          setLoading(false);
+
+          // if (response.data.content.error) {
+          //   // saveError();
+          // } else {
+          //   console.log(response);
+          //   // saveSuccess();
+          // }
+        })
+        .catch((err) => {
+          // saveError();
+        });
     }
+
     // console.log(joinColumn);
-    api
-      .post(
-        baseURL2 + `trSchedule/search`,
-        {
-          searchText: data.text,
-          joinColumn: joinColumn,
-        },
-        {
-          headers: _header,
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content.trSchedule);
-      })
-      .catch((err) => {
-      });
   };
 
   const [trScheduleList, setTrScheduleListData] = useState({
@@ -195,9 +261,9 @@ function TrainerPageList() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return ''; 
-    const date = new Date(dateString); 
-    return format(date, 'dd/MM/yyyy'); 
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
   };
 
   const handleDateChange = (date, type) => {
@@ -354,33 +420,31 @@ function TrainerPageList() {
                       Training Period Start Date<span className="text-danger">*</span>
                       </Form.Label> */}
                       <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.trStartDate}
-                      onChange={(date) =>
-                        handleDateChange(date, "trStartDate")
-                      }
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      // minDate={new Date()}
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-                ):(
-                <Col sm={3}>
-                  <Form.Control
-                    id="reelerId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
+                      <DatePicker
+                          selected={data.date}
+                          onChange={(date) => handleDateChange(date, "text")}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          // minDate={new Date()}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
+                  <Col sm={3}>
+                    <Form.Control
+                      id="trScheduleId"
+                      name="text"
+                      value={data.text}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder="Search"
+                    />
+                  </Col>
                 )}
                 
                 <Col sm={3}>
