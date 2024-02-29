@@ -228,18 +228,26 @@ function TrainerPageView() {
                         <td>
                           {" "}
                           {selectedPPtFile && (
-                            <img
-                              style={{
-                                height: "100px",
-                                width: "100px",
-                                cursor: "pointer",
-                              }}
-                              src={selectedPPtFile}
-                              alt="Selected File"
-                              onClick={() =>
-                                downloadFile(trTrainer.trUploadPath)
-                              }
-                            />
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedPPtFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(trTrainer.trUploadPath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                           )}
                         </td>
                       </tr>
