@@ -46,16 +46,64 @@ function NewTraderLicenseEdit() {
         .post(baseURL2 + `trader-license/edit`, data)
         .then((response) => {
           updateSuccess();
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+          setData({
+            arnNumber: "",
+            traderTypeMasterId: "",
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            fatherName: "",
+            districtId: "",
+            stateId: "",
+            address: "",
+            premisesDescription: "",
+            applicationDate: "2023-11-09T12:59:58.303+00:00",
+            applicationNumber: "",
+            traderLicenseNumber: "",
+            representativeDetails: "",
+            licenseFee: "",
+            licenseChallanNumber: "",
+            godownDetails: "",
+            silkExchangeMahajar: "",
+            licenseNumberSequence: "", 
+          });
+          setValidated(false);
+        }
         })
         .catch((err) => {
-          const message = err.response.data.errorMessages[0].message[0].message;
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-          setData({});
         });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      arnNumber: "",
+      traderTypeMasterId: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      fatherName: "",
+      districtId: "",
+      stateId: "",
+      address: "",
+      premisesDescription: "",
+      applicationDate: "2023-11-09T12:59:58.303+00:00",
+      applicationNumber: "",
+      traderLicenseNumber: "",
+      representativeDetails: "",
+      licenseFee: "",
+      licenseChallanNumber: "",
+      godownDetails: "",
+      silkExchangeMahajar: "",
+      licenseNumberSequence: "", 
+    });
   };
 
   //   to get data from api
@@ -143,7 +191,7 @@ function NewTraderLicenseEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/issue-new-trader-license-list"));
+    })
   };
   const updateError = (message) => {
     let errorMessage;
@@ -495,12 +543,9 @@ function NewTraderLicenseEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/issue-new-trader-license-list"
-                    className="btn btn-secondary border-0"
-                  >
-                    Cancel
-                  </Link>
+                <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                 </li>
               </ul>
             </div>
