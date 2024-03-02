@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col,Button } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -40,6 +40,9 @@ function ReelerLicenseView() {
       .get(baseURL2 + `reeler/get-by-reeler-id-join/${id}`)
       .then((response) => {
         setReeler(response.data.content);
+        if (response.data.content.mahajarDetails) {
+          getMahajarFile(response.data.content.mahajarDetails);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -48,19 +51,7 @@ function ReelerLicenseView() {
       });
   };
 
-  // const getVbAccountList = () => {
-  //   setLoadingVbAccount(true);
-  //   axios
-  //     .get(baseURL2 + `reeler-virtual-bank-account/get-by-reeler-id/${id}`)
-  //     .then((response) => {
-  //       setVbAccount(response.data.content);
-  //       setLoadingVbAccount(false);
-  //     })
-  //     .catch((err) => {
-  //       setVbAccount({});
-  //       setLoadingVbAccount(false);
-  //     });
-  // }
+  
 
   const [vbAccountList, setVbAccountList] = useState([]);
   const getVbAccountDetailsList = () => {
@@ -76,12 +67,61 @@ function ReelerLicenseView() {
       });
   };
 
-  // console.log(getIdList());
+  // To get Photo from S3 Bucket
+  const [selectedMahajarFile, setMahajarFile] = useState(null);
+
+  const getMahajarFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setMahajarFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
 
   useEffect(() => {
     getIdList();
     getVbAccountDetailsList();
   }, [id]);
+
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <Layout title="Reeler License View">
@@ -270,11 +310,6 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> Number of Basins/Charaka:</td>
                       <td>{Reeler.numberOfBasins}</td>
                     </tr>
-
-                    {/* <tr>
-                      <td style={styles.ctstyle}> Mahajar Details:</td>
-                      <td>{Reeler.mahajarDetails}</td>
-                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}> Loan Details:</td>
                       <td>{Reeler.loanDetails}</td>
@@ -283,6 +318,34 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> Inspection Date:</td>
                       <td>{Reeler.inspectionDate}</td>
                     </tr>
+                    <tr>
+                        <td style={styles.ctstyle}> Uploaded Mahajar Details:</td>
+                        <td>
+                          {" "}
+                          {selectedMahajarFile && (
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedMahajarFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(Reeler.mahajarDetails)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
+                          )}
+                        </td>
+                      </tr>
                   </tbody>
                 </table>
               </Col>

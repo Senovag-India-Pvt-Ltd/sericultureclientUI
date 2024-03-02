@@ -335,6 +335,10 @@ function NewReelerLicense() {
       api
         .post(baseURL + `reeler/add`, data)
         .then((response) => {
+          if (response.data.content.reelerId) {
+            const mahajarId = response.data.content.reelerId;
+            handleMahajarUpload(mahajarId);
+          }
           if (response.data.content.error) {
             const reelerError = response.data.content.error_description;
             saveReelerError(reelerError);
@@ -572,6 +576,41 @@ function NewReelerLicense() {
       getVillageList(data.hobliId);
     }
   }, [data.hobliId]);
+
+
+  // Display Image
+  const [mahajar, setMahajar] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleMahajarChange = (e) => {
+    const file = e.target.files[0];
+    setMahajar(file);
+    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleMahajarUpload = async (reelerid) => {
+    const parameters = `reelerId=${reelerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", mahajar);
+
+      const response = await api.post(
+        baseURL + `reeler/upload-document?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
 
   const navigate = useNavigate();
   const saveSuccess = (arn) => {
@@ -1216,30 +1255,33 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="mahajar">
-                          Upload Mahajar Details
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="mahajarDetails"
-                            name="mahajarDetails"
-                            value={data.mahajarDetails}
-                            // onChange={handleInputs}
-                            type="file"
-                            accept=".pdf, .doc, .docx"
-                            onChange={handleDocumentChange}
-                          />
-                        </div>
-                      </Form.Group>
+                      {/* <Col lg="4"> */}
+                  <Form.Group className="form-group mt-3">
+                    <Form.Label htmlFor="trUploadPath">
+                    Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id="mahajarDetails"
+                        name="mahajarDetails"
+                        // value={data.photoPath}
+                        onChange={handleMahajarChange}
+                      />
+                    </div>
+                  </Form.Group>
 
-                      <Form.Group className="form-group mt-3 ">
-                        {document ? (
-                          <p>Selected Document: {document.name}</p>
-                        ) : (
-                          ""
-                        )}
-                      </Form.Group>
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {mahajar ? (
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={URL.createObjectURL(mahajar)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </Form.Group>
+                {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">

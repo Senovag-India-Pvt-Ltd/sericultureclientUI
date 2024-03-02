@@ -199,29 +199,16 @@ function ReelerLicenceEdit() {
       api
         .post(baseURL + `reeler/edit`, data)
         .then((response) => {
-          // if (vbAccountList.length > 0) {
-          //   const reelerId = response.data.content.reelerId;
-          //   vbAccountList.forEach((list) => {
-          //     const updatedVb = {
-          //       ...list,
-          //       reelerId: reelerId,
-          //     };
-          //     axios
-          //       .post(baseURL + `reeler-virtual-bank-account/edit`, updatedVb, {
-          //         headers: _header,
-          //       })
-          //       .then((response) => {
-          //         updateSuccess();
-          //       })
-          //       .catch((err) => {
-          //         setVbAccount({});
-          //         updateError();
-          //       });
-          //   });
-          // } else {
-          //   updateSuccess();
-          // }
+          const reelerId = response.data.content.reelerId;
+          if (reelerId) {
+            handleMahajarUpload(reelerId);
+          }
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
           updateSuccess();
+          setValidated(false);
+          }
         })
         .catch((err) => {
           setData({});
@@ -241,11 +228,14 @@ function ReelerLicenceEdit() {
       .then((response) => {
         setData(response.data.content);
         // setLoading(false);
+        if (response.data.content.mahajarDetails) {
+          getMahajarFile(response.data.content.mahajarDetails);
+        }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         // setLoading(false);
       });
   };
@@ -446,6 +436,60 @@ function ReelerLicenceEdit() {
   useEffect(() => {
     getMarketMasterList();
   }, []);
+
+  // Display Image
+  const [mahajar, setMahajar] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleMahajarChange = (e) => {
+    const file = e.target.files[0];
+    setMahajar(file);
+    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleMahajarUpload = async (reelerid) => {
+    const parameters = `reelerId=${reelerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", mahajar);
+
+      const response = await api.post(
+        baseURL + `reeler/upload-document?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  // To get Photo from S3 Bucket
+  const [selectedMahajarFile, setMahajarFile] = useState(null);
+
+  const getMahajarFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setMahajarFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -1043,30 +1087,39 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="mahajar">
-                          Upload Mahajar Details
+                      {/* <Col lg="4"> */}
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="photoPath">
+                        Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
+                            type="file"
                             id="mahajarDetails"
                             name="mahajarDetails"
-                            // value={data.mahajarDetails}
-                            // onChange={handleInputs}
-                            type="file"
-                            accept=".pdf, .doc, .docx"
-                            onChange={handleDocumentChange}
+                            // value={data.trUploadPath}
+                            onChange={handleMahajarChange}
                           />
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3 ">
-                        {document ? (
-                          <p>Selected Document: {document.name}</p>
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
                         ) : (
-                          ""
+                          selectedMahajarFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedMahajarFile}
+                              alt="Selected File"
+                            />
+                          )
                         )}
                       </Form.Group>
+                    {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
