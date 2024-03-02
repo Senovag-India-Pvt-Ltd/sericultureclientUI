@@ -21,6 +21,48 @@ function NewTraderLicenseList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  const [data, setData] = useState({
+    text: "",
+    searchBy: "traderTypeMasterName",
+  });
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "traderTypeMasterName") {
+      joinColumn = "traderTypeMaster.traderTypeMasterName";
+    }
+    if (data.searchBy === "arnNumber") {
+      joinColumn = "traderLicense.arnNumber";
+    }
+    if (data.searchBy === "firstName") {
+      joinColumn = "traderLicense.firstName";
+    }
+    api
+      .post(
+        baseURL2 + `trader-license/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content.traderLicense);
+      })
+      .catch((err) => {
+      });
+  };
 
   const getList = () => {
     setLoading(true);
@@ -46,14 +88,8 @@ function NewTraderLicenseList() {
     navigate(`/seriui/issue-new-trader-license-view/${_id}`);
   };
 
-  // const handleEdit = (_id) => {
-  //   // navigate(`/seriui/caste/${_id}`);
-  //   navigate("/seriui/caste-edit");
-  // };
-
   const handleEdit = (_id) => {
     navigate(`/seriui/issue-new-trader-license-edit/${_id}`);
-    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -167,14 +203,14 @@ function NewTraderLicenseList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.traderLicenseId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -258,6 +294,45 @@ function NewTraderLicenseList() {
 
       <Block className="mt-n4">
         <Card>
+        <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                      {/* <option value="">Select</option> */}
+                      <option value="traderTypeMasterName">Trader Type</option>
+                      <option value="arnNumber">ARN Number</option>
+                      <option value="firstName"> Name</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={3}>
+                  <Form.Control
+                    id="traderLicenseId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
           <DataTable
             // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
