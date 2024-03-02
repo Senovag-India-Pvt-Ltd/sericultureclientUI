@@ -108,11 +108,10 @@ function NewReelerLicense() {
     if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
-    } else {
+    } else if (name === "ifscCode" && value.length === 11) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -297,9 +296,10 @@ function NewReelerLicense() {
     setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      console.log("hellohello");
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
-    } else {
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -307,7 +307,7 @@ function NewReelerLicense() {
     if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
-    } else {
+    } else if (name === "ifscCode" && value.length === 11) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -577,7 +577,6 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
-
   // Display Image
   const [mahajar, setMahajar] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
@@ -610,7 +609,6 @@ function NewReelerLicense() {
       console.error("Error uploading file:", error);
     }
   };
-
 
   const navigate = useNavigate();
   const saveSuccess = (arn) => {
@@ -873,7 +871,8 @@ function NewReelerLicense() {
                             name="mobileNumber"
                             value={data.mobileNumber}
                             onChange={handleInputs}
-                            type="text"
+                            maxLength="10"
+                            type="tel"
                             placeholder="Enter Mobile Number"
                             required
                           />
@@ -1231,7 +1230,7 @@ function NewReelerLicense() {
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
-                            maxDate={new Date()}
+                            // maxDate={new Date()}
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
@@ -1256,32 +1255,32 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       {/* <Col lg="4"> */}
-                  <Form.Group className="form-group mt-3">
-                    <Form.Label htmlFor="trUploadPath">
-                    Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="mahajarDetails"
-                        name="mahajarDetails"
-                        // value={data.photoPath}
-                        onChange={handleMahajarChange}
-                      />
-                    </div>
-                  </Form.Group>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="trUploadPath">
+                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="mahajarDetails"
+                            name="mahajarDetails"
+                            // value={data.photoPath}
+                            onChange={handleMahajarChange}
+                          />
+                        </div>
+                      </Form.Group>
 
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {mahajar ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(mahajar)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </Form.Group>
-                {/* </Col> */}
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                      {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
@@ -1875,12 +1874,13 @@ function NewReelerLicense() {
                             name="ifscCode"
                             value={data.ifscCode}
                             onChange={handleInputs}
+                            maxLength="11"
                             type="text"
                             placeholder="Enter IFSC Code"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2076,11 +2076,12 @@ function NewReelerLicense() {
                       value={vbAccount.ifscCode}
                       onChange={handleVbInputs}
                       type="text"
+                      maxLength="11"
                       placeholder="Enter IFSC Code"
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      IFSC Code is required
+                      IFSC Code is required and equals to 11 digit
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
