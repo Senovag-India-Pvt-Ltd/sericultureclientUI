@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 import { createTheme } from "react-data-table-component";
 import { Icon, Select } from "../../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegisterList() {
@@ -21,6 +21,50 @@ function ExternalUnitRegisterList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+
+  const [data, setData] = useState({
+    text: "",
+    searchBy: "externalUnitTypeName",
+  });
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "externalUnitTypeName") {
+      joinColumn = "externalUnitType.externalUnitTypeName";
+    }
+    if (data.searchBy === "licenseNumber") {
+      joinColumn = "externalUnitRegistration.licenseNumber";
+    }
+    if (data.searchBy === "organisationName") {
+      joinColumn = "externalUnitRegistration.organisationName";
+    }
+    api
+      .post(
+        baseURL2 + `external-unit-registration/search`,
+        {
+          searchText: data.text,
+          joinColumn: joinColumn,
+        },
+        {
+          headers: _header,
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content.externalUnitRegistration);
+      })
+      .catch((err) => {
+      });
+  };
+
 
   const getList = () => {
     setLoading(true);
@@ -167,23 +211,31 @@ function ExternalUnitRegisterList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.externalUnitRegistrationId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "External Unit Type",
       selector: (row) => row.externalUnitTypeName,
       cell: (row) => <span>{row.externalUnitTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Race",
+      selector: (row) => row.raceMasterName,
+      cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -198,6 +250,13 @@ function ExternalUnitRegisterList() {
       name: "Address",
       selector: (row) => row.address,
       cell: (row) => <span>{row.address}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Name of the Owner/Organisation",
+      selector: (row) => row.organisationName,
+      cell: (row) => <span>{row.organisationName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -251,6 +310,45 @@ function ExternalUnitRegisterList() {
 
       <Block className="mt-n4">
         <Card>
+        <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                      {/* <option value="">Select</option> */}
+                      <option value="externalUnitTypeName">External Unit Type</option>
+                      <option value="licenseNumber">License Number</option>
+                      <option value="organisationName">Organisation Name</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={3}>
+                  <Form.Control
+                    id="externalUnitRegistrationId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ExternalUnitRegisterDataColumns}

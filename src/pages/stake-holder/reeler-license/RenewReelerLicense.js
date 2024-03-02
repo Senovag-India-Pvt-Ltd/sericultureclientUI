@@ -37,14 +37,7 @@ function RenewReelerLicense() {
     setData({ ...data, [name]: value });
   };
 
-  // const handleDateChange = (newDate, dateType) => {
-  //   if (dateType === "renewedDate") {
-  //     setData({ ...data, renewedDate: newDate });
-  //   } else if (dateType === "expirationDate") {
-  //     setData({ ...data, expirationDate: newDate });
-  //   }
-  // };
-
+  
   // const YourFormComponent = ({ data, handleDateChange }) => {
   const handleRenewedDateChange = (date) => {
     // Calculate expiration date by adding 3 years to the renewed date
@@ -177,7 +170,7 @@ function RenewReelerLicense() {
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={4}>
-                        FRUITS ID / LICENSE NUMBER
+                        LICENSE NUMBER
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={6}>
@@ -187,11 +180,11 @@ function RenewReelerLicense() {
                           value={fruitId.reelingLicenseNumber}
                           onChange={handleFruitIdInputs}
                           type="text"
-                          placeholder="Enter FRUITS ID / AADHAAR NUMBER"
+                          placeholder="Enter License Number"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          FRUITS ID is required
+                          License Number is required
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
