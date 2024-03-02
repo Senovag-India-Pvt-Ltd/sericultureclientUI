@@ -1192,6 +1192,7 @@ function NewReelerLicense() {
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
+                            maxDate={new Date()}
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
