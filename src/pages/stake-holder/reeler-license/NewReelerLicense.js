@@ -42,6 +42,9 @@ function NewReelerLicense() {
       setValidatedVbAccount(true);
     } else {
       e.preventDefault();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       setVbAccountList((prev) => [...prev, vbAccount]);
       setVbAccount({
         virtualAccountNumber: "",
@@ -84,6 +87,9 @@ function NewReelerLicense() {
       setValidatedVbAccountEdit(true);
     } else {
       e.preventDefault();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       setShowModal2(false);
       setValidatedVbAccountEdit(false);
       setVbAccount({
@@ -98,6 +104,15 @@ function NewReelerLicense() {
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
     setVbAccount({ ...vbAccount, [name]: value });
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -280,6 +295,22 @@ function NewReelerLicense() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -293,6 +324,14 @@ function NewReelerLicense() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+
+      if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
+
       api
         .post(baseURL + `reeler/add`, data)
         .then((response) => {
@@ -333,7 +372,7 @@ function NewReelerLicense() {
           }
         })
         .catch((err) => {
-          setData({});
+          // setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
@@ -800,7 +839,8 @@ function NewReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required
+                            Mobile Number is required or Number is greater than
+                            and less than 10 Digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
