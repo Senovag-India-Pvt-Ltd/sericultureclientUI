@@ -46,16 +46,41 @@ function ExternalUnitRegister() {
       api
         .post(baseURL2 + `external-unit-registration/add`, data)
         .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
           saveSuccess();
+          setData({
+            externalUnitTypeId: "",
+            name: "",
+            address: "",
+            licenseNumber: "",
+            externalUnitNumber: "",
+            organisationName: "",
+            raceMasterId: "",
+          });
+          setValidated(false);
+          }
         })
         .catch((err) => {
-          setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      externalUnitTypeId: "",
+      name: "",
+      address: "",
+      licenseNumber: "",
+      externalUnitNumber: "",
+      organisationName: "",
+      raceMasterId: "",
+    });
   };
 
   // to get Race
@@ -100,9 +125,7 @@ function ExternalUnitRegister() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/seriui/external-unit-registration-list");
-    });
+    })
   };
   const saveError = (message) => {
     let errorMessage;
@@ -156,26 +179,7 @@ function ExternalUnitRegister() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            {/* <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                 
-                  <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="reu">Register External Units</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="reu"
-                          type="text"
-                          placeholder="Register External Units"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card> */}
-
+            
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
@@ -259,22 +263,6 @@ function ExternalUnitRegister() {
                         />
                       </div>
                     </Form.Group>
-
-                    {/* <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="lotNumber">
-                        Lot Number Nomenclature
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="lotNumber"
-                          name="lotNumber"
-                          value={data.lotNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Lot Number Nomenclature"
-                        />
-                      </div>
-                    </Form.Group> */}
                   </Col>
 
                   <Col lg="6">
@@ -342,12 +330,9 @@ function ExternalUnitRegister() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/external-unit-registration-list"
-                    className="btn btn-secondary border-0"
-                  >
-                    Cancel
-                  </Link>
+                <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                 </li>
               </ul>
             </div>

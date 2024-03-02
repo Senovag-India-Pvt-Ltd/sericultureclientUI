@@ -40,16 +40,41 @@ function ExternalUnitRegisterEdit() {
         .post(baseURL2 + `external-unit-registration/edit`, data)
         .then((response) => {
           updateSuccess();
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+          setData({
+            externalUnitTypeId: "",
+            name: "",
+            address: "",
+            licenseNumber: "",
+            externalUnitNumber: "",
+            organisationName: "",
+            raceMasterId: "",
+          });
+          setValidated(false);
+          }
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-          setData({});
         });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      externalUnitTypeId: "",
+      name: "",
+      address: "",
+      licenseNumber: "",
+      externalUnitNumber: "",
+      organisationName: "",
+      raceMasterId: "",
+    });
   };
 
   //   to get data from api
@@ -347,12 +372,9 @@ function ExternalUnitRegisterEdit() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/external-unit-registration-list"
-                    className="btn btn-secondary border-0"
-                  >
-                    Cancel
-                  </Link>
+                <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                 </li>
               </ul>
             </div>
