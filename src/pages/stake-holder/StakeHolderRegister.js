@@ -118,38 +118,41 @@ function StakeHolderRegister() {
               // }
             )
             .then((result) => {
-              setData((prev) => ({
-                ...prev,
-                ...result.data.content.farmerResponse,
-              }));
-              setFarmerAddressList((prev) => [
-                ...prev,
-                ...result.data.content.farmerAddressList,
-              ]);
+              if (!result.data.content.error) {
+                setData((prev) => ({
+                  ...prev,
+                  ...result.data.content.farmerResponse,
+                }));
+                setFarmerAddressList((prev) => [
+                  ...prev,
+                  ...result.data.content.farmerAddressList,
+                ]);
 
-              const modified = result.data.content.farmerLandDetailsDTOList.map(
-                (detail) => {
-                  if (detail.stateId === 0) {
-                    detail.stateId = null;
-                  }
-                  if (detail.districtId === 0) {
-                    detail.districtId = null;
-                  }
-                  if (detail.talukId === 0) {
-                    detail.talukId = null;
-                  }
-                  if (detail.hobliId === 0) {
-                    detail.hobliId = null;
-                  }
-                  if (detail.villageId === 0) {
-                    detail.villageId = null;
-                  }
-                  return detail;
-                }
-              );
-              // console.log(modified);FF
+                const modified =
+                  result.data.content.farmerLandDetailsDTOList.map((detail) => {
+                    if (detail.stateId === 0) {
+                      detail.stateId = null;
+                    }
+                    if (detail.districtId === 0) {
+                      detail.districtId = null;
+                    }
+                    if (detail.talukId === 0) {
+                      detail.talukId = null;
+                    }
+                    if (detail.hobliId === 0) {
+                      detail.hobliId = null;
+                    }
+                    if (detail.villageId === 0) {
+                      detail.villageId = null;
+                    }
+                    return detail;
+                  });
+                // console.log(modified);FF
 
-              setFarmerLandList((prev) => [...prev, ...modified]);
+                setFarmerLandList((prev) => [...prev, ...modified]);
+              } else {
+                searchError(result.data.content.error_description);
+              }
             })
             .catch((error) => {});
         }
@@ -422,7 +425,7 @@ function StakeHolderRegister() {
         mulberrySourceId: "",
         mulberryArea: "",
         mulberryVarietyId: "",
-        plantationDate: "2023-11-07T12:12:27.400+00:00",
+        plantationDate: new Date(),
         plantationTypeId: "",
         irrigationSourceId: "",
         irrigationTypeId: "",
@@ -502,7 +505,7 @@ function StakeHolderRegister() {
         mulberrySourceId: "",
         mulberryArea: "",
         mulberryVarietyId: "",
-        plantationDate: "2023-11-07T12:12:27.400+00:00",
+        plantationDate: new Date(),
         plantationTypeId: "",
         irrigationSourceId: "",
         irrigationTypeId: "",
@@ -1469,6 +1472,14 @@ function StakeHolderRegister() {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
+      text: message,
+    });
+  };
+
+  const searchError = (message) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Data not Found!!!",
       text: message,
     });
   };
