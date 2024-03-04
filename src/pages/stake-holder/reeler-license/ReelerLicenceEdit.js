@@ -231,8 +231,8 @@ function ReelerLicenceEdit() {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
-          updateSuccess();
-          setValidated(false);
+            updateSuccess();
+            setValidated(false);
           }
         })
         .catch((err) => {
@@ -515,7 +515,6 @@ function ReelerLicenceEdit() {
     }
   };
 
-
   const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
@@ -685,15 +684,23 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>DOB</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dob}
+                            selected={data.dob ? new Date(data.dob) : null}
                             onChange={(date) => handleDateChange(date, "dob")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            maxDate={new Date()}
+                            className="form-control"
+                            required
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>Gender</Form.Label>
@@ -712,7 +719,9 @@ function ReelerLicenceEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
@@ -936,24 +945,7 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="gpsLat">
-                          GPS Coordinates of reeling unit
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="gpsLat"
-                            name="gpsLat"
-                            value={data.gpsLat}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter GPS Coordinates of reeling unit"
-                          />
-                        </div>
-                      </Form.Group> */}
-                    </Col>
 
-                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label>Reeler Type</Form.Label>
                         <div className="form-control-wrap">
@@ -978,12 +970,29 @@ function ReelerLicenceEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Type is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Reeler Type is required
-                      </Form.Control.Feedback>
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="gpsLat">
+                          GPS Coordinates of reeling unit
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="gpsLat"
+                            name="gpsLat"
+                            value={data.gpsLat}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter GPS Coordinates of reeling unit"
+                          />
+                        </div>
+                      </Form.Group> */}
+                    </Col>
 
+                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="chakbandi">
                           GPS Coordinates of reeling unit
@@ -1086,20 +1095,32 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>Date of Machine Installation</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dateOfMachineInstallation}
+                            selected={
+                              data.dateOfMachineInstallation
+                                ? new Date(data.dateOfMachineInstallation)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(
                                 date,
                                 "dateOfMachineInstallation"
                               )
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="numberOfBasins">
@@ -1120,7 +1141,7 @@ function ReelerLicenceEdit() {
                       {/* <Col lg="4"> */}
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
-                        Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
+                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1149,7 +1170,7 @@ function ReelerLicenceEdit() {
                           )
                         )}
                       </Form.Group>
-                    {/* </Col> */}
+                      {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
@@ -1167,17 +1188,29 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>Inspection Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.inspectionDate}
+                            selected={
+                              data.inspectionDate
+                                ? new Date(data.inspectionDate)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "inspectionDate")
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -1424,17 +1457,29 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>Receipt Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.receiptDate}
+                            selected={
+                              data.receiptDate
+                                ? new Date(data.receiptDate)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "receiptDate")
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="reelingLicenseNumber">
@@ -1475,17 +1520,29 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>License Expiry Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.licenseExpiryDate}
+                            selected={
+                              data.licenseExpiryDatenew
+                                ? Date(data.licenseExpiryDatenew)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "licenseExpiryDate")
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group">
                         <Form.Label>Function of the Unit</Form.Label>
