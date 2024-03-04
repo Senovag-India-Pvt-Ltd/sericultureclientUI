@@ -161,6 +161,14 @@ function ReelerLicenceEdit() {
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
     setVbAccount({ ...vbAccount, [name]: value });
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -179,6 +187,23 @@ function ReelerLicenceEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      console.log("hellohello");
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -718,7 +743,8 @@ function ReelerLicenceEdit() {
                             name="mobileNumber"
                             value={data.mobileNumber}
                             onChange={handleInputs}
-                            type="text"
+                            maxLength="10"
+                            type="tel"
                             placeholder="Enter Mobile Number"
                             required
                           />
@@ -1670,12 +1696,13 @@ function ReelerLicenceEdit() {
                             name="ifscCode"
                             value={data.ifscCode}
                             onChange={handleInputs}
+                            maxLength="11"
                             type="text"
                             placeholder="Enter IFSC Code"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1879,11 +1906,12 @@ function ReelerLicenceEdit() {
                       value={vbAccount.ifscCode}
                       onChange={handleVbInputs}
                       type="text"
+                      maxLength="11"
                       placeholder="Enter IFSC Code"
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      IFSC Code is required
+                      IFSC Code is required and equals to 11 digit
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
