@@ -362,6 +362,7 @@ function Menu() {
     Admin_Master_General: false,
     Admin_Master_General_Pages: false,
     Admin_Master_General_Config_Role: false,
+    Admin_Master_General_Activate_External: false,
 
     Admin_Report: false,
     Admin_Report_Admin: false,
@@ -2049,6 +2050,14 @@ function Menu() {
                           <MenuItemLink
                             text="Config Role"
                             to="/seriui/role-config"
+                          />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_General_Activate_External ? (
+                        <MenuItem>
+                          <MenuItemLink
+                            text="Activate External Unit user"
+                            to="/seriui/activate-external-unit"
                           />
                         </MenuItem>
                       ) : null}
