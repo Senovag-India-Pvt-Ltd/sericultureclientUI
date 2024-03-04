@@ -2052,7 +2052,7 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
@@ -2067,6 +2067,9 @@ function StakeHolderRegister() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -2361,7 +2364,7 @@ function StakeHolderRegister() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")}
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

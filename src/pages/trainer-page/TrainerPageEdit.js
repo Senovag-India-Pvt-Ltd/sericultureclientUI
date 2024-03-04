@@ -200,8 +200,10 @@ function TrainerPageEdit() {
     }
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      console.log("hellohello");
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -1200,6 +1202,7 @@ function TrainerPageEdit() {
                         value={data.trDuration}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Duration"
                         required
                         />
@@ -1222,6 +1225,7 @@ function TrainerPageEdit() {
                         value={data.trPeriod}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Period"
                         required
                         />
@@ -1244,6 +1248,7 @@ function TrainerPageEdit() {
                         value={data.trNoOfParticipant}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="3"
                         placeholder="Enter  No Of Participant "
                         required
                         />
@@ -1600,6 +1605,7 @@ function TrainerPageEdit() {
                       name="mobileNumber"
                       value={trDetails.mobileNumber}
                       onChange={handleTrainerInputs}
+                      maxLength="10"
                       type="text"
                       placeholder="Enter Mobile Number"
                       required
