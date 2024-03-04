@@ -333,6 +333,7 @@ function ReceiptofDFLsfromthegrainage() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
+                        maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -355,6 +356,7 @@ function ReceiptofDFLsfromthegrainage() {
                         name="numberOfDFLsReceived"
                         value={data.numberOfDFLsReceived}
                         onChange={handleInputs}
+                        maxLength="4"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
                       />

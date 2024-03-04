@@ -280,6 +280,7 @@ function MaintenanceOfMulberryGardenEdit() {
                             name="areaUnderEachVariety"
                             value={data.areaUnderEachVariety}
                             onChange={handleInputs}
+                            maxLength="3"
                             type="text"
                             placeholder="Enter Area(In Hectares)"
                           />
