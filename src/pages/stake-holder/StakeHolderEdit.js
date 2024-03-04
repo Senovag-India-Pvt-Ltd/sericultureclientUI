@@ -1824,6 +1824,7 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
+                            disabled
                             isInvalid={
                               data.farmerTypeId === undefined ||
                               data.farmerTypeId === "0"
