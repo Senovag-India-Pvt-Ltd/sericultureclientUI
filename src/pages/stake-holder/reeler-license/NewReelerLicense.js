@@ -332,8 +332,25 @@ function NewReelerLicense() {
         return;
       }
 
+      const FormDob = dateFormatter(data.dob);
+      const FormDateOfMachineInstallation = dateFormatter(
+        data.dateOfMachineInstallation
+      );
+      const FormInspectionDate = dateFormatter(data.inspectionDate);
+      const FormLicenseExpiryDate = dateFormatter(data.licenseExpiryDate);
+      const FormReceiptDate = dateFormatter(data.receiptDate);
+      const FormLicenseRenewalDate = dateFormatter(data.licenseRenewalDate);
+
       api
-        .post(baseURL + `reeler/add`, data)
+        .post(baseURL + `reeler/add`, {
+          ...data,
+          dob: FormDob,
+          dateOfMachineInstallation: FormDateOfMachineInstallation,
+          inspectionDate: FormInspectionDate,
+          licenseExpiryDate: FormLicenseExpiryDate,
+          receiptDate: FormReceiptDate,
+          licenseRenewalDate: FormLicenseRenewalDate,
+        })
         .then((response) => {
           if (response.data.content.reelerId) {
             const mahajarId = response.data.content.reelerId;
@@ -677,6 +694,22 @@ function NewReelerLicense() {
     setDocument(file);
   };
 
+  // Date Formate
+  const dateFormatter = (date) => {
+    if(date){
+      return (
+        new Date(date).getFullYear() +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getDate().toString().padStart(2, "0")
+      );
+    }else{
+      return "";
+    }
+   
+  };
+
   return (
     <Layout title="Reeler License">
       <Block.Head>
@@ -844,7 +877,9 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"

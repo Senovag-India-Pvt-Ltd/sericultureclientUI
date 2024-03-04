@@ -193,7 +193,7 @@ function TrainingSchedule() {
           trDateOfCompletion: formattedToDate,
         })
         .then((response) => {
-          if (response.data.content.trScheduleId) {
+          if (response.data.content.trScheduleId && ppt ) {
             const trUploadId = response.data.content.trScheduleId;
             handlePPtUpload(trUploadId);
           }
