@@ -1632,6 +1632,7 @@ function StakeHolderEdit() {
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
@@ -1642,12 +1643,13 @@ function StakeHolderEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="0">Select Caste</option>
                             {casteListData.map((list) => (
@@ -1656,6 +1658,9 @@ function StakeHolderEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1666,6 +1671,7 @@ function StakeHolderEdit() {
                             name="differentlyAbled"
                             value={data.differentlyAbled}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select")}</option>
                             <option value="true">Yes</option>
@@ -1944,7 +1950,7 @@ function StakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")}
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

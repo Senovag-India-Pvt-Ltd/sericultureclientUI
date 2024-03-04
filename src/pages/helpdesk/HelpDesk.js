@@ -114,6 +114,8 @@ function HelpDesk() {
               hdSeverityId: "4",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
+            setAttachFiles("");
+            document.getElementById("hdAttachFiles").value = "";
             setValidated(false);
           }
         })
@@ -144,6 +146,7 @@ function HelpDesk() {
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");
+    document.getElementById("hdAttachFiles").value = "";
   };
 
   const [loading, setLoading] = useState(false);

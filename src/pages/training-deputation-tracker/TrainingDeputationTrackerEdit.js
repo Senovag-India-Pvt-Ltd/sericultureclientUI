@@ -28,8 +28,10 @@ function TrainingDeputationTrackerEdit() {
     setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      // console.log("hellohello");
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -540,6 +542,7 @@ function TrainingDeputationTrackerEdit() {
                           name="mobileNumber"
                           value={data.mobileNumber}
                           onChange={handleInputs}
+                          maxLength="10"
                           type="text"
                           placeholder="Enter Mobile Number"
                           required

@@ -692,6 +692,7 @@ function TrainingSchedule() {
                         value={data.trDuration}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Duration"
                         required
                       />
@@ -715,6 +716,7 @@ function TrainingSchedule() {
                         value={data.trPeriod}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Period"
                         required
                       />
@@ -738,6 +740,7 @@ function TrainingSchedule() {
                         value={data.trNoOfParticipant}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="3"
                         placeholder="Enter No Of Participant "
                         required
                       />
