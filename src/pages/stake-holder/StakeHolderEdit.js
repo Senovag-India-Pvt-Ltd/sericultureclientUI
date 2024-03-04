@@ -1506,6 +1506,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name is required.
@@ -1527,6 +1528,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("Enter Farmer Name in Kannada")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name in Kannada is required.
@@ -1548,6 +1550,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_fathers_husbands_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name is required.
@@ -1571,6 +1574,7 @@ function StakeHolderEdit() {
                               "enter_fathers_husbands_name_in_kannada"
                             )}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name in Kannada is required.
@@ -2749,6 +2753,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3244,6 +3249,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3258,6 +3264,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3274,6 +3281,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3297,6 +3305,7 @@ function StakeHolderEdit() {
                           type="text"
                           placeholder={t("enter_survey_number")}
                           required
+                          readOnly
                         />
                         <Form.Control.Feedback type="invalid">
                           Survey Number is required
@@ -3314,6 +3323,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3436,6 +3446,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3450,6 +3461,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3608,6 +3620,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4098,6 +4111,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4112,6 +4126,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4128,6 +4143,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4151,6 +4167,7 @@ function StakeHolderEdit() {
                           type="text"
                           placeholder={t("enter_survey_number")}
                           required
+                          readOnly
                         />
                         <Form.Control.Feedback type="invalid">
                           Survey Number is required
@@ -4168,6 +4185,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4290,6 +4308,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4304,6 +4323,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4569,6 +4589,7 @@ function StakeHolderEdit() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required
@@ -4828,6 +4849,7 @@ function StakeHolderEdit() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required

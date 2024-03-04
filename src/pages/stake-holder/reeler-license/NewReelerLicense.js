@@ -844,12 +844,13 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            required
                           >
                             <option value="0">Select Caste</option>
                             {casteListData.map((list) => (
@@ -858,6 +859,9 @@ function NewReelerLicense() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 

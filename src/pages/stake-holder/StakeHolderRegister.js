@@ -4052,6 +4052,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4572,6 +4573,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4586,6 +4588,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4602,6 +4605,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4624,7 +4628,12 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_number")}
+                          required
+                          readOnly
                         />
+                        <Form.Control.Feedback type="invalid">
+                          Survey Number is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
@@ -4638,6 +4647,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4788,6 +4798,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4802,6 +4813,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -5369,6 +5381,7 @@ function StakeHolderRegister() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required
