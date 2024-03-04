@@ -9,7 +9,7 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 
@@ -72,10 +72,11 @@ function TrainerPageList() {
 
       api
         .post(
-          baseURL2 + `trSchedule/search`,
+          baseURL2 + `trSchedule/search-by-user`,
           {
             searchText: data.date,
             joinColumn: joinColumn,
+            userMasterId: localStorage.getItem("userMasterId"),
           },
           {
             headers: _header,
@@ -101,10 +102,11 @@ function TrainerPageList() {
       joinColumn = "trGroupMaster.trGroupMasterName";
       api
         .post(
-          baseURL2 + `trSchedule/search`,
+          baseURL2 + `trSchedule/search-by-user`,
           {
             searchText: data.text,
             joinColumn: joinColumn,
+            userMasterId: localStorage.getItem("userMasterId"),
           },
           {
             headers: _header,
@@ -307,7 +309,7 @@ function TrainerPageList() {
       ),
       sortable: false,
       hide: "md",
-      grow:2,
+      grow: 2,
     },
     {
       name: "Training Schedule Id",
@@ -413,14 +415,14 @@ function TrainerPageList() {
                     </Form.Select>
                   </div>
                 </Col>
-                {data.searchBy === "trStartDate"?(
+                {data.searchBy === "trStartDate" ? (
                   <Col sm={2}>
                     <Form.Group className="form-group">
                       {/* <Form.Label htmlFor="sordfl">
                       Training Period Start Date<span className="text-danger">*</span>
                       </Form.Label> */}
                       <div className="form-control-wrap">
-                      <DatePicker
+                        <DatePicker
                           selected={data.date}
                           onChange={(date) => handleDateChange(date, "date")}
                           peekNextMonth
@@ -446,7 +448,7 @@ function TrainerPageList() {
                     />
                   </Col>
                 )}
-                
+
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
