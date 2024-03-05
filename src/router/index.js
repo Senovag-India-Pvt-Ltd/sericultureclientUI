@@ -543,6 +543,9 @@ import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
 import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmerAllow";
 import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
 import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
+import Tsc from "../pages/masters/tsc/TscMaster";
+import TscList from "../pages/masters/tsc/TscMasterList";
+import TscEdit from "../pages/masters/tsc/TscMasterEdit";
 
 // Admin and Reports
 
@@ -1427,6 +1430,10 @@ function Router() {
             <Route path="sc-program-list" element={<ScProgramList />} />
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
             <Route path="sc-program-edit/:id" element={<ScProgramEdit />} />
+            <Route path="tsc" element={<Tsc />} />
+            <Route path="tsc-list" element={<TscList />} />
+            <Route path="tsc-view/:id" element={<TscView />} />
+            <Route path="tsc-edit/:id" element={<TscEdit />} />
             <Route path="sc-component" element={<ScComponent />} />
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
