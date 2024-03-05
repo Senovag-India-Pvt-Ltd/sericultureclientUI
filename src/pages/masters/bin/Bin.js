@@ -333,21 +333,18 @@ function Bin() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Bin</Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
                 <li className="breadcrumb-item active" aria-current="page">
                   Bin
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -368,11 +365,11 @@ function Bin() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n5">
         <Form action="#">
           <Row className="g-3 ">
             <Card>
