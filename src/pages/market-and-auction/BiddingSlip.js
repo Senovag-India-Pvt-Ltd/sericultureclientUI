@@ -142,8 +142,19 @@ function BiddingSlip() {
       })
       .catch((err) => {
         console.error("Error fetching farmer details:", err);
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          searchError(err.response.data.validationErrors);
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            searchError(err.response.data.validationErrors);
+          }
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Details not Found",
+          });
         }
         setFarmerDetails({});
         setLoading(false);
