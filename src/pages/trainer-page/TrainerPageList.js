@@ -69,12 +69,17 @@ function TrainerPageList() {
     let joinColumn;
     if (data.searchBy === "trStartDate") {
       joinColumn = "trSchedule.trStartDate";
-
+      const formattedFromDate =
+      new Date(data.date).getFullYear() +
+      "-" +
+      (new Date(data.date).getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      new Date(data.date).getDate().toString().padStart(2, "0");
       api
         .post(
           baseURL2 + `trSchedule/search-by-user`,
           {
-            searchText: data.date,
+            searchText: formattedFromDate,
             joinColumn: joinColumn,
             userMasterId: localStorage.getItem("userMasterId"),
           },

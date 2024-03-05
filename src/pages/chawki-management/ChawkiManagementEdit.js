@@ -161,12 +161,12 @@ function ChawkiManagementEdit() {
 
   const getChawkiList = () => {
     const response = api
-      .get(baseURL2 + `userMaster/get-all`)
+      .get(baseURL2 + `tscMaster/get-all`)
       .then((response) => {
-        setChawkiListData(response.data.content.userMaster);
+        setChawkiListData(response.data.content.tscMaster);
       })
       .catch((err) => {
-       setChawkiListData([]);
+        setChawkiListData([]);
       });
   };
 
@@ -651,11 +651,11 @@ function ChawkiManagementEdit() {
                           <option value="">Select TSC</option>
                           {chawkiListData.map((list) => (
                             <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">

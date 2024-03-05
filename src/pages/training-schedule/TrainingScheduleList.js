@@ -42,12 +42,18 @@ function TrainingScheduleList() {
     let joinColumn;
     if (data.searchBy === "trStartDate") {
       joinColumn = "trSchedule.trStartDate";
-
+      const formattedFromDate =
+      new Date(data.date).getFullYear() +
+      "-" +
+      (new Date(data.date).getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      new Date(data.date).getDate().toString().padStart(2, "0");
       api
         .post(
           baseURL + `trSchedule/search`,
+          
           {
-            searchText: data.date,
+            searchText: formattedFromDate,
             joinColumn: joinColumn,
           },
           {
