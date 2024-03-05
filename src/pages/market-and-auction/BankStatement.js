@@ -368,6 +368,12 @@ function BankStatement() {
   const requestJobToProcessPayment = (e) => {
     if (fileNameError === "") {
       const { paymentDate, fileName } = data;
+      if(paymentDate===""){
+        return Swal.fire({
+          icon: "warning",
+          title: "Date Not Selected",
+        });
+      }
       api
         .post(baseURLMarket + `auction/fp/requestJobToProcessPayment`, {
           marketId: localStorage.getItem("marketId"),
