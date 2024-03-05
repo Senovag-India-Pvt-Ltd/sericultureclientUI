@@ -188,19 +188,19 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Lot Number (of the RSP)",
+      name: "Lot Number",
       selector: (row) => row.lotNumberRsp,
       cell: (row) => <span>{row.lotNumberRsp}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Lot No. (CRC)",
+    //   selector: (row) => row.lotNumberCrc,
+    //   cell: (row) => <span>{row.lotNumberCrc}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Lot No. (CRC)",
       selector: (row) => row.lotNumberCrc,
