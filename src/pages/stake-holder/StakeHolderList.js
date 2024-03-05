@@ -37,15 +37,15 @@ function StakeHolderList() {
 
   // Search
   const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "fruitsId") {
-      joinColumn = "farmer.fruitsId";
+    let joinColumnType;
+    if (data.searchBy === "0") {
+      joinColumnType = 0;
     }
-    if (data.searchBy === "farmerNumber") {
-      joinColumn = "farmer.farmerNumber";
+    if (data.searchBy === "1") {
+      joinColumnType = 1;
     }
-    if (data.searchBy === "mobileNumber") {
-      joinColumn = "farmer.mobileNumber";
+    if (data.searchBy === "2") {
+      joinColumnType = 2;
     }
     // console.log(joinColumn);
     const parameters = {
@@ -54,6 +54,7 @@ function StakeHolderList() {
         size: countPerPage,
         type: 2,
         searchText: data.text,
+        joinColumnType
       },
     };
 
@@ -347,9 +348,9 @@ function StakeHolderList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      {/* <option value="fruitsId">Fruits ID</option> */}
-                      <option value="farmerNumber">Farmer Number</option>
-                      {/* <option value="mobileNumber">Mobile Number</option> */}
+                      <option value="0">Farmer Number</option>
+                      <option value="1">Fruits ID</option>
+                      <option value="2">Mobile Number</option>
                     </Form.Select>
                   </div>
                 </Col>

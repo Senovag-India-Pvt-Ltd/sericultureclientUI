@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col,Button } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -51,8 +51,6 @@ function ReelerLicenseView() {
       });
   };
 
-  
-
   const [vbAccountList, setVbAccountList] = useState([]);
   const getVbAccountDetailsList = () => {
     api
@@ -87,7 +85,6 @@ function ReelerLicenseView() {
     }
   };
 
-
   useEffect(() => {
     getIdList();
     getVbAccountDetailsList();
@@ -120,6 +117,21 @@ function ReelerLicenseView() {
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error fetching file:", error);
+    }
+  };
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getFullYear() +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getDate().toString().padStart(2, "0")
+      );
+    } else {
+      return "";
     }
   };
 
@@ -181,7 +193,7 @@ function ReelerLicenseView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Date of Birth:</td>
-                      <td>{Reeler.dob}</td>
+                      <td>{dateFormatter(Reeler.dob)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Gender:</td>
@@ -300,7 +312,7 @@ function ReelerLicenseView() {
                         {" "}
                         Date of Machine Installation:
                       </td>
-                      <td>{Reeler.dateOfMachineInstallation}</td>
+                      <td>{dateFormatter(Reeler.dateOfMachineInstallation)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Machine Type:</td>
@@ -316,36 +328,36 @@ function ReelerLicenseView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Inspection Date:</td>
-                      <td>{Reeler.inspectionDate}</td>
+                      <td>{dateFormatter(Reeler.inspectionDate)}</td>
                     </tr>
                     <tr>
-                        <td style={styles.ctstyle}> Uploaded Mahajar Details:</td>
-                        <td>
-                          {" "}
-                          {selectedMahajarFile && (
-                            <>
-                              <img
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                }}
-                                src={selectedMahajarFile}
-                                alt="Selected File"
-                              />
-                              <Button
-                                variant="primary"
-                                size="sm"
-                                className="ms-2"
-                                onClick={() =>
-                                  downloadFile(Reeler.mahajarDetails)
-                                }
-                              >
-                                Download File
-                              </Button>
-                            </>
-                          )}
-                        </td>
-                      </tr>
+                      <td style={styles.ctstyle}> Uploaded Mahajar Details:</td>
+                      <td>
+                        {" "}
+                        {selectedMahajarFile && (
+                          <>
+                            <img
+                              style={{
+                                height: "100px",
+                                width: "100px",
+                              }}
+                              src={selectedMahajarFile}
+                              alt="Selected File"
+                            />
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              className="ms-2"
+                              onClick={() =>
+                                downloadFile(Reeler.mahajarDetails)
+                              }
+                            >
+                              Download File
+                            </Button>
+                          </>
+                        )}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>
@@ -408,7 +420,7 @@ function ReelerLicenseView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Receipt Date:</td>
-                      <td>{Reeler.receiptDate}</td>
+                      <td>{dateFormatter(Reeler.receiptDate)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Reeling License Number:</td>
@@ -420,7 +432,7 @@ function ReelerLicenseView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> License Expiry Date:</td>
-                      <td>{Reeler.licenseExpiryDate}</td>
+                      <td>{dateFormatter(Reeler.licenseExpiryDate)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Function of the Unit:</td>

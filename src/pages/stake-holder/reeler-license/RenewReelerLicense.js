@@ -37,7 +37,6 @@ function RenewReelerLicense() {
     setData({ ...data, [name]: value });
   };
 
-  
   // const YourFormComponent = ({ data, handleDateChange }) => {
   const handleRenewedDateChange = (date) => {
     // Calculate expiration date by adding 3 years to the renewed date
@@ -241,6 +240,7 @@ function RenewReelerLicense() {
                                 onChange={(date) =>
                                   handleRenewedDateChange(date)
                                 }
+                                className="form-control"
                               />
                             </div>
                           </Form.Group>
@@ -253,6 +253,7 @@ function RenewReelerLicense() {
                                 onChange={(date) =>
                                   handleDateChange(date, "licenseExpiryDate")
                                 }
+                                className="form-control"
                                 disabled={data.licenseRenewalDate !== null} // Disable if Renewed Date is selected
                                 // onChange={(date) =>
                                 //   handleDateChange(date, "licenseExpiryDate")
