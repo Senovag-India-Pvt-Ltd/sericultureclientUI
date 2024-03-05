@@ -161,9 +161,9 @@ function ChawkidistributiontoFarmersEdit() {
 
   const getChawkiList = () => {
     const response = api
-      .get(baseURL2 + `userMaster/get-all`)
+      .get(baseURL2 + `tscMaster/get-all`)
       .then((response) => {
-        setChawkiListData(response.data.content.userMaster);
+        setChawkiListData(response.data.content.tscMaster);
       })
       .catch((err) => {
        setChawkiListData([]);
@@ -630,10 +630,10 @@ function ChawkidistributiontoFarmersEdit() {
                             <option value="">Select TSC</option>
                             {chawkiListData.map((list) => (
                               <option
-                                key={list.userMasterId}
-                                value={list.userMasterId}
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
                               >
-                                {list.username}
+                                {list.name}
                               </option>
                             ))}
                           </Form.Select>
