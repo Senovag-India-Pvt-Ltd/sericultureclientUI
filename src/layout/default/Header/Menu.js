@@ -341,6 +341,7 @@ function Menu() {
     Admin_Master_Garden_Disinfectant: false,
     Admin_Master_Garden_Generation_Number: false,
     Admin_Master_Garden_Farm: false,
+    Admin_Master_Garden_Tsc: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -1905,6 +1906,11 @@ function Menu() {
                       {showMenu.Admin_Master_Garden_Farm ? (
                         <MenuItem>
                           <MenuItemLink text="Farm" to="/seriui/farm" />
+                        </MenuItem>
+                      ) : null}
+                      {showMenu.Admin_Master_Garden_Tsc ? (
+                        <MenuItem>
+                          <MenuItemLink text="Tsc" to="/seriui/tsc" />
                         </MenuItem>
                       ) : null}
                     </MenuSub>

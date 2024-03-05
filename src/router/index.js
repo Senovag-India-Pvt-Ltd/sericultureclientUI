@@ -547,6 +547,7 @@ import HomePage from "../pages/stake-holder/HomePage";
 import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
+import TscView from "../pages/masters/tsc/TscView";
 
 // Admin and Reports
 
