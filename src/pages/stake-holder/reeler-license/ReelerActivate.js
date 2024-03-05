@@ -345,7 +345,7 @@ function ReelerActivate() {
             <Block.Title tag="h2">Activate Reeler</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link to="#" className="btn btn-primary btn-md d-md-none">
                   <Icon name="arrow-long-left" />
@@ -361,7 +361,7 @@ function ReelerActivate() {
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
