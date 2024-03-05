@@ -1026,28 +1026,40 @@ function Market() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="chakbandi">
-                        Market Coordinates
+                        Market Coordinates<span className="text-danger">*</span>
                       </Form.Label>
                       <Row>
                         <Col lg="6">
-                          <Form.Control
-                            id="marketLongitude"
-                            name="marketLongitude"
-                            value={data.marketLongitude}
-                            onChange={handleInputs}
-                            placeholder="Enter Longitude"
-                          />
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="marketLongitude"
+                              name="marketLongitude"
+                              value={data.marketLongitude}
+                              onChange={handleInputs}
+                              placeholder="Enter Longitude"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Longitude is required
+                            </Form.Control.Feedback>
+                          </div>
                         </Col>
 
                         <Col lg="6">
-                          <Form.Control
-                            id="marketLatitude"
-                            name="marketLatitude"
-                            value={data.marketLatitude}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Latitude"
-                          />
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="marketLatitude"
+                              name="marketLatitude"
+                              value={data.marketLatitude}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter Latitude"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Latitude is required
+                            </Form.Control.Feedback>
+                          </div>
                         </Col>
                       </Row>
                     </Form.Group>

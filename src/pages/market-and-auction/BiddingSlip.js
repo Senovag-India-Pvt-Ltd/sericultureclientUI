@@ -152,10 +152,9 @@ function BiddingSlip() {
 
   const increment = (_farmerId) => {
     api
-      .post(
-        baseURL2 + `farmer/update-farmer-without-fruits-id-counter`,
-        {farmerId:_farmerId}
-      )
+      .post(baseURL2 + `farmer/update-farmer-without-fruits-id-counter`, {
+        farmerId: _farmerId,
+      })
       .then((response) => {
         // if (response.data.content.error) {
         //   saveError(response.data.content.error_description);
@@ -675,12 +674,12 @@ function BiddingSlip() {
                           placeholder="Enter FRUITS ID / FARMER NUMBER"
                         />
                       </Col> */}
-                  <Col sm={12}>
+                  <Col sm={8} lg={12}>
                     <Form.Group as={Row} className="form-group" id="fid">
-                      <Form.Label column sm={2}>
+                      <Form.Label column sm={1} lg={2}>
                         Search Farmer Details By
                       </Form.Label>
-                      <Col sm={2}>
+                      <Col sm={1} lg={2}>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="select"
@@ -695,7 +694,7 @@ function BiddingSlip() {
                         </div>
                       </Col>
 
-                      <Col sm={3}>
+                      <Col sm={2} lg={2}>
                         <Form.Control
                           id="fruitsId"
                           name="text"
@@ -705,7 +704,7 @@ function BiddingSlip() {
                           placeholder="Search"
                         />
                       </Col>
-                      <Col sm={3}>
+                      <Col sm={2} lg={3}>
                         <Button
                           type="button"
                           variant="primary"
@@ -714,7 +713,8 @@ function BiddingSlip() {
                           Search
                         </Button>
                       </Col>
-                      <Col sm={2} style={{ marginLeft: "-280px" }}>
+                      {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
+                      <Col sm={1} lg={2} style={{ marginLeft: "-15%" }}>
                         <Link
                           to="/seriui/stake-holder-registration"
                           className="btn btn-primary border-0"
@@ -722,16 +722,17 @@ function BiddingSlip() {
                           Add New
                         </Link>
                       </Col>
-                      <Col sm={2}>
+                      <Col sm={1} lg={3} style={{ marginLeft: "-5%" }}>
                         <Form.Group as={Row} className="form-group" id="date">
-                          <Form.Label column sm={3}>
+                          <Form.Label column sm={2} lg={3}>
                             Date
                           </Form.Label>
-                          <Col sm={2}>
+                          <Col sm={1} lg={1} style={{ marginLeft: "-10%" }}>
                             <div className="form-control-wrap">
                               <DatePicker
                                 dateFormat="dd/MM/yyyy"
                                 selected={new Date()}
+                                // className="form-control"
                                 readOnly
                               />
                             </div>

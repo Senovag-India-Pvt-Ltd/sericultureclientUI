@@ -65,10 +65,16 @@ function RejectLot() {
   };
 
   const searchError = (message = "Something went wrong!") => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Details not Found",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
