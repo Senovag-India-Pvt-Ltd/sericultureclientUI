@@ -206,7 +206,6 @@ function ReelerLicenceEdit() {
   };
 
   const handleDateChange = (date, type) => {
-    console.log("TESTDATA", data);
     setData({ ...data, [type]: date });
   };
 
@@ -236,7 +235,7 @@ function ReelerLicenceEdit() {
           }
         })
         .catch((err) => {
-          setData({});
+          // setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
