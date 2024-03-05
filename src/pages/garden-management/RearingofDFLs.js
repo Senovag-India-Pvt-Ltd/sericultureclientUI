@@ -240,7 +240,7 @@ function RearingofDFLs() {
               <Col lg="4">
                     <Form.Group className="form-group ">
                       <Form.Label>
-                        Disinfactant Usage Details
+                        Disinfactant Usage Details<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -249,6 +249,7 @@ function RearingofDFLs() {
                             value={data.disinfectantMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
+                            required
                           >
                             <option value="">Select Disinfactant Usage</option>
                             {disinfactantListData.map((list) => (
@@ -260,6 +261,9 @@ function RearingofDFLs() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                          Disinfactant Usage Details is required
+                        </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -277,42 +281,22 @@ function RearingofDFLs() {
                         value={data.cropNumber}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="12"
                         placeholder="Enter Crop Number"
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        Crop Number is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    Crop Number is required
-                  </Form.Control.Feedback>
                 </Col>
 
-                {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Lot Number<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="lotNumber"
-                          name="lotNumber"
-                          value={data.lotNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Lot Number"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Lot Number is required
-                    </Form.Control.Feedback>
-                  </Col> */}
-
+               
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Lot Number
+                      Lot Number<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -321,6 +305,7 @@ function RearingofDFLs() {
                           value={data.lotNumberId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Lot Number</option>
                           {lotNumberListData.map((list) => (
@@ -329,115 +314,14 @@ function RearingofDFLs() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Lot Number is required
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
                 </Col>
 
-                {/* <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Source
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="grainage"
-                          value={lot.grainage}
-                          onChange={handleInputs}
-                          // onBlur={() => handleInputs}
-                          disabled
-                        >
-                          <option value="">Select Source</option>
-                          {sourceListData.map((list) => (
-                            <option key={list.grainage} value={list.grainage}>
-                              {list.grainage}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Number Of DFLs
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="numberOfDFLsReceived"
-                          value={lot.numberOfDFLsReceived}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          disabled
-                        >
-                          <option value="">Select No Of DFLs</option>
-                          {dflsListData.map((list) => (
-                            <option key={list.numberOfDFLsReceived} value={list.numberOfDFLsReceived}>
-                              {list.numberOfDFLsReceived}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                     Race Of DFLs
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="raceOfDfls"
-                          value={lot.raceOfDfls}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          disabled
-                        >
-                          <option value="">Select Race Of DFLs</option>
-                          {raceListData.map((list) => (
-                            <option key={list.raceOfDfls} value={list.raceOfDfls}>
-                              {list.raceOfDfls}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                     Laid On Date
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="laidOnDate"
-                          value={lot.laidOnDate}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          disabled
-                        >
-                          <option value="">Select Laid On Date</option>
-                          {laidListData.map((list) => (
-                            <option key={list.laidOnDate} value={list.laidOnDate}>
-                              {list.laidOnDate}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col> */}
 
                 <Col lg="4">
                     <Form.Group className="form-group mt-n4">
@@ -519,8 +403,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="coldStorageDetails">
-                      Cold Storage Details
-                      <span className="text-danger">*</span>
+                      Cold Storage Status
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -529,7 +412,7 @@ function RearingofDFLs() {
                         value={data.coldStorageDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter  Cold Storage Details"
+                        placeholder="Enter  Cold Storage Status"
                       />
                     </div>
                   </Form.Group>
@@ -538,7 +421,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Chawki Percentage
+                      Chawki Percentage<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -548,7 +431,11 @@ function RearingofDFLs() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Chawki Percentage"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                      Chawki Percentage is required
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -556,7 +443,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Weight(In Grams)
+                      Worm Weight(In Grams)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -566,7 +453,11 @@ function RearingofDFLs() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter  Cold Storage Details"
+                        required
                       />
+                       <Form.Control.Feedback type="invalid">
+                       Worm Weight(In Grams) is required
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -574,7 +465,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Worm Test Details
+                      Worm Test Status<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -584,7 +475,11 @@ function RearingofDFLs() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Worm Test Details"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                      Worm Test Status is required
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -592,7 +487,7 @@ function RearingofDFLs() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
-                      Cocoon Assessment Details
+                      Cocoon Assessment(in Kgs/Grams)<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -601,40 +496,22 @@ function RearingofDFLs() {
                         value={data.cocoonAssessmentDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Cocoon Assessment Details"
+                        placeholder="Enter Cocoon Assessment(in Kgs/Grams)"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                      Cocoon Assessment(in Kgs/Grams) is required
+                        </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                <Form.Label column sm={2}>
-                  Brushing Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
-                    <DatePicker
-                      selected={data.brushingDate}
-                      onChange={(date) => handleDateChange(date, "brushingDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                    />
-                  </div>
-                </Col>
-
-                <Form.Label column sm={2}>
+                <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                   Released On Date
                   <span className="text-danger">*</span>
                 </Form.Label>
-                <Col sm={2}>
                   <div className="form-control-wrap">
                     {/* <DatePicker
                           selected={data.dob}
@@ -651,15 +528,46 @@ function RearingofDFLs() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
+                      required
                     />
                   </div>
+                  </Form.Group>
                 </Col>
 
-                <Form.Label column sm={2}>
+
+                <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
+                  Brushing Date
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                  <div className="form-control-wrap">
+                    {/* <DatePicker
+                          selected={data.dob}
+                          onChange={(date) => handleDateChange(date, "dob")}
+                        /> */}
+                    <DatePicker
+                      selected={data.brushingDate}
+                      onChange={(date) => handleDateChange(date, "brushingDate")}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  </Form.Group>
+                </Col>
+
+
+                <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                   Spun Date
                   <span className="text-danger">*</span>
                 </Form.Label>
-                <Col sm={2}>
                   <div className="form-control-wrap">
                     {/* <DatePicker
                           selected={data.dob}
@@ -674,8 +582,10 @@ function RearingofDFLs() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
+                      required
                     />
                   </div>
+                  </Form.Group>
                 </Col>
               </Row>
             </Card.Body>

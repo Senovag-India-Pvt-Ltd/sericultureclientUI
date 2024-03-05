@@ -1620,6 +1620,7 @@ function StakeHolderEdit() {
                               showYearDropdown
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
+                              maxDate={new Date()}
                             />
                           )}
                         </div>

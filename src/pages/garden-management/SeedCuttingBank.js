@@ -35,6 +35,14 @@ function SeedCuttingBank() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
@@ -50,7 +58,10 @@ function SeedCuttingBank() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
       api
         .post(baseURL2 + `seed-cutting/add-info`, data)
         .then((response) => {
@@ -237,9 +248,10 @@ function SeedCuttingBank() {
                           onChange={handleInputs}
                           placeholder="Enter FRUITS ID"
                           required
+                          maxLength= "16"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID Should Contain 16 digits
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -282,11 +294,11 @@ function SeedCuttingBank() {
                         placeholder="Enter Farmer Name"
                         required
                       />
-                    </div>
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
+                       <Form.Control.Feedback type="invalid">
                     Farmer Name is required
                   </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
                 </Col>
 
                 <Col lg="4">
@@ -302,20 +314,21 @@ function SeedCuttingBank() {
                         value={data.quantityOfSeedCuttings}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="5"
                         placeholder="Enter Quantity Of Seed Cuttings"
                         required
                       />
-                    </div>
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
+                      <Form.Control.Feedback type="invalid">
                     Quantity Of Seed Cuttings is required
                   </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
                 </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="ratePerTonne">
-                      Rate Per Tonne
+                      Rate Per Tonne<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -324,8 +337,13 @@ function SeedCuttingBank() {
                         value={data.ratePerTonne}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="4"
                         placeholder="Enter Rate Per Tonne"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                      Rate Per Tonne is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -344,7 +362,11 @@ function SeedCuttingBank() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter  Remittance Details"
+                        required
                       />
+                       <Form.Control.Feedback type="invalid">
+                      Remittance Details is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -394,6 +416,7 @@ function SeedCuttingBank() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
+                      required
                     />
                   </div>
                 </Col>

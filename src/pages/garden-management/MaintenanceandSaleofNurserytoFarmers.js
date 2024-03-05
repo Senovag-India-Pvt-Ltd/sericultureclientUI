@@ -47,6 +47,14 @@ function MaintenanceandSaleofNurserytoFarmers() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const _header = {
@@ -63,7 +71,10 @@ function MaintenanceandSaleofNurserytoFarmers() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
       api
         .post(baseURL + `Maintenance-sale/add-info`, data)
         .then((response) => {
@@ -277,9 +288,10 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           onChange={handleInputs}
                           placeholder="Enter FRUITS ID"
                           required
+                          maxLength= "16"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID Should Contain 16 digits
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -319,7 +331,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Farmer’s name
+                                Farmer’s name<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -329,7 +341,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                   value={data.farmerName}
                                   onChange={handleInputs}
                                   placeholder="Enter Farmer’s name"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Farmer Name is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -370,21 +386,26 @@ function MaintenanceandSaleofNurserytoFarmers() {
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">Area</Form.Label>
+                              <Form.Label htmlFor="sordfl">Area<span className="text-danger">*</span></Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="area"
                                   name="area"
-                                  type="text"
                                   value={data.area}
                                   onChange={handleInputs}
+                                  type="text"
+                                  maxLength="4"
                                   placeholder="Enter Area"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                Area is required
+                              </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>                
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Nursery sale details
@@ -400,20 +421,25 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                 />
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">Quantity</Form.Label>
+                              <Form.Label htmlFor="sordfl">Quantity(No Of Saplings)<span className="text-danger">*</span></Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="quantity"
                                   name="quantity"
-                                  type="text"
                                   value={data.quantity}
                                   onChange={handleInputs}
-                                  placeholder=" Enter Quantity"
+                                  type="text"
+                                  maxLength="5"
+                                  placeholder=" Enter Quantity(No Of Saplings)"
+                                  required
                                 />
+                                 <Form.Control.Feedback type="invalid">
+                                 Quantity(No Of Saplings) is required
+                              </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -421,16 +447,21 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">Rate</Form.Label>
+                              <Form.Label htmlFor="sordfl">Rate<span className="text-danger">*</span></Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="rate"
                                   name="rate"
-                                  type="text"
                                   value={data.rate}
                                   onChange={handleInputs}
+                                  type="text"
+                                  maxLength="3"
                                   placeholder="Enter Rate"
+                                  required
                                 />
+                                  <Form.Control.Feedback type="invalid">
+                                 Rate is required
+                              </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -438,17 +469,21 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Sapling age in Month/Year
+                                Sapling age in Month/Year<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="saplingAge"
                                   name="saplingAge"
-                                  type="text"
                                   value={data.saplingAge}
                                   onChange={handleInputs}
+                                  type="text"
                                   placeholder="Enter Sapling age in Month/Year"
+                                  required
                                 />
+                                 <Form.Control.Feedback type="invalid">
+                                 Sapling age in Month/Year is required
+                              </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -492,7 +527,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Remittance details
+                                Remittance details<span className="text-danger">*</span><span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -502,7 +537,11 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                   value={data.remittanceDetails}
                                   onChange={handleInputs}
                                   placeholder="Enter Remittance details"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                Remittance details is required
+                              </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
@@ -511,7 +550,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of planting
+                                Date of planting<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -525,6 +564,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -533,7 +573,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
                             <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date
+                                Sale Date<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -547,12 +587,13 @@ function MaintenanceandSaleofNurserytoFarmers() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  required
                                 />
                               </div>
                               </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                    <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="challanUploadKey">
                         Upload Challan

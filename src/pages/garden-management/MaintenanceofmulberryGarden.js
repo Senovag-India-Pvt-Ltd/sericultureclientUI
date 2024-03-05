@@ -195,11 +195,12 @@ function MaintenanceofmulberryGarden() {
                         placeholder="Enter Plot Number"
                         required
                       />
-                    </div>
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
+                      <Form.Control.Feedback type="invalid">
                     Plot Number is required
                   </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                  
                 </Col>
 
                 <Col lg="4">
@@ -267,6 +268,7 @@ function MaintenanceofmulberryGarden() {
                         name="areaUnderEachVariety"
                         value={data.areaUnderEachVariety}
                         onChange={handleInputs}
+                        maxLength="4"
                         type="text"
                         placeholder="Enter Area(In Hectares)"
                       />
@@ -274,16 +276,13 @@ function MaintenanceofmulberryGarden() {
                   </Form.Group>
                 </Col>
 
-                <Form.Label column sm={2}>
+              <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                   Pruning Date
                   <span className="text-danger">*</span>
                 </Form.Label>
-                <Col sm={2}>
                   <div className="form-control-wrap">
-                    {/* <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        /> */}
                     <DatePicker
                       selected={data.pruningDate}
                       onChange={(date) => handleDateChange(date, "pruningDate")}
@@ -293,8 +292,10 @@ function MaintenanceofmulberryGarden() {
                       dropdownMode="select"
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
+                      required
                     />
                   </div>
+                  </Form.Group>
                 </Col>
                 {/* <Form.Label column sm={2}>
                     Fertilizer Application Date

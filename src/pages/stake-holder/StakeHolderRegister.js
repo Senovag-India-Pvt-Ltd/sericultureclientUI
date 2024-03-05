@@ -29,7 +29,7 @@ function StakeHolderRegister() {
     firstName: "",
     middleName: "",
     lastName: "",
-    dob: "",
+    dob: null,
     genderId: "",
     casteId: "",
     differentlyAbled: "",
@@ -64,7 +64,7 @@ function StakeHolderRegister() {
       firstName: "",
       middleName: "",
       lastName: "",
-      dob: "",
+      dob: null,
       genderId: "",
       casteId: "",
       differentlyAbled: "",
@@ -2030,6 +2030,7 @@ function StakeHolderRegister() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Form.Group>
