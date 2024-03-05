@@ -302,6 +302,7 @@ function ReceiptOfDFLsEdit() {
                             value={data.raceId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
+                            required
                           >
                             <option value="">Select Race</option>
                             {raceListData.map((list) => (
@@ -313,6 +314,9 @@ function ReceiptOfDFLsEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                          Race is required
+                        </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -330,6 +334,7 @@ function ReceiptOfDFLsEdit() {
                             value={data.grainageId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
+                            required
                           >
                             <option value="">Select Grainage</option>
                             {grainageListData.map((list) => (
@@ -341,6 +346,9 @@ function ReceiptOfDFLsEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                          Grainage is required
+                        </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -362,17 +370,17 @@ function ReceiptOfDFLsEdit() {
                           placeholder="Enter Lot Number"
                           required
                         />
+                        <Form.Control.Feedback type="invalid">
+                    Lot Number is required
+                  </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Lot Number is required
-                    </Form.Control.Feedback>
                   </Col>
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="numberOfDFLsReceived">
-                        Number Of DFLs received
+                        Number Of DFLs received<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -383,7 +391,11 @@ function ReceiptOfDFLsEdit() {
                           maxLength="4"
                           type="text"
                           placeholder="Enter Number Of DFLs received"
+                          required
                         />
+                         <Form.Control.Feedback type="invalid">
+                         Number Of DFLs is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -391,7 +403,7 @@ function ReceiptOfDFLsEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="invoiceDetails">
-                        Invoice No
+                        Invoice No<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -401,7 +413,11 @@ function ReceiptOfDFLsEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Invoice No"
+                          required
                         />
+                        <Form.Control.Feedback type="invalid">
+                        Invoice Details is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -418,6 +434,7 @@ function ReceiptOfDFLsEdit() {
                           value={data.generationDetailsId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Generation Details</option>
                           {generationListData.map((list) => (
@@ -429,17 +446,20 @@ function ReceiptOfDFLsEdit() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                       Generation Details is required
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
                 </Col>
 
-
-                  <Form.Label column sm={2}>
+                <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                     Laid On Date
                     <span className="text-danger">*</span>
                   </Form.Label>
-                  <Col sm={2}>
                     <div className="form-control-wrap">
                       {isDataLaidSet && (
                         <DatePicker
@@ -453,16 +473,19 @@ function ReceiptOfDFLsEdit() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
+                          required
                         />
                       )}
                     </div>
+                    </Form.Group>
                   </Col>
 
-                  <Form.Label column sm={2}>
+                  <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                     DFLs received Date
                     <span className="text-danger">*</span>
                   </Form.Label>
-                  <Col sm={2}>
                     <div className="form-control-wrap">
                       {isDataDFLsSet && (
                         <DatePicker
@@ -476,33 +499,12 @@ function ReceiptOfDFLsEdit() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
+                          required
                         />
                       )}
                     </div>
+                    </Form.Group>
                   </Col>
-
-                  {/* <Col lg="2">
-                      <Button type="button" onClick={postDataReceipt}>
-                        View Invoice
-                      </Button>
-                    </Col> */}
-
-                  {/* <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="viewReceipt">Worm Test Details and result</Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="viewReceipt"
-                                name="viewReceipt"
-                                value={data.viewReceipt}
-                                onChange={handleInputs}
-                                type="text"
-                                placeholder="View Receipt"
-                              />
-                            </div>
-                          </Form.Group>
-                          <Button type="button" onClick={postDataReceipt}>Generate Receipt</Button>
-                        </Col> */}
                 </Row>
               )}
             </Card.Body>

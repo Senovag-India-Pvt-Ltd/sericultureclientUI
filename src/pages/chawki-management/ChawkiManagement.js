@@ -60,6 +60,15 @@ function ChawkiManagement() {
       const calculatedPrice = (numberOfDfls * ratePer100Dfls) / 100;
       setData((prevData) => ({ ...prevData, price: calculatedPrice }));
     }
+
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const _header = {
@@ -76,7 +85,9 @@ function ChawkiManagement() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
       api
         .post(baseURL + `chowkimanagement/add-info`, data)
         .then((response) => {
@@ -388,9 +399,10 @@ function ChawkiManagement() {
                           onChange={handleInputs}
                           placeholder="Enter FRUITS ID"
                           required
+                          maxLength= "16"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID Should Contain 16 digits
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -402,17 +414,6 @@ function ChawkiManagement() {
                           Search
                         </Button>
                       </Col>
-                      {/* <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col> */}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -439,11 +440,11 @@ function ChawkiManagement() {
                             placeholder="Enter Farmer’s name"
                             required
                           />
+                           <Form.Control.Feedback type="invalid">
+                          Farmer Name is required
+                        </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Farmer Name is required
-                      </Form.Control.Feedback>
                     </Col>
 
                     <Col lg="4">
@@ -460,18 +461,41 @@ function ChawkiManagement() {
                             type="text"
                             placeholder="Enter Father Name"
                             required
-                          />
+                          /> 
+                          <Form.Control.Feedback type="invalid">
+                            Father Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Father Name is required
-                      </Form.Control.Feedback>
                     </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          Lot Number (of the RSP)<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="lotNumberRsp"
+                            name="lotNumberRsp"
+                            value={data.lotNumberRsp}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="  Lot Number (of the RSP)"
+                            required
+                            // maxLength="6"
+                          />
+                           <Form.Control.Feedback type="invalid">
+                            Lot Number(of the RSP) is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="lotNumberCrc">
-                          Lot No. (CRC)
+                          Lot No. (CRC)<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -482,7 +506,11 @@ function ChawkiManagement() {
                             type="text"
                             placeholder="Lot No. (CRC)"
                             required
+                            // maxLength="6"
                           />
+                          <Form.Control.Feedback type="invalid">
+                            Lot Number(CRC) is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -490,7 +518,7 @@ function ChawkiManagement() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Number of DFL’s
+                          Number of DFL’s<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -498,9 +526,14 @@ function ChawkiManagement() {
                             name="numbersOfDfls"
                             value={data.numbersOfDfls}
                             onChange={handleInputs}
-                            type="number"
+                            type="text"
+                            maxLength="4"
                             placeholder=" Number of DFL’s"
+                            required
                           />
+                          <Form.Control.Feedback type="invalid">
+                          Number of DFL’s is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -508,7 +541,7 @@ function ChawkiManagement() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs
+                          Rate per 100 DFLs<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -516,9 +549,14 @@ function ChawkiManagement() {
                             name="ratePer100Dfls"
                             value={data.ratePer100Dfls}
                             onChange={handleInputs}
-                            type="number"
+                            type="text"
+                            maxLength="4"
                             placeholder=" Enter Rate per 100 DFL"
+                            required
                           />
+                           <Form.Control.Feedback type="invalid">
+                          Rate Per 100 DFL’s is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -536,7 +574,7 @@ function ChawkiManagement() {
                             onChange={handleInputs}
                             type="number"
                             placeholder=" Price (in Rupees)"
-                            disabled
+                            readOnly
                           />
                         </div>
                       </Form.Group>
@@ -544,7 +582,7 @@ function ChawkiManagement() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">Source of DFLs</Form.Label>
+                        <Form.Label htmlFor="sordfl">Source of DFLs<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="dflsSource"
@@ -555,6 +593,9 @@ function ChawkiManagement() {
                             placeholder=" Enter Source"
                             required
                           />
+                           <Form.Control.Feedback type="invalid">
+                           Source of DFLs is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -571,6 +612,7 @@ function ChawkiManagement() {
                               value={data.raceOfDfls}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
+                              required
                             >
                               <option value="">Select Race</option>
                               {raceListData.map((list) => (
@@ -582,6 +624,9 @@ function ChawkiManagement() {
                                 </option>
                               ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                            Race is required
+                            </Form.Control.Feedback>
                           </div>
                         </Col>
                       </Form.Group>
@@ -614,16 +659,36 @@ function ChawkiManagement() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            User is required
+                            TSC is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group mt-n4">
+                    <Form.Label> Sold after 1st/2nd/3rd Moult<span className="text-danger">*</span></Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="soldAfter1stOr2ndMould"
+                        value={data.soldAfter1stOr2ndMould}
+                        onChange={handleInputs}
+                      >
+                      <option value="">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        {/* <option value="3">Other</option> */}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Sold after 1st/2nd/3rd Moult is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+
+                      {/* <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                        Sold after 1st/2nd/3rd Moult
+                        Sold after 1st/2nd/3rd Moult<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -631,38 +696,27 @@ function ChawkiManagement() {
                             name="soldAfter1stOr2ndMould"
                             value={data.soldAfter1stOr2ndMould}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
+                            max={3}
+                            min={1}
                             placeholder=" Enter Sold after 1st/2nd/3rd Moult"
                             required
                           />
+                          <Form.Control.Feedback type="invalid">
+                            Sold after 1st/2nd/3rd Moult is required
+                          </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Lot Number (of the RSP)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="lotNumberRsp"
-                            name="lotNumberRsp"
-                            value={data.lotNumberRsp}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="  Lot Number (of the RSP)"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                   
 
-                    <Form.Label column sm={2}>
+                    <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
                       Hatching Date
                       <span className="text-danger">*</span>
                     </Form.Label>
-                    <Col sm={2}>
                       <div className="form-control-wrap">
                         
                         <DatePicker
@@ -676,15 +730,18 @@ function ChawkiManagement() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
+                          required
                         />
                       </div>
+                      </Form.Group>
                     </Col>
 
-                    <Form.Label column sm={2}>
+                    <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
                       Dispatch Date
                       <span className="text-danger">*</span>
                     </Form.Label>
-                    <Col sm={2}>
                       <div className="form-control-wrap">
                         <DatePicker
                           selected={data.dispatchDate}
@@ -698,8 +755,10 @@ function ChawkiManagement() {
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
                           minDate={new Date()}
+                          required
                         />
                       </div>
+                      </Form.Group>
                     </Col>
                   
                   </Row>
@@ -713,7 +772,7 @@ function ChawkiManagement() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           State<span className="text-danger">*</span>
                         </Form.Label>
@@ -740,8 +799,10 @@ function ChawkiManagement() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group">
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           District<span className="text-danger">*</span>
                         </Form.Label>
@@ -777,7 +838,7 @@ function ChawkiManagement() {
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Taluk<span className="text-danger">*</span>
                         </Form.Label>
@@ -809,8 +870,10 @@ function ChawkiManagement() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group">
+                    <Col lg ="4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Hobli<span className="text-danger">*</span>
                         </Form.Label>
@@ -845,7 +908,7 @@ function ChawkiManagement() {
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Village<span className="text-danger">*</span>
                         </Form.Label>
