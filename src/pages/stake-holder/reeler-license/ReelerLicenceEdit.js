@@ -189,7 +189,6 @@ function ReelerLicenceEdit() {
     setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
-      console.log("hellohello");
       e.target.classList.add("is-invalid");
       e.target.classList.remove("is-valid");
     } else if (name === "mobileNumber" && value.length === 10) {
@@ -207,6 +206,7 @@ function ReelerLicenceEdit() {
   };
 
   const handleDateChange = (date, type) => {
+    console.log("TESTDATA", data);
     setData({ ...data, [type]: date });
   };
 
@@ -462,6 +462,26 @@ function ReelerLicenceEdit() {
     getMarketMasterList();
   }, []);
 
+  const handleRenewedDateChange = (date) => {
+    console.log(data);
+    console.log(date);
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+    console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
+
+    setData((prev) => ({
+      ...prev,
+      receiptDate: date,
+      licenseExpiryDate: expirationDate,
+    }));
+
+    // setData(prev=>({
+    //   ...prev,
+    //   // receiptDate: date,
+    //   licenseExpiryDate: date,
+    // }));
+  };
+
   // Display Image
   const [mahajar, setMahajar] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
@@ -697,7 +717,6 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             maxDate={new Date()}
                             className="form-control"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -947,7 +966,9 @@ function ReelerLicenceEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label>Reeler Type</Form.Label>
+                        <Form.Label>
+                          Reeler Type <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="reelerTypeMasterId"
@@ -1117,7 +1138,6 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             // maxDate={new Date()}
                             className="form-control"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -1207,7 +1227,6 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             // maxDate={new Date()}
                             className="form-control"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -1467,7 +1486,7 @@ function ReelerLicenceEdit() {
                                 : null
                             }
                             onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
+                              handleRenewedDateChange(date, "receiptDate")
                             }
                             peekNextMonth
                             showMonthDropdown
@@ -1476,7 +1495,6 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             // maxDate={new Date()}
                             className="form-control"
-                            required
                           />
                         </div>
                       </Form.Group>
@@ -1525,8 +1543,8 @@ function ReelerLicenceEdit() {
                         <div className="form-control-wrap">
                           <DatePicker
                             selected={
-                              data.licenseExpiryDatenew
-                                ? Date(data.licenseExpiryDatenew)
+                              data.licenseExpiryDate
+                                ? new Date(data.licenseExpiryDate)
                                 : null
                             }
                             onChange={(date) =>
@@ -1539,7 +1557,7 @@ function ReelerLicenceEdit() {
                             dateFormat="dd/MM/yyyy"
                             // maxDate={new Date()}
                             className="form-control"
-                            required
+                            readOnly
                           />
                         </div>
                       </Form.Group>
