@@ -38,10 +38,16 @@ function Gatepass() {
   };
 
   const acceptError = (message = "Something went wrong!") => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Gatepass not generated!",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
@@ -94,7 +100,7 @@ function Gatepass() {
               if (response.data.content.reelerCurrentBalance < 0) {
                 acceptError("Reeler does not have sufficient balance");
               } else {
-                // alert("hello");
+                generateGatePassSlip(highestBid.allottedLotId);
               }
             }
             setLoading(false);
@@ -105,7 +111,7 @@ function Gatepass() {
         })
         .catch((err) => {
           // setFarmerAuction({});
-          acceptError(err.response.data.validationErrors)
+          acceptError(err.response.data.validationErrors);
           setLoading(false);
         })
         .finally(() => {
@@ -128,38 +134,69 @@ function Gatepass() {
     reelerAuctionId: "",
   });
 
-//   const postData = (e) => {
-//     // Check if reelerAuctionId is not empty or undefined
-//     if (farmerAuction && farmerAuction.reelerAuctionId) {
-//       setAcceptData({
-//         ...acceptData,
-//         reelerAuctionId: farmerAuction.reelerAuctionId,
-//       });
-//       api
-//         .post(baseURL1 + `auction/reeler/acceptReelerBidForGivenLot`, {
-//           ...highestBid,
-//           bidAcceptedBy: localStorage.getItem("username"),
-//         })
-//         .then((response) => {
-//           // setData(response.data.content);
-//           if (response.data.errorCode === 0) {
-//             // debugger
-//             acceptSuccess();
-//             setShowAccept(false);
-//           } else if (response.data.errorCode === -1) {
-//             acceptError(response.data.errorMessages[0].message);
-//           }
-//         })
-//         .catch((err) => {
-//           debugger;
-//           // setAcceptData({});
-//           acceptError();
-//         });
-//     } else {
-//       // Handle the case where reelerAuctionId is empty or undefined
-//       console.error("reelerAuctionId is empty or undefined");
-//     }
-//   };
+  //   const postData = (e) => {
+  //     // Check if reelerAuctionId is not empty or undefined
+  //     if (farmerAuction && farmerAuction.reelerAuctionId) {
+  //       setAcceptData({
+  //         ...acceptData,
+  //         reelerAuctionId: farmerAuction.reelerAuctionId,
+  //       });
+  //       api
+  //         .post(baseURL1 + `auction/reeler/acceptReelerBidForGivenLot`, {
+  //           ...highestBid,
+  //           bidAcceptedBy: localStorage.getItem("username"),
+  //         })
+  //         .then((response) => {
+  //           // setData(response.data.content);
+  //           if (response.data.errorCode === 0) {
+  //             // debugger
+  //             acceptSuccess();
+  //             setShowAccept(false);
+  //           } else if (response.data.errorCode === -1) {
+  //             acceptError(response.data.errorMessages[0].message);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           debugger;
+  //           // setAcceptData({});
+  //           acceptError();
+  //         });
+  //     } else {
+  //       // Handle the case where reelerAuctionId is empty or undefined
+  //       console.error("reelerAuctionId is empty or undefined");
+  //     }
+  //   };
+
+  const generateGatePassSlip = async (allotedLotId) => {
+    const newDate = new Date();
+    const formattedDate =
+      newDate.getFullYear() +
+      "-" +
+      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      newDate.getDate().toString().padStart(2, "0");
+
+    try {
+      const response = await api.post(
+        `https://api.senovagseri.com/reports-uat/marketreport/gatepass`,
+        {
+          marketId: highestBid.marketId,
+          godownId: highestBid.godownId,
+          allottedLotId: allotedLotId,
+          auctionDate: formattedDate,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
 
   // to get Bid Rejection
   const [bidRejectionListData, setBidRejectionListData] = useState([]);
