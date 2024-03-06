@@ -16,6 +16,7 @@ import { isValidDate } from "@fullcalendar/react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function OtherStateFarmer() {
   const [data, setData] = useState({
@@ -104,7 +105,8 @@ function OtherStateFarmer() {
         } else {
           api
             .post(
-              "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+              baseURLFarmer +
+                `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
               { fruitsId: data.fruitsId }
               // {
               //   headers: _header,

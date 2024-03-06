@@ -11,6 +11,7 @@ import axios from "axios";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BiddingReport() {
   const [data, setData] = useState({
@@ -78,7 +79,7 @@ function BiddingReport() {
       // event.stopPropagation();
       api
         .post(
-          `https://api.senovagseri.com/reports-uat/marketreport/get-bidding-report`,
+          baseURLReport + `get-bidding-report`,
           {
             marketId: marketId,
             godownId: godownId,

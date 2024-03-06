@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function Gatepass() {
   const navigate = useNavigate();
@@ -178,7 +179,7 @@ function Gatepass() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gatepass`,
+        baseURLReport + `gatepass`,
         {
           marketId: highestBid.marketId,
           godownId: highestBid.godownId,

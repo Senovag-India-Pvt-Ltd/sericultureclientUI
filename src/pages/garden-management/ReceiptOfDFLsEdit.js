@@ -12,6 +12,7 @@ import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function ReceiptOfDFLsEdit() {
   const { id } = useParams();
@@ -193,7 +194,7 @@ function ReceiptOfDFLsEdit() {
     // event.stopPropagation();
     api
       .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada`,
         {
           marketId: marketId,
           godownId: godownId,
@@ -315,8 +316,8 @@ function ReceiptOfDFLsEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Race is required
-                        </Form.Control.Feedback>
+                            Race is required
+                          </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -347,8 +348,8 @@ function ReceiptOfDFLsEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          Grainage is required
-                        </Form.Control.Feedback>
+                            Grainage is required
+                          </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -371,8 +372,8 @@ function ReceiptOfDFLsEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                    Lot Number is required
-                  </Form.Control.Feedback>
+                          Lot Number is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -380,7 +381,8 @@ function ReceiptOfDFLsEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="numberOfDFLsReceived">
-                        Number Of DFLs received<span className="text-danger">*</span>
+                        Number Of DFLs received
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -393,8 +395,8 @@ function ReceiptOfDFLsEdit() {
                           placeholder="Enter Number Of DFLs received"
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                         Number Of DFLs is required
+                        <Form.Control.Feedback type="invalid">
+                          Number Of DFLs is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -416,93 +418,93 @@ function ReceiptOfDFLsEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Invoice Details is required
+                          Invoice Details is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Generation Details<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="generationDetailsId"
-                          value={data.generationDetailsId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Generation Details</option>
-                          {generationListData.map((list) => (
-                            <option
-                              key={list.generationNumberId}
-                              value={list.generationNumberId}
-                            >
-                              {list.generationNumber}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                       Generation Details is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">
-                    Laid On Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                    <div className="form-control-wrap">
-                      {isDataLaidSet && (
-                        <DatePicker
-                          selected={new Date(data.laidOnDate)}
-                          onChange={(date) =>
-                            handleDateChange(date, "laidOnDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          required
-                        />
-                      )}
-                    </div>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Generation Details<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="generationDetailsId"
+                            value={data.generationDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                          >
+                            <option value="">Select Generation Details</option>
+                            {generationListData.map((list) => (
+                              <option
+                                key={list.generationNumberId}
+                                value={list.generationNumberId}
+                              >
+                                {list.generationNumber}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Generation Details is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
                     </Form.Group>
                   </Col>
 
                   <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">
-                    DFLs received Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                    <div className="form-control-wrap">
-                      {isDataDFLsSet && (
-                        <DatePicker
-                          selected={new Date(data.dflsRecDate)}
-                          onChange={(date) =>
-                            handleDateChange(date, "dflsRecDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          required
-                        />
-                      )}
-                    </div>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Laid On Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {isDataLaidSet && (
+                          <DatePicker
+                            selected={new Date(data.laidOnDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "laidOnDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        )}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        DFLs received Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {isDataDFLsSet && (
+                          <DatePicker
+                            selected={new Date(data.dflsRecDate)}
+                            onChange={(date) =>
+                              handleDateChange(date, "dflsRecDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        )}
+                      </div>
                     </Form.Group>
                   </Col>
                 </Row>

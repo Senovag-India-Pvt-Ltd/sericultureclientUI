@@ -16,6 +16,7 @@ import { Icon } from "../../components";
 // const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function SeedCuttingBank() {
   const [data, setData] = useState({
@@ -43,7 +44,7 @@ function SeedCuttingBank() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
@@ -123,35 +124,36 @@ function SeedCuttingBank() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-    api
-      .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-        { fruitsId: data.fruitsId }
-      )
-      .then((response) => {
-        console.log(response);
-        if (!response.data.content.error) {
-          if (response.data.content.farmerResponse) {
-            const firstName = response.data.content.farmerResponse.firstName;
-            const fatherName = response.data.content.farmerResponse.fatherName;
-            setData((prev) => ({
-              ...prev,
-              farmerName: firstName,
-              fatherName: fatherName,
-            }));
+      api
+        .post(
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+          { fruitsId: data.fruitsId }
+        )
+        .then((response) => {
+          console.log(response);
+          if (!response.data.content.error) {
+            if (response.data.content.farmerResponse) {
+              const firstName = response.data.content.farmerResponse.firstName;
+              const fatherName =
+                response.data.content.farmerResponse.fatherName;
+              setData((prev) => ({
+                ...prev,
+                farmerName: firstName,
+                fatherName: fatherName,
+              }));
+            }
+          } else {
+            saveError(response.data.content.error_description);
           }
-        } else {
-          saveError(response.data.content.error_description);
-        }
-      })
-      .catch((err) => {
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          saveError(err.response.data.validationErrors);
-        }
-      });
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
     }
   };
-
 
   // Display Image
   const [challan, setChallan] = useState("");
@@ -191,7 +193,7 @@ function SeedCuttingBank() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      text:`Receipt Number ${message}`,
+      text: `Receipt Number ${message}`,
     });
   };
   const saveError = (message) => {
@@ -243,221 +245,217 @@ function SeedCuttingBank() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="text"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
-                          maxLength= "16"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="submit"
-                          variant="primary"
-                        >
-                          Search
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Form>
-
-    <Form noValidate validated={validated} onSubmit={postData}>
-      <Row className="g-1 ">
-        <Block className="mt-3">
           <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Seed Cutting Bank
-            </Card.Header>
             <Card.Body>
-              {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-
-                <Col lg="4">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="plotNumber">
-                      Farmer Name<span className="text-danger">*</span>
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      FRUITS ID<span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
+                    <Col sm={4}>
                       <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        value={data.farmerName}
-                        onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Farmer Name"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder="Enter FRUITS ID"
+                        maxLength="16"
                         required
                       />
-                       <Form.Control.Feedback type="invalid">
-                    Farmer Name is required
-                  </Form.Control.Feedback>
-                    </div>
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID Should Contain 16 digits
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
                   </Form.Group>
                 </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
 
-                <Col lg="4">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="plotNumber">
-                      Quantity Of Seed Cuttings
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
+            <Block className="mt-3">
+              <Card>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Seed Cutting Bank
+                </Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
+                  <Row className="g-gs">
+                    <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="plotNumber">
+                          Farmer Name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerName"
+                            name="farmerName"
+                            value={data.farmerName}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Farmer Name"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="plotNumber">
+                          Quantity Of Seed Cuttings
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="quantityOfSeedCuttings"
+                            name="quantityOfSeedCuttings"
+                            value={data.quantityOfSeedCuttings}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength="5"
+                            placeholder="Enter Quantity Of Seed Cuttings"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Quantity Of Seed Cuttings is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="ratePerTonne">
+                          Rate Per Tonne<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="ratePerTonne"
+                            name="ratePerTonne"
+                            value={data.ratePerTonne}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength="4"
+                            placeholder="Enter Rate Per Tonne"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Rate Per Tonne is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="ratePerTonne">
+                          Remittance Details
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="remittanceDetails"
+                            name="remittanceDetails"
+                            value={data.remittanceDetails}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter  Remittance Details"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Remittance Details is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="challanUpload">
+                          Challan Upload
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="challanUpload"
+                            name="challanUpload"
+                            // value={data.photoPath}
+                            onChange={handleChallanChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {challan ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(challan)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                    </Col>
+
+                    <Form.Label column sm={2}>
+                      Date Of Pruning
                       <span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="quantityOfSeedCuttings"
-                        name="quantityOfSeedCuttings"
-                        value={data.quantityOfSeedCuttings}
-                        onChange={handleInputs}
-                        type="text"
-                        maxLength="5"
-                        placeholder="Enter Quantity Of Seed Cuttings"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                    Quantity Of Seed Cuttings is required
-                  </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+                    <Col sm={2}>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.dateOfPruning}
+                          onChange={(date) =>
+                            handleDateChange(date, "dateOfPruning")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="ratePerTonne">
-                      Rate Per Tonne<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="ratePerTonne"
-                        name="ratePerTonne"
-                        value={data.ratePerTonne}
-                        onChange={handleInputs}
-                        type="text"
-                        maxLength="4"
-                        placeholder="Enter Rate Per Tonne"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                      Rate Per Tonne is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="ratePerTonne">
-                      Remittance Details<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="remittanceDetails"
-                        name="remittanceDetails"
-                        value={data.remittanceDetails}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter  Remittance Details"
-                        required
-                      />
-                       <Form.Control.Feedback type="invalid">
-                      Remittance Details is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="challanUpload">
-                      Challan Upload
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="challanUpload"
-                        name="challanUpload"
-                        // value={data.photoPath}
-                        onChange={handleChallanChange}
-                      />
-                    </div>
-                  </Form.Group>
-
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {challan ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(challan)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Form.Label column sm={2}>
-                  Date Of Pruning
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.dateOfPruning}
-                      onChange={(date) =>
-                        handleDateChange(date, "dateOfPruning")
-                      }
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                </Col>
-
-                {/* <Col lg="2">
+                    {/* <Col lg="2">
                   <Button type="button" onClick={postDataReceipt}>
                     View Invoice
                   </Button>
                 </Col> */}
-              </Row>
-            </Card.Body>
-          </Card>
-          </Block>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
 
-          <div className="gap-col">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="submit" variant="primary">
-                  Save
-                </Button>
-              </li>
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li>
+              </ul>
+            </div>
           </Row>
         </Form>
       </Block>

@@ -15,6 +15,7 @@ import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function ChawkidistributiontoFarmers() {
   const [data, setData] = useState({
@@ -71,7 +72,7 @@ function ChawkidistributiontoFarmers() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
 
   const _header = {
@@ -88,7 +89,7 @@ function ChawkidistributiontoFarmers() {
       setValidated(true);
     } else {
       event.preventDefault();
-      
+
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
@@ -168,32 +169,34 @@ function ChawkidistributiontoFarmers() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-    api
-      .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-        { fruitsId: data.fruitsId }
-      )
-      .then((response) => {
-        console.log(response);
-        if (!response.data.content.error) {
-          if (response.data.content.farmerResponse) {
-            const firstName = response.data.content.farmerResponse.firstName;
-            const fatherName = response.data.content.farmerResponse.fatherName;
-            setData((prev) => ({
-              ...prev,
-              farmerName: firstName,
-              fatherName: fatherName,
-            }));
+      api
+        .post(
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+          { fruitsId: data.fruitsId }
+        )
+        .then((response) => {
+          console.log(response);
+          if (!response.data.content.error) {
+            if (response.data.content.farmerResponse) {
+              const firstName = response.data.content.farmerResponse.firstName;
+              const fatherName =
+                response.data.content.farmerResponse.fatherName;
+              setData((prev) => ({
+                ...prev,
+                farmerName: firstName,
+                fatherName: fatherName,
+              }));
+            }
+          } else {
+            saveError(response.data.content.error_description);
           }
-        } else {
-          saveError(response.data.content.error_description);
-        }
-      })
-      .catch((err) => {
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          saveError(err.response.data.validationErrors);
-        }
-      });
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
     }
   };
 
@@ -398,37 +401,34 @@ function ChawkidistributiontoFarmers() {
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
           {/* <Row className="g-1 "> */}
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
-                          required
-                          maxLength= "16"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="submit"
-                          variant="primary"
-                        >
-                          Search
-                        </Button>
-                      </Col>
-                      {/* <Col sm={2}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      FRUITS ID<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        type="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder="Enter FRUITS ID"
+                        required
+                        maxLength="16"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID Should Contain 16 digits
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    {/* <Col sm={2}>
                         <Button
                           type="button"
                           variant="primary"
@@ -439,14 +439,14 @@ function ChawkidistributiontoFarmers() {
                           Generate FRUITS ID
                         </Button>
                       </Col> */}
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Form>
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Row className="g-1 ">
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -454,7 +454,7 @@ function ChawkidistributiontoFarmers() {
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
-                  <Col lg="4">
+                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="sordfl">
                           Farmer’s name<span className="text-danger">*</span>
@@ -469,9 +469,9 @@ function ChawkidistributiontoFarmers() {
                             placeholder="Enter Farmer’s name"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                          Farmer Name is required
-                        </Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -490,7 +490,7 @@ function ChawkidistributiontoFarmers() {
                             type="text"
                             placeholder="Enter Father Name"
                             required
-                          /> 
+                          />
                           <Form.Control.Feedback type="invalid">
                             Father Name is required
                           </Form.Control.Feedback>
@@ -514,7 +514,7 @@ function ChawkidistributiontoFarmers() {
                             required
                             // maxLength="6"
                           />
-                           <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback type="invalid">
                             Lot Number is required
                           </Form.Control.Feedback>
                         </div>
@@ -561,7 +561,7 @@ function ChawkidistributiontoFarmers() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Number of DFL’s is required
+                            Number of DFL’s is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -570,7 +570,8 @@ function ChawkidistributiontoFarmers() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs<span className="text-danger">*</span>
+                          Rate per 100 DFLs
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -583,8 +584,8 @@ function ChawkidistributiontoFarmers() {
                             placeholder=" Enter Rate per 100 DFL"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                          Rate Per 100 DFL’s is required
+                          <Form.Control.Feedback type="invalid">
+                            Rate Per 100 DFL’s is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -611,7 +612,9 @@ function ChawkidistributiontoFarmers() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">Source of DFLs<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="sordfl">
+                          Source of DFLs<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="dflsSource"
@@ -622,8 +625,8 @@ function ChawkidistributiontoFarmers() {
                             placeholder=" Enter Source"
                             required
                           />
-                           <Form.Control.Feedback type="invalid">
-                           Source of DFLs is required
+                          <Form.Control.Feedback type="invalid">
+                            Source of DFLs is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -654,7 +657,7 @@ function ChawkidistributiontoFarmers() {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            Race is required
+                              Race is required
                             </Form.Control.Feedback>
                           </div>
                         </Col>
@@ -695,77 +698,79 @@ function ChawkidistributiontoFarmers() {
                     </Col>
 
                     <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                    <Form.Label> Sold after 1st/2nd/3rd Moult<span className="text-danger">*</span></Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="soldAfter1stOr2ndMould"
-                        value={data.soldAfter1stOr2ndMould}
-                        onChange={handleInputs}
-                      >
-                      <option value="">Select</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        {/* <option value="3">Other</option> */}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Sold after 1st/2nd/3rd Moult is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                  </Col>  
-
-                    <Col lg="2">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                      Hatching Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                      <div className="form-control-wrap">
-                        
-                        <DatePicker
-                          selected={data.hatchingDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "hatchingDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          required
-                        />
-                      </div>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          {" "}
+                          Sold after 1st/2nd/3rd Moult
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="soldAfter1stOr2ndMould"
+                            value={data.soldAfter1stOr2ndMould}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            {/* <option value="3">Other</option> */}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sold after 1st/2nd/3rd Moult is required
+                          </Form.Control.Feedback>
+                        </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="2">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                      Dispatch Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                      <div className="form-control-wrap">
-                        <DatePicker
-                          selected={data.dispatchDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "dispatchDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          minDate={new Date()}
-                          required
-                        />
-                      </div>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Hatching Date
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.hatchingDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "hatchingDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
                       </Form.Group>
                     </Col>
-                  
+
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Dispatch Date
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.dispatchDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "dispatchDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            minDate={new Date()}
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -877,7 +882,7 @@ function ChawkidistributiontoFarmers() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg ="4">
+                    <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Hobli<span className="text-danger">*</span>

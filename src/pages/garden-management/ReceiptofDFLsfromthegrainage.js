@@ -15,6 +15,8 @@ import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+
 
 function ReceiptofDFLsfromthegrainage() {
   const [data, setData] = useState({
@@ -173,8 +175,8 @@ function ReceiptofDFLsfromthegrainage() {
     //   event.preventDefault();
     // event.stopPropagation();
     api
-      .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+      .post(baseURLReport +
+        `gettripletpdf-kannada`,
         {
           marketId: marketId,
           godownId: godownId,
@@ -347,8 +349,8 @@ function ReceiptofDFLsfromthegrainage() {
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                    Lot Number is required
-                  </Form.Control.Feedback>
+                        Lot Number is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -356,7 +358,8 @@ function ReceiptofDFLsfromthegrainage() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs received<span className="text-danger">*</span>
+                      Number Of DFLs received
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -369,16 +372,18 @@ function ReceiptofDFLsfromthegrainage() {
                         placeholder="Enter Number Of DFLs received"
                         required
                       />
-                       <Form.Control.Feedback type="invalid">
-                       Number Of DFLs is required
-                        </Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">
+                        Number Of DFLs is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="invoiceDetails">Invoice No<span className="text-danger">*</span></Form.Label>
+                    <Form.Label htmlFor="invoiceDetails">
+                      Invoice No<span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
                         id="invoiceDetails"
@@ -390,8 +395,8 @@ function ReceiptofDFLsfromthegrainage() {
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                       Invoice Details is required
-                        </Form.Control.Feedback>
+                        Invoice Details is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -421,7 +426,7 @@ function ReceiptofDFLsfromthegrainage() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                       Generation Details is required
+                          Generation Details is required
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -429,46 +434,50 @@ function ReceiptofDFLsfromthegrainage() {
                 </Col>
 
                 <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">
-                  Laid On Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.laidOnDate}
-                      onChange={(date) => handleDateChange(date, "laidOnDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      required
-                    />
-                  </div>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Laid On Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.laidOnDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "laidOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
 
                 <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">
-                  DFLs received Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.dflsRecDate}
-                      onChange={(date) => handleDateChange(date, "dflsRecDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      required
-                    />
-                  </div>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      DFLs received Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.dflsRecDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "dflsRecDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
               </Row>

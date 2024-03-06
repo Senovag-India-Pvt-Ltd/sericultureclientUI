@@ -12,6 +12,8 @@ import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+
 
 function ChawkiManagement() {
   const [data, setData] = useState({
@@ -167,7 +169,8 @@ function ChawkiManagement() {
 
       api
         .post(
-          "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
           { fruitsId: data.fruitsId }
         )
         .then((response) => {

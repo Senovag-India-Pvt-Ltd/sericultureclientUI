@@ -15,6 +15,7 @@ import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function StakeHolderRegister() {
   const [familyMembersList, setFamilyMembersList] = useState([]);
@@ -112,62 +113,65 @@ function StakeHolderRegister() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-    api
-      .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
-      .then((response) => {
-        if (!response.data.content.isFruitService) {
-          const farmerId = response.data.content.farmerResponse.farmerId;
-          navigate(`/seriui/stake-holder-edit/${farmerId}`);
-        } else {
-          api
-            .post(
-              "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-              { fruitsId: data.fruitsId }
-              // {
-              //   headers: _header,
-              // }
-            )
-            .then((result) => {
-              if (!result.data.content.error) {
-                setData((prev) => ({
-                  ...prev,
-                  ...result.data.content.farmerResponse,
-                }));
-                setFarmerAddressList((prev) => [
-                  ...prev,
-                  ...result.data.content.farmerAddressList,
-                ]);
+      api
+        .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
+        .then((response) => {
+          if (!response.data.content.isFruitService) {
+            const farmerId = response.data.content.farmerResponse.farmerId;
+            navigate(`/seriui/stake-holder-edit/${farmerId}`);
+          } else {
+            api
+              .post(
+                baseURLFarmer +
+                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                { fruitsId: data.fruitsId }
+                // {
+                //   headers: _header,
+                // }
+              )
+              .then((result) => {
+                if (!result.data.content.error) {
+                  setData((prev) => ({
+                    ...prev,
+                    ...result.data.content.farmerResponse,
+                  }));
+                  setFarmerAddressList((prev) => [
+                    ...prev,
+                    ...result.data.content.farmerAddressList,
+                  ]);
 
-                const modified =
-                  result.data.content.farmerLandDetailsDTOList.map((detail) => {
-                    if (detail.stateId === 0) {
-                      detail.stateId = null;
-                    }
-                    if (detail.districtId === 0) {
-                      detail.districtId = null;
-                    }
-                    if (detail.talukId === 0) {
-                      detail.talukId = null;
-                    }
-                    if (detail.hobliId === 0) {
-                      detail.hobliId = null;
-                    }
-                    if (detail.villageId === 0) {
-                      detail.villageId = null;
-                    }
-                    return detail;
-                  });
-                // console.log(modified);FF
+                  const modified =
+                    result.data.content.farmerLandDetailsDTOList.map(
+                      (detail) => {
+                        if (detail.stateId === 0) {
+                          detail.stateId = null;
+                        }
+                        if (detail.districtId === 0) {
+                          detail.districtId = null;
+                        }
+                        if (detail.talukId === 0) {
+                          detail.talukId = null;
+                        }
+                        if (detail.hobliId === 0) {
+                          detail.hobliId = null;
+                        }
+                        if (detail.villageId === 0) {
+                          detail.villageId = null;
+                        }
+                        return detail;
+                      }
+                    );
+                  // console.log(modified);FF
 
-                setFarmerLandList((prev) => [...prev, ...modified]);
-              } else {
-                searchError(result.data.content.error_description);
-              }
-            })
-            .catch((error) => {});
-        }
-      })
-      .catch((error) => {});
+                  setFarmerLandList((prev) => [...prev, ...modified]);
+                } else {
+                  searchError(result.data.content.error_description);
+                }
+              })
+              .catch((error) => {});
+          }
+        })
+        .catch((error) => {});
     }
   };
 
@@ -752,7 +756,7 @@ function StakeHolderRegister() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
 
   const handleBankInputs = (e) => {
@@ -803,7 +807,7 @@ function StakeHolderRegister() {
       setValidated(true);
     } else {
       event.preventDefault();
-      
+
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
@@ -811,7 +815,10 @@ function StakeHolderRegister() {
       if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
         return;
       }
-      if (bank.farmerBankIfscCode.length < 11 || bank.farmerBankIfscCode.length > 11) {
+      if (
+        bank.farmerBankIfscCode.length < 11 ||
+        bank.farmerBankIfscCode.length > 11
+      ) {
         return;
       }
       api
@@ -1895,55 +1902,52 @@ function StakeHolderRegister() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        {t("FRUITS ID")}
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          type="text"
-                          maxLength="16"
-                          placeholder={t("Enter FRUITS ID")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID 16 Digits  is required.
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="submit"
-                          variant="primary"
-                        >
-                          {t("search")}
-                        </Button>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Form>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      {t("FRUITS ID")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        type="text"
+                        maxLength="16"
+                        placeholder={t("Enter FRUITS ID")}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID 16 Digits is required.
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        {t("search")}
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                        target="_blank"
+                        // onClick={search}
+                      >
+                        Generate FRUITS ID
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
 
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
@@ -2084,7 +2088,9 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"

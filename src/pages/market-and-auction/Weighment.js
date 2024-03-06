@@ -17,6 +17,7 @@ import { useSpeechSynthesis } from "react-speech-kit";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function Weighment() {
   const [weighStream, setWeighStream] = useState("");
@@ -252,7 +253,7 @@ function Weighment() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),

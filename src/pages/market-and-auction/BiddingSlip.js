@@ -17,6 +17,8 @@ import api from "../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BiddingSlip() {
   const [farmerDetails, setFarmerDetails] = useState({});
@@ -100,7 +102,8 @@ function BiddingSlip() {
 
     api
       .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+        baseURLFarmer +
+          `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
         sendData
       )
       .then((response) => {
@@ -514,7 +517,7 @@ function BiddingSlip() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/getfarmercopy-kannada`,
+        baseURLReport + `getfarmercopy-kannada`,
         {
           marketId: data.marketId,
           godownId: data.godownId,

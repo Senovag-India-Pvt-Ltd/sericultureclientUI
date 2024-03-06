@@ -12,6 +12,7 @@ import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PendingReport() {
   const [data, setData] = useState({
@@ -115,7 +116,7 @@ function PendingReport() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/get-pending-report`,
+        baseURLReport + `get-pending-report`,
         {
           marketId: data.marketId,
           godownId: data.godownId,

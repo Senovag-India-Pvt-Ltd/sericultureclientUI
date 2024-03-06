@@ -13,6 +13,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function NewReelerLicense() {
   // Virtual Bank Account
@@ -192,29 +193,79 @@ function NewReelerLicense() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-    api
-      .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
-        { fruitsId: data.fruitsId }
-        // {
-        //   headers: _header,
-        // }
-      )
-      .then((response) => {
-        // console.log("Hello");
-        if (response.data.content) {
-          const reelerId = response.data.content.reelerResponse.reelerId;
-          navigate(`/seriui/reeler-license-edit/${reelerId}`);
-        } else {
+      api
+        .post(
+          baseURLFarmer + `reeler/get-reeler-details-by-fruits-id`,
+          { fruitsId: data.fruitsId }
+          // {
+          //   headers: _header,
+          // }
+        )
+        .then((response) => {
+          // console.log("Hello");
+          if (response.data.content) {
+            const reelerId = response.data.content.reelerResponse.reelerId;
+            navigate(`/seriui/reeler-license-edit/${reelerId}`);
+          } else {
+            api
+              .post(
+                baseURLFarmer +
+                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                { fruitsId: data.fruitsId }
+                // {
+                //   headers: _header,
+                // }
+              )
+              .then((result) => {
+                const dump = result.data.content.farmerResponse;
+                let dump1 = "";
+                if (
+                  result.data.content.farmerAddressList &&
+                  result.data.content.farmerAddressList.length
+                ) {
+                  dump1 = result.data.content.farmerAddressList[0];
+                }
+
+                if (dump) {
+                  setData((prev) => ({
+                    ...prev,
+                    // ...result.data.content.farmerResponse,
+                    reelerName: dump.firstName,
+                    fatherName: dump.fatherName,
+                    gender: dump.genderId,
+                    casteId: dump.casteId,
+                    address: dump1 ? dump1.addressText : "",
+                  }));
+                }
+
+                if (result.data.content.error) {
+                  saveError(result.data.content.error_description);
+                }
+                // setFarmerAddressList((prev) => [
+                //   ...prev,
+                //   ...result.data.content.farmerAddressList,
+                // ]);
+                // setFarmerLandList((prev) => [
+                //   ...prev,
+                //   ...result.data.content.farmerLandDetailsList,
+                // ]);
+              })
+              .catch((error) => {});
+          }
+        })
+        .catch((error) => {
           api
             .post(
-              "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+              baseURLFarmer +
+                `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
               { fruitsId: data.fruitsId }
               // {
               //   headers: _header,
               // }
             )
             .then((result) => {
+              // console.log(result);
+              // console.log("result",result);
               const dump = result.data.content.farmerResponse;
               let dump1 = "";
               if (
@@ -223,7 +274,6 @@ function NewReelerLicense() {
               ) {
                 dump1 = result.data.content.farmerAddressList[0];
               }
-
               if (dump) {
                 setData((prev) => ({
                   ...prev,
@@ -239,57 +289,9 @@ function NewReelerLicense() {
               if (result.data.content.error) {
                 saveError(result.data.content.error_description);
               }
-              // setFarmerAddressList((prev) => [
-              //   ...prev,
-              //   ...result.data.content.farmerAddressList,
-              // ]);
-              // setFarmerLandList((prev) => [
-              //   ...prev,
-              //   ...result.data.content.farmerLandDetailsList,
-              // ]);
             })
             .catch((error) => {});
-        }
-      })
-      .catch((error) => {
-        api
-          .post(
-            "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-            { fruitsId: data.fruitsId }
-            // {
-            //   headers: _header,
-            // }
-          )
-          .then((result) => {
-            // console.log(result);
-            // console.log("result",result);
-            const dump = result.data.content.farmerResponse;
-            let dump1 = "";
-            if (
-              result.data.content.farmerAddressList &&
-              result.data.content.farmerAddressList.length
-            ) {
-              dump1 = result.data.content.farmerAddressList[0];
-            }
-            if (dump) {
-              setData((prev) => ({
-                ...prev,
-                // ...result.data.content.farmerResponse,
-                reelerName: dump.firstName,
-                fatherName: dump.fatherName,
-                gender: dump.genderId,
-                casteId: dump.casteId,
-                address: dump1 ? dump1.addressText : "",
-              }));
-            }
-
-            if (result.data.content.error) {
-              saveError(result.data.content.error_description);
-            }
-
-          })
-          .catch((error) => {});
-      });
+        });
     }
   };
 
@@ -322,7 +324,7 @@ function NewReelerLicense() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -712,7 +714,7 @@ function NewReelerLicense() {
 
   // Date Formate
   const dateFormatter = (date) => {
-    if(date){
+    if (date) {
       return (
         new Date(date).getFullYear() +
         "-" +
@@ -720,10 +722,9 @@ function NewReelerLicense() {
         "-" +
         new Date(date).getDate().toString().padStart(2, "0")
       );
-    }else{
+    } else {
       return "";
     }
-   
   };
 
   return (
@@ -761,55 +762,52 @@ function NewReelerLicense() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
-                          maxLength="16"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits.
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="submit"
-                          variant="primary"
-                        >
-                          Search
-                        </Button>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Form>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      FRUITS ID<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        type="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder="Enter FRUITS ID"
+                        maxLength="16"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID Should Contain 16 digits.
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                        target="_blank"
+                        // onClick={search}
+                      >
+                        Generate FRUITS ID
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
         <Form noValidate validated={validated} onSubmit={postData}>
-      <Row className="g-1 ">
+          <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header>Reeler Personal info</Card.Header>

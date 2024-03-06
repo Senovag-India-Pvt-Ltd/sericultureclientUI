@@ -12,6 +12,7 @@ import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DtrOnlineReport() {
   const [data, setData] = useState({
@@ -132,7 +133,7 @@ function DtrOnlineReport() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/dtr-online-report`,
+        baseURLReport + `dtr-online-report`,
         {
           marketId: data.marketId,
           reelerId: data.reelerId,

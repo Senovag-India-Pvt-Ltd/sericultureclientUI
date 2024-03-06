@@ -11,6 +11,7 @@ import axios from "axios";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PrintBidSlip() {
   const [data, setData] = useState({
@@ -78,7 +79,7 @@ function PrintBidSlip() {
       // event.stopPropagation();
       api
         .post(
-          `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+          baseURLReport + `gettripletpdf-kannada`,
           {
             marketId: marketId,
             godownId: godownId,
