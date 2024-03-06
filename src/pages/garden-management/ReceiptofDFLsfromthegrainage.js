@@ -57,6 +57,10 @@ function ReceiptofDFLsfromthegrainage() {
       api
         .post(baseURL2 + `Receipt/add-info`, data)
         .then((response) => {
+          if (response.data.id) {
+            const receiptId = response.data.id;
+            handleReceiptUpload(receiptId);
+          }
           if (response.data.error) {
             saveError(response.data.message);
           } else {
@@ -72,6 +76,8 @@ function ReceiptofDFLsfromthegrainage() {
               generationDetails: "",
               viewReceipt: "",
             });
+            setReceiptUpload("")
+document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -96,6 +102,8 @@ function ReceiptofDFLsfromthegrainage() {
       generationDetails: "",
       viewReceipt: "",
     });
+    setReceiptUpload("")
+    document.getElementById("viewReceipt").value = "";
   };
 
   const handleDateChange = (date, type) => {
@@ -156,49 +164,37 @@ function ReceiptofDFLsfromthegrainage() {
     getGenerationList();
   }, []);
 
-  const postDataReceipt = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
+ 
 
-    const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    // } else {
-    //   event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(baseURLReport +
-        `gettripletpdf-kannada`,
+  // Display Image
+  const [receiptUpload, setReceiptUpload] = useState("");
+ 
+  const handleUploadChange = (e) => {
+    const file = e.target.files[0];
+    setReceiptUpload(file);
+    setData((prev) => ({ ...prev, viewReceipt: file.name }));
+  };
+
+  // Upload Image to S3 Bucket
+  const handleReceiptUpload = async (receiptid) => {
+    const parameters = `id=${receiptid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", receiptUpload);
+
+      const response = await api.post(
+        baseURL2 + `Receipt/upload-reciept?${parameters}`,
+        formData,
         {
-          marketId: marketId,
-          godownId: godownId,
-          allottedLotId: allottedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      )
-      .then((response) => {
-        //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
-      })
-      .catch((error) => {
-        // console.log("error", error);
-      });
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
   };
 
   const navigate = useNavigate();
@@ -478,6 +474,34 @@ function ReceiptofDFLsfromthegrainage() {
                         required
                       />
                     </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="fileUploadPath">
+                      Upload Receipt(png/jpg/pdf)(Max:2mb)
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id="viewReceipt"
+                        name="viewReceipt"
+                        // value={data.photoPath}
+                        onChange={handleUploadChange}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {receiptUpload ? (
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={URL.createObjectURL(receiptUpload)}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Form.Group>
                 </Col>
               </Row>

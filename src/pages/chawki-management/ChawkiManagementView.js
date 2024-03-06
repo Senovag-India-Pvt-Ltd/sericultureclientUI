@@ -178,6 +178,10 @@ function ChawkiManagementView() {
                         <td>{chawkiManagement.price}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Tsc:</td>
+                        <td>{chawkiManagement.tscName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Receipt No:</td>
                         <td>{chawkiManagement.receiptNo}</td>
                       </tr>

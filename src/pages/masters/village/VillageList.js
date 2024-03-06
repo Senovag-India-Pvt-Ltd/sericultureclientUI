@@ -223,6 +223,7 @@ function VillageList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "State",

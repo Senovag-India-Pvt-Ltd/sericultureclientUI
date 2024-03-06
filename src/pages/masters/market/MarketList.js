@@ -215,6 +215,7 @@ function MarketList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Market",

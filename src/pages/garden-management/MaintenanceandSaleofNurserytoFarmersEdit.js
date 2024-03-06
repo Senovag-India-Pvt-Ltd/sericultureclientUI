@@ -77,6 +77,8 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
               remittanceDetails: "",
               challanUploadKey: "",
             });
+            setChallanFile("");
+            document.getElementById("challanUploadKey").value = "";
             setValidated(false);
           }
         })
@@ -105,6 +107,7 @@ function MaintenanceandSaleofNurserytoFarmersEdit() {
       challanUploadKey: "",
     });
     setChallanFile("");
+    document.getElementById("challanUploadKey").value = "";
   };
 
   const isDataPlantingSet = !!data.dateOfPlanting;
