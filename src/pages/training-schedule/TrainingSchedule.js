@@ -1007,8 +1007,8 @@ function TrainingSchedule() {
                       onBlur={() => handleTrainerInstitutionOption}
                       required
                       isInvalid={
-                        trainerUser.userMasterId === undefined ||
-                        trainerUser.userMasterId === "0"
+                        trainerUser.trInstitutionMasterId === undefined ||
+                        trainerUser.trInstitutionMasterId === "0"
                       }
                     >
                       <option value="">Select Training Institution</option>
@@ -1145,8 +1145,8 @@ function TrainingSchedule() {
                       onBlur={() => handleTrainerInstitutionOption}
                       required
                       isInvalid={
-                        trainerUser.userMasterId === undefined ||
-                        trainerUser.userMasterId === "0"
+                        trainerUser.trInstitutionMasterId === undefined ||
+                        trainerUser.trInstitutionMasterId === "0"
                       }
                     >
                       <option value="">Select Training Institution</option>
