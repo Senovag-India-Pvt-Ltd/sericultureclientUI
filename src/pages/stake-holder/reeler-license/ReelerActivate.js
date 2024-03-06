@@ -27,7 +27,37 @@ function ReelerActivate() {
     walletAMount: "",
   });
 
+  const [editData, setEditData] = useState({
+    userTypeId: "",
+    reelerId: "",
+    username: "",
+    password: "",
+    phoneNumber: "",
+    emailId: "",
+    roleId: "",
+    marketMasterId: "",
+    designationId: "",
+    deviceId: "",
+    walletAMount: "",
+  });
+
+  const getEdit = (i) => {
+    console.log(i);
+    setEditData((prev) => ({
+      ...prev,
+      reelerId: i.userTypeId,
+      marketMasterId: i.marketMasterId,
+      username: i.username,
+      phoneNumber: i.phoneNumber,
+      deviceId: i.deviceId,
+      userTypeId: i.userMasterId,
+    }));
+    handleShowModal();
+    // getMarketList();
+  };
+
   const [validated, setValidated] = useState(false);
+  const [validatedEdit, setValidatedEdit] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
@@ -39,6 +69,18 @@ function ReelerActivate() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "reelerId") {
+      getReelerList(value);
+      getConfigureUser(value);
+    }
+  };
+
+  const handleEditInputs = (e) => {
+    // debugger;
+    let name = e.target.name;
+    let value = e.target.value;
+    setEditData({ ...editData, [name]: value });
 
     if (name === "reelerId") {
       getReelerList(value);
@@ -104,6 +146,53 @@ function ReelerActivate() {
           // }
         });
       setValidated(true);
+    }
+  };
+
+  const editPostData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedEdit(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL1 + `userMaster/edit-reeler-user`, editData)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError();
+          } else {
+            saveSuccess();
+            setData({
+              reelerId: "",
+              username: "",
+              password: "",
+              phoneNumber: "",
+              emailId: "",
+              roleId: "",
+              marketMasterId: "",
+              designationId: "",
+              deviceId: "",
+              walletAMount: "",
+            });
+            setValidatedEdit(false);
+          }
+        })
+
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidatedEdit(true);
     }
   };
 
@@ -298,7 +387,8 @@ function ReelerActivate() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={handleShowModal}
+            // onClick={handleShowModal}
+            onClick={() => getEdit(row)}
           >
             Edit
           </Button>
@@ -627,269 +717,7 @@ function ReelerActivate() {
           <Modal.Title>Edit Activate Reeler</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Form action="#"> */}
-          {/* <Form
-            noValidate
-            validated={validatedFarmerAddressEdit}
-            onSubmit={(e) => handleUpdateFa(e, faId, farmerAddress)}
-          >
-            <Row className="g-3">
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label>
-                    State<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="stateId"
-                      value={`${farmerAddress.stateId}_${farmerAddress.stateName}`}
-                      onChange={handleStateOption}
-                      onBlur={() => handleStateOption}
-                      required
-                      isInvalid={
-                        farmerAddress.stateId === undefined ||
-                        farmerAddress.stateId === "0"
-                      }
-                    >
-                      <option value="0">Select State</option>
-                      {addressStateListData.map((list) => (
-                        <option
-                          key={list.stateId}
-                          value={`${list.stateId}_${list.stateName}`}
-                        >
-                          {list.stateName}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      State Name is required.
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label>
-                    District<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="districtId"
-                      value={`${farmerAddress.districtId}_${farmerAddress.districtName}`}
-                      onChange={handleDistrictOption}
-                      onBlur={() => handleDistrictOption}
-                      required
-                      isInvalid={
-                        farmerAddress.districtId === undefined ||
-                        farmerAddress.districtId === "0"
-                      }
-                    >
-                      <option value="">Select District</option>
-                      {addressdistrictListData && addressdistrictListData.length
-                        ? addressdistrictListData.map((list) => (
-                            <option
-                              key={list.districtId}
-                              value={`${list.districtId}_${list.districtName}`}
-                            >
-                              {list.districtName}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      District Name is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label>
-                    Taluk<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="talukId"
-                      value={`${farmerAddress.talukId}_${farmerAddress.talukName}`}
-                      onChange={handleTalukOption}
-                      onBlur={() => handleTalukOption}
-                      required
-                      isInvalid={
-                        farmerAddress.talukId === undefined ||
-                        farmerAddress.talukId === "0"
-                      }
-                    >
-                      <option value="">Select Taluk</option>
-                      {addressTalukListData && addressTalukListData.length
-                        ? addressTalukListData.map((list) => (
-                            <option
-                              key={list.talukId}
-                              value={`${list.talukId}_${list.talukName}`}
-                            >
-                              {list.talukName}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      Taluk Name is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label>
-                    Hobli<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="hobliId"
-                      value={`${farmerAddress.hobliId}_${farmerAddress.hobliName}`}
-                      onChange={handleHobliOption}
-                      onBlur={() => handleHobliOption}
-                      required
-                      isInvalid={
-                        farmerAddress.hobliId === undefined ||
-                        farmerAddress.hobliId === "0"
-                      }
-                    >
-                      <option value="">Select Hobli</option>
-                      {addressHobliListData && addressHobliListData.length
-                        ? addressHobliListData.map((list) => (
-                            <option
-                              key={list.hobliId}
-                              value={`${list.hobliId}_${list.hobliName}`}
-                            >
-                              {list.hobliName}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      Hobli Name is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label htmlFor="Village">
-                    Village<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="villageId"
-                      value={`${farmerAddress.villageId}_${farmerAddress.villageName}`}
-                      onChange={handleVillageOption}
-                      onBlur={() => handleVillageOption}
-                      required
-                      isInvalid={
-                        farmerAddress.villageId === undefined ||
-                        farmerAddress.villageId === "0"
-                      }
-                    >
-                      <option value="">Select Village</option>
-                      {addressVillageListData && addressVillageListData.length
-                        ? addressVillageListData.map((list) => (
-                            <option
-                              key={list.villageId}
-                              value={`${list.villageId}_${list.villageName}`}
-                            >
-                              {list.villageName}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">
-                      Village Name is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-
-                <Form.Group className="form-group mt-2">
-                  <Form.Label htmlFor="address">
-                    {t("address")}
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      as="textarea"
-                      id="addressText"
-                      name="addressText"
-                      value={farmerAddress.addressText}
-                      onChange={handleFarmerAddressInputs}
-                      type="text"
-                      placeholder={t("enter_address")}
-                      rows="2"
-                      required
-                      readOnly
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Address is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label htmlFor="pincode">
-                    {t("pin_code")}
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="pincode"
-                      name="pincode"
-                      value={farmerAddress.pincode}
-                      onChange={handleFarmerAddressInputs}
-                      type="text"
-                      placeholder={t("enter_pin_code")}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Pincode is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-               
-                <Form.Group as={Row} className="form-group mt-4">
-                  <Col sm={1}>
-                    <Form.Check
-                      type="checkbox"
-                      id="defaultAddress"
-                      checked={farmerAddress.defaultAddress}
-                      onChange={handleCheckBox}
-                      // defaultChecked
-                    />
-                  </Col>
-                  <Form.Label column sm={11} className="mt-n2">
-                    {t("make_this_address_default")}
-                  </Form.Label>
-                </Form.Group>
-              </Col>
-
-              <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
-                  <div className="gap-col">
-                  
-                    <Button type="submit" variant="success">
-                      Update
-                    </Button>
-                  </div>
-               
-                  <div className="gap-col">
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Form> */}
-
-          <Form noValidate validated={validated} onSubmit={postData}>
+          <Form noValidate validated={validatedEdit} onSubmit={editPostData}>
             <Row className="g-3 ">
               <Card>
                 <Card.Body>
@@ -903,12 +731,12 @@ function ReelerActivate() {
                         <div className="form-control-wrap">
                           <Form.Select
                             name="reelerId"
-                            value={data.reelerId}
-                            onChange={handleInputs}
+                            value={editData.reelerId}
+                            onChange={handleEditInputs}
                             required
                             isInvalid={
-                              data.reelerId === undefined ||
-                              data.reelerId === "0"
+                              editData.reelerId === undefined ||
+                              editData.reelerId === "0"
                             }
                           >
                             <option value="">Select Reeler</option>
@@ -934,13 +762,13 @@ function ReelerActivate() {
                           <div className="form-control-wrap">
                             <Form.Select
                               name="marketMasterId"
-                              value={data.marketMasterId}
-                              onChange={handleInputs}
-                              // onBlur={() => handleInputs}
+                              value={editData.marketMasterId}
+                              onChange={handleEditInputs}
+                              // onBlur={() => handleEditInputs}
                               required
                               isInvalid={
-                                data.marketMasterId === undefined ||
-                                data.marketMasterId === "0"
+                                editData.marketMasterId === undefined ||
+                                editData.marketMasterId === "0"
                               }
                             >
                               <option value="">Select Market</option>
@@ -969,8 +797,8 @@ function ReelerActivate() {
                           <Form.Control
                             id="user"
                             name="username"
-                            value={data.username}
-                            onChange={handleInputs}
+                            value={editData.username}
+                            onChange={handleEditInputs}
                             type="text"
                             placeholder="Enter User Name"
                             required
@@ -990,8 +818,8 @@ function ReelerActivate() {
                           <Form.Control
                             id="password"
                             name="password"
-                            value={data.password}
-                            onChange={handleInputs}
+                            value={editData.password}
+                            onChange={handleEditInputs}
                             type="password"
                             placeholder="Enter Password"
                             required
@@ -1011,8 +839,8 @@ function ReelerActivate() {
                           <Form.Control
                             id="phoneNumber"
                             name="phoneNumber"
-                            value={data.phoneNumber}
-                            onChange={handleInputs}
+                            value={editData.phoneNumber}
+                            onChange={handleEditInputs}
                             type="text"
                             placeholder="Enter Mobile Number"
                             required
@@ -1033,8 +861,8 @@ function ReelerActivate() {
                           <Form.Control
                             id="deviceId"
                             name="deviceId"
-                            value={data.deviceId}
-                            onChange={handleInputs}
+                            value={editData.deviceId}
+                            onChange={handleEditInputs}
                             type="text"
                             placeholder="Enter Device Id"
                             required
@@ -1045,28 +873,6 @@ function ReelerActivate() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                    {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="phoneNumber">
-                      Reeler Initial Wallet Amount<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="walletAMount"
-                          name="walletAMount"
-                          value={data.walletAMount}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Reeler Initial Wallet Amount"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Reeler Initial Wallet Amount is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
                   </Row>
                 </Card.Body>
               </Card>
@@ -1076,7 +882,7 @@ function ReelerActivate() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary" disabled={show}>
-                      Edit
+                      Update
                     </Button>
                   </li>
                   <li>

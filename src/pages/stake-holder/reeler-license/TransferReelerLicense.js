@@ -107,7 +107,7 @@ function TransferReelerLicense() {
       api
         .post(baseURL2 + `reeler/transfer-reeler-license`, {
           ...data,
-          transferReelerId: data.reelingLicenseNumber,
+          transferReelerId: data.reelerId,
         })
         .then((response) => {
           if (!response.data.content.error) {
@@ -121,7 +121,7 @@ function TransferReelerLicense() {
           }
         })
         .catch((err) => {
-          setData({});
+          // setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
@@ -148,7 +148,7 @@ function TransferReelerLicense() {
         }
       })
       .catch((err) => {
-        setData({});
+        // setData({});
         setLoading(false);
       });
     setIsActive((current) => !current);
