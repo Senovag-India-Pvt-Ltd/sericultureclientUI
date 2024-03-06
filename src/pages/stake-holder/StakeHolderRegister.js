@@ -56,8 +56,9 @@ function StakeHolderRegister() {
   });
 
   //  console.log("data",data.photoPath);
+  const [searchValidated, setSearchValidated] = useState(false);
 
-  const search = () => {
+  const search = (event) => {
     setData({
       farmerNumber: "",
       fruitsId: "",
@@ -101,7 +102,16 @@ function StakeHolderRegister() {
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
     });
-
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
     api
       .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
       .then((response) => {
@@ -158,6 +168,7 @@ function StakeHolderRegister() {
         }
       })
       .catch((error) => {});
+    }
   };
 
   // Try 3
@@ -734,6 +745,14 @@ function StakeHolderRegister() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const handleBankInputs = (e) => {
@@ -784,7 +803,17 @@ function StakeHolderRegister() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+      if (bank.farmerBankIfscCode.length < 11 || bank.farmerBankIfscCode.length > 11) {
+        return;
+      }
       api
         .post(baseURL2 + `farmer/add`, data)
         .then((response) => {
@@ -1865,8 +1894,7 @@ function StakeHolderRegister() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1 ">
+        <Form noValidate validated={searchValidated} onSubmit={search}>
             <Card>
               <Card.Body>
                 <Row className="g-gs">
@@ -1883,18 +1911,18 @@ function StakeHolderRegister() {
                           value={data.fruitsId}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="16"
                           placeholder={t("Enter FRUITS ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID 16 Digits  is required.
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
                         <Button
-                          type="button"
+                          type="submit"
                           variant="primary"
-                          onClick={search}
                         >
                           {t("search")}
                         </Button>
@@ -1915,7 +1943,10 @@ function StakeHolderRegister() {
                 </Row>
               </Card.Body>
             </Card>
+          </Form>
 
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -2117,6 +2148,7 @@ function StakeHolderRegister() {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
+                            maxLength="10"
                             placeholder={t("enter_mobile_number")}
                             required
                           />
@@ -2778,6 +2810,7 @@ function StakeHolderRegister() {
                             value={bank.farmerBankIfscCode}
                             onChange={handleBankInputs}
                             type="text"
+                            maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
                           />

@@ -491,6 +491,21 @@ function StakeHolderEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const handleDateChange = (date, type) => {
@@ -512,7 +527,16 @@ function StakeHolderEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+      if (bank.farmerBankIfscCode.length < 11 || bank.farmerBankIfscCode.length > 11) {
+        return;
+      }
       api
         .post(baseURL2 + `farmer/edit`, data)
         .then((response) => {
@@ -1462,11 +1486,12 @@ function StakeHolderEdit() {
                           value={data.fruitsId}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="16"
                           placeholder={t("Enter FRUITS ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID should contain 16 digits.
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -1708,11 +1733,12 @@ function StakeHolderEdit() {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
+                            maxLength="10"
                             placeholder={t("enter_mobile_number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required.
+                            Mobile Number should contain 10 digits.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2384,11 +2410,12 @@ function StakeHolderEdit() {
                             value={bank.farmerBankIfscCode}
                             onChange={handleBankInputs}
                             type="text"
+                            maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC should contain 11 digits
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

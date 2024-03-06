@@ -63,7 +63,9 @@ function ReelerLicenceEdit() {
       setValidatedVbAccount(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       api
         .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId)
         .then((response) => {
@@ -203,6 +205,14 @@ function ReelerLicenceEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const handleDateChange = (date, type) => {
@@ -219,7 +229,17 @@ function ReelerLicenceEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+
+      if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
       api
         .post(baseURL + `reeler/edit`, data)
         .then((response) => {
@@ -1157,39 +1177,6 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Col lg="4"> */}
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="photoPath">
-                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="mahajarDetails"
-                            name="mahajarDetails"
-                            // value={data.trUploadPath}
-                            onChange={handleMahajarChange}
-                          />
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {mahajar ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(mahajar)}
-                          />
-                        ) : (
-                          selectedMahajarFile && (
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedMahajarFile}
-                              alt="Selected File"
-                            />
-                          )
-                        )}
-                      </Form.Group>
-                      {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
@@ -1229,7 +1216,39 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="photoPath">
+                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="mahajarDetails"
+                            name="mahajarDetails"
+                            // value={data.trUploadPath}
+                            onChange={handleMahajarChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
+                        ) : (
+                          selectedMahajarFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedMahajarFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
+                  </Col>
                   </Row>
                 </Card.Body>
               </Card>

@@ -29,6 +29,7 @@ function SeedCuttingBank() {
   });
 
   const [validated, setValidated] = useState(false);
+  const [searchValidated, setSearchValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
@@ -111,7 +112,17 @@ function SeedCuttingBank() {
     setData({ ...data, [type]: date });
   };
 
-  const search = () => {
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
     api
       .post(
         "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
@@ -138,6 +149,7 @@ function SeedCuttingBank() {
           saveError(err.response.data.validationErrors);
         }
       });
+    }
   };
 
 
@@ -230,8 +242,7 @@ function SeedCuttingBank() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1 ">
+        <Form noValidate validated={searchValidated} onSubmit={search}>
             <Card>
               <Card.Body>
                 <Row className="g-gs">
@@ -242,13 +253,13 @@ function SeedCuttingBank() {
                       </Form.Label>
                       <Col sm={4}>
                         <Form.Control
-                          type="fruitsId"
+                          type="text"
                           name="fruitsId"
                           value={data.fruitsId}
                           onChange={handleInputs}
                           placeholder="Enter FRUITS ID"
-                          required
                           maxLength= "16"
+                          required
                         />
                         <Form.Control.Feedback type="invalid">
                           Fruits ID Should Contain 16 digits
@@ -256,9 +267,8 @@ function SeedCuttingBank() {
                       </Col>
                       <Col sm={2}>
                         <Button
-                          type="button"
+                          type="submit"
                           variant="primary"
-                          onClick={search}
                         >
                           Search
                         </Button>
@@ -268,8 +278,10 @@ function SeedCuttingBank() {
                 </Row>
               </Card.Body>
             </Card>
+          </Form>
 
-
+    <Form noValidate validated={validated} onSubmit={postData}>
+      <Row className="g-1 ">
         <Block className="mt-3">
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
