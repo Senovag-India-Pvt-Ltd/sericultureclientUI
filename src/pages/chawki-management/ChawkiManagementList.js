@@ -236,7 +236,7 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "TSC",
+      name: "Tsc",
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,

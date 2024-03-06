@@ -132,6 +132,10 @@ function ChawkidistributiontoFarmersView() {
                         <td>{chawkiManagement.soldAfter1stOr2ndMould}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Tsc :</td>
+                        <td>{chawkiManagement.tscName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}> State:</td>
                         <td>{chawkiManagement.stateName}</td>
                       </tr>

@@ -102,6 +102,8 @@ function MaintenanceandSaleofNurserytoFarmers() {
               remittanceDetails: "",
               challanUploadKey: "",
             });
+            setChallan("");
+            document.getElementById("challanUploadKey").value = "";
             setValidated(false);
           }
         })
@@ -130,6 +132,7 @@ function MaintenanceandSaleofNurserytoFarmers() {
       challanUploadKey: "",
     });
     setChallan("");
+    document.getElementById("challanUploadKey").value = "";
   };
 
   const search = (event) => {

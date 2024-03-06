@@ -75,6 +75,8 @@ function SeedCuttingBankEdit() {
               remittanceDetails: "",
               challanUpload: "",
             });
+            setChallanFile("");
+            document.getElementById("challanUpload").value = "";
             setValidated(false);
           }
         })
@@ -98,7 +100,8 @@ function SeedCuttingBankEdit() {
       remittanceDetails: "",
       challanUpload: "",
     });
-    setChallanFile({challanUpload: ""});
+    setChallanFile("");
+    document.getElementById("challanUpload").value = "";
   };
 
   //   to get data from api

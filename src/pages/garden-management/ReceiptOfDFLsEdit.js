@@ -47,10 +47,10 @@ function ReceiptOfDFLsEdit() {
       api
         .post(baseURL2 + `Receipt/update-info`, data)
         .then((response) => {
-          //   const trScheduleId = response.data.content.trScheduleId;
-          //   if (trScheduleId) {
-          //     handlePPtUpload(trScheduleId);
-          //   }
+            const id = response.data.id;
+            if (id) {
+              handleReceiptUpload(id);
+            }
           if (response.data.error) {
             updateError(response.data.message);
           } else {
@@ -69,6 +69,8 @@ function ReceiptOfDFLsEdit() {
               generationDetails: "",
               viewReceipt: "",
             });
+            setReceiptUpload("")
+    document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -97,6 +99,8 @@ function ReceiptOfDFLsEdit() {
       generationDetails: "",
       viewReceipt: "",
     });
+    setReceiptUpload("")
+    document.getElementById("viewReceipt").value = "";
   };
 
   // to get Race
@@ -161,6 +165,9 @@ function ReceiptOfDFLsEdit() {
       .then((response) => {
         setData(response.data);
         setLoading(false);
+        if (response.data.viewReceipt) {
+          getUploadReceipt(response.data.viewReceipt);
+        }
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -174,50 +181,56 @@ function ReceiptOfDFLsEdit() {
     getIdList();
   }, [id]);
 
-  const postDataReceipt = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
+   // Display Image
+   const [receiptUpload, setReceiptUpload] = useState("");
+ 
+   const handleUploadChange = (e) => {
+     const file = e.target.files[0];
+     setReceiptUpload(file);
+     setData((prev) => ({ ...prev, viewReceipt: file.name }));
+   };
+ 
+   // Upload Image to S3 Bucket
+   const handleReceiptUpload = async (receiptid) => {
+     const parameters = `id=${receiptid}`;
+     try {
+       const formData = new FormData();
+       formData.append("multipartFile", receiptUpload);
+ 
+       const response = await api.post(
+         baseURL2 + `Receipt/upload-reciept?${parameters}`,
+         formData,
+         {
+           headers: {
+             "Content-Type": "multipart/form-data",
+           },
+         }
+       );
+       console.log("File upload response:", response.data);
+     } catch (error) {
+       console.error("Error uploading file:", error);
+     }
+   };
+ 
+// To get Photo from S3 Bucket
+const [selectedUploadReceipt, setSelectedUploadReceipt] = useState(null);
 
-    const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    // } else {
-    //   event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(
-        baseURLReport + `gettripletpdf-kannada`,
-        {
-          marketId: marketId,
-          godownId: godownId,
-          allottedLotId: allottedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
-        }
-      )
-      .then((response) => {
-        //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
-      })
-      .catch((error) => {
-        // console.log("error", error);
-      });
-  };
+const getUploadReceipt = async (file) => {
+  const parameters = `fileName=${file}`;
+  try {
+    const response = await api.get(
+      baseURL2 + `v1/api/s3/download?${parameters}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+    const blob = new Blob([response.data]);
+    const url = URL.createObjectURL(blob);
+    setSelectedUploadReceipt(url);
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+};
 
   const navigate = useNavigate();
 
@@ -507,6 +520,40 @@ function ReceiptOfDFLsEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="fileUploadPath">
+                        Upload Receipt(pdf/png/pdf)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="viewReceipt"
+                            name="viewReceipt"
+                            // value={data.fileUploadPath}
+                            onChange={handleUploadChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {receiptUpload ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(receiptUpload)}
+                          />
+                        ) : (
+                          selectedUploadReceipt && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedUploadReceipt}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
+                    </Col>
                 </Row>
               )}
             </Card.Body>
