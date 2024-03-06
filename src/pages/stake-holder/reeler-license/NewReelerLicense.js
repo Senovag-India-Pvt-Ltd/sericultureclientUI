@@ -1603,7 +1603,7 @@ function NewReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1625,7 +1625,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
                           <span className="text-danger">*</span>
@@ -1648,7 +1648,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others
                         </Form.Label>
@@ -1666,7 +1666,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1682,7 +1682,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1698,18 +1698,11 @@ function NewReelerLicense() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Receipt Date</Form.Label>
-                        <Row>
-                          <Col lg="6">
                             <div className="form-control-wrap">
-                              {/* <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
-                            }
-                          /> */}
+                             
                               <DatePicker
                                 selected={data.receiptDate}
                                 onChange={(date) =>
@@ -1723,14 +1716,11 @@ function NewReelerLicense() {
                                 className="form-control"
                               />
                             </div>
-                          </Col>
-                        </Row>
-                        {/* </Form.Group> */}
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      {/* <Form.Group className="form-group"> */}
-                      <Form.Label>License Expiry Date</Form.Label>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>License Expiry Date</Form.Label>
                       <div className="form-control-wrap">
                         <DatePicker
                           selected={data.licenseExpiryDate}
@@ -1746,7 +1736,8 @@ function NewReelerLicense() {
                           className="form-control"
                         />
                       </div>
-                    </Col>
+                      </Form.Group>
+                      </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -1758,7 +1749,7 @@ function NewReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1780,7 +1771,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1802,7 +1793,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1824,7 +1815,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>

@@ -129,7 +129,7 @@ function ReelerLicenceEdit() {
   //   const [vb, setVb] = useState({});
   const handleVbGet = (i) => {
     api
-      .get(baseURL + `reeler-virtual-bank-account/get/${i}`)
+      .get(baseURL + `reeler-virtual-bank-account/get-join/${i}`)
       .then((response) => {
         setVbAccount(response.data.content);
         setShowModal2(true);
@@ -1474,7 +1474,7 @@ function ReelerLicenceEdit() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="recipientId">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1493,8 +1493,85 @@ function ReelerLicenceEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                      </Col>
 
-                      <Form.Group className="form-group mt-3">
+                      <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="reelingLicenseNumber">
+                          Reeling License Number
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reelingLicenseNumber"
+                            name="reelingLicenseNumber"
+                            value={data.reelingLicenseNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Reeling License Number"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reeling License Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="memberLoanDetails">
+                          Member of RCS/FPO/Others
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="memberLoanDetails"
+                            name="memberLoanDetails"
+                            value={data.memberLoanDetails}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Member of RCS/FPO/Others"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                      <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="feeAmount"
+                            name="feeAmount"
+                            value={data.feeAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Fee Amount"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                  
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Function of the Unit</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="functionOfUnit"
+                            value={data.functionOfUnit}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="2">No</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                      </Col>
+
+                      <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Receipt Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -1516,47 +1593,9 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="reelingLicenseNumber">
-                          Reeling License Number
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="reelingLicenseNumber"
-                            name="reelingLicenseNumber"
-                            value={data.reelingLicenseNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Reeling License Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Reeling License Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="memberLoanDetails">
-                          Member of RCS/FPO/Others
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="memberLoanDetails"
-                            name="memberLoanDetails"
-                            value={data.memberLoanDetails}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Member of RCS/FPO/Others"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-3">
+                      </Col>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>License Expiry Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -1579,35 +1618,7 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-
-                      <Form.Group className="form-group">
-                        <Form.Label>Function of the Unit</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="functionOfUnit"
-                            value={data.functionOfUnit}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Select</option>
-                            <option value="1">Yes</option>
-                            <option value="2">No</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="feeAmount"
-                            name="feeAmount"
-                            value={data.feeAmount}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Fee Amount"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                      </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -1619,7 +1630,7 @@ function ReelerLicenceEdit() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1641,7 +1652,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1663,7 +1674,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1685,7 +1696,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>

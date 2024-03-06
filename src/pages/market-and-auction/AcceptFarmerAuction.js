@@ -295,7 +295,7 @@ function AcceptFarmerAuction() {
                           name="allottedLotId"
                           value={highestBid.allottedLotId}
                           onChange={handleLotIdInputs}
-                          type="text"
+                          type="number"
                           placeholder="Enter Lot ID"
                           required
                         />

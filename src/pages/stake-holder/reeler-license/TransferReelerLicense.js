@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DatePicker from "../../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../../components";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -361,6 +361,22 @@ function TransferReelerLicense() {
   useEffect(() => {
     getRelationshipList();
   }, []);
+
+  const handleRenewedDateChange = (date) => {
+    // Calculate expiration date by adding 3 years to the renewed date
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+
+    setData({
+      ...data,
+      receiptDate: date,
+      licenseExpiryDate: expirationDate,
+    });
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
 
   return (
     <Layout title="Transfer of Reeler License">
@@ -1210,8 +1226,8 @@ function TransferReelerLicense() {
                 <Card.Header>License Details</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
-                    <Col lg="6">
-                      <Form.Group className="form-group ">
+                  <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1230,20 +1246,10 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                      </Col>
 
-                      {/* <Form.Group className="form-group ">
-                        <Form.Label>Receipt Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
-                            }
-                          />
-                        </div>
-                      </Form.Group> */}
-
-                      <Form.Group className="form-group">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
                           <span className="text-danger">*</span>
@@ -1263,8 +1269,10 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others Loan Details
                         </Form.Label>
@@ -1282,19 +1290,8 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      {/* <Form.Group className="form-group">
-                        <Form.Label>License Expiry Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.licenseExpiryDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "licenseExpiryDate")
-                            }
-                          />
-                        </div>
-                      </Form.Group> */}
 
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1308,7 +1305,10 @@ function TransferReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group">
+                      </Col>
+                      .
+                      <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1322,18 +1322,58 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-                  </Row>
+
+                      <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Receipt Date</Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.receiptDate}
+                                onChange={(date) =>
+                                  handleRenewedDateChange(date, "receiptDate")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                              />
+                            </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>License Expiry Date</Form.Label>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.licenseExpiryDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "licenseExpiryDate")
+                          }
+                          disabled={data.licenseRenewalDate !== null}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
+                      </Form.Group>
+                    </Col>
+                    </Row>
                 </Card.Body>
               </Card>
             </Block>
 
             <Block className="mt-4">
               <Card>
-                <Card.Header>Chakbandi Details</Card.Header>
+                <Card.Header> Chakbandi Details</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1355,7 +1395,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1377,7 +1417,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1399,7 +1439,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>

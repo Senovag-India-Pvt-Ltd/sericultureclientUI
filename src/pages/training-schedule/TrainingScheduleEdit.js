@@ -114,7 +114,7 @@ function TrainingScheduleEdit() {
 
   const handleTrainerUserGet = (i) => {
     api
-      .get(baseURL2 + `trainingScheduleUser/get/${i}`)
+      .get(baseURL2 + `trainingScheduleUser/get-join/${i}`)
       .then((response) => {
         setTrainerUser(response.data.content);
         setShowModal2(true);
