@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col,Button } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
@@ -155,11 +155,35 @@ function StakeHolderViewPage() {
     getBankList();
   }, [id]);
 
-  // console.log(getIdList());
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
 
-  // useEffect(() => {
-  //   getFamilyMembersList();
-  // }, [familyMemberId]);
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <Layout title="Stake Holder View">
@@ -682,11 +706,23 @@ function StakeHolderViewPage() {
                           src="../images/user/user.png"
                         /> */}
                         {selectedDocumentFile && (
+                          <>
                           <img
                             style={{ height: "100px", width: "100px" }}
                             src={selectedDocumentFile}
                             alt="Selected File"
                           />
+                          <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(bank.accountImagePath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                         )}
                       </td>
                     </tr>
