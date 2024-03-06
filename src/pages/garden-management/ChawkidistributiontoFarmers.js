@@ -48,6 +48,7 @@ function ChawkidistributiontoFarmers() {
   };
 
   const [validated, setValidated] = useState(false);
+  const [searchValidated, setSearchValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
@@ -156,7 +157,17 @@ function ChawkidistributiontoFarmers() {
     });
   };
 
-  const search = () => {
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
     api
       .post(
         "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
@@ -183,6 +194,7 @@ function ChawkidistributiontoFarmers() {
           saveError(err.response.data.validationErrors);
         }
       });
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -384,8 +396,8 @@ function ChawkidistributiontoFarmers() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1 ">
+        <Form noValidate validated={searchValidated} onSubmit={search}>
+          {/* <Row className="g-1 "> */}
             <Card>
               <Card.Body>
                 <Row className="g-gs">
@@ -410,9 +422,8 @@ function ChawkidistributiontoFarmers() {
                       </Col>
                       <Col sm={2}>
                         <Button
-                          type="button"
+                          type="submit"
                           variant="primary"
-                          onClick={search}
                         >
                           Search
                         </Button>
@@ -433,7 +444,9 @@ function ChawkidistributiontoFarmers() {
                 </Row>
               </Card.Body>
             </Card>
-
+          </Form>
+          <Form noValidate validated={validated} onSubmit={postData}>
+            <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>

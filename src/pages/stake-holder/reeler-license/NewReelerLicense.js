@@ -180,7 +180,18 @@ function NewReelerLicense() {
     transferReelerId: "0",
   });
 
-  const search = () => {
+  const [searchValidated, setSearchValidated] = useState(false);
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
     api
       .post(
         "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
@@ -276,17 +287,10 @@ function NewReelerLicense() {
               saveError(result.data.content.error_description);
             }
 
-            // setFarmerAddressList((prev) => [
-            //   ...prev,
-            //   ...result.data.content.farmerAddressList,
-            // ]);
-            // setFarmerLandList((prev) => [
-            //   ...prev,
-            //   ...result.data.content.farmerLandDetailsList,
-            // ]);
           })
           .catch((error) => {});
       });
+    }
   };
 
   let name, value;
@@ -311,6 +315,14 @@ function NewReelerLicense() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    } 
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -329,6 +341,10 @@ function NewReelerLicense() {
       }
 
       if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
 
@@ -744,8 +760,7 @@ function NewReelerLicense() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1 ">
+        <Form noValidate validated={searchValidated} onSubmit={search}>
             <Card>
               <Card.Body>
                 <Row className="g-gs">
@@ -761,17 +776,17 @@ function NewReelerLicense() {
                           value={data.fruitsId}
                           onChange={handleInputs}
                           placeholder="Enter FRUITS ID"
+                          maxLength="16"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID Should Contain 16 digits.
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
                         <Button
-                          type="button"
+                          type="submit"
                           variant="primary"
-                          onClick={search}
                         >
                           Search
                         </Button>
@@ -792,7 +807,9 @@ function NewReelerLicense() {
                 </Row>
               </Card.Body>
             </Card>
-
+          </Form>
+        <Form noValidate validated={validated} onSubmit={postData}>
+      <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header>Reeler Personal info</Card.Header>
