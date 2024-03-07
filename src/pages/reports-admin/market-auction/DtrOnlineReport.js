@@ -13,6 +13,7 @@ import api from "../../../services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function DtrOnlineReport() {
   const [data, setData] = useState({
@@ -22,6 +23,9 @@ function DtrOnlineReport() {
     fromDate: "",
     toDate: "",
   });
+
+  const [realReelerId, setRealReelerId] = useState("");
+
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
@@ -136,7 +140,7 @@ function DtrOnlineReport() {
         baseURLReport + `dtr-online-report`,
         {
           marketId: data.marketId,
-          reelerId: data.reelerId,
+          reelerId: realReelerId,
           fromDate: formattedFromDate,
           toDate: formattedToDate,
         },
@@ -179,19 +183,44 @@ function DtrOnlineReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+
       api
-        .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
-          marketId: marketId,
-          // godownId: godownId,
-          reelerId: reelerId,
-          fromDate: formattedFromDate,
-          toDate: formattedToDate,
-        })
+        .get(
+          baseURLFarmer +
+            `reeler/get-by-reeling-license-number/${data.reelerId}`
+        )
         .then((response) => {
-          //  console.log(response);
-          if (response.data.content)
-            setListData(response.data.content.dtrOnlineReportUnitDetailList);
-          setListDetails(response.data.content);
+          if (!response.data.content.error) {
+            if (response.data.content.reelerId) {
+              setRealReelerId(response.data.content.reelerId);
+
+              api
+                .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
+                  marketId: marketId,
+                  // godownId: godownId,
+                  reelerId: response.data.content.reelerId,
+                  fromDate: formattedFromDate,
+                  toDate: formattedToDate,
+                })
+                .then((response) => {
+                  //  console.log(response);
+                  if (response.data.content)
+                    setListData(
+                      response.data.content.dtrOnlineReportUnitDetailList
+                    );
+                  setListDetails(response.data.content);
+                })
+                .catch((error) => {
+                  // console.log("error", error);
+                });
+            }
+          } else {
+            Swal.fire({
+              icon: "warning",
+              // title: "Save",
+              text: response.data.content.error_description,
+            });
+          }
         })
         .catch((error) => {
           // console.log("error", error);
