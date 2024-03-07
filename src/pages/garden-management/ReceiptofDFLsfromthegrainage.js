@@ -57,8 +57,8 @@ function ReceiptofDFLsfromthegrainage() {
       api
         .post(baseURL2 + `Receipt/add-info`, data)
         .then((response) => {
-          if (response.data.id) {
-            const receiptId = response.data.id;
+          if (response.data.receiptOfDflsId) {
+            const receiptId = response.data.receiptOfDflsId;
             handleReceiptUpload(receiptId);
           }
           if (response.data.error) {
@@ -177,7 +177,7 @@ document.getElementById("viewReceipt").value = "";
 
   // Upload Image to S3 Bucket
   const handleReceiptUpload = async (receiptid) => {
-    const parameters = `id=${receiptid}`;
+    const parameters = `receiptOfDflsId=${receiptid}`;
     try {
       const formData = new FormData();
       formData.append("multipartFile", receiptUpload);
