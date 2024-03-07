@@ -135,6 +135,12 @@ function BankStatement() {
     },
   };
 
+  const convertDateFormat = (dateString) => {
+    const parts = dateString.split("-");
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return formattedDate;
+  };
+
   const PaymentDataColumns = [
     {
       name: "action",
@@ -180,8 +186,8 @@ function BankStatement() {
     },
     {
       name: "Transaction Date",
-      selector: (row) => row.lotTransactionDate,
-      cell: (row) => <span>{row.lotTransactionDate}</span>,
+      selector: (row) => convertDateFormat(row.lotTransactionDate),
+      cell: (row) => <span>{convertDateFormat(row.lotTransactionDate)}</span>,
       sortable: true,
       hide: "md",
     },
