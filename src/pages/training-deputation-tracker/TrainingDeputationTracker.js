@@ -47,7 +47,7 @@ function TrainingDeputationTracker() {
       e.target.classList.add("is-valid");
     }
   };
-
+  
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
   // };

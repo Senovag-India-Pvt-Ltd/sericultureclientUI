@@ -75,6 +75,15 @@ function ReelerActivate() {
       getConfigureUser(value);
       setShow(false);
     }
+
+    if (name === "phoneNumber" && (value.length < 10 || value.length > 10)) {
+      // console.log("hellohello");
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "phoneNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleEditInputs = (e) => {
@@ -86,6 +95,15 @@ function ReelerActivate() {
     if (name === "reelerId") {
       getReelerList(value);
       getConfigureUser(value);
+    }
+
+    if (name === "phoneNumber" && (value.length < 10 || value.length > 10)) {
+      // console.log("hellohello");
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "phoneNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
     }
   };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -103,7 +121,9 @@ function ReelerActivate() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
       api
         .post(baseURL1 + `userMaster/save-reeler-user`, data)
         .then((response) => {
@@ -158,7 +178,9 @@ function ReelerActivate() {
       setValidatedEdit(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (editData.mobileNumber.length < 10 || editData.mobileNumber.length > 10) {
+        return;
+      }
       api
         .post(baseURL1 + `userMaster/edit-reeler-user`, editData)
         .then((response) => {
@@ -615,11 +637,12 @@ function ReelerActivate() {
                           value={data.phoneNumber}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="10"
                           placeholder="Enter Mobile Number"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Mobile Number is required
+                          Mobile Number Should Contain 10 digits
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -843,11 +866,12 @@ function ReelerActivate() {
                             value={editData.phoneNumber}
                             onChange={handleEditInputs}
                             type="text"
+                            maxLength="10"
                             placeholder="Enter Mobile Number"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required
+                            Mobile Number Should Contain 10 digits
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -882,7 +906,7 @@ function ReelerActivate() {
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
-                    <Button type="submit" variant="primary" disabled={show}>
+                    <Button type="submit" variant="primary">
                       Update
                     </Button>
                   </li>
