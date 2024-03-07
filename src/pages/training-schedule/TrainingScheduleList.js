@@ -28,7 +28,7 @@ function TrainingScheduleList() {
   const [data, setData] = useState({
     text: "",
     date: "",
-    searchBy: "trStartDate",
+    searchBy: "trGroupMasterName",
   });
 
   const handleInputs = (e) => {
@@ -125,7 +125,8 @@ function TrainingScheduleList() {
   };
 
   useEffect(() => {
-    getList();
+    // getList();
+    search()
   }, [page]);
 
   const navigate = useNavigate();
