@@ -751,288 +751,301 @@ function Menu() {
   return (
     <MenuList>
       {/* Hard Code Menu with mapcode Start */}
-
-      <MenuItem sub>
-        {showMenu.Registration ? (
-          <MenuItemLink
-            text="Registration"
-            onClick={menuToggle}
-            onMouseEnter={menuHover}
-            sub
-          />
-        ) : null}
-
-        <MenuSub>
-          {showMenu.Registration_Farmer_Registration ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Farmer Registration"
-                to="/seriui/stake-holder-registration"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Reeler_License ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Reeler License"
-                to="/seriui/issue-new-reeler-license"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Renewal_of_Reeler_License ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Renewal of Reeler License"
-                to="/seriui/renew-reeler-license"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Transfer_of_Reeler_License ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Transfer of Reeler License"
-                to="/seriui/transfer-reeler-license"
-              />
-            </MenuItem>
+      {showMenu.Registration ? (
+        <MenuItem sub>
+          {showMenu.Registration ? (
+            <MenuItemLink
+              text="Registration"
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
 
-          {showMenu.Registration_Trader_License ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Trader License"
-                to="/seriui/issue-new-trader-license"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Nsso ? (
-            <MenuItem>
-              <MenuItemLink
-                text="RSP/CRC/NSSO Registration"
-                to="/seriui/external-unit-registration"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Farmer_Without_FruitsId ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Farmer Without FruitsId"
-                to="/seriui/farmer-without-fruits"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Registration_Other_State_Farmer ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Other State Farmer"
-                to="/seriui/other-state-farmer"
-              />
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.Registration_Farmer_Registration ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Farmer Registration"
+                  to="/seriui/stake-holder-registration"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Reeler_License ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Reeler License"
+                  to="/seriui/issue-new-reeler-license"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Renewal_of_Reeler_License ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Renewal of Reeler License"
+                  to="/seriui/renew-reeler-license"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Transfer_of_Reeler_License ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Transfer of Reeler License"
+                  to="/seriui/transfer-reeler-license"
+                />
+              </MenuItem>
+            ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("service")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.Services_Subsidy_Programmes ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Subsidy Programmes"
-                to="/seriui/subsidy-programs"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Track_the_DFL_procurement ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Track DFL Procurement"
-                to="/seriui/track-dfl-procurement"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Track_Mulberry_Status ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Track Mulberry Status"
-                to="/seriui/track-mulberry-status"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Supply_of_Disinfection ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Supply of Disinfection"
-                to="/seriui/supply-disinfectants"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Apply_Incentives ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Apply Incentives"
-                to="/seriui/providing-incentives"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Apply_Subsidy ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Apply Subsidy"
-                to="/seriui/providing-subsidy"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Providing_Chawki_Rearing_Incentives ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Providing Chawki Rearing incentives"
-                to="/seriui/providing-chawki-incentives"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Providing_Incentives_To_Reelers ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Apply incentives to Reelers"
-                to="/seriui/providing-reeler-incentives"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Services_Providing_Subsidy_To_Reelers ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Apply subsidy to the Reelers"
-                to="/seriui/providing-reeler-subsidy"
-              />
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+            {showMenu.Registration_Trader_License ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Trader License"
+                  to="/seriui/issue-new-trader-license"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Nsso ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="RSP/CRC/NSSO Registration"
+                  to="/seriui/external-unit-registration"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Farmer_Without_FruitsId ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Farmer Without FruitsId"
+                  to="/seriui/farmer-without-fruits"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Other_State_Farmer ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Other State Farmer"
+                  to="/seriui/other-state-farmer"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("dbt")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.DBT_Subsidy_Verification ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Subsidy Verification"
-                to="/seriui/subsidy-approval-verification"
-              />
-            </MenuItem>
+      {showMenu.Services ? (
+        <MenuItem sub>
+          {showMenu.Services ? (
+            <MenuItemLink
+              text={t("service")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-          {showMenu.DBT_Subsidy_Sanction ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Subsidy Sanction"
-                to="/seriui/subsidy-sanction"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.DBT_Subsidy_Drawing ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Subsidy Drawing"
-                to="/seriui/subsidy-drawing"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.DBT_Subsidy_Counter_Signing ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Subsidy Counter Signing"
-                to="/seriui/subsidy-counter-sign"
-              />
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Subsidy Programmes"
+                  to="/seriui/subsidy-programs"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Track_the_DFL_procurement ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Track DFL Procurement"
+                  to="/seriui/track-dfl-procurement"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Track_Mulberry_Status ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Track Mulberry Status"
+                  to="/seriui/track-mulberry-status"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Supply_of_Disinfection ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Supply of Disinfection"
+                  to="/seriui/supply-disinfectants"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Apply_Incentives ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Apply Incentives"
+                  to="/seriui/providing-incentives"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Apply_Subsidy ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Apply Subsidy"
+                  to="/seriui/providing-subsidy"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Providing_Chawki_Rearing_Incentives ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Providing Chawki Rearing incentives"
+                  to="/seriui/providing-chawki-incentives"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Providing_Incentives_To_Reelers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Apply incentives to Reelers"
+                  to="/seriui/providing-reeler-incentives"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Providing_Subsidy_To_Reelers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Apply subsidy to the Reelers"
+                  to="/seriui/providing-reeler-subsidy"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("market_and_auction")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {/* {showMenu.Market_Register ? (
+      {showMenu.DBT ? (
+        <MenuItem sub>
+          {showMenu.DBT ? (
+            <MenuItemLink
+              text={t("dbt")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
+          ) : null}
+
+          <MenuSub>
+            {showMenu.DBT_Subsidy_Verification ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Subsidy Verification"
+                  to="/seriui/subsidy-approval-verification"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Subsidy_Sanction ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Subsidy Sanction"
+                  to="/seriui/subsidy-sanction"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Subsidy_Drawing ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Subsidy Drawing"
+                  to="/seriui/subsidy-drawing"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Subsidy_Counter_Signing ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Subsidy Counter Signing"
+                  to="/seriui/subsidy-counter-sign"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Market ? (
+        <MenuItem sub>
+          {showMenu.Market ? (
+            <MenuItemLink
+              text={t("market_and_auction")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
+          ) : null}
+          <MenuSub>
+            {/* {showMenu.Market_Register ? (
             <MenuItem>
               <MenuItemLink text="e-Register" to="#" />
             </MenuItem>
           ) : null} */}
-          {showMenu.Market_Bidding ? (
-            <MenuItem>
-              <MenuItemLink text="e-Inward" to="/seriui/bidding-slip" />
-            </MenuItem>
-          ) : null}
-          {showMenu.Market_Accept_Farmer_Auction ? (
-            <MenuItem>
-              <MenuItemLink
-                text="e-Acceptance"
-                to="/seriui/accept-former-auction"
-              />
-            </MenuItem>
-          ) : null}
-          {/* {showMenu.Market_Auction ? (
+            {showMenu.Market_Bidding ? (
+              <MenuItem>
+                <MenuItemLink text="e-Inward" to="/seriui/bidding-slip" />
+              </MenuItem>
+            ) : null}
+            {showMenu.Market_Accept_Farmer_Auction ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="e-Acceptance"
+                  to="/seriui/accept-former-auction"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Market_Auction ? (
             <MenuItem>
               <MenuItemLink text="e-Auction" to="/seriui/reject-lot" />
             </MenuItem>
           ) : null} */}
-          {showMenu.Market_Weighment ? (
+            {showMenu.Market_Weighment ? (
+              <MenuItem>
+                <MenuItemLink text="e-Weighment" to="/seriui/weighment" />
+              </MenuItem>
+            ) : null}
+            {showMenu.Market_Gatepass ? (
+              <MenuItem>
+                <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
+              </MenuItem>
+            ) : null}
             <MenuItem>
-              <MenuItemLink text="e-Weighment" to="/seriui/weighment" />
-            </MenuItem>
-          ) : null}
-          {showMenu.Market_Gatepass ? (
-            <MenuItem>
-              <MenuItemLink text="Gatepass" to="/seriui/gatepass" />
-            </MenuItem>
-          ) : null}
-          <MenuItem>
-            {showMenu.Market_Payment ? (
-              <MenuItem sub>
-                <MenuItemLink
-                  text="e-Payment"
-                  onClick={menuToggle}
-                  onMouseEnter={menuHover}
-                  sub
-                />
-                <MenuSub>
-                  {showMenu.Market_Payment_Ready_for_Payment ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Ready for Payment"
-                        to="/seriui/ready-for-payment"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Market_Payment_Bulk_Send_To_Bank ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Bulk Send to Bank"
-                        to="/seriui/bulk-send-to-bank"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {showMenu.Market_Payment_Bank_Statement ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="Bank Statement"
-                        to="/seriui/bank-statement"
-                      />
-                    </MenuItem>
-                  ) : null}
-                  {/* {showMenu.Market_Payment_IFSC_Update ? (
+              {showMenu.Market_Payment ? (
+                <MenuItem sub>
+                  <MenuItemLink
+                    text="e-Payment"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_Payment_Ready_for_Payment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Ready for Payment"
+                          to="/seriui/ready-for-payment"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Payment_Bulk_Send_To_Bank ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Bulk Send to Bank"
+                          to="/seriui/bulk-send-to-bank"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Payment_Bank_Statement ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Bank Statement"
+                          to="/seriui/bank-statement"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {/* {showMenu.Market_Payment_IFSC_Update ? (
                     <MenuItem>
                       <MenuItemLink
                         text="IFSC Update"
@@ -1040,29 +1053,29 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null} */}
-                </MenuSub>
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
+            {showMenu.Market_Reject ? (
+              <MenuItem>
+                <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
               </MenuItem>
             ) : null}
-          </MenuItem>
-          {showMenu.Market_Reject ? (
-            <MenuItem>
-              <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
-            </MenuItem>
-          ) : null}
-          {showMenu.Market_Show_Lot ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Show Lot Details"
-                to="/seriui/display-all-lot"
-              />
-            </MenuItem>
-          ) : null}
-          {/* {showMenu.Market_Permit ? (
+            {showMenu.Market_Show_Lot ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Show Lot Details"
+                  to="/seriui/display-all-lot"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Market_Permit ? (
             <MenuItem>
               <MenuItemLink text="e-Permit" to="#" />
             </MenuItem>
           ) : null} */}
-          {/* {showMenu.Market_Reject_Farmer_Auction ? (
+            {/* {showMenu.Market_Reject_Farmer_Auction ? (
             <MenuItem>
               <MenuItemLink
                 text="Reject Farmer Auction"
@@ -1070,7 +1083,7 @@ function Menu() {
               />
             </MenuItem>
           ) : null} */}
-          {/* {showMenu.Market_Generate_Bidding_Slip ? (
+            {/* {showMenu.Market_Generate_Bidding_Slip ? (
             <MenuItem>
               <MenuItemLink
                 text="Generate Bidding Slip"
@@ -1078,113 +1091,117 @@ function Menu() {
               />
             </MenuItem>
           ) : null} */}
-          {/* {showMenu.Market_Update_Lot_Weight ? (
+            {/* {showMenu.Market_Update_Lot_Weight ? (
             <MenuItem>
               <MenuItemLink text="Update Lot Weight" to="/seriui/update-lot-weight" />
             </MenuItem>
           ) : null} */}
-        </MenuSub>
-      </MenuItem>
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("seed_and_dfl")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.SeedDFL_Garden_Farms ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance of mulberry Garden in the Farms"
-                to="/seriui/garden-mulberry-farm"
-              />
-            </MenuItem>
+      {showMenu.SeedDFL ? (
+        <MenuItem sub>
+          {showMenu.SeedDFL ? (
+            <MenuItemLink
+              text={t("seed_and_dfl")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
+          <MenuSub>
+            {showMenu.SeedDFL_Garden_Farms ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance of mulberry Garden in the Farms"
+                  to="/seriui/garden-mulberry-farm"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_DFLs_from_P4_Grainage ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Receipt of DFLs from the P4 grainage"
-                to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_DFLs_from_P4_Grainage ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Receipt of DFLs from the P4 grainage"
+                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Line_Records_Each_race ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance of Line Records for Each Race"
-                to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Line_Records_Each_race ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance of Line Records for Each Race"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Screening_batch_record ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance of Screening Batch Records"
-                to="/seriui/Maintenance-of-Screening-Batch-Records"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Screening_batch_record ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance of Screening Batch Records"
+                  to="/seriui/Maintenance-of-Screening-Batch-Records"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Cocoons_to_P4_Grainage ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Dispatch of Cocoons to P4 Grainage"
-                to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Cocoons_to_P4_Grainage ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Dispatch of Cocoons to P4 Grainage"
+                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_DFLs_for_the_8_lines ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Rearing of DFLs for the 8 Lines"
-                to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_DFLs_for_the_8_lines ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Rearing of DFLs for the 8 Lines"
+                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Seed_Cocoon_Processing ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Preservation of seed cocoon for processing"
-                to="/seriui/Preservation-of-seed-cocoon-for-processing"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Seed_Cocoon_Processing ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Preservation of seed cocoon for processing"
+                  to="/seriui/Preservation-of-seed-cocoon-for-processing"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Preparation_Egg_DFLs ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Preparation of eggs DFLs"
-                to="/seriui/Preparation-of-eggs-DFLs"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Preparation_Egg_DFLs ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Preparation of eggs DFLs"
+                  to="/seriui/Preparation-of-eggs-DFLs"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Eggs_Cold_storage ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance of eggs at cold storage"
-                to="/seriui/Maintenance-of-eggs-at-cold-storage"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Eggs_Cold_storage ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance of eggs at cold storage"
+                  to="/seriui/Maintenance-of-eggs-at-cold-storage"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.SeedDFL_Cold_Storage_Schedule_BV ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Cold Storage Schedule BV"
-                to="/seriui/Cold-Storage-Schedule-BV"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.SeedDFL_Cold_Storage_Schedule_BV ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Cold Storage Schedule BV"
+                  to="/seriui/Cold-Storage-Schedule-BV"
+                />
+              </MenuItem>
+            ) : null}
 
-          {/* {showMenu.SeedDFL_Grainages ? (
+            {/* {showMenu.SeedDFL_Grainages ? (
             <MenuItem sub>
               <MenuItemLink
                 text="Grainages"
@@ -1206,892 +1223,935 @@ function Menu() {
               <MenuSub></MenuSub>
             </MenuItem>
           ) : null} */}
-        </MenuSub>
-      </MenuItem>
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("garden_management")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.GardenManagement_Mulberry_Garden ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance Of Mulberry Garden"
-                to="/seriui/maintenance-of-mulberry-garden"
-              />
-            </MenuItem>
+      {showMenu.GardenManagement ? (
+        <MenuItem sub>
+          {showMenu.GardenManagement ? (
+            <MenuItemLink
+              text={t("garden_management")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
+          <MenuSub>
+            {showMenu.GardenManagement_Mulberry_Garden ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance Of Mulberry Garden"
+                  to="/seriui/maintenance-of-mulberry-garden"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_DFL_From_The_Grainage ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Receipt of DFLs from the grainage"
-                to="/seriui/receipt-of-dfls"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.GardenManagement_DFL_From_The_Grainage ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Receipt of DFLs from the grainage"
+                  to="/seriui/receipt-of-dfls"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_Rearing_of_DFL ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Rearing of DFLs"
-                to="/seriui/rearing-of-dfls"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.GardenManagement_Rearing_of_DFL ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Rearing of DFLs"
+                  to="/seriui/rearing-of-dfls"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_Cocoons_to_Grainage ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Supply of Cocoons to Grainagee"
-                to="/seriui/Supply-of-Cocoons-to-Grainagee"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.GardenManagement_Cocoons_to_Grainage ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Supply of Cocoons to Grainagee"
+                  to="/seriui/Supply-of-Cocoons-to-Grainagee"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_Sale_of_Nursery_to_Farmers ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Maintenance and Sale of Nursery to Farmers"
-                to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.GardenManagement_Sale_of_Nursery_to_Farmers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance and Sale of Nursery to Farmers"
+                  to="/seriui/Maintenance-and-Sale-of-Nursery-to-Farmers"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_Seed_Cutting_Bank ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Seed cutting bank"
-                to="/seriui/seed-cutting-bank"
-              />
-            </MenuItem>
-          ) : null}
+            {showMenu.GardenManagement_Seed_Cutting_Bank ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Seed cutting bank"
+                  to="/seriui/seed-cutting-bank"
+                />
+              </MenuItem>
+            ) : null}
 
-          {showMenu.GardenManagement_Distribution_Farmers ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Chawki distribution to Farmers"
-                to="/seriui/chawki-distribution"
-              />
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+            {showMenu.GardenManagement_Distribution_Farmers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Chawki distribution to Farmers"
+                  to="/seriui/chawki-distribution"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("chawki_management")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.ChawkiManagement_ChawkiManagement ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Sale Of Chawki Worms"
-                to="/seriui/chawki-management"
-              />
-            </MenuItem>
+      {showMenu.ChawkiManagement ? (
+        <MenuItem sub>
+          {showMenu.ChawkiManagement ? (
+            <MenuItemLink
+              text={t("chawki_management")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.ChawkiManagement_ChawkiManagement ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Sale Of Chawki Worms"
+                  to="/seriui/chawki-management"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("target_setting")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Assigning Yearly Targets"
-                to="/seriui/attribute-assigning"
-              />
-            </MenuItem>
+      {showMenu.TargetSetting ? (
+        <MenuItem sub>
+          {showMenu.TargetSetting ? (
+            <MenuItemLink
+              text={t("target_setting")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Assigning Yearly Targets"
+                  to="/seriui/attribute-assigning"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("inspection")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Tracking status of Mulberry"
-                to="/seriui/track-current-status"
-              />
-            </MenuItem>
+      {showMenu.Inspection ? (
+        <MenuItem sub>
+          {showMenu.Inspection ? (
+            <MenuItemLink
+              text={t("inspection")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-          {showMenu.Inspection_Supply_of_Disinfectants_to_Farmers ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Supply of disinfectants to farmers"
-                to="/seriui/inspect-supply-disinfectants"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Inspection_Implementation_of_MGNREGA ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Implementation of MGNREGA"
-                to="/seriui/implementation-mgnrega"
-              />
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Tracking status of Mulberry"
+                  to="/seriui/track-current-status"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Inspection_Supply_of_Disinfectants_to_Farmers ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Supply of disinfectants to farmers"
+                  to="/seriui/inspect-supply-disinfectants"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Inspection_Implementation_of_MGNREGA ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Implementation of MGNREGA"
+                  to="/seriui/implementation-mgnrega"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("training")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.Training_Schedule ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Schedule Training"
-                to="/seriui/training-schedule"
-              />
-            </MenuItem>
+      {showMenu.Training ? (
+        <MenuItem sub>
+          {showMenu.Training ? (
+            <MenuItemLink
+              text={t("training")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-          {showMenu.Training_Page ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Trainer Page"
-                to="/seriui/trainer-page-list"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Training_Deputation_Tracker ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Training Deputation Tracker"
-                to="/seriui/training-deputation-tracker"
-              />
-            </MenuItem>
-          ) : null}
-          {/* {showMenu.Training_Financial_Target ? (
+          <MenuSub>
+            {showMenu.Training_Schedule ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Schedule Training"
+                  to="/seriui/training-schedule"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Training_Page ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Trainer Page"
+                  to="/seriui/trainer-page-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Training_Deputation_Tracker ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Training Deputation Tracker"
+                  to="/seriui/training-deputation-tracker"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Training_Financial_Target ? (
             <MenuItem>
               <MenuItemLink text="Financial Target" to="#" />
             </MenuItem>
           ) : null} */}
-        </MenuSub>
-      </MenuItem>
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("helpdesk")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.Helpdesk_Raise_a_Ticket ? (
-            <MenuItem>
-              <MenuItemLink text="Raise a Ticket" to="/seriui/help-desk" />
-            </MenuItem>
+      {showMenu.Helpdesk ? (
+        <MenuItem sub>
+          {showMenu.Helpdesk ? (
+            <MenuItemLink
+              text={t("helpdesk")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-          {showMenu.Helpdesk_Dashboard ? (
-            <MenuItem>
-              <MenuItemLink
-                text="Helpdesk Dashboard"
-                to="/seriui/helpdesk-dashboard"
-              />
-            </MenuItem>
-          ) : null}
-          {showMenu.Helpdesk_User_Dashboard ? (
-            <MenuItem>
-              <MenuItemLink text="User Dashboard" to="/seriui/user-dashboard" />
-            </MenuItem>
-          ) : null}
-          {/* {showMenu.Helpdesk_My_Tickets ? (
+          <MenuSub>
+            {showMenu.Helpdesk_Raise_a_Ticket ? (
+              <MenuItem>
+                <MenuItemLink text="Raise a Ticket" to="/seriui/help-desk" />
+              </MenuItem>
+            ) : null}
+            {showMenu.Helpdesk_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Helpdesk Dashboard"
+                  to="/seriui/helpdesk-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Helpdesk_User_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="User Dashboard"
+                  to="/seriui/user-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Helpdesk_My_Tickets ? (
             <MenuItem>
               <MenuItemLink text="My Tickets" to="/seriui/my-tickets" />
             </MenuItem>
           ) : null} */}
+            {showMenu.Helpdesk_FAQ ? (
+              <MenuItem>
+                <MenuItemLink text="KEDB" to="/seriui/help-desk-faq-view" />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
+
+      {showMenu.Helpdesk_FAQ ? (
+        <MenuItem sub>
           {showMenu.Helpdesk_FAQ ? (
-            <MenuItem>
-              <MenuItemLink text="KEDB" to="/seriui/help-desk-faq-view" />
-            </MenuItem>
+            <MenuItemLink
+              text={t("admin")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
+            />
           ) : null}
-        </MenuSub>
-      </MenuItem>
+          <MenuSub>
+            {showMenu.Admin_Master ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Master"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.Admin_Master_Registration ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Registration"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Registration_Caste ? (
+                          <MenuItem>
+                            <MenuItemLink text="Caste" to="/seriui/caste" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Roles ? (
+                          <MenuItem>
+                            <MenuItemLink text="Roles" to="/seriui/roles" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Education ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Education"
+                              to="/seriui/education"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Relationship ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Relationship"
+                              to="/seriui/relationship"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_State ? (
+                          <MenuItem>
+                            <MenuItemLink text="State" to="/seriui/state" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_District ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="District"
+                              to="/seriui/district"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Taluk ? (
+                          <MenuItem>
+                            <MenuItemLink text="Taluk" to="/seriui/taluk" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Hobli ? (
+                          <MenuItem>
+                            <MenuItemLink text="Hobli" to="/seriui/hobli" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Village ? (
+                          <MenuItem>
+                            <MenuItemLink text="Village" to="/seriui/village" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Trader_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Trader Type"
+                              to="/seriui/trader-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Farmer_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Farmer Type"
+                              to="/seriui/farmer-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Working_Institution ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Working Institution"
+                              to="/seriui/working-institution"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_User ? (
+                          <MenuItem>
+                            <MenuItemLink text="User" to="/seriui/user" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Designation ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Designation"
+                              to="/seriui/designation"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_No_Fruits_Farmer_Counter ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Non Fruits ID Farmer Counter"
+                              to="/seriui/config-farmer-count"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("admin")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          {showMenu.Admin_Master ? (
-            <MenuItem sub>
-              <MenuItemLink
-                text="Master"
-                onClick={menuToggle}
-                onMouseEnter={menuHover}
-                sub
-              />
-              <MenuSub>
-                {showMenu.Admin_Master_Registration ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Registration"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Registration_Caste ? (
-                        <MenuItem>
-                          <MenuItemLink text="Caste" to="/seriui/caste" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Roles ? (
-                        <MenuItem>
-                          <MenuItemLink text="Roles" to="/seriui/roles" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Education ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Education"
-                            to="/seriui/education"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Relationship ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Relationship"
-                            to="/seriui/relationship"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_State ? (
-                        <MenuItem>
-                          <MenuItemLink text="State" to="/seriui/state" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_District ? (
-                        <MenuItem>
-                          <MenuItemLink text="District" to="/seriui/district" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Taluk ? (
-                        <MenuItem>
-                          <MenuItemLink text="Taluk" to="/seriui/taluk" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Hobli ? (
-                        <MenuItem>
-                          <MenuItemLink text="Hobli" to="/seriui/hobli" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Village ? (
-                        <MenuItem>
-                          <MenuItemLink text="Village" to="/seriui/village" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Trader_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Trader Type"
-                            to="/seriui/trader-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Farmer_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Farmer Type"
-                            to="/seriui/farmer-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Working_Institution ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Working Institution"
-                            to="/seriui/working-institution"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_User ? (
-                        <MenuItem>
-                          <MenuItemLink text="User" to="/seriui/user" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_Designation ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Designation"
-                            to="/seriui/designation"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Registration_No_Fruits_Farmer_Counter ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Non Fruits ID Farmer Counter"
-                            to="/seriui/config-farmer-count"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                  {showMenu.Admin_Master_Land ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Land"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Land_Holding_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Land Holding Category"
+                              to="/seriui/land-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Irrigation_Source ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Irrigation Source"
+                              to="/seriui/irrigation-source"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Irrigation_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Irrigation Type"
+                              to="/seriui/irrigation-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Ownership ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Land Ownership"
+                              to="/seriui/land-ownership"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Soil_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Soil Type"
+                              to="/seriui/soil-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Rear_House_Roof_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Rear House Roof Type"
+                              to="/seriui/rear-house-roof-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Silk_Worm_Variety ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Silk Worm Variety"
+                              to="/seriui/silk-worm-variety"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Source_of_Mulberry ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Source of Mulberry"
+                              to="/seriui/source-of-mulberry"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Mulberry_Variety ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Mulberry Variety"
+                              to="/seriui/mulberry-variety"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Subsidy_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Subsidy Details"
+                              to="/seriui/subsidy-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Plantation_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Plantation Type"
+                              to="/seriui/plantation-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Land_Machine_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Machine Type"
+                              to="/seriui/machine-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_Land ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Land"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Land_Holding_Category ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Land Holding Category"
-                            to="/seriui/land-category"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Irrigation_Source ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Irrigation Source"
-                            to="/seriui/irrigation-source"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Irrigation_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Irrigation Type"
-                            to="/seriui/irrigation-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Ownership ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Land Ownership"
-                            to="/seriui/land-ownership"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Soil_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Soil Type"
-                            to="/seriui/soil-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Rear_House_Roof_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Rear House Roof Type"
-                            to="/seriui/rear-house-roof-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Silk_Worm_Variety ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Silk Worm Variety"
-                            to="/seriui/silk-worm-variety"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Source_of_Mulberry ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Source of Mulberry"
-                            to="/seriui/source-of-mulberry"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Mulberry_Variety ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Mulberry Variety"
-                            to="/seriui/mulberry-variety"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Subsidy_Details ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Subsidy Details"
-                            to="/seriui/subsidy-details"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Plantation_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Plantation Type"
-                            to="/seriui/plantation-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Land_Machine_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Machine Type"
-                            to="/seriui/machine-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                  {showMenu.Admin_Master_Service ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Service"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Service_Program ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Program"
+                              to="/seriui/sc-program"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Component ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Component"
+                              to="/seriui/sc-component"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Head_of_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Head of Account"
+                              to="/seriui/sc-head-account"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reason for lot Cancellation"
+                              to="/seriui/reason-lot-cancellation"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reason for bid Rejection"
+                              to="/seriui/reason-bid-rejection"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_Service ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Service"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Service_Program ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Program"
-                            to="/seriui/sc-program"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Service_Component ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Component"
-                            to="/seriui/sc-component"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Service_Head_of_Account ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Head of Account"
-                            to="/seriui/sc-head-account"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Reason for lot Cancellation"
-                            to="/seriui/reason-lot-cancellation"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Reason for bid Rejection"
-                            to="/seriui/reason-bid-rejection"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                  {showMenu.Admin_Master_Training ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Training"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Training_Program ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Program"
+                              to="/seriui/trainingProgram"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Course ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Course"
+                              to="/seriui/trainingCourse"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Deputed_Institute ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Deputed Institute Training"
+                              to="/seriui/deputed-institute"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Group ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Group"
+                              to="/seriui/training-group"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Institution ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Institution"
+                              to="/seriui/training-institution"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Mode ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Mode"
+                              to="/seriui/training-mode"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Training_Office ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Training Office"
+                              to="/seriui/training-office"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_Training ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Training"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Training_Program ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Program"
-                            to="/seriui/trainingProgram"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Course ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Course"
-                            to="/seriui/trainingCourse"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Deputed_Institute ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Deputed Institute Training"
-                            to="/seriui/deputed-institute"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Group ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Group"
-                            to="/seriui/training-group"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Institution ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Institution"
-                            to="/seriui/training-institution"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Mode ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Mode"
-                            to="/seriui/training-mode"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Training_Office ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Training Office"
-                            to="/seriui/training-office"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                  {showMenu.Admin_Master_HelpDesk ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="HelpDesk"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_HelpDesk_Module ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Modules"
+                              to="/seriui/hd-module"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Feature ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Feature"
+                              to="/seriui/hd-feature"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Board_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Board Category"
+                              to="/seriui/hd-board-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Category"
+                              to="/seriui/hd-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Sub Category"
+                              to="/seriui/hd-sub-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Status ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Help Desk Status"
+                              to="/seriui/hd-status"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Severity ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Help Desk Severity"
+                              to="/seriui/hd-severity"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_HelpDesk_Faq ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Help Desk FAQ"
+                              to="/seriui/hd-question"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_HelpDesk ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="HelpDesk"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_HelpDesk_Module ? (
-                        <MenuItem>
-                          <MenuItemLink text="Modules" to="/seriui/hd-module" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Feature ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Feature"
-                            to="/seriui/hd-feature"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Board_Category ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Board Category"
-                            to="/seriui/hd-board-category"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Category ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Category"
-                            to="/seriui/hd-category"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Sub_Category ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Sub Category"
-                            to="/seriui/hd-sub-category"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Status ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Help Desk Status"
-                            to="/seriui/hd-status"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Severity ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Help Desk Severity"
-                            to="/seriui/hd-severity"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_HelpDesk_Faq ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Help Desk FAQ"
-                            to="/seriui/hd-question"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                  {showMenu.Admin_Master_Garden ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Garden Management"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Garden_Line ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Line Name"
+                              to="/seriui/lineName"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Grainage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Grainage"
+                              to="/seriui/grainage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Disinfectant ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Disinfectant Usage Details"
+                              to="/seriui/disinfectant"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Generation_Number ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Generation Number"
+                              to="/seriui/generation-number"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Farm ? (
+                          <MenuItem>
+                            <MenuItemLink text="Farm" to="/seriui/farm" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Tsc ? (
+                          <MenuItem>
+                            <MenuItemLink text="Tsc" to="/seriui/tsc" />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_Garden ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Garden Management"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Garden_Line ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Line Name"
-                            to="/seriui/lineName"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Garden_Grainage ? (
-                        <MenuItem>
-                          <MenuItemLink text="Grainage" to="/seriui/grainage" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Garden_Disinfectant ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Disinfectant Usage Details"
-                            to="/seriui/disinfectant"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Garden_Generation_Number ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Generation Number"
-                            to="/seriui/generation-number"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Garden_Farm ? (
-                        <MenuItem>
-                          <MenuItemLink text="Farm" to="/seriui/farm" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Garden_Tsc ? (
-                        <MenuItem>
-                          <MenuItemLink text="Tsc" to="/seriui/tsc" />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
-
-                {showMenu.Admin_Master_Auction ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="Market & Auction"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_Auction_Bin ? (
-                        <MenuItem>
-                          <MenuItemLink text="Bin" to="/seriui/bin" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Market ? (
-                        <MenuItem>
-                          <MenuItemLink text="Market" to="/seriui/market" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Godown ? (
-                        <MenuItem>
-                          <MenuItemLink text="Godown" to="/seriui/godawn" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Activate_Reeler ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Activate Reeler"
-                            to="/seriui/activate-reeler"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Race ? (
-                        <MenuItem>
-                          <MenuItemLink text="Race" to="/seriui/race" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Source ? (
-                        <MenuItem>
-                          <MenuItemLink text="Source" to="/seriui/source" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Crate ? (
-                        <MenuItem>
-                          <MenuItemLink text="Crate" to="/seriui/crate" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Flex_Time ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Flex Time"
-                            to="/seriui/flex-time"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Exception_Time ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Exception Time"
-                            to="/seriui/market-exception-time"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Market_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Market Type"
-                            to="/seriui/market-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Reeler_Type ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Reeler Type"
-                            to="/seriui/reeler-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_External_Unit ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="External Unit"
-                            to="/seriui/external-unit-type"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Empaneled_Vendor ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Empaneled Vendors"
-                            to="/seriui/empanelled-vendor"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Reeler_Device_Mapping ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Reeler Device Mapping"
-                            to="/seriui/reeler-device-mapping"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_Auction_Race_Mapping ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Race Mapping"
-                            to="/seriui/race-mapping"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {/* {showMenu.Admin_Master_Auction_Accept_Bid ? (
+                  {showMenu.Admin_Master_Auction ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="Market & Auction"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_Auction_Bin ? (
+                          <MenuItem>
+                            <MenuItemLink text="Bin" to="/seriui/bin" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Market ? (
+                          <MenuItem>
+                            <MenuItemLink text="Market" to="/seriui/market" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Godown ? (
+                          <MenuItem>
+                            <MenuItemLink text="Godown" to="/seriui/godawn" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Activate_Reeler ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Activate Reeler"
+                              to="/seriui/activate-reeler"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Race ? (
+                          <MenuItem>
+                            <MenuItemLink text="Race" to="/seriui/race" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Source ? (
+                          <MenuItem>
+                            <MenuItemLink text="Source" to="/seriui/source" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Crate ? (
+                          <MenuItem>
+                            <MenuItemLink text="Crate" to="/seriui/crate" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Flex_Time ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Flex Time"
+                              to="/seriui/flex-time"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Exception_Time ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Exception Time"
+                              to="/seriui/market-exception-time"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Market_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Market Type"
+                              to="/seriui/market-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Reeler_Type ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Type"
+                              to="/seriui/reeler-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_External_Unit ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="External Unit"
+                              to="/seriui/external-unit-type"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Empaneled_Vendor ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Empaneled Vendors"
+                              to="/seriui/empanelled-vendor"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Reeler_Device_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reeler Device Mapping"
+                              to="/seriui/reeler-device-mapping"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Race_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Race Mapping"
+                              to="/seriui/race-mapping"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {/* {showMenu.Admin_Master_Auction_Accept_Bid ? (
                         <MenuItem>
                           <MenuItemLink text="Accept Bid" to="/seriui/accept-bid" />
                         </MenuItem>
                       ) : null} */}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
 
-                {showMenu.Admin_Master_General ? (
-                  <MenuItem sub>
-                    <MenuItemLink
-                      text="General"
-                      onClick={menuToggle}
-                      onMouseEnter={menuHover}
-                      sub
-                    />
-                    <MenuSub>
-                      {showMenu.Admin_Master_General_Pages ? (
-                        <MenuItem>
-                          <MenuItemLink text="Pages" to="/seriui/role-pages" />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_General_Config_Role ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Config Role"
-                            to="/seriui/role-config"
-                          />
-                        </MenuItem>
-                      ) : null}
-                      {showMenu.Admin_Master_General_Activate_External ? (
-                        <MenuItem>
-                          <MenuItemLink
-                            text="Activate External Unit user"
-                            to="/seriui/activate-external-unit"
-                          />
-                        </MenuItem>
-                      ) : null}
-                    </MenuSub>
-                  </MenuItem>
-                ) : null}
-              </MenuSub>
-            </MenuItem>
-          ) : null}
+                  {showMenu.Admin_Master_General ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text="General"
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Admin_Master_General_Pages ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Pages"
+                              to="/seriui/role-pages"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_General_Config_Role ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Config Role"
+                              to="/seriui/role-config"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_General_Activate_External ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Activate External Unit user"
+                              to="/seriui/activate-external-unit"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
 
-          {showMenu.Admin_Report ? (
-            <MenuItem sub>
-              <MenuItemLink
-                text="Report"
-                onClick={menuToggle}
-                onMouseEnter={menuHover}
-                sub
-              />
-              <MenuSub>
-                {showMenu.Admin_Report_Admin ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Admin Report"
-                      to="/seriui/report-admin"
-                    />
-                  </MenuItem>
-                ) : null}
-                {/* {showMenu.Admin_Report_Transaction ? (
+            {showMenu.Admin_Report ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Report"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.Admin_Report_Admin ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Admin Report"
+                        to="/seriui/report-admin"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {/* {showMenu.Admin_Report_Transaction ? (
                   <MenuItem>
                     <MenuItemLink
                       text="Reeler Transaction Report"
@@ -2099,69 +2159,73 @@ function Menu() {
                     />
                   </MenuItem>
                 ) : null} */}
-                {showMenu.Admin_Report_Dashboard ? (
-                  <MenuItem>
-                    <MenuItemLink text="Dashboard" to="/seriui/bid-dashboard" />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_DTR ? (
-                  <MenuItem>
-                    <MenuItemLink text="DTR Online" to="/seriui/dtr-online" />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Unit ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Unit Counter Report"
-                      to="/seriui/unit-counter-report"
-                    />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Pending ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Pending Report"
-                      to="/seriui/pending-reports"
-                    />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Bidding_Report ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Bidding Report"
-                      to="/seriui/bidding-report"
-                    />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Bidding_Reeler_Report ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Reeler Bidding Report"
-                      to="/seriui/bidding-report-reeler"
-                    />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Farmer_Transaction_Report ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Farmer Transaction Report"
-                      to="/seriui/farmer-transaction-report"
-                    />
-                  </MenuItem>
-                ) : null}
-                {showMenu.Admin_Report_Reeler_Transaction_Report ? (
-                  <MenuItem>
-                    <MenuItemLink
-                      text="Reeler Transaction Report"
-                      to="/seriui/reeler-transaction-reports"
-                    />
-                  </MenuItem>
-                ) : null}
-              </MenuSub>
-            </MenuItem>
-          ) : null}
-        </MenuSub>
-      </MenuItem>
+                  {showMenu.Admin_Report_Dashboard ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Dashboard"
+                        to="/seriui/bid-dashboard"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_DTR ? (
+                    <MenuItem>
+                      <MenuItemLink text="DTR Online" to="/seriui/dtr-online" />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Unit ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Unit Counter Report"
+                        to="/seriui/unit-counter-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Pending ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Pending Report"
+                        to="/seriui/pending-reports"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Bidding_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Bidding Report"
+                        to="/seriui/bidding-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Bidding_Reeler_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Reeler Bidding Report"
+                        to="/seriui/bidding-report-reeler"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Farmer_Transaction_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Farmer Transaction Report"
+                        to="/seriui/farmer-transaction-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Reeler_Transaction_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Reeler Transaction Report"
+                        to="/seriui/reeler-transaction-reports"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
       {/* Hard Code Menu with mapcode End */}
     </MenuList>
