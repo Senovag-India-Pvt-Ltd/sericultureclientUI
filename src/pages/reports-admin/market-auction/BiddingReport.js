@@ -196,6 +196,8 @@ function BiddingReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.auctionDate}
                             onChange={handleDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>

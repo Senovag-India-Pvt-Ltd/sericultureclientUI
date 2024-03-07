@@ -317,6 +317,7 @@ function DtrOnlineReport() {
                             selected={data.fromDate}
                             onChange={handleFromDateChange}
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>
@@ -331,6 +332,7 @@ function DtrOnlineReport() {
                             selected={data.toDate}
                             onChange={handleToDateChange}
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>

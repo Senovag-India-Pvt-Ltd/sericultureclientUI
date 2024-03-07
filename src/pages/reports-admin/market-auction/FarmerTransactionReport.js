@@ -315,6 +315,8 @@ function FarmerTransactionReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportFromDate}
                             onChange={handleFromDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>
@@ -328,6 +330,8 @@ function FarmerTransactionReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportToDate}
                             onChange={handleToDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>
