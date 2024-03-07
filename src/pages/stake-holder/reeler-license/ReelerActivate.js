@@ -73,6 +73,7 @@ function ReelerActivate() {
     if (name === "reelerId") {
       getReelerList(value);
       getConfigureUser(value);
+      setShow(false);
     }
   };
 
@@ -107,7 +108,7 @@ function ReelerActivate() {
         .post(baseURL1 + `userMaster/save-reeler-user`, data)
         .then((response) => {
           if (response.data.content.error) {
-            saveError();
+            saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
@@ -162,7 +163,7 @@ function ReelerActivate() {
         .post(baseURL1 + `userMaster/edit-reeler-user`, editData)
         .then((response) => {
           if (response.data.content.error) {
-            saveError();
+            saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
