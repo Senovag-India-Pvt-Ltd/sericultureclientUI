@@ -137,6 +137,18 @@ function Weighment() {
         console.log(response);
       })
       .catch((err) => {
+        if (
+          err.response.data &&
+          err.response.data.errorMessages[0] &&
+          err.response.data.errorMessages[0].message[0]
+        ) {
+          const message = err.response.data.errorMessages[0].message[0].message;
+          Swal.fire({
+            icon: "warning",
+            text: message,
+          });
+        }
+
         // debugger;
         // setData({});
         // saveError();
