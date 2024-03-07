@@ -1479,9 +1479,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk_FAQ ? (
+      {showMenu.Admin ? (
         <MenuItem sub>
-          {showMenu.Helpdesk_FAQ ? (
+          {showMenu.Admin ? (
             <MenuItemLink
               text={t("admin")}
               onClick={menuToggle}
