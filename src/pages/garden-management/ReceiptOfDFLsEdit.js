@@ -47,9 +47,9 @@ function ReceiptOfDFLsEdit() {
       api
         .post(baseURL2 + `Receipt/update-info`, data)
         .then((response) => {
-            const id = response.data.id;
-            if (id) {
-              handleReceiptUpload(id);
+            const receiptOfDflsId = response.data.receiptOfDflsId;
+            if (receiptOfDflsId) {
+              handleReceiptUpload(receiptOfDflsId);
             }
           if (response.data.error) {
             updateError(response.data.message);
@@ -192,7 +192,7 @@ function ReceiptOfDFLsEdit() {
  
    // Upload Image to S3 Bucket
    const handleReceiptUpload = async (receiptid) => {
-     const parameters = `id=${receiptid}`;
+     const parameters = `receiptOfDflsId=${receiptid}`;
      try {
        const formData = new FormData();
        formData.append("multipartFile", receiptUpload);

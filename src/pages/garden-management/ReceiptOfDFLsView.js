@@ -36,6 +36,9 @@ function ReceiptOfDFLsView() {
       .get(baseURL2 + `Receipt/get-info-by-id/${id}`)
       .then((response) => {
         setReceiptOfDFLs(response.data);
+        if (response.data.viewReceipt) {
+          getUploadReceipt(response.data.viewReceipt);
+        }
         setLoading(false);
       })
       .catch((err) => {
