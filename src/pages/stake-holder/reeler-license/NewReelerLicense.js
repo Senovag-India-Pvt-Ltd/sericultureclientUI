@@ -116,7 +116,15 @@ function NewReelerLicense() {
   };
 
   const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    })
+  }
 
   const [data, setData] = useState({
     fruitsId: "",

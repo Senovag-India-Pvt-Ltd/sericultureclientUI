@@ -196,6 +196,8 @@ function BiddingReportReeler() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportFromDate}
                             onChange={handleDateChange}
+                            className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>

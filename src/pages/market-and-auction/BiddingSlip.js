@@ -544,6 +544,17 @@ function BiddingSlip() {
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // const printWindow = window.open(fileURL);
+      // if (printWindow) {
+      //   printWindow.onload = () => {
+      //     printWindow.print();
+      //   };
+      // } else {
+      //   console.error("Failed to open the print window.");
+      // }
     } catch (error) {
       // console.log("error", error);
     }
