@@ -164,8 +164,15 @@ function PendingReport() {
         })
         .then((response) => {
           if (response.data.errorCode === 0) {
-            if (response.data.content && response.data.content.length) {
+            if (response.data.content && response.data.content.length > 0) {
               setPendingData(response.data.content);
+            } else {
+              setPendingData([]);
+              Swal.fire({
+                icon: "warning",
+                // title: "Not Found",
+                text: "No Record Found",
+              });
             }
           } else if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0].message[0].message);
@@ -178,7 +185,7 @@ function PendingReport() {
               // title: "Not Found",
               text: error.response.data.errorMessages[0].message[0].message,
             });
-            setPendingData([])
+            setPendingData([]);
           }
           // console.log("error", error);
         });
@@ -411,7 +418,7 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
-                            A User
+                            Accepted User
                           </th>
                           <th
                             style={{
