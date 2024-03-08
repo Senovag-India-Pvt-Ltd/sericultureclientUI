@@ -143,10 +143,7 @@ function Weighment() {
           err.response.data.errorMessages[0].message[0]
         ) {
           const message = err.response.data.errorMessages[0].message[0].message;
-          Swal.fire({
-            icon: "warning",
-            text: message,
-          });
+          submitWarning(message);
         }
 
         // debugger;
@@ -194,6 +191,36 @@ function Weighment() {
     Swal.fire({
       icon: "error",
       title: "Not Saved",
+      text: message,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setData({
+          allottedLotId: "",
+          noOfCrates: "0",
+        });
+        setWeigh({
+          date: new Date(),
+          bidAmount: "0",
+          reelerCurrentBalance: 0,
+          farmerFirstName: "",
+          farmerNumber: "",
+          reelerName: "",
+          reelerLicense: "",
+        });
+        setTableWeightData([]);
+        setTotalNetPrice(0);
+        setTotalWeight(0);
+        setTotalNetWeight(0);
+        setTareWeight(0);
+        setCounter(0);
+        setLastWeight("0");
+      }
+    });
+  };
+
+  const submitWarning = (message = "Something went wrong!") => {
+    Swal.fire({
+      icon: "warning",
       text: message,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -278,12 +305,22 @@ function Weighment() {
       )
       .then((response) => {
         //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
+        // //Create a Blob from the PDF Stream
+        // const file = new Blob([response.data], { type: "application/pdf" });
+        // //Build a URL from the file
+        // const fileURL = URL.createObjectURL(file);
+        // //Open the URL on new Window
+        // window.open(fileURL);
         const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
         const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
+        const printWindow = window.open(fileURL);
+        if (printWindow) {
+          printWindow.onload = () => {
+            printWindow.print();
+          };
+        } else {
+          console.error("Failed to open the print window.");
+        }
       })
       .catch((error) => {
         // console.log("error", error);
@@ -967,6 +1004,8 @@ function Weighment() {
                                 <input
                                   name="noOfCrates"
                                   value={data.noOfCrates}
+                                  type="number"
+                                  min={0}
                                   onChange={handleInputs}
                                   onBlur={onchangingCrate}
                                   style={{
@@ -982,6 +1021,8 @@ function Weighment() {
                                 <input
                                   name="allottedLotId"
                                   value={data.allottedLotId}
+                                  type="number"
+                                  min={0}
                                   onChange={handleInputs}
                                   onBlur={onchanging}
                                   style={{

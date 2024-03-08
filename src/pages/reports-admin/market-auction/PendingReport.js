@@ -172,6 +172,14 @@ function PendingReport() {
           }
         })
         .catch((error) => {
+          if (error.response.data && !error.response.data.content) {
+            Swal.fire({
+              icon: "error",
+              // title: "Not Found",
+              text: error.response.data.errorMessages[0].message[0].message,
+            });
+            setPendingData([])
+          }
           // console.log("error", error);
         });
     }
@@ -342,7 +350,7 @@ function PendingReport() {
                           >
                             Lot No
                           </th>
-                          <th
+                          {/* <th
                             style={{
                               backgroundColor: "#0f6cbe",
                               color: "#fff",
@@ -350,7 +358,7 @@ function PendingReport() {
                             // colSpan="2"
                           >
                             Bin No
-                          </th>
+                          </th> */}
                           <th
                             style={{
                               backgroundColor: "#0f6cbe",
@@ -439,13 +447,13 @@ function PendingReport() {
                           <tr key={i}>
                             <td>{i + 1}</td>
                             <td>{list.allottedLotId}</td>
-                            <td>---</td>
-                            <td>---</td>
+                            {/* <td>---</td> */}
+                            <td>{list.shed ? list.shed : "---"}</td>
                             <td>{list.farmerNumber}</td>
                             <td>{list.farmerFirstName}</td>
                             <td>{list.farmerVillage}</td>
                             <td>{list.farmerMobileNumber}</td>
-                            <td>---</td>
+                            <td>{list.acceptedBy ? list.acceptedBy : "---"}</td>
                             <td>{list.reelerLicense}</td>
                             <td>{list.reelerMobileNumber}</td>
                             <td>{list.reelerCurrentBalance}</td>
