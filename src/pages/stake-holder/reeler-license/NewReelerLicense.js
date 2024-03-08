@@ -116,7 +116,15 @@ function NewReelerLicense() {
   };
 
   const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    })
+  }
 
   const [data, setData] = useState({
     fruitsId: "",
@@ -612,6 +620,24 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
+  // to get TSC
+  const [chawkiListData, setChawkiListData] = useState([]);
+
+  const getChawkiList = () => {
+    const response = api
+      .get(baseURL2 + `tscMaster/get-all`)
+      .then((response) => {
+        setChawkiListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setChawkiListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getChawkiList();
+  }, []);
+
   // Display Image
   const [mahajar, setMahajar] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
@@ -900,9 +926,13 @@ function NewReelerLicense() {
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            onBlur={() => handleInputs}
                             required
+                            isInvalid={
+                              data.casteId === undefined || data.casteId === "0"
+                            }
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="">Select Caste</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -966,25 +996,38 @@ function NewReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
+                      
                       {/* <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="arnNumber">
-                          ARN Number<span className="text-danger">*</span>
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Control
-                            id="arnNumber"
-                            name="arnNumber"
-                            value={data.arnNumber}
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
                             onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter ARN Number"
+                            onBlur={() => handleInputs}
                             required
-                          />
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {chawkiListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            ARN Number is required.
+                            TSC is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group> */}
+                    {/* </Col> */}
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerNumber">
                           Reeler Number<span className="text-danger">*</span>

@@ -247,7 +247,6 @@ function DtrOnlineReport() {
                   title: "No Data Found",
                   // text: "Something went wrong!",
                 });
-                
               }
             setListData(response.data.content.dtrOnlineReportUnitDetailList);
             setListDetails(response.data.content);
@@ -477,7 +476,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Wt
+                            Weight
                           </th>
                           <th
                             style={{
@@ -486,7 +485,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Bid Amt
+                            Bid Amount
                           </th>
                           <th
                             style={{
@@ -495,7 +494,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Amt
+                            Amount
                           </th>
                           <th
                             style={{
@@ -504,7 +503,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Farmer Amt
+                            Farmer Amount
                           </th>
                           <th
                             style={{
@@ -513,7 +512,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            MF
+                            Market Fee
                           </th>
                           <th
                             style={{
@@ -522,7 +521,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Amt
+                            Reeler Amount
                           </th>
                           <th
                             style={{
@@ -602,7 +601,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                Farmers Cheque Amt:{" "}
+                                Farmers Cheque Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     listDetails.totalFarmerAmount.toFixed(2)
@@ -610,7 +609,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                MF Amount:{" "}
+                                Market Fee Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     (
@@ -621,7 +620,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                Reeler Transaction Amt:{" "}
+                                Reeler Transaction Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     listDetails.totalReelerAmount.toFixed(2)
