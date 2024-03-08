@@ -183,48 +183,79 @@ function DtrOnlineReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.reelerId.trim()) {
+        api
+          .get(
+            baseURLFarmer +
+              `reeler/get-by-reeling-license-number/${data.reelerId}`
+          )
+          .then((response) => {
+            if (!response.data.content.error) {
+              if (response.data.content.reelerId) {
+                setRealReelerId(response.data.content.reelerId);
 
-      api
-        .get(
-          baseURLFarmer +
-            `reeler/get-by-reeling-license-number/${data.reelerId}`
-        )
-        .then((response) => {
-          if (!response.data.content.error) {
-            if (response.data.content.reelerId) {
-              setRealReelerId(response.data.content.reelerId);
-
-              api
-                .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
-                  marketId: marketId,
-                  // godownId: godownId,
-                  reelerId: response.data.content.reelerId,
-                  fromDate: formattedFromDate,
-                  toDate: formattedToDate,
-                })
-                .then((response) => {
-                  //  console.log(response);
-                  if (response.data.content)
-                    setListData(
-                      response.data.content.dtrOnlineReportUnitDetailList
-                    );
-                  setListDetails(response.data.content);
-                })
-                .catch((error) => {
-                  // console.log("error", error);
-                });
+                api
+                  .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
+                    marketId: marketId,
+                    // godownId: godownId,
+                    reelerId: response.data.content.reelerId,
+                    fromDate: formattedFromDate,
+                    toDate: formattedToDate,
+                  })
+                  .then((response) => {
+                    //  console.log(response);
+                    if (response.data.content)
+                      setListData(
+                        response.data.content.dtrOnlineReportUnitDetailList
+                      );
+                    setListDetails(response.data.content);
+                  })
+                  .catch((error) => {
+                    // console.log("error", error);
+                  });
+              }
+            } else {
+              Swal.fire({
+                icon: "warning",
+                // title: "Save",
+                text: response.data.content.error_description,
+              });
+              setListData([]);
             }
-          } else {
-            Swal.fire({
-              icon: "warning",
-              // title: "Save",
-              text: response.data.content.error_description,
-            });
-          }
-        })
-        .catch((error) => {
-          // console.log("error", error);
-        });
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      } else {
+        api
+          .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
+            marketId: marketId,
+            // godownId: godownId,
+            reelerId: 0,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
+          })
+          .then((response) => {
+            //  console.log(response);
+            if (response.data.content)
+              if (
+                response.data.content.dtrOnlineReportUnitDetailList.length === 0
+              ) {
+                setListData([]);
+                return Swal.fire({
+                  icon: "warning",
+                  title: "No Data Found",
+                  // text: "Something went wrong!",
+                });
+                
+              }
+            setListData(response.data.content.dtrOnlineReportUnitDetailList);
+            setListDetails(response.data.content);
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      }
     }
   };
 
@@ -300,11 +331,11 @@ function DtrOnlineReport() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Reeler Number"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Reeler Number is required.
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
                         From Date
