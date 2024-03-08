@@ -125,11 +125,11 @@ function ScCategoryEdit() {
   };
 
   return (
-    <Layout title="Edit Sc Category">
+    <Layout title="Edit Program Category">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Sc Category</Block.Title>
+            <Block.Title tag="h2">Edit Program Category</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -169,71 +169,73 @@ function ScCategoryEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="scCategory">
-                          Sc Category Number<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="categoryNumber"
-                            name="categoryNumber"
-                            value={data.categoryNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter SC Category Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sc Category Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Category  Number
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="categoryNumber"
+                          type="text"
+                          value={data.categoryNumber}
+                          onChange={handleInputs}
+                          placeholder="Enter Category Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Category Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="Sc Category">
-                          Sc Category Name<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="categoryName"
-                            name="categoryName"
-                            value={data.categoryName}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter SC Category Name"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sc Category Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Category Name
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="categoryName"
+                          type="text"
+                          value={data.categoryName}
+                          onChange={handleInputs}
+                          placeholder="Enter  Category Name"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                         Category Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                        Sc Category Name in Kannada
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="title"
-                            name="categoryNameInKannada"
-                            value={data.categoryNameInKannada}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Sc Category Name in Kannada"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sc Category Name in Kannada is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                       Category Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="categoryNameInKannada"
+                          value={data.categoryNameInKannada}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Category Name in Kannada"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                         Category Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

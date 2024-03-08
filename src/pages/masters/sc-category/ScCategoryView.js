@@ -22,15 +22,11 @@ function ScCategoryView() {
   const [ScCategory, setScCategory] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  //   let findUser = data.find((item) => item.id === id);
-  //   setState(findUser);
-  // }, [id, data]);
+  
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scCategoory/get/${id}`)
+      .get(baseURL + `scCategory/get/${id}`)
       .then((response) => {
         setScCategory(response.data.content);
         setLoading(false);
@@ -48,11 +44,11 @@ function ScCategoryView() {
   }, [id]);
 
   return (
-    <Layout title="Sc Category View">
+    <Layout title="View Category Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sc Category View</Block.Title>
+            <Block.Title tag="h2">View Category Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -81,7 +77,7 @@ function ScCategoryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Sc Category Details</Card.Header>
+          <Card.Header>Category Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -97,17 +93,17 @@ function ScCategoryView() {
                         <td>{ScCategory.scCategoryId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sc Category Number:</td>
+                        <td style={styles.ctstyle}> Category Number:</td>
                         <td>{ScCategory.categoryNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Sc Category Name:</td>
+                        <td style={styles.ctstyle}>Category Name:</td>
                         <td>{ScCategory.categoryName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Sc Category Name In Kannada:
+                          Category Name In Kannada:
                         </td>
                         <td>{ScCategory.categoryNameInKannada}</td>
                       </tr>

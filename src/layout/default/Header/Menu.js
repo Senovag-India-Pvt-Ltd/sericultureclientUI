@@ -313,6 +313,8 @@ function Menu() {
     Admin_Master_Service_Program: false,
     Admin_Master_Service_Component: false,
     Admin_Master_Service_Head_of_Account: false,
+    Admin_Master_Service_Category: false,
+    Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
 
@@ -1750,6 +1752,22 @@ function Menu() {
                             <MenuItemLink
                               text="Head of Account"
                               to="/seriui/sc-head-account"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Category"
+                              to="/seriui/sc-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Program_Account_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Program Account mapping"
+                              to="/seriui/sc-program-account-mapping"
                             />
                           </MenuItem>
                         ) : null}

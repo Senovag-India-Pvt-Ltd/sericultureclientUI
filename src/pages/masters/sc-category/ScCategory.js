@@ -93,11 +93,11 @@ function ScCategory() {
   };
 
   return (
-    <Layout title="Sc Category">
+    <Layout title="Program Category">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sc Category</Block.Title>
+            <Block.Title tag="h2">Program Category</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -135,7 +135,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Sc Category  Number
+                      Category  Number
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -145,11 +145,11 @@ function ScCategory() {
                           type="text"
                           value={data.categoryNumber}
                           onChange={handleInputs}
-                          placeholder="Enter Sc CategoryNumber"
+                          placeholder="Enter Category Number"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sc Category Number is required
+                        Category Number is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -158,7 +158,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Sc Category Name
+                        Category Name
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -168,11 +168,11 @@ function ScCategory() {
                           type="text"
                           value={data.categoryName}
                           onChange={handleInputs}
-                          placeholder="Enter Sc Category Name"
+                          placeholder="Enter  Category Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sc Category Name is required
+                         Category Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -181,7 +181,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Sc Category Name in Kannada
+                       Category Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -191,11 +191,11 @@ function ScCategory() {
                           value={data.categoryNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Sc Category Name in Kannada"
+                          placeholder="Enter Category Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sc Category Name in Kannada is required.
+                         Category Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

@@ -4,7 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
+import api from "../../../../src/services/auth/api";
 import ScHeadAccount from "./ScHeadAccount";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -24,7 +24,7 @@ function ScHeadAccountView() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `scHeadAccount/get/${id}`)
       .then((response) => {
         setScHeadAccount(response.data.content);
@@ -42,21 +42,12 @@ function ScHeadAccountView() {
   }, [id]);
 
   return (
-    <Layout title="Head of Account View" content="container">
+    <Layout title="View Head of Account Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head of Account View</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Head of Account View
-                </li>
-              </ol>
-            </nav>
+            <Block.Title tag="h2">View Head of Account Details</Block.Title>
+           
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -83,7 +74,7 @@ function ScHeadAccountView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <Card.Header>Head of Account Details</Card.Header>
           <Card.Body>
@@ -103,6 +94,10 @@ function ScHeadAccountView() {
                       <tr>
                         <td style={styles.ctstyle}> Head of Account:</td>
                         <td>{scHeadAccount.scHeadAccountName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Head of Account Name In Kannada:</td>
+                        <td>{scHeadAccount.scHeadAccountNameInKannada}</td>
                       </tr>
                     </tbody>
                   </table>

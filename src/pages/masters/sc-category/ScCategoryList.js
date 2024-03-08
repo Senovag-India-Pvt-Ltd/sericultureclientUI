@@ -177,7 +177,7 @@ function ScCategoryList() {
       hide: "md",
     },
     {
-      name: "Sc Category Number",
+      name: " Category Number",
       selector: (row) => row.categoryNumber,
       cell: (row) => <span>{row.categoryNumber}</span>,
       sortable: true,
@@ -185,14 +185,14 @@ function ScCategoryList() {
     },
 
     {
-        name: "Sc Category Name",
+        name: "Category Name",
         selector: (row) => row.categoryName,
         cell: (row) => <span>{row.categoryName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: "Sc Category Name in Kannada",
+      name: " Category Name in Kannada",
       selector: (row) => row.categoryNameInKannada,
       cell: (row) => <span>{row.categoryNameInKannada}</span>,
       sortable: true,
@@ -201,17 +201,17 @@ function ScCategoryList() {
   ];
 
   return (
-    <Layout title="Sc Category List">
+    <Layout title="Category List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sc Category List</Block.Title>
+            <Block.Title tag="h2">Category List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/scCategory"
+                  to="/seriui/sc-category"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -220,7 +220,7 @@ function ScCategoryList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/scCategory"
+                  to="/seriui/sc-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
