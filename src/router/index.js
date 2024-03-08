@@ -548,6 +548,10 @@ import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
 import TscView from "../pages/masters/tsc/TscView";
+import ScCategory from "../pages/masters/sc-category/ScCategory";
+import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
+import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
+import ScCategoryEdit from "../pages/masters/sc-category/ScCategoryEdit";
 
 // Admin and Reports
 
@@ -1437,6 +1441,10 @@ function Router() {
             <Route path="tsc-list" element={<TscList />} />
             <Route path="tsc-view/:id" element={<TscView />} />
             <Route path="tsc-edit/:id" element={<TscEdit />} />
+            <Route path="sc-category" element={<ScCategory />} />
+            <Route path="sc-category-list" element={<ScCategoryList />} />
+            <Route path="sc-category-view/:id" element={<ScCategoryView />} />
+            <Route path="sc-category-edit/:id" element={<ScCategoryEdit />} />
             <Route path="sc-component" element={<ScComponent />} />
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
