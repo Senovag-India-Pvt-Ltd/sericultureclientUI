@@ -1,34 +1,28 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
-import { useState, useEffect } from "react";
-// import axios from "axios";
-import Swal from "sweetalert2";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
+import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import { Icon, Select } from "../../components";
-import api from "../../../src/services/auth/api";
-import { format } from "date-fns";
-import DatePicker from "react-datepicker";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import api from "../../../../src/services/auth/api";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function TrainingScheduleList() {
+function ScProgramApprovalMappingList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [data, setData] = useState({
     text: "",
-    date: "",
-    searchBy: "trGroupMasterName",
+    searchBy: "scProgramName",
   });
 
   const handleInputs = (e) => {
@@ -40,81 +34,31 @@ function TrainingScheduleList() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "trStartDate") {
-      joinColumn = "trSchedule.trStartDate";
-      const formattedFromDate =
-      new Date(data.date).getFullYear() +
-      "-" +
-      (new Date(data.date).getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      new Date(data.date).getDate().toString().padStart(2, "0");
-      api
-        .post(
-          baseURL + `trSchedule/search`,
-          
-          {
-            searchText: formattedFromDate,
-            joinColumn: joinColumn,
-          },
-          {
-            headers: _header,
-          }
-        )
-        .then((response) => {
-          setListData(response.data.content.trSchedule);
-          setTotalRows(response.data.content.totalItems);
-          setLoading(false);
-
-          // if (response.data.content.error) {
-          //   // saveError();
-          // } else {
-          //   console.log(response);
-          //   // saveSuccess();
-          // }
-        })
-        .catch((err) => {
-          // saveError();
-        });
+    if (data.searchBy === "scProgramName") {
+      joinColumn = "scProgram.scProgramName";
     }
-    if (data.searchBy === "trGroupMasterName") {
-      joinColumn = "trGroupMaster.trGroupMasterName";
-      api
-        .post(
-          baseURL + `trSchedule/search`,
-          {
-            searchText: data.text,
-            joinColumn: joinColumn,
-          },
-          {
-            headers: _header,
-          }
-        )
-        .then((response) => {
-          setListData(response.data.content.trSchedule);
-          setTotalRows(response.data.content.totalItems);
-          setLoading(false);
-
-          // if (response.data.content.error) {
-          //   // saveError();
-          // } else {
-          //   console.log(response);
-          //   // saveSuccess();
-          // }
-        })
-        .catch((err) => {
-          // saveError();
-        });
+    if (data.searchBy === "stageName") {
+      joinColumn = "scApprovalStage.stageName";
     }
-
     // console.log(joinColumn);
+    api
+      .post(baseURL + `scProgramApprovalMapping/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      })
+      .then((response) => {
+        setListData(response.data.content.scProgramApprovalMapping);
+      })
+      .catch((err) => {
+      });
   };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `trSchedule/list-with-join`, _params)
+      .get(baseURL + `scProgramApprovalMapping/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.trSchedule);
+        setListData(response.data.content.scProgramApprovalMapping);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -126,22 +70,16 @@ function TrainingScheduleList() {
 
   useEffect(() => {
     getList();
-    // search()
   }, [page]);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/training-schedule-view/${_id}`);
+    navigate(`/seriui/sc-program-approval-mapping-view/${_id}`);
   };
 
-  // const handleEdit = (_id) => {
-  //   // navigate(`/seriui/caste/${_id}`);
-  //   navigate("/seriui/caste-edit");
-  // };
-
   const handleEdit = (_id) => {
-    navigate(`/seriui/training-schedule-edit/${_id}`);
-    // navigate("/seriui/training Schedule");
+    navigate(`/seriui/sc-program-approval-mapping-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -161,9 +99,8 @@ function TrainingScheduleList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        console.log("hello");
         const response = api
-          .delete(baseURL + `trSchedule/delete/${_id}`)
+          .delete(baseURL + `scProgramApprovalMapping/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -233,17 +170,7 @@ function TrainingScheduleList() {
     },
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return format(date, "dd/MM/yyyy");
-  };
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
-
-  const TrainingScheduleDataColumns = [
+  const ScProgramApprovalMappingDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -253,7 +180,7 @@ function TrainingScheduleList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.trScheduleId)}
+            onClick={() => handleView(row.scProgramApprovalMappingId)}
           >
             View
           </Button>
@@ -261,14 +188,14 @@ function TrainingScheduleList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.trScheduleId)}
+            onClick={() => handleEdit(row.scProgramApprovalMappingId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.trScheduleId)}
+            onClick={() => deleteConfirm(row.scProgramApprovalMappingId)}
             className="ms-2"
           >
             Delete
@@ -277,56 +204,52 @@ function TrainingScheduleList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2,
     },
     {
-      name: "Training Schedule",
-      selector: (row) => row.trScheduleId,
-      cell: (row) => <span>{row.trScheduleId}</span>,
+      name: "Program",
+      selector: (row) => row.scProgramName,
+      cell: (row) => <span>{row.scProgramName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Date",
-      selector: (row) => row.trStartDate,
-      cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Training Institution Name",
-    //   selector: (row) => row.trInstitutionMasterName,
-    //   cell: (row) => <span>{row.trInstitutionMasterName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Training Group Name",
-      selector: (row) => row.trGroupMasterName,
-      cell: (row) => <span>{row.trGroupMasterName}</span>,
+      name: "Approval Stage",
+      selector: (row) => row.stageName,
+      cell: (row) => <span>{row.stageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Training Program Name",
-      selector: (row) => row.trProgramMasterName,
-      cell: (row) => <span>{row.trProgramMasterName}</span>,
+      name: "Designation",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "Orders",
+      selector: (row) => row.orders,
+      cell: (row) => <span>{row.orders}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
   ];
 
   return (
-    <Layout title="Training Schedule List">
+    <Layout title="List Of Program Approval Mapping">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule List</Block.Title>
+            <Block.Title tag="h2">List Of Program Approval Mapping</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/training-schedule"
+                  to="/seriui/sc-program-approval-mapping"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -335,7 +258,7 @@ function TrainingScheduleList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/training-schedule"
+                  to="/seriui/sc-program-approval-mapping"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -363,46 +286,22 @@ function TrainingScheduleList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="trStartDate">Start Date</option>
-                      <option value="trGroupMasterName">Training Group</option>
+                      <option value="scProgramName">Program</option>
+                      <option value="stageName">Approval Stage</option>
                     </Form.Select>
                   </div>
                 </Col>
 
-                {data.searchBy === "trStartDate" ? (
-                  <Col sm={2}>
-                    <Form.Group className="form-group">
-                      {/* <Form.Label htmlFor="sordfl">
-                      Training Period Start Date<span className="text-danger">*</span>
-                      </Form.Label> */}
-                      <div className="form-control-wrap">
-                        <DatePicker
-                          selected={data.date}
-                          onChange={(date) => handleDateChange(date, "date")}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          // minDate={new Date()}
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-                ) : (
-                  <Col sm={3}>
-                    <Form.Control
-                      id="trScheduleId"
-                      name="text"
-                      value={data.text}
-                      onChange={handleInputs}
-                      type="text"
-                      placeholder="Search"
-                    />
-                  </Col>
-                )}
-
+                <Col sm={3}>
+                  <Form.Control
+                    id="fruitsId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
@@ -411,10 +310,10 @@ function TrainingScheduleList() {
               </Form.Group>
             </Col>
           </Row>
+
           <DataTable
-            // title="Training Schedule List"
             tableClassName="data-table-head-light table-responsive"
-            columns={TrainingScheduleDataColumns}
+            columns={ScProgramApprovalMappingDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -435,4 +334,4 @@ function TrainingScheduleList() {
   );
 }
 
-export default TrainingScheduleList;
+export default ScProgramApprovalMappingList;

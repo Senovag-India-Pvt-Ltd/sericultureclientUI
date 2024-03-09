@@ -314,7 +314,9 @@ function Menu() {
     Admin_Master_Service_Component: false,
     Admin_Master_Service_Head_of_Account: false,
     Admin_Master_Service_Category: false,
+    Admin_Master_Service_Approval_Stage: false,
     Admin_Master_Service_Program_Account_Mapping: false,
+    Admin_Master_Service_Program_Approval_Mapping: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
 
@@ -1763,11 +1765,27 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Approval_Stage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Approval Stage"
+                              to="/seriui/sc-approval-stage"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Program_Account_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Program Account mapping"
                               to="/seriui/sc-program-account-mapping"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Program_Approval_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Program Approval Stage mapping"
+                              to="/seriui/sc-program-approval-mapping"
                             />
                           </MenuItem>
                         ) : null}
