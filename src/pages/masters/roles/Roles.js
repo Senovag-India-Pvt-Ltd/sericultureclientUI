@@ -68,8 +68,7 @@ function Roles() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    });
   };
 
   const saveError = (message) => {

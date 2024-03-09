@@ -4,12 +4,11 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import ScHeadAccount from "./ScHeadAccount";
-
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScHeadAccountView() {
+function ScCategoryView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,41 +18,43 @@ function ScHeadAccountView() {
   };
 
   const { id } = useParams();
-  const [scHeadAccount, setScHeadAccount] = useState({});
+  // const [data] = useState(LandCategoryDatas);
+  const [ScCategory, setScCategory] = useState({});
   const [loading, setLoading] = useState(false);
 
+  
   const getIdList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scHeadAccount/get/${id}`)
+    const response = api
+      .get(baseURL + `scCategory/get/${id}`)
       .then((response) => {
-        setScHeadAccount(response.data.content);
+        setScCategory(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setScHeadAccount({});
+        setScCategory({});
         setLoading(false);
       });
   };
 
-  // grabs the id form the url and loads the corresponding data
+  // console.log(getIdList());
+
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="View Head of Account Details">
+    <Layout title="View Category Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Head of Account Details</Block.Title>
-           
+            <Block.Title tag="h2">View Category Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-head-account-list"
+                  to="/seriui/sc-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -62,7 +63,7 @@ function ScHeadAccountView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-head-account-list"
+                  to="/seriui/sc-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -76,7 +77,7 @@ function ScHeadAccountView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Head of Account Details</Card.Header>
+          <Card.Header>Category Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -89,15 +90,22 @@ function ScHeadAccountView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{scHeadAccount.scHeadAccountId}</td>
+                        <td>{ScCategory.scCategoryId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head of Account:</td>
-                        <td>{scHeadAccount.scHeadAccountName}</td>
+                        <td style={styles.ctstyle}> Category Number:</td>
+                        <td>{ScCategory.categoryNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head of Account Name In Kannada:</td>
-                        <td>{scHeadAccount.scHeadAccountNameInKannada}</td>
+                        <td style={styles.ctstyle}>Category Name:</td>
+                        <td>{ScCategory.categoryName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Category Name In Kannada:
+                        </td>
+                        <td>{ScCategory.categoryNameInKannada}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -111,4 +119,4 @@ function ScHeadAccountView() {
   );
 }
 
-export default ScHeadAccountView;
+export default ScCategoryView;

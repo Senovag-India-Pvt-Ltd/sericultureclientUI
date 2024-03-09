@@ -481,6 +481,25 @@ function ReelerLicenceEdit() {
     getMarketMasterList();
   }, []);
 
+  // to get TSC
+  const [chawkiListData, setChawkiListData] = useState([]);
+
+  const getChawkiList = () => {
+    const response = api
+      .get(baseURL2 + `tscMaster/get-all`)
+      .then((response) => {
+        setChawkiListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setChawkiListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getChawkiList();
+  }, []);
+
+
   const handleRenewedDateChange = (date) => {
     console.log(data);
     console.log(date);
@@ -761,13 +780,17 @@ function ReelerLicenceEdit() {
                           Caste<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Select
+                        <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            onBlur={() => handleInputs}
                             required
+                            isInvalid={
+                              data.casteId === undefined || data.casteId === "0"
+                            }
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="">Select Caste</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
@@ -830,7 +853,38 @@ function ReelerLicenceEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group mt-3">
+
+                       {/* <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {chawkiListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group> */}
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="arnNumber">
                           ARN Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -848,7 +902,7 @@ function ReelerLicenceEdit() {
                             ARN Number is required.
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
 
                     <Col lg="4">

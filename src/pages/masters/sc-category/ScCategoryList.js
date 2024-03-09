@@ -1,19 +1,22 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
 import { createTheme } from "react-data-table-component";
+import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScHeadAccountList() {
+function ScCategoryList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -23,10 +26,10 @@ function ScHeadAccountList() {
 
   const getList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scHeadAccount/list`, _params)
+    const response = api
+      .get(baseURL + `scCategory/list`, _params)
       .then((response) => {
-        setListData(response.data.content.scHeadAccount);
+        setListData(response.data.content.scCategory);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -42,12 +45,12 @@ function ScHeadAccountList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/sc-head-account-view/${_id}`);
+    navigate(`/seriui/sc-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-head-account-edit/${_id}`);
-    // navigate("/seriui/soil-type");
+    navigate(`/seriui/sc-category-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -67,8 +70,8 @@ function ScHeadAccountList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        api
-          .delete(baseURL + `scHeadAccount/delete/${_id}`)
+        const response = api
+          .delete(baseURL + `scCategory/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -138,8 +141,7 @@ function ScHeadAccountList() {
     },
   };
 
-
-  const ScHeadAccountDataColumns = [
+  const ScCategoryDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -149,7 +151,7 @@ function ScHeadAccountList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.scHeadAccountId)}
+            onClick={() => handleView(row.scCategoryId)}
           >
             View
           </Button>
@@ -157,14 +159,14 @@ function ScHeadAccountList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scHeadAccountId)}
+            onClick={() => handleEdit(row.scCategoryId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.scHeadAccountId)}
+            onClick={() => deleteConfirm(row.scCategoryId)}
             className="ms-2"
           >
             Delete
@@ -175,35 +177,41 @@ function ScHeadAccountList() {
       hide: "md",
     },
     {
-      name: "Head of Account",
-      selector: (row) => row.scHeadAccountName,
-      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      name: " Category Number",
+      selector: (row) => row.categoryNumber,
+      cell: (row) => <span>{row.categoryNumber}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "Head of Account Name in Kannda",
-      selector: (row) => row.scHeadAccountNameInKannada,
-      cell: (row) => <span>{row.scHeadAccountNameInKannada}</span>,
+        name: "Category Name",
+        selector: (row) => row.categoryName,
+        cell: (row) => <span>{row.categoryName}</span>,
+        sortable: true,
+        hide: "md",
+      },
+    {
+      name: " Category Name in Kannada",
+      selector: (row) => row.categoryNameInKannada,
+      cell: (row) => <span>{row.categoryNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Head of Account List">
+    <Layout title="Category List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head of Account List</Block.Title>
-           
+            <Block.Title tag="h2">Category List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-head-account"
+                  to="/seriui/sc-category"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -212,7 +220,7 @@ function ScHeadAccountList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-head-account"
+                  to="/seriui/sc-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -227,8 +235,9 @@ function ScHeadAccountList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
+            // title="scCategory List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ScHeadAccountDataColumns}
+            columns={ScCategoryDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -249,4 +258,4 @@ function ScHeadAccountList() {
   );
 }
 
-export default ScHeadAccountList;
+export default ScCategoryList;
