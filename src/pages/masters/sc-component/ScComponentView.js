@@ -4,7 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -23,7 +23,7 @@ function ScComponentView() {
 
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `scComponent/get/${id}`)
       .then((response) => {
         setScComponent(response.data.content);
@@ -41,21 +41,12 @@ function ScComponentView() {
   }, [id]);
 
   return (
-    <Layout title="Component View" content="container">
+    <Layout title="Component View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Component View</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Component View
-                </li>
-              </ol>
-            </nav>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -82,7 +73,7 @@ function ScComponentView() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <Card.Header>Component Details</Card.Header>
           <Card.Body>

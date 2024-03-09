@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -22,7 +23,7 @@ function ScComponentList() {
 
   const getList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `scComponent/list`, _params)
       .then((response) => {
         setListData(response.data.content.scComponent);
@@ -66,7 +67,7 @@ function ScComponentList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        axios
+        api
           .delete(baseURL + `scComponent/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
@@ -86,6 +87,55 @@ function ScComponentList() {
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
+  };
+
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#004b8e",
+        secondary: "#2aa198",
+      },
+      background: {
+        default: "#fff",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#d3d3d3",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.02)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "light"
+  );
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
   };
 
   const ScComponentDataColumns = [
@@ -138,17 +188,7 @@ function ScComponentList() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Component List</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Soil Type List</Link></li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  List
-                </li>
-              </ol>
-            </nav>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -175,10 +215,9 @@ function ScComponentList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className="mt-n4">
         <Card>
           <DataTable
-            title="Component List"
             tableClassName="data-table-head-light table-responsive"
             columns={ScComponentDataColumns}
             data={listData}
@@ -192,6 +231,8 @@ function ScComponentList() {
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
           />
         </Card>
       </Block>
