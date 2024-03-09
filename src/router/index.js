@@ -548,6 +548,7 @@ import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
 import TscView from "../pages/masters/tsc/TscView";
+import DashboardReport from "../pages/reports-admin/market-auction/DashboardReport";
 
 // Admin and Reports
 
@@ -1778,6 +1779,7 @@ function Router() {
               path="district-wise-abstract"
               element={<DistrictWiseAbstractReport />}
             />
+            <Route path="dashboard-report" element={<DashboardReport />} />
 
             {/* Display All Lot */}
             <Route path="display-all-lot" element={<DisplayAllLot />} />
