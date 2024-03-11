@@ -99,7 +99,7 @@ function Crate() {
 
   const getRaceList = (_id) => {
     const response = api
-      .get(baseURL + `raceMaster/get-by-market-master-id/${_id}`)
+      .get(baseURL + `raceMarketMaster/get-by-market-master-id/${_id}`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
         setLoading(false);
