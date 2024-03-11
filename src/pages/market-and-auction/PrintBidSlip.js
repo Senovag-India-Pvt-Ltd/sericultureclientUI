@@ -123,11 +123,11 @@ function PrintBidSlip() {
     });
   };
   return (
-    <Layout title="Print Bidding Slip">
+    <Layout title="Generated Triplet">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Print Bidding Slip</Block.Title>
+            <Block.Title tag="h2">Generated Triplet</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -189,8 +189,13 @@ function PrintBidSlip() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
                             selected={data.auctionDate}
                             onChange={handleDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>

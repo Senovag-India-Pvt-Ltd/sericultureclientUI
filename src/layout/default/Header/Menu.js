@@ -378,6 +378,7 @@ function Menu() {
     Admin_Report_Bidding_Reeler_Report: false,
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_Reeler_Transaction_Report: false,
+    Admin_Report_GeneratedTriplet: false,
   });
 
   // Old show menu using mapcode
@@ -2235,6 +2236,14 @@ function Menu() {
                       <MenuItemLink
                         text="Reeler Transaction Report"
                         to="/seriui/reeler-transaction-reports"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_GeneratedTriplet ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Generated Triplet"
+                        to="/seriui/print-bid-slip"
                       />
                     </MenuItem>
                   ) : null}
