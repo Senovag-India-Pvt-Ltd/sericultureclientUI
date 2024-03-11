@@ -1173,7 +1173,8 @@ function Weighment() {
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.large}>{lastWeight}</td>
+                              {/* <td style={styles.large}>{lastWeight-tareWeight}</td> */}
+                              <td style={styles.large}>{Math.max(0, lastWeight - tareWeight).toFixed(3)}</td>
                             </tr>
                             <tr>
                               <td style={styles.xxsmallcolor}>
