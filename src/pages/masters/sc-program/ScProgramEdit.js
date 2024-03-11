@@ -24,9 +24,18 @@ function ScProgramEdit() {
     setData({ ...data, [name]: value });
   };
 
+  const [validated, setValidated] = useState(false);
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
     api
       .post(baseURL + `scProgram/edit`, data)
       .then((response) => {
@@ -37,11 +46,16 @@ function ScProgramEdit() {
           setData({
             scProgramName: "",
           });
+          setValidated(false);
         }
       })
       .catch((err) => {
-        updateError();
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          updateError(err.response.data.validationErrors);
+        }
       });
+    setValidated(true);
+    }
   };
 
   const clear = () => {
@@ -81,10 +95,16 @@ function ScProgramEdit() {
   };
 
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: errorMessage,
     });
   };
 
@@ -129,7 +149,7 @@ function ScProgramEdit() {
       </Block.Head>
 
       <Block className="mt-n5">
-        <Form action="#">
+      <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -162,7 +182,7 @@ function ScProgramEdit() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary" onClick={postData}>
+                  <Button type="button" variant="primary">
                     Update
                   </Button>
                 </li>

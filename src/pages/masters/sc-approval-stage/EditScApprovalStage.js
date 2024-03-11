@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScCategoryEdit() {
+function EditScApprovalStage() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,11 +28,10 @@ function ScCategoryEdit() {
 
   const postData = (event) => {
     const datas = {
-      scCategoryId: id,
-      categoryNumber: data.categoryNumber,
-      categoryName: data.categoryName,
-      categoryNameInKannada: data.categoryNameInKannada,
-    };
+        scApprovalStageId: id,
+        stageName: data.stageName,
+        stageNameInKannada: data.stageNameInKannada,
+      };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -41,16 +40,15 @@ function ScCategoryEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `scCategory/edit`, datas)
+        .post(baseURL + `scApprovalStage/edit`, datas)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-                categoryNumber: "",
-                categoryName: "",
-                categoryNameInKannada: "",
+                stageName: "",
+                stageNameInKannada: "",
             });
             setValidated(false);
           }
@@ -66,9 +64,8 @@ function ScCategoryEdit() {
 
   const clear = () => {
     setData({
-        categoryNumber: "",
-        categoryName: "",
-        categoryNameInKannada: "",
+        stageName: "",
+        stageNameInKannada: "",
     });
   };
 
@@ -76,15 +73,13 @@ function ScCategoryEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scCategory/get/${id}`)
+      .get(baseURL + `scApprovalStage/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
         setLoading(false);
       });
   };
@@ -116,26 +111,20 @@ function ScCategoryEdit() {
       html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+ 
 
   return (
-    <Layout title="Edit Program Category">
+    <Layout title="Edit Approval Stage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Program Category</Block.Title>
+            <Block.Title tag="h2">Edit Approval Stage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-category-list"
+                  to="/seriui/sc-approval-stage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -144,7 +133,7 @@ function ScCategoryEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-category-list"
+                  to="/seriui/sc-approval-stage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -168,24 +157,24 @@ function ScCategoryEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Category  Number
+                      Approval Stage
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
-                          name="categoryNumber"
+                          name="stageName"
                           type="text"
-                          value={data.categoryNumber}
+                          value={data.stageName}
                           onChange={handleInputs}
-                          placeholder="Enter Category Number"
+                          placeholder="Enter Approval Stage"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Category Number is required
+                        Approval Stage is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -194,44 +183,21 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Category Name
+                        Approval Stage Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
-                          name="categoryName"
+                          name="stageNameInKannada"
                           type="text"
-                          value={data.categoryName}
+                          value={data.stageNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter  Category Name"
+                          placeholder="Enter Approval Stage Name In Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                       Category Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="categoryNameInKannada"
-                          value={data.categoryNameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Category Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                         Category Name in Kannada is required.
+                        Approval Stage Name In Kannada is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -263,4 +229,4 @@ function ScCategoryEdit() {
   );
 }
 
-export default ScCategoryEdit;
+export default EditScApprovalStage;

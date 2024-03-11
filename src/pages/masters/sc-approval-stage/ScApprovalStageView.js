@@ -4,11 +4,11 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import api from "../../../services/auth/api";
-
+import axios from "axios";
+import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScComponentView() {
+function ScApprovalStageView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -18,41 +18,43 @@ function ScComponentView() {
   };
 
   const { id } = useParams();
-  const [scComponent, setScComponent] = useState({});
+  // const [data] = useState(LandCategoryDatas);
+  const [scApproval, setScApproval] = useState({});
   const [loading, setLoading] = useState(false);
 
+  
   const getIdList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scComponent/get/${id}`)
+    const response = api
+      .get(baseURL + `scApprovalStage/get/${id}`)
       .then((response) => {
-        setScComponent(response.data.content);
+        setScApproval(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setScComponent({});
+        setScApproval({});
         setLoading(false);
       });
   };
 
-  // grabs the id form the url and loads the corresponding data
+  // console.log(getIdList());
+
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="Component View">
+    <Layout title="View Approval Stage Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Component View</Block.Title>
-            
+            <Block.Title tag="h2">View Approval Stage Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-component-list"
+                  to="/seriui/sc-approval-stage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -61,7 +63,7 @@ function ScComponentView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-component-list"
+                  to="/seriui/sc-approval-stage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -75,7 +77,7 @@ function ScComponentView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Component Details</Card.Header>
+          <Card.Header>Approval Stage Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -88,11 +90,18 @@ function ScComponentView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{scComponent.scComponentId}</td>
+                        <td>{scApproval.scApprovalStageId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Component:</td>
-                        <td>{scComponent.scComponentName}</td>
+                        <td style={styles.ctstyle}>Approval Stage Name:</td>
+                        <td>{scApproval.stageName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Approval Stage Name In Kannada:
+                        </td>
+                        <td>{scApproval.stageNameInKannada}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -106,4 +115,4 @@ function ScComponentView() {
   );
 }
 
-export default ScComponentView;
+export default ScApprovalStageView;

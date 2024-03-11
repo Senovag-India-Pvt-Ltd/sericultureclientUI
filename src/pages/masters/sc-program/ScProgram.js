@@ -19,6 +19,8 @@ function ScProgram() {
 
   let name, value;
 
+  const [validated, setValidated] = useState(false);
+
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
@@ -27,7 +29,14 @@ function ScProgram() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = () => {
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
     api
       .post(baseURL + `scProgram/add`, data)
       .then((response) => {
@@ -38,11 +47,16 @@ function ScProgram() {
           setData({
             scProgramName: "",
           });
+          setValidated(false);
         }
       })
       .catch((err) => {
-        saveError();
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          saveError(err.response.data.validationErrors);
+        }
       });
+      setValidated(true);
+    }
   };
   const clear = () => {
     setData({
@@ -60,10 +74,16 @@ function ScProgram() {
   };
 
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: errorMessage,
     });
   };
 
@@ -100,7 +120,7 @@ function ScProgram() {
       </Block.Head>
 
       <Block className="mt-n5">
-        <Form action="#">
+      <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -128,7 +148,7 @@ function ScProgram() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary" onClick={postData}>
+                  <Button type="button" variant="primary">
                     Save
                   </Button>
                 </li>

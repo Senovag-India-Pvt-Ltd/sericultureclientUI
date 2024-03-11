@@ -305,6 +305,7 @@ function TrainingScheduleEdit() {
       trStartDate: null,
       trDateOfCompletion: null,
     });
+    setPPt("");
     setPPtFile("");
     setTrainerUser({
       trScheduleId: "",

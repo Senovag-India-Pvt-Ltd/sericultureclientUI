@@ -553,6 +553,18 @@ import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
 import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
 import ScCategoryEdit from "../pages/masters/sc-category/ScCategoryEdit";
 import DashboardReport from "../pages/reports-admin/market-auction/DashboardReport";
+import ScProgramAccountMapping from "../pages/masters/sc-program-account-mapping/ScProgramAccountMapping";
+import ScProgramAccountMappingList from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingList";
+import ScProgramAccountMappingEdit from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingEdit";
+import ScProgramAccountMappingView from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingView";
+import ScApprovalStage from "../pages/masters/sc-approval-stage/ScApprovalStage";
+import ScApprovalStageList from "../pages/masters/sc-approval-stage/ScApprovalStageList";
+import ScApprovalStageView from "../pages/masters/sc-approval-stage/ScApprovalStageView";
+import EditScApprovalStage from "../pages/masters/sc-approval-stage/EditScApprovalStage";
+import ScProgramApprovalMapping from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMapping";
+import ScProgramApprovalMappingList from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingList";
+import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingView";
+import ScProgramApprovalMappingEdit from "../pages/masters/sc-program-approval-mapping/EditScApprovalMapping";
 
 // Admin and Reports
 
@@ -1438,10 +1450,22 @@ function Router() {
             <Route path="sc-program-list" element={<ScProgramList />} />
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
             <Route path="sc-program-edit/:id" element={<ScProgramEdit />} />
+            <Route path="sc-approval-stage" element={<ScApprovalStage />} />
+            <Route path="sc-approval-stage-list" element={<ScApprovalStageList />} />
+            <Route path="sc-approval-stage-view/:id" element={<ScApprovalStageView />} />
+            <Route path="sc-approval-stage-edit/:id" element={<EditScApprovalStage />} />
             <Route path="tsc" element={<Tsc />} />
             <Route path="tsc-list" element={<TscList />} />
             <Route path="tsc-view/:id" element={<TscView />} />
             <Route path="tsc-edit/:id" element={<TscEdit />} />
+            <Route path="sc-program-approval-mapping" element={<ScProgramApprovalMapping />} />
+            <Route path="sc-program-approval-mapping-list" element={<ScProgramApprovalMappingList />} />
+            <Route path="sc-program-approval-mapping-view/:id" element={<ScProgramApprovalMappingView />} />
+            <Route path="sc-program-approval-mapping-edit/:id" element={<ScProgramApprovalMappingEdit />} />
+            <Route path="sc-program-account-mapping" element={<ScProgramAccountMapping />} />
+            <Route path="sc-program-account-mapping-list" element={<ScProgramAccountMappingList />} />
+            <Route path="sc-program-account-mapping-view/:id" element={<ScProgramAccountMappingView />} />
+            <Route path="sc-program-account-mapping-edit/:id" element={<ScProgramAccountMappingEdit />} />
             <Route path="sc-category" element={<ScCategory />} />
             <Route path="sc-category-list" element={<ScCategoryList />} />
             <Route path="sc-category-view/:id" element={<ScCategoryView />} />

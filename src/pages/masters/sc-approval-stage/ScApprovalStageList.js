@@ -1,19 +1,22 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from "react-data-table-component";
+// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import api from "../../../services/auth/api";
+// import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScComponentList() {
+function ScApprovalStageList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -23,10 +26,10 @@ function ScComponentList() {
 
   const getList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scComponent/list`, _params)
+    const response = api
+      .get(baseURL + `scApprovalStage/list`, _params)
       .then((response) => {
-        setListData(response.data.content.scComponent);
+        setListData(response.data.content.scApprovalStage);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -42,12 +45,12 @@ function ScComponentList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/sc-component-view/${_id}`);
+    navigate(`/seriui/sc-approval-stage-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-component-edit/${_id}`);
-    // navigate("/seriui/soil-type");
+    navigate(`/seriui/sc-approval-stage-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -67,8 +70,8 @@ function ScComponentList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        api
-          .delete(baseURL + `scComponent/delete/${_id}`)
+        const response = api
+          .delete(baseURL + `scApprovalStage/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -138,9 +141,9 @@ function ScComponentList() {
     },
   };
 
-  const ScComponentDataColumns = [
+  const ScApprovalStageDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -148,7 +151,7 @@ function ScComponentList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.scComponentId)}
+            onClick={() => handleView(row.scApprovalStageId)}
           >
             View
           </Button>
@@ -156,14 +159,14 @@ function ScComponentList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scComponentId)}
+            onClick={() => handleEdit(row.scApprovalStageId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.scComponentId)}
+            onClick={() => deleteConfirm(row.scApprovalStageId)}
             className="ms-2"
           >
             Delete
@@ -174,27 +177,33 @@ function ScComponentList() {
       hide: "md",
     },
     {
-      name: "Component",
-      selector: (row) => row.scComponentName,
-      cell: (row) => <span>{row.scComponentName}</span>,
+      name: "Approval Stage",
+      selector: (row) => row.stageName,
+      cell: (row) => <span>{row.stageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Approval Stage Name in Kannada",
+      selector: (row) => row.stageNameInKannada,
+      cell: (row) => <span>{row.stageNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Component List">
+    <Layout title="List Of Approval Stages">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Component List</Block.Title>
-            
+            <Block.Title tag="h2">List Of Approval Stages</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-component"
+                  to="/seriui/sc-approval-stage"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -203,7 +212,7 @@ function ScComponentList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-component"
+                  to="/seriui/sc-approval-stage"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -218,8 +227,9 @@ function ScComponentList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
+            // title="scCategory List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ScComponentDataColumns}
+            columns={ScApprovalStageDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -240,4 +250,4 @@ function ScComponentList() {
   );
 }
 
-export default ScComponentList;
+export default ScApprovalStageList;
