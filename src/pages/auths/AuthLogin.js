@@ -105,7 +105,7 @@ const AuthLoginPage = () => {
     // }
   };
 
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const startTimer = () => {
