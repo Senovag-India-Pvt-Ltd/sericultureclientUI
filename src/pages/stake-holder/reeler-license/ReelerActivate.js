@@ -87,7 +87,6 @@ function ReelerActivate() {
   };
 
   const handleEditInputs = (e) => {
-    // debugger;
     let name = e.target.name;
     let value = e.target.value;
     setEditData({ ...editData, [name]: value });
@@ -121,7 +120,7 @@ function ReelerActivate() {
       setValidated(true);
     } else {
       event.preventDefault();
-      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+      if (data.phoneNumber.length < 10 || data.phoneNumber.length > 10) {
         return;
       }
       api
@@ -178,7 +177,11 @@ function ReelerActivate() {
       setValidatedEdit(true);
     } else {
       event.preventDefault();
-      if (editData.mobileNumber.length < 10 || editData.mobileNumber.length > 10) {
+      console.log(editData.phoneNumber);
+      if (
+        editData.phoneNumber.length < 10 ||
+        editData.phoneNumber.length > 10
+      ) {
         return;
       }
       api
@@ -188,7 +191,7 @@ function ReelerActivate() {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
+            setEditData({
               reelerId: "",
               username: "",
               password: "",
@@ -201,6 +204,8 @@ function ReelerActivate() {
               walletAMount: "",
             });
             setValidatedEdit(false);
+            getReelerList(data.reelerId);
+            handleCloseModal();
           }
         })
 
@@ -272,6 +277,21 @@ function ReelerActivate() {
       walletAMount: "",
     });
     setListData([]);
+  };
+
+  const clearEdit = () => {
+    setEditData({
+      reelerId: "",
+      username: "",
+      password: "",
+      phoneNumber: "",
+      emailId: "",
+      roleId: "",
+      marketMasterId: "",
+      designationId: "",
+      deviceId: "",
+      walletAMount: "",
+    });
   };
 
   const [show, setShow] = useState(false);
@@ -441,13 +461,36 @@ function ReelerActivate() {
   }, []);
 
   // to get reeler
-  const [reelerListData, setReelerListData] = useState([]);
+  // const [reelerListData, setReelerListData] = useState([]);
 
-  const getList = () => {
+  // const getList = () => {
+  //   const response = api
+  //     .get(baseURL + `reeler/get-all`)
+  //     .then((response) => {
+  //       setReelerListData(response.data.content.reeler);
+  //     })
+  //     .catch((err) => {
+  //       setReelerListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getList();
+  // }, []);
+
+  // to get reeler with market Id
+  const [reelerListData, setReelerListData] = useState([]);
+  // console.log(reelerListData);
+
+  const getList = (_id) => {
     const response = api
-      .get(baseURL + `reeler/get-all`)
+      .get(
+        baseURL + `reeler-virtual-bank-account/get-reelers-by-market-id/${_id}`
+      )
       .then((response) => {
-        setReelerListData(response.data.content.reeler);
+        setReelerListData([]);
+        console.log(response.data.content.reelerVirtualBankAccount);
+        setReelerListData(response.data.content.reelerVirtualBankAccount);
       })
       .catch((err) => {
         setReelerListData([]);
@@ -455,8 +498,10 @@ function ReelerActivate() {
   };
 
   useEffect(() => {
-    getList();
-  }, []);
+    if (data.marketMasterId) {
+      getList(data.marketMasterId);
+    }
+  }, [data.marketMasterId]);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -520,37 +565,6 @@ function ReelerActivate() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Reeler<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="reelerId"
-                          value={data.reelerId}
-                          onChange={handleInputs}
-                          // onSelect={()=>getReelerList(data.reelerId)}
-                          // onBlur={handleInputs}
-                          required
-                          isInvalid={
-                            data.reelerId === undefined || data.reelerId === "0"
-                          }
-                        >
-                          <option value="">Select Reeler</option>
-                          {reelerListData.map((list) => (
-                            <option key={list.reelerId} value={list.reelerId}>
-                              {list.reelerName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Reeler Name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
                         Market<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
@@ -583,6 +597,39 @@ function ReelerActivate() {
                       </Col>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Reeler<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="reelerId"
+                          value={data.reelerId}
+                          onChange={handleInputs}
+                          // onSelect={()=>getReelerList(data.reelerId)}
+                          // onBlur={handleInputs}
+                          required
+                          isInvalid={
+                            data.reelerId === undefined || data.reelerId === "0"
+                          }
+                        >
+                          <option value="">Select Reeler</option>
+                          {reelerListData.map((list) => (
+                            <option key={list.reelerVirtualBankAccountId} value={list.reelerId}>
+                              {console.log(list)}
+                              {list.reelerName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Reeler Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="user">
@@ -765,7 +812,7 @@ function ReelerActivate() {
                           >
                             <option value="">Select Reeler</option>
                             {reelerListData.map((list) => (
-                              <option key={list.reelerId} value={list.reelerId}>
+                              <option key={list.reelerVirtualBankAccountId} value={list.reelerId}>
                                 {list.reelerName}
                               </option>
                             ))}
@@ -911,7 +958,11 @@ function ReelerActivate() {
                     </Button>
                   </li>
                   <li>
-                    <Button type="button" variant="secondary" onClick={clear}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={clearEdit}
+                    >
                       Cancel
                     </Button>
                   </li>
