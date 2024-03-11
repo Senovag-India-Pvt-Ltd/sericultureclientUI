@@ -15,6 +15,11 @@ const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function DashboardReport() {
+  const styles = {
+    ctstyle: {
+      // Add your style properties here
+    },
+  };
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     godownId: 0,
@@ -23,7 +28,21 @@ function DashboardReport() {
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
-
+  const [timestamp, setTimestamp] = useState(new Date());
+  const formattedDateTime = `${timestamp.getFullYear()}-${(
+    timestamp.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}-${timestamp
+    .getDate()
+    .toString()
+    .padStart(2, "0")} ${timestamp
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${timestamp
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}:${timestamp.getSeconds().toString().padStart(2, "0")}`;
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
@@ -105,6 +124,45 @@ function DashboardReport() {
   //   }
   // };
 
+  // Commented code
+  // const generatePendingReport = async () => {
+  //   const { reportFromDate } = data;
+  //   const formattedPendingDate =
+  //     reportFromDate.getFullYear() +
+  //     "-" +
+  //     (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     reportFromDate.getDate().toString().padStart(2, "0");
+
+  //   try {
+  //     const response = await api.post(
+  //       baseURLReport + `get-dashboard-report`,
+  //       {
+  //         marketId: data.marketId,
+  //         //   godownId: data.godownId,
+  //         dashboardReportDate: formattedPendingDate,
+  //         //   lotId: 0,
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+
+  const [dashboardList, setDashboardList] = useState([]);
+  const [status, setStatus] = useState({
+    auctionStarted: "",
+    acceptanceStarted: "",
+    marketName: "",
+  });
+
   const generatePendingReport = async () => {
     const { reportFromDate } = data;
     const formattedPendingDate =
@@ -114,26 +172,36 @@ function DashboardReport() {
       "-" +
       reportFromDate.getDate().toString().padStart(2, "0");
 
-    try {
-      const response = await api.post(
-        baseURLReport + `get-dashboard-report`,
-        {
-          marketId: data.marketId,
-          //   godownId: data.godownId,
-          dashboardReportDate: formattedPendingDate,
-          //   lotId: 0,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+    api
+      .post(baseURLMarket + `auction/report/getDashboardReport`, {
+        marketId: data.marketId,
+        dashboardReportDate: formattedPendingDate,
+      })
+      .then((response) => {
+        if (response.data.errorCode === 0) {
+          setDashboardList(response.data.content.dashboardReportInfoList);
+          setStatus({
+            auctionStarted: response.data.content.auctionStarted,
+            acceptanceStarted: response.data.content.acceptanceStarted,
+            marketName: response.data.content.marketName,
+          });
+        } else {
+          // saveSuccess(arnNumber);
         }
-      );
-
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      // console.log("error", error);
-    }
+      })
+      .catch((err) => {
+        // setVbAccount({});
+        if (err.response.data) {
+          console.log(err.response.data);
+          saveError(err.response.data.errorMessages[0].message[0].message);
+          setDashboardList([]);
+        }
+        // if (
+        //   Object.keys(err.response.data.validationErrors).length > 0
+        // ) {
+        //   saveError(err.response.data.validationErrors);
+        // }
+      });
   };
 
   const [pendingData, setPendingData] = useState([]);
@@ -477,6 +545,186 @@ function DashboardReport() {
             )}
           </Row>
         </Form>
+        {dashboardList && dashboardList.length ? (
+          <Card className="mt-2">
+            <Card.Header>
+              Dashboard - {status.marketName} : {formattedDateTime}
+            </Card.Header>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <h2 className="text-centre">
+                    Bidding Status:
+                    {status.auctionStarted ? "Start" : "Stop"}
+                  </h2>
+                  <h2 className="text-centre">
+                    Acceptance Status:
+                    {status.acceptanceStarted ? "Start" : "Stop"}
+                  </h2>
+                  <table className="table small table-bordered">
+                    {/* <tr>
+                        <th>Heading 1</th>
+                      </tr>
+                      <tr>
+                        <th>Heading 1</th>
+                      </tr>
+                      <tr>
+                        <th>Heading 1</th>
+                      </tr> */}
+                    <tbody>
+                      {/* <td style={styles.ctstyle}> Bidding Status:</td> */}
+                      {/* <h2 className="text-centre">
+                          Bidding Status:
+                          {status.auctionStarted ? "Start" : "Stop"}
+                        </h2>
+                        <h2 className="text-centre">
+                          Acceptance Status:
+                          {status.acceptanceStarted ? "Start" : "Stop"}
+                        </h2> */}
+
+                      <tr>
+                        <td style={styles.ctstyle}> Total Lots:</td>
+                        {/* <td>CSR-70</td>
+                          <td>CB-48</td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>
+                              {dashboard.raceName}-{dashboard.totalLots}
+                            </td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Total Lots Bid:</td>
+                        {/* <td>118</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.totalLotsBid}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Total Lots Not Bid:</td>
+                        {/* <td>0</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.totalLotsNotBid}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Total Bids:</td>
+                        {/* <td>1897</td>
+                          <td>36</td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.totalBids}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Total Reelers:</td>
+                        {/* <td>107(Active)</td>
+                          <td>253(Paid)</td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.totalReelers}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Current Auction-Max Bid:
+                        </td>
+                        {/* <td>540</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.currentAuctionMaxBid}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Accepted Lots:</td>
+                        {/* <td>105</td>
+                          <td>12:32:47</td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.accecptedLots}</td>
+                          </>
+                        ))}
+                      </tr>
+                      {/* <tr>
+                          <td style={styles.ctstyle}> Online Lots:</td>
+                         
+                          {dashboardList.map((dashboard) => (
+                            <>
+                              <td>{dashboard.accecptedLotsMaxBid}</td>
+                            </>
+                          ))}
+                        </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}> Accepted Lots-Max Bid:</td>
+                        {/* <td>557.000</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.accecptedLotsMaxBid}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Accepted Lots-Min Bid:</td>
+                        {/* <td>290.000</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.accectedLotsMinBid}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Average Rate:</td>
+                        {/* <td>0</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.averagRate}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Weighed Lots:</td>
+                        {/* <td>0</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.weighedLots}</td>
+                          </>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Total Soldout Amount:</td>
+                        {/* <td>0</td>
+                          <td></td> */}
+                        {dashboardList.map((dashboard) => (
+                          <>
+                            <td>{dashboard.totalSoldOutAmount}</td>
+                          </>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );
