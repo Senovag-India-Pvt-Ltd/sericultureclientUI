@@ -27,6 +27,11 @@ function ReelerActivate() {
     walletAMount: "",
   });
 
+  const [reelerSearch, setReelerSearch] = useState({
+    text: "",
+    select: "mobileNumber",
+  });
+
   const [editData, setEditData] = useState({
     userTypeId: "",
     reelerId: "",
@@ -58,6 +63,7 @@ function ReelerActivate() {
 
   const [validated, setValidated] = useState(false);
   const [validatedEdit, setValidatedEdit] = useState(false);
+  const [validatedDisplay, setValidatedDisplay] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
@@ -84,6 +90,12 @@ function ReelerActivate() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+  };
+
+  const handleReelerSearchInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setReelerSearch({ ...reelerSearch, [name]: value });
   };
 
   const handleEditInputs = (e) => {
@@ -166,6 +178,65 @@ function ReelerActivate() {
           // }
         });
       setValidated(true);
+    }
+  };
+
+  const display = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedDisplay(true);
+    } else {
+      event.preventDefault();
+
+      const { text, select } = reelerSearch;
+      let sendData;
+
+      if (select === "mobileNumber") {
+        sendData = {
+          mobileNumber: text,
+          marketId: localStorage.getItem("marketId"),
+        };
+      }
+      if (select === "reelerNumber") {
+        sendData = {
+          reelerNumber: text,
+          marketId: localStorage.getItem("marketId"),
+        };
+      }
+
+      setLoading(true);
+
+      api
+        .post(
+          baseURL +
+            `reeler/get-reeler-details-by-reeler-number-or-mobile-number`,
+          sendData
+        )
+        .then((response) => {
+          if (!response.data.content.error) {
+            // console.log("hello buddy");
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching farmer details:", err);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              searchError(err.response.data.validationErrors);
+            }
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "Details not Found",
+            });
+          }
+          setLoading(false);
+        });
     }
   };
 
@@ -525,6 +596,20 @@ function ReelerActivate() {
     });
   };
 
+  const searchError = (message = "Something went wrong!") => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Details not Found",
+      html: errorMessage,
+    });
+  };
+
   return (
     <Layout title="Activate Reeler">
       <Block.Head>
@@ -554,15 +639,69 @@ function ReelerActivate() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n3">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
+        <Form noValidate validated={validatedDisplay} onSubmit={display}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col sm={8} lg={12}>
+                  <Form.Group as={Row} className="form-group" id="fid">
+                    <Form.Label column sm={1} lg={2}>
+                      Search Reeler
+                    </Form.Label>
+                    <Col sm={1} lg={2}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="select"
+                          value={reelerSearch.select}
+                          onChange={handleReelerSearchInputs}
+                        >
+                          {/* <option value="">Select</option> */}
+                          <option value="mobileNumber">Mobile Number</option>
+                          {/* <option value="fruitsId">Fruits Id</option> */}
+                          <option value="reelerNumber">Reeler Number</option>
+                        </Form.Select>
+                      </div>
+                    </Col>
+
+                    <Col sm={2} lg={2}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="text"
+                        value={reelerSearch.text}
+                        onChange={handleReelerSearchInputs}
+                        type="text"
+                        placeholder="Search"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Field Value is Required
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2} lg={3}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit={postData}
+          className="mt-2"
+        >
           <Row className="g-3 ">
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                         Market<span className="text-danger">*</span>
@@ -596,7 +735,7 @@ function ReelerActivate() {
                         </div>
                       </Col>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                   <Col lg="6">
                     <Form.Group className="form-group">
@@ -617,7 +756,10 @@ function ReelerActivate() {
                         >
                           <option value="">Select Reeler</option>
                           {reelerListData.map((list) => (
-                            <option key={list.reelerVirtualBankAccountId} value={list.reelerId}>
+                            <option
+                              key={list.reelerVirtualBankAccountId}
+                              value={list.reelerId}
+                            >
                               {console.log(list)}
                               {list.reelerName}
                             </option>
@@ -812,7 +954,10 @@ function ReelerActivate() {
                           >
                             <option value="">Select Reeler</option>
                             {reelerListData.map((list) => (
-                              <option key={list.reelerVirtualBankAccountId} value={list.reelerId}>
+                              <option
+                                key={list.reelerVirtualBankAccountId}
+                                value={list.reelerId}
+                              >
                                 {list.reelerName}
                               </option>
                             ))}
