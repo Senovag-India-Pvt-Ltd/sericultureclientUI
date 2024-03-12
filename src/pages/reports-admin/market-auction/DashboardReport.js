@@ -17,7 +17,17 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 function DashboardReport() {
   const styles = {
     ctstyle: {
-      // Add your style properties here
+      fontWeight: "bold",
+      backgroundColor: "#f8f8f9",
+    },
+    red: {
+      color: "red",
+    },
+    green: {
+      color: "green",
+    },
+    boldFont: {
+      fontWeight: "bold",
     },
   };
   const [data, setData] = useState({
@@ -125,7 +135,7 @@ function DashboardReport() {
   // };
 
   // Commented code
-  // const generatePendingReport = async () => {
+  // const generateDashboardReport = async () => {
   //   const { reportFromDate } = data;
   //   const formattedPendingDate =
   //     reportFromDate.getFullYear() +
@@ -163,7 +173,7 @@ function DashboardReport() {
     marketName: "",
   });
 
-  const generatePendingReport = async () => {
+  const generateDashboardReport = async () => {
     const { reportFromDate } = data;
     const formattedPendingDate =
       reportFromDate.getFullYear() +
@@ -204,6 +214,10 @@ function DashboardReport() {
       });
   };
 
+  useEffect(() => {
+    generateDashboardReport(new Date());
+  }, []);
+
   const [pendingData, setPendingData] = useState([]);
 
   const postData = (event) => {
@@ -223,7 +237,7 @@ function DashboardReport() {
       setValidated(true);
     } else {
       event.preventDefault();
-      generatePendingReport();
+      generateDashboardReport();
       // event.stopPropagation();
       //   api
       //     .post(baseURLMarket + `auction/report/getPendingLotReport`, {
@@ -309,32 +323,13 @@ function DashboardReport() {
       </Block.Head>
 
       <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
+        {/* <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="">
                     <Form.Group as={Row} className="form-group">
-                      {/* <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Lot ID"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
-                        </Form.Control.Feedback>
-                      </Col> */}
                       <Form.Label column sm={1}>
                         Date
                         <span className="text-danger">*</span>
@@ -351,218 +346,51 @@ function DashboardReport() {
                         </div>
                       </Col>
                       <Col sm={2}>
-                        {/* <Button
-                          type="button"
-                          variant="primary"
-                          onClick={display}
-                        > */}
                         <Button type="submit" variant="primary">
                           Generate Report
                         </Button>
                       </Col>
                     </Form.Group>
                   </Col>
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>
-
-            {pendingData && pendingData.length ? (
-              <div
-              //  className={isActive ? "" : "d-none"}
-              >
-                <Row className="d-flex justify-content-end mt-2">
-                  <Col sm={2}>
-                    {/* <Button
-                          type="button"
-                          variant="primary"
-                          onClick={display}
-                        > */}
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      size="sm"
-                      onClick={generatePendingReport}
-                    >
-                      Print
-                    </Button>
-                  </Col>
-                </Row>
-                <Row className="g-gs pt-2">
-                  <Col lg="12">
-                    <table className="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            SL No
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Lot No
-                          </th>
-                          {/* <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Bin No
-                          </th> */}
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Shed
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Farmer ID
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Name
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Village
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Phone
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Accepted User
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Reeler ID
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Reeler Ph
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Balance
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {pendingData.map((list, i) => (
-                          <tr key={i}>
-                            <td>{i + 1}</td>
-                            <td>{list.allottedLotId}</td>
-                            {/* <td>---</td> */}
-                            <td>{list.shed ? list.shed : "---"}</td>
-                            <td>{list.farmerNumber}</td>
-                            <td>{list.farmerFirstName}</td>
-                            <td>{list.farmerVillage}</td>
-                            <td>{list.farmerMobileNumber}</td>
-                            <td>{list.acceptedBy ? list.acceptedBy : "---"}</td>
-                            <td>{list.reelerLicense}</td>
-                            <td>{list.reelerMobileNumber}</td>
-                            <td>{list.reelerCurrentBalance}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Col>
-                </Row>
-              </div>
-            ) : (
-              ""
-            )}
           </Row>
-        </Form>
-        {dashboardList && dashboardList.length ? (
-          <Card className="mt-2">
-            <Card.Header>
-              Dashboard - {status.marketName} : {formattedDateTime}
-            </Card.Header>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <h2 className="text-centre">
-                    Bidding Status:
-                    {status.auctionStarted ? "Start" : "Stop"}
-                  </h2>
-                  <h2 className="text-centre">
-                    Acceptance Status:
-                    {status.acceptanceStarted ? "Start" : "Stop"}
-                  </h2>
-                  <table className="table small table-bordered">
-                    {/* <tr>
+        </Form> */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={12} lg={6}>
+            {dashboardList && dashboardList.length ? (
+              <Card className="mt-2">
+                <Card.Header>
+                  Dashboard - {status.marketName} : {formattedDateTime}
+                </Card.Header>
+                <Card.Body>
+                  <Row className="g-gs d-flex justify-content-center">
+                    <Col lg="12">
+                      <div className="d-flex mt-n2">
+                        <h4 className="text-centre">Bidding Status: </h4>
+                        <h4 style={{ fontWeight: "bold" }}>
+                          {" "}
+                          {status.auctionStarted ? (
+                            <span style={styles.green}> Start </span>
+                          ) : (
+                            <span style={styles.red}> Stop </span>
+                          )}
+                        </h4>
+                      </div>
+                      <div className="d-flex">
+                        <h4 className="text-centre">Acceptance Status:</h4>
+                        <h4 style={styles.boldFont}>
+                          {" "}
+                          {status.acceptanceStarted ? (
+                            <span style={styles.green}> Start </span>
+                          ) : (
+                            <span style={styles.red}> Stop </span>
+                          )}
+                        </h4>
+                      </div>
+                      <table className="table small table-bordered border border-dark">
+                        {/* <tr>
                         <th>Heading 1</th>
                       </tr>
                       <tr>
@@ -571,9 +399,9 @@ function DashboardReport() {
                       <tr>
                         <th>Heading 1</th>
                       </tr> */}
-                    <tbody>
-                      {/* <td style={styles.ctstyle}> Bidding Status:</td> */}
-                      {/* <h2 className="text-centre">
+                        <tbody>
+                          {/* <td style={styles.ctstyle}> Bidding Status:</td> */}
+                          {/* <h2 className="text-centre">
                           Bidding Status:
                           {status.auctionStarted ? "Start" : "Stop"}
                         </h2>
@@ -582,82 +410,82 @@ function DashboardReport() {
                           {status.acceptanceStarted ? "Start" : "Stop"}
                         </h2> */}
 
-                      <tr>
-                        <td style={styles.ctstyle}> Total Lots:</td>
-                        {/* <td>CSR-70</td>
+                          <tr>
+                            <td style={styles.ctstyle}> Total Lots:</td>
+                            {/* <td>CSR-70</td>
                           <td>CB-48</td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>
-                              {dashboard.raceName}-{dashboard.totalLots}
-                            </td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Total Lots Bid:</td>
-                        {/* <td>118</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>
+                                  {dashboard.raceName}-{dashboard.totalLots}
+                                </td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Total Lots Bid:</td>
+                            {/* <td>118</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.totalLotsBid}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Total Lots Not Bid:</td>
-                        {/* <td>0</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.totalLotsBid}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Total Lots Not Bid:</td>
+                            {/* <td>0</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.totalLotsNotBid}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Total Bids:</td>
-                        {/* <td>1897</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.totalLotsNotBid}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Total Bids:</td>
+                            {/* <td>1897</td>
                           <td>36</td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.totalBids}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Total Reelers:</td>
-                        {/* <td>107(Active)</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.totalBids}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Total Reelers:</td>
+                            {/* <td>107(Active)</td>
                           <td>253(Paid)</td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.totalReelers}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Current Auction-Max Bid:
-                        </td>
-                        {/* <td>540</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.totalReelers}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Current Auction-Max Bid:
+                            </td>
+                            {/* <td>540</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.currentAuctionMaxBid}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Accepted Lots:</td>
-                        {/* <td>105</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.currentAuctionMaxBid}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Accepted Lots:</td>
+                            {/* <td>105</td>
                           <td>12:32:47</td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.accecptedLots}</td>
-                          </>
-                        ))}
-                      </tr>
-                      {/* <tr>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.accecptedLots}</td>
+                              </>
+                            ))}
+                          </tr>
+                          {/* <tr>
                           <td style={styles.ctstyle}> Online Lots:</td>
                          
                           {dashboardList.map((dashboard) => (
@@ -666,65 +494,76 @@ function DashboardReport() {
                             </>
                           ))}
                         </tr> */}
-                      <tr>
-                        <td style={styles.ctstyle}> Accepted Lots-Max Bid:</td>
-                        {/* <td>557.000</td>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Accepted Lots-Max Bid:
+                            </td>
+                            {/* <td>557.000</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.accecptedLotsMaxBid}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Accepted Lots-Min Bid:</td>
-                        {/* <td>290.000</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.accecptedLotsMaxBid}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Accepted Lots-Min Bid:
+                            </td>
+                            {/* <td>290.000</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.accectedLotsMinBid}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Average Rate:</td>
-                        {/* <td>0</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.accectedLotsMinBid}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Average Rate:</td>
+                            {/* <td>0</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.averagRate}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Weighed Lots:</td>
-                        {/* <td>0</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.averagRate}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Weighed Lots:</td>
+                            {/* <td>0</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.weighedLots}</td>
-                          </>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Total Soldout Amount:</td>
-                        {/* <td>0</td>
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.weighedLots}</td>
+                              </>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Total Soldout Amount:
+                            </td>
+                            {/* <td>0</td>
                           <td></td> */}
-                        {dashboardList.map((dashboard) => (
-                          <>
-                            <td>{dashboard.totalSoldOutAmount}</td>
-                          </>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        ) : (
-          ""
-        )}
+                            {dashboardList.map((dashboard) => (
+                              <>
+                                <td>{dashboard.totalSoldOutAmount}</td>
+                              </>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            ) : (
+              ""
+            )}
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

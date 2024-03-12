@@ -2180,14 +2180,14 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
-                  {showMenu.Admin_Report_Admin ? (
+                  {/* {showMenu.Admin_Report_Admin ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Admin Report"
                         to="/seriui/report-admin"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                   {/* {showMenu.Admin_Report_Transaction ? (
                   <MenuItem>
                     <MenuItemLink
@@ -2200,7 +2200,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Dashboard"
-                        to="/seriui/bid-dashboard"
+                        to="/seriui/dashboard-report"
                       />
                     </MenuItem>
                   ) : null}
