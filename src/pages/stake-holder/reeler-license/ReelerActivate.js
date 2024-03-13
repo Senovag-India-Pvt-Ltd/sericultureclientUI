@@ -46,6 +46,9 @@ function ReelerActivate() {
     walletAMount: "",
   });
 
+  const [reelerName, setReelerName] = useState("");
+  const [editReelerName, setEditReelerName] = useState("");
+
   const getEdit = (i) => {
     console.log(i);
     setEditData((prev) => ({
@@ -57,6 +60,7 @@ function ReelerActivate() {
       deviceId: i.deviceId,
       userTypeId: i.userMasterId,
     }));
+    setEditReelerName(i.firstName);
     handleShowModal();
     // getMarketList();
   };
@@ -195,11 +199,18 @@ function ReelerActivate() {
 
       if (select === "mobileNumber") {
         sendData = {
-          mobileNumber: text,
+          mobileNumber: text.trim(),
           marketId: localStorage.getItem("marketId"),
         };
       }
       if (select === "reelerNumber") {
+        sendData = {
+          reelerNumber: text,
+          marketId: localStorage.getItem("marketId"),
+        };
+      }
+
+      if (select === "reelingLicenseNumber") {
         sendData = {
           reelerNumber: text,
           marketId: localStorage.getItem("marketId"),
@@ -211,12 +222,19 @@ function ReelerActivate() {
       api
         .post(
           baseURL +
-            `reeler/get-reeler-details-by-reeler-number-or-mobile-number`,
+            `reeler-virtual-bank-account/get-reeler-details-by-reeler-number-or-mobile-number`,
           sendData
         )
         .then((response) => {
           if (!response.data.content.error) {
-            // console.log("hello buddy");
+            getReelerList(response.data.content.reelerId);
+            setReelerName(response.data.content.reelerName);
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "Details not Found",
+            });
+            setLoading(false);
           }
         })
         .catch((err) => {
@@ -659,7 +677,9 @@ function ReelerActivate() {
                         >
                           {/* <option value="">Select</option> */}
                           <option value="mobileNumber">Mobile Number</option>
-                          {/* <option value="fruitsId">Fruits Id</option> */}
+                          <option value="reelingLicenseNumber">
+                            Reeler License Number
+                          </option>
                           <option value="reelerNumber">Reeler Number</option>
                         </Form.Select>
                       </div>
@@ -737,7 +757,7 @@ function ReelerActivate() {
                     </Form.Group>
                   </Col> */}
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                         Reeler<span className="text-danger">*</span>
@@ -767,6 +787,28 @@ function ReelerActivate() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Reeler Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col> */}
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="user">
+                        Reeler Name<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="user"
+                          name="username"
+                          value={reelerName}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter User Name"
+                          readOnly
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          User Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -936,7 +978,7 @@ function ReelerActivate() {
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Reeler<span className="text-danger">*</span>
@@ -967,9 +1009,31 @@ function ReelerActivate() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="user">
+                          Reeler Name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="user"
+                            name="username"
+                            value={editReelerName}
+                            // onChange={handleEditInputs}
+                            type="text"
+                            placeholder="Enter User Name"
+                            readOnly
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            User Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Market<span className="text-danger">*</span>
@@ -1003,7 +1067,7 @@ function ReelerActivate() {
                           </div>
                         </Col>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="user">
