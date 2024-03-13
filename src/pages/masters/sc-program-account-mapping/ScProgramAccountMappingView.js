@@ -90,7 +90,7 @@ function ScProgramAccountMappingView() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}>ID:</td>
-                      <td>{scAccountMapping.ScProgramAccountMappingId}</td>
+                      <td>{scAccountMapping.scProgramAccountMappingId}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Program:</td>
@@ -102,7 +102,7 @@ function ScProgramAccountMappingView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Category:</td>
-                      <td>{scAccountMapping.scCategoryName}</td>
+                      <td>{scAccountMapping.categoryName}</td>
                     </tr>
                   </tbody>
                 </table>

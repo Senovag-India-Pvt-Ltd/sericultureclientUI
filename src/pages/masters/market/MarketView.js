@@ -109,7 +109,7 @@ function MarketView() {
                       <td>{MarketMaster.clientId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Crate Weight:</td>
+                      <td style={styles.ctstyle}>Tare Weight:</td>
                       <td>{MarketMaster.boxWeight}</td>
                     </tr>
                     <tr>

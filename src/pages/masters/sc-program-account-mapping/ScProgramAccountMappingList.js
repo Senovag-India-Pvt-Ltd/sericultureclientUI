@@ -24,8 +24,8 @@ function ScProgramAccountMappingList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
-    searchBy: "hobli",
     text: "",
+    searchBy: "scProgramName",
   });
 
   const handleInputs = (e) => {
@@ -37,26 +37,20 @@ function ScProgramAccountMappingList() {
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "state") {
-      joinColumn = "state.stateName";
+    if (data.searchBy === "scProgramName") {
+      joinColumn = "scProgram.scProgramName";
     }
-    if (data.searchBy === "district") {
-      joinColumn = "district.districtName";
-    }
-    if (data.searchBy === "taluk") {
-      joinColumn = "taluk.talukName";
-    }
-    if (data.searchBy === "hobli") {
-      joinColumn = "hobli.hobliName";
+    if (data.searchBy === "scHeadAccountName") {
+      joinColumn = "scHeadAccount.scHeadAccountName";
     }
     // console.log(joinColumn);
     api
-      .post(baseURL + `hobli/search`, {
+      .post(baseURL + `scProgramAccountMapping/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
       })
       .then((response) => {
-        setListData(response.data.content.hobli);
+        setListData(response.data.content.scProgramAccountMapping);
       })
       .catch((err) => {
       });
@@ -231,8 +225,8 @@ function ScProgramAccountMappingList() {
     },
     {
       name: "Category",
-      selector: (row) => row.scCategoryName,
-      cell: (row) => <span>{row.scCategoryName}</span>,
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -287,10 +281,8 @@ function ScProgramAccountMappingList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
+                      <option value="scProgramName">Program</option>
+                      <option value="scHeadAccountName">Head Account</option>
                     </Form.Select>
                   </div>
                 </Col>

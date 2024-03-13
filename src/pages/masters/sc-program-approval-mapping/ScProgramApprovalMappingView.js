@@ -90,7 +90,7 @@ function ScProgramApprovalMappingView() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}>ID:</td>
-                      <td>{approvalMapping.ScProgramApprovalMappingId}</td>
+                      <td>{approvalMapping.scProgramApprovalMappingId}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Program:</td>

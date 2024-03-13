@@ -239,7 +239,7 @@ function MarketList() {
     //   hide: "md",
     // },
     {
-      name: "Crate Weight",
+      name: "Tare Weight",
       selector: (row) => row.boxWeight,
       cell: (row) => <span>{row.boxWeight}</span>,
       sortable: true,
