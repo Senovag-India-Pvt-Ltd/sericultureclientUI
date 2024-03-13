@@ -91,9 +91,9 @@ function RaceMapping() {
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
 
-  const getRaceList = (_id) => {
+  const getRaceList = () => {
     const response = api
-      .get(baseURL + `raceMaster/get-by-market-master-id/${_id}`)
+      .get(baseURL + `raceMaster/get-all`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
         setLoading(false);
@@ -108,10 +108,10 @@ function RaceMapping() {
   };
 
   useEffect(() => {
-    if (data.marketMasterId) {
-      getRaceList(data.marketMasterId);
-    }
-  }, [data.marketMasterId]);
+    // if (data.marketMasterId) {
+    getRaceList();
+    // }
+  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {

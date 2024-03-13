@@ -2,23 +2,20 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
-import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
 import DatePicker from "react-datepicker";
-import { Icon } from "../../components";
+import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import api from "../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function PrintBidSlip() {
+function ReelerPendingReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    godownId: 0,
-    allottedLotId: "",
-    auctionDate: "",
   });
   console.log("printBid", data);
 
@@ -32,7 +29,7 @@ function PrintBidSlip() {
   };
 
   const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+    setData((prev) => ({ ...prev, reportFromDate: date }));
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -44,6 +41,24 @@ function PrintBidSlip() {
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
+
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   // const postData = (e) => {
   //   axios
@@ -60,14 +75,7 @@ function PrintBidSlip() {
   // };
 
   const postData = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
+    const { marketId } = data;
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -79,25 +87,27 @@ function PrintBidSlip() {
       // event.stopPropagation();
       api
         .post(
-          baseURLReport + `gettripletpdf-kannada`,
+          baseURLReport + `get-reeler-pending-report`,
           {
             marketId: marketId,
-            godownId: godownId,
-            allottedLotId: allottedLotId,
-            auctionDate: formattedDate,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
           }
         )
         .then((response) => {
+          console.log(response.data.size);
+          if (response.data.size > 800) {
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "No Record Found",
+            });
+          }
           //console.log("hello world", response.data);
-          //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], { type: "application/pdf" });
-          //Build a URL from the file
-          const fileURL = URL.createObjectURL(file);
-          //Open the URL on new Window
-          window.open(fileURL);
         })
         .catch((error) => {
           // console.log("error", error);
@@ -123,11 +133,11 @@ function PrintBidSlip() {
     });
   };
   return (
-    <Layout title="Generated Triplet">
+    <Layout title="Bidding Report Reeler">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Generated Triplet</Block.Title>
+            <Block.Title tag="h2">Bidding Report Reeler</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -162,43 +172,57 @@ function PrintBidSlip() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="">
+                  <Col lg="12">
                     <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Lot ID<span className="text-danger">*</span>
+                      {/* <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
+                        Reeler Number<span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
-                          id="allotedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
+                          id="reelerNumber"
+                          name="reelerNumber"
+                          value={data.reelerNumber}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lot ID"
+                          placeholder="Enter Reeler Number"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Lot ID is required.
+                          Reeler Number is required.
+                        </Form.Control.Feedback>
+                      </Col> */}
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      {/* <div className="form-control-wrap"> */}
+                      <Col sm={3}>
+                        <Form.Select
+                          name="marketId"
+                          value={data.marketId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.marketId === undefined ||
+                            data.marketId === "0"
+                          }
+                        >
+                          <option value="">Select Market</option>
+                          {marketListData.map((list) => (
+                            <option
+                              key={list.marketMasterId}
+                              value={list.marketMasterId}
+                            >
+                              {list.marketMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Market Name is required
                         </Form.Control.Feedback>
                       </Col>
-                      <Form.Label column sm={2}>
-                        Date
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={2}>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            dateFormat="dd/MM/yyyy"
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
-                            maxDate={new Date()}
-                            className="form-control"
-                          />
-                        </div>
-                      </Col>
+                      {/* </div> */}
+
                       <Col sm={2}>
                         {/* <Button
                           type="button"
@@ -206,7 +230,7 @@ function PrintBidSlip() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Get Details
+                          Generate Report
                         </Button>
                       </Col>
                     </Form.Group>
@@ -252,4 +276,4 @@ function PrintBidSlip() {
   );
 }
 
-export default PrintBidSlip;
+export default ReelerPendingReport;

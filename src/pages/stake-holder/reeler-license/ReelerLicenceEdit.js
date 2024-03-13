@@ -212,7 +212,7 @@ function ReelerLicenceEdit() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -499,7 +499,6 @@ function ReelerLicenceEdit() {
     getChawkiList();
   }, []);
 
-
   const handleRenewedDateChange = (date) => {
     console.log(data);
     console.log(date);
@@ -780,7 +779,7 @@ function ReelerLicenceEdit() {
                           Caste<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                        <Form.Select
+                          <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
@@ -854,7 +853,7 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                       {/* <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>
                           TSC<span className="text-danger">*</span>
                         </Form.Label>
@@ -1231,7 +1230,6 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
                           Loan Details
@@ -1302,7 +1300,7 @@ function ReelerLicenceEdit() {
                           )
                         )}
                       </Form.Group>
-                  </Col>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -1547,9 +1545,9 @@ function ReelerLicenceEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
@@ -1590,7 +1588,7 @@ function ReelerLicenceEdit() {
                       </Form.Group>
                     </Col>
 
-                      <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
@@ -1606,7 +1604,6 @@ function ReelerLicenceEdit() {
                       </Form.Group>
                     </Col>
 
-                  
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
@@ -1622,9 +1619,9 @@ function ReelerLicenceEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
 
-                      <Col lg="2">
+                    <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>Receipt Date</Form.Label>
                         <div className="form-control-wrap">
@@ -1647,7 +1644,7 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>License Expiry Date</Form.Label>
@@ -1672,7 +1669,7 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-                      </Col>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>

@@ -380,6 +380,7 @@ function Menu() {
     Admin_Report_Bidding_Reeler_Report: false,
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_Reeler_Transaction_Report: false,
+    Admin_Report_GeneratedTriplet: false,
   });
 
   // Old show menu using mapcode
@@ -2179,14 +2180,14 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
-                  {showMenu.Admin_Report_Admin ? (
+                  {/* {showMenu.Admin_Report_Admin ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Admin Report"
                         to="/seriui/report-admin"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                   {/* {showMenu.Admin_Report_Transaction ? (
                   <MenuItem>
                     <MenuItemLink
@@ -2199,7 +2200,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Dashboard"
-                        to="/seriui/bid-dashboard"
+                        to="/seriui/dashboard-report"
                       />
                     </MenuItem>
                   ) : null}
@@ -2253,6 +2254,14 @@ function Menu() {
                       <MenuItemLink
                         text="Reeler Transaction Report"
                         to="/seriui/reeler-transaction-reports"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_GeneratedTriplet ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Generated Triplet"
+                        to="/seriui/print-bid-slip"
                       />
                     </MenuItem>
                   ) : null}

@@ -460,7 +460,8 @@ function StakeHolderEdit() {
       (value.length < 11 || value.length > 11)
     ) {
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "farmerBankIfscCode" && value.length === 11) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -494,7 +495,8 @@ function StakeHolderEdit() {
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -505,7 +507,7 @@ function StakeHolderEdit() {
     } else if (name === "fruitsId" && value.length === 16) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
-    } 
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -534,7 +536,10 @@ function StakeHolderEdit() {
       if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
         return;
       }
-      if (bank.farmerBankIfscCode.length < 11 || bank.farmerBankIfscCode.length > 11) {
+      if (
+        bank.farmerBankIfscCode.length < 11 ||
+        bank.farmerBankIfscCode.length > 11
+      ) {
         return;
       }
       api
@@ -1669,7 +1674,9 @@ function StakeHolderEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste<span className="text-danger">*</span></Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
