@@ -204,7 +204,7 @@ function ScProgramAccountMapping() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-program-account-list"
+                  to="/seriui/sc-program-account-mapping-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -213,7 +213,7 @@ function ScProgramAccountMapping() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-program-account-list"
+                  to="/seriui/sc-program-account-mapping-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

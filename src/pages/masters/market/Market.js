@@ -390,7 +390,7 @@ function Market() {
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Crate Weight(In Kg)
+                        Tare Weight(In Kg)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -400,11 +400,11 @@ function Market() {
                           value={data.boxWeight}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crate Weight"
+                          placeholder="Enter Tare Weight"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Crate Weight(In Kg) is required
+                        Tare Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
