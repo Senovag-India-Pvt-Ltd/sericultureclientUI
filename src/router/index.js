@@ -565,6 +565,7 @@ import ScProgramApprovalMapping from "../pages/masters/sc-program-approval-mappi
 import ScProgramApprovalMappingList from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingList";
 import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingView";
 import ScProgramApprovalMappingEdit from "../pages/masters/sc-program-approval-mapping/EditScApprovalMapping";
+import ReelerPendingReport from "../pages/reports-admin/market-auction/ReelerPendingReport";
 
 // Admin and Reports
 
@@ -1451,21 +1452,54 @@ function Router() {
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
             <Route path="sc-program-edit/:id" element={<ScProgramEdit />} />
             <Route path="sc-approval-stage" element={<ScApprovalStage />} />
-            <Route path="sc-approval-stage-list" element={<ScApprovalStageList />} />
-            <Route path="sc-approval-stage-view/:id" element={<ScApprovalStageView />} />
-            <Route path="sc-approval-stage-edit/:id" element={<EditScApprovalStage />} />
+            <Route
+              path="sc-approval-stage-list"
+              element={<ScApprovalStageList />}
+            />
+            <Route
+              path="sc-approval-stage-view/:id"
+              element={<ScApprovalStageView />}
+            />
+            <Route
+              path="sc-approval-stage-edit/:id"
+              element={<EditScApprovalStage />}
+            />
             <Route path="tsc" element={<Tsc />} />
             <Route path="tsc-list" element={<TscList />} />
             <Route path="tsc-view/:id" element={<TscView />} />
             <Route path="tsc-edit/:id" element={<TscEdit />} />
-            <Route path="sc-program-approval-mapping" element={<ScProgramApprovalMapping />} />
-            <Route path="sc-program-approval-mapping-list" element={<ScProgramApprovalMappingList />} />
-            <Route path="sc-program-approval-mapping-view/:id" element={<ScProgramApprovalMappingView />} />
-            <Route path="sc-program-approval-mapping-edit/:id" element={<ScProgramApprovalMappingEdit />} />
-            <Route path="sc-program-account-mapping" element={<ScProgramAccountMapping />} />
-            <Route path="sc-program-account-mapping-list" element={<ScProgramAccountMappingList />} />
-            <Route path="sc-program-account-mapping-view/:id" element={<ScProgramAccountMappingView />} />
-            <Route path="sc-program-account-mapping-edit/:id" element={<ScProgramAccountMappingEdit />} />
+            <Route
+              path="sc-program-approval-mapping"
+              element={<ScProgramApprovalMapping />}
+            />
+            <Route
+              path="sc-program-approval-mapping-list"
+              element={<ScProgramApprovalMappingList />}
+            />
+            <Route
+              path="sc-program-approval-mapping-view/:id"
+              element={<ScProgramApprovalMappingView />}
+            />
+            <Route
+              path="sc-program-approval-mapping-edit/:id"
+              element={<ScProgramApprovalMappingEdit />}
+            />
+            <Route
+              path="sc-program-account-mapping"
+              element={<ScProgramAccountMapping />}
+            />
+            <Route
+              path="sc-program-account-mapping-list"
+              element={<ScProgramAccountMappingList />}
+            />
+            <Route
+              path="sc-program-account-mapping-view/:id"
+              element={<ScProgramAccountMappingView />}
+            />
+            <Route
+              path="sc-program-account-mapping-edit/:id"
+              element={<ScProgramAccountMappingEdit />}
+            />
             <Route path="sc-category" element={<ScCategory />} />
             <Route path="sc-category-list" element={<ScCategoryList />} />
             <Route path="sc-category-view/:id" element={<ScCategoryView />} />
@@ -1792,6 +1826,11 @@ function Router() {
               path="reeler-transaction-reports"
               element={<ReelerTransactionReports />}
             />
+            <Route
+              path="reeler-pending-report"
+              element={<ReelerPendingReport />}
+            />
+
             <Route path="bidding-report" element={<BiddingReport />} />
             <Route
               path="bidding-report-reeler"
