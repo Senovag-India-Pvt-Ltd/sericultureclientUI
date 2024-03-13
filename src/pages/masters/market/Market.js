@@ -48,6 +48,7 @@ function Market() {
     snorkelRequestPath: "",
     snorkelResponsePath: "",
     clientCode: "",
+    weighmentTripletGeneration: true,
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -57,6 +58,14 @@ function Market() {
     // });
     console.log(selectedTime);
     setData((prev) => ({ ...prev, issueBidSlipStartTime: selectedTime }));
+  };
+
+  const handleCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      weighmentTripletGeneration: e.target.checked,
+    }));
   };
 
   const [validated, setValidated] = useState(false);
@@ -118,6 +127,7 @@ function Market() {
               snorkelRequestPath: "",
               snorkelResponsePath: "",
               clientCode: "",
+              weighmentTripletGeneration: true,
             });
             setValidated(false);
           }
@@ -165,6 +175,7 @@ function Market() {
       snorkelRequestPath: "",
       snorkelResponsePath: "",
       clientCode: "",
+      weighmentTripletGeneration: true,
     });
   };
 
@@ -404,7 +415,7 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Tare Weight(In Kg) is required
+                          Tare Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1097,13 +1108,29 @@ function Market() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Market Address"
-                          rows="8"
+                          rows="6"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
                           Market Address is required
                         </Form.Control.Feedback>
                       </div>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="weighmentTripletGeneration"
+                          checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Triplet Generation After Weighment
+                      </Form.Label>
                     </Form.Group>
                   </Col>
                 </Row>
