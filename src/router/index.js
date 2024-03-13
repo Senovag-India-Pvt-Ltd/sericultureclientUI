@@ -566,6 +566,7 @@ import ScProgramApprovalMappingList from "../pages/masters/sc-program-approval-m
 import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingView";
 import ScProgramApprovalMappingEdit from "../pages/masters/sc-program-approval-mapping/EditScApprovalMapping";
 import ReelerPendingReport from "../pages/reports-admin/market-auction/ReelerPendingReport";
+import ReelerInitialAmount from "../pages/market-and-auction/ReelerInitialAmount";
 
 // Admin and Reports
 
@@ -1772,6 +1773,7 @@ function Router() {
             <Route path="bank-statement" element={<BankStatement />} />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />
+            <Route path="reeler-initial-amount" element={<ReelerInitialAmount />} />
             <Route
               path="reject-farmer-auction"
               element={<RejectFarmerAuction />}
