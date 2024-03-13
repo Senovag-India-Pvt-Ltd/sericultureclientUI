@@ -92,6 +92,29 @@ function Weighment() {
     }
   };
 
+  const [isTriplet, setIsTriplet] = useState("");
+  console.log(isTriplet);
+
+  const getMarketDetails = () => {
+    // console.log("hello world");
+    api
+      .get(baseURL + `marketMaster/get/${localStorage.getItem("marketId")}`)
+      .then((response) => {
+        if (!response.data.content.error) {
+          setIsTriplet(response.data.content.weighmentTripletGeneration);
+        } else {
+          console.error(response.data.content.error_description);
+        }
+
+        console.log(response);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    getMarketDetails();
+  }, []);
+
   const onchanging = (e) => {
     let value = e.target.value;
     setData((prev) => {
@@ -276,8 +299,11 @@ function Weighment() {
         setCounter(0);
         setLastWeight("0");
         // setLotNumber("");
-
-        printTriplet();
+        if (isTriplet) {
+          printTriplet();
+        } else {
+          console.log("In Market Master Change setting");
+        }
       }
     });
   };
@@ -1174,7 +1200,11 @@ function Weighment() {
                             </tr>
                             <tr>
                               {/* <td style={styles.large}>{lastWeight-tareWeight}</td> */}
-                              <td style={styles.large}>{Math.max(0, lastWeight - tareWeight).toFixed(3)}</td>
+                              <td style={styles.large}>
+                                {Math.max(0, lastWeight - tareWeight).toFixed(
+                                  3
+                                )}
+                              </td>
                             </tr>
                             <tr>
                               <td style={styles.xxsmallcolor}>
