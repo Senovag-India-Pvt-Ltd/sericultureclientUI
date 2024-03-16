@@ -567,6 +567,10 @@ import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-m
 import ScProgramApprovalMappingEdit from "../pages/masters/sc-program-approval-mapping/EditScApprovalMapping";
 import ReelerPendingReport from "../pages/reports-admin/market-auction/ReelerPendingReport";
 import ReelerInitialAmount from "../pages/market-and-auction/ReelerInitialAmount";
+import Bank from "../pages/masters/bank/Bank";
+import BankList from "../pages/masters/bank/BankList";
+import BankView from "../pages/masters/bank/BankView";
+import BankEdit from "../pages/masters/bank/BankEdit";
 
 // Admin and Reports
 
@@ -1448,6 +1452,10 @@ function Router() {
             <Route path="source-list" element={<SourceList />} />
             <Route path="source-view/:id" element={<SourceView />} />
             <Route path="source-edit/:id" element={<SourceEdit />} />
+            <Route path="bank" element={<Bank/>} />
+            <Route path="bank-list" element={<BankList />} />
+            <Route path="bank-view/:id" element={<BankView />} />
+            <Route path="bank-edit/:id" element={<BankEdit />} />
             <Route path="sc-program" element={<ScProgram />} />
             <Route path="sc-program-list" element={<ScProgramList />} />
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
