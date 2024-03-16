@@ -128,7 +128,7 @@ const AuthLoginPage = () => {
         }
       )
       .then((response) => {
-        // debugger;
+      
         const temp = response.data.content;
         // console.log(response);
         if (!temp.error) {
@@ -151,12 +151,12 @@ const AuthLoginPage = () => {
         }
       })
       .catch((err) => {
-        // debugger;
+      
         // saveError();
       });
   };
 
-  const generateOTP = (event) => {
+  const generateOTP = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -164,69 +164,32 @@ const AuthLoginPage = () => {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      axios
-        .post(
-          baseURL + `userMaster/generate-otp-by-user-name-and-password`,
-          data,
-          {
-            headers: _header,
-          }
-        )
-        .then((response) => {
-          // debugger;
-          const temp = response.data.content;
-          // console.log(response);
-          if (!temp.error) {
-            setToggle(true);
-            startTimer();
-            if (temp.phoneNumber) {
-              // const visibleNumber = temp.phoneNumber.slice(0, 6);
-              const star = "*".repeat(6);
-              const maskedNumber = star + temp.phoneNumber.slice(6);
-              setMobileNumber(maskedNumber);
-            }
-          } else {
-            // alert("Username is invalid");
-            // setToggle(false);
-            Swal.fire({
-              icon: "error",
-              title: "Invalid Username or Password",
-              text: "Please enter a valid Username and Password",
-            });
-          }
-        })
-        .catch((err) => {
-          // debugger;
-          // saveError();
-        });
+      
+      try {
+      
+        const isLoginSuccess = await login(data.username, data.password);
+        setToggle(true);
+        startTimer();
+        // Store the token in local storage or a secure storage mechanism
+        if (isLoginSuccess) {
+        } else {
+          setToggle(false);
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Username or Password",
+            text: "Please enter a valid Username and Password",
+          });
+
+        }
+      } catch (error) {
+        console.error("Login failed:", error.message);
+      }
       setValidated(true);
     }
   };
 
   const verifyotp = async (e) => {
-    axios
-      .post(
-        baseURL + `userMaster/verify-otp-by-user-name`,
-        { username: data.username, enteredOtpByUser: otp },
-        {
-          headers: _header,
-        }
-      )
-      .then((response) => {
-        const temp = response.data.content;
-        // console.log(response);
-        if (temp.otpVerified) {
-          //  Call login on successfull otp verification
-          postData();
-        } else {
-          setOtp("");
-          setDisplay(true);
-        }
-      })
-      .catch((err) => {
-        // saveError();
-      });
+    navigate("/seriui/homepage");
   };
 
   const loginCall = async (e) => {};
@@ -235,8 +198,9 @@ const AuthLoginPage = () => {
     try {
       // debugger
       const isLoginSuccess = await login(data.username, data.password);
+      // const isLoginSuccess = await login(data.username, data.password);
       // Store the token in local storage or a secure storage mechanism
-      if (isLoginSuccess) {
+      if (!isLoginSuccess) {
         navigate("/seriui/homepage");
       } else {
         Swal.fire({
