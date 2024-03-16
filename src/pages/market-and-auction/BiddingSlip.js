@@ -73,7 +73,9 @@ function BiddingSlip() {
         numberOfSmallBin: "",
         numberOfBigBin: "",
         marketId: localStorage.getItem("marketId"),
-        godownId: localStorage.getItem("godownId"),
+        godownId: localStorage.getItem("godownId")
+          ? localStorage.getItem("godownId")
+          : 0,
       });
       setFarmerNumber("");
       setValidatedDisplay(false);
@@ -223,7 +225,9 @@ function BiddingSlip() {
 
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    godownId: localStorage.getItem("godownId"),
+    godownId: localStorage.getItem("godownId")
+      ? localStorage.getItem("godownId")
+      : 0,
     farmerId: "",
     sourceMasterId: "",
     raceMasterId: "",
@@ -302,7 +306,8 @@ function BiddingSlip() {
     } else {
       event.preventDefault();
       try {
-        const response = await api.post(baseURL + `auction/allot`, data);
+        const addGodown = localStorage.getItem("godownId")?localStorage.getItem("godownId"):0;
+        const response = await api.post(baseURL + `auction/allot`, {...data,godownId:addGodown});
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
           increment(response.data.content.farmerId);

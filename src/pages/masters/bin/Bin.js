@@ -209,7 +209,7 @@ function Bin() {
   // const [binStatus, setBinStatus] = useState({});
   const [data, setData] = useState({
     marketId: "",
-    godownId: "",
+    godownId: 0,
     smallBinStart: "",
     smallBinEnd: "",
     bigBinstart: "",
@@ -269,9 +269,7 @@ function Bin() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/seriui/bin-list");
-    });
+    })
   };
 
   const [marketListData, setMarketListData] = useState([]);
@@ -407,7 +405,7 @@ function Bin() {
                           value={data.godownId}
                           onChange={change}
                         >
-                          <option value="">Select Godown</option>
+                          <option value="0">Select Godown</option>
                           {godownListData.map((list) => (
                             <option key={list.godownId} value={list.godownId}>
                               {list.godownName}
