@@ -12,7 +12,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function DisplayAllLot() {
   const styles = {
@@ -75,6 +75,26 @@ function DisplayAllLot() {
     },
   };
 
+  // Get Lot By MarketId
+  const [lots, setLots] = useState([]);
+  const getList = () => {
+    api
+      .post(
+        baseURLMarket +
+          `auction/report/getAllHighestBidsByMarketIdAndOptionalGodownId`,
+        { marketId: localStorage.getItem("marketId") }
+      )
+      .then((response) => {
+        console.log(response);
+        setLots(response.data.content);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -96,155 +116,87 @@ function DisplayAllLot() {
   return (
     // <Layout title="e-Weighment">
     <div>
-      {/* <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">e-Weighment</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  e-Weighment
-                </li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head> */}
-
       <Block>
         <Form action="#">
           <Row className="g-3">
             <Col lg="12">
               <Card>
                 <Card.Body>
-                  <Row className="g-3 ">
+                  <Row className="g-3 d-flex justify-content-center">
                     <Col lg="8" style={{ padding: "0px 0px 0px 8px" }}>
-                      <table className="table small table-bordered weightmenttable marginbottom0">
-                        <thead>
-                          <tr>
-                            <th style={styles.top}>Lot No</th>
-                            <th style={styles.top}>Bid Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              1
-                            </td>
+                      <div className="table">
+                        <div className="table-slide">
+                          <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
+                            <thead>
+                              <tr>
+                                <th style={styles.top}>Lot No</th>
+                                <th style={styles.top}>Bid Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {lots.forEach((lot) => (
+                                <>
+                                  <tr>
+                                    <td
+                                      style={{ ...styles.bottom, width: "50%" }}
+                                    >
+                                      {lot.allottedLotId}
+                                    </td>
 
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 200
-                            </td>
+                                    <td
+                                      style={{ ...styles.bottom, width: "50%" }}
+                                    >
+                                      {" "}
+                                      &#8377; {lot.highestBid}
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="table-slide">
+                          <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
+                            <thead>
+                              <tr>
+                                <th style={styles.top}>Lot No</th>
+                                <th style={styles.top}>Bid Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {/* <tr>
+                                <td style={{ ...styles.bottom, width: "50%" }}>
+                                  1
+                                </td>
 
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              2
-                            </td>
+                                <td style={{ ...styles.bottom, width: "50%" }}>
+                                  {" "}
+                                  &#8377; 200
+                                </td>
+                              </tr> */}
+                              {lots.map((lot) => (
+                               
+                                <>
+                                  <tr>
+                                    <td
+                                      style={{ ...styles.bottom, width: "50%" }}
+                                    >
+                                      {lot.allottedLotId}
+                                    </td>
 
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 300
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              3
-                            </td>
-
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 400
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              4
-                            </td>
-
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 500
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              5
-                            </td>
-
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 600
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              6
-                            </td>
-
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 700
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                          <tr>
-                            {/* <td style={styles.bottom}>{noOfBox}</td> */}
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              7
-                            </td>
-
-                            <td style={{ ...styles.bottom, width: "50%" }}>
-                              {" "}
-                              &#8377; 800
-                            </td>
-
-                            {/* <td style={styles.bottom}>2</td> */}
-                          </tr>
-                        </tbody>
-                      </table>
+                                    <td
+                                      style={{ ...styles.bottom, width: "50%" }}
+                                    >
+                                      {" "}
+                                      &#8377; {lot.highestBid}
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </Card.Body>

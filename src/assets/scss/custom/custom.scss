@@ -54,3 +54,22 @@
   box-shadow: none;
   border-color: #d2d4e4;
 }
+
+@keyframes slide {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.table {
+  overflow: hidden;
+  padding: 60px 0;
+}
+
+.table-slide {
+  white-space: nowrap;
+  animation: 500s slide infinite linear;
+}
