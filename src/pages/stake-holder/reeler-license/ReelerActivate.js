@@ -229,6 +229,7 @@ function ReelerActivate() {
           if (!response.data.content.error) {
             getReelerList(response.data.content.reelerId);
             setReelerName(response.data.content.reelerName);
+            setData(prev=>({...prev,username:response.data.content.reelerName}))
           } else {
             Swal.fire({
               icon: "warning",
@@ -926,6 +927,22 @@ function ReelerActivate() {
               </Card.Body>
             </Card>
 
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary" disabled={show}>
+                    Activate
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li>
+              </ul>
+            </div>
+
             <Block className="mt-4">
               <Card>
                 <DataTable
@@ -948,21 +965,7 @@ function ReelerActivate() {
               </Card>
             </Block>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary" disabled={show}>
-                    Activate
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+            
           </Row>
         </Form>
       </Block>
