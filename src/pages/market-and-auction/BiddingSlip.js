@@ -126,7 +126,7 @@ function BiddingSlip() {
             // console.log("hello",response);
             const res = response.data.content.farmerBankAccount;
             setFarmerDetails(response.data.content.farmerResponse);
-            setFarmerAddress(response.data.content.farmerAddressDTOList);
+            setFarmerAddress(response.data.content.farmerAddressList);
             setData((prev) => {
               return {
                 ...prev,
@@ -1430,8 +1430,8 @@ function BiddingSlip() {
                                     farmerAddress[0].villageName} */}
                                   {farmerAddress &&
                                     farmerAddress.length > 0 &&
-                                    farmerAddress[0].villageName &&
-                                    farmerAddress[0].villageName}
+                                    farmerAddress[0].addressText &&
+                                    farmerAddress[0].addressText}
                                 </td>
                               </tr>
                             </tbody>

@@ -381,6 +381,7 @@ function Menu() {
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_Reeler_Transaction_Report: false,
     Admin_Report_GeneratedTriplet: false,
+    Admin_Report_GeneratedFarmerCopy: false,
   });
 
   // Old show menu using mapcode
@@ -2262,6 +2263,14 @@ function Menu() {
                       <MenuItemLink
                         text="Generated Triplet"
                         to="/seriui/print-bid-slip"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_GeneratedFarmerCopy ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Generated Bidding Slip"
+                        to="/seriui/print-farmer-copy"
                       />
                     </MenuItem>
                   ) : null}

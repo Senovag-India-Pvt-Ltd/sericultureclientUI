@@ -571,6 +571,7 @@ import Bank from "../pages/masters/bank/Bank";
 import BankList from "../pages/masters/bank/BankList";
 import BankView from "../pages/masters/bank/BankView";
 import BankEdit from "../pages/masters/bank/BankEdit";
+import PrintFarmerCopy from "../pages/market-and-auction/PrintFarmerCopy";
 
 // Admin and Reports
 
@@ -1789,6 +1790,10 @@ function Router() {
             <Route
               path="generate-bidding-slip"
               element={<GenerateBiddingSlip />}
+            />
+            <Route
+              path="print-farmer-copy"
+              element={<PrintFarmerCopy />}
             />
             <Route path="weighment" element={<Weighment />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
