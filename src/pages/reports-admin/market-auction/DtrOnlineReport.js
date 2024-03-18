@@ -320,7 +320,7 @@ function DtrOnlineReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number<span className="text-danger">*</span>
+                        Reeler Number
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
