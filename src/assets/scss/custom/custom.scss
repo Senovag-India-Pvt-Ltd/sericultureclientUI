@@ -71,5 +71,19 @@
 
 .table-slide {
   white-space: nowrap;
+  animation: 15s slide infinite linear;
+}
+
+.table-slide-500 {
+  white-space: nowrap;
+  animation: 100s slide infinite linear;
+}
+
+.table-slide-1000 {
+  white-space: nowrap;
   animation: 500s slide infinite linear;
+}
+
+.hide{
+  display: none;
 }

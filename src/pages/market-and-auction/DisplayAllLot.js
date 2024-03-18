@@ -8,6 +8,7 @@ import { Icon } from "../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import classNames from "classnames";
 // import { SerialPort } from "serialport";
 import api from "../../../src/services/auth/api";
 
@@ -77,6 +78,25 @@ function DisplayAllLot() {
 
   // Get Lot By MarketId
   const [lots, setLots] = useState([]);
+  const [lotsLength, setLotsLength] = useState(0);
+
+  function getClassName() {
+    return classNames({
+      "table-slide": lotsLength > 10,
+      "table-slide-500": lotsLength > 100,
+      "able-slide-1000": lotsLength > 1000,
+    });
+  }
+
+  function getClassNameHide() {
+    return classNames({
+      hide: lotsLength < 10,
+      "table-slide": lotsLength > 10,
+      "table-slide-500": lotsLength > 100,
+      "able-slide-1000": lotsLength > 1000,
+    });
+  }
+
   const getList = () => {
     api
       .post(
@@ -87,12 +107,16 @@ function DisplayAllLot() {
       .then((response) => {
         console.log(response);
         setLots(response.data.content);
+        setLotsLength(response.data.content.length);
       })
       .catch((err) => {});
   };
 
+  // console.log(lotsLength);
+
   useEffect(() => {
-    getList();
+    const interval = setInterval(getList, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const navigate = useNavigate();
@@ -125,7 +149,7 @@ function DisplayAllLot() {
                   <Row className="g-3 d-flex justify-content-center">
                     <Col lg="8" style={{ padding: "0px 0px 0px 8px" }}>
                       <div className="table">
-                        <div className="table-slide">
+                        <div className={getClassName()}>
                           <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
                             <thead>
                               <tr>
@@ -134,7 +158,7 @@ function DisplayAllLot() {
                               </tr>
                             </thead>
                             <tbody>
-                              {lots.forEach((lot) => (
+                              {lots.map((lot) => (
                                 <>
                                   <tr>
                                     <td
@@ -155,7 +179,7 @@ function DisplayAllLot() {
                             </tbody>
                           </table>
                         </div>
-                        <div className="table-slide">
+                        <div className={getClassNameHide()}>
                           <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
                             <thead>
                               <tr>
@@ -164,18 +188,7 @@ function DisplayAllLot() {
                               </tr>
                             </thead>
                             <tbody>
-                              {/* <tr>
-                                <td style={{ ...styles.bottom, width: "50%" }}>
-                                  1
-                                </td>
-
-                                <td style={{ ...styles.bottom, width: "50%" }}>
-                                  {" "}
-                                  &#8377; 200
-                                </td>
-                              </tr> */}
                               {lots.map((lot) => (
-                               
                                 <>
                                   <tr>
                                     <td
@@ -202,16 +215,6 @@ function DisplayAllLot() {
                 </Card.Body>
               </Card>
             </Col>
-
-            {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="button" variant="primary" onClick={postData}>
-                    Generate
-                  </Button>
-                </li>
-              </ul>
-            </div> */}
           </Row>
         </Form>
       </Block>
