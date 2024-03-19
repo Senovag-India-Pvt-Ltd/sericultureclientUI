@@ -178,11 +178,11 @@ function ReelerPendingReport() {
     });
   };
   return (
-    <Layout title="Bidding Report Reeler">
+    <Layout title="Reeler Pending Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Report Reeler</Block.Title>
+            <Block.Title tag="h2">Reeler Pending Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">

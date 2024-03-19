@@ -83,8 +83,9 @@ function DisplayAllLot() {
   function getClassName() {
     return classNames({
       "table-slide": lotsLength > 10,
-      "table-slide-500": lotsLength > 100,
-      "able-slide-1000": lotsLength > 1000,
+      "table-slide-100": lotsLength > 100,
+      "table-slide-150": lotsLength > 150,
+      "table-slide-200": lotsLength > 200,
     });
   }
 
@@ -92,8 +93,9 @@ function DisplayAllLot() {
     return classNames({
       hide: lotsLength < 10,
       "table-slide": lotsLength > 10,
-      "table-slide-500": lotsLength > 100,
-      "able-slide-1000": lotsLength > 1000,
+      "table-slide-100": lotsLength > 100,
+      "table-slide-150": lotsLength > 150,
+      "table-slide-200": lotsLength > 200,
     });
   }
 

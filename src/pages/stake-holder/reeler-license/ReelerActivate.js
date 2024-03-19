@@ -229,7 +229,7 @@ function ReelerActivate() {
           if (!response.data.content.error) {
             getReelerList(response.data.content.reelerId);
             setReelerName(response.data.content.reelerName);
-            setData(prev=>({...prev,username:response.data.content.reelerName}))
+            setData(prev=>({...prev,username:response.data.content.reelerName,reelerId:response.data.content.reelerId}))
           } else {
             Swal.fire({
               icon: "warning",
