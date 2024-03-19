@@ -317,13 +317,13 @@ function HelpdeskDashboard() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Severity",
-      selector: (row) => row.hdSeverityName,
-      cell: (row) => <span>{row.hdSeverityName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Severity",
+    //   selector: (row) => row.hdSeverityName,
+    //   cell: (row) => <span>{row.hdSeverityName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Status",
     //   cell: (row) => (
