@@ -602,13 +602,13 @@ function DtrOnlineReport() {
                           <td>Wt: {listDetails.totalWeight}</td>
                           <td>Amt: {listDetails.totalBidAmount}</td>
                           <td></td>
-                          <td>F Amt: {listDetails.totalFarmerAmount}</td>
+                          <td>F Amt: {listDetails.totalFarmerAmount.toFixed(2)}</td>
                           <td>
                             MF:{" "}
-                            {listDetails.totalFarmerMarketFee +
-                              listDetails.totalReelerMarketFee}
+                            {(listDetails.totalFarmerMarketFee +
+                              listDetails.totalReelerMarketFee).toFixed(2)}
                           </td>
-                          <td>R Amt: {listDetails.totalReelerAmount}</td>
+                          <td>R Amt: {listDetails.totalReelerAmount.toFixed(2)}</td>
                           <td></td>
                           <td></td>
                           <td></td>
