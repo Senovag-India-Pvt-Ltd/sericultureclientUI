@@ -48,7 +48,15 @@ function ReelerLicenceEdit() {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () => {
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    });
+    setShowModal(true);
+  };
   const handleCloseModal = () => setShowModal(false);
 
   const handleAdd = (event) => {
