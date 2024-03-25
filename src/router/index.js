@@ -572,6 +572,16 @@ import BankList from "../pages/masters/bank/BankList";
 import BankView from "../pages/masters/bank/BankView";
 import BankEdit from "../pages/masters/bank/BankEdit";
 import PrintFarmerCopy from "../pages/market-and-auction/PrintFarmerCopy";
+import MaintenanceofMulberryfarmList from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmList";
+import ReceiptofDFLsfromtheP4grainageList from "../pages/seed-and-dfl-managment/ReceiptofDFLsfromtheP4grainageList";
+import MaintenanceofLineRecordsforEachRaceList from "../pages/seed-and-dfl-managment/MaintenanceofLineRecordsforEachRaceList";
+import MaintenanceofScreeningBatchRecordsList from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsList";
+import DispatchofCocoonstoP4GrainageList from "../pages/seed-and-dfl-managment/DispatchofCocoonstoP4GrainageList";
+import RearingofDFLsforthe8LinesList from "../pages/seed-and-dfl-managment/RearingofDFLsforthe8LinesList";
+import PreservationofseedcocoonforprocessingList from "../pages/seed-and-dfl-managment/PreservationofseedcocoonforprocessingList";
+import PreparationofeggsDFLsList from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsList";
+import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/MaintenanceofeggsatcoldstorageList";
+import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
 
 // Admin and Reports
 
@@ -893,12 +903,25 @@ function Router() {
               element={<MaintenanceofMulberryfarm />}
             />
             <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-list"
+              element={<MaintenanceofMulberryfarmList />}
+            />
+            <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
             />
             <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-list"
+              element={<ReceiptofDFLsfromtheP4grainageList />}
+            />
+            <Route
               path="Maintenance-of-Line-Records-for-Each-Race"
               element={<MaintenanceofLineRecordsforEachRace />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-List"
+              element={<MaintenanceofLineRecordsforEachRaceList />}
             />
 
             <Route
@@ -907,8 +930,18 @@ function Router() {
             />
 
             <Route
+              path="Maintenance-of-Screening-Batch-Records-List"
+              element={<MaintenanceofScreeningBatchRecordsList />}
+            />
+
+            <Route
               path="Dispatch-of-Cocoons-to-P4-Grainage"
               element={<DispatchofCocoonstoP4Grainage />}
+            />
+
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-List"
+              element={<DispatchofCocoonstoP4GrainageList />}
             />
 
             <Route
@@ -917,8 +950,18 @@ function Router() {
             />
 
             <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-List"
+              element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
               path="Preservation-of-seed-cocoon-for-processing"
               element={<Preservationofseedcocoonforprocessing />}
+            />
+
+            <Route
+              path="Preservation-of-seed-cocoon-for-processing-List"
+              element={<PreservationofseedcocoonforprocessingList />}
             />
 
             <Route
@@ -927,13 +970,28 @@ function Router() {
             />
 
             <Route
+              path="Preparation-of-eggs-DFLs-List"
+              element={<PreparationofeggsDFLsList />}
+            />
+
+            <Route
               path="Maintenance-of-eggs-at-cold-storage"
               element={<Maintenanceofeggsatcoldstorage />}
             />
 
             <Route
+              path="Maintenance-of-eggs-at-cold-storage-List"
+              element={<MaintenanceofeggsatcoldstorageList />}
+            />
+
+            <Route
               path="Cold-Storage-Schedule-BV"
               element={<ColdStorageScheduleBV />}
+            />
+
+            <Route
+              path="Cold-Storage-Schedule-BV-List"
+              element={<ColdStorageScheduleBVList />}
             />
 
             {/* Seed & DFL Management */}
@@ -1453,7 +1511,7 @@ function Router() {
             <Route path="source-list" element={<SourceList />} />
             <Route path="source-view/:id" element={<SourceView />} />
             <Route path="source-edit/:id" element={<SourceEdit />} />
-            <Route path="bank" element={<Bank/>} />
+            <Route path="bank" element={<Bank />} />
             <Route path="bank-list" element={<BankList />} />
             <Route path="bank-view/:id" element={<BankView />} />
             <Route path="bank-edit/:id" element={<BankEdit />} />
@@ -1782,7 +1840,10 @@ function Router() {
             <Route path="bank-statement" element={<BankStatement />} />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />
-            <Route path="reeler-initial-amount" element={<ReelerInitialAmount />} />
+            <Route
+              path="reeler-initial-amount"
+              element={<ReelerInitialAmount />}
+            />
             <Route
               path="reject-farmer-auction"
               element={<RejectFarmerAuction />}
@@ -1791,10 +1852,7 @@ function Router() {
               path="generate-bidding-slip"
               element={<GenerateBiddingSlip />}
             />
-            <Route
-              path="print-farmer-copy"
-              element={<PrintFarmerCopy />}
-            />
+            <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route

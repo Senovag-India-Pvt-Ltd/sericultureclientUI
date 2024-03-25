@@ -413,25 +413,25 @@ function ColdStorageScheduleBV() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2"> Cold-Storage-Schedule-BV</Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Cold-Storage-Schedule-BV
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Cold-Storage-Schedule-BV-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -440,7 +440,7 @@ function ColdStorageScheduleBV() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Cold-Storage-Schedule-BV-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -490,34 +490,46 @@ function ColdStorageScheduleBV() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group ">
                               <Form.Label> Laid on date</Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group ">
                               <Form.Label> Date of deposit</Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
@@ -537,141 +549,139 @@ function ColdStorageScheduleBV() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button
-                              type="button"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              {" "}
-                              Submit{" "}
-                            </Button>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
                   </Block>
+                  <Col lg="12" className="text-center mt-1">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={handleShowModal}
+                    >
+                      {" "}
+                      Submit{" "}
+                    </Button>
+                  </Col>
                 </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Grainage</th>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>Laid on date</th>
-                                  <th style={styles.ctstyle}>
-                                    Date of deposit
-                                  </th>
-                                  <th style={styles.ctstyle}>Schedule Type</th>
-                                  <th style={styles.ctstyle}>
-                                    Storage Temperature
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Storage Duration
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Remaining Duration{" "}
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Date of release
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Line/Year data </td>
-                                  <td>Source</td>
-                                  <td>Generation No. ( 1 to 15)</td>
-                                  <td>Spun on Date</td>
-                                  <td>Lot Number</td>
-                                  <td>Number of Cocoons Dispatched</td>
-                                  <td>12/20/2023</td>
-                                  <td>Dispatch </td>
-                                  <td>Invoice No amd Date</td>
-                                </tr>
-                                <tr>
-                                  <td>Line/Year data </td>
-                                  <td>Source</td>
-                                  <td>Generation No. ( 1 to 15)</td>
-                                  <td>Spun on Date</td>
-                                  <td>Lot Number</td>
-                                  <td>Number of Cocoons Dispatched</td>
-                                  <td>12/20/2023</td>
-                                  <td>Dispatch </td>
-                                  <td>Invoice No amd Date</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-
-                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
-                    <Modal.Header closeButton>
-                      <Modal.Title>
-                        {" "}
-                        Status of Cold Storage Schedule (BV)
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <Form action="#">
-                        <Row className="g-5 px-5">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>Laid on date</th>
-                                  <th style={styles.ctstyle}>
-                                    Date of deposit
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Remaining Duration
-                                  </th>
-                                  <th style={styles.ctstyle}>Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Grainage Name data</td>
-                                  <td>Number of DFLs received data</td>
-                                  <td>Line Name data</td>
-                                  <td>Lot Number data</td>
-                                  <td>Invoice no data</td>
-
-                                  <td style={styles.actionredtstyle}>
-                                    Pending
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>Grainage Name data</td>
-                                  <td>Number of DFLs received data</td>
-                                  <td>Line Name data</td>
-                                  <td>Lot Number data</td>
-                                  <td>Invoice no data</td>
-
-                                  <td style={styles.actiongreentstyle}>
-                                    Changed
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
+                {/* <Col lg="12">
+                    <Card>
+                      <Card.Body>
+                        <Row className="g-gs">
+                          <Col lg="12">
+                            <div className="table-responsive">
+                              <table className="table small table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th style={styles.ctstyle}>Grainage</th>
+                                    <th style={styles.ctstyle}>Lot number</th>
+                                    <th style={styles.ctstyle}>Laid on date</th>
+                                    <th style={styles.ctstyle}>
+                                      Date of deposit
+                                    </th>
+                                    <th style={styles.ctstyle}>Schedule Type</th>
+                                    <th style={styles.ctstyle}>
+                                      Storage Temperature
+                                    </th>
+                                    <th style={styles.ctstyle}>
+                                      Storage Duration
+                                    </th>
+                                    <th style={styles.ctstyle}>
+                                      Remaining Duration{" "}
+                                    </th>
+                                    <th style={styles.ctstyle}>
+                                      Date of release
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Line/Year data </td>
+                                    <td>Source</td>
+                                    <td>Generation No. ( 1 to 15)</td>
+                                    <td>Spun on Date</td>
+                                    <td>Lot Number</td>
+                                    <td>Number of Cocoons Dispatched</td>
+                                    <td>12/20/2023</td>
+                                    <td>Dispatch </td>
+                                    <td>Invoice No amd Date</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Line/Year data </td>
+                                    <td>Source</td>
+                                    <td>Generation No. ( 1 to 15)</td>
+                                    <td>Spun on Date</td>
+                                    <td>Lot Number</td>
+                                    <td>Number of Cocoons Dispatched</td>
+                                    <td>12/20/2023</td>
+                                    <td>Dispatch </td>
+                                    <td>Invoice No amd Date</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </Col>
                         </Row>
-                      </Form>
-                    </Modal.Body>
-                  </Modal>
-                </Col>
+                      </Card.Body>
+                    </Card>
+
+                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
+                      <Modal.Header closeButton>
+                        <Modal.Title>
+                          {" "}
+                          Status of Cold Storage Schedule (BV)
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form action="#">
+                          <Row className="g-5 px-5">
+                            <div className="table-responsive">
+                              <table className="table small table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th style={styles.ctstyle}>Grainage Name</th>
+                                    <th style={styles.ctstyle}>Lot number</th>
+                                    <th style={styles.ctstyle}>Laid on date</th>
+                                    <th style={styles.ctstyle}>
+                                      Date of deposit
+                                    </th>
+                                    <th style={styles.ctstyle}>
+                                      Remaining Duration
+                                    </th>
+                                    <th style={styles.ctstyle}>Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Grainage Name data</td>
+                                    <td>Number of DFLs received data</td>
+                                    <td>Line Name data</td>
+                                    <td>Lot Number data</td>
+                                    <td>Invoice no data</td>
+
+                                    <td style={styles.actionredtstyle}>
+                                      Pending
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Grainage Name data</td>
+                                    <td>Number of DFLs received data</td>
+                                    <td>Line Name data</td>
+                                    <td>Lot Number data</td>
+                                    <td>Invoice no data</td>
+
+                                    <td style={styles.actiongreentstyle}>
+                                      Changed
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </Row>
+                        </Form>
+                      </Modal.Body>
+                    </Modal>
+                  </Col> */}
               </Row>
             </div>
           </Row>

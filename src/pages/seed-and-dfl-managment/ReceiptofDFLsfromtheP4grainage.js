@@ -415,25 +415,25 @@ function ReceiptofDFLsfromtheP4grainage() {
             <Block.Title tag="h2">
               Receipt of DFLs from the P4 grainage
             </Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Receipt of DFLs from the P4 grainage
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -442,7 +442,7 @@ function ReceiptofDFLsfromtheP4grainage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -615,26 +615,24 @@ function ReceiptofDFLsfromtheP4grainage() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button
-                              type="button"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              {" "}
-                              Submit{" "}
-                            </Button>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={handleShowModal}
+                      >
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -735,7 +733,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                       </Form>
                     </Modal.Body>
                   </Modal>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

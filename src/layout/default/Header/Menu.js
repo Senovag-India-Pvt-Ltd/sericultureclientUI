@@ -1122,7 +1122,7 @@ function Menu() {
               <MenuItem>
                 <MenuItemLink
                   text="Maintenance of mulberry Garden in the Farms"
-                  to="/seriui/garden-mulberry-farm"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms"
                 />
               </MenuItem>
             ) : null}

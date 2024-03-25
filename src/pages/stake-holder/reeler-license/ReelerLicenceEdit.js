@@ -512,7 +512,7 @@ function ReelerLicenceEdit() {
     console.log(date);
     const expirationDate = new Date(date);
     expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-    console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
+    // console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
 
     setData((prev) => ({
       ...prev,
