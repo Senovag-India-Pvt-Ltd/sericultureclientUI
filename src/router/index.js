@@ -588,6 +588,10 @@ import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
 import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
 import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
 import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
+import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
 
 // Admin and Reports
 
@@ -1013,6 +1017,20 @@ function Router() {
             <Route
               path="testing-of-moth-view/:id"
               element={<TestingOfMothView />}
+            />
+            <Route path="maintenance-of-pierced-cocoons" element={<MaintenanceOfPiercedCocoons />} />
+            <Route
+              path="maintenance-of-pierced-cocoons-list"
+              element={<MaintenanceOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="maintenance-of-pierced-cocoons-edit/:id"
+              element={<EditMaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-view/:id"
+              element={<MaintenanceOfPiercedCocoonsView />}
             />
 
 

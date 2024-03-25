@@ -240,6 +240,8 @@ function Menu() {
     SeedDFL_Preparation_Egg_DFLs: false,
     SeedDFL_Eggs_Cold_storage: false,
     SeedDFL_Cold_Storage_Schedule_BV: false,
+    SeedDFL_Testing_Of_Moth: false,
+    SeedDFL_Maintenance_Of_Pierced_Cocoons: false,
 
     GardenManagement: false,
     GardenManagement_Mulberry_Garden: false,
@@ -1204,6 +1206,22 @@ function Menu() {
                 <MenuItemLink
                   text="Cold Storage Schedule BV"
                   to="/seriui/Cold-Storage-Schedule-BV"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.SeedDFL_Testing_Of_Moth ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Testing Of Moth/Pupa"
+                  to="/seriui/testing-of-moth"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.SeedDFL_Maintenance_Of_Pierced_Cocoons ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance Of Pierced Cocoons"
+                  to="/seriui/maintenance-of-pierced-cocoons"
                 />
               </MenuItem>
             ) : null}
