@@ -10,428 +10,263 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import axios from "axios";
+import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function SaleDisposalofDFLseggs() {
+  const [data, setData] = useState({
+    fruitsId: "",
+    farmerName: "",
+    mulberryVarietyId: "",
+    area: "",
+    dateOfPlanting: "",
+    nurserySaleDetails: "",
+    quantity: "",
+    date: "",
+    rate: "",
+    saplingAge: "",
+    remittanceDetails: "",
+    challanUploadKey: "",
+  });
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
+      width: "20%",
     },
   };
 
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
-
-  const [data, setData] = useState({
-    name: "",
-    wardNumber: "",
-    passbookNumber: "",
-    fatherName: "",
-    educationId: "",
-    reelingUnitBoundary: "",
-    dob: "",
-    rationCard: "",
-    machineTypeId: "",
-    gender: "",
-    dateOfMachineInstallation: "",
-    electricityRrNumber: "",
-    casteId: "",
-    revenueDocument: "",
-    numberOfBasins: "",
-    mobileNumber: "",
-    recipientId: "",
-    mahajarDetails: "",
-    emailId: "",
-    representativeNameAddress: "",
-    loanDetails: "",
-    assignToInspectId: "",
-    gpsLat: "",
-    gpsLng: "",
-    inspectionDate: "",
-    arnNumber: "",
-    chakbandiLat: "",
-    chakbandiLng: "",
-    address: "",
-    pincode: "",
-    stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
-    receiptDate: "",
-    functionOfUnit: "",
-    reelingLicenseNumber: "",
-    feeAmount: "",
-    memberLoanDetails: "",
-    mahajarEast: "",
-    mahajarWest: "",
-    mahajarNorth: "",
-    mahajarSouth: "",
-    mahajarNorthEast: "",
-    mahajarNorthWest: "",
-    mahajarSouthEast: "",
-    mahajarSouthWest: "",
-    bankName: "",
-    bankAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    status: "",
-    licenseRenewalDate: "",
-  });
+  const [validated, setValidated] = useState(false);
+  const [searchValidated, setSearchValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+  };
+
+  const _header = {
+    "Content-Type": "application/json",
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+      api
+        .post(baseURL + `Maintenance-sale/add-info`, data)
+        .then((response) => {
+          if (response.data.mainAndSaleOfNurseryId) {
+            const nurseryId = response.data.mainAndSaleOfNurseryId;
+            handleChallanUpload(nurseryId);
+          }
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.receiptNo);
+            setData({
+              fruitsId: "",
+              farmerName: "",
+              mulberryVarietyId: "",
+              area: "",
+              dateOfPlanting: "",
+              nurserySaleDetails: "",
+              quantity: "",
+              date: "",
+              rate: "",
+              saplingAge: "",
+              remittanceDetails: "",
+              challanUploadKey: "",
+            });
+            setChallan("");
+            document.getElementById("challanUploadKey").value = "";
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
+      fruitsId: "",
+      farmerName: "",
+      mulberryVarietyId: "",
+      area: "",
+      dateOfPlanting: "",
+      nurserySaleDetails: "",
+      quantity: "",
+      date: "",
+      rate: "",
+      saplingAge: "",
+      remittanceDetails: "",
+      challanUploadKey: "",
+    });
+    setChallan("");
+    document.getElementById("challanUploadKey").value = "";
+  };
+
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+      api
+        .post(
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+          { fruitsId: data.fruitsId }
+        )
+        .then((response) => {
+          console.log(response);
+          if (!response.data.content.error) {
+            if (response.data.content.farmerResponse) {
+              const firstName = response.data.content.farmerResponse.firstName;
+              const fatherName =
+                response.data.content.farmerResponse.fatherName;
+              setData((prev) => ({
+                ...prev,
+                farmerName: firstName,
+                fatherName: fatherName,
+              }));
+            }
+          } else {
+            saveError(response.data.content.error_description);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+    }
+  };
+
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURL2 + `mulberry-variety/get-all`)
+      .then((response) => {
+        setVarietyListData(response.data.content.mulberryVariety);
+      })
+      .catch((err) => {
+        setVarietyListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getVarietyList();
+  }, []);
+
+  // Display Image
+  const [challan, setChallan] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleChallanChange = (e) => {
+    const file = e.target.files[0];
+    setChallan(file);
+    setData((prev) => ({ ...prev, challanUploadKey: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleChallanUpload = async (nurseryFarmerid) => {
+    const parameters = `mainAndSaleOfNurseryId=${nurseryFarmerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", challan);
+
+      const response = await api.post(
+        baseURL + `Maintenance-sale/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  const saveSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      text: `Receipt Number ${message}`,
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
   };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
-  const postData = (e) => {
-    axios
-      .post(baseURL + `reeler/add`, data, {
-        headers: _header,
-      })
-      .then((response) => {
-        if (vbAccountList.length > 0) {
-          const reelerId = response.data.content.reelerId;
-          vbAccountList.forEach((list) => {
-            const updatedVb = {
-              ...list,
-              reelerId: reelerId,
-            };
-            axios
-              .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb, {
-                headers: _header,
-              })
-              .then((response) => {
-                saveSuccess();
-              })
-              .catch((err) => {
-                setVbAccount({});
-                saveError();
-              });
-          });
-        } else {
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
-  };
-
-  // to get Caste
-  const [casteListData, setCasteListData] = useState([]);
-
-  const getCasteList = () => {
-    axios
-      .get(baseURL2 + `caste/get-all`)
-      .then((response) => {
-        setCasteListData(response.data.content.caste);
-      })
-      .catch((err) => {
-        setCasteListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getCasteList();
-  }, []);
-
-  // to get Education
-  const [educationListData, setEducationListData] = useState([]);
-
-  const getEducationList = () => {
-    axios
-      .get(baseURL2 + `education/get-all`)
-      .then((response) => {
-        setEducationListData(response.data.content.education);
-      })
-      .catch((err) => {
-        setEducationListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getEducationList();
-  }, []);
-
-  // to get Machine Type
-  const [machineTypeListData, setMachineTypeListData] = useState([]);
-
-  const getMachineTypeList = () => {
-    axios
-      .get(baseURL2 + `machine-type-master/get-all`)
-      .then((response) => {
-        setMachineTypeListData(response.data.content.machineTypeMaster);
-      })
-      .catch((err) => {
-        setMachineTypeListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMachineTypeList();
-  }, []);
-
-  // to get Market
-  const [marketMasterListData, setMarketMasterListData] = useState([]);
-
-  const getMarketMasterList = () => {
-    axios
-      .get(baseURL2 + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketMasterListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketMasterListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMarketMasterList();
-  }, []);
-
-  // to get State
-  const [stateListData, setStateListData] = useState([]);
-
-  const getList = () => {
-    axios
-      .get(baseURL2 + `state/get-all`)
-      .then((response) => {
-        setStateListData(response.data.content.state);
-      })
-      .catch((err) => {
-        setStateListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  // to get district
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = (_id) => {
-    axios
-      .get(baseURL2 + `district/get-by-state-id/${_id}`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.stateId) {
-      getDistrictList(data.stateId);
-    }
-  }, [data.stateId]);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    axios
-      .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.districtId) {
-      getTalukList(data.districtId);
-    }
-  }, [data.districtId]);
-
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    axios
-      .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        setHobliListData(response.data.content.hobli);
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.talukId) {
-      getHobliList(data.talukId);
-    }
-  }, [data.talukId]);
-
-  // to get Village
-  const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    axios
-      .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.hobliId) {
-      getVillageList(data.hobliId);
-    }
-  }, [data.hobliId]);
-
-  const navigate = useNavigate();
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/reeler-license-list"));
-  };
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
-
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
-  };
-
   return (
-    <Layout title=" Cold-Storage-Schedule-BV">
+    <Layout title="Sale / Disposal of DFL's(eggs) ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Cold-Storage-Schedule-BV</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Cold-Storage-Schedule-BV
-                </li>
-              </ol>
-            </nav>
+            <Block.Title tag="h2">Sale / Disposal of DFL's(eggs)</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Sale-Disposal-of-DFLs-eggs-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -440,7 +275,7 @@ function SaleDisposalofDFLseggs() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Sale-Disposal-of-DFLs-eggs-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -452,227 +287,429 @@ function SaleDisposalofDFLseggs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
-        <Form action="#">
-          <Row className="g-3 ">
-            <div>
+      <Block className="mt-n4">
+        {/* <Form action="#"> */}
+        <Form noValidate validated={searchValidated} onSubmit={search}>
+          <Card>
+            <Card.Body>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header> Cold-Storage-Schedule-BV </Card.Header>
-                      <Card.Body>
-                        <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">Grainage</Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="Grainage"
-                                  type="text"
-                                  placeholder="Grainage"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      FRUITS ID<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        type="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder="Enter FRUITS ID"
+                        required
+                        maxLength="16"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID Should Contain 16 digits
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    {/* <Col sm={2}>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                          target="_blank"
+                          // onClick={search}
+                        >
+                          Generate FRUITS ID
+                        </Button>
+                      </Col> */}
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
+            <Block className="mt-3">
+              <Card>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Sale / Disposal of DFLs 's (egg) s{" "}
+                </Card.Header>
+                <Card.Body>
+                  <Row className="g-gs">
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="sordfl">
+                          Lot Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerName"
+                            name="farmerName"
+                            type="text"
+                            value={data.farmerName}
+                            onChange={handleInputs}
+                            placeholder="Enter Lot Number"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Lot Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="sordfl">
+                          Egg Sheet Numbers
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerName"
+                            name="farmerName"
+                            type="text"
+                            value={data.farmerName}
+                            onChange={handleInputs}
+                            placeholder="Enter Egg Sheet Numbers"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Egg Sheet Numbers is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Race<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="mulberryVarietyId"
+                            value={data.mulberryVarietyId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // multiple
+                            required
+                            isInvalid={
+                              data.mulberryVarietyId === undefined ||
+                              data.mulberryVarietyId === "0"
+                            }
+                          >
+                            <option value="">Select Race</option>
+                            {varietyListData.map((list) => (
+                              <option
+                                key={list.mulberryVarietyId}
+                                value={list.mulberryVarietyId}
+                              >
+                                {list.mulberryVarietyName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Race is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="sordfl">
+                          Number of DFLs disposed
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="area"
+                            name="area"
+                            value={data.area}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength="4"
+                            placeholder="Enter Number of DFLs disposed"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Number of DFLs disposed is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    {/* <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Lot number
+                                Nursery sale details
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="nurserySaleDetails"
+                                  name="nurserySaleDetails"
                                   type="text"
-                                  placeholder="Lot number"
+                                  value={data.nurserySaleDetails}
+                                  onChange={handleInputs}
+                                  placeholder="Enter Nursery sale details"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col> */}
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Name and address of the farm / farmer / CRC
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="quantity"
+                            name="quantity"
+                            value={data.quantity}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength="5"
+                            placeholder=" Enter Name and address of the farm / farmer / CRC"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Name and address of the farm / farmer / CRC is
+                            required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Date of disposal<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.dateOfPlanting}
+                            onChange={(date) =>
+                              handleDateChange(date, "dateOfPlanting")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Rate per 100 DFLs Price (in Rupees)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="rate"
+                            name="rate"
+                            value={data.rate}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength="3"
+                            placeholder="Enter Rate per 100 DFLs Price"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Rate per 100 DFLs Price is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Sapling age in Month/Year
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="saplingAge"
+                            name="saplingAge"
+                            value={data.saplingAge}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Sapling age in Month/Year"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Sapling age in Month/Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col> */}
+
+                    {/* <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Generate Recipt
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="generateRecipt"
+                                  name="generateRecipt"
+                                  type="text"
+                                  value={data.generateRecipt}
+                                  onChange={handleInputs}
+                                  placeholder="Generate Recipt"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
-                              <Form.Label> Laid on date</Form.Label>
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Receipt number
+                              </Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group ">
-                              <Form.Label> Date of deposit</Form.Label>
-                              <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group  ">
-                              <Form.Label>Schedule Type</Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="gender"
-                                  value={data.gender}
+                                <Form.Control
+                                  id="receiptNumber"
+                                  name="receiptNumber"
+                                  type="text"
+                                  value={data.receiptNumber}
                                   onChange={handleInputs}
-                                >
-                                  <option value="">4 Months</option>
-                                  <option value="1">6 Months </option>
-                                </Form.Select>
+                                  placeholder="Enter Receipt number"
+                                />
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          <Col lg="12" className="text-center">
-                            <Button
-                              type="button"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              {" "}
-                              Submit{" "}
-                            </Button>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Grainage</th>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>Laid on date</th>
-                                  <th style={styles.ctstyle}>
-                                    Date of deposit
-                                  </th>
-                                  <th style={styles.ctstyle}>Schedule Type</th>
-                                  <th style={styles.ctstyle}>
-                                    Storage Temperature
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Storage Duration
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Remaining Duration{" "}
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Date of release
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Line/Year data </td>
-                                  <td>Source</td>
-                                  <td>Generation No. ( 1 to 15)</td>
-                                  <td>Spun on Date</td>
-                                  <td>Lot Number</td>
-                                  <td>Number of Cocoons Dispatched</td>
-                                  <td>12/20/2023</td>
-                                  <td>Dispatch </td>
-                                  <td>Invoice No amd Date</td>
-                                </tr>
-                                <tr>
-                                  <td>Line/Year data </td>
-                                  <td>Source</td>
-                                  <td>Generation No. ( 1 to 15)</td>
-                                  <td>Spun on Date</td>
-                                  <td>Lot Number</td>
-                                  <td>Number of Cocoons Dispatched</td>
-                                  <td>12/20/2023</td>
-                                  <td>Dispatch </td>
-                                  <td>Invoice No amd Date</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
+                    {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Remittance details
+                          <span className="text-danger">*</span>
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="remittanceDetails"
+                            name="remittanceDetails"
+                            type="text"
+                            value={data.remittanceDetails}
+                            onChange={handleInputs}
+                            placeholder="Enter Remittance details"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Remittance details is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Modal show={showModal} onHide={handleCloseModal} size="xl">
-                    <Modal.Header closeButton>
-                      <Modal.Title>
-                        {" "}
-                        Status of Cold Storage Schedule (BV)
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <Form action="#">
-                        <Row className="g-5 px-5">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Grainage Name</th>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>Laid on date</th>
-                                  <th style={styles.ctstyle}>
-                                    Date of deposit
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Remaining Duration
-                                  </th>
-                                  <th style={styles.ctstyle}>Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Grainage Name data</td>
-                                  <td>Number of DFLs received data</td>
-                                  <td>Line Name data</td>
-                                  <td>Lot Number data</td>
-                                  <td>Invoice no data</td>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Date of planting<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.dateOfPlanting}
+                            onChange={(date) =>
+                              handleDateChange(date, "dateOfPlanting")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                                  <td style={styles.actionredtstyle}>
-                                    Pending
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>Grainage Name data</td>
-                                  <td>Number of DFLs received data</td>
-                                  <td>Line Name data</td>
-                                  <td>Lot Number data</td>
-                                  <td>Invoice no data</td>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Sale Date<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                                  <td style={styles.actiongreentstyle}>
-                                    Changed
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Row>
-                      </Form>
-                    </Modal.Body>
-                  </Modal>
-                </Col>
-              </Row>
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="challanUploadKey">
+                          Upload Challan
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="challanUploadKey"
+                            name="challanUploadKey"
+                            // value={data.photoPath}
+                            onChange={handleChallanChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {challan ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(challan)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                    </Col> */}
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
+
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  {/* <Button type="button" variant="primary" onClick={postData}> */}
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
+                </li>
+                <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li>
+              </ul>
             </div>
           </Row>
         </Form>

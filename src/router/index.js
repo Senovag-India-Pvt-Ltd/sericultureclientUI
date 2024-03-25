@@ -582,6 +582,8 @@ import PreservationofseedcocoonforprocessingList from "../pages/seed-and-dfl-man
 import PreparationofeggsDFLsList from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsList";
 import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/MaintenanceofeggsatcoldstorageList";
 import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
+import SaleDisposalofDFLseggs from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggs";
+import SaleDisposalofDFLseggsList from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsList";
 
 // Admin and Reports
 
@@ -992,6 +994,16 @@ function Router() {
             <Route
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs"
+              element={<SaleDisposalofDFLseggs />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-list"
+              element={<SaleDisposalofDFLseggsList />}
             />
 
             {/* Seed & DFL Management */}
