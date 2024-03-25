@@ -584,6 +584,10 @@ import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/
 import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
 import SaleDisposalofDFLseggs from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggs";
 import SaleDisposalofDFLseggsList from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsList";
+import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
+import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
+import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
+import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
 
 // Admin and Reports
 
@@ -995,6 +999,22 @@ function Router() {
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
             />
+
+            <Route path="testing-of-moth" element={<TestingOfMoth />} />
+            <Route
+              path="testing-of-moth-list"
+              element={<TestingOfMothList />}
+            />
+
+            <Route
+              path="testing-of-moth-edit/:id"
+              element={<EditTestingOfMoth />}
+            />
+            <Route
+              path="testing-of-moth-view/:id"
+              element={<TestingOfMothView />}
+            />
+
 
             <Route
               path="Sale-Disposal-of-DFLs-eggs"
