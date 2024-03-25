@@ -588,6 +588,10 @@ import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
 import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
 import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
 import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import SaleDisposalOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoons";
+import SaleDisposalOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsList";
+import SaleDisposalOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsView";
+import SaleDisposalOfPiercedCocoonsEdit from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsEdit";
 import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoons";
 import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
 import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
@@ -1069,6 +1073,25 @@ function Router() {
               element={<MaintenanceOfEggLayingSheetsView />}
             />
 
+            <Route
+              path="sale-disposal-of-pierced-cocoons"
+              element={<SaleDisposalOfPiercedCocoons />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-edit/:id"
+              element={<SaleDisposalOfPiercedCocoonsEdit />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-list"
+              element={<SaleDisposalOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons/:id"
+              element={<SaleDisposalOfPiercedCocoonsView />}
+            />
 
             <Route
               path="Sale-Disposal-of-DFLs-eggs"
