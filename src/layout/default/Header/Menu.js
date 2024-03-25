@@ -243,6 +243,7 @@ function Menu() {
     SeedDFL_Testing_Of_Moth: false,
     SeedDFL_Maintenance_Of_Pierced_Cocoons: false,
     SeedDFL_Maintenance_Of_Egg_Laying_Sheets: false,
+    SeedDFL_Remittance: false,
 
     GardenManagement: false,
     GardenManagement_Mulberry_Garden: false,
@@ -1232,6 +1233,15 @@ function Menu() {
                 <MenuItemLink
                   text="Maintenance Of Egg Laying Sheets"
                   to="/seriui/maintenance-of-egg-laying-sheets"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.SeedDFL_Remittance ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Remittance (Eggs / PC / Others)"
+                  to="/seriui/remittance"
                 />
               </MenuItem>
             ) : null}

@@ -596,6 +596,10 @@ import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/Ma
 import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
 import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
 import MaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheets";
+import Remittance from "../pages/seed-and-dfl-managment/Remittance";
+import RemittanceList from "../pages/seed-and-dfl-managment/RemittanceList";
+import RemittanceEdit from "../pages/seed-and-dfl-managment/RemittanceEdit";
+import RemittanceView from "../pages/seed-and-dfl-managment/RemittanceView";
 
 // Admin and Reports
 
@@ -1006,6 +1010,20 @@ function Router() {
             <Route
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
+            />
+             <Route path="remittance" element={<Remittance />} />
+            <Route
+              path="remittance-list"
+              element={<RemittanceList />}
+            />
+
+            <Route
+              path="remittance-edit/:id"
+              element={<RemittanceEdit />}
+            />
+            <Route
+              path="remittance-view/:id"
+              element={<RemittanceView />}
             />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
