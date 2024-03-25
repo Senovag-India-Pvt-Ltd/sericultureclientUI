@@ -592,6 +592,10 @@ import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/Mainten
 import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
 import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
 import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
+import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
+import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
+import MaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheets";
 
 // Admin and Reports
 
@@ -1031,6 +1035,20 @@ function Router() {
             <Route
               path="maintenance-of-pierced-cocoons-view/:id"
               element={<MaintenanceOfPiercedCocoonsView />}
+            />
+             <Route path="maintenance-of-egg-laying-sheets" element={<MaintenanceOfEggLayingSheets />} />
+            <Route
+              path="maintenance-of-egg-laying-sheets-list"
+              element={<MaintenanceOfEggLayingSheetsList />}
+            />
+
+            <Route
+              path="maintenance-of-egg-laying-sheets-edit/:id"
+              element={<EditMaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-view/:id"
+              element={<MaintenanceOfEggLayingSheetsView />}
             />
 
 
