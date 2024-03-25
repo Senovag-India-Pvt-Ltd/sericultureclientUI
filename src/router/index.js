@@ -592,6 +592,14 @@ import SaleDisposalOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleDi
 import SaleDisposalOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsList";
 import SaleDisposalOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsView";
 import SaleDisposalOfPiercedCocoonsEdit from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsEdit";
+import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
+import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
+import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
+import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
+import MaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheets";
 
 // Admin and Reports
 
@@ -1017,6 +1025,34 @@ function Router() {
             <Route
               path="testing-of-moth-view/:id"
               element={<TestingOfMothView />}
+            />
+            <Route path="maintenance-of-pierced-cocoons" element={<MaintenanceOfPiercedCocoons />} />
+            <Route
+              path="maintenance-of-pierced-cocoons-list"
+              element={<MaintenanceOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="maintenance-of-pierced-cocoons-edit/:id"
+              element={<EditMaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-view/:id"
+              element={<MaintenanceOfPiercedCocoonsView />}
+            />
+             <Route path="maintenance-of-egg-laying-sheets" element={<MaintenanceOfEggLayingSheets />} />
+            <Route
+              path="maintenance-of-egg-laying-sheets-list"
+              element={<MaintenanceOfEggLayingSheetsList />}
+            />
+
+            <Route
+              path="maintenance-of-egg-laying-sheets-edit/:id"
+              element={<EditMaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-view/:id"
+              element={<MaintenanceOfEggLayingSheetsView />}
             />
 
             <Route

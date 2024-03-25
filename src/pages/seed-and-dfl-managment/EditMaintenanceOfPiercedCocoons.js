@@ -13,12 +13,14 @@ import { Icon } from "../../components";
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-function EditTestingOfMoth() {
+function EditMaintenanceOfPiercedCocoons() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const isDataStorageDate = !!data.storageDate;
 
   let name, value;
   const handleInputs = (e) => {
@@ -43,7 +45,7 @@ function EditTestingOfMoth() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURL2 + `MaintenanceOfPiercedCocoons/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -51,8 +53,8 @@ function EditTestingOfMoth() {
             updateSuccess();
             setData({
                 lotNumber: "",
-                pebrine: "",
-                sourceDetails: "",
+                storageDate: "",
+                quantityInNumber: "",
             });
             setValidated(false);
           }
@@ -70,8 +72,8 @@ function EditTestingOfMoth() {
   const clear = () => {
     setData({
         lotNumber: "",
-        pebrine: "",
-        sourceDetails: "",
+        storageDate: "",
+        quantityInNumber: "",
     });
   };
 
@@ -80,7 +82,7 @@ function EditTestingOfMoth() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -129,17 +131,17 @@ function EditTestingOfMoth() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Testing Of Moth">
+    <Layout title="Edit Maintenance Of Pierced Cocoon">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Testing Of Moth</Block.Title>
+            <Block.Title tag="h2">Edit Maintenance Of Pierced Cocoon</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-pierced-cocoons-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +150,7 @@ function EditTestingOfMoth() {
               </li>
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-pierced-cocoons-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -164,7 +166,7 @@ function EditTestingOfMoth() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Testing Of Moth
+              Edit Maintenance Of Pierced Cocoons
             </Card.Header>
             <Card.Body>
               {loading ? (
@@ -173,8 +175,8 @@ function EditTestingOfMoth() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group">
+                <Col lg="6" >
+                  <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
                     </Form.Label>
@@ -196,48 +198,52 @@ function EditTestingOfMoth() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+                
+
+                <Col lg="6">
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="numberOfDFLsReceived">
-                      Pebrine Free Status Of Pupa & Moth
-                      <span className="text-danger">*</span>
+                    <Form.Label htmlFor="invoiceDetails">
+                    Quantity in Number & Kgs<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        id="quantityInNumber"
+                        name="quantityInNumber"
+                        value={data.quantityInNumber}
                         onChange={handleInputs}
-                        // maxLength="4"
                         type="text"
-                        placeholder="Enter Pebrine Free Status Of Pupa & Moth"
+                        placeholder="Enter Quantity in Number & Kgs"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Pebrine Free Status Of Pupa & Moth is required
+                      Quantity in Number & Kgs is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="invoiceDetails">
-                      Source Details<span className="text-danger">*</span>
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Storage Date
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                      <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Source Details"
+                    {isDataStorageDate && (
+                      <DatePicker
+                        selected={new Date(data.storageDate)}
+                        onChange={(date) =>
+                          handleDateChange(date, "storageDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
                         required
                       />
-                      <Form.Control.Feedback type="invalid">
-                      Source Details is required
-                      </Form.Control.Feedback>
+                      )}
                     </div>
                   </Form.Group>
                 </Col>
@@ -268,4 +274,4 @@ function EditTestingOfMoth() {
   );
 }
 
-export default EditTestingOfMoth;
+export default EditMaintenanceOfPiercedCocoons;

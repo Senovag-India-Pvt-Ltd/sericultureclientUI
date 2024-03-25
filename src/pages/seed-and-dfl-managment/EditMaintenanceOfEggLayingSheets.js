@@ -13,12 +13,14 @@ import { Icon } from "../../components";
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-function EditTestingOfMoth() {
+function EditMaintenanceOfEggLayingSheets() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const isDataDate = !!data.date;
 
   let name, value;
   const handleInputs = (e) => {
@@ -43,7 +45,7 @@ function EditTestingOfMoth() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURL2 + `MaintenanceOfEggLayingSheets/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -51,8 +53,10 @@ function EditTestingOfMoth() {
             updateSuccess();
             setData({
                 lotNumber: "",
-                pebrine: "",
-                sourceDetails: "",
+                date: "",
+                noOfEggSheets: "",
+                eggSheetsNo: "",
+                balanceNoOfSheets: "",
             });
             setValidated(false);
           }
@@ -70,8 +74,10 @@ function EditTestingOfMoth() {
   const clear = () => {
     setData({
         lotNumber: "",
-        pebrine: "",
-        sourceDetails: "",
+        date: "",
+        noOfEggSheets: "",
+        eggSheetsNo: "",
+        balanceNoOfSheets: "",
     });
   };
 
@@ -80,7 +86,7 @@ function EditTestingOfMoth() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURL2 + `MaintenanceOfEggLayingSheets/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -128,18 +134,21 @@ function EditTestingOfMoth() {
       text: "Something went wrong!",
     }).then(() => navigate("#"));
   };
+
   return (
-    <Layout title="Edit Testing Of Moth">
+    <Layout title="Maintenance Of Egg Laying Sheets">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Testing Of Moth</Block.Title>
+            <Block.Title tag="h2">
+            Maintenance Of Egg Laying Sheets
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-egg-laying-sheets-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -148,7 +157,7 @@ function EditTestingOfMoth() {
               </li>
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-egg-laying-sheets-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -161,20 +170,18 @@ function EditTestingOfMoth() {
       </Block.Head>
 
       <Block className="mt-n4">
+        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
+          {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Testing Of Moth
+              Maintenance Of Egg Laying Sheets
             </Card.Header>
             <Card.Body>
-              {loading ? (
-                <h1 className="d-flex justify-content-center align-items-center">
-                  Loading...
-                </h1>
-              ) : (
-                <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group">
+              {/* <h3>Farmers Details</h3> */}
+              <Row className="g-gs">
+                <Col lg="6" >
+                  <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
                     </Form.Label>
@@ -196,53 +203,100 @@ function EditTestingOfMoth() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+               
+                <Col lg="6">
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="numberOfDFLsReceived">
-                      Pebrine Free Status Of Pupa & Moth
-                      <span className="text-danger">*</span>
+                    <Form.Label htmlFor="invoiceDetails">
+                    Number of Egg sheets used <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        id="noOfEggSheets"
+                        name="noOfEggSheets"
+                        value={data.noOfEggSheets}
                         onChange={handleInputs}
-                        // maxLength="4"
                         type="text"
-                        placeholder="Enter Pebrine Free Status Of Pupa & Moth"
+                        placeholder="Enter Number of Egg sheets Used"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Pebrine Free Status Of Pupa & Moth is required
+                      Number of Egg sheets used is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Source Details<span className="text-danger">*</span>
+                   Egg Sheet Number <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
+                        id="eggSheetsNo"
+                        name="eggSheetsNo"
+                        value={data.eggSheetsNo}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Source Details"
+                        placeholder="Enter Egg Sheet Number"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Source Details is required
+                      Egg Sheet Number is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
-                </Row>
-              )}
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Balance Number Of Sheets <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="balanceNoOfSheets"
+                        name="balanceNoOfSheets"
+                        value={data.balanceNoOfSheets}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Balance Number Of Sheets"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Balance Number Of Sheets is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                    {isDataDate && (
+                      <DatePicker
+                        selected={new Date(data.date)}
+                        onChange={(date) =>
+                          handleDateChange(date, "date")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    )}
+                    </div>
+                  </Form.Group>
+                </Col>
+
+              </Row>
             </Card.Body>
           </Card>
 
@@ -267,5 +321,4 @@ function EditTestingOfMoth() {
     </Layout>
   );
 }
-
-export default EditTestingOfMoth;
+export default EditMaintenanceOfEggLayingSheets;
