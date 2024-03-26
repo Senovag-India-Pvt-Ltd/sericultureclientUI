@@ -604,14 +604,12 @@ import Remittance from "../pages/seed-and-dfl-managment/Remittance";
 import RemittanceList from "../pages/seed-and-dfl-managment/RemittanceList";
 import RemittanceEdit from "../pages/seed-and-dfl-managment/RemittanceEdit";
 import RemittanceView from "../pages/seed-and-dfl-managment/RemittanceView";
-<<<<<<< HEAD
 import MaintenanceOfEggsAtColdStorageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdStorageEdit";
 import MaintenanceOfEggsAtColdStorageView from "../pages/seed-and-dfl-managment/MaintenanceOfEggAtColdStorageView";
 import MaintenanceOfEggsAtCold from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtCold";
 import MaintenanceOfEggsAtColdList from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdList";
 import MaintenanceOfEggsAtColdEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdEdit";
 import MaintenanceOfEggsAtColdView from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdView";
-=======
 import RegisteredSeedProducerNssoGrainages from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainages";
 import RegisteredSeedProducerNssoGrainagesList from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesList";
 import RegisteredSeedProducerNssoGrainagesEdit from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesEdit";
@@ -620,7 +618,6 @@ import SaleAndDisposalOfEggsNSSO from "../pages/seed-and-dfl-managment/SaleAndDi
 import SaleAndDisposalOfEggsNSSOList from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOList";
 import SaleAndDisposalOfEggsNSSOView from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOView";
 import SaleAndDisposalOfEggsNSSOEdit from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOEdit";
->>>>>>> origin/seed&Dfls
 
 // Admin and Reports
 
