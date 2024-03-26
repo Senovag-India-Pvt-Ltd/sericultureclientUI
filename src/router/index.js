@@ -604,6 +604,12 @@ import Remittance from "../pages/seed-and-dfl-managment/Remittance";
 import RemittanceList from "../pages/seed-and-dfl-managment/RemittanceList";
 import RemittanceEdit from "../pages/seed-and-dfl-managment/RemittanceEdit";
 import RemittanceView from "../pages/seed-and-dfl-managment/RemittanceView";
+import MaintenanceOfEggsAtColdStorageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdStorageEdit";
+import MaintenanceOfEggsAtColdStorageView from "../pages/seed-and-dfl-managment/MaintenanceOfEggAtColdStorageView";
+import MaintenanceOfEggsAtCold from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtCold";
+import MaintenanceOfEggsAtColdList from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdList";
+import MaintenanceOfEggsAtColdEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdEdit";
+import MaintenanceOfEggsAtColdView from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdView";
 
 // Admin and Reports
 
@@ -1002,8 +1008,36 @@ function Router() {
             />
 
             <Route
-              path="Maintenance-of-eggs-at-cold-storage-List"
+              path="maintenance-of-eggs-at-cold-storage-list"
               element={<MaintenanceofeggsatcoldstorageList />}
+            />
+
+             <Route
+              path="maintenance-of-eggs-at-cold-storage-edit/:id"
+              element={<MaintenanceOfEggsAtColdStorageEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-storage-view/:id"
+              element={<MaintenanceOfEggsAtColdStorageView/>}
+            />
+
+            <Route
+              path="Maintenance-of-eggs-at-cold"
+              element={<MaintenanceOfEggsAtCold />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-list"
+              element={<MaintenanceOfEggsAtColdList />}
+            />
+
+             <Route
+              path="maintenance-of-eggs-at-cold-edit/:id"
+              element={<MaintenanceOfEggsAtColdEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-view/:id"
+              element={<MaintenanceOfEggsAtColdView/>}
             />
 
             <Route

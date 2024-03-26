@@ -16,7 +16,7 @@ import { Icon } from "../../components";
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function Maintenanceofeggsatcoldstorage() {
+function MaintenanceOfEggsAtCold() {
   const [data, setData] = useState({
     lotNumber: "",
     noOfDFLs: "",
@@ -128,7 +128,7 @@ function Maintenanceofeggsatcoldstorage() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-eggs-at-cold-storage-List"
+                  to="/seriui/maintenance-of-eggs-at-cold-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -137,7 +137,7 @@ function Maintenanceofeggsatcoldstorage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-eggs-at-cold-storage-List"
+                  to="/seriui/maintenance-of-eggs-at-cold-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -229,10 +229,56 @@ function Maintenanceofeggsatcoldstorage() {
                   </Form.Group>
                 </Col>
 
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                      Grainage Details
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="grainageDetails"
+                        name="grainageDetails"
+                        value={data.grainageDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Grainage Details"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Grainage Details is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                      Schedule Details
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="scheduleDetails"
+                        name="scheduleDetails"
+                        value={data.scheduleDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Schedule Details"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Schedule Details is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of Cold storage
+                                Date of Deposit
                               </Form.Label>
                               <div className="Date of Cold Storage">
                                 <DatePicker
@@ -256,7 +302,7 @@ function Maintenanceofeggsatcoldstorage() {
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Date of release
+                                Date of Retrieval
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
@@ -277,23 +323,7 @@ function Maintenanceofeggsatcoldstorage() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Incubation Details
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                   id="incubationDetails"
-                                  name="incubationDetails"
-                                  value={data.incubationDetails}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Incubation Details"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          
                         </Row>
                       </Card.Body>
                     </Card>
@@ -319,4 +349,4 @@ function Maintenanceofeggsatcoldstorage() {
   );
 }
 
-export default Maintenanceofeggsatcoldstorage;
+export default MaintenanceOfEggsAtCold;

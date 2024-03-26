@@ -14,7 +14,7 @@ import api from "../../../src/services/auth/api";
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
-function MaintenanceofeggsatcoldstorageList() {
+function MaintenanceOfEggsAtColdList() {
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
@@ -54,11 +54,11 @@ function MaintenanceofeggsatcoldstorageList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/maintenance-of-eggs-at-cold-storage-view/${_id}`);
+    navigate(`/seriui/maintenance-of-eggs-at-cold-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/maintenance-of-eggs-at-cold-storage-edit/${_id}`);
+    navigate(`/seriui/maintenance-of-eggs-at-cold-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
@@ -230,9 +230,9 @@ function MaintenanceofeggsatcoldstorageList() {
         hide: "md",
       },
       {
-        name: "Incubation Details",
-        selector: (row) => row.incubationDetails,
-        cell: (row) => <span>{row.incubationDetails}</span>,
+        name: "Schedule Details",
+        selector: (row) => row.scheduleDetails,
+        cell: (row) => <span>{row.scheduleDetails}</span>,
         sortable: true,
         hide: "md",
       },
@@ -250,7 +250,7 @@ function MaintenanceofeggsatcoldstorageList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-eggs-at-cold-storage"
+                  to="/seriui/maintenance-of-eggs-at-cold"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -259,7 +259,7 @@ function MaintenanceofeggsatcoldstorageList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-eggs-at-cold-storage"
+                  to="/seriui/maintenance-of-eggs-at-cold"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -297,4 +297,4 @@ function MaintenanceofeggsatcoldstorageList() {
   );
 }
 
-export default MaintenanceofeggsatcoldstorageList;
+export default MaintenanceOfEggsAtColdList;
