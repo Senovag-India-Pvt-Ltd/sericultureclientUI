@@ -618,6 +618,10 @@ import SaleAndDisposalOfEggsNSSO from "../pages/seed-and-dfl-managment/SaleAndDi
 import SaleAndDisposalOfEggsNSSOList from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOList";
 import SaleAndDisposalOfEggsNSSOView from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOView";
 import SaleAndDisposalOfEggsNSSOEdit from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOEdit";
+import WormStage from "../pages/masters/worm-stage/WormStage";
+import WormStageList from "../pages/masters/worm-stage/WormStageList";
+import WormStageView from "../pages/masters/worm-stage/WormStageView";
+import WormStageEdit from "../pages/masters/worm-stage/WormStageEdit";
 
 // Admin and Reports
 
@@ -1511,6 +1515,10 @@ function Router() {
             <Route path="soil-type-list" element={<SoilTypeList />} />
             <Route path="soil-type-view/:id" element={<SoilTypeView />} />
             <Route path="soil-type-edit/:id" element={<SoilTypeEdit />} />
+            <Route path="worm-stage" element={<WormStage />} />
+            <Route path="worm-stage-list" element={<WormStageList />} />
+            <Route path="worm-stage-view/:id" element={<WormStageView />} />
+            <Route path="worm-stage-edit/:id" element={<WormStageEdit />} />
             <Route
               path="rear-house-roof-type"
               element={<RearHouseRoofType />}

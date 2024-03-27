@@ -186,6 +186,27 @@ function LineNameEdit() {
                     </Col>
 
                     <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Line Code
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="lineCode"
+                          value={data.lineCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Line Code"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Line Code is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
                           Line Name in Kannada
