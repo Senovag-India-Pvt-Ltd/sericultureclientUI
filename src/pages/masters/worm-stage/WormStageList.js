@@ -16,7 +16,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function LineNameList() {
+function WormStageList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -27,9 +27,9 @@ function LineNameList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `lineNameMaster/list`, _params)
+      .get(baseURL + `wormStageMaster/list`, _params)
       .then((response) => {
-        setListData(response.data.content.lineNameMaster);
+        setListData(response.data.content.wormStageMaster);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function LineNameList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/lineName-view/${_id}`);
+    navigate(`/seriui/worm-stage-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/lineName-edit/${_id}`);
+    navigate(`/seriui/worm-stage-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
@@ -71,7 +71,7 @@ function LineNameList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `lineNameMaster/delete/${_id}`)
+          .delete(baseURL + `wormStageMaster/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -141,7 +141,7 @@ function LineNameList() {
     },
   };
 
-  const LineNameDataColumns = [
+  const WormStageDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -151,7 +151,7 @@ function LineNameList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.lineNameId)}
+            onClick={() => handleView(row.wormStageMasterId)}
           >
             View
           </Button>
@@ -159,14 +159,14 @@ function LineNameList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.lineNameId)}
+            onClick={() => handleEdit(row.wormStageMasterId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.lineNameId)}
+            onClick={() => deleteConfirm(row.wormStageMasterId)}
             className="ms-2"
           >
             Delete
@@ -177,40 +177,33 @@ function LineNameList() {
       hide: "md",
     },
     {
-      name: "Line Name",
-      selector: (row) => row.lineName,
-      cell: (row) => <span>{row.lineName}</span>,
+      name: "Worm Stage",
+      selector: (row) => row.wormStageMasterName,
+      cell: (row) => <span>{row.wormStageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Line Code",
-      selector: (row) => row.lineCode,
-      cell: (row) => <span>{row.lineCode}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Line Name in Kannada",
-      selector: (row) => row.lineNameInKannada,
-      cell: (row) => <span>{row.lineNameInKannada}</span>,
+      name: "Worm Stage Name in Kannada",
+      selector: (row) => row.wormStageMasterNameInKannada,
+      cell: (row) => <span>{row.wormStageMasterNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Line Name List">
+    <Layout title="List Of Worm Stage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Line Name List</Block.Title>
+            <Block.Title tag="h2">List Of Worm Stage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/lineName"
+                  to="/seriui/worm-stage"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -219,7 +212,7 @@ function LineNameList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/lineName"
+                  to="/seriui/worm-stage"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -236,7 +229,7 @@ function LineNameList() {
           <DataTable
             // title="LineName List"
             tableClassName="data-table-head-light table-responsive"
-            columns={LineNameDataColumns}
+            columns={WormStageDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -257,5 +250,5 @@ function LineNameList() {
   );
 }
 
-export default LineNameList;
+export default WormStageList;
 

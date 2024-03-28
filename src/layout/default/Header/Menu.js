@@ -350,6 +350,7 @@ function Menu() {
     Admin_Master_Garden_Generation_Number: false,
     Admin_Master_Garden_Farm: false,
     Admin_Master_Garden_Tsc: false,
+    Admin_Master_Garden_Worm_Stage: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -2045,6 +2046,11 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Tsc ? (
                           <MenuItem>
                             <MenuItemLink text="Tsc" to="/seriui/tsc" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Worm_Stage ? (
+                          <MenuItem>
+                            <MenuItemLink text="Worm Stage" to="/seriui/worm-stage" />
                           </MenuItem>
                         ) : null}
                       </MenuSub>

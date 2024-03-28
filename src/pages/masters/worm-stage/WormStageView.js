@@ -8,7 +8,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function LineNameView() {
+function WormStageView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,7 +19,7 @@ function LineNameView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [LineName, setLineName] = useState({});
+  const [wormStage, setWormStage] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -30,13 +30,13 @@ function LineNameView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `lineNameMaster/get/${id}`)
+      .get(baseURL + `wormStageMaster/get/${id}`)
       .then((response) => {
-        setLineName(response.data.content);
+        setWormStage(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setLineName({});
+        setWormStage({});
         setLoading(false);
       });
   };
@@ -48,17 +48,17 @@ function LineNameView() {
   }, [id]);
 
   return (
-    <Layout title="View Line Name">
+    <Layout title="View Worm Stage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Line Name</Block.Title>
+            <Block.Title tag="h2">View Worm Stage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/lineName-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +67,7 @@ function LineNameView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/lineName-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,7 +81,7 @@ function LineNameView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Line Name Details</Card.Header>
+          <Card.Header>Worm Stage Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,22 +94,19 @@ function LineNameView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{LineName.lineNameId}</td>
+                        <td>{wormStage.wormStageMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Line Name:</td>
-                        <td>{LineName.lineName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Line Code:</td>
-                        <td>{LineName.lineCode}</td>
+                        <td style={styles.ctstyle}>Worm Stage:</td>
+                        <td>{wormStage.wormStageMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
-                          Line Name In Kannada:
+                          Worm Stage Name in Kannada:
                         </td>
-                        <td>{LineName.lineNameInKannada}</td>
+                        <td>
+                          {wormStage.wormStageMasterNameInKannada}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -123,5 +120,4 @@ function LineNameView() {
   );
 }
 
-export default LineNameView
-;       
+export default WormStageView;

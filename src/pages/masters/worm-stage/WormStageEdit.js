@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function LandOwnershipEdit() {
+function WormStageEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -29,11 +29,6 @@ function LandOwnershipEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const datas = {
-      landOwnershipId: id,
-      landOwnershipName: data.landOwnershipName,
-      landOwnershipNameInKannada: data.landOwnershipNameInKannada,
-    };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -43,15 +38,15 @@ function LandOwnershipEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `landOwnership/edit`, datas)
+        .post(baseURL + `wormStageMaster/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-              landOwnershipName: "",
-              landOwnershipNameInKannada: "",
+                wormStageMasterName: "",
+                wormStageMasterNameInKannada: "",
             });
             setValidated(false);
           }
@@ -67,8 +62,8 @@ function LandOwnershipEdit() {
 
   const clear = () => {
     setData({
-      landOwnershipName: "",
-      landOwnershipNameInKannada: "",
+        wormStageMasterName: "",
+        wormStageMasterNameInKannada: "",
     });
   };
 
@@ -76,7 +71,7 @@ function LandOwnershipEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `landOwnership/get/${id}`)
+      .get(baseURL + `wormStageMaster/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -99,7 +94,7 @@ function LandOwnershipEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    })
+    });
   };
   const updateError = (message) => {
     let errorMessage;
@@ -123,17 +118,17 @@ function LandOwnershipEdit() {
   };
 
   return (
-    <Layout title="Edit Land Ownership">
+    <Layout title="Edit Worm Stage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Land Ownership</Block.Title>
+            <Block.Title tag="h2">Edit Worm Stage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/land-ownership-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -142,7 +137,7 @@ function LandOwnershipEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/land-ownership-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -166,50 +161,50 @@ function LandOwnershipEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="land">
-                          Land Ownership<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="land"
-                            name="landOwnershipName"
-                            type="text"
-                            value={data.landOwnershipName}
-                            onChange={handleInputs}
-                            placeholder="Enter Land Ownership"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Land Ownership is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="land">
+                        Worm Stage<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="land"
+                          name="wormStageMasterName"
+                          type="text"
+                          value={data.wormStageMasterName}
+                          onChange={handleInputs}
+                          placeholder="Enter Worm Stage"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Worm Stage is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="land">
-                          Land Ownership Name in Kannada
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="land"
-                            name="landOwnershipNameInKannada"
-                            type="text"
-                            value={data.landOwnershipNameInKannada}
-                            onChange={handleInputs}
-                            placeholder="Enter Land Ownership Name in Kannada"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Land Ownership Name in Kannada is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="land">
+                      Worm Stage Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="land"
+                          name="wormStageMasterNameInKannada"
+                          type="text"
+                          value={data.wormStageMasterNameInKannada}
+                          onChange={handleInputs}
+                          placeholder="Enter Worm Stage Name in Kannada"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Worm Stage Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -237,4 +232,4 @@ function LandOwnershipEdit() {
   );
 }
 
-export default LandOwnershipEdit;
+export default WormStageEdit;

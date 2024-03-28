@@ -2,31 +2,30 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import { Icon } from "../../../components";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import React from "react";
-// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function LineName() {
+function WormStage() {
   const [data, setData] = useState({
-    lineName: "",
-    lineNameInKannada: "",
-    lineCode: "",
+    wormStageMasterName: "",
+    wormStageMasterNameInKannada: "",
   });
 
   const [validated, setValidated] = useState(false);
 
   let name, value;
+
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -37,23 +36,25 @@ function LineName() {
       setValidated(true);
     } else {
       event.preventDefault();
+      // event.stopPropagation();
       api
-        .post(baseURL + `lineNameMaster/add`, data)
+        .post(baseURL + `wormStageMaster/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-                lineName: "",
-                lineNameInKannada: "",
-                lineCode: "",
+                wormStageMasterName: "",
+                wormStageMasterNameInKannada: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -61,9 +62,8 @@ function LineName() {
 
   const clear = () => {
     setData({
-        lineName: "",
-        lineNameInKannada: "",
-        lineCode: "",
+        wormStageMasterName: "",
+        wormStageMasterNameInKannada: "",
     });
   };
 
@@ -73,7 +73,7 @@ function LineName() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    });
+    }).then(() => navigate("#"));
   };
 
   const saveError = (message) => {
@@ -91,17 +91,17 @@ function LineName() {
   };
 
   return (
-    <Layout title="Line Name">
+    <Layout title="Worm Stage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Line Name</Block.Title>
+            <Block.Title tag="h2">Worm Stage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/lineName-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -110,7 +110,7 @@ function LineName() {
               </li>
               <li>
                 <Link
-                  to="/seriui/lineName-list"
+                  to="/seriui/worm-stage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -132,22 +132,21 @@ function LineName() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Line Name
-                        <span className="text-danger">*</span>
+                      <Form.Label htmlFor="land">
+                        Worm Stage<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="lineName"
+                          id="land"
+                          name="wormStageMasterName"
                           type="text"
-                          value={data.lineName}
+                          value={data.wormStageMasterName}
                           onChange={handleInputs}
-                          placeholder="Enter Line name"
+                          placeholder="Enter Worm Stage"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Line Name is required
+                        Worm Stage is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -155,49 +154,26 @@ function LineName() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Line Code
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="lineCode"
-                          value={data.lineCode}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Line Code"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Line Code is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Line Name in Kannada
+                      <Form.Label htmlFor="land">
+                      Worm Stage Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="lineNameInKannada"
-                          value={data.lineNameInKannada}
-                          onChange={handleInputs}
+                          id="land"
+                          name="wormStageMasterNameInKannada"
                           type="text"
-                          placeholder="Enter Line Name in Kannada"
+                          value={data.wormStageMasterNameInKannada}
+                          onChange={handleInputs}
+                          placeholder="Enter Worm Stage Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Line Name in Kannada is required.
+                        Worm Stage Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
-
-                 
                 </Row>
               </Card.Body>
             </Card>
@@ -224,4 +200,4 @@ function LineName() {
   );
 }
 
-export default LineName;
+export default WormStage;
