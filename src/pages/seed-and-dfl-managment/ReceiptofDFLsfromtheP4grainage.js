@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import axios from "axios";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
@@ -90,6 +91,8 @@ function ReceiptofDFLsfromtheP4grainage() {
     });
   };
 
+  const [validated, setValidated] = useState(false);
+
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
     setVbAccount({ ...vbAccount, [name]: value });
@@ -99,62 +102,10 @@ function ReceiptofDFLsfromtheP4grainage() {
   const handleCloseModal2 = () => setShowModal2(false);
 
   const [data, setData] = useState({
-    name: "",
-    wardNumber: "",
-    passbookNumber: "",
-    fatherName: "",
-    educationId: "",
-    reelingUnitBoundary: "",
-    dob: "",
-    rationCard: "",
-    machineTypeId: "",
-    gender: "",
-    dateOfMachineInstallation: "",
-    electricityRrNumber: "",
-    casteId: "",
-    revenueDocument: "",
-    numberOfBasins: "",
-    mobileNumber: "",
-    recipientId: "",
-    mahajarDetails: "",
-    emailId: "",
-    representativeNameAddress: "",
-    loanDetails: "",
-    assignToInspectId: "",
-    gpsLat: "",
-    gpsLng: "",
-    inspectionDate: "",
-    arnNumber: "",
-    chakbandiLat: "",
-    chakbandiLng: "",
-    address: "",
-    pincode: "",
-    stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
-    receiptDate: "",
-    functionOfUnit: "",
-    reelingLicenseNumber: "",
-    feeAmount: "",
-    memberLoanDetails: "",
-    mahajarEast: "",
-    mahajarWest: "",
-    mahajarNorth: "",
-    mahajarSouth: "",
-    mahajarNorthEast: "",
-    mahajarNorthWest: "",
-    mahajarSouthEast: "",
-    mahajarSouthWest: "",
-    bankName: "",
-    bankAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    status: "",
-    licenseRenewalDate: "",
+    lineNumber: "",
+    lineNameId: "",
+    laidOnDate: "",
+    lotNumber: "",
   });
 
   let name, value;
@@ -168,41 +119,53 @@ function ReceiptofDFLsfromtheP4grainage() {
     setData({ ...data, [type]: date });
   };
 
+  const clear = () => {
+    setData({
+      lineNumber: "",
+      lineNameId: "",
+      laidOnDate: "",
+      lotNumber: "",
+    });
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
-    axios
-      .post(baseURL + `reeler/add`, data, {
-        headers: _header,
-      })
-      .then((response) => {
-        if (vbAccountList.length > 0) {
-          const reelerId = response.data.content.reelerId;
-          vbAccountList.forEach((list) => {
-            const updatedVb = {
-              ...list,
-              reelerId: reelerId,
-            };
-            axios
-              .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb, {
-                headers: _header,
-              })
-              .then((response) => {
-                saveSuccess();
-              })
-              .catch((err) => {
-                setVbAccount({});
-                saveError();
-              });
-          });
-        } else {
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURL2 + `Mulberry-garden/add-info`, data)
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess();
+            setData({
+              plotNumber: "",
+              variety: "",
+              areaUnderEachVariety: "",
+              pruningDate: "",
+              fertilizerApplicationDate: "",
+              fymApplicationDate: "",
+              irrigationDate: "",
+              brushingDate: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
   };
 
   // to get Caste
@@ -407,6 +370,24 @@ function ReceiptofDFLsfromtheP4grainage() {
     });
   };
 
+  // to get Race
+  const [lineDetailsListData, setDetailsListData] = useState([]);
+
+  const getLineDetailsList = () => {
+    const response = api
+      .get(baseURL2 + `lineNameMaster/get-all`)
+      .then((response) => {
+        setDetailsListData(response.data.content.lineNameMaster);
+      })
+      .catch((err) => {
+        setDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLineDetailsList();
+  }, []);
+
   return (
     <Layout title="Receipt of DFLs from the P4 grainage">
       <Block.Head>
@@ -455,7 +436,7 @@ function ReceiptofDFLsfromtheP4grainage() {
       </Block.Head>
 
       <Block className="mt-4">
-        <Form action="#">
+        <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
               <Row className="g-gs">
@@ -470,6 +451,83 @@ function ReceiptofDFLsfromtheP4grainage() {
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot  Number"
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group  ">
+                              <Form.Label>
+                                Line of DFLs
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="lineNameId"
+                                  value={data.lineNameId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  required
+                                  isInvalid={
+                                    data.lineNameId === undefined ||
+                                    data.lineNameId === "0"
+                                  }
+                                >
+                                  <option value="">Select Line Name</option>
+                                  {lineDetailsListData.map((list) => (
+                                    <option
+                                      key={list.lineNameId}
+                                      value={list.lineNameId}
+                                    >
+                                      {list.lineName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Line Name is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Laid on Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  maxDate={new Date()}
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
                                 Line Number/Year
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -481,57 +539,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group  ">
-                              <Form.Label>Line of DFLs</Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="gender"
-                                  value={data.gender}
-                                  onChange={handleInputs}
-                                >
-                                  <option value="">Kempanahalli</option>
-                                  <option value="1">Magadi</option>
-                                  <option value="2">Hebbur</option>
-                                  <option value="3"> Kunigal</option>
-                                  <option value="">Solur</option>
-                                  <option value="1">Kudur</option>
-                                  <option value="2">Swarna-I</option>
-                                  <option value="3"> CSB</option>
-                                </Form.Select>
-                              </div>
-                            </Form.Group>
-                          </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Laid on Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Laid on Date"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Lot Number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Lot  Number"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
@@ -553,10 +561,19 @@ function ReceiptofDFLsfromtheP4grainage() {
                                 Invoice no. and Date
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Invoice no. and Date"
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  maxDate={new Date()}
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -618,16 +635,31 @@ function ReceiptofDFLsfromtheP4grainage() {
                         </Row>
                       </Card.Body>
                     </Card>
-                    <Col lg="12" className="text-center mt-1">
-                      <Button
-                        type="button"
-                        variant="primary"
-                        onClick={handleShowModal}
-                      >
+                    {/* <Col lg="12" className="text-center mt-1">
+                      <Button type="submit" variant="primary">
                         {" "}
                         Submit{" "}
                       </Button>
-                    </Col>
+                    </Col> */}
+                    <div className="gap-col">
+                      <ul className="mt-1 d-flex align-items-center justify-content-center gap g-3">
+                        <li>
+                          {/* <Button type="button" variant="primary" onClick={postData}> */}
+                          <Button type="submit" variant="primary">
+                            Save
+                          </Button>
+                        </li>
+                        <li>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={clear}
+                          >
+                            Cancel
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
                   </Block>
                 </Col>
                 {/* <Col lg="12">

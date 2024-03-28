@@ -14,6 +14,7 @@ import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmList() {
   const [listData, setListData] = useState({});
@@ -34,7 +35,7 @@ function MaintenanceofMulberryfarmList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `Mulberry-garden/get-info`)
+      .get(baseURLSeedDfl + `MulberryFarm/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -56,7 +57,7 @@ function MaintenanceofMulberryfarmList() {
     setShowModal(true);
 
     api
-      .get(baseURL2 + `Mulberry-garden/get-logs/${_id}/${plot}`)
+      .get(baseURLSeedDfl + `MulberryFarm/get-logs/${_id}/${plot}`)
       .then((response) => {
         // console.log(response.data)
         setListLogsData(response.data);
@@ -110,7 +111,7 @@ function MaintenanceofMulberryfarmList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}/${plot}`)
+          .delete(baseURLSeedDfl + `MulberryFarm/delete-info/${_id}/${plot}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
