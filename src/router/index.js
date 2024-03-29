@@ -588,6 +588,31 @@ import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
 import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
 import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
 import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import ScHeadAccountCategory from "../pages/masters/sc-head-account-category/ScHeadAccountCategory";
+import ScHeadAccountCategoryList from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryList";
+import ScHeadAccountCategoryView from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryView";
+import ScHeadAccountCategoryEdit from "../pages/masters/sc-head-account-category/EditScHeadAccountCategory";
+import ScApprovingAuthority from "../pages/masters/sc-approving-authority/ScApproving";
+import ScApprovingAuthorityList from "../pages/masters/sc-approving-authority/ScApprovingList";
+import ScApprovingAuthorityView from "../pages/masters/sc-approving-authority/ScApprovingView";
+import ScApprovingAuthorityEdit from "../pages/masters/sc-approving-authority/EditScApproving";
+import ScVendorContact from "../pages/masters/sc-vendor-contact/ScVendorContact";
+import ScVendorContactList from "../pages/masters/sc-vendor-contact/ScVendorContactList";
+import ScVendorContactView from "../pages/masters/sc-vendor-contact/ScVendorContactView";
+import ScVendorContactEdit from "../pages/masters/sc-vendor-contact/EditScVendorContact";
+import ScVendorBank from "../pages/masters/sc-vendor-bank/ScVendorBank";
+import ScVendorBankList from "../pages/masters/sc-vendor-bank/ScVendorBankList";
+import ScVendorBankView from "../pages/masters/sc-vendor-bank/ScVendorBankView";
+import ScVendorBankEdit from "../pages/masters/sc-vendor-bank/EditScVendorBank";
+import ScVendor from "../pages/masters/sc-vendor/ScVendor";
+import ScVendorList from "../pages/masters/sc-vendor/ScVendorList";
+import ScVendorView from "../pages/masters/sc-vendor/ScVendorView";
+import ScVendorEdit from "../pages/masters/sc-vendor/EditScVendor";
+import ScUunitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostView from "../pages/masters/sc-unit-cost/ScUnitCostView";
+import ScUnitCostEdit from "../pages/masters/sc-unit-cost/EditScUnitCost";
+import ScUnitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostList from "../pages/masters/sc-unit-cost/ScUnitCostList";
 
 // Admin and Reports
 
@@ -1480,6 +1505,28 @@ function Router() {
             <Route path="godawn-list" element={<GodawnList />} />
             <Route path="godawn-view/:id" element={<GodawnView />} />
             <Route path="godawn-edit/:id" element={<GodawnEdit />} />
+
+            <Route path="sc-head-account-category" element={<ScHeadAccountCategory />} />
+            <Route path="sc-head-account-category-list" element={<ScHeadAccountCategoryList />} />
+            <Route path="sc-head-account-category-view/:id" element={<ScHeadAccountCategoryView />} />
+            <Route path="sc-head-account-category-edit/:id" element={<ScHeadAccountCategoryEdit />} />
+
+            <Route path="sc-approving-authority" element={<ScApprovingAuthority />} />
+            <Route path="sc-approving-authority-list" element={<ScApprovingAuthorityList/>} />
+            <Route path="sc-approving-authority-view/:id" element={<ScApprovingAuthorityView />} />
+            <Route path="sc-approving-authority-edit/:id" element={<ScApprovingAuthorityEdit />} />
+
+            
+            
+            <Route path="sc-vendor" element={<ScVendor />} />
+            <Route path="sc-vendor-list" element={<ScVendorList />} />
+            <Route path="sc-vendor-view/:id" element={<ScVendorView />} />
+            <Route path="sc-vendor-edit/:id" element={<ScVendorEdit />} />
+
+            <Route path="sc-unit-cost" element={<ScUnitCost />} />
+            <Route path="sc-unit-cost-list" element={<ScUnitCostList/>} />
+            <Route path="sc-unit-cost-view/:id" element={<ScUnitCostView />} />
+            <Route path="sc-unit-cost-edit/:id" element={<ScUnitCostEdit />} />
             <Route path="bin" element={<Bin />} />
             <Route path="bin-list" element={<BinList />} />
             <Route path="bin-view/:id" element={<BinView />} />

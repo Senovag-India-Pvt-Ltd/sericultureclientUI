@@ -4,14 +4,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
-//import axios from "axios";
 import { Icon } from "../../../components";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FarmEdit() {
+function ScApprovingAuthorityEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,12 +28,13 @@ function FarmEdit() {
 
   const postData = (event) => {
     const datas = {
-      farmId: id,
-      farmName: data.farmName,
-      farmNameInKannada: data.farmNameInKannada,
-      userMasterId:data.userMasterId,
-
+      scApprovingAuthorityId: id,
+      minAmount: data.minAmount,
+      maxAmount: data.maxAmount,
+      type:data.type,
+      roleId:data.roleId
     };
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -42,22 +43,25 @@ function FarmEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `farmMaster/edit`, datas)
+        .post(baseURL + `scApprovingAuthority/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-                farmName: "",
-                farmNameInKannada: "",
-                userMasterId:"",
+              minAmount: "",
+              maxAmount: "",
+              type: "",
+              roleId:""
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -65,9 +69,10 @@ function FarmEdit() {
 
   const clear = () => {
     setData({
-        farmName: "",
-        farmNameInKannada: "",
-        userMasterId:"",
+      minAmount: "",
+      maxAmount: "",
+      type: "",
+      roleId:""
     });
   };
 
@@ -75,7 +80,7 @@ function FarmEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/get/${id}`)
+      .get(baseURL + `scApprovingAuthority/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -88,23 +93,21 @@ function FarmEdit() {
       });
   };
 
-  // console.log(getIdList());
-
   useEffect(() => {
     getIdList();
   }, [id]);
 
-  // to get User
-  const [userListData, setUserListData] = useState([]);
+  // to get Role
+  const [roleListData, setRoleListData] = useState([]);
 
   const getList = () => {
     const response = api
-      .get(baseURL + `userMaster/get-all`)
+      .get(baseURL + `role/get-all`)
       .then((response) => {
-        setUserListData(response.data.content.userMaster);
+        setRoleListData(response.data.content.role);
       })
       .catch((err) => {
-        setUserListData([]);
+        setRoleListData([]);
       });
   };
 
@@ -113,6 +116,7 @@ function FarmEdit() {
   }, []);
 
   const navigate = useNavigate();
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -142,17 +146,17 @@ function FarmEdit() {
   };
 
   return (
-    <Layout title="Edit Farm">
+    <Layout title="Edit Approving Authority">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Farm</Block.Title>
+            <Block.Title tag="h2">Edit  Approving Authority</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/farm-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -161,7 +165,7 @@ function FarmEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/farm-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -185,23 +189,25 @@ function FarmEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
+                    
+
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="Farm">
-                          Farm Name<span className="text-danger">*</span>
+                        <Form.Label htmlFor="minAmount">
+                          Min Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="farm"
-                            name="farmName"
-                            value={data.farmName}
+                            id="minAmount"
+                            name="minAmount"
+                            value={data.minAmount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farm"
+                            placeholder="Enter Min Amount"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farm Name is required
+                            Min Amount is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -209,22 +215,45 @@ function FarmEdit() {
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Farm Name in Kannada
+                        <Form.Label htmlFor="maxAmount">
+                          Max Amount
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="title"
-                            name="farmNameInKannada"
-                            value={data.farmNameInKannada}
+                            id="maxAmount"
+                            name="maxAmount"
+                            value={data.maxAmount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter farm Name in Kannada"
+                            placeholder="Enter Max Amount"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                           Farm Name in Kannada is required.
+                            Max Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="type">
+                          Type
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="type"
+                            name="type"
+                            value={data.type}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Type"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                           Type is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -233,28 +262,32 @@ function FarmEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          User<span className="text-danger">*</span>
+                          Role <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="userMasterId"
-                            value={data.userMasterId}
+                            name="roleId"
+                            value={data.roleId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.userMasterId === undefined || data.userMasterId === "0"
+                              data.roleId === undefined ||
+                              data.roleId === "0"
                             }
                           >
-                            <option value="">Select User</option>
-                            {userListData.map((list) => (
-                              <option key={list.userMasterId} value={list.userMasterId}>
-                                {list.username}
+                            <option value="">Select Role</option>
+                            {roleListData.map((list) => (
+                              <option
+                                key={list.roleId}
+                                value={list.roleId}
+                              >
+                                {list.roleName}
                               </option>
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            User Name is required
+                            Role Name is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -286,4 +319,4 @@ function FarmEdit() {
   );
 }
 
-export default FarmEdit;
+export default ScApprovingAuthorityEdit;

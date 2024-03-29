@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import React from "react";
@@ -12,11 +12,11 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function Grainage() {
+function ScVendor() {
   const [data, setData] = useState({
-    grainageMasterName: "",
-    grainageMasterNameInKannada: "",
-    userMasterId:"",
+    name: "",
+    nameInKannada: "",
+    type:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -38,22 +38,24 @@ function Grainage() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `grainageMaster/add`, data)
+        .post(baseURL + `scVendor/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-                grainageMasterName: "",
-                grainageMasterNameInKannada: "",
-                userMasterId:"",
+              name: "",
+              nameInKannada: "",
+              type:"",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -61,30 +63,11 @@ function Grainage() {
 
   const clear = () => {
     setData({
-        grainageMasterName: "",
-        grainageMasterNameInKannada: "",
-        userMasterId:"",
+      name: "",
+      nameInKannada: "",
+      type:"",
     });
   };
-
-
-  // to get User Master
-  const [userListData, setUserListData] = useState([]);
-
-  const getList = () => {
-    const response = api
-      .get(baseURL + `userMaster/get-all`)
-      .then((response) => {
-        setUserListData(response.data.content.userMaster);
-      })
-      .catch((err) => {
-        setUserListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -96,25 +79,31 @@ function Grainage() {
   };
 
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Grainage">
+    <Layout title=" Vendor">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage</Block.Title>
+            <Block.Title tag="h2"> Vendor</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,7 +112,7 @@ function Grainage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -146,21 +135,21 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Name
+                         Vendor Name
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
-                          name="grainageMasterName"
+                          name="name"
                           type="text"
-                          value={data.grainageMasterName}
+                          value={data.name}
                           onChange={handleInputs}
-                          placeholder="Enter Grainage name"
+                          placeholder="Enter Sc Vendor name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name is required
+                           Vendor Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -169,21 +158,21 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Grainage Name in Kannada
+                         Vendor Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="title"
-                          name="grainageMasterNameInKannada"
-                          value={data.grainageMasterNameInKannada}
+                          name="nameInKannada"
+                          value={data.nameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Grainage Name in Kannada"
+                          placeholder="Enter  Vendor Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name in Kannada is required.
+                           Vendor Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -191,29 +180,22 @@ function Grainage() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
+                      <Form.Label htmlFor="title">
+                        Type
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
+                        <Form.Control
+                          id="title"
+                          name="type"
+                          value={data.type}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs}
+                          type="text"
+                          placeholder="Enter Type"
                           required
-                          isInvalid={
-                            data.userMasterId === undefined || data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option key={list.userMasterId} value={list.userMasterId}>
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
+                        />
                         <Form.Control.Feedback type="invalid">
-                          User name is required
+                          Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -244,4 +226,4 @@ function Grainage() {
   );
 }
 
-export default Grainage;
+export default ScVendor;

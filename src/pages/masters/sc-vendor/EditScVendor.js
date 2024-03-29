@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FarmEdit() {
+function ScVendorEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,10 +28,10 @@ function FarmEdit() {
 
   const postData = (event) => {
     const datas = {
-      farmId: id,
-      farmName: data.farmName,
-      farmNameInKannada: data.farmNameInKannada,
-      userMasterId:data.userMasterId,
+      scVendorId: id,
+      name: data.name,
+      nameInKannada: data.nameInKannada,
+      type: data.type,
 
     };
     const form = event.currentTarget;
@@ -42,22 +42,24 @@ function FarmEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `farmMaster/edit`, datas)
+        .post(baseURL + `scVendor/edit`, datas)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-                farmName: "",
-                farmNameInKannada: "",
-                userMasterId:"",
+              name: "",
+              nameInKannada: "",
+              type:"",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -65,9 +67,9 @@ function FarmEdit() {
 
   const clear = () => {
     setData({
-        farmName: "",
-        farmNameInKannada: "",
-        userMasterId:"",
+      name: "",
+      nameInKannada: "",
+      type:"",
     });
   };
 
@@ -75,7 +77,7 @@ function FarmEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/get/${id}`)
+      .get(baseURL + `scVendor/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -93,24 +95,6 @@ function FarmEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
-
-  // to get User
-  const [userListData, setUserListData] = useState([]);
-
-  const getList = () => {
-    const response = api
-      .get(baseURL + `userMaster/get-all`)
-      .then((response) => {
-        setUserListData(response.data.content.userMaster);
-      })
-      .catch((err) => {
-        setUserListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -142,17 +126,17 @@ function FarmEdit() {
   };
 
   return (
-    <Layout title="Edit Farm">
+    <Layout title="Edit Vendor">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Farm</Block.Title>
+            <Block.Title tag="h2">Edit Vendor</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/farm-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -161,7 +145,7 @@ function FarmEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/farm-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -187,21 +171,21 @@ function FarmEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="Farm">
-                          Farm Name<span className="text-danger">*</span>
+                        <Form.Label htmlFor="Sc Vendor">
+                         Vendor<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="farm"
-                            name="farmName"
-                            value={data.farmName}
+                            id="scVendor"
+                            name="name"
+                            value={data.name}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Farm"
+                            placeholder="Enter Vendor Name"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Farm Name is required
+                             Vendor Name is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -210,55 +194,48 @@ function FarmEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Farm Name in Kannada
+                           Vendor Name in Kannada
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="title"
-                            name="farmNameInKannada"
-                            value={data.farmNameInKannada}
+                            name="nameInKannada"
+                            value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter farm Name in Kannada"
+                            placeholder="Enter  Vendor Name in Kannada"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                           Farm Name in Kannada is required.
+                             Vendor Name in Kannada is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label>
-                          User<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="userMasterId"
-                            value={data.userMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.userMasterId === undefined || data.userMasterId === "0"
-                            }
-                          >
-                            <option value="">Select User</option>
-                            {userListData.map((list) => (
-                              <option key={list.userMasterId} value={list.userMasterId}>
-                                {list.username}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            User Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="type"
+                          value={data.type}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Type is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -286,4 +263,4 @@ function FarmEdit() {
   );
 }
 
-export default FarmEdit;
+export default ScVendorEdit;

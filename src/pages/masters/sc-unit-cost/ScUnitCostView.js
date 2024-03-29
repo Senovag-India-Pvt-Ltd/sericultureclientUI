@@ -4,11 +4,11 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function GrainageView() {
+function ScUnitCostView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -18,25 +18,26 @@ function GrainageView() {
   };
 
   const { id } = useParams();
-  // const [data] = useState(LandCategoryDatas);
-  const [Grainage, setGrainage] = useState({});
+  // const [data] = useState(EducationDatas);
+  const [ScUnitCost, setScUnitCost] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
+  // // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
   //   let findUser = data.find((item) => item.id === id);
-  //   setState(findUser);
+  //   setDistrict(findUser);
   // }, [id, data]);
+
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get-join/${id}`)
+      .get(baseURL + `scUnitCost/get-join/${id}`)
       .then((response) => {
-        setGrainage(response.data.content);
+        setScUnitCost(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setGrainage({});
+        setScUnitCost({});
         setLoading(false);
       });
   };
@@ -48,17 +49,17 @@ function GrainageView() {
   }, [id]);
 
   return (
-    <Layout title="Grainage View">
+    <Layout title="Unit Cost View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage View</Block.Title>
+            <Block.Title tag="h2">Unit Cost View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-unit-cost-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +68,7 @@ function GrainageView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-unit-cost-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,7 +82,7 @@ function GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Grainage Details</Card.Header>
+          <Card.Header>Unit Cost Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,23 +95,35 @@ function GrainageView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{Grainage.grainageMasterId}</td>
+                        <td>{ScUnitCost.scUnitCostId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Grainage:</td>
-                        <td>{Grainage.grainageMasterName}</td>
+                        <td style={styles.ctstyle}> Head Account:</td>
+                        <td>{ScUnitCost.scHeadAccountName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Grainage Name In Kannada:
-                        </td>
-                        <td>{Grainage.grainageMasterNameInKannada}</td>
+                        <td style={styles.ctstyle}> Category:</td>
+                        <td>{ScUnitCost.categoryName}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> Sub Scheme Details:</td>
+                        <td>{ScUnitCost.subSchemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{Grainage.username}</td>
+                        <td style={styles.ctstyle}> Central Share:</td>
+                        <td>{ScUnitCost.centralShare}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> State Share:</td>
+                        <td>{ScUnitCost.stateShare}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> Benificiary Share:</td>
+                        <td>{ScUnitCost.benificiaryShare}</td>
+                      </tr>
+                    
                     </tbody>
                   </table>
                 </Col>
@@ -123,4 +136,4 @@ function GrainageView() {
   );
 }
 
-export default GrainageView;
+export default ScUnitCostView;

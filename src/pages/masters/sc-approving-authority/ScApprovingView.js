@@ -6,9 +6,10 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function GrainageView() {
+function ScApprovingAuthorityView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,7 +20,7 @@ function GrainageView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [Grainage, setGrainage] = useState({});
+  const [ScApprovingAuthority, setScApprovingAuthority] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -30,35 +31,33 @@ function GrainageView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get-join/${id}`)
+      .get(baseURL + `scApprovingAuthority/get-join/${id}`)
       .then((response) => {
-        setGrainage(response.data.content);
+        setScApprovingAuthority(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setGrainage({});
+        setScApprovingAuthority({});
         setLoading(false);
       });
   };
-
-  // console.log(getIdList());
 
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="Grainage View">
+    <Layout title="Approving Authority View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage View</Block.Title>
+            <Block.Title tag="h2"> Approving Authority View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +66,7 @@ function GrainageView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,7 +80,7 @@ function GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Grainage Details</Card.Header>
+          <Card.Header> Approving Authority Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,22 +93,24 @@ function GrainageView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{Grainage.grainageMasterId}</td>
+                        <td>{ScApprovingAuthority.scApprovingAuthorityId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Grainage:</td>
-                        <td>{Grainage.grainageMasterName}</td>
+                        <td style={styles.ctstyle}> Min Amount:</td>
+                        <td>{ScApprovingAuthority.minAmount}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Grainage Name In Kannada:
-                        </td>
-                        <td>{Grainage.grainageMasterNameInKannada}</td>
+                        <td style={styles.ctstyle}>Max Amount:</td>
+                        <td>{ScApprovingAuthority.maxAmount}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{Grainage.username}</td>
+                        <td style={styles.ctstyle}> Type:</td>
+                        <td>{ScApprovingAuthority.type}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> Role:</td>
+                        <td>{ScApprovingAuthority.roleName}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -123,4 +124,4 @@ function GrainageView() {
   );
 }
 
-export default GrainageView;
+export default ScApprovingAuthorityView;

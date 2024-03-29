@@ -1,22 +1,19 @@
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
+import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
-import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Swal from "sweetalert2";
-import {useEffect, useState } from "react";
-// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FarmList() {
+function ScHeadAccountCategoryList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -25,17 +22,41 @@ function FarmList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
-    searchBy: "farmMaster",
     text: "",
+    searchBy: "scHeadAccountName",
   });
 
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "scHeadAccountName") {
+      joinColumn = "scHeadAccount.scHeadAccountName";
+    }
+    // console.log(joinColumn);
+    api
+      .post(baseURL + `scHeadAccountCategory/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      })
+      .then((response) => {
+        setListData(response.data.content.scHeadAccountCategory);
+      })
+      .catch((err) => {
+      });
+  };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/list-with-join`, _params)
+      .get(baseURL + `scHeadAccountCategory/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.farmMaster);
+        setListData(response.data.content.scHeadAccountCategory);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -49,51 +70,13 @@ function FarmList() {
     getList();
   }, [page]);
 
-
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "userMaster") {
-      joinColumn = "userMaster.username";
-    }
-    if (data.searchBy === "farmMaster") {
-      joinColumn = "farmMaster.farmName";
-    }
-    console.log(joinColumn);
-    api
-      .post(baseURL + `farmMaster/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.farmMaster);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
-      })
-      .catch((err) => {
-        // saveError();
-      });
-  };
-
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/farm-view/${_id}`);
+    navigate(`/seriui/sc-head-account-category-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/farm-edit/${_id}`);
+    navigate(`/seriui/sc-head-account-category-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
@@ -115,7 +98,7 @@ function FarmList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `farmMaster/delete/${_id}`)
+          .delete(baseURL + `scHeadAccountCategory/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -185,7 +168,7 @@ function FarmList() {
     },
   };
 
-  const FarmDataColumns = [
+  const ScHeadAccountCategoryDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -195,7 +178,7 @@ function FarmList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.farmId)}
+            onClick={() => handleView(row.scHeadAccountCategoryId)}
           >
             View
           </Button>
@@ -203,14 +186,14 @@ function FarmList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.farmId)}
+            onClick={() => handleEdit(row.scHeadAccountCategoryId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.farmId)}
+            onClick={() => deleteConfirm(row.scHeadAccountCategoryId)}
             className="ms-2"
           >
             Delete
@@ -219,43 +202,37 @@ function FarmList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2,
     },
     {
-      name: "Farm",
-      selector: (row) => row.farmName,
-      cell: (row) => <span>{row.farmName}</span>,
+      name: "Head Of account",
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm Name in Kannada",
-      selector: (row) => row.farmNameInKannada,
-      cell: (row) => <span>{row.farmNameInKannada}</span>,
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
-
-    {
-      name: "User",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
-      sortable: true,
-      hide: "md",
-    },
+   
   ];
 
   return (
-    <Layout title="Farm List">
+    <Layout title="List Of  Head Account Category">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farm List</Block.Title>
+            <Block.Title tag="h2">List Of  Head Account Category</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-head-account-category"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -264,7 +241,7 @@ function FarmList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-head-account-category"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -292,8 +269,7 @@ function FarmList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="farmMaster">Farm</option>
-                      <option value="userMaster">User</option>
+                      <option value="scHeadAccountName">Head Account</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -318,9 +294,8 @@ function FarmList() {
           </Row>
 
           <DataTable
-            // title="Farm List"
             tableClassName="data-table-head-light table-responsive"
-            columns={FarmDataColumns}
+            columns={ScHeadAccountCategoryDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -341,4 +316,4 @@ function FarmList() {
   );
 }
 
-export default FarmList;
+export default ScHeadAccountCategoryList;

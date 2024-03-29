@@ -2,21 +2,21 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
-import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import React from "react";
-// import axios from "axios";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function Grainage() {
+function ScApprovingAuthority() {
   const [data, setData] = useState({
-    grainageMasterName: "",
-    grainageMasterNameInKannada: "",
-    userMasterId:"",
+    minAmount: "",
+    maxAmount: "",
+    type: "",
+    roleId:""
   });
 
   const [validated, setValidated] = useState(false);
@@ -37,23 +37,34 @@ function Grainage() {
       setValidated(true);
     } else {
       event.preventDefault();
+      // event.stopPropagation();
       api
-        .post(baseURL + `grainageMaster/add`, data)
+        .post(baseURL + `scApprovingAuthority/add`, data)
         .then((response) => {
           if (response.data.content.error) {
-            saveError(response.data.content.error_description);
+            // saveError();
+            saveRaceError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-                grainageMasterName: "",
-                grainageMasterNameInKannada: "",
-                userMasterId:"",
+                minAmount: "",
+                maxAmount: "",
+                type: "",
+                roleId:""
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
         });
       setValidated(true);
     }
@@ -61,24 +72,24 @@ function Grainage() {
 
   const clear = () => {
     setData({
-        grainageMasterName: "",
-        grainageMasterNameInKannada: "",
-        userMasterId:"",
+        minAmount: "",
+        maxAmount: "",
+        type: "",
+        roleId:""
     });
   };
 
-
-  // to get User Master
-  const [userListData, setUserListData] = useState([]);
+  // to get Role
+  const [roleListData, setRoleListData] = useState([]);
 
   const getList = () => {
     const response = api
-      .get(baseURL + `userMaster/get-all`)
+      .get(baseURL + `role/get-all`)
       .then((response) => {
-        setUserListData(response.data.content.userMaster);
+        setRoleListData(response.data.content.role);
       })
       .catch((err) => {
-        setUserListData([]);
+        setRoleListData([]);
       });
   };
 
@@ -94,27 +105,40 @@ function Grainage() {
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
-
-  const saveError = (message) => {
+  const saveError = () => {
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      text: "Something went wrong!",
+    });
+  };
+
+  const saveRaceError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Grainage">
+    <Layout title=" Approving Authority">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage</Block.Title>
+            <Block.Title tag="h2"> Approving Authority</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,7 +147,7 @@ function Grainage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-approving-authority-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -143,24 +167,57 @@ function Grainage() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
+                  {/* <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="marketMasterId"
+                          value={data.marketMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.marketMasterId === undefined ||
+                            data.marketMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Market</option>
+                          {marketListData.map((list) => (
+                            <option
+                              key={list.marketMasterId}
+                              value={list.marketMasterId}
+                            >
+                              {list.marketMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Market Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col> */}
+
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Grainage Name
-                        <span className="text-danger">*</span>
+                      <Form.Label htmlFor="minAmount">
+                        Min Amount<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="grainageMasterName"
-                          type="text"
-                          value={data.grainageMasterName}
+                          id="minAmount"
+                          name="minAmount"
+                          value={data.minAmount}
                           onChange={handleInputs}
-                          placeholder="Enter Grainage name"
+                          type="text"
+                          placeholder="Enter Min Amount"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name is required
+                          Min Amount is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -168,22 +225,45 @@ function Grainage() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Grainage Name in Kannada
+                      <Form.Label htmlFor="maxAmount">
+                        Max Amount
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="grainageMasterNameInKannada"
-                          value={data.grainageMasterNameInKannada}
+                          id="maxAmount"
+                          name="maxAmount"
+                          value={data.maxAmount}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Grainage Name in Kannada"
+                          placeholder="Enter Max Amount"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Grainage Name in Kannada is required.
+                          Max Amount is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="type">
+                        Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="type"
+                          name="type"
+                          value={data.type}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -192,28 +272,28 @@ function Grainage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        User<span className="text-danger">*</span>
+                        Role<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
+                          name="roleId"
+                          value={data.roleId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.userMasterId === undefined || data.userMasterId === "0"
+                            data.roleId === undefined || data.roleId === "0"
                           }
                         >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option key={list.userMasterId} value={list.userMasterId}>
-                              {list.username}
+                          <option value="">Select Role</option>
+                          {roleListData.map((list) => (
+                            <option key={list.roleId} value={list.roleId}>
+                              {list.roleName}
                             </option>
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          User name is required
+                          Role name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -244,4 +324,4 @@ function Grainage() {
   );
 }
 
-export default Grainage;
+export default ScApprovingAuthority;

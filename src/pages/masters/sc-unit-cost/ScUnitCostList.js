@@ -1,22 +1,22 @@
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+// import { Card, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
-import {useEffect, useState } from "react";
-// import axios from "axios";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FarmList() {
+function ScUnitCostList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -25,17 +25,17 @@ function FarmList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
-    searchBy: "farmMaster",
+    searchBy: "scHeadAccountName",
     text: "",
   });
 
-
+  // console.log("Test",data);
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/list-with-join`, _params)
+      .get(baseURL + `scUnitCost/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.farmMaster);
+        setListData(response.data.content.ScUnitCost);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -49,24 +49,23 @@ function FarmList() {
     getList();
   }, [page]);
 
-
   // Search
   const search = (e) => {
     let joinColumn;
-    if (data.searchBy === "userMaster") {
-      joinColumn = "userMaster.username";
+    if (data.searchBy === "scHeadAccountName") {
+      joinColumn = "scHeadAccount.scHeadAccountName";
     }
-    if (data.searchBy === "farmMaster") {
-      joinColumn = "farmMaster.farmName";
+    if (data.searchBy === "categoryName") {
+      joinColumn = "scCategory.categoryName";
     }
     console.log(joinColumn);
     api
-      .post(baseURL + `farmMaster/search`, {
+      .post(baseURL + `scUnitCost/search`, {
         searchText: data.text,
         joinColumn: joinColumn,
       })
       .then((response) => {
-        setListData(response.data.content.farmMaster);
+        setListData(response.data.content.ScUnitCost);
 
         // if (response.data.content.error) {
         //   // saveError();
@@ -86,15 +85,14 @@ function FarmList() {
     setData({ ...data, [name]: value });
   };
 
-
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/farm-view/${_id}`);
+    navigate(`/seriui/sc-unit-cost-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/farm-edit/${_id}`);
-    // navigate("/seriui/state");
+    navigate(`/seriui/sc-unit-cost-edit/${_id}`);
+    // navigate("/seriui/district");
   };
 
   const deleteError = () => {
@@ -115,7 +113,7 @@ function FarmList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `farmMaster/delete/${_id}`)
+          .delete(baseURL + `scUnitCost/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -185,9 +183,9 @@ function FarmList() {
     },
   };
 
-  const FarmDataColumns = [
+  const ScUnitCostDataColumns = [
     {
-      name: "Action",
+      name: "action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -195,7 +193,7 @@ function FarmList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.farmId)}
+            onClick={() => handleView(row.scUnitCostId)}
           >
             View
           </Button>
@@ -203,14 +201,14 @@ function FarmList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.farmId)}
+            onClick={() => handleEdit(row.scUnitCostId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.farmId)}
+            onClick={() => deleteConfirm(row.scUnitCostId)}
             className="ms-2"
           >
             Delete
@@ -221,41 +219,63 @@ function FarmList() {
       hide: "md",
     },
     {
-      name: "Farm",
-      selector: (row) => row.farmName,
-      cell: (row) => <span>{row.farmName}</span>,
+      name: "Head Account Name",
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm Name in Kannada",
-      selector: (row) => row.farmNameInKannada,
-      cell: (row) => <span>{row.farmNameInKannada}</span>,
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "User",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
+      name: "Central Share",
+      selector: (row) => row.centralShare,
+      cell: (row) => <span>{row.centralShare}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "State Share",
+      selector: (row) => row.stateShare,
+      cell: (row) => <span>{row.stateShare}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Benificiary Share",
+      selector: (row) => row.benificiaryShare,
+      cell: (row) => <span>{row.benificiaryShare}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Farm List">
+    <Layout title="Unit Cost List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farm List</Block.Title>
+            <Block.Title tag="h2">Unit Cost List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-unit-cost"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -264,7 +284,7 @@ function FarmList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-unit-cost"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -275,6 +295,17 @@ function FarmList() {
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
+
+      {/* <Block>
+        <Card>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            data={DistrictDatas}
+            columns={DistrictDataColumns}
+            expandableRows
+          />
+        </Card>
+      </Block> */}
 
       <Block className="mt-n4">
         <Card>
@@ -292,8 +323,8 @@ function FarmList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="farmMaster">Farm</option>
-                      <option value="userMaster">User</option>
+                      <option value="scHeadAccountName">ScHeadAccount</option>
+                      <option value="categoryName">ScCategory</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -318,9 +349,8 @@ function FarmList() {
           </Row>
 
           <DataTable
-            // title="Farm List"
             tableClassName="data-table-head-light table-responsive"
-            columns={FarmDataColumns}
+            columns={ScUnitCostDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -341,4 +371,4 @@ function FarmList() {
   );
 }
 
-export default FarmList;
+export default ScUnitCostList;

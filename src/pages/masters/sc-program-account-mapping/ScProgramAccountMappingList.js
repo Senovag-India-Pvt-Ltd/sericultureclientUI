@@ -5,13 +5,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
 import DataTable from "react-data-table-component";
-import HobliDatas from "../../../store/masters/hobli/HobliData";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
-import ScProgramAccountMapping from "./ScProgramAccountMapping";
+
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 

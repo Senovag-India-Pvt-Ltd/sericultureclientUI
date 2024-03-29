@@ -8,7 +8,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function GrainageView() {
+function ScVendorView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,7 +19,7 @@ function GrainageView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [Grainage, setGrainage] = useState({});
+  const [scVendor, setScVendor] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -30,13 +30,13 @@ function GrainageView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get-join/${id}`)
+      .get(baseURL + `scVendor/get/${id}`)
       .then((response) => {
-        setGrainage(response.data.content);
+        setScVendor(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setGrainage({});
+        setScVendor({});
         setLoading(false);
       });
   };
@@ -48,17 +48,17 @@ function GrainageView() {
   }, [id]);
 
   return (
-    <Layout title="Grainage View">
+    <Layout title=" Vendor View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage View</Block.Title>
+            <Block.Title tag="h2"> Vendor View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +67,7 @@ function GrainageView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-vendor-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,7 +81,7 @@ function GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Grainage Details</Card.Header>
+          <Card.Header> Vendor Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,22 +94,22 @@ function GrainageView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{Grainage.grainageMasterId}</td>
+                        <td>{scVendor.scVendorId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Grainage:</td>
-                        <td>{Grainage.grainageMasterName}</td>
+                        <td style={styles.ctstyle}>  Vendor Name:</td>
+                        <td>{scVendor.name}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Grainage Name In Kannada:
+                           Vendor Name In Kannada:
                         </td>
-                        <td>{Grainage.grainageMasterNameInKannada}</td>
+                        <td>{scVendor.nameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{Grainage.username}</td>
+                        <td style={styles.ctstyle}>Type:</td>
+                        <td>{scVendor.type}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -123,4 +123,4 @@ function GrainageView() {
   );
 }
 
-export default GrainageView;
+export default ScVendorView;

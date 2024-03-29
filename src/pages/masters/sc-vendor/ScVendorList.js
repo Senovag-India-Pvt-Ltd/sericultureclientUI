@@ -1,4 +1,4 @@
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
@@ -10,13 +10,13 @@ import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FarmList() {
+function ScVendorList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -24,18 +24,12 @@ function FarmList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [data, setData] = useState({
-    searchBy: "farmMaster",
-    text: "",
-  });
-
-
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/list-with-join`, _params)
+      .get(baseURL + `scVendor/list`, _params)
       .then((response) => {
-        setListData(response.data.content.farmMaster);
+        setListData(response.data.content.ScVendor);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,55 +39,19 @@ function FarmList() {
       });
   };
 
+  console.log(listData);
+
   useEffect(() => {
     getList();
   }, [page]);
 
-
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "userMaster") {
-      joinColumn = "userMaster.username";
-    }
-    if (data.searchBy === "farmMaster") {
-      joinColumn = "farmMaster.farmName";
-    }
-    console.log(joinColumn);
-    api
-      .post(baseURL + `farmMaster/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.farmMaster);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
-      })
-      .catch((err) => {
-        // saveError();
-      });
-  };
-
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/farm-view/${_id}`);
+    navigate(`/seriui/sc-vendor-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/farm-edit/${_id}`);
+    navigate(`/seriui/sc-vendor-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
@@ -115,7 +73,7 @@ function FarmList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `farmMaster/delete/${_id}`)
+          .delete(baseURL + `scVendor/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -185,7 +143,7 @@ function FarmList() {
     },
   };
 
-  const FarmDataColumns = [
+  const ScVendorDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -195,7 +153,7 @@ function FarmList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.farmId)}
+            onClick={() => handleView(row.scVendorId)}
           >
             View
           </Button>
@@ -203,14 +161,14 @@ function FarmList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.farmId)}
+            onClick={() => handleEdit(row.scVendorId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.farmId)}
+            onClick={() => deleteConfirm(row.scVendorId)}
             className="ms-2"
           >
             Delete
@@ -221,41 +179,34 @@ function FarmList() {
       hide: "md",
     },
     {
-      name: "Farm",
-      selector: (row) => row.farmName,
-      cell: (row) => <span>{row.farmName}</span>,
+      name: "Sc Vendor",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm Name in Kannada",
-      selector: (row) => row.farmNameInKannada,
-      cell: (row) => <span>{row.farmNameInKannada}</span>,
+      name: "Sc Vendor Name in Kannada",
+      selector: (row) => row.nameInKannada,
+      cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
 
-    {
-      name: "User",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
-      sortable: true,
-      hide: "md",
-    },
   ];
 
   return (
-    <Layout title="Farm List">
+    <Layout title="Sc Vendor List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Farm List</Block.Title>
+            <Block.Title tag="h2">Sc Vendor List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-vendor"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -264,7 +215,7 @@ function FarmList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/farm"
+                  to="/seriui/sc-vendor"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -278,49 +229,10 @@ function FarmList() {
 
       <Block className="mt-n4">
         <Card>
-          <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      {/* <option value="">Select</option> */}
-                      <option value="farmMaster">Farm</option>
-                      <option value="userMaster">User</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row>
-
           <DataTable
-            // title="Farm List"
+            // title="TrainingProgram List"
             tableClassName="data-table-head-light table-responsive"
-            columns={FarmDataColumns}
+            columns={ScVendorDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -341,4 +253,4 @@ function FarmList() {
   );
 }
 
-export default FarmList;
+export default ScVendorList;

@@ -31,6 +31,7 @@ function GrainageEdit() {
       grainageMasterId: id,
       grainageMasterName: data.grainageMasterName,
       grainageMasterNameInKannada: data.grainageMasterNameInKannada,
+      userMasterId:data.userMasterId
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -49,6 +50,7 @@ function GrainageEdit() {
             setData({
                 grainageMasterName: "",
                 grainageMasterNameInKannada: "",
+                userMasterId:"",
             });
             setValidated(false);
           }
@@ -64,6 +66,7 @@ function GrainageEdit() {
     setData({
         grainageMasterName: "",
         grainageMasterNameInKannada: "",
+        userMasterId:"",
     });
   };
 
@@ -89,6 +92,24 @@ function GrainageEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  // to get User
+  const [userListData, setUserListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -197,6 +218,36 @@ function GrainageEdit() {
                           />
                           <Form.Control.Feedback type="invalid">
                             Grainage Name in Kannada is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          User<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userMasterId"
+                            value={data.userMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.userMasterId === undefined || data.userMasterId === "0"
+                            }
+                          >
+                            <option value="">Select User</option>
+                            {userListData.map((list) => (
+                              <option key={list.userMasterId} value={list.userMasterId}>
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            User name is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

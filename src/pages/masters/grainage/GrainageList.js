@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
@@ -24,10 +24,16 @@ function GrainageList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [data, setData] = useState({
+    searchBy: "grainageMaster",
+    text: "",
+  });
+
+
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/list`, _params)
+      .get(baseURL + `grainageMaster/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.grainageMaster);
         setTotalRows(response.data.content.totalItems);
@@ -42,6 +48,42 @@ function GrainageList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "userMaster") {
+      joinColumn = "userMaster.username";
+    }
+    if (data.searchBy === "grainageMaster") {
+      joinColumn = "grainageMaster.grainageMasterName";
+    }
+    console.log(joinColumn);
+    api
+      .post(baseURL + `grainageMaster/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      })
+      .then((response) => {
+        setListData(response.data.content.grainageMaster);
+
+        // if (response.data.content.error) {
+        //   // saveError();
+        // } else {
+        //   console.log(response);
+        //   // saveSuccess();
+        // }
+      })
+      .catch((err) => {
+        // saveError();
+      });
+  };
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -190,6 +232,14 @@ function GrainageList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "User",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
@@ -226,6 +276,44 @@ function GrainageList() {
 
       <Block className="mt-n4">
         <Card>
+          <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                      {/* <option value="">Select</option> */}
+                      <option value="grainageMaster">Grainage</option>
+                      <option value="userMaster">UserMaster</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={3}>
+                  <Form.Control
+                    id="fruitsId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
           <DataTable
             // title="Grainage List"
             tableClassName="data-table-head-light table-responsive"

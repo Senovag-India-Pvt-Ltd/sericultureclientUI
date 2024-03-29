@@ -30,7 +30,7 @@ function FarmView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `farmMaster/get/${id}`)
+      .get(baseURL + `farmMaster/get-join/${id}`)
       .then((response) => {
         setFarm(response.data.content);
         setLoading(false);
@@ -106,6 +106,10 @@ function FarmView() {
                           Farm Name In Kannada:
                         </td>
                         <td>{Farm.farmNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>User Name:</td>
+                        <td>{Farm.username}</td>
                       </tr>
                     </tbody>
                   </table>

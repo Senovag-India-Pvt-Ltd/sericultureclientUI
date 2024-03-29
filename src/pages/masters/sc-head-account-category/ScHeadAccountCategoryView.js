@@ -4,11 +4,11 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function GrainageView() {
+function ScHeadAccountCategoryView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,24 +19,25 @@ function GrainageView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [Grainage, setGrainage] = useState({});
+  const [scHeadAccountCategory, setScHeadAccountCategory] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
+  // // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
   //   let findUser = data.find((item) => item.id === id);
-  //   setState(findUser);
+  //   setHobli(findUser);
   // }, [id, data]);
+
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get-join/${id}`)
+      .get(baseURL + `scHeadAccountCategory/get-join/${id}`)
       .then((response) => {
-        setGrainage(response.data.content);
+        setScHeadAccountCategory(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setGrainage({});
+        setScHeadAccountCategory({});
         setLoading(false);
       });
   };
@@ -48,17 +49,17 @@ function GrainageView() {
   }, [id]);
 
   return (
-    <Layout title="Grainage View">
+    <Layout title="View Sc Head Account Category Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Grainage View</Block.Title>
+            <Block.Title tag="h2">View Sc Head Account Category Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-head-account-category-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -67,7 +68,7 @@ function GrainageView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/grainage-list"
+                  to="/seriui/sc-head-account-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -81,41 +82,28 @@ function GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Grainage Details</Card.Header>
+          <Card.Header>View Sc Head Account Category Details</Card.Header>
           <Card.Body>
-            {loading ? (
-              <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
-              </h1>
-            ) : (
-              <Row className="g-gs">
-                <Col lg="12">
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>ID:</td>
-                        <td>{Grainage.grainageMasterId}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Grainage:</td>
-                        <td>{Grainage.grainageMasterName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Grainage Name In Kannada:
-                        </td>
-                        <td>{Grainage.grainageMasterNameInKannada}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{Grainage.username}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Col>
-              </Row>
-            )}
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>ID:</td>
+                      <td>{scHeadAccountCategory.scHeadAccountCategoryId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Head Of account:</td>
+                      <td>{scHeadAccountCategory.scHeadAccountName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Category:</td>
+                      <td>{scHeadAccountCategory.categoryName}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
           </Card.Body>
         </Card>
       </Block>
@@ -123,4 +111,4 @@ function GrainageView() {
   );
 }
 
-export default GrainageView;
+export default ScHeadAccountCategoryView;
