@@ -72,20 +72,20 @@ function MaintenanceofMulberryfarmList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
+    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-edit/${_id}`);
+    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
   const handleUpdate = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
+    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-update/${_id}`);
   };
 
   const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
+    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-alert`);
   };
 
   const handleLogs = (_id) => {
@@ -231,7 +231,7 @@ function MaintenanceofMulberryfarmList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      grow: 3,
     },
 
     {
@@ -247,11 +247,26 @@ function MaintenanceofMulberryfarmList() {
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
+      grow: 2,
     },
     {
-      name: " Area(In Hectares)",
+      name: "Soil Type",
+      selector: (row) => row.soilTypeName,
+      cell: (row) => <span>{row.soilTypeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Area(In Acres)",
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Spacing",
+      selector: (row) => row.mulberrySpacing,
+      cell: (row) => <span>{row.mulberrySpacing}</span>,
       sortable: true,
       hide: "md",
     },
@@ -262,29 +277,42 @@ function MaintenanceofMulberryfarmList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+    {
+      name: "Fertilizer Application Date",
+      selector: (row) => row.fertilizerApplicationDate,
+      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "FYM (Farm Yard Manure) application date",
+      selector: (row) => row.fymApplicationDate,
+      cell: (row) => <span>{row.fymApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Irrigation Date",
+      selector: (row) => row.irrigationDate,
+      cell: (row) => <span>{row.irrigationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Date of Brushing",
+      selector: (row) => row.brushingDate,
+      cell: (row) => <span>{row.brushingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Remarks",
+      selector: (row) => row.remarks,
+      cell: (row) => <span>{row.remarks}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
     {
       name: "Activity Logs",
       cell: (row) => (

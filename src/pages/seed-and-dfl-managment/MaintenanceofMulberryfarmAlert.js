@@ -14,6 +14,7 @@ import DataTable from "react-data-table-component";
 import api from "../../../src/services/auth/api";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmAlert() {
   const { id } = useParams();
@@ -45,7 +46,7 @@ function MaintenanceofMulberryfarmAlert() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `Mulberry-garden/get-alerts-list`)
+      .get(baseURLSeedDfl + `MulberryFarm/get-alerts-list`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -71,7 +72,7 @@ function MaintenanceofMulberryfarmAlert() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL2 + `Mulberry-garden/update-task-status`, pruningDate)
+        .post(baseURLSeedDfl + `MulberryFarm/update-task-status`, pruningDate)
         .then((response) => {
           updateSuccess(response.data.message);
           // getVbDetailsList();
@@ -342,7 +343,7 @@ function MaintenanceofMulberryfarmAlert() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -351,7 +352,7 @@ function MaintenanceofMulberryfarmAlert() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -16,7 +16,14 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmEdit() {
   const { id } = useParams();
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    plotNumber: "",
+    variety: "",
+    areaUnderEachVariety: "",
+    pruningDate: null,
+    soilTypeId: "",
+    mulberrySpacing: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
@@ -33,7 +40,6 @@ function MaintenanceofMulberryfarmEdit() {
   };
 
   const isDataPruningSet = !!data.pruningDate;
-  
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -56,12 +62,12 @@ function MaintenanceofMulberryfarmEdit() {
           } else {
             updateSuccess();
             setData({
-                plotNumber: "",
-                variety: "",
-                areaUnderEachVariety: "",
-                pruningDate: "",
-                soilTypeId: "",
-                mulberrySpacing: "",
+              plotNumber: "",
+              variety: "",
+              areaUnderEachVariety: "",
+              pruningDate: "",
+              soilTypeId: "",
+              mulberrySpacing: "",
             });
             setValidated(false);
           }
@@ -76,12 +82,12 @@ function MaintenanceofMulberryfarmEdit() {
 
   const clear = () => {
     setData({
-        plotNumber: "",
-        variety: "",
-        areaUnderEachVariety: "",
-        pruningDate: "",
-        soilTypeId: "",
-        mulberrySpacing: "",
+      plotNumber: "",
+      variety: "",
+      areaUnderEachVariety: "",
+      pruningDate: "",
+      soilTypeId: "",
+      mulberrySpacing: "",
     });
     setValidated(false);
   };
@@ -121,25 +127,24 @@ function MaintenanceofMulberryfarmEdit() {
       });
   };
 
-   // to get Soil Type
-   const [soilTypeListData, setSoilTypeListData] = useState([]);
+  // to get Soil Type
+  const [soilTypeListData, setSoilTypeListData] = useState([]);
 
-   const getSoilTypeList = () => {
-     const response = api
-       .get(baseURL + `soilType/get-all`)
-       .then((response) => {
-         setSoilTypeListData(response.data.content.soilType);
-       })
-       .catch((err) => {
-         setSoilTypeListData([]);
-       });
-   };
+  const getSoilTypeList = () => {
+    const response = api
+      .get(baseURL + `soilType/get-all`)
+      .then((response) => {
+        setSoilTypeListData(response.data.content.soilType);
+      })
+      .catch((err) => {
+        setSoilTypeListData([]);
+      });
+  };
 
   useEffect(() => {
     getVarietyList();
     getSoilTypeList();
   }, []);
-
 
   const navigate = useNavigate();
 
@@ -151,13 +156,13 @@ function MaintenanceofMulberryfarmEdit() {
     });
   };
   const updateError = (message) => {
-  //   Swal.fire({
-  //     icon: "error",
-  //     title: "Save attempt was not successful",
-  //     text: message,
-  //   });
-  // };
-  let errorMessage;
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Save attempt was not successful",
+    //     text: message,
+    //   });
+    // };
+    let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
     } else {
@@ -190,7 +195,7 @@ function MaintenanceofMulberryfarmEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -199,7 +204,7 @@ function MaintenanceofMulberryfarmEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -215,151 +220,155 @@ function MaintenanceofMulberryfarmEdit() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-            <Card>
+          <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-                Edit Maintenance of Mulberry Garden in the Farms
-              </Card.Header>
-              <Card.Body>
-                {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
-                  </h1>
-                ) : (
-                    <Row className="g-gs">
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="plotNumber">
-                          Plot Number<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="plotNumber"
-                            name="plotNumber"
-                            value={data.plotNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Plot Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Plot Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-    
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label>
-                          Mulberry Variety<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="variety"
-                            value={data.variety}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.variety === undefined || data.variety === "0"
-                            }
-                          >
-                            <option value="">Select Mulberry Variety</option>
-                            {varietyListData.map((list) => (
-                              <option
-                                key={list.mulberryVarietyId}
-                                value={list.mulberryVarietyId}
-                              >
-                                {list.mulberryVarietyName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Mulberry Variety is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-    
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="areaUnderEachVariety">
-                          Area(In Acres)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="areaUnderEachVariety"
-                            name="areaUnderEachVariety"
-                            value={data.areaUnderEachVariety}
-                            onChange={handleInputs}
-                            maxLength="4"
-                            type="text"
-                            placeholder="Enter Area(In Hectares)"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-    
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Soil Type<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="soilTypeId"
-                            value={data.soilTypeId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.variety === undefined || data.variety === "0"
-                            }
-                          >
-                            <option value="">Select Soil Type</option>
-                            {soilTypeListData.map((list) => (
-                              <option key={list.soilTypeId} value={list.soilTypeId}>
-                                {list.soilTypeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Soil Type is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-    
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="mulberrySpacing">
-                          Mulberry Spacing
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="mulberrySpacing"
-                            name="mulberrySpacing"
-                            value={data.mulberrySpacing}
-                            onChange={handleInputs}
-                            maxLength="4"
-                            type="text"
-                            placeholder="Enter Mulberry Spacing"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-    
-                    <Col lg="2">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Pruning Date
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
+              Edit Maintenance of Mulberry Garden in the Farms
+            </Card.Header>
+            <Card.Body>
+              {loading ? (
+                <h1 className="d-flex justify-content-center align-items-center">
+                  Loading...
+                </h1>
+              ) : (
+                <Row className="g-gs">
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="plotNumber">
+                        Plot Number<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="plotNumber"
+                          name="plotNumber"
+                          value={data.plotNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Plot Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Plot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Mulberry Variety<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="varietyId"
+                          value={data.varietyId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            data.variety === undefined || data.variety === "0"
+                          }
+                        >
+                          <option value="">Select Mulberry Variety</option>
+                          {varietyListData.map((list) => (
+                            <option
+                              key={list.mulberryVarietyId}
+                              value={list.mulberryVarietyId}
+                            >
+                              {list.mulberryVarietyName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Mulberry Variety is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="areaUnderEachVariety">
+                        Area(In Acres)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="areaUnderEachVariety"
+                          name="areaUnderEachVariety"
+                          value={data.areaUnderEachVariety}
+                          onChange={handleInputs}
+                          maxLength="4"
+                          type="text"
+                          placeholder="Enter Area(In Hectares)"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Soil Type<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="soilTypeId"
+                          value={data.soilTypeId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            data.variety === undefined || data.variety === "0"
+                          }
+                        >
+                          <option value="">Select Soil Type</option>
+                          {soilTypeListData.map((list) => (
+                            <option
+                              key={list.soilTypeId}
+                              value={list.soilTypeId}
+                            >
+                              {list.soilTypeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Soil Type is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="mulberrySpacing">
+                        Mulberry Spacing
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="mulberrySpacing"
+                          name="mulberrySpacing"
+                          value={data.mulberrySpacing}
+                          onChange={handleInputs}
+                          maxLength="4"
+                          type="text"
+                          placeholder="Enter Mulberry Spacing"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Pruning Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {isDataPruningSet && (
                           <DatePicker
-                            selected={data.pruningDate}
+                            selected={new Date(data.pruningDate) || null}
                             onChange={(date) =>
                               handleDateChange(date, "pruningDate")
                             }
@@ -372,29 +381,30 @@ function MaintenanceofMulberryfarmEdit() {
                             className="form-control"
                             required
                           />
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                )}
-              </Card.Body>
-            </Card>
+                        )}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              )}
+            </Card.Body>
+          </Card>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+          <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Update
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>

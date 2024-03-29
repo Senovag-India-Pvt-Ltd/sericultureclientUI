@@ -41,6 +41,8 @@ function MaintenanceofMulberryfarmUpdate() {
       api
         .post(baseURLSeedDfl + `MulberryFarm/update-pruning-date`, data)
         .then((response) => {
+          const pdate = response.data.pruningDate;
+          console.log(pdate);
           //   const trScheduleId = response.data.content.trScheduleId;
           //   if (trScheduleId) {
           //     handlePPtUpload(trScheduleId);
@@ -69,6 +71,8 @@ function MaintenanceofMulberryfarmUpdate() {
       setValidated(true);
     }
   };
+
+  console.log(data);
 
   const clear = () => {
     setData({
@@ -147,7 +151,7 @@ function MaintenanceofMulberryfarmUpdate() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -156,7 +160,7 @@ function MaintenanceofMulberryfarmUpdate() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

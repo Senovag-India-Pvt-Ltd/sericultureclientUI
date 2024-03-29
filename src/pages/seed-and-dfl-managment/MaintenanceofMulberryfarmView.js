@@ -27,7 +27,7 @@ function MaintenanceofMulberryfarmView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MulberryFarm/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `MulberryFarm/get-info-by-id/${id}`)
       .then((response) => {
         setMaintenanceGarden(response.data);
         setLoading(false);
@@ -50,14 +50,14 @@ function MaintenanceofMulberryfarmView() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-               Maintenance of Mulberry Garden in the Farms View
+              Maintenance of Mulberry Garden in the Farms View
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function MaintenanceofMulberryfarmView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
+                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,7 +80,9 @@ function MaintenanceofMulberryfarmView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Mulberry Garden in the Farms Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>
+            Maintenance of Mulberry Garden in the Farms Details
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -129,7 +131,6 @@ function MaintenanceofMulberryfarmView() {
                         <td style={styles.ctstyle}>Brushing Date:</td>
                         <td>{maintenanceGarden.brushingDate}</td>
                       </tr>
-                     
                     </tbody>
                   </table>
                 </Col>

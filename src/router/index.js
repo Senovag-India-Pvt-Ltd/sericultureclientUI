@@ -622,6 +622,10 @@ import WormStage from "../pages/masters/worm-stage/WormStage";
 import WormStageList from "../pages/masters/worm-stage/WormStageList";
 import WormStageView from "../pages/masters/worm-stage/WormStageView";
 import WormStageEdit from "../pages/masters/worm-stage/WormStageEdit";
+import MaintenanceofMulberryfarmView from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmView";
+import MaintenanceofMulberryfarmUpdate from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmUpdate";
+import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmEdit";
+import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
 
 // Admin and Reports
 
@@ -947,6 +951,22 @@ function Router() {
               element={<MaintenanceofMulberryfarmList />}
             />
             <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-view/:id"
+              element={<MaintenanceofMulberryfarmView />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-update/:id"
+              element={<MaintenanceofMulberryfarmUpdate />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-edit/:id"
+              element={<MaintenanceofMulberryfarmEdit />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-alert"
+              element={<MaintenanceofMulberryfarmAlert />}
+            />
+            <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
             />
@@ -1024,13 +1044,13 @@ function Router() {
               element={<MaintenanceofeggsatcoldstorageList />}
             />
 
-             <Route
+            <Route
               path="maintenance-of-eggs-at-cold-storage-edit/:id"
               element={<MaintenanceOfEggsAtColdStorageEdit />}
             />
             <Route
               path="maintenance-of-eggs-at-cold-storage-view/:id"
-              element={<MaintenanceOfEggsAtColdStorageView/>}
+              element={<MaintenanceOfEggsAtColdStorageView />}
             />
 
             <Route
@@ -1043,13 +1063,13 @@ function Router() {
               element={<MaintenanceOfEggsAtColdList />}
             />
 
-             <Route
+            <Route
               path="maintenance-of-eggs-at-cold-edit/:id"
               element={<MaintenanceOfEggsAtColdEdit />}
             />
             <Route
               path="maintenance-of-eggs-at-cold-view/:id"
-              element={<MaintenanceOfEggsAtColdView/>}
+              element={<MaintenanceOfEggsAtColdView />}
             />
 
             <Route
