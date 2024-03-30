@@ -14,7 +14,7 @@ const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function RaiseTicketView() {
-  const styles = {    
+  const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
@@ -28,17 +28,21 @@ function RaiseTicketView() {
     solution: "",
     hdSeverityId: "",
     assignedTo: "",
-    userMasterId:""
+    userMasterId: "",
   });
   const [loading, setLoading] = useState(false);
 
-  
+  const [hideByStatus, setHideByStatus] = useState(false);
 
   const getIdList = () => {
     setLoading(true);
     api
       .get(baseURL + `hdTicket/get-join/${id}`)
       .then((response) => {
+        if (response.data.content.hdStatusId === 3) {
+          setHideByStatus(true);
+        }
+
         setRaiseTicket((prev) => ({ ...prev, ...response.data.content }));
         setLoading(false);
       })
@@ -115,24 +119,25 @@ function RaiseTicketView() {
     getStatusList();
   }, []);
 
-   // to get Escalate Users
-   const [escalateListData, setEscalateListData] = useState([]);
+  // to get Escalate Users
+  const [escalateListData, setEscalateListData] = useState([]);
 
-   const getEscalateList = () => {
-     const response = api
-       .post(baseURLMaster + `userMaster/get-escalate-users`,{roleName:"escalate"})
-       .then((response) => {
-         setEscalateListData(response.data.content.userMaster);
-       })
-       .catch((err) => {
+  const getEscalateList = () => {
+    const response = api
+      .post(baseURLMaster + `userMaster/get-escalate-users`, {
+        roleName: "escalate",
+      })
+      .then((response) => {
+        setEscalateListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
         setEscalateListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getEscalateList();
-   }, []);
+      });
+  };
 
+  useEffect(() => {
+    getEscalateList();
+  }, []);
 
   // Submit
   const submit = (esc) => {
@@ -176,7 +181,6 @@ function RaiseTicketView() {
       });
   };
 
-  
   const [show, setShow] = useState(false);
   const displaySeverity = () => {
     setShow((prev) => !prev);
@@ -450,9 +454,9 @@ function RaiseTicketView() {
                         onBlur={() => handleInput}
                         // multiple
                         required
-                        isInvalid={
-                          raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
-                        }
+                        // isInvalid={
+                        //   raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
+                        // }
                       >
                         <option value="">Select Escalate To</option>
                         {escalateListData.map((list) => (
@@ -464,9 +468,6 @@ function RaiseTicketView() {
                           </option>
                         ))}
                       </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                       User  is required
-                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -501,6 +502,7 @@ function RaiseTicketView() {
                       type="button"
                       variant="primary"
                       onClick={() => submit(escalate)}
+                      disabled={hideByStatus}
                     >
                       Submit
                     </Button>
