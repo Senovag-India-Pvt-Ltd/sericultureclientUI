@@ -28,7 +28,7 @@ function RaiseTicketView() {
     solution: "",
     hdSeverityId: "",
     assignedTo: "",
-    
+    userMasterId:""
   });
   const [loading, setLoading] = useState(false);
 
@@ -160,7 +160,7 @@ function RaiseTicketView() {
         if (esc === "1") {
           escalateSuccess();
           setRaiseTicket({
-            assignedTo: "",
+            userMasterId: "",
           });
         }
         if (esc === "0") {
@@ -454,7 +454,7 @@ function RaiseTicketView() {
                           raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
                         }
                       >
-                        <option value="">Select Assigned To</option>
+                        <option value="">Select Escalate To</option>
                         {escalateListData.map((list) => (
                           <option
                             key={list.userMasterId}

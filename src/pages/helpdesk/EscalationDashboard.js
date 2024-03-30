@@ -431,11 +431,11 @@ import {
     };
   
     return (
-      <Layout title="Help desk Dashboard">
+      <Layout title="Escalate Dashboard">
         <Block.Head>
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2">Helpdesk Dashboard</Block.Title>
+              <Block.Title tag="h2">Escalate Dashboard</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -462,20 +462,18 @@ import {
           </Block.HeadBetween>
         </Block.Head>
         <Row className="g-gs">
-          <Col xxl="3">
+          {/* <Col xxl="3">
             <Card className="h-100">
               <Card.Body style={{ ...styles }}>
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
                     <div className="card-title">
                       <h4 className="title mb-1">New Tickets</h4>
-                      {/* <p className="small">Best seller of the month</p> */}
                     </div>
                     <div className="my-3">
                       <div className="amount h2 fw-bold text-primary">
                         {hdTicketData.newTickets}
                       </div>
-                      {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                     </div>
                     <Button
                       href="#"
@@ -486,13 +484,10 @@ import {
                       View
                     </Button>
                   </div>
-                  {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
-                            <Image src="/images/award/a.png" alt=""/>
-                        </div> */}
                 </div>
               </Card.Body>
             </Card>
-          </Col>
+          </Col> */}
   
           <Col xxl="3">
             <Card className="h-100">

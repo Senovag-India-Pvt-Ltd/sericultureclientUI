@@ -586,6 +586,8 @@ import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
 import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
 import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
 import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import EscalationDashboard from "../pages/helpdesk/EscalationDashboard";
+import EscalationView from "../pages/helpdesk/EscalationView";
 
 // Admin and Reports
 
@@ -1013,7 +1015,6 @@ function Router() {
               element={<TestingOfMothView />}
             />
 
-
             {/* Seed & DFL Management */}
             {/*<Route
           path="maintenance-mulberry-farm"
@@ -1114,6 +1115,11 @@ function Router() {
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
             <Route path="help-desk" element={<HelpDesk />} />
+            <Route
+              path="escalate-dashboard"
+              element={<EscalationDashboard />}
+            />
+            <Route path="escalate-view/:id" element={<EscalationView />} />
             <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
             <Route path="raise-ticket-view/:id" element={<RaiseTicketView />} />
             <Route path="user-ticket-view/:id" element={<UserTicketView />} />
