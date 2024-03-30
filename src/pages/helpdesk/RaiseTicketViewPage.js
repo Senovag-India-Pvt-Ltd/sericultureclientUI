@@ -14,7 +14,7 @@ const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 
 function RaiseTicketView() {
-  const styles = {
+  const styles = {    
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
@@ -28,14 +28,11 @@ function RaiseTicketView() {
     solution: "",
     hdSeverityId: "",
     assignedTo: "",
+    
   });
   const [loading, setLoading] = useState(false);
 
-  // grabsthe id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  
 
   const getIdList = () => {
     setLoading(true);
@@ -118,6 +115,25 @@ function RaiseTicketView() {
     getStatusList();
   }, []);
 
+   // to get Escalate Users
+   const [escalateListData, setEscalateListData] = useState([]);
+
+   const getEscalateList = () => {
+     const response = api
+       .post(baseURLMaster + `userMaster/get-escalate-users`,{roleName:"escalate"})
+       .then((response) => {
+         setEscalateListData(response.data.content.userMaster);
+       })
+       .catch((err) => {
+        setEscalateListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getEscalateList();
+   }, []);
+
+
   // Submit
   const submit = (esc) => {
     const { solution, hdSeverityId, hdTicketId } = raiseTicket;
@@ -160,6 +176,7 @@ function RaiseTicketView() {
       });
   };
 
+  
   const [show, setShow] = useState(false);
   const displaySeverity = () => {
     setShow((prev) => !prev);
@@ -405,7 +422,7 @@ function RaiseTicketView() {
             </Row>
             {escalate === "1" ? (
               <Row className="mt-2">
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="assignedTo">Assign To</Form.Label>
                     <div className="form-control-wrap">
@@ -417,6 +434,39 @@ function RaiseTicketView() {
                         type="text"
                         placeholder="Enter Name"
                       />
+                    </div>
+                  </Form.Group>
+                </Col> */}
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label>
+                      Escalated To<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="userMasterId"
+                        value={raiseTicket.userMasterId}
+                        onChange={handleInput}
+                        onBlur={() => handleInput}
+                        // multiple
+                        required
+                        isInvalid={
+                          raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Assigned To</option>
+                        {escalateListData.map((list) => (
+                          <option
+                            key={list.userMasterId}
+                            value={list.userMasterId}
+                          >
+                            {list.firstName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                       User  is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
