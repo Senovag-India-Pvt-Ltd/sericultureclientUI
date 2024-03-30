@@ -1516,6 +1516,12 @@ function Router() {
             <Route path="sc-approving-authority-view/:id" element={<ScApprovingAuthorityView />} />
             <Route path="sc-approving-authority-edit/:id" element={<ScApprovingAuthorityEdit />} />
 
+            <Route path="sc-vendor-bank" element={<ScVendorBank />} />
+            <Route path="sc-vendor-bank-list" element={<ScVendorBankList/>} />
+            <Route path="sc-vendor-bank-view/:id" element={<ScVendorBankView />} />
+            <Route path="sc-vendor-bank-edit/:id" element={<ScVendorBankEdit />} />
+
+
             
             
             <Route path="sc-vendor" element={<ScVendor />} />
