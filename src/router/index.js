@@ -1521,6 +1521,11 @@ function Router() {
             <Route path="sc-vendor-bank-view/:id" element={<ScVendorBankView />} />
             <Route path="sc-vendor-bank-edit/:id" element={<ScVendorBankEdit />} />
 
+            <Route path="sc-vendor-contact" element={<ScVendorContact />} />
+            <Route path="sc-vendor-contact-list" element={<ScVendorContactList/>} />
+            <Route path="sc-vendor-contact-view/:id" element={<ScVendorContactView />} />
+            <Route path="sc-vendor-contact-edit/:id" element={<ScVendorContactEdit />} />
+
 
             
             
