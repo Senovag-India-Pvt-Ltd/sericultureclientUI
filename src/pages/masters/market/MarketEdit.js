@@ -32,6 +32,13 @@ function MarketEdit() {
     }));
   };
 
+  const handleCheckBoxBidAmount = (e) => {
+    setData((prev) => ({
+      ...prev,
+      bidAmountFlag: e.target.checked,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -84,6 +91,7 @@ function MarketEdit() {
               snorkelResponsePath: "",
               clientCode: "",
               weighmentTripletGeneration: "",
+              bidAmountFlag: "",
             });
             setValidated(false);
           }
@@ -132,6 +140,7 @@ function MarketEdit() {
       snorkelResponsePath: "",
       clientCode: "",
       weighmentTripletGeneration: "",
+      bidAmountFlag: "",
     });
   };
 
@@ -1152,6 +1161,22 @@ function MarketEdit() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         Triplet Generation After Weighment
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="bidAmountFlag"
+                          checked={data.bidAmountFlag}
+                          onChange={handleCheckBoxBidAmount}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Bid Amount Flag
                       </Form.Label>
                     </Form.Group>
                   </Col>

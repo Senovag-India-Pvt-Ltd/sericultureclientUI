@@ -49,6 +49,7 @@ function Market() {
     snorkelResponsePath: "",
     clientCode: "",
     weighmentTripletGeneration: true,
+    bidAmountFlag: false,
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -65,6 +66,14 @@ function Market() {
     setData((prev) => ({
       ...prev,
       weighmentTripletGeneration: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxBidAmount = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      bidAmountFlag: e.target.checked,
     }));
   };
 
@@ -128,6 +137,7 @@ function Market() {
               snorkelResponsePath: "",
               clientCode: "",
               weighmentTripletGeneration: true,
+              bidAmountFlag: false,
             });
             setValidated(false);
           }
@@ -176,6 +186,7 @@ function Market() {
       snorkelResponsePath: "",
       clientCode: "",
       weighmentTripletGeneration: true,
+      bidAmountFlag: false,
     });
   };
 
@@ -1130,6 +1141,22 @@ function Market() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         Triplet Generation After Weighment
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="bidAmountFlag"
+                          checked={data.bidAmountFlag}
+                          onChange={handleCheckBoxBidAmount}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Bid Amount Flag
                       </Form.Label>
                     </Form.Group>
                   </Col>

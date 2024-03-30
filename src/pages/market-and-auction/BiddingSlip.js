@@ -1417,12 +1417,12 @@ function BiddingSlip() {
                                 <td style={styles.ctstyle}> Aadhaar Number:</td>
                                 <td>{fruitsId.farmerId}</td>
                               </tr> */}
-                              <tr>
+                              {/* <tr>
                                 <td style={styles.ctstyle}> EPIC Number:</td>
                                 <td>
                                   {farmerDetails && farmerDetails.epicNumber}
                                 </td>
-                              </tr>
+                              </tr> */}
                               <tr>
                                 <td style={styles.ctstyle}> Farmer Address:</td>
                                 <td>
