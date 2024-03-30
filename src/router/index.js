@@ -613,6 +613,10 @@ import ScUnitCostView from "../pages/masters/sc-unit-cost/ScUnitCostView";
 import ScUnitCostEdit from "../pages/masters/sc-unit-cost/EditScUnitCost";
 import ScUnitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
 import ScUnitCostList from "../pages/masters/sc-unit-cost/ScUnitCostList";
+import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
+import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
+import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
+import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
 
 // Admin and Reports
 
@@ -1525,6 +1529,11 @@ function Router() {
             <Route path="sc-vendor-contact-list" element={<ScVendorContactList/>} />
             <Route path="sc-vendor-contact-view/:id" element={<ScVendorContactView />} />
             <Route path="sc-vendor-contact-edit/:id" element={<ScVendorContactEdit />} />
+
+            <Route path="division" element={<DivisionMaster />} />
+            <Route path="division-list" element={<DivisionMasterList/>} />
+            <Route path="division-view/:id" element={<DivisionMasterView />} />
+            <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
 
 
             
