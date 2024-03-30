@@ -589,6 +589,70 @@ function HelpdeskDashboard() {
             </Card.Body>
           </Card>
         </Col>
+
+        <Col xxl="3">
+          <Card className="h-100">
+            <Card.Body style={{ ...styles }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="card-title">
+                    <h4 className="title mb-1">Escalated Tickets</h4>
+                    {/* <p className="small">Best seller of the month</p> */}
+                  </div>
+                  <div className="my-3">
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.unassignedTickets}
+                    </div>
+                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
+                  </div>
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Pending Tickets")}
+                  >
+                    View
+                  </Button>
+                </div>
+                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
+                          <Image src="/images/award/a.png" alt=""/>
+                      </div> */}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xxl="3">
+          <Card className="h-100">
+            <Card.Body style={{ ...styles }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="card-title">
+                    <h4 className="title mb-1">Resolved Tickets</h4>
+                    {/* <p className="small">Best seller of the month</p> */}
+                  </div>
+                  <div className="my-3">
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.unassignedTickets}
+                    </div>
+                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
+                  </div>
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Pending Tickets")}
+                  >
+                    View
+                  </Button>
+                </div>
+                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
+                          <Image src="/images/award/a.png" alt=""/>
+                      </div> */}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
       <Row className="g-gs mt-2">
         <Col xxl="12">

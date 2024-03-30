@@ -197,11 +197,11 @@ function EscalationView() {
   };
 
   return (
-    <Layout title="View Raised Ticket Details">
+    <Layout title="View Escalated Ticket Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Raised Ticket Details</Block.Title>
+            <Block.Title tag="h2">View Escalated Ticket Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -230,7 +230,7 @@ function EscalationView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>View Raised Ticket Details</Card.Header>
+          <Card.Header>View Escalated Ticket Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
