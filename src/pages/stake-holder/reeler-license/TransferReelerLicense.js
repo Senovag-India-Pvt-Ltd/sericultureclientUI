@@ -51,8 +51,8 @@ function TransferReelerLicense() {
     talukId: "",
     hobliId: "",
     villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
+    licenseReceiptNumber: null,
+    licenseExpiryDate: null,
     receiptDate: "",
     functionOfUnit: "",
     reelingLicenseNumber: "",
@@ -73,8 +73,11 @@ function TransferReelerLicense() {
     status: "",
     licenseRenewalDate: "",
     transferReelerId: "",
-    reelerNumber:""
+    reelerNumber: "",
   });
+
+  const isExpiryDate = !!data.licenseExpiryDate;
+  const isReceiptDate = !!data.licenseReceiptNumber;
 
   const [existingReelerName, setExistingReelerName] = useState("");
 
@@ -172,7 +175,7 @@ function TransferReelerLicense() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -1226,7 +1229,7 @@ function TransferReelerLicense() {
                 <Card.Header>License Details</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
-                  <Col lg="6">
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
@@ -1246,8 +1249,7 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      </Col>
-
+                    </Col>
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
@@ -1270,7 +1272,6 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
@@ -1288,9 +1289,7 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-
                     <Col lg="6">
-
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
@@ -1305,9 +1304,9 @@ function TransferReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      </Col>
-                      .
-                      <Col lg="6">
+                    </Col>
+                    .
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
@@ -1322,47 +1321,52 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                      <Col lg="2">
+                    <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>Receipt Date</Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.receiptDate}
-                                onChange={(date) =>
-                                  handleRenewedDateChange(date, "receiptDate")
-                                }
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                              />
-                            </div>
+                        <div className="form-control-wrap">
+                          {isReceiptDate && (
+                            <DatePicker
+                              selected={new Date(data.receiptDate) || null}
+                              onChange={(date) =>
+                                handleRenewedDateChange(date, "receiptDate")
+                              }
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                            />
+                          )}
+                        </div>
                       </Form.Group>
                     </Col>
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>License Expiry Date</Form.Label>
-                      <div className="form-control-wrap">
-                        <DatePicker
-                          selected={data.licenseExpiryDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "licenseExpiryDate")
-                          }
-                          disabled={data.licenseRenewalDate !== null}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                        />
-                      </div>
+                        <div className="form-control-wrap">
+                          {isExpiryDate && (
+                            <DatePicker
+                              selected={
+                                new Date(data.licenseExpiryDate) || null
+                              }
+                              onChange={(date) =>
+                                handleDateChange(date, "licenseExpiryDate")
+                              }
+                              disabled={data.licenseRenewalDate !== null}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                            />
+                          )}
+                        </div>
                       </Form.Group>
                     </Col>
-                    </Row>
+                  </Row>
                 </Card.Body>
               </Card>
             </Block>
