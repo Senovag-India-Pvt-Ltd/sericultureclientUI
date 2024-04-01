@@ -136,16 +136,17 @@
     "survey_details": "Survey Details",
     "survey_number": "Survey Number",
     "enter_survey_number": "Enter Survey Number",
-    "farmer_number":"Farmer Number",
-    "enter_farmer_number":"Enter Farmer Number",
-    "update":"Update",
-    "farmer_name_kannada":"Farmer Name in Kannada",
-    "father_name_kannada":"Father Name in kannada",
-    "owner_name":"Owner Name",
-    "enter_owner_name":"Enter Owner Name",
-    "survey_noc":"Survey NOC",
-    "enter_survey_noc":"Enter Survey NOC",
-    "fathers_husbands_name_in_kannada":"Father's/Husband's Name in kannada",
-    "enter_fathers_husbands_name_in_kannada":"Enter Father's/Husband's Name in kannada"
+    "farmer_number": "Farmer Number",
+    "enter_farmer_number": "Enter Farmer Number",
+    "update": "Update",
+    "farmer_name_kannada": "Farmer Name in Kannada",
+    "father_name_kannada": "Father Name in kannada",
+    "owner_name": "Owner Name",
+    "enter_owner_name": "Enter Owner Name",
+    "survey_noc": "Survey NOC",
+    "enter_survey_noc": "Enter Survey NOC",
+    "fathers_husbands_name_in_kannada": "Father's/Husband's Name in kannada",
+    "enter_fathers_husbands_name_in_kannada": "Enter Father's/Husband's Name in kannada",
+    "title_service_application": "Application for Subsidy / Incentives"
   }
 }

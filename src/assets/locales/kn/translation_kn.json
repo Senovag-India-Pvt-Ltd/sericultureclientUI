@@ -138,14 +138,15 @@
     "enter_survey_number": "ಸರ್ವೆ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
     "farmer_number": "ರೈತ ಸಂಖ್ಯೆ",
     "enter_farmer_number": "ರೈತರ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-    "update":"ನವೀಕರಿಸಿ",
-    "farmer_name_kannada":"ಕನ್ನಡದಲ್ಲಿ ರೈತರ ಹೆಸರು",
-    "father_name_kannada":"ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ ಹೆಸರು",
-    "owner_name":"ಮಾಲೀಕರ ಹೆಸರು",
-    "enter_owner_name":"ಮಾಲೀಕರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
-    "survey_noc":"ಸರ್ವೆ ಎನ್.ಒ.ಸಿ",
-    "enter_survey_noc":"ಸರ್ವೆ ಎನ್.ಒ.ಸಿ ನಮೂದಿಸಿ",
-    "fathers_husbands_name_in_kannada":"ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರು",
-    "enter_fathers_husbands_name_in_kannada":"ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"
+    "update": "ನವೀಕರಿಸಿ",
+    "farmer_name_kannada": "ಕನ್ನಡದಲ್ಲಿ ರೈತರ ಹೆಸರು",
+    "father_name_kannada": "ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ ಹೆಸರು",
+    "owner_name": "ಮಾಲೀಕರ ಹೆಸರು",
+    "enter_owner_name": "ಮಾಲೀಕರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+    "survey_noc": "ಸರ್ವೆ ಎನ್.ಒ.ಸಿ",
+    "enter_survey_noc": "ಸರ್ವೆ ಎನ್.ಒ.ಸಿ ನಮೂದಿಸಿ",
+    "fathers_husbands_name_in_kannada": "ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರು",
+    "enter_fathers_husbands_name_in_kannada": "ಕನ್ನಡದಲ್ಲಿ ತಂದೆಯ/ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+    "title_service_application": "ಸಬ್ಸಿಡಿ/ಪ್ರೋತ್ಸಾಹಕ್ಕಾಗಿ ಅರ್ಜಿ"
   }
 }
