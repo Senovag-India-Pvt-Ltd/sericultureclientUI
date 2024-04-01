@@ -9,6 +9,8 @@ import { Icon, Select } from "../../components";
 import HelpDeskFaqView from "../../pages/helpdesk/HelpDeskFaqView";
 import HelpDeskFaqComponent from "./HelpDeskFaqComponent";
 import Swal from "sweetalert2";
+import HelpDeskFaq from "../masters/help-desk-faq/HelpDeskFaq";
+import HelpDeskFaqAnsComponent from "./HelpDeskFaqAnsComponent";
 
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_HELPDESK;
@@ -338,7 +340,7 @@ function EscalationView() {
           </Card.Body>
         </Card>
       </Block>
-      <Block className="mt-2">
+      {/* <Block className="mt-2">
         <Card>
           <Card.Header>
             <div className="d-flex justify-content-between">
@@ -420,21 +422,6 @@ function EscalationView() {
             </Row>
             {escalate === "1" ? (
               <Row className="mt-2">
-                {/* <Col lg="6">
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="assignedTo">Assign To</Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="assignedTo"
-                        name="assignedTo"
-                        value={raiseTicket.assignedTo}
-                        onChange={handleInput}
-                        type="text"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                  </Form.Group>
-                </Col> */}
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
@@ -509,11 +496,12 @@ function EscalationView() {
             </Row>
           </Card.Body>
         </Card>
-      </Block>
+      </Block> */}
       <Block className="mt-2">
         <Card>
           <Card.Body>
-            <HelpDeskFaqComponent />
+            {/* <HelpDeskFaqComponent /> */}
+            <HelpDeskFaqAnsComponent query={raiseTicket} />
           </Card.Body>
         </Card>
       </Block>

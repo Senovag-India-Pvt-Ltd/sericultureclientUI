@@ -270,6 +270,7 @@ function Menu() {
     Helpdesk_Raise_a_Ticket: false,
     Helpdesk_Dashboard: false,
     Helpdesk_User_Dashboard: false,
+    Helpdesk_Escalated_Dashboard: false,
     Helpdesk_My_Tickets: false,
     Helpdesk_FAQ: false,
 
@@ -1469,6 +1470,14 @@ function Menu() {
                 <MenuItemLink
                   text="User Dashboard"
                   to="/seriui/user-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Helpdesk_Escalated_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Escalate Dashboard"
+                  to="/seriui/escalate-dashboard"
                 />
               </MenuItem>
             ) : null}

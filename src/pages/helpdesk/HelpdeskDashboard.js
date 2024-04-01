@@ -139,6 +139,27 @@ function HelpdeskDashboard() {
       });
   };
 
+  // const getTicketDataList = () => {
+  //   // setLoading(true);
+  //   api
+  //     .post(baseURL2 + `hdTicket/search`, {
+  //       searchText: "",
+  //       joinColumn: "hdTicket.ticketArn",
+  //       pageNumber: "0",
+  //       pageSize: "10",
+  //       // userId: localStorage.getItem("userMasterId"),
+  //     })
+  //     .then((response) => {
+  //       setHdTicketDataList(response.data.content.hdTicket);
+  //       setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // setListData({});
+  //       // setLoading(false);
+  //     });
+  // };
+
   useEffect(() => {
     getTicketDataList();
   }, [page]);
@@ -601,7 +622,7 @@ function HelpdeskDashboard() {
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary ">
-                      {hdTicketData.unassignedTickets}
+                      {hdTicketData.escalatedTickets}
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
@@ -609,7 +630,7 @@ function HelpdeskDashboard() {
                     href="#"
                     size="sm"
                     variant="primary"
-                    onClick={() => getOtherTicketDataList("Pending Tickets")}
+                    onClick={() => getOtherTicketDataList("Escalated Tickets")}
                   >
                     View
                   </Button>
@@ -633,7 +654,7 @@ function HelpdeskDashboard() {
                   </div>
                   <div className="my-3">
                     <div className="amount h2 fw-bold text-primary ">
-                      {hdTicketData.unassignedTickets}
+                      {hdTicketData.resolvedTickets}
                     </div>
                     {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                   </div>
@@ -641,7 +662,7 @@ function HelpdeskDashboard() {
                     href="#"
                     size="sm"
                     variant="primary"
-                    onClick={() => getOtherTicketDataList("Pending Tickets")}
+                    onClick={() => getOtherTicketDataList("Resolved Tickets")}
                   >
                     View
                   </Button>

@@ -42,6 +42,9 @@ function RaiseTicketView() {
         if (response.data.content.hdStatusId === 3) {
           setHideByStatus(true);
         }
+        if (response.data.content.hdStatusId === 5) {
+          setHideByStatus(true);
+        }
 
         setRaiseTicket((prev) => ({ ...prev, ...response.data.content }));
         setLoading(false);
@@ -150,7 +153,7 @@ function RaiseTicketView() {
       };
     } else {
       escalateDetails = {
-        hdStatusId: 2,
+        hdStatusId: 5,
       };
     }
     api
