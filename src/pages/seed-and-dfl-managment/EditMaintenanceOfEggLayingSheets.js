@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function EditMaintenanceOfEggLayingSheets() {
   const { id } = useParams();
@@ -45,18 +45,18 @@ function EditMaintenanceOfEggLayingSheets() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfEggLayingSheets/update-info`, data)
+        .post(baseURLSeedDfl + `EggLayingSheet/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-                lotNumber: "",
-                date: "",
-                noOfEggSheets: "",
-                eggSheetsNo: "",
-                balanceNoOfSheets: "",
+              lotNumber: "",
+              date: "",
+              numberOfEggSheetsUsed: "",
+              eggSheetNumbers: "",
+              balanceNumberOfSheets: "",
             });
             setValidated(false);
           }
@@ -73,11 +73,11 @@ function EditMaintenanceOfEggLayingSheets() {
 
   const clear = () => {
     setData({
-        lotNumber: "",
-        date: "",
-        noOfEggSheets: "",
-        eggSheetsNo: "",
-        balanceNoOfSheets: "",
+      lotNumber: "",
+      date: "",
+      numberOfEggSheetsUsed: "",
+      eggSheetNumbers: "",
+      balanceNumberOfSheets: "",
     });
   };
 
@@ -86,7 +86,7 @@ function EditMaintenanceOfEggLayingSheets() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggLayingSheets/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggLayingSheet/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -212,8 +212,8 @@ function EditMaintenanceOfEggLayingSheets() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="noOfEggSheets"
-                        name="noOfEggSheets"
-                        value={data.noOfEggSheets}
+                        name="numberOfEggSheetsUsed"
+                        value={data.numberOfEggSheetsUsed}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Number of Egg sheets Used"
@@ -234,8 +234,8 @@ function EditMaintenanceOfEggLayingSheets() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="eggSheetsNo"
-                        name="eggSheetsNo"
-                        value={data.eggSheetsNo}
+                        name="eggSheetNumbers"
+                        value={data.eggSheetNumbers}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Egg Sheet Number"
@@ -256,8 +256,8 @@ function EditMaintenanceOfEggLayingSheets() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="balanceNoOfSheets"
-                        name="balanceNoOfSheets"
-                        value={data.balanceNoOfSheets}
+                        name="balanceNumberOfSheets"
+                        value={data.balanceNumberOfSheets}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Balance Number Of Sheets"

@@ -8,7 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 import MaintenanceOfEggLayingSheets from "./MaintenanceOfEggLayingSheets";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggLayingSheetsView() {
   const styles = {
@@ -33,7 +33,7 @@ function MaintenanceOfEggLayingSheetsView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggLayingSheets/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggLayingSheet/get-info-by-id/${id}`)
       .then((response) => {
         setEggSheets(response.data);
         setLoading(false);
@@ -113,19 +113,19 @@ function MaintenanceOfEggLayingSheetsView() {
                         <td style={styles.ctstyle}>
                         Number Of Egg Sheets:
                         </td>
-                        <td>{eggSheets.noOfEggSheets}</td>
+                        <td>{eggSheets.numberOfEggSheetsUsed}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                         Egg Sheet Number:
                         </td>
-                        <td>{eggSheets.eggSheetsNo}</td>
+                        <td>{eggSheets.eggSheetNumbers}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                        Balance No Of Sheets:
                         </td>
-                        <td>{eggSheets.balanceNoOfSheets}</td>
+                        <td>{eggSheets.balanceNumberOfSheets}</td>
                       </tr>
                     </tbody>
                   </table>

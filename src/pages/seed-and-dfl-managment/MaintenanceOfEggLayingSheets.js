@@ -14,17 +14,16 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 
 function MaintenanceOfEggLayingSheets() {
   const [data, setData] = useState({
     lotNumber: "",
     date: "",
-    noOfEggSheets: "",
-    eggSheetsNo: "",
-    balanceNoOfSheets: "",
+    numberOfEggSheetsUsed: "",
+    eggSheetNumbers: "",
+    balanceNumberOfSheets: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -51,18 +50,18 @@ function MaintenanceOfEggLayingSheets() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfEggLayingSheets/add-info`, data)
+        .post(baseURLSeedDfl + `EggLayingSheet/add-info`, data)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
           } else {
             saveSuccess();
             setData({
-                lotNumber: "",
-                date: "",
-                noOfEggSheets: "",
-                eggSheetsNo: "",
-                balanceNoOfSheets: "",
+              lotNumber: "",
+              date: "",
+              numberOfEggSheetsUsed: "",
+              eggSheetNumbers: "",
+              balanceNumberOfSheets: "",
             });
             setValidated(false);
           }
@@ -78,11 +77,11 @@ function MaintenanceOfEggLayingSheets() {
 
   const clear = () => {
     setData({
-        lotNumber: "",
-        date: "",
-        noOfEggSheets: "",
-        eggSheetsNo: "",
-        balanceNoOfSheets: "",
+      lotNumber: "",
+      date: "",
+      numberOfEggSheetsUsed: "",
+      eggSheetNumbers: "",
+      balanceNumberOfSheets: "",
     });
   };
 
@@ -190,8 +189,8 @@ function MaintenanceOfEggLayingSheets() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="noOfEggSheets"
-                        name="noOfEggSheets"
-                        value={data.noOfEggSheets}
+                        name="numberOfEggSheetsUsed"
+                        value={data.numberOfEggSheetsUsed}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Number of Egg sheets Used"
@@ -211,9 +210,9 @@ function MaintenanceOfEggLayingSheets() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="eggSheetsNo"
-                        name="eggSheetsNo"
-                        value={data.eggSheetsNo}
+                        id="eggSheetNumbers"
+                        name="eggSheetNumbers"
+                        value={data.eggSheetNumbers}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Egg Sheet Number"
@@ -234,8 +233,8 @@ function MaintenanceOfEggLayingSheets() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="balanceNoOfSheets"
-                        name="balanceNoOfSheets"
-                        value={data.balanceNoOfSheets}
+                        name="balanceNumberOfSheets"
+                        value={data.balanceNumberOfSheets}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Balance Number Of Sheets"
