@@ -142,9 +142,7 @@ function MaintenanceOfPiercedCocoons() {
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
               Maintenance Of Pierced Cocoons

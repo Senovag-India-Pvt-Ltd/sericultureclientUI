@@ -626,6 +626,8 @@ import MaintenanceofMulberryfarmView from "../pages/seed-and-dfl-managment/Maint
 import MaintenanceofMulberryfarmUpdate from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmUpdate";
 import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmEdit";
 import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
+import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageEdit";
+import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
 
 // Admin and Reports
 
@@ -1002,6 +1004,15 @@ function Router() {
             <Route
               path="Dispatch-of-Cocoons-to-P4-Grainage-List"
               element={<DispatchofCocoonstoP4GrainageList />}
+            />
+
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-edit/:id"
+              element={<DispatchofCocoonstoP4GrainageEdit />}
+            />
+             <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-view/:id"
+              element={<DispatchofCocoonstoP4GrainageView />}
             />
 
             <Route
