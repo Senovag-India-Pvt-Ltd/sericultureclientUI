@@ -533,6 +533,39 @@ function Menu() {
       }));
     }
 
+    const hasTraining = data.some((item) => item.startsWith("Training_"));
+    if (hasTraining) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Training: true,
+      }));
+    }
+
+    const hasHelpdesk = data.some((item) => item.startsWith("Helpdesk_"));
+    if (hasHelpdesk) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Helpdesk: true,
+      }));
+    }
+
+    const hasReport = data.some((item) => item.startsWith("Admin_Report_"));
+    if (hasReport) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin_Report: true,
+        Admin: true,
+      }));
+    }
+
+    const hasGarden = data.some((item) => item.startsWith("GardenManagement_"));
+    if (hasGarden) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        GardenManagement: true,
+      }));
+    }
+
     const hasMarket = data.some((item) => item.startsWith("Market_"));
     if (hasMarket) {
       setShowMenu((prevMenu) => ({
