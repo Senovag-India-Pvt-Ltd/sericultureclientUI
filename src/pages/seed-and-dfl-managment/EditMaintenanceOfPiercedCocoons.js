@@ -10,7 +10,7 @@ import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function EditMaintenanceOfPiercedCocoons() {
@@ -45,7 +45,7 @@ function EditMaintenanceOfPiercedCocoons() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfPiercedCocoons/update-info`, data)
+        .post(baseURLSeedDfl + `PiercedCocoons/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -54,7 +54,7 @@ function EditMaintenanceOfPiercedCocoons() {
             setData({
                 lotNumber: "",
                 storageDate: "",
-                quantityInNumber: "",
+                quantityInNumberAndKgs: "",
             });
             setValidated(false);
           }
@@ -73,7 +73,7 @@ function EditMaintenanceOfPiercedCocoons() {
     setData({
         lotNumber: "",
         storageDate: "",
-        quantityInNumber: "",
+        quantityInNumberAndKgs: "",
     });
   };
 
@@ -82,7 +82,7 @@ function EditMaintenanceOfPiercedCocoons() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `PiercedCocoons/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -208,8 +208,8 @@ function EditMaintenanceOfPiercedCocoons() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="quantityInNumber"
-                        name="quantityInNumber"
-                        value={data.quantityInNumber}
+                        name="quantityInNumberAndKgs"
+                        value={data.quantityInNumberAndKgs}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Quantity in Number & Kgs"
