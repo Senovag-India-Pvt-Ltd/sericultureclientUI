@@ -20,16 +20,16 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function SaleDisposalofDFLseggs() {
   const [data, setData] = useState({
+    lotNumber: "",
+    eggSheetNumbers: "",
+    raceId: "",
+    releaseDate: "",
+    dateOfDisposal: "",
+    expectedDateOfHatching: "",
+    numberOfDflsDisposed: "",
     fruitsId: "",
-    farmerName: "",
-    mulberryVarietyId: "",
-    area: "",
-    dateOfPlanting: "",
-    nurserySaleDetails: "",
-    quantity: "",
-    date: "",
-    rate: "",
-    saplingAge: "",
+    nameAndAddressOfTheFarm: "",
+    ratePer100DflsPrice: "",
     remittanceDetails: "",
     challanUploadKey: "",
   });
