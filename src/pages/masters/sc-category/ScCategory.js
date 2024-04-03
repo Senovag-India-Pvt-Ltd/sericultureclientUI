@@ -14,9 +14,11 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScCategory() {
   const [data, setData] = useState({
-    categoryNumber: "",
     categoryName: "",
     categoryNameInKannada: "",
+    codeNumber:"",
+    description:"",
+
   });
 
   const [validated, setValidated] = useState(false);
@@ -45,9 +47,10 @@ function ScCategory() {
           } else {
             saveSuccess();
             setData({
-                categoryNumber: "",
-                categoryName: "",
-                categoryNameInKannada: "",
+              categoryName: "",
+              categoryNameInKannada: "",
+              codeNumber:"",
+              description:"",
             });
             setValidated(false);
           }
@@ -63,9 +66,10 @@ function ScCategory() {
 
   const clear = () => {
     setData({
-        categoryNumber: "",
-        categoryName: "",
-        categoryNameInKannada: "",
+      categoryName: "",
+      categoryNameInKannada: "",
+      codeNumber:"",
+      description:"",
     });
   };
 
@@ -132,29 +136,7 @@ function ScCategory() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Category  Number
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="categoryNumber"
-                          type="text"
-                          value={data.categoryNumber}
-                          onChange={handleInputs}
-                          placeholder="Enter Category Number"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Category Number is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
+                  
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
@@ -196,6 +178,52 @@ function ScCategory() {
                         />
                         <Form.Control.Feedback type="invalid">
                          Category Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Code  Number
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="codeNumber"
+                          type="text"
+                          value={data.codeNumber}
+                          onChange={handleInputs}
+                          placeholder="Enter Code Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Code Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Description
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="description"
+                          type="text"
+                          value={data.description}
+                          onChange={handleInputs}
+                          placeholder="Enter Description"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Description is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

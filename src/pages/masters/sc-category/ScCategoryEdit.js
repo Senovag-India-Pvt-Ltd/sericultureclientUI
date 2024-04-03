@@ -29,9 +29,10 @@ function ScCategoryEdit() {
   const postData = (event) => {
     const datas = {
       scCategoryId: id,
-      categoryNumber: data.categoryNumber,
       categoryName: data.categoryName,
       categoryNameInKannada: data.categoryNameInKannada,
+      codeNumber: data.codeNumber,
+      description: data.description,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -48,9 +49,10 @@ function ScCategoryEdit() {
           } else {
             updateSuccess();
             setData({
-                categoryNumber: "",
-                categoryName: "",
-                categoryNameInKannada: "",
+              categoryName: "",
+              categoryNameInKannada: "",
+              codeNumber:"",
+              description:"",
             });
             setValidated(false);
           }
@@ -66,9 +68,10 @@ function ScCategoryEdit() {
 
   const clear = () => {
     setData({
-        categoryNumber: "",
-        categoryName: "",
-        categoryNameInKannada: "",
+      categoryName: "",
+      categoryNameInKannada: "",
+      codeNumber:"",
+      description:"",
     });
   };
 
@@ -171,29 +174,6 @@ function ScCategoryEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Category  Number
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="categoryNumber"
-                          type="text"
-                          value={data.categoryNumber}
-                          onChange={handleInputs}
-                          placeholder="Enter Category Number"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Category Number is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
                         Category Name
                         <span className="text-danger">*</span>
                       </Form.Label>
@@ -232,6 +212,52 @@ function ScCategoryEdit() {
                         />
                         <Form.Control.Feedback type="invalid">
                          Category Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Code  Number
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="codeNumber"
+                          type="text"
+                          value={data.codeNumber}
+                          onChange={handleInputs}
+                          placeholder="Enter Code Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Code Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Description
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="description"
+                          type="text"
+                          value={data.description}
+                          onChange={handleInputs}
+                          placeholder="Enter Description"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Description is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

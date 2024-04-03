@@ -63,7 +63,7 @@ function ScCategoryView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-category-list"
+                  to="/seriui/npm"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -92,10 +92,7 @@ function ScCategoryView() {
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{ScCategory.scCategoryId}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Category Number:</td>
-                        <td>{ScCategory.categoryNumber}</td>
-                      </tr>
+            
                       <tr>
                         <td style={styles.ctstyle}>Category Name:</td>
                         <td>{ScCategory.categoryName}</td>
@@ -106,6 +103,14 @@ function ScCategoryView() {
                           Category Name In Kannada:
                         </td>
                         <td>{ScCategory.categoryNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Code Number:</td>
+                        <td>{ScCategory.codeNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Description:</td>
+                        <td>{ScCategory.description}</td>
                       </tr>
                     </tbody>
                   </table>

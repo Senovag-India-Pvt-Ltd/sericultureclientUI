@@ -619,7 +619,6 @@ import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
 import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
 import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
 import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
-<<<<<<< HEAD
 import ScSchemeDeatils from "../pages/masters/sc-scheme-details/ScSchemeDetails";
 import ScSchemeDetailsList from "../pages/masters/sc-scheme-details/ScSchemeDetailsList";
 import ScSchemeDetailsView from "../pages/masters/sc-scheme-details/ScSchemeDetailsView";
@@ -628,9 +627,7 @@ import ScSubSchemeDetails from "../pages/masters/sc-sub-scheme-details/ScSubSche
 import ScSubSchemeDetailsList from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsList";
 import ScSubSchemeDetailsView from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsView";
 import ScSubSchemeDetailsEdit from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsEdit";
-=======
 import FinancialYear from "../pages/masters/financial-year/FinancialYear";
->>>>>>> origin/service&DBT
 
 // Admin and Reports
 
@@ -1598,15 +1595,12 @@ function Router() {
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
 
-<<<<<<< HEAD
 
             <Route path="sc-sub-scheme-details" element={<ScSubSchemeDetails />} />
             <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
             <Route path="sc-sub-scheme-details-view/:id" element={<ScSubSchemeDetailsView />} />
             <Route path="sc-sub-scheme-details-edit/:id" element={<ScSubSchemeDetailsEdit />} />
             
-=======
->>>>>>> origin/service&DBT
             <Route path="sc-vendor" element={<ScVendor />} />
             <Route path="sc-vendor-list" element={<ScVendorList />} />
             <Route path="sc-vendor-view/:id" element={<ScVendorView />} />
