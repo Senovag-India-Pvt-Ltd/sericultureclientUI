@@ -116,6 +116,24 @@ function DispatchofCocoonstoP4GrainageEdit() {
     getIdList();
   }, [id]);
 
+   // to get Line Year
+   const [lineYearListData, setLineYearListData] = useState([]);
+
+   const getLineYearList = () => {
+     const response = api
+       .get(baseURL2 + `lineNameMaster/get-all`)
+       .then((response) => {
+         setLineYearListData(response.data.content.lineNameMaster);
+       })
+       .catch((err) => {
+        setLineYearListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLineYearList();
+   }, []);
+
 
    // to get Lot
    const [lotListData, setLotListData] = useState([]);
@@ -314,24 +332,37 @@ function DispatchofCocoonstoP4GrainageEdit() {
                       </Form.Group>
                     </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Line/Year<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="lineYear"
-                                  name="lineYear"
-                                  value={data.lineYear}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Line Year"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Line Details/year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lineYear"
+                              value={data.lineYear}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Line Details</option>
+                              {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
+                                <option
+                                  key={list.lineNameId}
+                                  value={list.lineNameId}
+                                >
+                                  {list.lineName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Line Details is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">

@@ -196,8 +196,8 @@ function DispatchofCocoonstoP4GrainageList() {
     },
     {
       name: "Line Year",
-      selector: (row) => row.lineYear,
-      cell: (row) => <span>{row.lineYear}</span>,
+      selector: (row) => row.lineName,
+      cell: (row) => <span>{row.lineName}</span>,
       sortable: true,
       hide: "md",
     },

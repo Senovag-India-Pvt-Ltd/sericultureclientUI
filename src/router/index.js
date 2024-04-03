@@ -630,6 +630,8 @@ import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/D
 import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
 import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesEdit";
 import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
+import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
+import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
 
 // Admin and Reports
 
@@ -986,6 +988,15 @@ function Router() {
             <Route
               path="Maintenance-of-Line-Records-for-Each-Race-List"
               element={<MaintenanceofLineRecordsforEachRaceList />}
+            />
+
+          <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceEdit />}
+            />
+             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceView />}
             />
 
             <Route

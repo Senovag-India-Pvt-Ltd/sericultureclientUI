@@ -6,12 +6,11 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import DispatchofCocoonstoP4Grainage from "./DispatchofCocoonstoP4Grainage";
-
+import { format } from 'date-fns';
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function DispatchofCocoonstoP4GrainageView() {
+function MaintenanceOfLineRecordForEachRaceView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -22,7 +21,7 @@ function DispatchofCocoonstoP4GrainageView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [dispatchCocoon, setDispatchCocoon] = useState({});
+  const [lineRecord, setLineRecord] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -34,13 +33,13 @@ function DispatchofCocoonstoP4GrainageView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `DispatchOfCocoons/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `LineRecord/get-info-by-id/${id}`)
       .then((response) => {
-        setDispatchCocoon(response.data);
+        setLineRecord(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setDispatchCocoon({});
+        setLineRecord({});
         setLoading(false);
       });
   };
@@ -51,18 +50,24 @@ function DispatchofCocoonstoP4GrainageView() {
     getIdList();
   }, [id]);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   return (
-    <Layout title="View Dispatch of Cocoons to P4 Grainage">
+    <Layout title="View Maintenance of Line records for each race Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Dispatch of Cocoons to P4 Grainage Details </Block.Title>
+            <Block.Title tag="h2"> View Maintenance of Line records for each race Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -71,7 +76,7 @@ function DispatchofCocoonstoP4GrainageView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -85,7 +90,7 @@ function DispatchofCocoonstoP4GrainageView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>Dispatch of Cocoons to P4 Grainage Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Line records for each race Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -98,73 +103,61 @@ function DispatchofCocoonstoP4GrainageView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{dispatchCocoon.id}</td>
+                        <td>{lineRecord.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Grainage:
+                        Line Name:
                         </td>
-                        <td>{dispatchCocoon.grainageMasterName}</td>
+                        <td>{lineRecord.lineName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Line Year:</td>
-                        <td>{dispatchCocoon.lineName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Source:
-                        </td>
-                        <td>{dispatchCocoon.sourceMasterName}</td>
+                        <td style={styles.ctstyle}>Date Of Selection Cocoon:</td>
+                        <td>{formatDate(lineRecord.dateOfSelectionCocoon)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Screening Batch No:
+                        Race:
                         </td>
-                        <td>{dispatchCocoon.screeningBatchNo}</td>
+                        <td>{lineRecord.raceName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td>{lineRecord.fruitsId}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Generation Number:
+                        Farmer Name:
                         </td>
-                        <td>{dispatchCocoon.generationNumber}</td>
+                        <td>{lineRecord.farmerName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                        Spun On Date:
-                        </td>
-                        <td>{dispatchCocoon.spunOnDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Lot Number:
-                        </td>
-                        <td>{dispatchCocoon.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Number Of Cocoons Dispatched:
-                        </td>
-                        <td>{dispatchCocoon.numberOfCocoonsDispatched}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Date Of Supply:
-                        </td>
-                        <td>{dispatchCocoon.dateOfSupply}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Dispatch Date:
-                        </td>
-                        <td>{dispatchCocoon.dispatchDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Invoice No:
-                        </td>
-                        <td>{dispatchCocoon.invoiceNo}</td>
+                        <td style={styles.ctstyle}>Pupa Test Details:</td>
+                        <td>{lineRecord.pupaTestDetails}</td>
                       </tr>
                       
+                      <tr>
+                        <td style={styles.ctstyle}>Market:</td>
+                        <td>{lineRecord.marketMasterName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          Lot Number:
+                        </td>
+                        <td>{lineRecord.lotNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        No Of Cocoons Selected:
+                        </td>
+                        <td>{lineRecord.noOfCocoonsSelected}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Average Weight:
+                        </td>
+                        <td>{lineRecord.averageWeight}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>
@@ -177,4 +170,4 @@ function DispatchofCocoonstoP4GrainageView() {
   );
 }
 
-export default DispatchofCocoonstoP4GrainageView;
+export default MaintenanceOfLineRecordForEachRaceView;
