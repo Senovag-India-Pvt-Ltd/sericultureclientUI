@@ -1,37 +1,28 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
-import api from "../../../src/services/auth/api";
+import { useEffect } from "react";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DispatchofCocoonstoP4Grainage() {
-  const [data, setData] = useState({
-    grainageMasterId: "",
-    lineYear: "",
-    sourceMasterId: "",
-    screeningBatchNo: "",
-    generationNumberId: "",
-    spunOnDate: "",
-    lotNumber: "",
-    numberOfCocoonsDispatched: "",
-    dateOfSupply: "",
-    dispatchDate: "",
-  });
+function DispatchofCocoonstoP4GrainageEdit() {
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
+  const isDataSupplyDate = !!data.dateOfSupply;
+  const isDataDispatchDate = !!data.dispatchDate;
+  const isDataSpunDate = !!data.spunOnDate;
 
   let name, value;
   const handleInputs = (e) => {
@@ -39,11 +30,12 @@ function DispatchofCocoonstoP4Grainage() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+ 
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -55,145 +47,74 @@ function DispatchofCocoonstoP4Grainage() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `DispatchOfCocoons/add-info`, data)
+        .post(baseURLSeedDfl + `DispatchOfCocoons/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            saveError(response.data.message);
+            updateError(response.data.message);
           } else {
-            saveSuccess(response.data.invoice_no);
+            updateSuccess();
             setData({
-              grainageMasterId: "",
-              lineYear: "",
-              sourceMasterId: "",
-              screeningBatchNo: "",
-              generationNumberId: "",
-              spunOnDate: "",
-              lotNumber: "",
-              numberOfCocoonsDispatched: "",
-              dateOfSupply: "",
-              dispatchDate: "",
+                grainageMasterId: "",
+                lineYear: "",
+                sourceMasterId: "",
+                screeningBatchNo: "",
+                generationNumberId: "",
+                spunOnDate: "",
+                lotNumber: "",
+                numberOfCocoonsDispatched: "",
+                dateOfSupply: "",
+                dispatchDate: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
           if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+            updateError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
     }
   };
 
-
   const clear = () => {
     setData({
-      grainageMasterId: "",
-      lineYear: "",
-      sourceMasterId: "",
-      screeningBatchNo: "",
-      generationNumberId: "",
-      spunOnDate: "",
-      lotNumber: "",
-      numberOfCocoonsDispatched: "",
-      dateOfSupply: "",
-      dispatchDate: "",
+        grainageMasterId: "",
+        lineYear: "",
+        sourceMasterId: "",
+        screeningBatchNo: "",
+        generationNumberId: "",
+        spunOnDate: "",
+        lotNumber: "",
+        numberOfCocoonsDispatched: "",
+        dateOfSupply: "",
+        dispatchDate: "",
     });
   };
 
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
 
-  // to get Lot
-  const [lotListData, setLotListData] = useState([]);
-
-  const getLotList = () => {
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+      .get(baseURLSeedDfl + `DispatchOfCocoons/get-info-by-id/${id}`)
       .then((response) => {
-        setLotListData(response.data.ReceiptOfDflsFromP4GrainageLinesController);
+        setData(response.data);
+        setLoading(false);
+        
       })
       .catch((err) => {
-        setLotListData([]);
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    getLotList();
-  }, []);
-
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL2 + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRaceList();
-  }, []);
-
-  // to get Grainage
-  const [grainageListData, setGrainageListData] = useState([]);
-
-  const getGrainageList = () => {
-    const response = api
-      .get(baseURL2 + `grainageMaster/get-all`)
-      .then((response) => {
-        setGrainageListData(response.data.content.grainageMaster);
-      })
-      .catch((err) => {
-        setGrainageListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getGrainageList();
-  }, []);
-
-   // to get Source
-   const [sourceListData, setSourceListData] = useState([]);
-
-   const getSourceList = () => {
-     const response = api
-       .get(baseURL2 + `sourceMaster/get-all`)
-       .then((response) => {
-         setSourceListData(response.data.content.sourceMaster);
-       })
-       .catch((err) => {
-        setSourceListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getSourceList();
-   }, []);
-
-   // to get Generation Number
-   const [generationListData, setGenerationListData] = useState([]);
-
-   const getGenerationList = () => {
-     const response = api
-       .get(baseURL2 + `generationNumberMaster/get-all`)
-       .then((response) => {
-         setGenerationListData(response.data.content.generationNumberMaster);
-       })
-       .catch((err) => {
-        setGenerationListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getGenerationList();
-   }, []);
+    getIdList();
+  }, [id]);
 
    // to get Line Year
    const [lineYearListData, setLineYearListData] = useState([]);
@@ -212,16 +133,109 @@ function DispatchofCocoonstoP4Grainage() {
    useEffect(() => {
      getLineYearList();
    }, []);
+
+
+   // to get Lot
+   const [lotListData, setLotListData] = useState([]);
+
+   const getLotList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+       .then((response) => {
+         setLotListData(response.data.ReceiptOfDflsFromP4GrainageLinesController);
+       })
+       .catch((err) => {
+         setLotListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotList();
+   }, []);
+ 
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+ 
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL2 + `raceMaster/get-all`)
+       .then((response) => {
+         setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+         setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getRaceList();
+   }, []);
+ 
+   // to get Grainage
+   const [grainageListData, setGrainageListData] = useState([]);
+ 
+   const getGrainageList = () => {
+     const response = api
+       .get(baseURL2 + `grainageMaster/get-all`)
+       .then((response) => {
+         setGrainageListData(response.data.content.grainageMaster);
+       })
+       .catch((err) => {
+         setGrainageListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getGrainageList();
+   }, []);
+ 
+    // to get Source
+    const [sourceListData, setSourceListData] = useState([]);
+ 
+    const getSourceList = () => {
+      const response = api
+        .get(baseURL2 + `sourceMaster/get-all`)
+        .then((response) => {
+          setSourceListData(response.data.content.sourceMaster);
+        })
+        .catch((err) => {
+         setSourceListData([]);
+        });
+    };
   
+    useEffect(() => {
+      getSourceList();
+    }, []);
+ 
+    // to get Generation Number
+    const [generationListData, setGenerationListData] = useState([]);
+ 
+    const getGenerationList = () => {
+      const response = api
+        .get(baseURL2 + `generationNumberMaster/get-all`)
+        .then((response) => {
+          setGenerationListData(response.data.content.generationNumberMaster);
+        })
+        .catch((err) => {
+         setGenerationListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getGenerationList();
+    }, []);
+
+   
   const navigate = useNavigate();
-  const saveSuccess = (message) => {
+
+  const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: `Invoice Number ${message}`,
+      title: "Updated successfully",
+      text: message,
     });
   };
-  const saveError = (message) => {
+  const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -234,16 +248,19 @@ function DispatchofCocoonstoP4Grainage() {
       html: errorMessage,
     });
   };
-
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
   return (
-    <Layout title=" Dispatch of Cocoons to P4 Grainage">
+    <Layout title="Edit Dispatch of Cocoons to P4 Grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Dispatch of Cocoons to P4 Grainage
-            </Block.Title>
-           
+            <Block.Title tag="h2">Edit Dispatch of Cocoons to P4 Grainage</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -274,12 +291,16 @@ function DispatchofCocoonstoP4Grainage() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Dispatch Of Cocoons To P4 Grainage
-                </Card.Header>
-                    <Card.Body>
-                        <Row className="g-gs">
-
-                        <Col lg="4">
+              Edit Dispatch of Cocoons to P4 Grainage
+            </Card.Header>
+            <Card.Body>
+              {loading ? (
+                <h1 className="d-flex justify-content-center align-items-center">
+                  Loading...
+                </h1>
+              ) : (
+                <Row className="g-gs">
+                <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Grainage<span className="text-danger">*</span>
@@ -441,7 +462,7 @@ function DispatchofCocoonstoP4Grainage() {
                           value={data.lotNumber}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
-                          // required
+                        //   required
                         >
                           <option value="">Select Lot Number</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
@@ -482,8 +503,9 @@ function DispatchofCocoonstoP4Grainage() {
                                 Spun on Date
                               </Form.Label>
                               <div className="form-control-wrap">
+                              {isDataSpunDate && (
                                 <DatePicker
-                                  selected={data.spunOnDate}
+                                  selected={new Date(data.spunOnDate)}
                                   onChange={(date) =>
                                     handleDateChange(date, "spunOnDate")
                                   }
@@ -491,11 +513,12 @@ function DispatchofCocoonstoP4Grainage() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  // maxDate={new Date()}
+                                //   maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
@@ -504,8 +527,9 @@ function DispatchofCocoonstoP4Grainage() {
                             <Form.Group className="form-group mt-n4 ">
                               <Form.Label> Date of Supply</Form.Label>
                               <div className="form-control-wrap">
+                              {isDataSupplyDate && (
                                 <DatePicker
-                                  selected={data.dateOfSupply}
+                                  selected={new Date(data.dateOfSupply)}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfSupply")
                                   }
@@ -513,11 +537,12 @@ function DispatchofCocoonstoP4Grainage() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  // maxDate={new Date()}
+                                //   maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
@@ -528,8 +553,9 @@ function DispatchofCocoonstoP4Grainage() {
                                 Dispatch Date
                               </Form.Label>
                               <div className="form-control-wrap">
+                              {isDataDispatchDate && (
                                 <DatePicker
-                                  selected={data.dispatchDate}
+                                  selected={new Date(data.dispatchDate)}
                                   onChange={(date) =>
                                     handleDateChange(date, "dispatchDate")
                                   }
@@ -537,37 +563,40 @@ function DispatchofCocoonstoP4Grainage() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  // maxDate={new Date()}
+                                //   maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
+                </Row>
+              )}
+            </Card.Body>
+          </Card>
 
-                <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Update
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
   );
 }
 
-export default DispatchofCocoonstoP4Grainage;
+export default DispatchofCocoonstoP4GrainageEdit;

@@ -628,6 +628,12 @@ import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/Maint
 import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
 import SaleDisposalofDFLseggsView from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsView";
 import SaleDisposalofDFLseggsEdit from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsEdit";
+import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageEdit";
+import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
+import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesEdit";
+import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
+import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
+import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
 
 // Admin and Reports
 
@@ -986,6 +992,15 @@ function Router() {
               element={<MaintenanceofLineRecordsforEachRaceList />}
             />
 
+          <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceEdit />}
+            />
+             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceView />}
+            />
+
             <Route
               path="Maintenance-of-Screening-Batch-Records"
               element={<MaintenanceofScreeningBatchRecords />}
@@ -1007,6 +1022,15 @@ function Router() {
             />
 
             <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-edit/:id"
+              element={<DispatchofCocoonstoP4GrainageEdit />}
+            />
+             <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-view/:id"
+              element={<DispatchofCocoonstoP4GrainageView />}
+            />
+
+            <Route
               path="Rearing-of-DFLs-for-the-8-Lines"
               element={<RearingofDFLsforthe8Lines />}
             />
@@ -1014,6 +1038,15 @@ function Router() {
             <Route
               path="Rearing-of-DFLs-for-the-8-Lines-List"
               element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-edit/:id"
+              element={<RearingOfDFLsForThe8LinesEdit />}
+            />
+             <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-view/:id"
+              element={<RearingOfDFLsForThe8LinesView/>}
             />
 
             <Route

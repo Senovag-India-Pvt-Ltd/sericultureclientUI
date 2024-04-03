@@ -11,9 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 import MaintenanceOfPiercedCocoons from "./MaintenanceOfPiercedCocoons";
+import { format } from 'date-fns';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfPiercedCocoonsList() {
   const [listData, setListData] = useState({});
@@ -28,7 +29,7 @@ function MaintenanceOfPiercedCocoonsList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info`)
+      .get(baseURLSeedDfl + `PiercedCocoons/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -74,7 +75,7 @@ function MaintenanceOfPiercedCocoonsList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `MaintenanceOfPiercedCocoons/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `PiercedCocoons/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -144,6 +145,12 @@ function MaintenanceOfPiercedCocoonsList() {
     },
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   const MaintenanceOfPiercedCocoonsDataColumns = [
     {
       name: "Action",
@@ -178,7 +185,7 @@ function MaintenanceOfPiercedCocoonsList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
     },
     {
       name: "Lot Number",
@@ -190,14 +197,14 @@ function MaintenanceOfPiercedCocoonsList() {
     {
       name: "Storage Date",
       selector: (row) => row.storageDate,
-      cell: (row) => <span>{row.storageDate}</span>,
+      cell: (row) => <span>{formatDate(row.storageDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
         name: "Quantity in Number & Kgs",
-        selector: (row) => row.quantityInNumber,
-        cell: (row) => <span>{row.quantityInNumber}</span>,
+        selector: (row) => row.quantityInNumberAndKgs,
+        cell: (row) => <span>{row.quantityInNumberAndKgs}</span>,
         sortable: true,
         hide: "md",
       },

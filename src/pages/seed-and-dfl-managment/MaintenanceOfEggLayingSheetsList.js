@@ -13,7 +13,7 @@ import api from "../../../src/services/auth/api";
 import MaintenanceOfPiercedCocoons from "./MaintenanceOfPiercedCocoons";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggLayingSheetsList() {
   const [listData, setListData] = useState({});
@@ -28,7 +28,7 @@ function MaintenanceOfEggLayingSheetsList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggLayingSheets/get-info`)
+      .get(baseURLSeedDfl + `EggLayingSheet/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -74,7 +74,7 @@ function MaintenanceOfEggLayingSheetsList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `MaintenanceOfEggLayingSheets/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `EggLayingSheet/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -178,19 +178,33 @@ function MaintenanceOfEggLayingSheetsList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
+    },
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Number Of Egg Sheets Used",
+      selector: (row) => row.numberOfEggSheetsUsed,
+      cell: (row) => <span>{row.numberOfEggSheetsUsed}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Egg Sheet Number",
-      selector: (row) => row.eggSheetsNo,
-      cell: (row) => <span>{row.eggSheetsNo}</span>,
+      selector: (row) => row.eggSheetNumbers,
+      cell: (row) => <span>{row.eggSheetNumbers}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Balance Number Of Sheets",
-      selector: (row) => row.balanceNoOfSheets,
-      cell: (row) => <span>{row.balanceNoOfSheets}</span>,
+      selector: (row) => row.balanceNumberOfSheets,
+      cell: (row) => <span>{row.balanceNumberOfSheets}</span>,
       sortable: true,
       hide: "md",
     },
@@ -215,7 +229,7 @@ function MaintenanceOfEggLayingSheetsList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-pierced-cocoons"
+                  to="/seriui/maintenance-of-egg-laying-sheets"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -224,7 +238,7 @@ function MaintenanceOfEggLayingSheetsList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-pierced-cocoons"
+                  to="/seriui/maintenance-of-egg-laying-sheets"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

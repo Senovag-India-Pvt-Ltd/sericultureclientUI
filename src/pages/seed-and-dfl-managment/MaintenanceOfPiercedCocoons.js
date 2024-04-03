@@ -15,14 +15,14 @@ import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 
 function MaintenanceOfPiercedCocoons() {
   const [data, setData] = useState({
     lotNumber: "",
     storageDate: "",
-    quantityInNumber: "",
+    quantityInNumberAndKgs: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -49,7 +49,7 @@ function MaintenanceOfPiercedCocoons() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfPiercedCocoons/add-info`, data)
+        .post(baseURLSeedDfl + `PiercedCocoons/add-info`, data)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -58,7 +58,7 @@ function MaintenanceOfPiercedCocoons() {
             setData({
                 lotNumber: "",
                 storageDate: "",
-                quantityInNumber: "",
+                quantityInNumberAndKgs: "",
             });
             setValidated(false);
           }
@@ -76,7 +76,7 @@ function MaintenanceOfPiercedCocoons() {
     setData({
         lotNumber: "",
         storageDate: "",
-        quantityInNumber: "",
+        quantityInNumberAndKgs: "",
     });
   };
 
@@ -142,9 +142,7 @@ function MaintenanceOfPiercedCocoons() {
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          {/* <Row className="g-3 "> */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
               Maintenance Of Pierced Cocoons
@@ -184,8 +182,8 @@ function MaintenanceOfPiercedCocoons() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="quantityInNumber"
-                        name="quantityInNumber"
-                        value={data.quantityInNumber}
+                        name="quantityInNumberAndKgs"
+                        value={data.quantityInNumberAndKgs}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Quantity in Number & Kgs"

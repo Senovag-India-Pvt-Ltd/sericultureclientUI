@@ -19,11 +19,12 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function Maintenanceofeggsatcoldstorage() {
   const [data, setData] = useState({
     lotNumber: "",
-    noOfDFLs: "",
+    numberOfDFLs: "",
     grainageDetails: "",
-    scheduleDetails: "",
-    dateOfDeposit: "",
-    dateOfRetrieval: "",
+    dateOfColdStore: "",
+    laidOnDate: "",
+    dateOfRelease: "",
+    incubationDetails: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -58,11 +59,12 @@ function Maintenanceofeggsatcoldstorage() {
             saveSuccess();
             setData({
               lotNumber: "",
-              noOfDFLs: "",
+              numberOfDFLs: "",
               grainageDetails: "",
-              scheduleDetails: "",
-              dateOfDeposit: "",
-              dateOfRetrieval: "",
+              dateOfColdStore: "",
+              laidOnDate: "",
+              dateOfRelease: "",
+              incubationDetails: "",
             });
             setValidated(false);
           }
@@ -79,11 +81,12 @@ function Maintenanceofeggsatcoldstorage() {
   const clear = () => {
     setData({
       lotNumber: "",
-      noOfDFLs: "",
-      grainageDetails: "",
-      scheduleDetails: "",
-      dateOfDeposit: "",
-      dateOfRetrieval: "",
+    numberOfDFLs: "",
+    grainageDetails: "",
+    dateOfColdStore: "",
+    laidOnDate: "",
+    dateOfRelease: "",
+    incubationDetails: "",
     });
   };
 

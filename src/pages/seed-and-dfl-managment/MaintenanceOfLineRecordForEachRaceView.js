@@ -6,11 +6,11 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import MaintenanceOfEggLayingSheets from "./MaintenanceOfEggLayingSheets";
+import { format } from 'date-fns';
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function MaintenanceOfEggLayingSheetsView() {
+function MaintenanceOfLineRecordForEachRaceView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -21,7 +21,7 @@ function MaintenanceOfEggLayingSheetsView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [eggSheets, setEggSheets] = useState({});
+  const [lineRecord, setLineRecord] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -33,13 +33,13 @@ function MaintenanceOfEggLayingSheetsView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `EggLayingSheet/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `LineRecord/get-info-by-id/${id}`)
       .then((response) => {
-        setEggSheets(response.data);
+        setLineRecord(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setEggSheets({});
+        setLineRecord({});
         setLoading(false);
       });
   };
@@ -50,18 +50,24 @@ function MaintenanceOfEggLayingSheetsView() {
     getIdList();
   }, [id]);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   return (
-    <Layout title="View  Maintenance Of Egg Laying Sheets Details">
+    <Layout title="View Maintenance of Line records for each race Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View  Maintenance Of Egg Laying Sheets Details </Block.Title>
+            <Block.Title tag="h2"> View Maintenance of Line records for each race Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-egg-laying-sheets-list"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +76,7 @@ function MaintenanceOfEggLayingSheetsView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-egg-laying-sheets-list"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -84,7 +90,7 @@ function MaintenanceOfEggLayingSheetsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}> Maintenance Of Egg Laying Sheets Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Maintenance of Line records for each race Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -97,35 +103,60 @@ function MaintenanceOfEggLayingSheetsView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{eggSheets.id}</td>
+                        <td>{lineRecord.id}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Line Name:
+                        </td>
+                        <td>{lineRecord.lineName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Date Of Selection Cocoon:</td>
+                        <td>{formatDate(lineRecord.dateOfSelectionCocoon)}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Race:
+                        </td>
+                        <td>{lineRecord.raceName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td>{lineRecord.fruitsId}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Farmer Name:
+                        </td>
+                        <td>{lineRecord.farmerName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Pupa Test Details:</td>
+                        <td>{lineRecord.pupaTestDetails}</td>
+                      </tr>
+                      
+                      <tr>
+                        <td style={styles.ctstyle}>Market:</td>
+                        <td>{lineRecord.marketMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           Lot Number:
                         </td>
-                        <td>{eggSheets.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Date:</td>
-                        <td>{eggSheets.date}</td>
+                        <td>{lineRecord.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Number Of Egg Sheets:
+                        No Of Cocoons Selected:
                         </td>
-                        <td>{eggSheets.numberOfEggSheetsUsed}</td>
+                        <td>{lineRecord.noOfCocoonsSelected}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Egg Sheet Number:
+                        Average Weight:
                         </td>
-                        <td>{eggSheets.eggSheetNumbers}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                       Balance No Of Sheets:
-                        </td>
-                        <td>{eggSheets.balanceNumberOfSheets}</td>
+                        <td>{lineRecord.averageWeight}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -139,4 +170,4 @@ function MaintenanceOfEggLayingSheetsView() {
   );
 }
 
-export default MaintenanceOfEggLayingSheetsView;
+export default MaintenanceOfLineRecordForEachRaceView;

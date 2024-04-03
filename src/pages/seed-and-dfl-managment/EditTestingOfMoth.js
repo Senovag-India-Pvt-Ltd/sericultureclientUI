@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function EditTestingOfMoth() {
   const { id } = useParams();
@@ -43,7 +43,7 @@ function EditTestingOfMoth() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURLSeedDfl + `Testing/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -51,7 +51,7 @@ function EditTestingOfMoth() {
             updateSuccess();
             setData({
                 lotNumber: "",
-                pebrine: "",
+                pebrineFreeStatusOfPupaAndMoth: "",
                 sourceDetails: "",
             });
             setValidated(false);
@@ -70,7 +70,7 @@ function EditTestingOfMoth() {
   const clear = () => {
     setData({
         lotNumber: "",
-        pebrine: "",
+        pebrineFreeStatusOfPupaAndMoth: "",
         sourceDetails: "",
     });
   };
@@ -80,7 +80,7 @@ function EditTestingOfMoth() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `Testing/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -204,9 +204,9 @@ function EditTestingOfMoth() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        id="pebrineFreeStatusOfPupaAndMoth"
+                        name="pebrineFreeStatusOfPupaAndMoth"
+                        value={data.pebrineFreeStatusOfPupaAndMoth}
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"

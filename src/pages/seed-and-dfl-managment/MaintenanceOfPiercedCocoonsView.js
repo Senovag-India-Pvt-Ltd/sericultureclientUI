@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
+import { format } from 'date-fns';
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfPiercedCocoonsView() {
   const styles = {
@@ -32,7 +33,7 @@ function MaintenanceOfPiercedCocoonsView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `PiercedCocoons/get-info-by-id/${id}`)
       .then((response) => {
         setPiercedCocoons(response.data);
         setLoading(false);
@@ -49,6 +50,12 @@ function MaintenanceOfPiercedCocoonsView() {
     getIdList();
   }, [id]);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   return (
     <Layout title="View Maintenance Of Pierced Cocoons Details">
       <Block.Head>
@@ -60,7 +67,7 @@ function MaintenanceOfPiercedCocoonsView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-pierced-cocoons-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -69,7 +76,7 @@ function MaintenanceOfPiercedCocoonsView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/maintenance-of-pierced-cocoons-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -106,13 +113,13 @@ function MaintenanceOfPiercedCocoonsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Storage Date:</td>
-                        <td>{piercedCocoons.storageDate}</td>
+                        <td>{formatDate(piercedCocoons.storageDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                         Quantity in Number & Kgs:
                         </td>
-                        <td>{piercedCocoons.quantityInNumber}</td>
+                        <td>{piercedCocoons.quantityInNumberAndKgs}</td>
                       </tr>
                     </tbody>
                   </table>

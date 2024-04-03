@@ -6,11 +6,12 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import MaintenanceOfEggLayingSheets from "./MaintenanceOfEggLayingSheets";
+import DispatchofCocoonstoP4Grainage from "./DispatchofCocoonstoP4Grainage";
+
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function MaintenanceOfEggLayingSheetsView() {
+function DispatchofCocoonstoP4GrainageView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -21,7 +22,7 @@ function MaintenanceOfEggLayingSheetsView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [eggSheets, setEggSheets] = useState({});
+  const [dispatchCocoon, setDispatchCocoon] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -33,13 +34,13 @@ function MaintenanceOfEggLayingSheetsView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `EggLayingSheet/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `DispatchOfCocoons/get-info-by-id/${id}`)
       .then((response) => {
-        setEggSheets(response.data);
+        setDispatchCocoon(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setEggSheets({});
+        setDispatchCocoon({});
         setLoading(false);
       });
   };
@@ -51,17 +52,17 @@ function MaintenanceOfEggLayingSheetsView() {
   }, [id]);
 
   return (
-    <Layout title="View  Maintenance Of Egg Laying Sheets Details">
+    <Layout title="View Dispatch of Cocoons to P4 Grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View  Maintenance Of Egg Laying Sheets Details </Block.Title>
+            <Block.Title tag="h2"> View Dispatch of Cocoons to P4 Grainage Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-egg-laying-sheets-list"
+                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +71,7 @@ function MaintenanceOfEggLayingSheetsView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-egg-laying-sheets-list"
+                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -84,7 +85,7 @@ function MaintenanceOfEggLayingSheetsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header style={{ fontWeight: "bold" }}> Maintenance Of Egg Laying Sheets Details</Card.Header>
+          <Card.Header style={{ fontWeight: "bold" }}>Dispatch of Cocoons to P4 Grainage Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -97,36 +98,73 @@ function MaintenanceOfEggLayingSheetsView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{eggSheets.id}</td>
+                        <td>{dispatchCocoon.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Lot Number:
+                          Grainage:
                         </td>
-                        <td>{eggSheets.lotNumber}</td>
+                        <td>{dispatchCocoon.grainageMasterName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
-                        <td>{eggSheets.date}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Number Of Egg Sheets:
-                        </td>
-                        <td>{eggSheets.numberOfEggSheetsUsed}</td>
+                        <td style={styles.ctstyle}>Line Year:</td>
+                        <td>{dispatchCocoon.lineName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Egg Sheet Number:
+                        Source:
                         </td>
-                        <td>{eggSheets.eggSheetNumbers}</td>
+                        <td>{dispatchCocoon.sourceMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                       Balance No Of Sheets:
+                        Screening Batch No:
                         </td>
-                        <td>{eggSheets.balanceNumberOfSheets}</td>
+                        <td>{dispatchCocoon.screeningBatchNo}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Generation Number:
+                        </td>
+                        <td>{dispatchCocoon.generationNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Spun On Date:
+                        </td>
+                        <td>{dispatchCocoon.spunOnDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Lot Number:
+                        </td>
+                        <td>{dispatchCocoon.lotNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Number Of Cocoons Dispatched:
+                        </td>
+                        <td>{dispatchCocoon.numberOfCocoonsDispatched}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Date Of Supply:
+                        </td>
+                        <td>{dispatchCocoon.dateOfSupply}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Dispatch Date:
+                        </td>
+                        <td>{dispatchCocoon.dispatchDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Invoice No:
+                        </td>
+                        <td>{dispatchCocoon.invoiceNo}</td>
+                      </tr>
+                      
                     </tbody>
                   </table>
                 </Col>
@@ -139,4 +177,4 @@ function MaintenanceOfEggLayingSheetsView() {
   );
 }
 
-export default MaintenanceOfEggLayingSheetsView;
+export default DispatchofCocoonstoP4GrainageView;

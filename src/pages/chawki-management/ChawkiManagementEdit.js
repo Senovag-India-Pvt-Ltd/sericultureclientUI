@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DatePicker from "../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTable, { createTheme } from "react-data-table-component";

@@ -12,6 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function TestingOfMothList() {
@@ -27,7 +28,7 @@ function TestingOfMothList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info`)
+      .get(baseURLSeedDfl + `Testing/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -73,7 +74,7 @@ function TestingOfMothList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `TestingOfMoth/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `Testing/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -177,7 +178,7 @@ function TestingOfMothList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
     },
     {
       name: "Lot Number",
@@ -188,8 +189,8 @@ function TestingOfMothList() {
     },
     {
       name: "Pebrine free status of pupa &Moth",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
+      selector: (row) => row.pebrineFreeStatusOfPupaAndMoth,
+      cell: (row) => <span>{row.pebrineFreeStatusOfPupaAndMoth}</span>,
       sortable: true,
       hide: "md",
     },

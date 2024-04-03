@@ -14,14 +14,15 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+// const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 
 function TestingOfMoth() {
   const [data, setData] = useState({
     lotNumber: "",
-    pebrine: "",
+    pebrineFreeStatusOfPupaAndMoth: "",
     sourceDetails: "",
   });
 
@@ -49,7 +50,7 @@ function TestingOfMoth() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMoth/add-info`, data)
+        .post(baseURLSeedDfl + `Testing/add-info`, data)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -57,7 +58,7 @@ function TestingOfMoth() {
             saveSuccess();
             setData({
                 lotNumber: "",
-                pebrine: "",
+                pebrineFreeStatusOfPupaAndMoth: "",
                 sourceDetails: "",
             });
             setValidated(false);
@@ -75,7 +76,7 @@ function TestingOfMoth() {
   const clear = () => {
     setData({
         lotNumber: "",
-        pebrine: "",
+        pebrineFreeStatusOfPupaAndMoth: "",
         sourceDetails: "",
     });
   };
@@ -184,8 +185,8 @@ function TestingOfMoth() {
                     <div className="form-control-wrap">
                       <Form.Control
                         id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        name="pebrineFreeStatusOfPupaAndMoth"
+                        value={data.pebrineFreeStatusOfPupaAndMoth}
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
