@@ -626,6 +626,8 @@ import MaintenanceofMulberryfarmView from "../pages/seed-and-dfl-managment/Maint
 import MaintenanceofMulberryfarmUpdate from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmUpdate";
 import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmEdit";
 import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
+import SaleDisposalofDFLseggsView from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsView";
+import SaleDisposalofDFLseggsEdit from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsEdit";
 
 // Admin and Reports
 
@@ -1164,6 +1166,16 @@ function Router() {
             <Route
               path="Sale-Disposal-of-DFLs-eggs-list"
               element={<SaleDisposalofDFLseggsList />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-view/:id"
+              element={<SaleDisposalofDFLseggsView />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-edit/:id"
+              element={<SaleDisposalofDFLseggsEdit />}
             />
 
             <Route

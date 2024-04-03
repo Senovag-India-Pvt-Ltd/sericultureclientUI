@@ -14,6 +14,7 @@ import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalofDFLseggsList() {
   const [listData, setListData] = useState({});
@@ -33,8 +34,8 @@ function SaleDisposalofDFLseggsList() {
   const getList = () => {
     setLoading(true);
 
-    const response = api
-      .get(baseURL2 + `Mulberry-garden/get-info`)
+    api
+      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -71,11 +72,11 @@ function SaleDisposalofDFLseggsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
+    navigate(`/seriui/Sale-Disposal-of-DFLs-eggs-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-edit/${_id}`);
+    navigate(`/seriui/Sale-Disposal-of-DFLs-eggs-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
@@ -110,7 +111,7 @@ function SaleDisposalofDFLseggsList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}/${plot}`)
+          .delete(baseURLSeedDfl + `sale-disposal-of-egg/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -203,29 +204,13 @@ function SaleDisposalofDFLseggsList() {
             Edit
           </Button>
           <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleUpdate(row.id)}
-          >
-            Update
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleAlert(row.id)}
-          >
-            Alert
-          </Button>
-          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button> */}
+          </Button>
         </div>
       ),
       sortable: false,
@@ -234,33 +219,48 @@ function SaleDisposalofDFLseggsList() {
     },
 
     {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
+      name: "Egg Sheet Numbers",
+      selector: (row) => row.eggSheetNumbers,
+      cell: (row) => <span>{row.eggSheetNumbers}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Area(In Hectares)",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
+      name: "Race",
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
+      name: "Release Date",
+      selector: (row) => row.releaseDate,
+      cell: (row) => <span>{row.releaseDate}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Date of Disposal",
+      selector: (row) => row.dateOfDisposal,
+      cell: (row) => <span>{row.dateOfDisposal}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Expected Date of Hatching",
+      selector: (row) => row.expectedDateOfHatching,
+      cell: (row) => <span>{row.expectedDateOfHatching}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
     // {
     //   name: "Fertilizer Application Date",
     //   selector: (row) => row.fertilizerApplicationDate,
@@ -284,20 +284,20 @@ function SaleDisposalofDFLseggsList() {
     //   sortable: false,
     //   hide: "md",
     // },
-    {
-      name: "Activity Logs",
-      cell: (row) => (
-        <div className="text-end">
-          <AiOutlineInfoCircle // Use the information icon instead of Button
-            size={20}
-            style={{ cursor: "pointer" }}
-            onClick={() => getLogsList(row.id, row.plotNumber)}
-          />
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Activity Logs",
+    //   cell: (row) => (
+    //     <div className="text-end">
+    //       <AiOutlineInfoCircle // Use the information icon instead of Button
+    //         size={20}
+    //         style={{ cursor: "pointer" }}
+    //         onClick={() => getLogsList(row.id, row.plotNumber)}
+    //       />
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
   ];
 
   const MaintenanceofmulberryGardenLogsDataColumns = [

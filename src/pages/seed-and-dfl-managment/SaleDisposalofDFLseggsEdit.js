@@ -1,142 +1,27 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
-import axios from "axios";
-import api from "../../../src/services/auth/api";
+import { useEffect } from "react";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function SaleDisposalofDFLseggs() {
-  const [data, setData] = useState({
-    lotNumber: "",
-    eggSheetNumbers: "",
-    raceId: "",
-    releaseDate: "",
-    dateOfDisposal: "",
-    expectedDateOfHatching: "",
-    numberOfDflsDisposed: "",
-    fruitsId: "",
-    nameAndAddressOfTheFarm: "",
-    ratePer100DflsPrice: "",
-    userType: "farm",
-    userTypeId: "",
-  });
-
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "20%",
-    },
-  };
+function SaleDisposalofDFLseggsEdit() {
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
   const [searchValidated, setSearchValidated] = useState(false);
-
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-
-    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-      e.target.classList.add("is-invalid");
-      e.target.classList.remove("is-valid");
-    } else if (name === "fruitsId" && value.length === 16) {
-      e.target.classList.remove("is-invalid");
-      e.target.classList.add("is-valid");
-    }
-  };
-
-  const _header = {
-    "Content-Type": "application/json",
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-  };
-
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-
-      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-      //   return;
-      // }
-      api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg/add-info`, data)
-        .then((response) => {
-          if (response.data.error) {
-            saveError(response.data.message);
-          } else {
-            saveSuccess(response.data.invoice_no);
-            setData({
-              lotNumber: "",
-              eggSheetNumbers: "",
-              raceId: "",
-              releaseDate: "",
-              dateOfDisposal: "",
-              expectedDateOfHatching: "",
-              numberOfDflsDisposed: "",
-              fruitsId: "",
-              nameAndAddressOfTheFarm: "",
-              ratePer100DflsPrice: "",
-              userType: "farm",
-              userTypeId: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
-    }
-  };
-
-  const clear = () => {
-    setData({
-      lotNumber: "",
-      eggSheetNumbers: "",
-      raceId: "",
-      releaseDate: "",
-      dateOfDisposal: "",
-      expectedDateOfHatching: "",
-      numberOfDflsDisposed: "",
-      fruitsId: "",
-      nameAndAddressOfTheFarm: "",
-      ratePer100DflsPrice: "",
-      userType: "farm",
-      userTypeId: "",
-    });
-    setValidated(false);
-  };
-
-  console.log(data);
 
   const search = (event) => {
     const form = event.currentTarget;
@@ -168,7 +53,7 @@ function SaleDisposalofDFLseggs() {
               }));
             }
           } else {
-            saveError(response.data.content.error_description);
+            updateError(response.data.content.error_description);
           }
         })
         .catch((err) => {
@@ -178,19 +63,108 @@ function SaleDisposalofDFLseggs() {
             err.response.data.validationErrors
           ) {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+              updateError(err.response.data.validationErrors);
             }
           }
         });
     }
   };
 
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLSeedDfl + `sale-disposal-of-egg/update-info`, data)
+        .then((response) => {
+          if (response.data.error) {
+            updateError(response.data.message);
+          } else {
+            updateSuccess();
+            setData({
+              lotNumber: "",
+              eggSheetNumbers: "",
+              raceId: "",
+              releaseDate: "",
+              dateOfDisposal: "",
+              expectedDateOfHatching: "",
+              numberOfDflsDisposed: "",
+              fruitsId: "",
+              nameAndAddressOfTheFarm: "",
+              ratePer100DflsPrice: "",
+              userType: "farm",
+              userTypeId: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
+      lotNumber: "",
+      pebrine: "",
+      sourceDetails: "",
+    });
+  };
+
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    api
+      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info-by-id/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getIdList();
+  }, [id]);
+
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
 
   const getRaceList = () => {
-    api
-      .get(baseURL2 + `raceMaster/get-all`)
+    const response = api
+      .get(baseURL + `raceMaster/get-all`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
       })
@@ -208,7 +182,7 @@ function SaleDisposalofDFLseggs() {
 
   const getFarmList = () => {
     api
-      .get(baseURL2 + `farmMaster/get-all`)
+      .get(baseURL + `farmMaster/get-all`)
       .then((response) => {
         setFarmListData(response.data.content.farmMaster);
       })
@@ -221,48 +195,16 @@ function SaleDisposalofDFLseggs() {
     getFarmList();
   }, []);
 
-  // Display Image
-  const [challan, setChallan] = useState("");
-  // const [photoFile,setPhotoFile] = useState("")
+  const navigate = useNavigate();
 
-  const handleChallanChange = (e) => {
-    const file = e.target.files[0];
-    setChallan(file);
-    setData((prev) => ({ ...prev, challanUploadKey: file.name }));
-    // setPhotoFile(file);
-  };
-
-  // Upload Image to S3 Bucket
-  const handleChallanUpload = async (nurseryFarmerid) => {
-    const parameters = `mainAndSaleOfNurseryId=${nurseryFarmerid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", challan);
-
-      const response = await api.post(
-        baseURL + `Maintenance-sale/upload-photo?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
-
-  const saveSuccess = (message) => {
+  const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: `Invoice Number ${message}`,
+      title: "Updated successfully",
+      text: message,
     });
   };
-
-  const saveError = (message) => {
+  const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -275,11 +217,13 @@ function SaleDisposalofDFLseggs() {
       html: errorMessage,
     });
   };
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
   };
-
   return (
     <Layout title="Sale / Disposal of DFL's(eggs) ">
       <Block.Head>
@@ -676,7 +620,11 @@ function SaleDisposalofDFLseggs() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.releaseDate}
+                            selected={
+                              data.releaseDate
+                                ? new Date(data.releaseDate)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "releaseDate")
                             }
@@ -699,7 +647,11 @@ function SaleDisposalofDFLseggs() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dateOfDisposal}
+                            selected={
+                              data.dateOfDisposal
+                                ? new Date(data.dateOfDisposal)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "dateOfDisposal")
                             }
@@ -723,7 +675,11 @@ function SaleDisposalofDFLseggs() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.expectedDateOfHatching}
+                            selected={
+                              data.expectedDateOfHatching
+                                ? new Date(data.expectedDateOfHatching)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "expectedDateOfHatching")
                             }
@@ -748,7 +704,7 @@ function SaleDisposalofDFLseggs() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    Update
                   </Button>
                 </li>
                 <li>
@@ -765,4 +721,4 @@ function SaleDisposalofDFLseggs() {
   );
 }
 
-export default SaleDisposalofDFLseggs;
+export default SaleDisposalofDFLseggsEdit;
