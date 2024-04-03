@@ -1738,19 +1738,12 @@ function Router() {
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
             <Route path="sc-component-edit/:id" element={<ScComponentEdit />} />
+
             <Route path="sc-head-account" element={<ScHeadAccount />} />
-            <Route
-              path="sc-head-account-list"
-              element={<ScHeadAccountList />}
-            />
-            <Route
-              path="sc-head-account-view/:id"
-              element={<ScHeadAccountView />}
-            />
-            <Route
-              path="sc-head-account-edit/:id"
-              element={<ScHeadAccountEdit />}
-            />
+            <Route path="sc-head-account-list" element={<ScHeadAccountList />} />
+            <Route path="sc-head-account-view/:id" element={<ScHeadAccountView />} />
+            <Route path="sc-head-account-edit/:id" element={<ScHeadAccountEdit />} />
+            
             <Route path="empanelled-vendor" element={<EmpanelledVendor />} />
             <Route
               path="empanelled-vendor-list"
