@@ -628,6 +628,8 @@ import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/Maint
 import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
 import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageEdit";
 import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
+import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesEdit";
+import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
 
 // Admin and Reports
 
@@ -1023,6 +1025,15 @@ function Router() {
             <Route
               path="Rearing-of-DFLs-for-the-8-Lines-List"
               element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-edit/:id"
+              element={<RearingOfDFLsForThe8LinesEdit />}
+            />
+             <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-view/:id"
+              element={<RearingOfDFLsForThe8LinesView/>}
             />
 
             <Route

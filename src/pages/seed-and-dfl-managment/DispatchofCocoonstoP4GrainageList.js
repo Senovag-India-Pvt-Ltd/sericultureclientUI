@@ -24,10 +24,6 @@ function DispatchofCocoonstoP4GrainageList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const getList = () => {
     setLoading(true);
@@ -50,23 +46,7 @@ function DispatchofCocoonstoP4GrainageList() {
     getList();
   }, []);
 
-  const getLogsList = (_id, plot) => {
-    setLoading(true);
-    setShowModal(true);
-
-    api
-      .get(baseURLSeedDfl + `DispatchOfCocoons/get-logs/${_id}/${plot}`)
-      .then((response) => {
-        // console.log(response.data)
-        setListLogsData(response.data);
-        // setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        setLoading(false);
-      });
-  };
+  
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -88,7 +68,7 @@ function DispatchofCocoonstoP4GrainageList() {
     });
   };
 
-  const deleteConfirm = (_id, plot) => {
+  const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -99,7 +79,7 @@ function DispatchofCocoonstoP4GrainageList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `DispatchOfCocoons/delete-info/${_id}/${plot}`)
+          .delete(baseURLSeedDfl + `DispatchOfCocoons/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
