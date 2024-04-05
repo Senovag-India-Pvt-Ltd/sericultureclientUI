@@ -619,7 +619,7 @@ import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
 import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
 import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
 import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
-import ScSchemeDeatils from "../pages/masters/sc-scheme-details/ScSchemeDetails";
+import ScSchemeDetails from "../pages/masters/sc-scheme-details/ScSchemeDetails";
 import ScSchemeDetailsList from "../pages/masters/sc-scheme-details/ScSchemeDetailsList";
 import ScSchemeDetailsView from "../pages/masters/sc-scheme-details/ScSchemeDetailsView";
 import ScSchemeDetailsEdit from "../pages/masters/sc-scheme-details/ScSchemeDetailsEdit";
@@ -1585,7 +1585,7 @@ function Router() {
             />
 
 
-            <Route path="sc-scheme-details" element={<ScSchemeDeatils />} />
+            <Route path="sc-scheme-details" element={<ScSchemeDetails />} />
             <Route path="sc-scheme-details-list" element={<ScSchemeDetailsList/>} />
             <Route path="sc-scheme-details-view/:id" element={<ScSchemeDetailsView />} />
             <Route path="sc-scheme-details-edit/:id" element={<ScSchemeDetailsEdit />} />

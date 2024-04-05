@@ -9,7 +9,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import ScSchemeDeatils from "../sc-scheme-details/ScSchemeDetails";
+import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 

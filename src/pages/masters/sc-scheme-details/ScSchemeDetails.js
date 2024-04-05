@@ -13,7 +13,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScSchemeDeatils() {
+function ScSchemeDetails() {
   const [data, setData] = useState({
     schemeName: "",
     schemeNameInKannada: "",
@@ -268,4 +268,4 @@ function ScSchemeDeatils() {
   );
 }
 
-export default ScSchemeDeatils;
+export default ScSchemeDetails;
