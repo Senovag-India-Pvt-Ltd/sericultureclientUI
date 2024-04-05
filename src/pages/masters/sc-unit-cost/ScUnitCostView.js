@@ -123,6 +123,11 @@ function ScUnitCostView() {
                         <td style={styles.ctstyle}> Benificiary Share:</td>
                         <td>{ScUnitCost.benificiaryShare}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Unit Cost:</td>
+                        <td>{ScUnitCost.unitCost}</td>
+                      </tr>
                     
                     </tbody>
                   </table>

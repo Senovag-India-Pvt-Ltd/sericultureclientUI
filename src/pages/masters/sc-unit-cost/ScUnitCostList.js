@@ -262,6 +262,13 @@ function ScUnitCostList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Unit Cost",
+      selector: (row) => row.unitCost,
+      cell: (row) => <span>{row.unitCost}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
