@@ -1,21 +1,23 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
-import { createTheme } from "react-data-table-component";
+import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function MarketList() {
+function ScSchemeDetailsList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -23,53 +25,12 @@ function MarketList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [data, setData] = useState({
-    text: "",
-    searchBy: "marketMasterName",
-  });
-
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "marketMasterName") {
-      joinColumn = "marketMaster.marketMasterName";
-    }
-    if (data.searchBy === "marketTypeMasterName") {
-      joinColumn = "marketTypeMaster.marketTypeMasterName";
-    }
-    // console.log(joinColumn);
-    api
-      .post(baseURL + `marketMaster/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.marketMaster);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
-      })
-      .catch((err) => {
-        // saveError();
-      });
-  };
-
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `marketMaster/list-with-join`, _params)
+      .get(baseURL + `scSchemeDetails/list`, _params)
       .then((response) => {
-        setListData(response.data.content.marketMaster);
+        setListData(response.data.content.ScSchemeDetails);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -85,12 +46,12 @@ function MarketList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/market-view/${_id}`);
+    navigate(`/seriui/sc-scheme-details-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/market-edit/${_id}`);
-    // navigate("/seriui/district");
+    navigate(`/seriui/sc-scheme-details-edit/${_id}`);
+    // navigate("/seriui/state");
   };
 
   const deleteError = () => {
@@ -111,7 +72,7 @@ function MarketList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `marketMaster/delete/${_id}`)
+          .delete(baseURL + `scSchemeDetails/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -181,7 +142,7 @@ function MarketList() {
     },
   };
 
-  const MarketDataColumns = [
+  const ScSchemeDetailsDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -191,7 +152,7 @@ function MarketList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.marketMasterId)}
+            onClick={() => handleView(row.scSchemeDetailsId)}
           >
             View
           </Button>
@@ -199,14 +160,14 @@ function MarketList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.marketMasterId)}
+            onClick={() => handleEdit(row.scSchemeDetailsId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.marketMasterId)}
+            onClick={() => deleteConfirm(row.scSchemeDetailsId)}
             className="ms-2"
           >
             Delete
@@ -215,93 +176,49 @@ function MarketList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
     },
     {
-      name: "Market",
-      selector: (row) => row.marketMasterName,
-      cell: (row) => <span>{row.marketMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Tare Weight",
-      selector: (row) => row.boxWeight,
-      cell: (row) => <span>{row.boxWeight}</span>,
+      name: "Scheme Name",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Weight",
-      selector: (row) => row.lotWeight,
-      cell: (row) => <span>{row.lotWeight}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      name: "Scheme Name in Kannada",
+      selector: (row) => row.schemeNameInKannada,
+      cell: (row) => <span>{row.schemeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Division",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Market Type",
-      selector: (row) => row.marketTypeMasterName,
-      cell: (row) => <span>{row.marketTypeMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Scheme Start Date",
+        selector: (row) => row.schemeStartDate,
+        cell: (row) => <span>{row.schemeStartDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Scheme End Date",
+        selector: (row) => row.schemeEndDate,
+        cell: (row) => <span>{row.schemeEndDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
-    <Layout title="Market List">
+    <Layout title="Scheme Details List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market List</Block.Title>
+            <Block.Title tag="h2">Scheme Details List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/market"
+                  to="/seriui/sc-scheme-details"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -310,7 +227,7 @@ function MarketList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/market"
+                  to="/seriui/sc-scheme-details"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -324,48 +241,10 @@ function MarketList() {
 
       <Block className="mt-n4">
         <Card>
-          <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      {/* <option value="">Select</option> */}
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="marketMasterId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row>
           <DataTable
-            //  title="Market List"
+            // title="TrainingProgram List"
             tableClassName="data-table-head-light table-responsive"
-            columns={MarketDataColumns}
+            columns={ScSchemeDetailsDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -386,4 +265,4 @@ function MarketList() {
   );
 }
 
-export default MarketList;
+export default ScSchemeDetailsList;

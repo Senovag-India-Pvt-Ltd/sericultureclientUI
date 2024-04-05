@@ -1,21 +1,22 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+// import { Card, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
+// import DataTable from "../../../components/DataTable/DataTable";
+import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function MarketList() {
+function ScSubSchemeDetailsList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -24,52 +25,17 @@ function MarketList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
+    searchBy: "scSubSchemeDetails",
     text: "",
-    searchBy: "marketMasterName",
   });
 
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "marketMasterName") {
-      joinColumn = "marketMaster.marketMasterName";
-    }
-    if (data.searchBy === "marketTypeMasterName") {
-      joinColumn = "marketTypeMaster.marketTypeMasterName";
-    }
-    // console.log(joinColumn);
-    api
-      .post(baseURL + `marketMaster/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.marketMaster);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
-      })
-      .catch((err) => {
-        // saveError();
-      });
-  };
-
+  // console.log("Test",data);
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `marketMaster/list-with-join`, _params)
+      .get(baseURL + `scSubSchemeDetails/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.marketMaster);
+        setListData(response.data.content.ScSubSchemeDetails);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -83,13 +49,49 @@ function MarketList() {
     getList();
   }, [page]);
 
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "scSchemeDetails") {
+      joinColumn = "scSchemeDetails.schemeName";
+    }
+    if (data.searchBy === "scSubSchemeDetails") {
+      joinColumn = "scSubSchemeDetails.subSchemeName";
+    }
+    console.log(joinColumn);
+    api
+      .post(baseURL + `scSubSchemeDetails/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      })
+      .then((response) => {
+        setListData(response.data.content.ScSubSchemeDetails);
+
+        // if (response.data.content.error) {
+        //   // saveError();
+        // } else {
+        //   console.log(response);
+        //   // saveSuccess();
+        // }
+      })
+      .catch((err) => {
+        // saveError();
+      });
+  };
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/market-view/${_id}`);
+    navigate(`/seriui/sc-sub-scheme-details-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/market-edit/${_id}`);
+    navigate(`/seriui/sc-sub-scheme-details-edit/${_id}`);
     // navigate("/seriui/district");
   };
 
@@ -111,7 +113,7 @@ function MarketList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `marketMaster/delete/${_id}`)
+          .delete(baseURL + `scSubSchemeDetails/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -181,9 +183,9 @@ function MarketList() {
     },
   };
 
-  const MarketDataColumns = [
+  const ScSubSchemeDataColumns = [
     {
-      name: "Action",
+      name: "action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -191,7 +193,7 @@ function MarketList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.marketMasterId)}
+            onClick={() => handleView(row.scSubSchemeDetailsId)}
           >
             View
           </Button>
@@ -199,14 +201,14 @@ function MarketList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.marketMasterId)}
+            onClick={() => handleEdit(row.scSubSchemeDetailsId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.marketMasterId)}
+            onClick={() => deleteConfirm(row.scSubSchemeDetailsId)}
             className="ms-2"
           >
             Delete
@@ -215,93 +217,63 @@ function MarketList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
     },
     {
-      name: "Market",
-      selector: (row) => row.marketMasterName,
-      cell: (row) => <span>{row.marketMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Tare Weight",
-      selector: (row) => row.boxWeight,
-      cell: (row) => <span>{row.boxWeight}</span>,
+      name: "Scheme Name",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot Weight",
-      selector: (row) => row.lotWeight,
-      cell: (row) => <span>{row.lotWeight}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      name: "Sub Scheme Name",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Division",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Sub Scheme Name In Kannada",
+      selector: (row) => row.subSchemeNameInKannada,
+      cell: (row) => <span>{row.subSchemeNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market Type",
-      selector: (row) => row.marketTypeMasterName,
-      cell: (row) => <span>{row.marketTypeMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Sub Scheme Type",
+        selector: (row) => row.subSchemeType,
+        cell: (row) => <span>{row.subSchemeType}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Sub Scheme Start Date",
+        selector: (row) => row.subSchemeStartDate,
+        cell: (row) => <span>{row.subSchemeStartDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Sub Scheme End Date",
+        selector: (row) => row.subSchemeEndDate,
+        cell: (row) => <span>{row.subSchemeEndDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
-    <Layout title="Market List">
+    <Layout title="Sub Scheme List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market List</Block.Title>
+            <Block.Title tag="h2">Sub Scheme List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/market"
+                  to="/seriui/sc-sub-scheme-details"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -310,7 +282,7 @@ function MarketList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/market"
+                  to="/seriui/sc-sub-scheme-details"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -321,6 +293,17 @@ function MarketList() {
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
+
+      {/* <Block>
+        <Card>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            data={DistrictDatas}
+            columns={DistrictDataColumns}
+            expandableRows
+          />
+        </Card>
+      </Block> */}
 
       <Block className="mt-n4">
         <Card>
@@ -338,15 +321,15 @@ function MarketList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
+                      <option value="scSubSchemeDetails"> Sub Scheme Name</option>
+                      <option value="scSchemeDetails">Scheme Name</option>
                     </Form.Select>
                   </div>
                 </Col>
 
                 <Col sm={3}>
                   <Form.Control
-                    id="marketMasterId"
+                    id="fruitsId"
                     name="text"
                     value={data.text}
                     onChange={handleInputs}
@@ -362,10 +345,10 @@ function MarketList() {
               </Form.Group>
             </Col>
           </Row>
+
           <DataTable
-            //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
-            columns={MarketDataColumns}
+            columns={ScSubSchemeDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -386,4 +369,4 @@ function MarketList() {
   );
 }
 
-export default MarketList;
+export default ScSubSchemeDetailsList;

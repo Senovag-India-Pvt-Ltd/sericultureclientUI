@@ -4,18 +4,24 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScHeadAccount() {
+function ScSubSchemeDetails() {
   const [data, setData] = useState({
-    scHeadAccountName: "",
-    scHeadAccountNameInKannada: "",
-    scSchemeDetailsId:"",
+    scSchemeDetailsId: "",
+    subSchemeName: "",
+    subSchemeNameInKannada: "",
+    subSchemeType:"",
+    subSchemeStartDate:"",
+    subSchemeEndDate:"",
+
   });
 
   const [validated, setValidated] = useState(false);
@@ -27,6 +33,11 @@ function ScHeadAccount() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -39,16 +50,19 @@ function ScHeadAccount() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `scHeadAccount/add`, data)
+        .post(baseURL + `scSubSchemeDetails/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              scHeadAccountName: "",
-              scHeadAccountNameInKannada: "",
-              scSchemeDetailsId:"",
+                scSchemeDetailsId: "",
+                subSchemeName: "",
+                subSchemeNameInKannada: "",
+                subSchemeType:"",
+                subSchemeStartDate:"",
+                subSchemeEndDate:"",
             });
             setValidated(false);
           }
@@ -64,13 +78,16 @@ function ScHeadAccount() {
 
   const clear = () => {
     setData({
-      scHeadAccountName: "",
-      scHeadAccountNameInKannada: "",
-      scSchemeDetailsId:"",
+        scSchemeDetailsId: "",
+        subSchemeName: "",
+        subSchemeNameInKannada: "",
+        subSchemeType:"",
+        subSchemeStartDate:"",
+        subSchemeEndDate:"",
     });
   };
 
-  // to get Scheme Name
+  // to get Scheme Details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
 
   const getList = () => {
@@ -114,17 +131,17 @@ function ScHeadAccount() {
   };
 
   return (
-    <Layout title="Head Account">
+    <Layout title="Sub Scheme Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head Account</Block.Title>
+            <Block.Title tag="h2">Sub Scheme Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-head-account-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -133,7 +150,7 @@ function ScHeadAccount() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-head-account-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -153,7 +170,7 @@ function ScHeadAccount() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                         Scheme Details<span className="text-danger">*</span>
@@ -177,55 +194,130 @@ function ScHeadAccount() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Scheme  name is required
+                          Scheme name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="headAccount">
-                        Head of Account<span className="text-danger">*</span>
+                      <Form.Label htmlFor="subSchemeName">
+                        Sub Scheme Name<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="headAccount"
-                          name="scHeadAccountName"
+                          id="subSchemeName"
                           type="text"
-                          value={data.scHeadAccountName}
+                          name="subSchemeName"
+                          value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder="Enter Head Of Account"
+                          placeholder="Enter Sub Scheme Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Head Of Account Name is required.
+                        Sub Scheme Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Head Of Account Name in Kannada
-                        <span className="text-danger">*</span>
+                      <Form.Label htmlFor="subSchemeNameInKannada">
+                        Sub Scheme Name In Kannada<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="scHeadAccountNameInKannada"
-                          value={data.scHeadAccountNameInKannada}
-                          onChange={handleInputs}
+                          id="subSchemeNameInKannada"
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          name="subSchemeNameInKannada"
+                          value={data.subSchemeNameInKannada}
+                          onChange={handleInputs}
+                          placeholder="Enter Sub Scheme Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Head Of Account Name in Kannada is required.
+                        Sub Scheme Name In Kannada is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="subSchemeType">
+                        Sub Scheme Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="subSchemeType"
+                          type="text"
+                          name="subSchemeType"
+                          value={data.subSchemeType}
+                          onChange={handleInputs}
+                          placeholder="Enter Sub Scheme Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Sub Scheme Type is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="2">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="subSchemeStartDate">
+                          Sub Scheme Start Date<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.subSchemeStartDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "subSchemeStartDate")
+                          }
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              minDate={new Date()}
+                              required
+                            />
+                          </div>
+                          </Form.Group>
+                          <Form.Control.Feedback type="invalid">
+                          Sub Scheme Start Date is Required
+                      </Form.Control.Feedback>
+                        </Col>
+
+                        <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="subSchemeEndDate">
+                                Sub Scheme End Date<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                            <DatePicker
+                              selected={data.subSchemeEndDate}
+                              onChange={(date) =>
+                                handleDateChange(date, "subSchemeEndDate")
+                              }
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              minDate={new Date(data.subSchemeStartDate)}
+                              required
+                            />
+                          </div>
+                          </Form.Group>
+                          <Form.Control.Feedback type="invalid">
+                          Sub Scheme End Date is Required
+                        </Form.Control.Feedback>
+                        </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -255,4 +347,4 @@ function ScHeadAccount() {
   );
 }
 
-export default ScHeadAccount;
+export default ScSubSchemeDetails;

@@ -4,11 +4,14 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import axios from "axios";
+import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
+import ScSchemeDetailsView from "../sc-scheme-details/ScSchemeDetailsView";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScUnitCostView() {
+function ScSubSchemeDetailsView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -19,7 +22,7 @@ function ScUnitCostView() {
 
   const { id } = useParams();
   // const [data] = useState(EducationDatas);
-  const [ScUnitCost, setScUnitCost] = useState({});
+  const [ScSubSchemeDetails, setScSubSchemeDetails] = useState({});
   const [loading, setLoading] = useState(false);
 
   // // grabs the id form the url and loads the corresponding data
@@ -31,13 +34,13 @@ function ScUnitCostView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scUnitCost/get-join/${id}`)
+      .get(baseURL + `scSubSchemeDetails/get-join/${id}`)
       .then((response) => {
-        setScUnitCost(response.data.content);
+        setScSubSchemeDetails(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setScUnitCost({});
+        setScSubSchemeDetails({});
         setLoading(false);
       });
   };
@@ -49,17 +52,17 @@ function ScUnitCostView() {
   }, [id]);
 
   return (
-    <Layout title="Unit Cost View">
+    <Layout title="Sub Scheme Details View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Unit Cost View</Block.Title>
+            <Block.Title tag="h2">Sub Scheme Details View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-unit-cost-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +71,7 @@ function ScUnitCostView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-unit-cost-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +85,7 @@ function ScUnitCostView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Unit Cost Details</Card.Header>
+          <Card.Header>Sub Scheme Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,40 +98,35 @@ function ScUnitCostView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{ScUnitCost.scUnitCostId}</td>
+                        <td>{ScSubSchemeDetails.scSubSchemeDetailsId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head Account:</td>
-                        <td>{ScUnitCost.scHeadAccountName}</td>
+                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td>{ScSubSchemeDetails.schemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Category:</td>
-                        <td>{ScUnitCost.categoryName}</td>
-                      </tr>
-
-                      <tr>
-                        <td style={styles.ctstyle}> Sub Scheme Details:</td>
-                        <td>{ScUnitCost.subSchemeName}</td>
+                        <td style={styles.ctstyle}> Sub Scheme Name:</td>
+                        <td>{ScSubSchemeDetails.subSchemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Central Share:</td>
-                        <td>{ScUnitCost.centralShare}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Sub Scheme Name in Kannada:
+                        </td>
+                        <td>{ScSubSchemeDetails.subSchemeNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> State Share:</td>
-                        <td>{ScUnitCost.stateShare}</td>
+                        <td style={styles.ctstyle}> Sub Scheme Type:</td>
+                        <td>{ScSubSchemeDetails.subSchemeType}</td>
                       </tr>
-
                       <tr>
-                        <td style={styles.ctstyle}> Benificiary Share:</td>
-                        <td>{ScUnitCost.benificiaryShare}</td>
+                        <td style={styles.ctstyle}>Sub Scheme Start Date:</td>
+                        <td>{ScSubSchemeDetails.subSchemeStartDate}</td>
                       </tr>
-
                       <tr>
-                        <td style={styles.ctstyle}>Unit Cost:</td>
-                        <td>{ScUnitCost.unitCost}</td>
+                        <td style={styles.ctstyle}> Sub Scheme End Date:</td>
+                        <td>{ScSubSchemeDetails.subSchemeEndDate}</td>
                       </tr>
-                    
                     </tbody>
                   </table>
                 </Col>
@@ -141,4 +139,4 @@ function ScUnitCostView() {
   );
 }
 
-export default ScUnitCostView;
+export default ScSubSchemeDetailsView;

@@ -3,15 +3,16 @@ import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
-//import axios from "axios";
 import { Icon } from "../../../components";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScCategoryEdit() {
+function ScSubSchemeDetailsEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -24,16 +25,16 @@ function ScCategoryEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  const isDataFromSet = !!data.subSchemeStartDate;
+  const isDataToSet = !!data.subSchemeEndDate;
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const datas = {
-      scCategoryId: id,
-      categoryName: data.categoryName,
-      categoryNameInKannada: data.categoryNameInKannada,
-      codeNumber: data.codeNumber,
-      description: data.description,
-    };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -41,18 +42,21 @@ function ScCategoryEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      // event.stopPropagation();
       api
-        .post(baseURL + `scCategory/edit`, datas)
+        .post(baseURL + `scSubSchemeDetails/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-              categoryName: "",
-              categoryNameInKannada: "",
-              codeNumber:"",
-              description:"",
+                scSchemeDetailsId: "",
+                subSchemeName: "",
+                subSchemeNameInKannada: "",
+                subSchemeType:"",
+                subSchemeStartDate:"",
+                subSchemeEndDate:"",
             });
             setValidated(false);
           }
@@ -68,10 +72,12 @@ function ScCategoryEdit() {
 
   const clear = () => {
     setData({
-      categoryName: "",
-      categoryNameInKannada: "",
-      codeNumber:"",
-      description:"",
+        scSchemeDetailsId: "",
+        subSchemeName: "",
+        subSchemeNameInKannada: "",
+        subSchemeType:"",
+        subSchemeStartDate:"",
+        subSchemeEndDate:"",
     });
   };
 
@@ -79,7 +85,7 @@ function ScCategoryEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scCategory/get/${id}`)
+      .get(baseURL + `scSubSchemeDetails/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -92,20 +98,38 @@ function ScCategoryEdit() {
       });
   };
 
-  // console.log(getIdList());
-
   useEffect(() => {
     getIdList();
   }, [id]);
 
+  // to get Scheme Details
+  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
+        setScSchemeDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const navigate = useNavigate();
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    });
+    }).then(() => navigate("#"));
   };
+
   const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -126,19 +150,18 @@ function ScCategoryEdit() {
       text: "Something went wrong!",
     }).then(() => navigate("#"));
   };
-
   return (
-    <Layout title="Edit Program Category">
+    <Layout title="Sub Scheme Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Program Category</Block.Title>
+            <Block.Title tag="h2">Sub Scheme Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-category-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -147,7 +170,7 @@ function ScCategoryEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-category-list"
+                  to="/seriui/sc-sub-scheme-details-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -173,22 +196,50 @@ function ScCategoryEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Category Name
-                        <span className="text-danger">*</span>
+                      <Form.Label>
+                        Scheme Details<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="scSchemeDetailsId"
+                          value={data.scSchemeDetailsId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
+                          }
+                        >
+                          <option value="">Select Scheme Details</option>
+                          {scSchemeDetailsListData.map((list) => (
+                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                              {list.schemeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Scheme name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="subSchemeName">
+                        Sub Scheme Name<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="categoryName"
+                          id="subSchemeName"
                           type="text"
-                          value={data.categoryName}
+                          name="subSchemeName"
+                          value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder="Enter  Category Name"
+                          placeholder="Enter Sub Scheme Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name is required
+                        Sub Scheme Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -196,22 +247,21 @@ function ScCategoryEdit() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                       Category Name in Kannada
-                        <span className="text-danger">*</span>
+                      <Form.Label htmlFor="subSchemeNameInKannada">
+                        Sub Scheme Name In Kannada<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="categoryNameInKannada"
-                          value={data.categoryNameInKannada}
-                          onChange={handleInputs}
+                          id="subSchemeNameInKannada"
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          name="subSchemeNameInKannada"
+                          value={data.subSchemeNameInKannada}
+                          onChange={handleInputs}
+                          placeholder="Enter Sub Scheme Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name in Kannada is required.
+                        Sub Scheme Name In Kannada is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -219,49 +269,77 @@ function ScCategoryEdit() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Code  Number
+                      <Form.Label htmlFor="subSchemeType">
+                        Sub Scheme Type
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="codeNumber"
+                          id="subSchemeType"
                           type="text"
-                          value={data.codeNumber}
+                          name="subSchemeType"
+                          value={data.subSchemeType}
                           onChange={handleInputs}
-                          placeholder="Enter Code Number"
+                          placeholder="Enter Sub Scheme Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Code Number is required
+                          Sub Scheme Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
+                  <Col lg="2">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="subSchemeStartDate">
+                          Sub Scheme Start Date<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                              {isDataFromSet && (
+                                <DatePicker
+                                  selected={new Date(data.subSchemeStartDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "subSchemeStartDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  minDate={new Date()}
+                                  required
+                                />
+                              )}
+                            </div>
+                            </Form.Group>
+                        </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Description
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="description"
-                          type="text"
-                          value={data.description}
-                          onChange={handleInputs}
-                          placeholder="Enter Description"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Description is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                        <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Sub Scheme End Date<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataToSet && (
+                                <DatePicker
+                                  selected={new Date(data.subSchemeEndDate)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "subSchemeEndDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  minDate={new Date(data.subSchemeStartDate)}
+                                  required
+                                />
+                              )}
+                            </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -276,6 +354,12 @@ function ScCategoryEdit() {
                   </Button>
                 </li>
                 <li>
+                  {/* <Link
+                    to="/seriui/district-list"
+                    className="btn btn-secondary border-0"
+                  >
+                    Cancel
+                  </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
@@ -289,4 +373,4 @@ function ScCategoryEdit() {
   );
 }
 
-export default ScCategoryEdit;
+export default ScSubSchemeDetailsEdit;

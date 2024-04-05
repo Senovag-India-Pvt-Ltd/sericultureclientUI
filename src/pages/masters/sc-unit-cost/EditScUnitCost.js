@@ -49,6 +49,8 @@ function ScUnitCostEdit() {
               centralShare:"",
               stateShare:"",
               benificiaryShare:"",
+              unitCost:"",
+
             });
             setValidated(false);
           }
@@ -70,6 +72,7 @@ function ScUnitCostEdit() {
       centralShare:"",
       stateShare:"",
       benificiaryShare:"",
+      unitCost:"",
     });
   };
 
@@ -379,6 +382,29 @@ function ScUnitCostEdit() {
                         />
                         <Form.Control.Feedback type="invalid">
                         Beneficiary Share is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                         Unit Cost 
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="unitCost"
+                          value={data.unitCost}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Unit Cost"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Unit Cost is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
