@@ -1,30 +1,34 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2/src/sweetalert2.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { Icon } from "../../../components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import FinancialYear from "./FinancialYear";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialYear() {
-  const [data, setData] = useState({
-    financialYear: "",
-    isDefault: false,
-  });
-
+function FinancialYearEdit() {
+  // Fetching id from URL params
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
 
   let name, value;
+
+  // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
 
+  // Function to handle checkbox change
   const handleCheckBox = (e) => {
     setData((prev) => ({
       ...prev,
@@ -32,12 +36,10 @@ function FinancialYear() {
     }));
   };
 
-  const _header = {
-    "Content-Type": "application/json",
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-  };
+  // HTTP header configuration
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  // Function to submit form data
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -46,51 +48,77 @@ function FinancialYear() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
       api
-        .post(baseURL + `financialYearMaster/add`, data)
+        .post(baseURL + `financialYearMaster/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
-            saveError(response.data.content.error_description);
+            updateError(response.data.content.error_description);
           } else {
-            saveSuccess();
+            updateSuccess();
             setData({
-              financialYear: "",
-              isDefault: false,
+              title: "",
+              code: "",
+              nameInKannada: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
     }
   };
 
+  // Function to clear form data
   const clear = () => {
     setData({
-      financial_year: "",
-      is_default: false,
+      title: "",
+      code: "",
+      nameInKannada: "",
     });
   };
 
+  // Function to get data by ID from API
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURL + `financialYearMaster/get/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message;
+        if (err.response.data.errorMessages.length > 0) {
+          message = err.response.data.errorMessages[0].message[0].message;
+          editError(message);
+        }
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    getIdList();
+  }, [id]);
+
+  // Navigation hook
   const navigate = useNavigate();
-  const saveSuccess = () => {
+
+  // Function to handle success alert
+  const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-    });
+      title: "Updated successfully",
+    }).then(() => navigate("#"));
   };
-  const saveError = (message) => {
+
+  // Function to handle error alert
+  const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -103,12 +131,22 @@ function FinancialYear() {
       html: errorMessage,
     });
   };
+
+  // Function to handle edit error
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
+
   return (
-    <Layout title="Financial Year">
+    <Layout title="Edit financialyear">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Financial Year</Block.Title>
+            <Block.Title tag="h2">Edit Financial Year</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -136,32 +174,38 @@ function FinancialYear() {
       </Block.Head>
 
       <Block className="mt-n5">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="financialYear">
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="financialYear"
-                          name="financialYear"
-                          value={data.financialYear}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
+                {loading ? (
+                  <h1 className="d-flex justify-content-center align-items-center">
+                    Loading...
+                  </h1>
+                ) : (
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="title">
+                          Edit Financial Year
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="financialYear"
+                            name="financialYear"
+                            value={data.financialYear}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Title"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={3}>
@@ -175,22 +219,9 @@ function FinancialYear() {
                           onChange={handleCheckBox}
                         />
                       </Col>
-                      {/* <Form.Label column sm={11} className="mt-n2">
-                        Triplet Generation After Weighment
-                      </Form.Label> */}
                     </Form.Group>
-
-                    {/* <div style={{ marginTop: "10px" }}>
-                      <Form.Check
-                        className="form-check-sm"
-                        type="checkbox"
-                        id="is_default"
-                        name="is_default"
-                        label="Is Default"
-                      />
-                    </div> */}
-                  </Col>
-                </Row>
+                  </Row>
+                )}
               </Card.Body>
             </Card>
 
@@ -198,7 +229,7 @@ function FinancialYear() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Save
+                    Update
                   </Button>
                 </li>
                 <li>
@@ -215,4 +246,4 @@ function FinancialYear() {
   );
 }
 
-export default FinancialYear;
+export default FinancialYearEdit;

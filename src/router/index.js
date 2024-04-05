@@ -620,7 +620,9 @@ import DivisionMasterList from "../pages/masters/division-master/DivisionMasterL
 import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
 import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
 import FinancialYear from "../pages/masters/financial-year/FinancialYear";
-
+import FinancialYearEdit from "../pages/masters/financial-year/FinancialYearEdit";
+import FinancialYearList from "../pages/masters/financial-year/FinancialYearList";
+import FinancialYearView from "../pages/masters/financial-year/FinancialYearView";
 // Admin and Reports
 
 function Router() {
@@ -1294,6 +1296,15 @@ function Router() {
 
             {/* Master */}
             <Route path="financial-year" element={<FinancialYear />} />
+            <Route
+              path="financial-year-edit/:id"
+              element={<FinancialYearEdit />}
+            />
+            <Route path="financial-year-list" element={<FinancialYearList />} />
+            <Route
+              path="financial-year-view/:id"
+              element={<FinancialYearView />}
+            />
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
             <Route path="caste-list" element={<CasteList />} />
