@@ -628,6 +628,7 @@ import ScSubSchemeDetailsList from "../pages/masters/sc-sub-scheme-details/ScSub
 import ScSubSchemeDetailsView from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsView";
 import ScSubSchemeDetailsEdit from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsEdit";
 import FinancialYear from "../pages/masters/financial-year/FinancialYear";
+import Activity from "../pages/masters/activity/Activity";
 
 // Admin and Reports
 
@@ -1304,6 +1305,7 @@ function Router() {
             <Route path="financial-year" element={<FinancialYear />} />
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
+            <Route path="activity" element={<Activity />} />
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
@@ -1584,23 +1586,42 @@ function Router() {
               element={<ScVendorContactEdit />}
             />
 
-
             <Route path="sc-scheme-details" element={<ScSchemeDetails />} />
-            <Route path="sc-scheme-details-list" element={<ScSchemeDetailsList/>} />
-            <Route path="sc-scheme-details-view/:id" element={<ScSchemeDetailsView />} />
-            <Route path="sc-scheme-details-edit/:id" element={<ScSchemeDetailsEdit />} />
+            <Route
+              path="sc-scheme-details-list"
+              element={<ScSchemeDetailsList />}
+            />
+            <Route
+              path="sc-scheme-details-view/:id"
+              element={<ScSchemeDetailsView />}
+            />
+            <Route
+              path="sc-scheme-details-edit/:id"
+              element={<ScSchemeDetailsEdit />}
+            />
 
             <Route path="division" element={<DivisionMaster />} />
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
 
+            <Route
+              path="sc-sub-scheme-details"
+              element={<ScSubSchemeDetails />}
+            />
+            <Route
+              path="sc-sub-scheme-details-list"
+              element={<ScSubSchemeDetailsList />}
+            />
+            <Route
+              path="sc-sub-scheme-details-view/:id"
+              element={<ScSubSchemeDetailsView />}
+            />
+            <Route
+              path="sc-sub-scheme-details-edit/:id"
+              element={<ScSubSchemeDetailsEdit />}
+            />
 
-            <Route path="sc-sub-scheme-details" element={<ScSubSchemeDetails />} />
-            <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
-            <Route path="sc-sub-scheme-details-view/:id" element={<ScSubSchemeDetailsView />} />
-            <Route path="sc-sub-scheme-details-edit/:id" element={<ScSubSchemeDetailsEdit />} />
-            
             <Route path="sc-vendor" element={<ScVendor />} />
             <Route path="sc-vendor-list" element={<ScVendorList />} />
             <Route path="sc-vendor-view/:id" element={<ScVendorView />} />
@@ -1740,10 +1761,19 @@ function Router() {
             <Route path="sc-component-edit/:id" element={<ScComponentEdit />} />
 
             <Route path="sc-head-account" element={<ScHeadAccount />} />
-            <Route path="sc-head-account-list" element={<ScHeadAccountList />} />
-            <Route path="sc-head-account-view/:id" element={<ScHeadAccountView />} />
-            <Route path="sc-head-account-edit/:id" element={<ScHeadAccountEdit />} />
-            
+            <Route
+              path="sc-head-account-list"
+              element={<ScHeadAccountList />}
+            />
+            <Route
+              path="sc-head-account-view/:id"
+              element={<ScHeadAccountView />}
+            />
+            <Route
+              path="sc-head-account-edit/:id"
+              element={<ScHeadAccountEdit />}
+            />
+
             <Route path="empanelled-vendor" element={<EmpanelledVendor />} />
             <Route
               path="empanelled-vendor-list"
