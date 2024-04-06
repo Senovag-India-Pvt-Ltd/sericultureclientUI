@@ -634,6 +634,7 @@ import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/Reari
 import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
 import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
 import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
+import ReceiptOfDFLsFromTheP4GrainageEdit from "../pages/seed-and-dfl-managment/ReceiptOfDFLsFromTheP4GrainageEdit";
 
 // Admin and Reports
 
@@ -977,6 +978,10 @@ function Router() {
             <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
+            />
+            <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-edit/:id"
+              element={<ReceiptOfDFLsFromTheP4GrainageEdit />}
             />
             <Route
               path="Receipt-of-DFLs-from-the-P4-grainage-list"
