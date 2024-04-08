@@ -12,7 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofeggsatcoldstorageList() {
   const [listData, setListData] = useState({});
@@ -33,7 +33,7 @@ function MaintenanceofeggsatcoldstorageList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggsAtColdStorage/get-info`)
+      .get(baseURLSeedDfl + `EggStorage/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -81,7 +81,7 @@ function MaintenanceofeggsatcoldstorageList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `MaintenanceOfEggsAtColdStorage/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `EggStorage/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -196,8 +196,8 @@ function MaintenanceofeggsatcoldstorageList() {
     },
     {
       name: "Number Of DFLs",
-      selector: (row) => row.noOfDFLs,
-      cell: (row) => <span>{row.noOfDFLs}</span>,
+      selector: (row) => row.numberOfDFLs,
+      cell: (row) => <span>{row.numberOfDFLs}</span>,
       sortable: true,
       hide: "md",
     },
@@ -210,8 +210,8 @@ function MaintenanceofeggsatcoldstorageList() {
       },
       {
         name: "Date Of Cold Storage",
-        selector: (row) => row.dateOfColdStorage,
-        cell: (row) => <span>{row.dateOfColdStorage}</span>,
+        selector: (row) => row.dateOfColdStore,
+        cell: (row) => <span>{row.dateOfColdStore}</span>,
         sortable: true,
         hide: "md",
       },
@@ -224,8 +224,8 @@ function MaintenanceofeggsatcoldstorageList() {
       },
       {
         name: "Date Of Release",
-        selector: (row) => row.releaseDate,
-        cell: (row) => <span>{row.releaseDate}</span>,
+        selector: (row) => row.dateOfRelease,
+        cell: (row) => <span>{row.dateOfRelease}</span>,
         sortable: true,
         hide: "md",
       },

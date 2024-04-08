@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggsAtColdStorageEdit() {
   const { id } = useParams();
@@ -20,7 +20,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
 
   const [validated, setValidated] = useState(false);
 
-  const isDataStorageDate = !!data.storageDate;
+  
 
   let name, value;
   const handleInputs = (e) => {
@@ -33,8 +33,9 @@ function MaintenanceOfEggsAtColdStorageEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const isDataReleaseSet = !!data.releaseDate;
-  const isDataColdSet = !!data.coldDate;
+  const isDataReleaseSet = !!data.dateOfRelease;
+  const isDataColdSet = !!data.laidOnDate;
+  const isDataLaidDate = !!data.storageDate;
 
 
   const postData = (event) => {
@@ -47,19 +48,19 @@ function MaintenanceOfEggsAtColdStorageEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfEggsAtColdStorage/update-info`, data)
+        .post(baseURLSeedDfl + `MaintenanceOfEggsAtColdStorage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-                lotNumber: "",
-                noOfDFLs: "",
-                grainageDetails: "",
-                scheduleDetails: "",
-                dateOfDeposit: "",
-                dateOfRetrieval: "",
+              lotNumber: "",
+              numberOfDFLs: "",
+              dateOfColdStore: "",
+              laidOnDate: "",
+              dateOfRelease: "",
+              incubationDetails: "",
             });
             setValidated(false);
           }
@@ -76,21 +77,22 @@ function MaintenanceOfEggsAtColdStorageEdit() {
 
   const clear = () => {
     setData({
-        lotNumber: "",
-        noOfDFLs: "",
-        grainageDetails: "",
-        scheduleDetails: "",
-        dateOfDeposit: "",
-        dateOfRetrieval: "",
+      lotNumber: "",
+      numberOfDFLs: "",
+      dateOfColdStore: "",
+      laidOnDate: "",
+      dateOfRelease: "",
+      incubationDetails: "",
     });
   };
+
 
 
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggPreparation/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -107,6 +109,24 @@ function MaintenanceOfEggsAtColdStorageEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data.EggPreparation);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
 
    
   const navigate = useNavigate();
@@ -183,26 +203,35 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                <Col lg="6" >
-                  <Form.Group className="form-group mt-n4 ">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
                         Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
                   </Form.Group>
                 </Col>
 
@@ -214,9 +243,9 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="numberOfDFLsReceived"
-                        name="numberOfDFLsReceived"
-                        value={data.numberOfDFLsReceived}
+                        id="numberOfDFLs"
+                        name="numberOfDFLs"
+                        value={data.numberOfDFLs}
                         onChange={handleInputs}
                         maxLength="4"
                         type="text"
@@ -231,81 +260,6 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="numberOfDFLsReceived">
-                      Grainage Details
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="grainageDetails"
-                        name="grainageDetails"
-                        value={data.grainageDetails}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Grainage Details"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                      Grainage Details is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                          <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date of Cold storage
-                              </Form.Label>
-                              <div className="Date of Cold Storage">
-                              { isDataColdSet && (
-                                <DatePicker
-                                  selected={new Date(data.dateOfColdStorage)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dateOfColdStorage")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date of release
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {isDataReleaseSet && (
-                                <DatePicker
-                                  selected={new Date(data.releaseDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "releaseDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Incubation Details
@@ -322,6 +276,85 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of Cold storage<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="Date of Cold Storage">
+                              { isDataColdSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfColdStore)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfColdStore")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Laid On Date<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                    {isDataLaidDate && (
+                      <DatePicker
+                        selected={new Date(data.laidOnDate)}
+                        onChange={(date) =>
+                          handleDateChange(date, "laidOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                      )}
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of release<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataReleaseSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfRelease)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfRelease")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          
                 </Row>
               )}
             </Card.Body>
