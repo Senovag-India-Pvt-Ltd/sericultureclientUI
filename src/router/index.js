@@ -635,6 +635,10 @@ import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/Reari
 import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
 import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
 import ReceiptOfDFLsFromTheP4GrainageEdit from "../pages/seed-and-dfl-managment/ReceiptOfDFLsFromTheP4GrainageEdit";
+import MaintenanceofScreeningBatchRecordsEdit from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsEdit";
+import MaintenanceofScreeningBatchRecordsView from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsView";
+import PreparationofeggsDFLsEdit from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsEdit";
+import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsView";
 
 // Admin and Reports
 
@@ -997,11 +1001,11 @@ function Router() {
               element={<MaintenanceofLineRecordsforEachRaceList />}
             />
 
-          <Route
+            <Route
               path="Maintenance-of-Line-Records-for-Each-Race-edit/:id"
               element={<MaintenanceOfLineRecordsForEachRaceEdit />}
             />
-             <Route
+            <Route
               path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
               element={<MaintenanceOfLineRecordForEachRaceView />}
             />
@@ -1014,6 +1018,16 @@ function Router() {
             <Route
               path="Maintenance-of-Screening-Batch-Records-List"
               element={<MaintenanceofScreeningBatchRecordsList />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-edit/:id"
+              element={<MaintenanceofScreeningBatchRecordsEdit />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-view/:id"
+              element={<MaintenanceofScreeningBatchRecordsView />}
             />
 
             <Route
@@ -1030,7 +1044,7 @@ function Router() {
               path="Dispatch-of-Cocoons-to-P4-Grainage-edit/:id"
               element={<DispatchofCocoonstoP4GrainageEdit />}
             />
-             <Route
+            <Route
               path="Dispatch-of-Cocoons-to-P4-Grainage-view/:id"
               element={<DispatchofCocoonstoP4GrainageView />}
             />
@@ -1049,9 +1063,9 @@ function Router() {
               path="Rearing-of-DFLs-for-the-8-Lines-edit/:id"
               element={<RearingOfDFLsForThe8LinesEdit />}
             />
-             <Route
+            <Route
               path="Rearing-of-DFLs-for-the-8-Lines-view/:id"
-              element={<RearingOfDFLsForThe8LinesView/>}
+              element={<RearingOfDFLsForThe8LinesView />}
             />
 
             <Route
@@ -1072,6 +1086,16 @@ function Router() {
             <Route
               path="Preparation-of-eggs-DFLs-List"
               element={<PreparationofeggsDFLsList />}
+            />
+
+            <Route
+              path="Preparation-of-eggs-DFLs-edit/:id"
+              element={<PreparationofeggsDFLsEdit />}
+            />
+
+            <Route
+              path="Preparation-of-eggs-DFLs-view/:id"
+              element={<PreparationofeggsDFLsView />}
             />
 
             <Route

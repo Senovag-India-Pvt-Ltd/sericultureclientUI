@@ -1,107 +1,21 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function MaintenanceofScreeningBatchRecords() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
-
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
-
-  const [validated, setValidated] = useState(false);
-
+function MaintenanceofScreeningBatchRecordsEdit() {
+  const { id } = useParams();
   const [data, setData] = useState({
     cocoonsProducedAtEachGeneration: "",
     lotNumber: "",
@@ -117,6 +31,56 @@ function MaintenanceofScreeningBatchRecords() {
     selectedBedAsPerTheMeanPerformance: "",
     cropFailureDetails: "",
   });
+  const [loading, setLoading] = useState(false);
+
+  const [validated, setValidated] = useState(false);
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  const isIncubationDate = !!data.incubationDate;
+  const isBlackBoxingDate = !!data.blackBoxingDate;
+  const isSpunOnDate = !!data.spunOnDate;
+  const isBrushedOnDate = !!data.brushedOnDate;
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLSeedDfl + `MaintenanceOfScreen/update-info`, data)
+        .then((response) => {
+          //   const trScheduleId = response.data.content.trScheduleId;
+          //   if (trScheduleId) {
+          //     handlePPtUpload(trScheduleId);
+          //   }
+          if (response.data.error) {
+            updateError(response.data.message);
+          } else {
+            updateSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
+          updateError();
+        });
+      setValidated(true);
+    }
+  };
 
   const clear = () => {
     setData({
@@ -135,64 +99,69 @@ function MaintenanceofScreeningBatchRecords() {
       cropFailureDetails: "",
     });
     setValidated(false);
+    getIdList();
   };
 
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLSeedDfl + `MaintenanceOfScreen/get-info-by-id/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
+      });
   };
 
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
+  useEffect(() => {
+    getIdList();
+  }, [id]);
+
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURL + `mulberry-variety/get-all`)
+      .then((response) => {
+        setVarietyListData(response.data.content.mulberryVariety);
+      })
+      .catch((err) => {
+        setVarietyListData([]);
+      });
   };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  // to get Soil Type
+  const [soilTypeListData, setSoilTypeListData] = useState([]);
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-
-      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-      //   return;
-      // }
-      api
-        .post(baseURLSeedDfl + `MaintenanceOfScreen/add-info`, data)
-        .then((response) => {
-          if (response.data.error) {
-            saveError(response.data.message);
-          } else {
-            saveSuccess(response.data.message);
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
-    }
+  const getSoilTypeList = () => {
+    const response = api
+      .get(baseURL + `soilType/get-all`)
+      .then((response) => {
+        setSoilTypeListData(response.data.content.soilType);
+      })
+      .catch((err) => {
+        setSoilTypeListData([]);
+      });
   };
+
+  useEffect(() => {
+    getVarietyList();
+    getSoilTypeList();
+  }, []);
 
   // to get Line Name
   const [lineNameListData, setLineNameListData] = useState([]);
 
   const getLineYearList = () => {
     api
-      .get(baseURLMasterData + `lineNameMaster/get-all`)
+      .get(baseURL + `lineNameMaster/get-all`)
       .then((response) => {
         setLineNameListData(response.data.content.lineNameMaster);
       })
@@ -205,15 +174,22 @@ function MaintenanceofScreeningBatchRecords() {
     getLineYearList();
   }, []);
 
-  const saveSuccess = (message) => {
+  const navigate = useNavigate();
+
+  const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      text: message,
+      title: "Updated successfully",
+      // text: "You clicked the button!",
     });
   };
-
-  const saveError = (message) => {
+  const updateError = (message) => {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Save attempt was not successful",
+    //     text: message,
+    //   });
+    // };
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -227,39 +203,21 @@ function MaintenanceofScreeningBatchRecords() {
     });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
   };
-
   return (
-    <Layout title="Maintenance of screening batch records">
+    <Layout title="Edit Maintenance of Mulberry Garden in the Farms">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Maintenance of screening batch records
+              Edit Maintenance of Mulberry Garden in the Farms
             </Block.Title>
-            {/* <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Maintenance of screening batch records
-                </li>
-              </ol>
-            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -380,21 +338,6 @@ function MaintenanceofScreeningBatchRecords() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="sordfl">
-                                Line Name
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Line Name"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
@@ -554,20 +497,24 @@ function MaintenanceofScreeningBatchRecords() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.incubationDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "incubationDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isIncubationDate && (
+                                  <DatePicker
+                                    selected={
+                                      new Date(data.incubationDate) || null
+                                    }
+                                    onChange={(date) =>
+                                      handleDateChange(date, "incubationDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    maxDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
                                 <Form.Control.Feedback type="invalid">
                                   Incubation Date is required
                                 </Form.Control.Feedback>
@@ -581,20 +528,24 @@ function MaintenanceofScreeningBatchRecords() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.blackBoxingDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "blackBoxingDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isBlackBoxingDate && (
+                                  <DatePicker
+                                    selected={
+                                      new Date(data.blackBoxingDate) || null
+                                    }
+                                    onChange={(date) =>
+                                      handleDateChange(date, "blackBoxingDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    maxDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
                                 <Form.Control.Feedback type="invalid">
                                   Black Boxing Date is required
                                 </Form.Control.Feedback>
@@ -609,20 +560,24 @@ function MaintenanceofScreeningBatchRecords() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.brushedOnDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "brushedOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isBrushedOnDate && (
+                                  <DatePicker
+                                    selected={
+                                      new Date(data.brushedOnDate) || null
+                                    }
+                                    onChange={(date) =>
+                                      handleDateChange(date, "brushedOnDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    maxDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
                                 <Form.Control.Feedback type="invalid">
                                   Brushed on date is required
                                 </Form.Control.Feedback>
@@ -637,20 +592,22 @@ function MaintenanceofScreeningBatchRecords() {
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.spunOnDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "spunOnDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
+                                {isSpunOnDate && (
+                                  <DatePicker
+                                    selected={new Date(data.spunOnDate) || null}
+                                    onChange={(date) =>
+                                      handleDateChange(date, "spunOnDate")
+                                    }
+                                    peekNextMonth
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dropdownMode="select"
+                                    maxDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    required
+                                  />
+                                )}
                                 <Form.Control.Feedback type="invalid">
                                   Spun on date is required
                                 </Form.Control.Feedback>
@@ -666,7 +623,7 @@ function MaintenanceofScreeningBatchRecords() {
                       <li>
                         {/* <Button type="button" variant="primary" onClick={postData}> */}
                         <Button type="submit" variant="primary">
-                          Save
+                          Update
                         </Button>
                       </li>
                       <li>
@@ -681,66 +638,6 @@ function MaintenanceofScreeningBatchRecords() {
                     </ul>
                   </div>
                 </Col>
-                {/* <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>
-                                    Total number of cocoons produced at each
-                                    generation
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Lot number/Year
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Line details/Year (Silk Worm Race)
-                                  </th>
-                                  <th style={styles.ctstyle}>Line Name</th>
-                                  <th style={styles.ctstyle}>
-                                    Incubation Date
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Black Boxing Date
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Brushed on date
-                                  </th>
-                                  <th style={styles.ctstyle}>Spun on date</th>
-                                  <th style={styles.ctstyle}>
-                                    Worm Test details and result
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    Total number of cocoons produced at each
-                                    generation data
-                                  </td>
-                                  <td>Lot number/Year data</td>
-                                  <td>
-                                    Line details/Year (Silk Worm Race) data
-                                  </td>
-                                  <td>Line Name data</td>
-                                  <td>Incubation Date data</td>
-                                  <td>Black Boxing Date data</td>
-                                  <td>Brushed on date data</td>
-                                  <td>Spun on date data</td>
-                                  <td>Worm Test details and result data</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col> */}
               </Row>
             </div>
           </Row>
@@ -750,4 +647,4 @@ function MaintenanceofScreeningBatchRecords() {
   );
 }
 
-export default MaintenanceofScreeningBatchRecords;
+export default MaintenanceofScreeningBatchRecordsEdit;
