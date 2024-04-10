@@ -1192,7 +1192,7 @@ function Router() {
             />
 
             <Route
-              path="sale-disposal-of-pierced-cocoons/:id"
+              path="sale-disposal-of-pierced-cocoons-view/:id"
               element={<SaleDisposalOfPiercedCocoonsView />}
             />
 

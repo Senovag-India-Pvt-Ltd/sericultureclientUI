@@ -12,7 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalOfPiercedCocoonsList() {
   const [listData, setListData] = useState({});
@@ -27,7 +27,7 @@ function SaleDisposalOfPiercedCocoonsList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info`)
+      .get(baseURLSeedDfl + `Disposal-Pierced/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -46,11 +46,11 @@ function SaleDisposalOfPiercedCocoonsList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/testing-of-moth-view/${_id}`);
+    navigate(`/seriui/sale-disposal-of-pierced-cocoons-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/testing-of-moth-edit/${_id}`);
+    navigate(`/seriui/sale-disposal-of-pierced-cocoons-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
@@ -73,7 +73,7 @@ function SaleDisposalOfPiercedCocoonsList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `TestingOfMoth/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `Disposal-Pierced/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -143,7 +143,7 @@ function SaleDisposalOfPiercedCocoonsList() {
     },
   };
 
-  const TestingOfMothDataColumns = [
+  const SaleOfDisposalDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -188,8 +188,8 @@ function SaleDisposalOfPiercedCocoonsList() {
     },
     {
       name: "Race",
-      selector: (row) => row.race,
-      cell: (row) => <span>{row.race}</span>,
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -202,8 +202,8 @@ function SaleDisposalOfPiercedCocoonsList() {
     },
     {
       name: "Name and address of the PC Merchant",
-      selector: (row) => row.nameAddress,
-      cell: (row) => <span>{row.nameAddress}</span>,
+      selector: (row) => row.merchantNameAndAddress,
+      cell: (row) => <span>{row.merchantNameAndAddress}</span>,
       sortable: true,
       hide: "md",
     },
@@ -216,15 +216,15 @@ function SaleDisposalOfPiercedCocoonsList() {
     },
     {
       name: "Quantity in kgs",
-      selector: (row) => row.quatity,
-      cell: (row) => <span>{row.quatity}</span>,
+      selector: (row) => row.quantityInKgs,
+      cell: (row) => <span>{row.quantityInKgs}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Rate per Kgs",
-      selector: (row) => row.quatity,
-      cell: (row) => <span>{row.quatity}</span>,
+      selector: (row) => row.ratePerKg,
+      cell: (row) => <span>{row.ratePerKg}</span>,
       sortable: true,
       hide: "md",
     },
@@ -276,7 +276,7 @@ function SaleDisposalOfPiercedCocoonsList() {
           <DataTable
             // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
-            columns={TestingOfMothDataColumns}
+            columns={SaleOfDisposalDataColumns}
             data={listData}
             highlightOnHover
             pagination

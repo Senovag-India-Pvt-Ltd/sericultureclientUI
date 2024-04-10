@@ -91,7 +91,7 @@ function Maintenanceofeggsatcoldstorage() {
     setData({ ...data, [type]: date });
   };
 
-  // to get Grainage
+  // to get Lot
   const [lotListData, setLotListData] = useState([]);
 
   const getLotList = () => {

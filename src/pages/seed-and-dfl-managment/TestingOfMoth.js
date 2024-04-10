@@ -85,6 +85,24 @@ function TestingOfMoth() {
     setData({ ...data, [type]: date });
   };
 
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data.EggPreparation);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
   
   const navigate = useNavigate();
   const saveSuccess = (message) => {
@@ -153,7 +171,7 @@ function TestingOfMoth() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                <Col lg="4" >
+                {/* <Col lg="4" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -174,7 +192,40 @@ function TestingOfMoth() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
+                </Col> */}
+
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
                 </Col>
+
 
                 <Col lg="4">
                   <Form.Group className="form-group">
