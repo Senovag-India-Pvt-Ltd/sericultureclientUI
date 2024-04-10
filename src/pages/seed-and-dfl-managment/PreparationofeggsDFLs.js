@@ -9,7 +9,7 @@ import Block from "../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import axios from "axios";
+import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
@@ -17,395 +17,135 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function PreparationofeggsDFLs() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
-
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
-
   const [data, setData] = useState({
-    name: "",
-    wardNumber: "",
-    passbookNumber: "",
-    fatherName: "",
-    educationId: "",
-    reelingUnitBoundary: "",
-    dob: "",
-    rationCard: "",
-    machineTypeId: "",
-    gender: "",
-    dateOfMachineInstallation: "",
-    electricityRrNumber: "",
-    casteId: "",
-    revenueDocument: "",
-    numberOfBasins: "",
-    mobileNumber: "",
-    recipientId: "",
-    mahajarDetails: "",
-    emailId: "",
-    representativeNameAddress: "",
-    loanDetails: "",
-    assignToInspectId: "",
-    gpsLat: "",
-    gpsLng: "",
-    inspectionDate: "",
-    arnNumber: "",
-    chakbandiLat: "",
-    chakbandiLng: "",
-    address: "",
-    pincode: "",
-    stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
-    receiptDate: "",
-    functionOfUnit: "",
-    reelingLicenseNumber: "",
-    feeAmount: "",
-    memberLoanDetails: "",
-    mahajarEast: "",
-    mahajarWest: "",
-    mahajarNorth: "",
-    mahajarSouth: "",
-    mahajarNorthEast: "",
-    mahajarNorthWest: "",
-    mahajarSouthEast: "",
-    mahajarSouthWest: "",
-    bankName: "",
-    bankAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    status: "",
-    licenseRenewalDate: "",
+    grainageNameAndAddress: "",
+    lotNumberYear: "",
+    numberOfCocoonsCB: "",
+    dateOfMothEmergence: "",
+    laidOnDate: "",
+    eggSheetSerialNumber: "",
+    numberOfPairs: "",
+    numberOfRejection: "",
+    dflsObtained: "",
+    eggRecoveryPercentage: "",
+    examinationDetails: "",
+    testResults: "",
+    certification: "",
+    additionalRemarks: "",
+    parentLotNumber: "",
   });
+
+  const [validated, setValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
+    // debugger;
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+  
+  // const handleDateChange = (newDate) => {
+  //   setData({ ...data, applicationDate: newDate });
+  // };
+
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      api
+        .post(baseURL2 + `EggPreparation/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            setData({
+              grainageNameAndAddress: "",
+              lotNumberYear: "",
+              numberOfCocoonsCB: "",
+              dateOfMothEmergence: "",
+              laidOnDate: "",
+              eggSheetSerialNumber: "",
+              numberOfPairs: "",
+              numberOfRejection: "",
+              dflsObtained: "",
+              eggRecoveryPercentage: "",
+              examinationDetails: "",
+              testResults: "",
+              certification: "",
+              additionalRemarks: "",
+              parentLotNumber: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        
+        });
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
+      grainageNameAndAddress: "",
+      lotNumberYear: "",
+      numberOfCocoonsCB: "",
+      dateOfMothEmergence: "",
+      laidOnDate: "",
+      eggSheetSerialNumber: "",
+      numberOfPairs: "",
+      numberOfRejection: "",
+      dflsObtained: "",
+      eggRecoveryPercentage: "",
+      examinationDetails: "",
+      testResults: "",
+      certification: "",
+      additionalRemarks: "",
+      parentLotNumber: "",
+    });
+  };
+
+  
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
-  const postData = (e) => {
-    axios
-      .post(baseURL + `reeler/add`, data, {
-        headers: _header,
-      })
-      .then((response) => {
-        if (vbAccountList.length > 0) {
-          const reelerId = response.data.content.reelerId;
-          vbAccountList.forEach((list) => {
-            const updatedVb = {
-              ...list,
-              reelerId: reelerId,
-            };
-            axios
-              .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb, {
-                headers: _header,
-              })
-              .then((response) => {
-                saveSuccess();
-              })
-              .catch((err) => {
-                setVbAccount({});
-                saveError();
-              });
-          });
-        } else {
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
-  };
-
-  // to get Caste
-  const [casteListData, setCasteListData] = useState([]);
-
-  const getCasteList = () => {
-    axios
-      .get(baseURL2 + `caste/get-all`)
-      .then((response) => {
-        setCasteListData(response.data.content.caste);
-      })
-      .catch((err) => {
-        setCasteListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getCasteList();
-  }, []);
-
-  // to get Education
-  const [educationListData, setEducationListData] = useState([]);
-
-  const getEducationList = () => {
-    axios
-      .get(baseURL2 + `education/get-all`)
-      .then((response) => {
-        setEducationListData(response.data.content.education);
-      })
-      .catch((err) => {
-        setEducationListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getEducationList();
-  }, []);
-
-  // to get Machine Type
-  const [machineTypeListData, setMachineTypeListData] = useState([]);
-
-  const getMachineTypeList = () => {
-    axios
-      .get(baseURL2 + `machine-type-master/get-all`)
-      .then((response) => {
-        setMachineTypeListData(response.data.content.machineTypeMaster);
-      })
-      .catch((err) => {
-        setMachineTypeListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMachineTypeList();
-  }, []);
-
-  // to get Market
-  const [marketMasterListData, setMarketMasterListData] = useState([]);
-
-  const getMarketMasterList = () => {
-    axios
-      .get(baseURL2 + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketMasterListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketMasterListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMarketMasterList();
-  }, []);
-
-  // to get State
-  const [stateListData, setStateListData] = useState([]);
-
-  const getList = () => {
-    axios
-      .get(baseURL2 + `state/get-all`)
-      .then((response) => {
-        setStateListData(response.data.content.state);
-      })
-      .catch((err) => {
-        setStateListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  // to get district
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = (_id) => {
-    axios
-      .get(baseURL2 + `district/get-by-state-id/${_id}`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.stateId) {
-      getDistrictList(data.stateId);
-    }
-  }, [data.stateId]);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    axios
-      .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.districtId) {
-      getTalukList(data.districtId);
-    }
-  }, [data.districtId]);
-
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    axios
-      .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        setHobliListData(response.data.content.hobli);
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.talukId) {
-      getHobliList(data.talukId);
-    }
-  }, [data.talukId]);
-
-  // to get Village
-  const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    axios
-      .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.hobliId) {
-      getVillageList(data.hobliId);
-    }
-  }, [data.hobliId]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/reeler-license-list"));
-  };
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
+
 
   return (
     <Layout title="Preparation of eggs (DFLs)">
@@ -413,19 +153,7 @@ function PreparationofeggsDFLs() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2"> Preparation of eggs (DFLs) </Block.Title>
-            {/* <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Preparati on of eggs (DFLs)
-                </li>
-              </ol>
-            </nav> */}
+           
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -452,16 +180,13 @@ function PreparationofeggsDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
-        <Form action="#">
-          <Row className="g-3 ">
-            <div>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header> Preparati on of eggs (DFLs) </Card.Header>
-                      <Card.Body>
+      <Block className="mt-n4">
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Preparation Of Eggs
+            </Card.Header>
+            <Card.Body>
                         <Row className="g-gs">
                           <Col lg="4">
                             <Form.Group className="form-group">
@@ -470,13 +195,17 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                   id="grainageNameAndAddress"
+                                  name="grainageNameAndAddress"
+                                  value={data.grainageNameAndAddress}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Name of the Grainage and Address"
+                                  placeholder="Enter Name of the Grainage and Address"
                                 />
                               </div>
                             </Form.Group>
                           </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
@@ -484,9 +213,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="plotNumber"
+                                  name="lotNumberYear"
+                                  value={data.lotNumberYear}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Lot number/Year"
+                                  placeholder="Enter  Lot number/Year"
                                 />
                               </div>
                             </Form.Group>
@@ -499,9 +231,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="numberOfCocoonsCB"
+                                  name="numberOfCocoonsCB"
+                                  value={data.numberOfCocoonsCB}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Number of Cocoons (CB, Hybrid)"
+                                  placeholder="Enter Number of Cocoons (CB, Hybrid)"
                                 />
                               </div>
                             </Form.Group>
@@ -514,9 +249,33 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="Date of moth emergence">
                                 <DatePicker
-                                  selected={data.pruningDate}
+                                  selected={data.dateOfMothEmergence}
                                   onChange={(date) =>
-                                    handleDateChange(date, "pruningDate")
+                                    handleDateChange(date, "dateOfMothEmergence")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Laid On Date
+                              </Form.Label>
+                              <div className="Laid On Date">
+                                <DatePicker
+                                  selected={data.laidOnDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "laidOnDate")
                                   }
                                   peekNextMonth
                                   showMonthDropdown
@@ -538,9 +297,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="eggSheetSerialNumber"
+                                  name="eggSheetSerialNumber"
+                                  value={data.eggSheetSerialNumber}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Egg sheet serial number"
+                                  placeholder="Enter Egg sheet serial number"
                                 />
                               </div>
                             </Form.Group>
@@ -553,9 +315,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="numberOfPairs"
+                                  name="numberOfPairs"
+                                  value={data.numberOfPairs}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Number of pairs"
+                                  placeholder="Enter Number of pairs"
                                 />
                               </div>
                             </Form.Group>
@@ -566,9 +331,12 @@ function PreparationofeggsDFLs() {
                               <Form.Label> Number of Rejection</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                   id="numberOfRejection"
+                                  name="numberOfRejection"
+                                  value={data.numberOfRejection}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Number of Rejection"
+                                  placeholder="Enter Number of Rejection"
                                 />
                               </div>
                             </Form.Group>
@@ -581,9 +349,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="dflsObtained"
+                                  name="dflsObtained"
+                                  value={data.dflsObtained}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="DFLs obtained "
+                                  placeholder="Enter DFLs obtained"
                                 />
                               </div>
                             </Form.Group>
@@ -596,9 +367,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Egg Recovery %"
+                                 id="eggRecoveryPercentage"
+                                name="eggRecoveryPercentage"
+                                value={data.eggRecoveryPercentage}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder="Enter Egg Recovery %"
                                 />
                               </div>
                             </Form.Group>
@@ -611,9 +385,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="examinationDetails"
+                                  name="examinationDetails"
+                                  value={data.examinationDetails}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Examination details (Date, etc)"
+                                  placeholder="Enter  Examination details (Date, etc)"
                                 />
                               </div>
                             </Form.Group>
@@ -627,8 +404,11 @@ function PreparationofeggsDFLs() {
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="sordfl"
+                                  name="testResults"
+                                  value={data.testResults}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Test results"
+                                  placeholder="Enter Test results"
                                 />
                               </div>
                             </Form.Group>
@@ -641,9 +421,12 @@ function PreparationofeggsDFLs() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="certification"
+                                  name="certification"
+                                  value={data.plotNumber}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Certification (Yes/No)"
+                                  placeholder="Enter Certification (Yes/No)"
                                 />
                               </div>
                             </Form.Group>
@@ -657,8 +440,29 @@ function PreparationofeggsDFLs() {
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="sordfl"
+                                  name="additionalRemarks"
+                                  value={data.additionalRemarks}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="Additional remarks"
+                                  placeholder="Enter additional Remarks"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                               Parent Lot Number
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="parentLotNumber"
+                                  value={data.parentLotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Parent Lot Number"
                                 />
                               </div>
                             </Form.Group>
@@ -666,84 +470,23 @@ function PreparationofeggsDFLs() {
                         </Row>
                       </Card.Body>
                     </Card>
-                    <Col lg="12" className="text-center mt-1">
-                      <Button type="button" variant="primary">
-                        {" "}
-                        Submit{" "}
-                      </Button>
-                    </Col>
-                  </Block>
-                </Col>
-                {/* <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>
-                                    Race (MSC,CSR 2,FC1, FC2)
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Date of seed cocoon supply
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Name of the Government Seed Farm/Farmer
-                                  </th>
-                                  <th style={styles.ctstyle}>Spun On date</th>
-                                  <th style={styles.ctstyle}>Crop Number</th>
-                                  <th style={styles.ctstyle}>
-                                    Source (Line) of the Cocoon
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Bed number Number / Kgs of cocoons supplied{" "}
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Number of pupa examined
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Cocoon rejection details/ numbers
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Invoice No. and Date
-                                  </th>
-                                  <th style={styles.ctstyle}>Rate per Kg</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Lot number data </td>
-                                  <td>Race (MSC,CSR 2,FC1, FC2) data</td>
-                                  <td>Date of seed cocoon supply data</td>
-                                  <td>
-                                    Name of the Government Seed Farm/Farmer data
-                                  </td>
-                                  <td>12/20/2023</td>
-                                  <td>Crop Number data</td>
-                                  <td>Source (Line) of the Cocoon data </td>
-                                  <td>
-                                    Bed number Number / Kgs of cocoons supplied
-                                    data
-                                  </td>
-                                  <td>Number of pupa examined</td>
-                                  <td>Cocoon rejection details/ numbers</td>
-                                  <td>Invoice No. and Date</td>
-                                  <td>Rate per Kg data </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col> */}
-              </Row>
-            </div>
-          </Row>
+                    
+            <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
