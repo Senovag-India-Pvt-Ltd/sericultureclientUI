@@ -14,14 +14,17 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalOfPiercedCocoons() {
   const [data, setData] = useState({
     lotNumber: "",
-    pebrine: "",
-    sourceDetails: "",
+    raceId: "",
+    dateOfDisposal: "",
+    merchantNameAndAddress:"",
+    numberOfCocoons: "",
+    quantityInKgs: "",
+    ratePerKg: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -31,6 +34,14 @@ function SaleDisposalOfPiercedCocoons() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "quantityInKgs" || name === "ratePerKg") {
+      const quantityInKgs = name === "quantityInKgs" ? parseInt(value) : data.quantityInKgs;
+      const ratePerKg = name === "ratePerKg" ? parseInt(value) : data.ratePerKg;
+      const calculatedPrice = (quantityInKgs*ratePerKg);
+      setData(prevData => ({ ...prevData, percentageImproved: calculatedPrice }));
+      
+    }
   };
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
@@ -48,7 +59,7 @@ function SaleDisposalOfPiercedCocoons() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMoth/add-info`, data)
+        .post(baseURLSeedDfl + `Disposal-Pierced/add-info`, data)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -56,8 +67,12 @@ function SaleDisposalOfPiercedCocoons() {
             saveSuccess();
             setData({
               lotNumber: "",
-              pebrine: "",
-              sourceDetails: "",
+              raceId: "",
+              dateOfDisposal: "",
+              merchantNameAndAddress:"",
+              numberOfCocoons: "",
+              quantityInKgs: "",
+              ratePerKg: "",
             });
             setValidated(false);
           }
@@ -74,10 +89,50 @@ function SaleDisposalOfPiercedCocoons() {
   const clear = () => {
     setData({
       lotNumber: "",
-      pebrine: "",
-      sourceDetails: "",
+      raceId: "",
+      dateOfDisposal: "",
+      merchantNameAndAddress:"",
+      numberOfCocoons: "",
+      quantityInKgs: "",
+      ratePerKg: "",
     });
   };
+
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL + `raceMaster/get-all`)
+       .then((response) => {
+         setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+         setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getRaceList();
+   }, []);
+ 
+    // to get Lot
+    const [lotListData, setLotListData] = useState([]);
+ 
+    const getLotList = () => {
+      const response = api
+        .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+        .then((response) => {
+          setLotListData(response.data.EggPreparation);
+        })
+        .catch((err) => {
+          setLotListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getLotList();
+    }, []);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -105,23 +160,7 @@ function SaleDisposalOfPiercedCocoons() {
     });
   };
 
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getRaceList();
-  }, []);
+  
 
   return (
     <Layout title="Sale/Disposal of Pierced Cocoons">
@@ -166,39 +205,48 @@ function SaleDisposalOfPiercedCocoons() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+              <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
                         Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
                   </Form.Group>
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Race<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="raceOfDfls"
-                          value={data.raceOfDfls}
+                          name="raceId"
+                          value={data.raceId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
@@ -222,16 +270,16 @@ function SaleDisposalOfPiercedCocoons() {
                 </Col>
 
                 <Col lg="2">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       Date of disposal
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
-                        selected={data.dispatchDate}
+                        selected={data.dateOfDisposal}
                         onChange={(date) =>
-                          handleDateChange(date, "dispatchDate")
+                          handleDateChange(date, "dateOfDisposal")
                         }
                         peekNextMonth
                         showMonthDropdown
@@ -239,7 +287,7 @@ function SaleDisposalOfPiercedCocoons() {
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        minDate={new Date()}
+                        // minDate={new Date()}
                         required
                       />
                     </div>
@@ -247,16 +295,16 @@ function SaleDisposalOfPiercedCocoons() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                       Name and address of the PC Merchant
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        id="merchantNameAndAddress"
+                        name="merchantNameAndAddress"
+                        value={data.merchantNameAndAddress}
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
@@ -271,18 +319,18 @@ function SaleDisposalOfPiercedCocoons() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
                       Number of cocoons
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
+                        id="numberOfCocoons"
+                        name="numberOfCocoons"
+                        value={data.numberOfCocoons}
                         onChange={handleInputs}
-                        type="text"
+                        type="number"
                         placeholder="Enter Number of cocoons"
                         required
                       />
@@ -294,20 +342,19 @@ function SaleDisposalOfPiercedCocoons() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
                       Quantity in kgs
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
+                        id="quantityInKgs"
+                        name="quantityInKgs"
+                        value={data.quantityInKgs}
                         onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Quantity in kgs
-                        "
+                        type="number"
+                        placeholder="Enter Quantity in kgs"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -318,18 +365,18 @@ function SaleDisposalOfPiercedCocoons() {
                 </Col>
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
                       Rate per Kgs
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
+                        id="ratePerKg"
+                        name="ratePerKg"
+                        value={data.ratePerKg}
                         onChange={handleInputs}
-                        type="text"
+                        type="number"
                         placeholder="Enter Rate per Kgs"
                         required
                       />
@@ -340,17 +387,17 @@ function SaleDisposalOfPiercedCocoons() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
+                {/* <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
                       Total Amount (In Rs)
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="sourceDetails"
-                        name="sourceDetails"
-                        value={data.sourceDetails}
+                        id="totalAmount"
+                        name="totalAmount"
+                        value={data.totalAmount}
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Total Amount"
@@ -361,7 +408,7 @@ function SaleDisposalOfPiercedCocoons() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
               </Row>
             </Card.Body>
           </Card>

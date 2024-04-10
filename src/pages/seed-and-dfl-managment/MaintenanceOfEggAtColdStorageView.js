@@ -8,7 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggsAtColdStorageView() {
   const styles = {
@@ -33,7 +33,7 @@ function MaintenanceOfEggsAtColdStorageView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggsAtColdStorage/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggStorage/get-info-by-id/${id}`)
       .then((response) => {
         setColdStorage(response.data);
         setLoading(false);
@@ -107,19 +107,19 @@ function MaintenanceOfEggsAtColdStorageView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number Of DFLs:</td>
-                        <td>{coldStorage.noOfDFLs}</td>
+                        <td>{coldStorage.numberOfDFLs}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>
                         Grainage Details:
                         </td>
                         <td>{coldStorage.grainageDetails}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
                         Date Of Cold Storage:
                         </td>
-                        <td>{coldStorage.dateOfColdStorage}</td>
+                        <td>{coldStorage.dateOfColdStore}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
@@ -131,7 +131,7 @@ function MaintenanceOfEggsAtColdStorageView() {
                         <td style={styles.ctstyle}>
                         Date Of Release:
                         </td>
-                        <td>{coldStorage.releaseDate}</td>
+                        <td>{coldStorage.dateOfRelease}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleDisposalOfPiercedCocoonsView() {
   const styles = {
@@ -20,7 +20,7 @@ function SaleDisposalOfPiercedCocoonsView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [testingMoth, setTestingOfMoth] = useState({});
+  const [piercedCocoons, setPiercedCocoons] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -32,13 +32,13 @@ function SaleDisposalOfPiercedCocoonsView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `Disposal-Pierced/get-info-by-id/${id}`)
       .then((response) => {
-        setTestingOfMoth(response.data);
+        setPiercedCocoons(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setTestingOfMoth({});
+        setPiercedCocoons({});
         setLoading(false);
       });
   };
@@ -101,41 +101,41 @@ function SaleDisposalOfPiercedCocoonsView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{testingMoth.id}</td>
+                        <td>{piercedCocoons.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Lot Number:</td>
-                        <td>{testingMoth.lotNumber}</td>
+                        <td>{piercedCocoons.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race:</td>
-                        <td>{testingMoth.race}</td>
+                        <td>{piercedCocoons.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date of disposal:</td>
-                        <td>{testingMoth.dateOfDisposal}</td>
+                        <td>{piercedCocoons.dateOfDisposal}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           Name and address of the PC Merchant:
                         </td>
-                        <td>{testingMoth.name}</td>
+                        <td>{piercedCocoons.merchantNameAndAddress}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number of cocoons:</td>
-                        <td>{testingMoth.numberCocoons}</td>
+                        <td>{piercedCocoons.numberOfCocoons}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Quantity in kgs:</td>
-                        <td>{testingMoth.quantityInkgs}</td>
+                        <td>{piercedCocoons.quantityInKgs}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Rate per Kgs:</td>
-                        <td>{testingMoth.ratePerKgs}</td>
+                        <td>{piercedCocoons.ratePerKg}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Total Amount:</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{piercedCocoons.totalAmount}</td>
                       </tr>
                     </tbody>
                   </table>
