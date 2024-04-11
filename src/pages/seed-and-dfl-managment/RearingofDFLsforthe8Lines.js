@@ -124,7 +124,7 @@ function RearingofDFLsforthe8Lines() {
     const response = api
       .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
       .then((response) => {
-        setLotListData(response.data.ReceiptOfDflsFromP4GrainageLinesController);
+        setLotListData(response.data);
       })
       .catch((err) => {
         setLotListData([]);
@@ -281,7 +281,7 @@ function RearingofDFLsforthe8Lines() {
                         >
                           <option value="">Select Lot Number</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option key={list.lotNumberId} value={list.lotNumberId}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))): ""}

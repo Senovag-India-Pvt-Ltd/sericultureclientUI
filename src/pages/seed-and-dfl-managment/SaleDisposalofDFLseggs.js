@@ -228,6 +228,24 @@ function SaleDisposalofDFLseggs() {
     getFarmList();
   }, []);
 
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
   // Display Image
   const [challan, setChallan] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
@@ -439,7 +457,7 @@ function SaleDisposalofDFLseggs() {
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
                           Lot Number<span className="text-danger">*</span>
@@ -458,6 +476,38 @@ function SaleDisposalofDFLseggs() {
                             Lot Number is required
                           </Form.Control.Feedback>
                         </div>
+                      </Form.Group>
+                    </Col> */}
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>Lot Number</Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lotNumber"
+                              value={data.lotNumber}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              // required
+                            >
+                              <option value="">Select Lot Number</option>
+                              {lotListData && lotListData.length
+                                ? lotListData.map((list) => (
+                                    <option
+                                      key={list.id}
+                                      value={list.lotNumber}
+                                    >
+                                      {list.lotNumber}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Lot Number is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
                       </Form.Group>
                     </Col>
 

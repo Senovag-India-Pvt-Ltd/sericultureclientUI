@@ -205,6 +205,27 @@ function MaintenanceofScreeningBatchRecords() {
     getLineYearList();
   }, []);
 
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(
+        baseURLSeedDfl +
+          `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`
+      )
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
@@ -326,24 +347,33 @@ function MaintenanceofScreeningBatchRecords() {
                           </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="lotNumber">
-                                Lot number
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="lotNumber"
-                                  name="lotNumber"
-                                  value={data.lotNumber}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Lot number/Year"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Lot number/Year is required
-                                </Form.Control.Feedback>
-                              </div>
+                              <Form.Label>Lot Number</Form.Label>
+                              <Col>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    name="lotNumber"
+                                    value={data.lotNumber}
+                                    onChange={handleInputs}
+                                    onBlur={() => handleInputs}
+                                    // required
+                                  >
+                                    <option value="">Select Lot Number</option>
+                                    {lotListData && lotListData.length
+                                      ? lotListData.map((list) => (
+                                          <option
+                                            key={list.id}
+                                            value={list.lotNumber}
+                                          >
+                                            {list.lotNumber}
+                                          </option>
+                                        ))
+                                      : ""}
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    Lot Number is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Col>
                             </Form.Group>
                           </Col>
 
