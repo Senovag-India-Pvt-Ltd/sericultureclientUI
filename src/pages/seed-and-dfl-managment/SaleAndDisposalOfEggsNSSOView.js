@@ -8,6 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSOView() {
   const styles = {
@@ -20,7 +21,7 @@ function SaleAndDisposalOfEggsNSSOView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [testingMoth, setTestingOfMoth] = useState({});
+  const [seedDisposal, setSeedDisposal] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -31,14 +32,14 @@ function SaleAndDisposalOfEggsNSSOView() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+    api
+      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info-by-id/${id}`)
       .then((response) => {
-        setTestingOfMoth(response.data);
+        setSeedDisposal(response.data);
         setLoading(false);
       })
       .catch((err) => {
-        setTestingOfMoth({});
+        setSeedDisposal({});
         setLoading(false);
       });
   };
@@ -50,13 +51,13 @@ function SaleAndDisposalOfEggsNSSOView() {
   }, [id]);
 
   return (
-    <Layout title="Sale/Disposal of Eggs NSSO View">
+    <Layout title="Sale / Disposal of DFL's(eggs) NSSO View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
               {" "}
-              Sale/Disposal of Eggs NSSO View{" "}
+              Sale / Disposal of DFL's(eggs) NSSO View{" "}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -87,7 +88,7 @@ function SaleAndDisposalOfEggsNSSOView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header style={{ fontWeight: "bold" }}>
-            Sale/Disposal of Pierced Cocoons Details
+            Sale / Disposal of DFL's(eggs) View
           </Card.Header>
           <Card.Body>
             {loading ? (
@@ -101,39 +102,60 @@ function SaleAndDisposalOfEggsNSSOView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{testingMoth.id}</td>
+                        <td>{seedDisposal.id}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Lot Number:</td>
-                        <td>{testingMoth.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Egg sheet numbers:</td>
-                        <td>{testingMoth.lotNumber}</td>
+                        <td>{seedDisposal.lotNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Race:</td>
-                        <td>{testingMoth.race}</td>
+                        <td>{seedDisposal.raceName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Release Date:</td>
+                        <td>{seedDisposal.releaseDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date of disposal:</td>
-                        <td>{testingMoth.dateOfDisposal}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Number of DFLs disposed:</td>
-                        <td>{testingMoth.name}</td>
+                        <td>{seedDisposal.dateOfDisposal}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Name and address of the farm / farmer / CRC:
+                          Expected Date of Hatching:
                         </td>
-                        <td>{testingMoth.numberCocoons}</td>
+                        <td>{seedDisposal.expectedDateOfHatching}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Number Of Dfls Disposed:</td>
+                        <td>{seedDisposal.numberOfDflsDisposed}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Fruits Id:</td>
+                        <td>{seedDisposal.fruitsId}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Type:</td>
+                        <td>{seedDisposal.userType}</td>
+                      </tr>
+
                       <tr>
                         <td style={styles.ctstyle}>
-                          Rate per 100 DFLs Price (in Rupees):
+                          Name and address of the PC Merchant:
                         </td>
-                        <td>{testingMoth.quantityInkgs}</td>
+                        <td>{seedDisposal.nameAndAddressOfTheFarm}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Rate per 100 Dfls Price:</td>
+                        <td>{seedDisposal.ratePer100DflsPrice}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Invoice Number:</td>
+                        <td>{seedDisposal.invoiceNumber}</td>
                       </tr>
                     </tbody>
                   </table>

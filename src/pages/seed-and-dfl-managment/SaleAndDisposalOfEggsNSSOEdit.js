@@ -13,6 +13,7 @@ import { Icon } from "../../components";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSOEdit() {
   const { id } = useParams();
@@ -21,6 +22,53 @@ function SaleAndDisposalOfEggsNSSOEdit() {
 
   const [validated, setValidated] = useState(false);
   const [searchValidated, setSearchValidated] = useState(false);
+
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+      api
+        .post(
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+          { fruitsId: data.fruitsId }
+        )
+        .then((response) => {
+          console.log(response);
+          if (!response.data.content.error) {
+            if (response.data.content.farmerResponse) {
+              const firstName = response.data.content.farmerResponse.firstName;
+              const address =
+                response.data.content.farmerAddressList[0].addressText;
+              setData((prev) => ({
+                ...prev,
+                nameAndAddressOfTheFarm: `${firstName}, ${address}`,
+              }));
+            }
+          } else {
+            updateError(response.data.content.error_description);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+  };
 
   let name, value;
   const handleInputs = (e) => {
@@ -43,7 +91,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -51,16 +99,31 @@ function SaleAndDisposalOfEggsNSSOEdit() {
             updateSuccess();
             setData({
               lotNumber: "",
-              pebrine: "",
-              sourceDetails: "",
+              eggSheetNumbers: "",
+              raceId: "",
+              releaseDate: "",
+              dateOfDisposal: "",
+              expectedDateOfHatching: "",
+              numberOfDflsDisposed: "",
+              fruitsId: "",
+              nameAndAddressOfTheFarm: "",
+              ratePer100DflsPrice: "",
+              userType: "farm",
+              userTypeId: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
           // const message = err.response.data.errorMessages[0].message[0].message;
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -78,8 +141,8 @@ function SaleAndDisposalOfEggsNSSOEdit() {
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+    api
+      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -114,6 +177,42 @@ function SaleAndDisposalOfEggsNSSOEdit() {
     getRaceList();
   }, []);
 
+  // to get farm
+  const [farmListData, setFarmListData] = useState([]);
+
+  const getFarmList = () => {
+    api
+      .get(baseURL + `farmMaster/get-all`)
+      .then((response) => {
+        setFarmListData(response.data.content.farmMaster);
+      })
+      .catch((err) => {
+        setFarmListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFarmList();
+  }, []);
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
   const navigate = useNavigate();
 
   const updateSuccess = (message) => {
@@ -143,60 +242,18 @@ function SaleAndDisposalOfEggsNSSOEdit() {
       text: "Something went wrong!",
     }).then(() => navigate("#"));
   };
-
-  const search = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setSearchValidated(true);
-    } else {
-      event.preventDefault();
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-      api
-        .post(
-          baseURLFarmer +
-            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-          { fruitsId: data.fruitsId }
-        )
-        .then((response) => {
-          console.log(response);
-          if (!response.data.content.error) {
-            if (response.data.content.farmerResponse) {
-              const firstName = response.data.content.farmerResponse.firstName;
-              const fatherName =
-                response.data.content.farmerResponse.fatherName;
-              setData((prev) => ({
-                ...prev,
-                farmerName: firstName,
-                fatherName: fatherName,
-              }));
-            }
-          } else {
-            updateError(response.data.content.error_description);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
-          }
-        });
-    }
-  };
   return (
-    <Layout title="Edit Testing Of Moth">
+    <Layout title="Edit Sale / Disposal of DFL's(eggs) NSSO">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Testing Of Moth</Block.Title>
+            <Block.Title tag="h2">Edit Sale / Disposal of DFL's(eggs) NSSO</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/sale-and-disposal-of-eggs-nsso-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -205,7 +262,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/testing-of-moth-list"
+                  to="/seriui/sale-and-disposal-of-eggs-nsso-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -219,35 +276,96 @@ function SaleAndDisposalOfEggsNSSOEdit() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={searchValidated} onSubmit={search}>
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Form.Group as={Row} className="form-group" controlId="fid">
-                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={4}>
-                      <Form.Control
-                        type="fruitsId"
-                        name="fruitsId"
-                        value={data.fruitsId}
-                        onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
-                        required
-                        maxLength="16"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
-                      </Form.Control.Feedback>
-                    </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary">
-                        Search
-                      </Button>
-                    </Col>
-                    {/* <Col sm={2}>
+        <Card>
+          <Card.Body>
+            <Row lg="12" className="g-gs">
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="farm">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="farm"
+                      checked={data.userType === "farm"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="farm">
+                    Farm
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="farmer">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="farmer"
+                      checked={data.userType === "farmer"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="farmer">
+                    Farmer
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="crc">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="crc"
+                      checked={data.userType === "crc"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="crc">
+                    CRC
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+        {data.userType === "farmer" ? (
+          <Form
+            noValidate
+            validated={searchValidated}
+            onSubmit={search}
+            className="mt-1"
+          >
+            <Card>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="12">
+                    <Form.Group as={Row} className="form-group" controlId="fid">
+                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        FRUITS ID<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={4}>
+                        <Form.Control
+                          type="fruitsId"
+                          name="fruitsId"
+                          value={data.fruitsId}
+                          onChange={handleInputs}
+                          placeholder="Enter FRUITS ID"
+                          required
+                          maxLength="16"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Fruits ID Should Contain 16 digits
+                        </Form.Control.Feedback>
+                      </Col>
+                      <Col sm={2}>
+                        <Button type="submit" variant="primary">
+                          Search
+                        </Button>
+                      </Col>
+                      {/* <Col sm={2}>
                         <Button
                           type="button"
                           variant="primary"
@@ -258,40 +376,53 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           Generate FRUITS ID
                         </Button>
                       </Col> */}
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Form>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Form>
+        ) : (
+          ""
+        )}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Sale/Disposal of Eggs NSSO{" "}
+                  Sale / Disposal of DFLs 's (egg) s{" "}
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Lot Number<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="farmerName"
-                            name="farmerName"
-                            type="text"
-                            value={data.farmerName}
-                            onChange={handleInputs}
-                            placeholder="Enter Lot Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Lot Number is required
-                          </Form.Control.Feedback>
-                        </div>
+                        <Form.Label>Lot Number</Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lotNumber"
+                              value={data.lotNumber}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              // required
+                            >
+                              <option value="">Select Lot Number</option>
+                              {lotListData && lotListData.length
+                                ? lotListData.map((list) => (
+                                    <option
+                                      key={list.id}
+                                      value={list.lotNumber}
+                                    >
+                                      {list.lotNumber}
+                                    </option>
+                                  ))
+                                : ""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Lot Number is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
                       </Form.Group>
                     </Col>
 
@@ -303,10 +434,11 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="farmerName"
-                            name="farmerName"
-                            type="text"
-                            value={data.farmerName}
+                            id="eggSheetNumbers"
+                            name="eggSheetNumbers"
+                            type="number"
+                            min="1"
+                            value={data.eggSheetNumbers}
                             onChange={handleInputs}
                             placeholder="Enter Egg Sheet Numbers"
                             required
@@ -323,44 +455,46 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                         <Form.Label>
                           Race<span className="text-danger">*</span>
                         </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="raceOfDfls"
-                              value={data.raceOfDfls}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              required
-                            >
-                              <option value="">Select Race</option>
-                              {raceListData.map((list) => (
-                                <option
-                                  key={list.raceMasterId}
-                                  value={list.raceMasterId}
-                                >
-                                  {list.raceMasterName}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                              Race is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="raceId"
+                            value={data.raceId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // multiple
+                            required
+                            isInvalid={
+                              data.raceId === undefined || data.raceId === "0"
+                            }
+                          >
+                            <option value="">Select Race</option>
+                            {raceListData.map((list) => (
+                              <option
+                                key={list.raceMasterId}
+                                value={list.raceMasterId}
+                              >
+                                {list.raceMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Race is required
+                          </Form.Control.Feedback>
+                        </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Number of DFLs disposed
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="area"
-                            name="area"
-                            value={data.area}
+                            id="numberOfDflsDisposed"
+                            name="numberOfDflsDisposed"
+                            value={data.numberOfDflsDisposed}
                             onChange={handleInputs}
                             type="text"
                             maxLength="4"
@@ -374,71 +508,89 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       </Form.Group>
                     </Col>
 
-                    {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Nursery sale details
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="nurserySaleDetails"
-                                  name="nurserySaleDetails"
-                                  type="text"
-                                  value={data.nurserySaleDetails}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Nursery sale details"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col> */}
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Name and address of the farm / farmer / CRC
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="quantity"
-                            name="quantity"
-                            value={data.quantity}
-                            onChange={handleInputs}
-                            type="text"
-                            maxLength="5"
-                            placeholder=" Enter Name and address of the farm / farmer / CRC"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Name and address of the farm / farmer / CRC is
-                            required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Date of disposal<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.dateOfPlanting}
-                            onChange={(date) =>
-                              handleDateChange(date, "dateOfPlanting")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    {data.userType === "farm" ? (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            Farm<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="userTypeId"
+                              value={data.userTypeId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              // multiple
+                              required
+                              isInvalid={
+                                data.userTypeId === undefined ||
+                                data.userTypeId === "0"
+                              }
+                            >
+                              <option value="">Select Farm</option>
+                              {farmListData.map((list) => (
+                                <option
+                                  key={list.farmId}
+                                  value={list.userMasterId}
+                                >
+                                  {list.farmName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Farm is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ) : data.userType === "farmer" ? (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                            Name and address farmer
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="nameAndAddressOfTheFarm"
+                              name="nameAndAddressOfTheFarm"
+                              value={data.nameAndAddressOfTheFarm}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder=" Enter Name and address farmer"
+                              required
+                              readOnly
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Name and address farmer is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ) : (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                            Name and address CRC
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="nameAndAddressOfTheFarm"
+                              name="nameAndAddressOfTheFarm"
+                              value={data.nameAndAddressOfTheFarm}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder=" Enter Name and address CRC"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Name and address CRC is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    )}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -448,9 +600,9 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="rate"
-                            name="rate"
-                            value={data.rate}
+                            id="ratePer100DflsPrice"
+                            name="ratePer100DflsPrice"
+                            value={data.ratePer100DflsPrice}
                             onChange={handleInputs}
                             type="text"
                             maxLength="3"
@@ -463,100 +615,46 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                    {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Sapling age in Month/Year
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="saplingAge"
-                            name="saplingAge"
-                            value={data.saplingAge}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Sapling age in Month/Year"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sapling age in Month/Year is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
-
-                    {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Generate Recipt
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="generateRecipt"
-                                  name="generateRecipt"
-                                  type="text"
-                                  value={data.generateRecipt}
-                                  onChange={handleInputs}
-                                  placeholder="Generate Recipt"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Receipt number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="receiptNumber"
-                                  name="receiptNumber"
-                                  type="text"
-                                  value={data.receiptNumber}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Receipt number"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col> */}
-
-                    {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Remittance details
-                          <span className="text-danger">*</span>
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="remittanceDetails"
-                            name="remittanceDetails"
-                            type="text"
-                            value={data.remittanceDetails}
-                            onChange={handleInputs}
-                            placeholder="Enter Remittance details"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Remittance details is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
+                    {data.userType === "farm" ? (
+                      <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                            Name and address of Farm
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="nameAndAddressOfTheFarm"
+                              name="nameAndAddressOfTheFarm"
+                              value={data.nameAndAddressOfTheFarm}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder=" Enter Name and address of Farm"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Name and address of Farm is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ) : (
+                      ""
+                    )}
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of planting<span className="text-danger">*</span>
+                          Release Date<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dateOfPlanting}
+                            selected={
+                              data.releaseDate
+                                ? new Date(data.releaseDate)
+                                : null
+                            }
                             onChange={(date) =>
-                              handleDateChange(date, "dateOfPlanting")
+                              handleDateChange(date, "releaseDate")
                             }
                             peekNextMonth
                             showMonthDropdown
@@ -573,12 +671,18 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Sale Date<span className="text-danger">*</span>
+                          Date of disposal<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.date}
-                            onChange={(date) => handleDateChange(date, "date")}
+                            selected={
+                              data.dateOfDisposal
+                                ? new Date(data.dateOfDisposal)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleDateChange(date, "dateOfDisposal")
+                            }
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
@@ -591,33 +695,33 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    <Col lg="2">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="challanUploadKey">
-                          Upload Challan
+                        <Form.Label htmlFor="sordfl">
+                          Expected Date of Hatching
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="challanUploadKey"
-                            name="challanUploadKey"
-                            // value={data.photoPath}
-                            onChange={handleChallanChange}
+                          <DatePicker
+                            selected={
+                              data.expectedDateOfHatching
+                                ? new Date(data.expectedDateOfHatching)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleDateChange(date, "expectedDateOfHatching")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
                           />
                         </div>
                       </Form.Group>
-
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {challan ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(challan)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </Form.Group>
-                    </Col> */}
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>

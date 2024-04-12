@@ -14,6 +14,7 @@ import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function SaleAndDisposalOfEggsNSSOList() {
   const [listData, setListData] = useState({});
@@ -33,8 +34,8 @@ function SaleAndDisposalOfEggsNSSOList() {
   const getList = () => {
     setLoading(true);
 
-    const response = api
-      .get(baseURL2 + `Mulberry-garden/get-info`)
+    api
+      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -71,25 +72,15 @@ function SaleAndDisposalOfEggsNSSOList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
+    navigate(`/seriui/sale-and-disposal-of-eggs-nsso-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-edit/${_id}`);
+    navigate(`/seriui/sale-and-disposal-of-eggs-nsso-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
-  };
-
-  const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
-  };
-
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
+ 
 
   const deleteError = () => {
     Swal.fire({
@@ -110,7 +101,7 @@ function SaleAndDisposalOfEggsNSSOList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}/${plot}`)
+          .delete(baseURLSeedDfl + `sale-disposal-of-egg/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -203,29 +194,13 @@ function SaleAndDisposalOfEggsNSSOList() {
             Edit
           </Button>
           <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleUpdate(row.id)}
-          >
-            Update
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleAlert(row.id)}
-          >
-            Alert
-          </Button>
-          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button> */}
+          </Button>
         </div>
       ),
       sortable: false,
@@ -235,67 +210,70 @@ function SaleAndDisposalOfEggsNSSOList() {
 
     {
       name: "Lot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Race",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Date of disposal",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Number of DFLs disposed",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FRUITS-ID",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Name and address of the farm / farmer / CRC",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Rate per 100 DFLs Price (in Rupees)",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Invoice/Receipt number",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Egg Sheet Numbers",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
+      selector: (row) => row.eggSheetNumbers,
+      cell: (row) => <span>{row.eggSheetNumbers}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Race",
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Release Date",
+      selector: (row) => row.releaseDate,
+      cell: (row) => <span>{row.releaseDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Date of Disposal",
+      selector: (row) => row.dateOfDisposal,
+      cell: (row) => <span>{row.dateOfDisposal}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Expected Date of Hatching",
+      selector: (row) => row.expectedDateOfHatching,
+      cell: (row) => <span>{row.expectedDateOfHatching}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    // {
+    //   name: "Fertilizer Application Date",
+    //   selector: (row) => row.fertilizerApplicationDate,
+    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Activity Logs",
+    //   cell: (row) => (
+    //     <div className="text-end">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => handleLogs(row.id)}
+    //       >
+    //         Activity Logs
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
     // {
     //   name: "Activity Logs",
     //   cell: (row) => (
@@ -312,131 +290,16 @@ function SaleAndDisposalOfEggsNSSOList() {
     // },
   ];
 
-  const MaintenanceofmulberryGardenLogsDataColumns = [
-    {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Area Under Each Variety",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Date",
-      selector: (row) => row.fymApplicationDate,
-      cell: (row) => <span>{row.fymApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Date",
-      selector: (row) => row.irrigationDate,
-      cell: (row) => <span>{row.irrigationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Date",
-      selector: (row) => row.brushingDate,
-      cell: (row) => <span>{row.brushingDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Status",
-      selector: (row) => row.fertilizerApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fertilizerApplicationStatus === 0
-            ? "Pending"
-            : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Application Status",
-      selector: (row) => row.fymApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fymApplicationStatus === 0
-            ? "Pending"
-            : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Status",
-      selector: (row) => row.irrigationStatus,
-      cell: (row) => (
-        <span>
-          {row.irrigationStatus === 0
-            ? "Pending"
-            : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Status",
-      selector: (row) => row.brushingStatus,
-      cell: (row) => (
-        <span>
-          {row.brushingStatus === 0
-            ? "Pending"
-            : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-  ];
+ 
 
   return (
-    <Layout title="Sale/Disposal of Eggs NSSO List">
+    <Layout title="Sale / Disposal of DFL's(eggs) NSSO List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sale/Disposal of Eggs NSSO List</Block.Title>
+            <Block.Title tag="h2">
+              Sale / Disposal of DFL's(eggs) NSSO List
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -486,35 +349,7 @@ function SaleAndDisposalOfEggsNSSOList() {
         </Card>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Block className="mt-2">
-            <Card>
-              <DataTable
-                // title="New Trader License List"
-                tableClassName="data-table-head-light table-responsive"
-                columns={MaintenanceofmulberryGardenLogsDataColumns}
-                data={listLogsData}
-                highlightOnHover
-                pagination
-                paginationServer
-                paginationTotalRows={totalRows}
-                paginationPerPage={countPerPage}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                onChangePage={(page) => setPage(page - 1)}
-                progressPending={loading}
-                theme="solarized"
-                customStyles={customStyles}
-              />
-            </Card>
-          </Block>
-        </Modal.Body>
-      </Modal>
+      
     </Layout>
   );
 }
