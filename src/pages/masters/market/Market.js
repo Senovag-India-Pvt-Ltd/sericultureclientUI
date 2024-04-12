@@ -48,6 +48,8 @@ function Market() {
     snorkelRequestPath: "",
     snorkelResponsePath: "",
     clientCode: "",
+    weighmentTripletGeneration: true,
+    bidAmountFlag: false,
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -57,6 +59,22 @@ function Market() {
     // });
     console.log(selectedTime);
     setData((prev) => ({ ...prev, issueBidSlipStartTime: selectedTime }));
+  };
+
+  const handleCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      weighmentTripletGeneration: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxBidAmount = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      bidAmountFlag: e.target.checked,
+    }));
   };
 
   const [validated, setValidated] = useState(false);
@@ -118,6 +136,8 @@ function Market() {
               snorkelRequestPath: "",
               snorkelResponsePath: "",
               clientCode: "",
+              weighmentTripletGeneration: true,
+              bidAmountFlag: false,
             });
             setValidated(false);
           }
@@ -165,6 +185,8 @@ function Market() {
       snorkelRequestPath: "",
       snorkelResponsePath: "",
       clientCode: "",
+      weighmentTripletGeneration: true,
+      bidAmountFlag: false,
     });
   };
 
@@ -390,7 +412,7 @@ function Market() {
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Crate Weight(In Kg)
+                        Tare Weight(In Kg)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -400,11 +422,11 @@ function Market() {
                           value={data.boxWeight}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crate Weight"
+                          placeholder="Enter Tare Weight"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Crate Weight(In Kg) is required
+                          Tare Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1026,28 +1048,40 @@ function Market() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="chakbandi">
-                        Market Coordinates
+                        Market Coordinates<span className="text-danger">*</span>
                       </Form.Label>
                       <Row>
                         <Col lg="6">
-                          <Form.Control
-                            id="marketLongitude"
-                            name="marketLongitude"
-                            value={data.marketLongitude}
-                            onChange={handleInputs}
-                            placeholder="Enter Longitude"
-                          />
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="marketLongitude"
+                              name="marketLongitude"
+                              value={data.marketLongitude}
+                              onChange={handleInputs}
+                              placeholder="Enter Longitude"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Longitude is required
+                            </Form.Control.Feedback>
+                          </div>
                         </Col>
 
                         <Col lg="6">
-                          <Form.Control
-                            id="marketLatitude"
-                            name="marketLatitude"
-                            value={data.marketLatitude}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Latitude"
-                          />
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="marketLatitude"
+                              name="marketLatitude"
+                              value={data.marketLatitude}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter Latitude"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Latitude is required
+                            </Form.Control.Feedback>
+                          </div>
                         </Col>
                       </Row>
                     </Form.Group>
@@ -1085,13 +1119,45 @@ function Market() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Market Address"
-                          rows="8"
+                          rows="6"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
                           Market Address is required
                         </Form.Control.Feedback>
                       </div>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="weighmentTripletGeneration"
+                          checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Triplet Generation After Weighment
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="bidAmountFlag"
+                          checked={data.bidAmountFlag}
+                          onChange={handleCheckBoxBidAmount}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Bid Amount Flag
+                      </Form.Label>
                     </Form.Group>
                   </Col>
                 </Row>

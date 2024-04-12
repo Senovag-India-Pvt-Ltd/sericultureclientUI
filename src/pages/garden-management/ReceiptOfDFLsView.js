@@ -36,6 +36,9 @@ function ReceiptOfDFLsView() {
       .get(baseURL2 + `Receipt/get-info-by-id/${id}`)
       .then((response) => {
         setReceiptOfDFLs(response.data);
+        if (response.data.viewReceipt) {
+          getUploadReceipt(response.data.viewReceipt);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -44,11 +47,59 @@ function ReceiptOfDFLsView() {
       });
   };
 
-  //console.log(Caste);
+  // To get Photo from S3 Bucket
+const [selectedUploadReceipt, setSelectedUploadReceipt] = useState(null);
+
+const getUploadReceipt = async (file) => {
+  const parameters = `fileName=${file}`;
+  try {
+    const response = await api.get(
+      baseURL2 + `v1/api/s3/download?${parameters}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+    const blob = new Blob([response.data]);
+    const url = URL.createObjectURL(blob);
+    setSelectedUploadReceipt(url);
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+};
 
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `v1/api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <Layout title="View Receipt of DFLs Details">
@@ -131,10 +182,34 @@ function ReceiptOfDFLsView() {
                         <td style={styles.ctstyle}>Generation Details:</td>
                         <td>{receiptOfDFLs.generationDetails}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>View Receipt:</td>
-                        <td>{receiptOfDFLs.viewReceipt}</td>
-                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}> Uploaded Receipt:</td>
+                        <td>
+                          {" "}
+                          {selectedUploadReceipt && (
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedUploadReceipt}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(receiptOfDFLs.viewReceipt)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
+                          )}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

@@ -13,6 +13,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function NewReelerLicense() {
   // Virtual Bank Account
@@ -42,6 +43,9 @@ function NewReelerLicense() {
       setValidatedVbAccount(true);
     } else {
       e.preventDefault();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       setVbAccountList((prev) => [...prev, vbAccount]);
       setVbAccount({
         virtualAccountNumber: "",
@@ -84,6 +88,9 @@ function NewReelerLicense() {
       setValidatedVbAccountEdit(true);
     } else {
       e.preventDefault();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       setShowModal2(false);
       setValidatedVbAccountEdit(false);
       setVbAccount({
@@ -98,10 +105,26 @@ function NewReelerLicense() {
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
     setVbAccount({ ...vbAccount, [name]: value });
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    })
+  }
 
   const [data, setData] = useState({
     fruitsId: "",
@@ -166,30 +189,91 @@ function NewReelerLicense() {
     transferReelerId: "0",
   });
 
-  const search = () => {
-    api
-      .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/reeler/get-reeler-details-by-fruits-id",
-        { fruitsId: data.fruitsId }
-        // {
-        //   headers: _header,
-        // }
-      )
-      .then((response) => {
-        // console.log("Hello");
-        if (response.data.content) {
-          const reelerId = response.data.content.reelerResponse.reelerId;
-          navigate(`/seriui/reeler-license-edit/${reelerId}`);
-        } else {
+  const [searchValidated, setSearchValidated] = useState(false);
+  const search = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+      api
+        .post(
+          baseURLFarmer + `reeler/get-reeler-details-by-fruits-id`,
+          { fruitsId: data.fruitsId }
+          // {
+          //   headers: _header,
+          // }
+        )
+        .then((response) => {
+          // console.log("Hello");
+          if (response.data.content) {
+            const reelerId = response.data.content.reelerResponse.reelerId;
+            navigate(`/seriui/reeler-license-edit/${reelerId}`);
+          } else {
+            api
+              .post(
+                baseURLFarmer +
+                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                { fruitsId: data.fruitsId }
+                // {
+                //   headers: _header,
+                // }
+              )
+              .then((result) => {
+                const dump = result.data.content.farmerResponse;
+                let dump1 = "";
+                if (
+                  result.data.content.farmerAddressList &&
+                  result.data.content.farmerAddressList.length
+                ) {
+                  dump1 = result.data.content.farmerAddressList[0];
+                }
+
+                if (dump) {
+                  setData((prev) => ({
+                    ...prev,
+                    // ...result.data.content.farmerResponse,
+                    reelerName: dump.firstName,
+                    fatherName: dump.fatherName,
+                    gender: dump.genderId,
+                    casteId: dump.casteId,
+                    address: dump1 ? dump1.addressText : "",
+                  }));
+                }
+
+                if (result.data.content.error) {
+                  saveError(result.data.content.error_description);
+                }
+                // setFarmerAddressList((prev) => [
+                //   ...prev,
+                //   ...result.data.content.farmerAddressList,
+                // ]);
+                // setFarmerLandList((prev) => [
+                //   ...prev,
+                //   ...result.data.content.farmerLandDetailsList,
+                // ]);
+              })
+              .catch((error) => {});
+          }
+        })
+        .catch((error) => {
           api
             .post(
-              "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
+              baseURLFarmer +
+                `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
               { fruitsId: data.fruitsId }
               // {
               //   headers: _header,
               // }
             )
             .then((result) => {
+              // console.log(result);
+              // console.log("result",result);
               const dump = result.data.content.farmerResponse;
               let dump1 = "";
               if (
@@ -198,7 +282,6 @@ function NewReelerLicense() {
               ) {
                 dump1 = result.data.content.farmerAddressList[0];
               }
-
               if (dump) {
                 setData((prev) => ({
                   ...prev,
@@ -214,65 +297,10 @@ function NewReelerLicense() {
               if (result.data.content.error) {
                 saveError(result.data.content.error_description);
               }
-              // setFarmerAddressList((prev) => [
-              //   ...prev,
-              //   ...result.data.content.farmerAddressList,
-              // ]);
-              // setFarmerLandList((prev) => [
-              //   ...prev,
-              //   ...result.data.content.farmerLandDetailsList,
-              // ]);
             })
             .catch((error) => {});
-        }
-      })
-      .catch((error) => {
-        api
-          .post(
-            "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-            { fruitsId: data.fruitsId }
-            // {
-            //   headers: _header,
-            // }
-          )
-          .then((result) => {
-            // console.log(result);
-            // console.log("result",result);
-            const dump = result.data.content.farmerResponse;
-            let dump1 = "";
-            if (
-              result.data.content.farmerAddressList &&
-              result.data.content.farmerAddressList.length
-            ) {
-              dump1 = result.data.content.farmerAddressList[0];
-            }
-            if (dump) {
-              setData((prev) => ({
-                ...prev,
-                // ...result.data.content.farmerResponse,
-                reelerName: dump.firstName,
-                fatherName: dump.fatherName,
-                gender: dump.genderId,
-                casteId: dump.casteId,
-                address: dump1 ? dump1.addressText : "",
-              }));
-            }
-
-            if (result.data.content.error) {
-              saveError(result.data.content.error_description);
-            }
-
-            // setFarmerAddressList((prev) => [
-            //   ...prev,
-            //   ...result.data.content.farmerAddressList,
-            // ]);
-            // setFarmerLandList((prev) => [
-            //   ...prev,
-            //   ...result.data.content.farmerLandDetailsList,
-            // ]);
-          })
-          .catch((error) => {});
-      });
+        });
+    }
   };
 
   let name, value;
@@ -280,6 +308,31 @@ function NewReelerLicense() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      console.log("hellohello");
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -293,9 +346,42 @@ function NewReelerLicense() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+
+      if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      const FormDob = dateFormatter(data.dob);
+      const FormDateOfMachineInstallation = dateFormatter(
+        data.dateOfMachineInstallation
+      );
+      const FormInspectionDate = dateFormatter(data.inspectionDate);
+      const FormLicenseExpiryDate = dateFormatter(data.licenseExpiryDate);
+      const FormReceiptDate = dateFormatter(data.receiptDate);
+      const FormLicenseRenewalDate = dateFormatter(data.licenseRenewalDate);
+
       api
-        .post(baseURL + `reeler/add`, data)
+        .post(baseURL + `reeler/add`, {
+          ...data,
+          dob: FormDob,
+          dateOfMachineInstallation: FormDateOfMachineInstallation,
+          inspectionDate: FormInspectionDate,
+          licenseExpiryDate: FormLicenseExpiryDate,
+          receiptDate: FormReceiptDate,
+          licenseRenewalDate: FormLicenseRenewalDate,
+        })
         .then((response) => {
+          if (response.data.content.reelerId) {
+            const mahajarId = response.data.content.reelerId;
+            handleMahajarUpload(mahajarId);
+          }
           if (response.data.content.error) {
             const reelerError = response.data.content.error_description;
             saveReelerError(reelerError);
@@ -333,7 +419,7 @@ function NewReelerLicense() {
           }
         })
         .catch((err) => {
-          setData({});
+          // setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
@@ -534,6 +620,57 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
+  // to get TSC
+  const [chawkiListData, setChawkiListData] = useState([]);
+
+  const getChawkiList = () => {
+    const response = api
+      .get(baseURL2 + `tscMaster/get-all`)
+      .then((response) => {
+        setChawkiListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setChawkiListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getChawkiList();
+  }, []);
+
+  // Display Image
+  const [mahajar, setMahajar] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleMahajarChange = (e) => {
+    const file = e.target.files[0];
+    setMahajar(file);
+    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleMahajarUpload = async (reelerid) => {
+    const parameters = `reelerId=${reelerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", mahajar);
+
+      const response = await api.post(
+        baseURL + `reeler/upload-document?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   const navigate = useNavigate();
   const saveSuccess = (arn) => {
     Swal.fire({
@@ -601,6 +738,21 @@ function NewReelerLicense() {
     setDocument(file);
   };
 
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getFullYear() +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getDate().toString().padStart(2, "0")
+      );
+    } else {
+      return "";
+    }
+  };
+
   return (
     <Layout title="Reeler License">
       <Block.Head>
@@ -635,55 +787,53 @@ function NewReelerLicense() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
+        <Form noValidate validated={searchValidated} onSubmit={search}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group" controlId="fid">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      FRUITS ID<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        type="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        placeholder="Enter FRUITS ID"
+                        maxLength="16"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID Should Contain 16 digits.
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                        target="_blank"
+                        // onClick={search}
+                      >
+                        Generate FRUITS ID
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={search}
-                        >
-                          Search
-                        </Button>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-
             <Block className="mt-3">
               <Card>
                 <Card.Header>Reeler Personal info</Card.Header>
@@ -768,20 +918,30 @@ function NewReelerLicense() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.casteId === undefined || data.casteId === "0"
+                            }
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="">Select Caste</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -795,12 +955,14 @@ function NewReelerLicense() {
                             name="mobileNumber"
                             value={data.mobileNumber}
                             onChange={handleInputs}
-                            type="text"
+                            maxLength="10"
+                            type="tel"
                             placeholder="Enter Mobile Number"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required
+                            Mobile Number is required or Number is greater than
+                            and less than 10 Digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -834,25 +996,38 @@ function NewReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
+                      
                       {/* <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="arnNumber">
-                          ARN Number<span className="text-danger">*</span>
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Control
-                            id="arnNumber"
-                            name="arnNumber"
-                            value={data.arnNumber}
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
                             onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter ARN Number"
+                            onBlur={() => handleInputs}
                             required
-                          />
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {chawkiListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            ARN Number is required.
+                            TSC is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group> */}
+                    {/* </Col> */}
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerNumber">
                           Reeler Number<span className="text-danger">*</span>
@@ -1152,6 +1327,7 @@ function NewReelerLicense() {
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
+                            // maxDate={new Date()}
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
@@ -1175,30 +1351,33 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
+                      {/* <Col lg="4"> */}
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="mahajar">
-                          Upload Mahajar Details
+                        <Form.Label htmlFor="trUploadPath">
+                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
+                            type="file"
                             id="mahajarDetails"
                             name="mahajarDetails"
-                            value={data.mahajarDetails}
-                            // onChange={handleInputs}
-                            type="file"
-                            accept=".pdf, .doc, .docx"
-                            onChange={handleDocumentChange}
+                            // value={data.photoPath}
+                            onChange={handleMahajarChange}
                           />
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3 ">
-                        {document ? (
-                          <p>Selected Document: {document.name}</p>
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
                         ) : (
                           ""
                         )}
                       </Form.Group>
+                      {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
@@ -1467,7 +1646,7 @@ function NewReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1489,7 +1668,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
                           <span className="text-danger">*</span>
@@ -1512,7 +1691,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others
                         </Form.Label>
@@ -1530,7 +1709,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1546,7 +1725,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1562,18 +1741,11 @@ function NewReelerLicense() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Receipt Date</Form.Label>
-                        <Row>
-                          <Col lg="6">
                             <div className="form-control-wrap">
-                              {/* <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
-                            }
-                          /> */}
+                             
                               <DatePicker
                                 selected={data.receiptDate}
                                 onChange={(date) =>
@@ -1587,14 +1759,11 @@ function NewReelerLicense() {
                                 className="form-control"
                               />
                             </div>
-                          </Col>
-                        </Row>
-                        {/* </Form.Group> */}
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      {/* <Form.Group className="form-group"> */}
-                      <Form.Label>License Expiry Date</Form.Label>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>License Expiry Date</Form.Label>
                       <div className="form-control-wrap">
                         <DatePicker
                           selected={data.licenseExpiryDate}
@@ -1610,7 +1779,8 @@ function NewReelerLicense() {
                           className="form-control"
                         />
                       </div>
-                    </Col>
+                      </Form.Group>
+                      </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -1622,7 +1792,7 @@ function NewReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1644,7 +1814,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1666,7 +1836,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1688,7 +1858,7 @@ function NewReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>
@@ -1792,12 +1962,13 @@ function NewReelerLicense() {
                             name="ifscCode"
                             value={data.ifscCode}
                             onChange={handleInputs}
+                            maxLength="11"
                             type="text"
                             placeholder="Enter IFSC Code"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1993,11 +2164,12 @@ function NewReelerLicense() {
                       value={vbAccount.ifscCode}
                       onChange={handleVbInputs}
                       type="text"
+                      maxLength="11"
                       placeholder="Enter IFSC Code"
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      IFSC Code is required
+                      IFSC Code is required and equals to 11 digit
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

@@ -65,9 +65,34 @@ function NewTraderLicense() {
         .post(baseURL2 + `trader-license/add`, data)
         .then((response) => {
           saveSuccess();
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+          setData({
+            arnNumber: "",
+            traderTypeMasterId: "",
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            fatherName: "",
+            districtId: "",
+            stateId: "",
+            address: "",
+            premisesDescription: "",
+            applicationDate: "2023-11-09T12:59:58.303+00:00",
+            applicationNumber: "",
+            traderLicenseNumber: "",
+            representativeDetails: "",
+            licenseFee: "",
+            licenseChallanNumber: "",
+            godownDetails: "",
+            silkExchangeMahajar: "",
+            licenseNumberSequence: "", 
+          });
+          setValidated(false);
+        }
         })
         .catch((err) => {
-          setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
@@ -76,24 +101,29 @@ function NewTraderLicense() {
     }
   };
 
-  // const postData = (e) => {
-  //   console.log("Data to be sent:", data);
-  //   axios
-  //     .post(baseURL2 + `trader-license/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       console.log("Response from server:", response.data);
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error from server:", err);
-  //       console.log("Detailed error response:", err.response); // Log the detailed error response
-  //       setData({}); // You might want to handle the error and state appropriately
-  //       saveError();
-  //     });
-  // };
-
+  const clear = () => {
+    setData({
+      arnNumber: "",
+      traderTypeMasterId: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      fatherName: "",
+      districtId: "",
+      stateId: "",
+      address: "",
+      premisesDescription: "",
+      applicationDate: "2023-11-09T12:59:58.303+00:00",
+      applicationNumber: "",
+      traderLicenseNumber: "",
+      representativeDetails: "",
+      licenseFee: "",
+      licenseChallanNumber: "",
+      godownDetails: "",
+      silkExchangeMahajar: "",
+      licenseNumberSequence: "", 
+    });
+  };
   // to get traderType Unit
   const [traderTypeListData, setTraderTypeListData] = useState([]);
 
@@ -157,9 +187,7 @@ function NewTraderLicense() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/seriui/issue-new-trader-license-list");
-    });
+    })
   };
   const saveError = (message) => {
     let errorMessage;
@@ -497,12 +525,9 @@ function NewTraderLicense() {
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/issue-new-trader-license-list"
-                    className="btn btn-secondary border-0"
-                  >
-                    Cancel
-                  </Link>
+                <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                 </li>
               </ul>
             </div>

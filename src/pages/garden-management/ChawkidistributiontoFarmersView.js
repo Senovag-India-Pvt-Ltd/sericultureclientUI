@@ -124,12 +124,16 @@ function ChawkidistributiontoFarmersView() {
                         <td>{chawkiManagement.numbersOfDfls}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number (of the RSP):</td>
+                        <td style={styles.ctstyle}>Lot Number:</td>
                         <td>{chawkiManagement.lotNumberRsp}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot No. (CRC):</td>
-                        <td>{chawkiManagement.lotNumberCrc}</td>
+                        <td style={styles.ctstyle}>Sold after 1st/2nd/3rd Moult :</td>
+                        <td>{chawkiManagement.soldAfter1stOr2ndMould}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Tsc :</td>
+                        <td>{chawkiManagement.tscName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> State:</td>

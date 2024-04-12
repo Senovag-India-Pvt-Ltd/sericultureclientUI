@@ -413,25 +413,25 @@ function RearingofDFLsforthe8Lines() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2"> Rearing of DFLs for the 8 lines</Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Rearing of DFLs for the 8 lines
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -440,7 +440,7 @@ function RearingofDFLsforthe8Lines() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -540,29 +540,48 @@ function RearingofDFLsforthe8Lines() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Laid on (L/O) date
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group ">
                               <Form.Label> Released on</Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
@@ -597,24 +616,50 @@ function RearingofDFLsforthe8Lines() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Spun on date
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Worm test dates and results
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
@@ -649,21 +694,34 @@ function RearingofDFLsforthe8Lines() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="12" className="text-center">
-                            <Button type="button" variant="primary">
-                              {" "}
-                              Submit{" "}
-                            </Button>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Cold storage details
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Cold storage details"
+                                />
+                              </div>
+                            </Form.Group>
                           </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button type="button" variant="primary">
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -731,7 +789,7 @@ function RearingofDFLsforthe8Lines() {
                       </Row>
                     </Card.Body>
                   </Card>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

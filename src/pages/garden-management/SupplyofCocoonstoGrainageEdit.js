@@ -216,7 +216,7 @@ function SupplyofCocoonstoGrainage() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                      Lot Number<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -225,6 +225,7 @@ function SupplyofCocoonstoGrainage() {
                           value={data.lotNumberId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Lot Number</option>
                           {lotNumberListData.map((list) => (
@@ -233,6 +234,9 @@ function SupplyofCocoonstoGrainage() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
@@ -257,7 +261,7 @@ function SupplyofCocoonstoGrainage() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                        Number of Cocoons Dispatched
+                        Number of Cocoons Dispatched(Kg/Grams)<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -266,83 +270,17 @@ function SupplyofCocoonstoGrainage() {
                           value={data.numberOfCocoonsDispatched}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Number of Cocoons Dispatched"
+                          placeholder="Enter Number of Cocoons Dispatched(Kg/Grams)"
+                          required
                         />
+                         <Form.Control.Feedback type="invalid">
+                         Number of Cocoons Dispatched is required
+                      </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Generation details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
-                          name="generationDetails"
-                          value={data.generationDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Generation details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Genarate Invoice</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generateInvoice"
-                          name="generateInvoice"
-                          value={data.generateInvoice}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Genarate Invoice"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">View Reciept</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="viewReciept"
-                          name="viewReciept"
-                          value={data.viewReciept}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="View Reciept"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Spun on date</Form.Label>
-                      <div className="form-control-wrap">
-                        {isDataSpunSet && (
-                          <DatePicker
-                            selected={new Date(data.spunOnDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "spunOnDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                  
 
                   <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -356,6 +294,7 @@ function SupplyofCocoonstoGrainage() {
                           value={data.grainageId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Grainage</option>
                           {grainageListData.map((list) => (
@@ -367,6 +306,9 @@ function SupplyofCocoonstoGrainage() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                         Grainage is required
+                      </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
@@ -374,7 +316,7 @@ function SupplyofCocoonstoGrainage() {
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Dispatch Date</Form.Label>
+                      <Form.Label htmlFor="sordfl">Dispatch Date<span className="text-danger">*</span></Form.Label>
                       <div className="form-control-wrap">
                         {isDataDispatchSet && (
                           <DatePicker
@@ -388,6 +330,7 @@ function SupplyofCocoonstoGrainage() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            required
                           />
                         )}
                       </div>

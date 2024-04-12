@@ -48,7 +48,15 @@ function ReelerLicenceEdit() {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () => {
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    });
+    setShowModal(true);
+  };
   const handleCloseModal = () => setShowModal(false);
 
   const handleAdd = (event) => {
@@ -63,7 +71,9 @@ function ReelerLicenceEdit() {
       setValidatedVbAccount(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+        return;
+      }
       api
         .post(baseURL + `reeler-virtual-bank-account/add`, withReelerId)
         .then((response) => {
@@ -127,7 +137,7 @@ function ReelerLicenceEdit() {
   //   const [vb, setVb] = useState({});
   const handleVbGet = (i) => {
     api
-      .get(baseURL + `reeler-virtual-bank-account/get/${i}`)
+      .get(baseURL + `reeler-virtual-bank-account/get-join/${i}`)
       .then((response) => {
         setVbAccount(response.data.content);
         setShowModal2(true);
@@ -161,6 +171,14 @@ function ReelerLicenceEdit() {
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
     setVbAccount({ ...vbAccount, [name]: value });
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -179,6 +197,30 @@ function ReelerLicenceEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -195,36 +237,33 @@ function ReelerLicenceEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+
+      if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
       api
         .post(baseURL + `reeler/edit`, data)
         .then((response) => {
-          // if (vbAccountList.length > 0) {
-          //   const reelerId = response.data.content.reelerId;
-          //   vbAccountList.forEach((list) => {
-          //     const updatedVb = {
-          //       ...list,
-          //       reelerId: reelerId,
-          //     };
-          //     axios
-          //       .post(baseURL + `reeler-virtual-bank-account/edit`, updatedVb, {
-          //         headers: _header,
-          //       })
-          //       .then((response) => {
-          //         updateSuccess();
-          //       })
-          //       .catch((err) => {
-          //         setVbAccount({});
-          //         updateError();
-          //       });
-          //   });
-          // } else {
-          //   updateSuccess();
-          // }
-          updateSuccess();
+          const reelerId = response.data.content.reelerId;
+          if (reelerId) {
+            handleMahajarUpload(reelerId);
+          }
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setValidated(false);
+          }
         })
         .catch((err) => {
-          setData({});
+          // setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
@@ -241,11 +280,14 @@ function ReelerLicenceEdit() {
       .then((response) => {
         setData(response.data.content);
         // setLoading(false);
+        if (response.data.content.mahajarDetails) {
+          getMahajarFile(response.data.content.mahajarDetails);
+        }
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         // setLoading(false);
       });
   };
@@ -447,6 +489,97 @@ function ReelerLicenceEdit() {
     getMarketMasterList();
   }, []);
 
+  // to get TSC
+  const [chawkiListData, setChawkiListData] = useState([]);
+
+  const getChawkiList = () => {
+    const response = api
+      .get(baseURL2 + `tscMaster/get-all`)
+      .then((response) => {
+        setChawkiListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setChawkiListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getChawkiList();
+  }, []);
+
+  const handleRenewedDateChange = (date) => {
+    console.log(data);
+    console.log(date);
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+    // console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
+
+    setData((prev) => ({
+      ...prev,
+      receiptDate: date,
+      licenseExpiryDate: expirationDate,
+    }));
+
+    // setData(prev=>({
+    //   ...prev,
+    //   // receiptDate: date,
+    //   licenseExpiryDate: date,
+    // }));
+  };
+
+  // Display Image
+  const [mahajar, setMahajar] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  const handleMahajarChange = (e) => {
+    const file = e.target.files[0];
+    setMahajar(file);
+    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleMahajarUpload = async (reelerid) => {
+    const parameters = `reelerId=${reelerid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", mahajar);
+
+      const response = await api.post(
+        baseURL + `reeler/upload-document?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  // To get Photo from S3 Bucket
+  const [selectedMahajarFile, setMahajarFile] = useState(null);
+
+  const getMahajarFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setMahajarFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
   const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
@@ -616,15 +749,22 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>DOB</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dob}
+                            selected={data.dob ? new Date(data.dob) : null}
                             onChange={(date) => handleDateChange(date, "dob")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>Gender</Form.Label>
@@ -643,20 +783,30 @@ function ReelerLicenceEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.casteId === undefined || data.casteId === "0"
+                            }
                           >
-                            <option value="0">Select Caste</option>
+                            <option value="">Select Caste</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
                                 {list.title}
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -670,7 +820,8 @@ function ReelerLicenceEdit() {
                             name="mobileNumber"
                             value={data.mobileNumber}
                             onChange={handleInputs}
-                            type="text"
+                            maxLength="10"
+                            type="tel"
                             placeholder="Enter Mobile Number"
                             required
                           />
@@ -709,7 +860,38 @@ function ReelerLicenceEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group mt-3">
+
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {chawkiListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group> */}
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="arnNumber">
                           ARN Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -727,7 +909,7 @@ function ReelerLicenceEdit() {
                             ARN Number is required.
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
 
                     <Col lg="4">
@@ -862,26 +1044,11 @@ function ReelerLicenceEdit() {
                           />
                         </div>
                       </Form.Group>
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="gpsLat">
-                          GPS Coordinates of reeling unit
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="gpsLat"
-                            name="gpsLat"
-                            value={data.gpsLat}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter GPS Coordinates of reeling unit"
-                          />
-                        </div>
-                      </Form.Group> */}
-                    </Col>
 
-                    <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label>Reeler Type</Form.Label>
+                        <Form.Label>
+                          Reeler Type <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="reelerTypeMasterId"
@@ -904,12 +1071,29 @@ function ReelerLicenceEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Reeler Type is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Reeler Type is required
-                      </Form.Control.Feedback>
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="gpsLat">
+                          GPS Coordinates of reeling unit
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="gpsLat"
+                            name="gpsLat"
+                            value={data.gpsLat}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter GPS Coordinates of reeling unit"
+                          />
+                        </div>
+                      </Form.Group> */}
+                    </Col>
 
+                    <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="chakbandi">
                           GPS Coordinates of reeling unit
@@ -1012,20 +1196,31 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>Date of Machine Installation</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dateOfMachineInstallation}
+                            selected={
+                              data.dateOfMachineInstallation
+                                ? new Date(data.dateOfMachineInstallation)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(
                                 date,
                                 "dateOfMachineInstallation"
                               )
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="numberOfBasins">
@@ -1044,31 +1239,6 @@ function ReelerLicenceEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="mahajar">
-                          Upload Mahajar Details
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="mahajarDetails"
-                            name="mahajarDetails"
-                            // value={data.mahajarDetails}
-                            // onChange={handleInputs}
-                            type="file"
-                            accept=".pdf, .doc, .docx"
-                            onChange={handleDocumentChange}
-                          />
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3 ">
-                        {document ? (
-                          <p>Selected Document: {document.name}</p>
-                        ) : (
-                          ""
-                        )}
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="loanDetails">
                           Loan Details
                         </Form.Label>
@@ -1084,17 +1254,60 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>Inspection Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.inspectionDate}
+                            selected={
+                              data.inspectionDate
+                                ? new Date(data.inspectionDate)
+                                : null
+                            }
                             onChange={(date) =>
                               handleDateChange(date, "inspectionDate")
                             }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="photoPath">
+                          Upload Mahajar Details(Pdf/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="mahajarDetails"
+                            name="mahajarDetails"
+                            // value={data.trUploadPath}
+                            onChange={handleMahajarChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {mahajar ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(mahajar)}
+                          />
+                        ) : (
+                          selectedMahajarFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedMahajarFile}
+                              alt="Selected File"
+                            />
+                          )
+                        )}
+                      </Form.Group>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -1321,7 +1534,7 @@ function ReelerLicenceEdit() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="recipientId">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1340,20 +1553,10 @@ function ReelerLicenceEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label>Receipt Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
-                            }
-                          />
-                        </div>
-                      </Form.Group> */}
-
-                      <Form.Group className="form-group mt-3">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
                           <span className="text-danger">*</span>
@@ -1373,8 +1576,10 @@ function ReelerLicenceEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group mt-3">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others
                         </Form.Label>
@@ -1392,19 +1597,23 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label>License Expiry Date</Form.Label>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.licenseExpiryDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "licenseExpiryDate")
-                            }
+                          <Form.Control
+                            id="feeAmount"
+                            name="feeAmount"
+                            value={data.feeAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Fee Amount"
                           />
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1418,16 +1627,53 @@ function ReelerLicenceEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
+                    </Col>
+
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Receipt Date</Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Control
-                            id="feeAmount"
-                            name="feeAmount"
-                            value={data.feeAmount}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Fee Amount"
+                          <DatePicker
+                            selected={
+                              data.receiptDate
+                                ? new Date(data.receiptDate)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleRenewedDateChange(date, "receiptDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>License Expiry Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={
+                              data.licenseExpiryDate
+                                ? new Date(data.licenseExpiryDate)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleDateChange(date, "licenseExpiryDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            readOnly
                           />
                         </div>
                       </Form.Group>
@@ -1443,7 +1689,7 @@ function ReelerLicenceEdit() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1465,7 +1711,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1487,7 +1733,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1509,7 +1755,7 @@ function ReelerLicenceEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>
@@ -1613,12 +1859,13 @@ function ReelerLicenceEdit() {
                             name="ifscCode"
                             value={data.ifscCode}
                             onChange={handleInputs}
+                            maxLength="11"
                             type="text"
                             placeholder="Enter IFSC Code"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC Code is required and equals to 11 digit
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1822,11 +2069,12 @@ function ReelerLicenceEdit() {
                       value={vbAccount.ifscCode}
                       onChange={handleVbInputs}
                       type="text"
+                      maxLength="11"
                       placeholder="Enter IFSC Code"
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      IFSC Code is required
+                      IFSC Code is required and equals to 11 digit
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

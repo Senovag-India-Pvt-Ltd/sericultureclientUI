@@ -15,6 +15,8 @@ import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+
 
 function ReceiptofDFLsfromthegrainage() {
   const [data, setData] = useState({
@@ -55,6 +57,10 @@ function ReceiptofDFLsfromthegrainage() {
       api
         .post(baseURL2 + `Receipt/add-info`, data)
         .then((response) => {
+          if (response.data.receiptOfDflsId) {
+            const receiptId = response.data.receiptOfDflsId;
+            handleReceiptUpload(receiptId);
+          }
           if (response.data.error) {
             saveError(response.data.message);
           } else {
@@ -70,6 +76,8 @@ function ReceiptofDFLsfromthegrainage() {
               generationDetails: "",
               viewReceipt: "",
             });
+            setReceiptUpload("")
+document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -94,6 +102,8 @@ function ReceiptofDFLsfromthegrainage() {
       generationDetails: "",
       viewReceipt: "",
     });
+    setReceiptUpload("")
+    document.getElementById("viewReceipt").value = "";
   };
 
   const handleDateChange = (date, type) => {
@@ -154,49 +164,37 @@ function ReceiptofDFLsfromthegrainage() {
     getGenerationList();
   }, []);
 
-  const postDataReceipt = (event) => {
-    const { marketId, godownId, allottedLotId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
-      "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      newDate.getDate().toString().padStart(2, "0");
+ 
 
-    const form = event.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    // } else {
-    //   event.preventDefault();
-    // event.stopPropagation();
-    api
-      .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+  // Display Image
+  const [receiptUpload, setReceiptUpload] = useState("");
+ 
+  const handleUploadChange = (e) => {
+    const file = e.target.files[0];
+    setReceiptUpload(file);
+    setData((prev) => ({ ...prev, viewReceipt: file.name }));
+  };
+
+  // Upload Image to S3 Bucket
+  const handleReceiptUpload = async (receiptid) => {
+    const parameters = `receiptOfDflsId=${receiptid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", receiptUpload);
+
+      const response = await api.post(
+        baseURL2 + `Receipt/upload-reciept?${parameters}`,
+        formData,
         {
-          marketId: marketId,
-          godownId: godownId,
-          allottedLotId: allottedLotId,
-          auctionDate: formattedDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      )
-      .then((response) => {
-        //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
-      })
-      .catch((error) => {
-        // console.log("error", error);
-      });
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
   };
 
   const navigate = useNavigate();
@@ -278,6 +276,7 @@ function ReceiptofDFLsfromthegrainage() {
                           value={data.raceOfDfls}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Race</option>
                           {raceListData.map((list) => (
@@ -289,6 +288,9 @@ function ReceiptofDFLsfromthegrainage() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Race is required
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
@@ -306,6 +308,7 @@ function ReceiptofDFLsfromthegrainage() {
                           value={data.grainage}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Grainage</option>
                           {grainageListData.map((list) => (
@@ -317,6 +320,9 @@ function ReceiptofDFLsfromthegrainage() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Grainage is required
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
@@ -333,21 +339,23 @@ function ReceiptofDFLsfromthegrainage() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
+                        maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    Lot Number is required
-                  </Form.Control.Feedback>
                 </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                       Number Of DFLs received
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -355,16 +363,23 @@ function ReceiptofDFLsfromthegrainage() {
                         name="numberOfDFLsReceived"
                         value={data.numberOfDFLsReceived}
                         onChange={handleInputs}
+                        maxLength="4"
                         type="text"
                         placeholder="Enter Number Of DFLs received"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        Number Of DFLs is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="invoiceDetails">Invoice No</Form.Label>
+                    <Form.Label htmlFor="invoiceDetails">
+                      Invoice No<span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
                         id="invoiceDetails"
@@ -373,7 +388,11 @@ function ReceiptofDFLsfromthegrainage() {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Invoice No"
+                        required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        Invoice Details is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
@@ -390,6 +409,7 @@ function ReceiptofDFLsfromthegrainage() {
                           value={data.generationDetails}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
+                          required
                         >
                           <option value="">Select Generation Details</option>
                           {generationListData.map((list) => (
@@ -401,47 +421,88 @@ function ReceiptofDFLsfromthegrainage() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Generation Details is required
+                        </Form.Control.Feedback>
                       </div>
                     </Col>
                   </Form.Group>
                 </Col>
 
-                <Form.Label column sm={2}>
-                  Laid On Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.laidOnDate}
-                      onChange={(date) => handleDateChange(date, "laidOnDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                    />
-                  </div>
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Laid On Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.laidOnDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "laidOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
                 </Col>
 
-                <Form.Label column sm={2}>
-                  DFLs received Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                <Col sm={2}>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.dflsRecDate}
-                      onChange={(date) => handleDateChange(date, "dflsRecDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                    />
-                  </div>
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      DFLs received Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.dflsRecDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "dflsRecDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="fileUploadPath">
+                      Upload Receipt(png/jpg/pdf)(Max:2mb)
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id="viewReceipt"
+                        name="viewReceipt"
+                        // value={data.photoPath}
+                        onChange={handleUploadChange}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {receiptUpload ? (
+                      <img
+                        style={{ height: "100px", width: "100px" }}
+                        src={URL.createObjectURL(receiptUpload)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </Form.Group>
                 </Col>
               </Row>
             </Card.Body>

@@ -17,6 +17,8 @@ import api from "../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BiddingSlip() {
   const [farmerDetails, setFarmerDetails] = useState({});
@@ -34,6 +36,7 @@ function BiddingSlip() {
   ];
 
   const [validated, setValidated] = useState(false);
+  const [validatedDisplay, setValidatedDisplay] = useState(false);
 
   const [isActive, setIsActive] = useState(false);
   const [bank, setBank] = useState({
@@ -47,115 +50,139 @@ function BiddingSlip() {
 
   console.log(farmer);
 
-  const display = () => {
+  const display = (event) => {
     // const fruitsId = farmer.fruitsId;
     // const { fruitsId, farmerNumber, mobileNumber } = farmer;
     // if (fruitsId) {
-    setData({
-      farmerId: "",
-      sourceMasterId: "",
-      raceMasterId: "",
-      dflCount: "",
-      estimatedWeight: "",
-      numberOfLot: "",
-      numberOfSmallBin: "",
-      numberOfBigBin: "",
-      marketId: localStorage.getItem("marketId"),
-      godownId: localStorage.getItem("godownId"),
-    });
-    setFarmerNumber("");
-    setValidated(false);
-    setFarmerDetails({});
-    setFarmerAddress({});
-    setBank({
-      farmerBankName: "",
-      farmerBankAccountNumber: "",
-      farmerBankBranchName: "",
-      farmerBankIfscCode: "",
-    });
-    setAllotedLotList([]);
-    setBigBinList([]);
-    setSmallBinList([]);
 
-    const { text, select } = farmer;
-    let sendData;
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedDisplay(true);
+    } else {
+      event.preventDefault();
 
-    if (select === "mobileNumber") {
-      sendData = {
-        mobileNumber: text,
-      };
-    }
-    if (select === "fruitsId") {
-      sendData = {
-        fruitsId: text,
-      };
-    }
-    if (select === "farmerNumber") {
-      sendData = {
-        farmerNumber: text,
-      };
-    }
+      setData({
+        farmerId: "",
+        sourceMasterId: "",
+        raceMasterId: "",
+        dflCount: "",
+        estimatedWeight: "",
+        numberOfLot: "",
+        numberOfSmallBin: "",
+        numberOfBigBin: "",
+        marketId: localStorage.getItem("marketId"),
+        godownId: localStorage.getItem("godownId")
+          ? localStorage.getItem("godownId")
+          : 0,
+      });
+      setFarmerNumber("");
+      setValidatedDisplay(false);
+      setFarmerDetails({});
+      setFarmerAddress({});
+      setBank({
+        farmerBankName: "",
+        farmerBankAccountNumber: "",
+        farmerBankBranchName: "",
+        farmerBankIfscCode: "",
+      });
+      setAllotedLotList([]);
+      setBigBinList([]);
+      setSmallBinList([]);
 
-    setLoading(true);
+      const { text, select } = farmer;
+      let sendData;
 
-    api
-      .post(
-        "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-        sendData
-      )
-      .then((response) => {
-        if (!response.data.content.error) {
-          const farmerResponse = response.data.content.farmerResponse;
-          setFarmerNumber(farmerResponse.farmerNumber);
-          console.log("Response:", response.data.content.farmerResponse);
-          // console.log("hello",response);
-          const res = response.data.content.farmerBankAccount;
-          setFarmerDetails(response.data.content.farmerResponse);
-          setFarmerAddress(response.data.content.farmerAddressDTOList);
-          setData((prev) => {
-            return {
-              ...prev,
-              farmerId: response.data.content.farmerResponse.farmerId,
-            };
-          });
-          setLoading(false);
-          setIsActive(true);
-          if (res) {
-            setBank({
-              farmerBankName:
-                response.data.content.farmerBankAccount.farmerBankName,
-              farmerBankAccountNumber:
-                response.data.content.farmerBankAccount.farmerBankAccountNumber,
-              farmerBankBranchName:
-                response.data.content.farmerBankAccount.farmerBankBranchName,
-              farmerBankIfscCode:
-                response.data.content.farmerBankAccount.farmerBankIfscCode,
+      if (select === "mobileNumber") {
+        sendData = {
+          mobileNumber: text,
+        };
+      }
+      if (select === "fruitsId") {
+        sendData = {
+          fruitsId: text,
+        };
+      }
+      if (select === "farmerNumber") {
+        sendData = {
+          farmerNumber: text,
+        };
+      }
+
+      setLoading(true);
+
+      api
+        .post(
+          baseURLFarmer +
+            `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+          sendData
+        )
+        .then((response) => {
+          if (!response.data.content.error) {
+            const farmerResponse = response.data.content.farmerResponse;
+            setFarmerNumber(farmerResponse.farmerNumber);
+            console.log("Response:", response.data.content.farmerResponse);
+            // console.log("hello",response);
+            const res = response.data.content.farmerBankAccount;
+            setFarmerDetails(response.data.content.farmerResponse);
+            setFarmerAddress(response.data.content.farmerAddressList);
+            setData((prev) => {
+              return {
+                ...prev,
+                farmerId: response.data.content.farmerResponse.farmerId,
+              };
+            });
+            setLoading(false);
+            setIsActive(true);
+            if (res) {
+              setBank({
+                farmerBankName:
+                  response.data.content.farmerBankAccount.farmerBankName,
+                farmerBankAccountNumber:
+                  response.data.content.farmerBankAccount
+                    .farmerBankAccountNumber,
+                farmerBankBranchName:
+                  response.data.content.farmerBankAccount.farmerBankBranchName,
+                farmerBankIfscCode:
+                  response.data.content.farmerBankAccount.farmerBankIfscCode,
+              });
+            }
+          } else {
+            searchError(response.data.content.error_description);
+          }
+
+          //   // Logs after updating state
+          // console.log('After updating state - farmerDetails:', farmerDetails);
+          // console.log('After updating state - Bank Name:', farmerDetails && farmerDetails.farmerBankName);
+        })
+        .catch((err) => {
+          console.error("Error fetching farmer details:", err);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              searchError(err.response.data.validationErrors);
+            }
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "Details not Found",
             });
           }
-        } else {
-          searchError(response.data.content.error_description);
-        }
-
-        //   // Logs after updating state
-        // console.log('After updating state - farmerDetails:', farmerDetails);
-        // console.log('After updating state - Bank Name:', farmerDetails && farmerDetails.farmerBankName);
-      })
-      .catch((err) => {
-        console.error("Error fetching farmer details:", err);
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          searchError(err.response.data.validationErrors);
-        }
-        setFarmerDetails({});
-        setLoading(false);
-      });
+          setFarmerDetails({});
+          setLoading(false);
+        });
+    }
   };
 
   const increment = (_farmerId) => {
     api
-      .post(
-        baseURL2 + `farmer/update-farmer-without-fruits-id-counter`,
-        {farmerId:_farmerId}
-      )
+      .post(baseURL2 + `farmer/update-farmer-without-fruits-id-counter`, {
+        farmerId: _farmerId,
+      })
       .then((response) => {
         // if (response.data.content.error) {
         //   saveError(response.data.content.error_description);
@@ -198,7 +225,9 @@ function BiddingSlip() {
 
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    godownId: localStorage.getItem("godownId"),
+    godownId: localStorage.getItem("godownId")
+      ? localStorage.getItem("godownId")
+      : 0,
     farmerId: "",
     sourceMasterId: "",
     raceMasterId: "",
@@ -277,7 +306,8 @@ function BiddingSlip() {
     } else {
       event.preventDefault();
       try {
-        const response = await api.post(baseURL + `auction/allot`, data);
+        const addGodown = localStorage.getItem("godownId")?localStorage.getItem("godownId"):0;
+        const response = await api.post(baseURL + `auction/allot`, {...data,godownId:addGodown});
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
           increment(response.data.content.farmerId);
@@ -504,7 +534,7 @@ function BiddingSlip() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/getfarmercopy-kannada`,
+        baseURLReport + `getfarmercopy-kannada`,
         {
           marketId: data.marketId,
           godownId: data.godownId,
@@ -519,6 +549,17 @@ function BiddingSlip() {
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // const printWindow = window.open(fileURL);
+      // if (printWindow) {
+      //   printWindow.onload = () => {
+      //     printWindow.print();
+      //   };
+      // } else {
+      //   console.error("Failed to open the print window.");
+      // }
     } catch (error) {
       // console.log("error", error);
     }
@@ -653,14 +694,13 @@ function BiddingSlip() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  {/* <Col lg="12">
+        <Form noValidate validated={validatedDisplay} onSubmit={display}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                {/* <Col lg="12">
                     <Form.Group as={Row} className="form-group" id="fid">
                       <Form.Label column sm={3}>
                         FRUITS ID / FARMER NUMBER<span className="text-danger">*</span>
@@ -675,75 +715,84 @@ function BiddingSlip() {
                           placeholder="Enter FRUITS ID / FARMER NUMBER"
                         />
                       </Col> */}
-                  <Col sm={12}>
-                    <Form.Group as={Row} className="form-group" id="fid">
-                      <Form.Label column sm={2}>
-                        Search Farmer Details By
-                      </Form.Label>
-                      <Col sm={2}>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="select"
-                            value={farmer.select}
-                            onChange={handleFarmerIdInputs}
-                          >
-                            {/* <option value="">Select</option> */}
-                            <option value="mobileNumber">Mobile Number</option>
-                            <option value="fruitsId">Fruits Id</option>
-                            <option value="farmerNumber">Farmer Number</option>
-                          </Form.Select>
-                        </div>
-                      </Col>
-
-                      <Col sm={3}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="text"
-                          value={farmer.text}
+                <Col sm={8} lg={12}>
+                  <Form.Group as={Row} className="form-group" id="fid">
+                    <Form.Label column sm={1} lg={2}>
+                      Search Farmer Details By
+                    </Form.Label>
+                    <Col sm={1} lg={2}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="select"
+                          value={farmer.select}
                           onChange={handleFarmerIdInputs}
-                          type="text"
-                          placeholder="Search"
-                        />
-                      </Col>
-                      <Col sm={3}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={display}
                         >
-                          Search
-                        </Button>
-                      </Col>
-                      <Col sm={2} style={{ marginLeft: "-280px" }}>
-                        <Link
-                          to="/seriui/stake-holder-registration"
-                          className="btn btn-primary border-0"
-                        >
-                          Add New
-                        </Link>
-                      </Col>
-                      <Col sm={2}>
-                        <Form.Group as={Row} className="form-group" id="date">
-                          <Form.Label column sm={3}>
-                            Date
-                          </Form.Label>
-                          <Col sm={2}>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                dateFormat="dd/MM/yyyy"
-                                selected={new Date()}
-                                readOnly
-                              />
-                            </div>
-                          </Col>
-                        </Form.Group>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                          {/* <option value="">Select</option> */}
+                          <option value="mobileNumber">Mobile Number</option>
+                          <option value="fruitsId">Fruits Id</option>
+                          <option value="farmerNumber">Farmer Number</option>
+                        </Form.Select>
+                      </div>
+                    </Col>
 
+                    <Col sm={2} lg={2}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="text"
+                        value={farmer.text}
+                        onChange={handleFarmerIdInputs}
+                        type="text"
+                        placeholder="Search"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Field Value is Required
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2} lg={3}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
+                    <Col sm={1} lg={2} style={{ marginLeft: "-15%" }}>
+                      <Link
+                        to="/seriui/stake-holder-registration"
+                        className="btn btn-primary border-0"
+                      >
+                        Add New
+                      </Link>
+                    </Col>
+                    <Col sm={1} lg={3} style={{ marginLeft: "-5%" }}>
+                      <Form.Group as={Row} className="form-group" id="date">
+                        <Form.Label column sm={2} lg={3}>
+                          Date
+                        </Form.Label>
+                        <Col sm={1} lg={1} style={{ marginLeft: "-10%" }}>
+                          <div className="form-control-wrap">
+                            <DatePicker
+                              dateFormat="dd/MM/yyyy"
+                              selected={new Date()}
+                              // className="form-control"
+                              readOnly
+                            />
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit={postData}
+          className="mt-2"
+        >
+          <Row className="g-3 ">
             <div className={isActive ? "" : "d-none"}>
               <Row className="g-gs">
                 <Col lg="5">
@@ -1368,12 +1417,12 @@ function BiddingSlip() {
                                 <td style={styles.ctstyle}> Aadhaar Number:</td>
                                 <td>{fruitsId.farmerId}</td>
                               </tr> */}
-                              <tr>
+                              {/* <tr>
                                 <td style={styles.ctstyle}> EPIC Number:</td>
                                 <td>
                                   {farmerDetails && farmerDetails.epicNumber}
                                 </td>
-                              </tr>
+                              </tr> */}
                               <tr>
                                 <td style={styles.ctstyle}> Farmer Address:</td>
                                 <td>
@@ -1381,8 +1430,8 @@ function BiddingSlip() {
                                     farmerAddress[0].villageName} */}
                                   {farmerAddress &&
                                     farmerAddress.length > 0 &&
-                                    farmerAddress[0].villageName &&
-                                    farmerAddress[0].villageName}
+                                    farmerAddress[0].addressText &&
+                                    farmerAddress[0].addressText}
                                 </td>
                               </tr>
                             </tbody>

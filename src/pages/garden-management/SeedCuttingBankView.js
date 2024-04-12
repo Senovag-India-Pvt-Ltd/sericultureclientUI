@@ -75,6 +75,36 @@ function SeedCuttingBankView() {
     getIdList();
   }, [id]);
 
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `v1/api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
   return (
     <Layout title="View Seed Cutting Bank Details ">
       <Block.Head>
@@ -156,15 +186,27 @@ function SeedCuttingBankView() {
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}> Challan:</td>
+                        <td style={styles.ctstyle}> Uploaded Challan:</td>
                         <td>
                           {" "}
                           {selectedChallanFile && (
+                            <>
                             <img
                               style={{ height: "100px", width: "100px" }}
                               src={selectedChallanFile}
                               alt="Selected File"
                             />
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(seedCuttingBank.challanUpload)
+                                }
+                              >
+                                Download File
+                              </Button>
+                              </>
                           )}
                         </td>
                       </tr>

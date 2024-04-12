@@ -1,24 +1,104 @@
 .block-head {
-    flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 .flex-left {
-    display: flex;
-    flex-direction: row-reverse;
-    margin-bottom: 5px;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 5px;
 }
 
 .weightmenttable.table > :not(caption) > * > * {
-    padding:0;
-   
+  padding: 0;
 }
-.marginbottom0.table{
- margin-bottom: 0rem !important;
+.marginbottom0.table {
+  margin-bottom: 0rem !important;
 }
 .totalweight.table {
-       font-size: 60px;
-      color:#b50606;
-      background: rgb(248, 248, 249, 1);
-      font-weight:bold; 
-      text-align: center;
+  font-size: 60px;
+  color: #b50606;
+  background: rgb(248, 248, 249, 1);
+  font-weight: bold;
+  text-align: center;
+}
+
+.was-validated .form-control:valid {
+  background-image: none;
+  border-color: #d2d4e4;
+}
+
+.was-validated .form-control:valid:focus,
+.form-control.is-valid:focus {
+  border-color: #d2d4e4;
+  box-shadow: none;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  border-color: #d2d4e4;
+  background-image: none;
+  box-shadow: none;
+}
+
+.was-validated .form-select:valid,
+.form-select.is-valid {
+  border-color: #d2d4e4;
+  box-shadow: none;
+}
+
+.was-validated .form-select:valid:not([multiple]):not([size]),
+.was-validated .form-select:valid:not([multiple])[size="1"],
+.form-select.is-valid:not([multiple]):not([size]),
+.form-select.is-valid:not([multiple])[size="1"] {
+  background-image: none;
+  box-shadow: none;
+  border-color: #d2d4e4;
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.table {
+  overflow: hidden;
+  padding: 60px 0;
+}
+
+.table-slide {
+  white-space: nowrap;
+  animation: 15s slide infinite linear;
+}
+
+.table-slide-50 {
+  white-space: nowrap;
+  animation: 35s slide infinite linear;
+}
+
+.table-slide-100 {
+  white-space: nowrap;
+  animation: 50s slide infinite linear;
+}
+
+.table-slide-150 {
+  white-space: nowrap;
+  animation: 65s slide infinite linear;
+}
+
+.table-slide-200 {
+  white-space: nowrap;
+  animation: 75s slide infinite linear;
+}
+
+.table-slide-500 {
+  white-space: nowrap;
+  animation: 100s slide infinite linear;
+}
+
+.hide {
+  display: none;
 }

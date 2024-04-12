@@ -14,7 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function Race() {
   const [data, setData] = useState({
     raceMasterName: "",
-    marketMasterId: "",
+    marketMasterId: -1,
     raceNameInKannada: "",
   });
 
@@ -47,15 +47,21 @@ function Race() {
             saveSuccess();
             setData({
               raceMasterName: "",
-              marketMasterId: "",
+              marketMasterId: -1,
               raceNameInKannada: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -158,7 +164,7 @@ function Race() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
                         Market<span className="text-danger">*</span>
@@ -190,7 +196,7 @@ function Race() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                   <Col lg="6">
                     <Form.Group className="form-group">

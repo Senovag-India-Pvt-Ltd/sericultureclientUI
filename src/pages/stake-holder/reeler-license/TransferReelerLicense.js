@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DatePicker from "../../../components/Form/DatePicker";
+import DatePicker from "react-datepicker";
 import { Icon, Select } from "../../../components";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -51,8 +51,8 @@ function TransferReelerLicense() {
     talukId: "",
     hobliId: "",
     villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
+    licenseReceiptNumber: null,
+    licenseExpiryDate: null,
     receiptDate: "",
     functionOfUnit: "",
     reelingLicenseNumber: "",
@@ -73,8 +73,11 @@ function TransferReelerLicense() {
     status: "",
     licenseRenewalDate: "",
     transferReelerId: "",
-    reelerNumber:""
+    reelerNumber: "",
   });
+
+  const isExpiryDate = !!data.licenseExpiryDate;
+  const isReceiptDate = !!data.licenseReceiptNumber;
 
   const [existingReelerName, setExistingReelerName] = useState("");
 
@@ -107,7 +110,7 @@ function TransferReelerLicense() {
       api
         .post(baseURL2 + `reeler/transfer-reeler-license`, {
           ...data,
-          transferReelerId: data.reelingLicenseNumber,
+          transferReelerId: data.reelerId,
         })
         .then((response) => {
           if (!response.data.content.error) {
@@ -121,9 +124,11 @@ function TransferReelerLicense() {
           }
         })
         .catch((err) => {
-          setData({});
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          // setData({});
+          if (err.response && err.response.data) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -148,7 +153,7 @@ function TransferReelerLicense() {
         }
       })
       .catch((err) => {
-        setData({});
+        // setData({});
         setLoading(false);
       });
     setIsActive((current) => !current);
@@ -172,7 +177,7 @@ function TransferReelerLicense() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -361,6 +366,22 @@ function TransferReelerLicense() {
   useEffect(() => {
     getRelationshipList();
   }, []);
+
+  const handleRenewedDateChange = (date) => {
+    // Calculate expiration date by adding 3 years to the renewed date
+    const expirationDate = new Date(date);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+
+    setData({
+      ...data,
+      receiptDate: date,
+      licenseExpiryDate: expirationDate,
+    });
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
 
   return (
     <Layout title="Transfer of Reeler License">
@@ -1211,7 +1232,7 @@ function TransferReelerLicense() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group ">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="licenseReceiptNumber">
                           Receipt number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1230,20 +1251,9 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-
-                      {/* <Form.Group className="form-group ">
-                        <Form.Label>Receipt Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.receiptDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "receiptDate")
-                            }
-                          />
-                        </div>
-                      </Form.Group> */}
-
-                      <Form.Group className="form-group">
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           Reeling License Number
                           <span className="text-danger">*</span>
@@ -1263,8 +1273,9 @@ function TransferReelerLicense() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-
-                      <Form.Group className="form-group">
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="memberLoanDetails">
                           Member of RCS/FPO/Others Loan Details
                         </Form.Label>
@@ -1280,21 +1291,8 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
-
                     <Col lg="6">
-                      {/* <Form.Group className="form-group">
-                        <Form.Label>License Expiry Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.licenseExpiryDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "licenseExpiryDate")
-                            }
-                          />
-                        </div>
-                      </Form.Group> */}
-
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>Function of the Unit</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1308,7 +1306,10 @@ function TransferReelerLicense() {
                           </Form.Select>
                         </div>
                       </Form.Group>
-                      <Form.Group className="form-group">
+                    </Col>
+                    .
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="feeAmount">Fee Amount</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1322,6 +1323,51 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
                     </Col>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Receipt Date</Form.Label>
+                        <div className="form-control-wrap">
+                          {isReceiptDate && (
+                            <DatePicker
+                              selected={new Date(data.receiptDate) || null}
+                              onChange={(date) =>
+                                handleRenewedDateChange(date, "receiptDate")
+                              }
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                            />
+                          )}
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>License Expiry Date</Form.Label>
+                        <div className="form-control-wrap">
+                          {isExpiryDate && (
+                            <DatePicker
+                              selected={
+                                new Date(data.licenseExpiryDate) || null
+                              }
+                              onChange={(date) =>
+                                handleDateChange(date, "licenseExpiryDate")
+                              }
+                              disabled={data.licenseRenewalDate !== null}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                            />
+                          )}
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -1329,11 +1375,11 @@ function TransferReelerLicense() {
 
             <Block className="mt-4">
               <Card>
-                <Card.Header>Chakbandi Details</Card.Header>
+                <Card.Header> Chakbandi Details</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
                           East<span className="text-danger">*</span>
                         </Form.Label>
@@ -1355,7 +1401,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
                           West<span className="text-danger">*</span>
                         </Form.Label>
@@ -1377,7 +1423,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
                           North<span className="text-danger">*</span>
                         </Form.Label>
@@ -1399,7 +1445,7 @@ function TransferReelerLicense() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
                           South<span className="text-danger">*</span>
                         </Form.Label>

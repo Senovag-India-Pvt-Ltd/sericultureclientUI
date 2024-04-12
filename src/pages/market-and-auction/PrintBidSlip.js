@@ -11,6 +11,7 @@ import axios from "axios";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PrintBidSlip() {
   const [data, setData] = useState({
@@ -78,7 +79,7 @@ function PrintBidSlip() {
       // event.stopPropagation();
       api
         .post(
-          `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+          baseURLReport + `gettripletpdf-kannada`,
           {
             marketId: marketId,
             godownId: godownId,
@@ -122,11 +123,11 @@ function PrintBidSlip() {
     });
   };
   return (
-    <Layout title="Print Bidding Slip">
+    <Layout title="Generated Triplet">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Print Bidding Slip</Block.Title>
+            <Block.Title tag="h2">Generated Triplet</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -188,8 +189,13 @@ function PrintBidSlip() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
                             selected={data.auctionDate}
                             onChange={handleDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>

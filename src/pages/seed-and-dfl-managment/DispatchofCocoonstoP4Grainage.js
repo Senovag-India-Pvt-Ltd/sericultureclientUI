@@ -416,25 +416,25 @@ function DispatchofCocoonstoP4Grainage() {
               {" "}
               Dispatch of Cocoons to P4 Grainage
             </Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Dispatch of Cocoons to P4 Grainage
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +443,7 @@ function DispatchofCocoonstoP4Grainage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -498,30 +498,26 @@ function DispatchofCocoonstoP4Grainage() {
 
                           <Col lg="4">
                             <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Generation No. ( 1 to 15)
-                              </Form.Label>
+                              <Form.Label>Generation number</Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Generation No. ( 1 to 15)"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Spun on Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Spun on Date"
-                                />
+                                <Form.Select
+                                  name="gender"
+                                  value={data.gender}
+                                  onChange={handleInputs}
+                                >
+                                  <option value="">1st </option>
+                                  <option value="1">2nd</option>
+                                  <option value="2">3rd</option>
+                                  <option value="3"> 4th </option>
+                                  <option value="4">5th</option>
+                                  <option value="5">6th</option>
+                                  <option value="6">7th</option>
+                                  <option value="7"> 8th</option>
+                                  <option value="8">9th</option>
+                                  <option value="9">10th</option>
+                                  <option value="10">11th</option>
+                                  <option value="11">12th</option>
+                                </Form.Select>
                               </div>
                             </Form.Group>
                           </Col>
@@ -557,22 +553,6 @@ function DispatchofCocoonstoP4Grainage() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
-                              <Form.Label> Date of Supply</Form.Label>
-                              <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">Dispatch</Form.Label>
                               <div className="form-control-wrap">
@@ -585,36 +565,89 @@ function DispatchofCocoonstoP4Grainage() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
-                                Invoice No & Date
+                                Spun on Date
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Invoice No & Date"
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
                                 />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="12" className="text-center">
-                            <Button type="button" variant="primary">
-                              {" "}
-                              Submit{" "}
-                            </Button>
+                          <Col lg="2">
+                            <Form.Group className="form-group ">
+                              <Form.Label> Date of Supply</Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice No & Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
                           </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button type="button" variant="primary">
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -668,7 +701,7 @@ function DispatchofCocoonstoP4Grainage() {
                       </Row>
                     </Card.Body>
                   </Card>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

@@ -460,7 +460,8 @@ function StakeHolderEdit() {
       (value.length < 11 || value.length > 11)
     ) {
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "farmerBankIfscCode" && value.length === 11) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -491,6 +492,22 @@ function StakeHolderEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+
+    if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -512,7 +529,19 @@ function StakeHolderEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+      if (
+        bank.farmerBankIfscCode.length < 11 ||
+        bank.farmerBankIfscCode.length > 11
+      ) {
+        return;
+      }
       api
         .post(baseURL2 + `farmer/edit`, data)
         .then((response) => {
@@ -1462,11 +1491,12 @@ function StakeHolderEdit() {
                           value={data.fruitsId}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="16"
                           placeholder={t("Enter FRUITS ID")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
+                          Fruits ID should contain 16 digits.
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
@@ -1506,6 +1536,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_farmer_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name is required.
@@ -1527,6 +1558,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("Enter Farmer Name in Kannada")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Name in Kannada is required.
@@ -1548,6 +1580,7 @@ function StakeHolderEdit() {
                             type="text"
                             placeholder={t("enter_fathers_husbands_name")}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name is required.
@@ -1571,6 +1604,7 @@ function StakeHolderEdit() {
                               "enter_fathers_husbands_name_in_kannada"
                             )}
                             required
+                            readOnly
                           />
                           <Form.Control.Feedback type="invalid">
                             Fathers/Husband Name in Kannada is required.
@@ -1616,6 +1650,7 @@ function StakeHolderEdit() {
                               showYearDropdown
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
+                              maxDate={new Date()}
                             />
                           )}
                         </div>
@@ -1628,6 +1663,7 @@ function StakeHolderEdit() {
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
@@ -1638,12 +1674,15 @@ function StakeHolderEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
                             value={data.casteId}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="0">Select Caste</option>
                             {casteListData.map((list) => (
@@ -1652,6 +1691,9 @@ function StakeHolderEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1662,6 +1704,7 @@ function StakeHolderEdit() {
                             name="differentlyAbled"
                             value={data.differentlyAbled}
                             onChange={handleInputs}
+                            disabled
                           >
                             <option value="">{t("select")}</option>
                             <option value="true">Yes</option>
@@ -1697,11 +1740,12 @@ function StakeHolderEdit() {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
+                            maxLength="10"
                             placeholder={t("enter_mobile_number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required.
+                            Mobile Number should contain 10 digits.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1824,6 +1868,7 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
+                            disabled
                             isInvalid={
                               data.farmerTypeId === undefined ||
                               data.farmerTypeId === "0"
@@ -1939,7 +1984,7 @@ function StakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")}
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2372,11 +2417,12 @@ function StakeHolderEdit() {
                             value={bank.farmerBankIfscCode}
                             onChange={handleBankInputs}
                             type="text"
+                            maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
+                            IFSC should contain 11 digits
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2748,6 +2794,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3243,6 +3290,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3257,6 +3305,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3273,6 +3322,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -3296,6 +3346,7 @@ function StakeHolderEdit() {
                           type="text"
                           placeholder={t("enter_survey_number")}
                           required
+                          readOnly
                         />
                         <Form.Control.Feedback type="invalid">
                           Survey Number is required
@@ -3313,6 +3364,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3435,6 +3487,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3449,6 +3502,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -3607,6 +3661,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4097,6 +4152,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4111,6 +4167,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4127,6 +4184,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4150,6 +4208,7 @@ function StakeHolderEdit() {
                           type="text"
                           placeholder={t("enter_survey_number")}
                           required
+                          readOnly
                         />
                         <Form.Control.Feedback type="invalid">
                           Survey Number is required
@@ -4167,6 +4226,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4289,6 +4349,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4303,6 +4364,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4568,6 +4630,7 @@ function StakeHolderEdit() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required
@@ -4827,6 +4890,7 @@ function StakeHolderEdit() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required

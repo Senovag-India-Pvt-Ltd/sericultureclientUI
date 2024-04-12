@@ -12,6 +12,7 @@ import DataTable from "react-data-table-component";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function FarmerTransactionReport() {
   const [page, setPage] = useState(0);
@@ -129,13 +130,13 @@ function FarmerTransactionReport() {
       // event.stopPropagation();
       api
         .post(
-          `https://api.senovagseri.com/reports-uat/marketreport/get-farmer-txn-report`,
+          baseURLReport + `get-farmer-txn-report`,
           {
             marketId: marketId,
             godownId: godownId,
             reportFromDate: formattedFromDate,
             reportToDate: formattedToDate,
-            farmerNumber:farmerNumber
+            farmerNumber: farmerNumber,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
@@ -314,6 +315,8 @@ function FarmerTransactionReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportFromDate}
                             onChange={handleFromDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>
@@ -327,6 +330,8 @@ function FarmerTransactionReport() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportToDate}
                             onChange={handleToDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
                           />
                         </div>
                       </Col>

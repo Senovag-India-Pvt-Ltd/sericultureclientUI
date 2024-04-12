@@ -22,7 +22,7 @@ function TrainingDeputationTracker() {
     deputedInstitute: "",
     fileUploadPath: "",
     deputedFromDate: null,
-    deputedToDate: "",
+    deputedToDate: null,
     trProgramMasterId: "",
     trCourseMasterId: "",
     deputedAttended: "",
@@ -39,13 +39,15 @@ function TrainingDeputationTracker() {
     setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      // console.log("hellohello");
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
   };
-
+  
   // const handleDateChange = (newDate) => {
   //   setData({ ...data, applicationDate: newDate });
   // };
@@ -61,6 +63,10 @@ function TrainingDeputationTracker() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.mobileNumber.length !== 10) {
+        return;
+    }
+
       api
         .post(baseURL2 + `trainingDeputationTracker/add`, data)
         .then((response) => {
@@ -80,12 +86,14 @@ function TrainingDeputationTracker() {
               deputedInstitute: "",
               fileUploadPath: "",
               deputedFromDate: null,
-              deputedToDate: "",
+              deputedToDate: null,
               trProgramMasterId: "",
               trCourseMasterId: "",
               deputedAttended: "",
               deputedRemarks: "",
             });
+            setFileUpload("")
+            document.getElementById("fileUploadPath").value = "";
             setValidated(false);
           }
         })
@@ -111,13 +119,14 @@ function TrainingDeputationTracker() {
       deputedInstitute: "",
       fileUploadPath: "",
       deputedFromDate: null,
-      deputedToDate: "",
+      deputedToDate: null,
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
       deputedRemarks: "",
     });
     setFileUpload("")
+    document.getElementById("fileUploadPath").value = "";
   };
 
   // to get Designation
@@ -500,6 +509,7 @@ function TrainingDeputationTracker() {
                           name="mobileNumber"
                           value={data.mobileNumber}
                           onChange={handleInputs}
+                          maxLength="10"
                           type="text"
                           placeholder="Enter Mobile Number"
                           required
@@ -591,6 +601,7 @@ function TrainingDeputationTracker() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
+                              minDate={new Date(data.deputedFromDate)}
                               required
                             />
                           </div>
@@ -603,7 +614,7 @@ function TrainingDeputationTracker() {
                   <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="fileUploadPath">
-                       Upload Document
+                      Upload Pdf/PPt/Video(Max:2mb)
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control

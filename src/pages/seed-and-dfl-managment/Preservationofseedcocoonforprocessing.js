@@ -416,25 +416,25 @@ function Preservationofseedcocoonforprocessing() {
               {" "}
               Preservation of seed cocoon for processing
             </Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Preservation of seed cocoon for processing
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Preservation-of-seed-cocoon-for-processing-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +443,7 @@ function Preservationofseedcocoonforprocessing() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Preservation-of-seed-cocoon-for-processing-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -513,13 +513,50 @@ function Preservationofseedcocoonforprocessing() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Date of seed cocoon supply
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Spun On date
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
@@ -588,21 +625,6 @@ function Preservationofseedcocoonforprocessing() {
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
-                                Invoice No. and Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Invoice No. and Date"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
                                 Rate per Kg
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -615,21 +637,58 @@ function Preservationofseedcocoonforprocessing() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="12" className="text-center">
-                            <Button type="button" variant="primary">
-                              {" "}
-                              Submit{" "}
-                            </Button>
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                              Cocoon rejection details/ numbers
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Cocoon rejection details/ numbers"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice No. and Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
                           </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button type="button" variant="primary">
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -693,7 +752,7 @@ function Preservationofseedcocoonforprocessing() {
                       </Row>
                     </Card.Body>
                   </Card>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

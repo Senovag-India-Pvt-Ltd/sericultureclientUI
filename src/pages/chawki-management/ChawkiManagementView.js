@@ -132,6 +132,10 @@ function ChawkiManagementView() {
                         <td>{chawkiManagement.lotNumberCrc}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Sold after 1st/2nd/3rd Moult :</td>
+                        <td>{chawkiManagement.soldAfter1stOr2ndMould}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}> State:</td>
                         <td>{chawkiManagement.stateName}</td>
                       </tr>
@@ -172,6 +176,10 @@ function ChawkiManagementView() {
                       <tr>
                         <td style={styles.ctstyle}>Price (in Rupees):</td>
                         <td>{chawkiManagement.price}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Tsc:</td>
+                        <td>{chawkiManagement.tscName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Receipt No:</td>

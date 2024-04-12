@@ -415,25 +415,25 @@ function MaintenanceofLineRecordsforEachRace() {
             <Block.Title tag="h2">
               Maintenance of Line records for each race
             </Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Maintenance of Line records for each race
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -442,7 +442,7 @@ function MaintenanceofLineRecordsforEachRace() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -469,7 +469,7 @@ function MaintenanceofLineRecordsforEachRace() {
                       <Card.Body>
                         <Row className="g-gs">
                           <Col lg="4">
-                            <Form.Group className="form-group  ">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label>
                                 Line details/Year (Silk Worm Race)
                               </Form.Label>
@@ -492,7 +492,7 @@ function MaintenanceofLineRecordsforEachRace() {
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 FRUITS-ID
                               </Form.Label>
@@ -507,7 +507,7 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 Farmer’s name
                               </Form.Label>
@@ -522,7 +522,7 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 Lot number/Year
                               </Form.Label>
@@ -536,7 +536,7 @@ function MaintenanceofLineRecordsforEachRace() {
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group  ">
+                            <Form.Group className="form-group   mt-n2">
                               <Form.Label>Generation number</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -562,26 +562,32 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label>
                                 {" "}
                                 Date of selection of Cocoon
                               </Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group  ">
+                            <Form.Group className="form-group   mt-n2">
                               <Form.Label>Market Name</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
@@ -599,7 +605,7 @@ function MaintenanceofLineRecordsforEachRace() {
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 No. of cocoons selected
                               </Form.Label>
@@ -614,7 +620,7 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 Crop number
                               </Form.Label>
@@ -629,45 +635,57 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label>
                                 {" "}
                                 Date of Brushing (each generation)
                               </Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label>
                                 {" "}
                                 Spun on date (each generation)
                               </Form.Label>
                               <div className="form-control-wrap">
-                                {/* <DatePicker selected={formValues.remark}
-                          onChange={(e) =>
-                            setFormValues({
-                              ...formValues,
-                              remark: e.target.value,
-                            })
-                          } /> */}
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 Total number of cocoons produced
                               </Form.Label>
@@ -682,7 +700,7 @@ function MaintenanceofLineRecordsforEachRace() {
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
+                            <Form.Group className="form-group  mt-n2">
                               <Form.Label htmlFor="sordfl">
                                 Average Weight
                               </Form.Label>
@@ -695,26 +713,24 @@ function MaintenanceofLineRecordsforEachRace() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button
-                              type="button"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              {" "}
-                              Submit{" "}
-                            </Button>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={handleShowModal}
+                      >
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -835,7 +851,7 @@ function MaintenanceofLineRecordsforEachRace() {
                       </Form>
                     </Modal.Body>
                   </Modal>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

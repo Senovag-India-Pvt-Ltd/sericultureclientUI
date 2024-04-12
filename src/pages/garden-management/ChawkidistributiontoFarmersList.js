@@ -146,6 +146,41 @@ useEffect(() => {
 
   const ChawkiDataColumns = [
     {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.chowkiId)}
+          >
+            View
+          </Button>
+          {/* <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.chowkiId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.chowkiId)}
+            className="ms-2"
+          >
+            Delete
+          </Button> */}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      grow: 2,
+    },
+    {
       name: "Fruits ID",
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
@@ -174,6 +209,13 @@ useEffect(() => {
       hide: "md",
     },
     {
+      name: "Tsc",
+      selector: (row) => row.tscName,
+      cell: (row) => <span>{row.tscName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Race of DFLs",
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
@@ -188,23 +230,9 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Lot Number (of the RSP)",
+      name: "Lot Number",
       selector: (row) => row.lotNumberRsp,
       cell: (row) => <span>{row.lotNumberRsp}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot No. (CRC)",
-      selector: (row) => row.lotNumberCrc,
-      cell: (row) => <span>{row.lotNumberCrc}</span>,
       sortable: true,
       hide: "md",
     },
@@ -274,41 +302,6 @@ useEffect(() => {
       hide: "md",
     },
 
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.chowkiId)}
-          >
-            View
-          </Button>
-          {/* <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.chowkiId)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.chowkiId)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-      grow: 2,
-    },
   ];
 
   return (

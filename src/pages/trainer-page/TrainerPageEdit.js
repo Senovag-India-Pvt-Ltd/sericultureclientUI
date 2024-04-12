@@ -76,6 +76,9 @@ function TrainerPageEdit() {
       setValidatedTrDetails(true);
     } else {
       event.preventDefault();
+      if(trDetails.mobileNumber.length<10 || trDetails.mobileNumber.length>10){
+        return
+      }
       setTrDetailsList((prev) => [...prev, trDetails]);
       setTrDetails({
         trScheduleId: "",
@@ -197,8 +200,10 @@ function TrainerPageEdit() {
     }
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      console.log("hellohello");
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -231,26 +236,29 @@ function TrainerPageEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if (name === "trDuration" && (value.length > 2)) {
+    if (name === "trDuration" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trDuration" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trPeriod" && (value.length > 2)) {
+    if (name === "trPeriod" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trPeriod" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trNoOfParticipant" && (value.length > 3)) {
+    if (name === "trNoOfParticipant" && value.length > 3) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trNoOfParticipant" && value.length <= 3) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
   };
 
   
@@ -258,6 +266,20 @@ function TrainerPageEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
+    const formattedFromDate =
+    new Date(data.trStartDate).getFullYear() +
+    "-" +
+    (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trStartDate).getDate().toString().padStart(2, "0");
+
+    const formattedToDate =
+    new Date(data.trDateOfCompletion).getFullYear() +
+    "-" +
+    (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -266,8 +288,19 @@ function TrainerPageEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.trDuration.length > 2) {
+        return;
+      }
+      if (data.trPeriod.length > 2) {
+        return;
+      }
+      if (data.trNoOfParticipant.length > 3) {
+        return;
+      }
+
+      
       api
-        .post(baseURL + `trSchedule/edit`, data)
+        .post(baseURL + `trSchedule/edit`, {...data,trStartDate:formattedFromDate,trDateOfCompletion:formattedToDate})
         .then((response) => {
           const trScheduleId = response.data.content.trScheduleId;
           if (trScheduleId) {
@@ -283,16 +316,17 @@ function TrainerPageEdit() {
                 const updatedTr = {
                   ...list,
                   trScheduleId: trScheduleId,
-                };
+                };          
                 api
                   .post(baseURL + `trTrainee/add`, updatedTr)
                   .then((response) => {
                     if (response.data.content.error) {
                       const bankError = response.data.content.error_description;
                       updateError(bankError);
-                    } else {
-                      updateSuccess();
-                    }
+                    } 
+                    // else {
+                    //   updateSuccess();
+                    // }
                   })
                   .catch((err) => {
                     setTrDetails({});
@@ -301,13 +335,50 @@ function TrainerPageEdit() {
                     }
                   });
               });
-            } else {
+            } 
+            // else {
               updateSuccess();
+              setData({
+                userMasterId: "",
+                trStakeholderType: "",
+                trName: "",
+                trInstitutionMasterId: "",
+                trGroupMasterId: "",
+                trProgramMasterId: "",
+                trCourseMasterId: "",
+                trModeMasterId: "",
+                trDuration: "",
+                trPeriod: "",
+                trNoOfParticipant: "",
+                trUploadPath: "",
+                trStartDate: null,
+                trDateOfCompletion: null,
+              });
+              setPPtFile("");
+              setTrDetails({
+                trScheduleId: "",
+                trTraineeName: "",
+                designationId: "",
+                trOfficeId: "",
+                gender: "",
+                mobileNumber: "",
+                place: "",
+                stateId: "",
+                districtId: "",
+                talukId: "",
+                hobliId: "",
+                villageId: "",
+                preTestScore: "",
+                postTestScore: "",
+                percentageImproved: "",
+              });
+              setTrDetailsList([]);
+              document.getElementById("trUploadPath").value = "";
+              setValidated(false);
             }
-          }
+          // }
         })
         .catch((err) => {
-          setData({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
           updateError(err.response.data.validationErrors);
           }
@@ -329,11 +400,30 @@ function TrainerPageEdit() {
       trStartDate: null,
       trDuration: "",
       trPeriod: "",
-      trDateOfCompletion: "",
+      trDateOfCompletion: null,
       trUploadPath: "",
       trNoOfParticipant: "",
     });
     setPPtFile("");
+    setTrDetails({
+      trScheduleId: "",
+      trTraineeName: "",
+      designationId: "",
+      trOfficeId: "",
+      gender: "",
+      mobileNumber: "",
+      place: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageId: "",
+      preTestScore: "",
+      postTestScore: "",
+      percentageImproved: "",
+    });
+    setTrDetailsList([]);
+    document.getElementById("trUploadPath").value = "";
   };
 
   const trClear = () => {
@@ -819,11 +909,11 @@ function TrainerPageEdit() {
   };
 
   return (
-    <Layout title="Trainer Page Edit">
+    <Layout title="Edit Scheduled Training Details And Add Trainees">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Trainer Page Edit</Block.Title>
+            <Block.Title tag="h2">Edit Scheduled Training Details And Add Trainees</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1112,6 +1202,7 @@ function TrainerPageEdit() {
                         value={data.trDuration}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Duration"
                         required
                         />
@@ -1134,6 +1225,7 @@ function TrainerPageEdit() {
                         value={data.trPeriod}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="2"
                         placeholder="Enter Training Period"
                         required
                         />
@@ -1156,6 +1248,7 @@ function TrainerPageEdit() {
                         value={data.trNoOfParticipant}
                         onChange={handleInputs}
                         type="text"
+                        maxLength="3"
                         placeholder="Enter  No Of Participant "
                         required
                         />
@@ -1184,6 +1277,7 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  minDate={new Date()}
                                   required
                                 />
                               )}
@@ -1208,7 +1302,7 @@ function TrainerPageEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  minDate={new Date(data.trStartDate)}
                                   required
                                 />
                               )}
@@ -1219,7 +1313,7 @@ function TrainerPageEdit() {
                     <Col lg = "4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="photoPath">
-                          Upload PPT/Video
+                          Upload Pdf/PPt/Video(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1511,6 +1605,7 @@ function TrainerPageEdit() {
                       name="mobileNumber"
                       value={trDetails.mobileNumber}
                       onChange={handleTrainerInputs}
+                      maxLength="10"
                       type="text"
                       placeholder="Enter Mobile Number"
                       required

@@ -37,6 +37,8 @@ function HelpDesk() {
 
   const { quill, quillRef } = useQuill({ placeholder });
 
+  // console.log(quillRef);
+
   useEffect(() => {
     if (quill) {
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -114,6 +116,9 @@ function HelpDesk() {
               hdSeverityId: "4",
               onBehalfOf: localStorage.getItem("userMasterId"),
             });
+            setAttachFiles("");
+            document.getElementById("hdAttachFiles").value = "";
+            quill.setText("");
             setValidated(false);
           }
         })
@@ -144,6 +149,8 @@ function HelpDesk() {
       onBehalfOf: localStorage.getItem("userMasterId"),
     });
     setAttachFiles("");
+    document.getElementById("hdAttachFiles").value = "";
+    quill.setText("");
   };
 
   const [loading, setLoading] = useState(false);
@@ -352,7 +359,7 @@ function HelpDesk() {
       icon: "success",
       title: "Saved successfully",
       text: `Ticket Number is ${message}`,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -654,31 +661,9 @@ function HelpDesk() {
 
                   <Col lg="12">
                     <Form.Group className="form-group mt-n1">
-                      {/* <Form.Label htmlFor="address">
-                        Query<span className="text-danger">*</span>
-                      </Form.Label> */}
                       <Card.Header>Query Details </Card.Header>
                       <div className="form-control-wrap">
-                        {/* <Form.Control
-                          as="textarea"
-                          id="queryDetails"
-                          name="queryDetails"
-                          value={data.queryDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder=""
-                          rows=""
-
-                        /> */}
                         <div ref={quillRef} />
-                        {/* <Quill
-                          theme="snow"
-                          defaultValue="hello"
-                          placeholder="Enter the query"
-                        /> */}
-                        {/* <Form.Control.Feedback type="invalid">
-                          Market Address is required
-                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
@@ -26,9 +26,9 @@ function TrainingScheduleView() {
   const [loading, setLoading] = useState(false);
 
   const formatDate = (dateString) => {
-    if (!dateString) return ''; 
-    const date = new Date(dateString); 
-    return format(date, 'dd/MM/yyyy'); 
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
   };
 
   const getIdList = () => {
@@ -92,12 +92,44 @@ function TrainingScheduleView() {
     getIdList();
   }, [id]);
 
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
   return (
-    <Layout title="Training Schedule View">
+    <Layout title="View Scheduled Training and Trainer Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Training Schedule View</Block.Title>
+            <Block.Title tag="h2">
+              View Scheduled Training and Trainer Details
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -126,7 +158,7 @@ function TrainingScheduleView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Training Schedule Details</Card.Header>
+          <Card.Header>Scheduled Training Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -179,18 +211,35 @@ function TrainingScheduleView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date Of Completion:</td>
-                        <td>{formatDate(trainingSchedule.trDateOfCompletion)}</td>
+                        <td>
+                          {formatDate(trainingSchedule.trDateOfCompletion)}
+                        </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded PPt/Video:</td>
+                        <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
                         <td>
                           {" "}
                           {selectedPPtFile && (
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedPPtFile}
-                              alt="Selected File"
-                            />
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedPPtFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(trainingSchedule.trUploadPath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                           )}
                         </td>
                       </tr>
@@ -205,12 +254,6 @@ function TrainingScheduleView() {
         <Card className="mt-3">
           <Card.Header>Trainers List</Card.Header>
           <Card.Body>
-            {/* {console.log('Virtual Bank Account List:', vbAccountList)}
-          {vbAccountList && vbAccountList.length > 0 ? (
-            vbAccountList.map((vbAccount) => (
-              <Row className="g-gs" key={vbAccount.reelerVirtualBankAccountId}> */}
-            {/* {console.log(vbAccount.reelerVirtualBankAccountId)} */}
-            {/* <Row className="g-gs"> */}
             {trainerUserList && trainerUserList.length > 0
               ? trainerUserList.map((trainerUser) => (
                   <Row className="g-gs">
@@ -219,23 +262,25 @@ function TrainingScheduleView() {
                       <table className="table small table-bordered">
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}> Training Schedule User ID:</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Training Schedule User ID:
+                            </td>
                             <td>{trainerUser.trainingScheduleUserId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}> Training Schedule Id:</td>
+                            <td style={styles.ctstyle}>
+                              {" "}
+                              Training Schedule Id:
+                            </td>
                             <td>{trainerUser.trScheduleId}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>
-                              User Name:
-                            </td>
+                            <td style={styles.ctstyle}>User Name:</td>
                             <td>{trainerUser.username}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>
-                              Institution Name:
-                            </td>
+                            <td style={styles.ctstyle}>Institution Name:</td>
                             <td>{trainerUser.trInstitutionMasterName}</td>
                           </tr>
                         </tbody>

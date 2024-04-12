@@ -9,7 +9,7 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 
@@ -27,6 +27,7 @@ function TrainerPageList() {
 
   const [data, setData] = useState({
     text: "",
+    date: "",
     searchBy: "trStartDate",
   });
 
@@ -36,32 +37,104 @@ function TrainerPageList() {
     setData({ ...data, [name]: value });
   };
 
+  // // Search
+  // const search = (e) => {
+  //   let joinColumn;
+  //   if (data.searchBy === "trStartDate") {
+  //     joinColumn = "trSchedule.trStartDate";
+  //   }
+  //   if (data.searchBy === "trGroupMasterName") {
+  //     joinColumn = "trGroupMaster.trGroupMasterName";
+  //   }
+  //   // console.log(joinColumn);
+  //   api
+  //     .post(
+  //       baseURL2 + `trSchedule/search`,
+  //       {
+  //         searchText: data.text,
+  //         joinColumn: joinColumn,
+  //       },
+  //       {
+  //         headers: _header,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content.trSchedule);
+  //     })
+  //     .catch((err) => {
+  //     });
+  // };
   // Search
   const search = (e) => {
     let joinColumn;
     if (data.searchBy === "trStartDate") {
       joinColumn = "trSchedule.trStartDate";
+      const formattedFromDate =
+      new Date(data.date).getFullYear() +
+      "-" +
+      (new Date(data.date).getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      new Date(data.date).getDate().toString().padStart(2, "0");
+      api
+        .post(
+          baseURL2 + `trSchedule/search-by-user`,
+          {
+            searchText: formattedFromDate,
+            joinColumn: joinColumn,
+            userMasterId: localStorage.getItem("userMasterId"),
+          },
+          {
+            headers: _header,
+          }
+        )
+        .then((response) => {
+          setListData(response.data.content.trSchedule);
+          setTotalRows(response.data.content.totalItems);
+          setLoading(false);
+
+          // if (response.data.content.error) {
+          //   // saveError();
+          // } else {
+          //   console.log(response);
+          //   // saveSuccess();
+          // }
+        })
+        .catch((err) => {
+          // saveError();
+        });
     }
     if (data.searchBy === "trGroupMasterName") {
       joinColumn = "trGroupMaster.trGroupMasterName";
+      api
+        .post(
+          baseURL2 + `trSchedule/search-by-user`,
+          {
+            searchText: data.text,
+            joinColumn: joinColumn,
+            userMasterId: localStorage.getItem("userMasterId"),
+          },
+          {
+            headers: _header,
+          }
+        )
+        .then((response) => {
+          setListData(response.data.content.trSchedule);
+          setTotalRows(response.data.content.totalItems);
+          setLoading(false);
+
+          // if (response.data.content.error) {
+          //   // saveError();
+          // } else {
+          //   console.log(response);
+          //   // saveSuccess();
+          // }
+        })
+        .catch((err) => {
+          // saveError();
+        });
     }
+
     // console.log(joinColumn);
-    api
-      .post(
-        baseURL2 + `trSchedule/search`,
-        {
-          searchText: data.text,
-          joinColumn: joinColumn,
-        },
-        {
-          headers: _header,
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content.trSchedule);
-      })
-      .catch((err) => {
-      });
   };
 
   const [trScheduleList, setTrScheduleListData] = useState({
@@ -195,9 +268,9 @@ function TrainerPageList() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return ''; 
-    const date = new Date(dateString); 
-    return format(date, 'dd/MM/yyyy'); 
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
   };
 
   const handleDateChange = (date, type) => {
@@ -241,7 +314,7 @@ function TrainerPageList() {
       ),
       sortable: false,
       hide: "md",
-      grow:2,
+      grow: 2,
     },
     {
       name: "Training Schedule Id",
@@ -347,42 +420,40 @@ function TrainerPageList() {
                     </Form.Select>
                   </div>
                 </Col>
-                {data.searchBy === "trStartDate"?(
+                {data.searchBy === "trStartDate" ? (
                   <Col sm={2}>
                     <Form.Group className="form-group">
                       {/* <Form.Label htmlFor="sordfl">
                       Training Period Start Date<span className="text-danger">*</span>
                       </Form.Label> */}
                       <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.trStartDate}
-                      onChange={(date) =>
-                        handleDateChange(date, "trStartDate")
-                      }
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      // minDate={new Date()}
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-                ):(
-                <Col sm={3}>
-                  <Form.Control
-                    id="reelerId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
+                        <DatePicker
+                          selected={data.date}
+                          onChange={(date) => handleDateChange(date, "date")}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          // minDate={new Date()}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
+                  <Col sm={3}>
+                    <Form.Control
+                      id="trScheduleId"
+                      name="text"
+                      value={data.text}
+                      onChange={handleInputs}
+                      type="text"
+                      placeholder="Search"
+                    />
+                  </Col>
                 )}
-                
+
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search

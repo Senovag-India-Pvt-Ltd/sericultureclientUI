@@ -166,14 +166,14 @@ function SeedCuttingBankList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,

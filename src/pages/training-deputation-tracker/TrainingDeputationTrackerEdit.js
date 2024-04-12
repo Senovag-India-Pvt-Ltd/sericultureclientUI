@@ -28,8 +28,10 @@ function TrainingDeputationTrackerEdit() {
     setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
+      // console.log("hellohello");
       e.target.classList.add("is-invalid");
-    } else {
+      e.target.classList.remove("is-valid");
+    } else if (name === "mobileNumber" && value.length === 10) {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
@@ -53,6 +55,10 @@ function TrainingDeputationTrackerEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.mobileNumber.length !== 10) {
+        return;
+    }
+
       api
         .post(baseURL2 + `trainingDeputationTracker/edit`, data)
         .then((response) => {
@@ -69,15 +75,16 @@ function TrainingDeputationTrackerEdit() {
               designationId: "",
               officialAddress: "",
               mobileNumber: "",
-              deputedInstitute: "",
-              fileUploadPath: "",
+              deputedInstituteId: "",
               deputedFromDate: null,
-              deputedToDate: "",
+              deputedToDate: null,
               trProgramMasterId: "",
               trCourseMasterId: "",
               deputedAttended: "",
               deputedRemarks: "",
             });
+            setSelectedUploadFile("")
+            document.getElementById("fileUploadPath").value = "";
             setValidated(false);
           }
         })
@@ -99,13 +106,14 @@ function TrainingDeputationTrackerEdit() {
       mobileNumber: "",
       deputedInstituteId: "",
       deputedFromDate: null,
-      deputedToDate: "",
+      deputedToDate: null,
       trProgramMasterId: "",
       trCourseMasterId: "",
       deputedAttended: "",
       deputedRemarks: "",
     });
     setSelectedUploadFile("")
+    document.getElementById("fileUploadPath").value = "";
   };
 
   //   to get data from api
@@ -534,6 +542,7 @@ function TrainingDeputationTrackerEdit() {
                           name="mobileNumber"
                           value={data.mobileNumber}
                           onChange={handleInputs}
+                          maxLength="10"
                           type="text"
                           placeholder="Enter Mobile Number"
                           required
@@ -599,7 +608,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}y
+                                  minDate={new Date()}
                                   required
                                 />
                               )}
@@ -625,6 +634,7 @@ function TrainingDeputationTrackerEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
+                                  minDate={new Date(data.deputedFromDate)}
                                   required
                                 />
                               )}
@@ -635,7 +645,7 @@ function TrainingDeputationTrackerEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="fileUploadPath">
-                         Upload Document
+                        Upload Pdf/PPt/Video(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

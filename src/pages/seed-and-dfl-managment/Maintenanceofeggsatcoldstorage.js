@@ -408,33 +408,33 @@ function Maintenanceofeggsatcoldstorage() {
   };
 
   return (
-    <Layout title="Maintenanc e of eggs at cold storage">
+    <Layout title="Maintenance of eggs at cold storage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
               {" "}
-              Maintenanc e of eggs at cold storage{" "}
+              Maintenance of eggs at cold storage{" "}
             </Block.Title>
-            <nav>
+            {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
                   <Link to="/seriui/">Home</Link>
                 </li>
-                {/* <li className="breadcrumb-item">
+                <li className="breadcrumb-item">
                   <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                   Maintenanc e of eggs at cold storage
                 </li>
               </ol>
-            </nav>
+            </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Maintenance-of-eggs-at-cold-storage-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +443,7 @@ function Maintenanceofeggsatcoldstorage() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Maintenance-of-eggs-at-cold-storage-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -465,7 +465,7 @@ function Maintenanceofeggsatcoldstorage() {
                     <Card>
                       <Card.Header>
                         {" "}
-                        Maintenanc e of eggs at cold storage{" "}
+                        Maintenance of eggs at cold storage{" "}
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
@@ -513,27 +513,49 @@ function Maintenanceofeggsatcoldstorage() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Date of Cold Store
                               </Form.Label>
                               <div className="Date of Cold Store">
-                                <DatePicker />
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">
                                 Date of release
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Date of release"
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
                                 />
                               </div>
                             </Form.Group>
@@ -553,22 +575,20 @@ function Maintenanceofeggsatcoldstorage() {
                               </div>
                             </Form.Group>
                           </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button type="button" variant="primary">
-                              {" "}
-                              Submit{" "}
-                            </Button>
-                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>
+                    <Col lg="12" className="text-center mt-1">
+                      <Button type="button" variant="primary">
+                        {" "}
+                        Submit{" "}
+                      </Button>
+                    </Col>
                   </Block>
                 </Col>
-                <Col lg="12">
+                {/* <Col lg="12">
                   <Card>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="12">
                           <div className="table-responsive">
@@ -632,7 +652,7 @@ function Maintenanceofeggsatcoldstorage() {
                       </Row>
                     </Card.Body>
                   </Card>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Row>

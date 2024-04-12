@@ -54,62 +54,56 @@ function TrainingDeputationTrackerView() {
   // To get Photo
   const [selectedUploadFile, setSelectedUploadFile] = useState(null);
 
-  // const getUploadeddFile = async (file) => {
-  //   const parameters = `fileName=${file}`;
-  //   try {
-  //     const response = await api.get(
-  //       baseURL + `api/s3/download?${parameters}`,
-  //       {
-  //         responseType: "arraybuffer",
-  //       }
-  //     );
-  //     const blob = new Blob([response.data]);
-  //     const url = URL.createObjectURL(blob);
-  //     setSelectedUploadFile(url);
-  //   } catch (error) {
-  //     console.error("Error fetching file:", error);
-  //   }
-  // };
-
-  const getUploadedFile = async (trainingDeputationId) => {
-    // const newDate = new Date();
-    // const formattedDate =
-    //   newDate.getFullYear() +
-    //   "-" +
-    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
-    //   "-" +
-    //   newDate.getDate().toString().padStart(2, "0");
-    const parameters = `fileName=${trainingDeputationId}`;
+  const getUploadedFile = async (file) => {
+    const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
         baseURL + `api/s3/download?${parameters}`,
         {
-          // marketId: data.marketId,
-          // godownId: data.godownId,
-          // allottedLotId: allotedLotId,
-          // auctionDate: formattedDate,
-          fileUploadPath:trainingDeputationTracker.fileUploadPath
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+          responseType: "arraybuffer",
         }
       );
-
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      // const fileURL = URL.createObjectURL(file);
-      // window.open(fileURL);
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
       setSelectedUploadFile(url);
     } catch (error) {
-      // console.log("error", error);
+      console.error("Error fetching file:", error);
     }
   };
-
 
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  const downloadFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   return (
     <Layout title="View Training Deputation Tracker Details">
@@ -215,16 +209,30 @@ function TrainingDeputationTrackerView() {
                         <td>{trainingDeputationTracker.deputedRemarks}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Uploaded Document:</td>
+                        <td style={styles.ctstyle}> Uploaded Pdf/PPt/Video:</td>
                         <td>
                           {" "}
                           {selectedUploadFile && (
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedUploadFile}
-                              alt="Selected File"
-                              onClick ={()=>getUploadedFile(trainingDeputationTracker.fileUploadPath)}
-                            />
+                            <>
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                }}
+                                src={selectedUploadFile}
+                                alt="Selected File"
+                              />
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                  downloadFile(trainingDeputationTracker.fileUploadPath)
+                                }
+                              >
+                                Download File
+                              </Button>
+                            </>
                           )}
                         </td>
                       </tr>

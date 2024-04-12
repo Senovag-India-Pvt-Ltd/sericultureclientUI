@@ -79,8 +79,6 @@ function TrainingScheduleEdit() {
     }
   };
 
-  
-
   // TrainerUser
   const handleTrainerUserOption = (e) => {
     const value = e.target.value;
@@ -116,7 +114,7 @@ function TrainingScheduleEdit() {
 
   const handleTrainerUserGet = (i) => {
     api
-      .get(baseURL2 + `trainingScheduleUser/get/${i}`)
+      .get(baseURL2 + `trainingScheduleUser/get-join/${i}`)
       .then((response) => {
         setTrainerUser(response.data.content);
         setShowModal2(true);
@@ -169,26 +167,29 @@ function TrainingScheduleEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if (name === "trDuration" && (value.length > 2)) {
+    if (name === "trDuration" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trDuration" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trPeriod" && (value.length > 2)) {
+    if (name === "trPeriod" && value.length > 2) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trPeriod" && value.length <= 2) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
 
-    if (name === "trNoOfParticipant" && (value.length > 3)) {
+    if (name === "trNoOfParticipant" && value.length > 3) {
+      e.target.classList.remove("is-valid");
       e.target.classList.add("is-invalid");
-    } else {
-      e.target.classList.remove("is-invalid");
+    } else if (name === "trNoOfParticipant" && value.length <= 3) {
       e.target.classList.add("is-valid");
-    } 
+      e.target.classList.remove("is-invalid");
+    }
   };
 
   const handleDateChange = (date, type) => {
@@ -202,18 +203,21 @@ function TrainingScheduleEdit() {
 
   const postData = (event) => {
     const formattedFromDate =
-    new Date(data.trStartDate).getFullYear() +
-    "-" +
-    (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    new Date(data.trStartDate).getDate().toString().padStart(2, "0");
+      new Date(data.trStartDate).getFullYear() +
+      "-" +
+      (new Date(data.trStartDate).getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      new Date(data.trStartDate).getDate().toString().padStart(2, "0");
 
     const formattedToDate =
-    new Date(data.trDateOfCompletion).getFullYear() +
-    "-" +
-    (new Date(data.trDateOfCompletion).getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+      new Date(data.trDateOfCompletion).getFullYear() +
+      "-" +
+      (new Date(data.trDateOfCompletion).getMonth() + 1)
+        .toString()
+        .padStart(2, "0") +
+      "-" +
+      new Date(data.trDateOfCompletion).getDate().toString().padStart(2, "0");
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -222,11 +226,24 @@ function TrainingScheduleEdit() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (data.trDuration.length > 2) {
+        return;
+      }
+      if (data.trPeriod.length > 2) {
+        return;
+      }
+      if (data.trNoOfParticipant.length > 3) {
+        return;
+      }
       api
-        .post(baseURL2 + `trSchedule/edit`, data)
+        .post(baseURL2 + `trSchedule/edit`, {
+          ...data,
+          trStartDate: formattedFromDate,
+          trDateOfCompletion: formattedToDate,
+        })
         .then((response) => {
           const trScheduleId = response.data.content.trScheduleId;
-          if (trScheduleId) {
+          if (trScheduleId && ppt) {
             handlePPtUpload(trScheduleId);
           }
           if (response.data.content.error) {
@@ -247,8 +264,17 @@ function TrainingScheduleEdit() {
               trNoOfParticipant: "",
               trUploadPath: "",
               trStartDate: null,
-              trDateOfCompletion: "",
+              trDateOfCompletion: null,
             });
+            setPPtFile("");
+            setTrainerUser({
+              trScheduleId: "",
+              userMasterId: "",
+              trainerName: "",
+              trInstitutionMasterId: "",
+            });
+            setTrainerUserList([]);
+            document.getElementById("trUploadPath").value = "";
             setValidated(false);
           }
         })
@@ -277,8 +303,9 @@ function TrainingScheduleEdit() {
       trNoOfParticipant: "",
       trUploadPath: "",
       trStartDate: null,
-      trDateOfCompletion: "",
+      trDateOfCompletion: null,
     });
+    setPPt("");
     setPPtFile("");
     setTrainerUser({
       trScheduleId: "",
@@ -286,6 +313,8 @@ function TrainingScheduleEdit() {
       trainerName: "",
       trInstitutionMasterId: "",
     });
+    setTrainerUserList([]);
+    document.getElementById("trUploadPath").value = "";
   };
 
   const trainerUserClear = () => {
@@ -435,6 +464,7 @@ function TrainingScheduleEdit() {
   // const [photoFile,setPhotoFile] = useState("")
 
   const handlePPtChange = (e) => {
+    console.log("hello", e.target.files);
     const file = e.target.files[0];
     setPPt(file);
     setData((prev) => ({ ...prev, trUploadPath: file.name }));
@@ -549,16 +579,18 @@ function TrainingScheduleEdit() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-1 "> */}
-            <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>Edit Scheduled Training</Card.Header>
-              <Card.Body>
-                {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
-                  </h1>
-                ) : (
-                  <Row className="g-gs">
-                    {/* <Col lg="6">
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Edit Scheduled Training
+            </Card.Header>
+            <Card.Body>
+              {loading ? (
+                <h1 className="d-flex justify-content-center align-items-center">
+                  Loading...
+                </h1>
+              ) : (
+                <Row className="g-gs">
+                  {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           User<span className="text-danger">*</span>
@@ -592,7 +624,7 @@ function TrainingScheduleEdit() {
                       </Form.Group>
                     </Col> */}
 
-                    {/* <Col lg="6">
+                  {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Training Institution
@@ -623,146 +655,147 @@ function TrainingScheduleEdit() {
                       </Form.Group>
                     </Col> */}
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Training Group<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="trGroupMasterId"
-                            value={data.trGroupMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.trGroupMasterId === undefined ||
-                              data.trGroupMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Training Group Type</option>
-                            {trGroupListData.map((list) => (
-                              <option
-                                key={list.trGroupMasterId}
-                                value={list.trGroupMasterId}
-                              >
-                                {list.trGroupMasterName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Training Group is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Training Group<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="trGroupMasterId"
+                          value={data.trGroupMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.trGroupMasterId === undefined ||
+                            data.trGroupMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Training Group Type</option>
+                          {trGroupListData.map((list) => (
+                            <option
+                              key={list.trGroupMasterId}
+                              value={list.trGroupMasterId}
+                            >
+                              {list.trGroupMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Training Group is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Training Program<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="trProgramMasterId"
-                            value={data.trProgramMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.trProgramMasterId === undefined ||
-                              data.trProgramMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Training Program</option>
-                            {trProgramListData.map((list) => (
-                              <option
-                                key={list.trProgramMasterId}
-                                value={list.trProgramMasterId}
-                              >
-                                {list.trProgramMasterName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Training Program is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Training Program<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="trProgramMasterId"
+                          value={data.trProgramMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.trProgramMasterId === undefined ||
+                            data.trProgramMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Training Program</option>
+                          {trProgramListData.map((list) => (
+                            <option
+                              key={list.trProgramMasterId}
+                              value={list.trProgramMasterId}
+                            >
+                              {list.trProgramMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Training Program is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Training Course<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="trCourseMasterId"
-                            value={data.trCourseMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.trCourseMasterId === undefined ||
-                              data.trCourseMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Training Course</option>
-                            {trCourseListData.map((list) => (
-                              <option
-                                key={list.trCourseMasterId}
-                                value={list.trCourseMasterId}
-                              >
-                                {list.trCourseMasterName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Training Course is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Training Course<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="trCourseMasterId"
+                          value={data.trCourseMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.trCourseMasterId === undefined ||
+                            data.trCourseMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Training Course</option>
+                          {trCourseListData.map((list) => (
+                            <option
+                              key={list.trCourseMasterId}
+                              value={list.trCourseMasterId}
+                            >
+                              {list.trCourseMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Training Course is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Training Mode<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="trModeMasterId"
-                            value={data.trModeMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.trModeMasterId === undefined ||
-                              data.trModeMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Training Mode</option>
-                            {trModeListData.map((list) => (
-                              <option
-                                key={list.trModeMasterId}
-                                value={list.trModeMasterId}
-                              >
-                                {list.trModeMasterName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Training Mode is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Training Mode<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="trModeMasterId"
+                          value={data.trModeMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.trModeMasterId === undefined ||
+                            data.trModeMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Training Mode</option>
+                          {trModeListData.map((list) => (
+                            <option
+                              key={list.trModeMasterId}
+                              value={list.trModeMasterId}
+                            >
+                              {list.trModeMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Training Mode is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="6">
+                  <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trDuration">
-                      Training Duration Per Day(In Hours)<span className="text-danger">*</span>
+                        Training Duration Per Day(In Hours)
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -771,12 +804,13 @@ function TrainingScheduleEdit() {
                           value={data.trDuration}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="2"
                           placeholder="Enter Training Duration"
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                         Training Duration Should Be Less Than 24 Hours
-                          </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Training Duration Should Be Less Than 24 Hours
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -784,7 +818,8 @@ function TrainingScheduleEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trPeriod">
-                        Training Period(In Days)<span className="text-danger">*</span>
+                        Training Period(In Days)
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -793,12 +828,13 @@ function TrainingScheduleEdit() {
                           value={data.trPeriod}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="2"
                           placeholder="Enter Training Period"
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                         Training Period Must Be Limited To 2 Digits or Less
-                          </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Training Period Must Be Limited To 2 Digits or Less
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -806,7 +842,8 @@ function TrainingScheduleEdit() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trNoOfParticipant">
-                        Training No Of Participant<span className="text-danger">*</span>
+                        Training No Of Participant
+                        <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -815,224 +852,227 @@ function TrainingScheduleEdit() {
                           value={data.trNoOfParticipant}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="3"
                           placeholder="Enter No Of Participant "
                           required
                         />
-                         <Form.Control.Feedback type="invalid">
-                          Participant Number Must Be Limited To Three Digits or Less
-                          </Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Participant Number Must Be Limited To Three Digits or
+                          Less
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
-                    <Form.Label column sm={2}>
-                      Training Period Start Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataStartSet && (
-                          <DatePicker
-                            selected={new Date(data.trStartDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "trStartDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            minDate={new Date()}
-                            required
-                          />
-                        )}
-                      </div>
-                    </Col>
-                    
-                    <Form.Label column sm={2}>
-                      Expected Date of Completion
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataCompletionSet && (
-                          <DatePicker
-                            selected={new Date(data.trDateOfCompletion)}
-                            onChange={(date) =>
-                              handleDateChange(date, "trDateOfCompletion")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            required
-                          />
-                        )}
-                      </div>
-                    </Col>
+                  <Form.Label column sm={2}>
+                    Training Period Start Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {isDataStartSet && (
+                        <DatePicker
+                          selected={new Date(data.trStartDate)}
+                          onChange={(date) =>
+                            handleDateChange(date, "trStartDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          minDate={new Date()}
+                          required
+                        />
+                      )}
+                    </div>
+                  </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="photoPath">
-                          Upload PPt/Video
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="trUploadPath"
-                            name="trUploadPath"
-                            // value={data.trUploadPath}
-                            onChange={handlePPtChange}
-                          />
-                        </div>
-                      </Form.Group>
+                  <Form.Label column sm={2}>
+                    Expected Date of Completion
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Col sm={2}>
+                    <div className="form-control-wrap">
+                      {isDataCompletionSet && (
+                        <DatePicker
+                          selected={new Date(data.trDateOfCompletion)}
+                          onChange={(date) =>
+                            handleDateChange(date, "trDateOfCompletion")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          minDate={new Date(data.trStartDate)}
+                          required
+                        />
+                      )}
+                    </div>
+                  </Col>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {ppt ? (
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="photoPath">
+                        Upload Pdf/PPt/Video(Max:2mb)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          type="file"
+                          id="trUploadPath"
+                          name="trUploadPath"
+                          // value={data.trUploadPath}
+                          onChange={handlePPtChange}
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                      {ppt ? (
+                        <img
+                          style={{ height: "100px", width: "100px" }}
+                          src={URL.createObjectURL(ppt)}
+                        />
+                      ) : (
+                        selectedPPtFile && (
                           <img
                             style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(ppt)}
+                            src={selectedPPtFile}
+                            alt="Selected File"
                           />
-                        ) : (
-                          selectedPPtFile && (
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedPPtFile}
-                              alt="Selected File"
-                            />
-                          )
-                        )}
-                      </Form.Group>
-                    </Col>
+                        )
+                      )}
+                    </Form.Group>
+                  </Col>
+                </Row>
+              )}
+            </Card.Body>
+          </Card>
+
+          <Block className="mt-3">
+            <Card>
+              <Card.Header>Add Trainer</Card.Header>
+              <Card.Body>
+                {/* <h3>Virtual Bank account</h3> */}
+                <Row className="g-gs mb-1">
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-1">
+                      <div className="form-control-wrap"></div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-3">
+                      <div className="form-control-wrap">
+                        <ul className="">
+                          <li>
+                            <Button
+                              className="d-md-none"
+                              size="md"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              className="d-none d-md-inline-flex"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                        </ul>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                {trainerUserList && trainerUserList.length > 0 ? (
+                  <Row className="g-gs">
+                    <Block>
+                      <Card>
+                        <div
+                          className="table-responsive"
+                          // style={{ paddingBottom: "30px" }}
+                        >
+                          <table className="table small">
+                            <thead>
+                              <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                {/* <th></th> */}
+                                <th>Action</th>
+                                <th>User Name</th>
+                                <th>Training Institution</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {trainerUserList.map((item, i) => (
+                                <tr>
+                                  <td>
+                                    <div>
+                                      <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleTrainerUserGet(
+                                            item.trainingScheduleUserId
+                                          )
+                                        }
+                                      >
+                                        Edit
+                                      </Button>
+                                      <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleDelete(
+                                            item.trainingScheduleUserId
+                                          )
+                                        }
+                                        className="ms-2"
+                                      >
+                                        Delete
+                                      </Button>
+                                    </div>
+                                  </td>
+                                  <td>{item.username}</td>
+                                  <td>{item.trInstitutionMasterName}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </Card>
+                    </Block>
                   </Row>
+                ) : (
+                  ""
                 )}
               </Card.Body>
             </Card>
+          </Block>
 
-            <Block className="mt-3">
-              <Card>
-                <Card.Header>Add Trainer</Card.Header>
-                <Card.Body>
-                  {/* <h3>Virtual Bank account</h3> */}
-                  <Row className="g-gs mb-1">
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-1">
-                        <div className="form-control-wrap"></div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-3">
-                        <div className="form-control-wrap">
-                          <ul className="">
-                            <li>
-                              <Button
-                                className="d-md-none"
-                                size="md"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button>
-                            </li>
-                            <li>
-                              <Button
-                                className="d-none d-md-inline-flex"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button>
-                            </li>
-                          </ul>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {trainerUserList && trainerUserList.length > 0 ? (
-                    <Row className="g-gs">
-                      <Block>
-                        <Card>
-                          <div
-                            className="table-responsive"
-                            // style={{ paddingBottom: "30px" }}
-                          >
-                            <table className="table small">
-                              <thead>
-                                <tr style={{ backgroundColor: "#f1f2f7" }}>
-                                  {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>User Name</th>
-                                  <th>Training Institution</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {trainerUserList.map((item, i) => (
-                                  <tr>
-                                    <td>
-                                      <div>
-                                        <Button
-                                          variant="primary"
-                                          size="sm"
-                                          onClick={() =>
-                                            handleTrainerUserGet(
-                                              item.trainingScheduleUserId
-                                            )
-                                          }
-                                        >
-                                          Edit
-                                        </Button>
-                                        <Button
-                                          variant="danger"
-                                          size="sm"
-                                          onClick={() =>
-                                            handleDelete(
-                                              item.trainingScheduleUserId
-                                            )
-                                          }
-                                          className="ms-2"
-                                        >
-                                          Delete
-                                        </Button>
-                                      </div>
-                                    </td>
-                                    <td>{item.username}</td>
-                                    <td>{item.trInstitutionMasterName}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </Card>
-                      </Block>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
-                </Card.Body>
-              </Card>
-            </Block>
-
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Clear
-                  </Button>
-                </li>
-              </ul>
-            </div>
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Update
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Clear
+                </Button>
+              </li>
+            </ul>
+          </div>
           {/* </Row> */}
         </Form>
       </Block>
@@ -1086,7 +1126,6 @@ function TrainingScheduleEdit() {
                 </Form.Group>
               </Col>
 
-
               <Col lg="6">
                 <Form.Group className="form-group mt-2">
                   <Form.Label>
@@ -1101,8 +1140,8 @@ function TrainingScheduleEdit() {
                       onBlur={() => handleTrainerInstitutionOption}
                       required
                       isInvalid={
-                        trainerUser.userMasterId === undefined ||
-                        trainerUser.userMasterId === "0"
+                        trainerUser.trInstitutionMasterId === undefined ||
+                        trainerUser.trInstitutionMasterId === "0"
                       }
                     >
                       <option value="">Select Training Institution</option>
@@ -1237,8 +1276,8 @@ function TrainingScheduleEdit() {
                       onBlur={() => handleTrainerInstitutionOption}
                       required
                       isInvalid={
-                        trainerUser.userMasterId === undefined ||
-                        trainerUser.userMasterId === "0"
+                        trainerUser.trInstitutionMasterId === undefined ||
+                        trainerUser.trInstitutionMasterId === "0"
                       }
                     >
                       <option value="">Select Training Institution</option>

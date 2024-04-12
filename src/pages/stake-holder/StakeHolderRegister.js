@@ -15,6 +15,7 @@ import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function StakeHolderRegister() {
   const [familyMembersList, setFamilyMembersList] = useState([]);
@@ -29,7 +30,7 @@ function StakeHolderRegister() {
     firstName: "",
     middleName: "",
     lastName: "",
-    dob: "",
+    dob: null,
     genderId: "",
     casteId: "",
     differentlyAbled: "",
@@ -56,15 +57,16 @@ function StakeHolderRegister() {
   });
 
   //  console.log("data",data.photoPath);
+  const [searchValidated, setSearchValidated] = useState(false);
 
-  const search = () => {
+  const search = (event) => {
     setData({
       farmerNumber: "",
       fruitsId: "",
       firstName: "",
       middleName: "",
       lastName: "",
-      dob: "",
+      dob: null,
       genderId: "",
       casteId: "",
       differentlyAbled: "",
@@ -101,60 +103,76 @@ function StakeHolderRegister() {
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
     });
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+      api
+        .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
+        .then((response) => {
+          if (!response.data.content.isFruitService) {
+            const farmerId = response.data.content.farmerResponse.farmerId;
+            navigate(`/seriui/stake-holder-edit/${farmerId}`);
+          } else {
+            api
+              .post(
+                baseURLFarmer +
+                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                { fruitsId: data.fruitsId }
+                // {
+                //   headers: _header,
+                // }
+              )
+              .then((result) => {
+                if (!result.data.content.error) {
+                  setData((prev) => ({
+                    ...prev,
+                    ...result.data.content.farmerResponse,
+                  }));
+                  setFarmerAddressList((prev) => [
+                    ...prev,
+                    ...result.data.content.farmerAddressList,
+                  ]);
 
-    api
-      .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
-      .then((response) => {
-        if (!response.data.content.isFruitService) {
-          const farmerId = response.data.content.farmerResponse.farmerId;
-          navigate(`/seriui/stake-holder-edit/${farmerId}`);
-        } else {
-          api
-            .post(
-              "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number",
-              { fruitsId: data.fruitsId }
-              // {
-              //   headers: _header,
-              // }
-            )
-            .then((result) => {
-              setData((prev) => ({
-                ...prev,
-                ...result.data.content.farmerResponse,
-              }));
-              setFarmerAddressList((prev) => [
-                ...prev,
-                ...result.data.content.farmerAddressList,
-              ]);
+                  const modified =
+                    result.data.content.farmerLandDetailsDTOList.map(
+                      (detail) => {
+                        if (detail.stateId === 0) {
+                          detail.stateId = null;
+                        }
+                        if (detail.districtId === 0) {
+                          detail.districtId = null;
+                        }
+                        if (detail.talukId === 0) {
+                          detail.talukId = null;
+                        }
+                        if (detail.hobliId === 0) {
+                          detail.hobliId = null;
+                        }
+                        if (detail.villageId === 0) {
+                          detail.villageId = null;
+                        }
+                        return detail;
+                      }
+                    );
+                  // console.log(modified);FF
 
-              const modified = result.data.content.farmerLandDetailsDTOList.map(
-                (detail) => {
-                  if (detail.stateId === 0) {
-                    detail.stateId = null;
-                  }
-                  if (detail.districtId === 0) {
-                    detail.districtId = null;
-                  }
-                  if (detail.talukId === 0) {
-                    detail.talukId = null;
-                  }
-                  if (detail.hobliId === 0) {
-                    detail.hobliId = null;
-                  }
-                  if (detail.villageId === 0) {
-                    detail.villageId = null;
-                  }
-                  return detail;
+                  setFarmerLandList((prev) => [...prev, ...modified]);
+                } else {
+                  searchError(result.data.content.error_description);
                 }
-              );
-              // console.log(modified);FF
-
-              setFarmerLandList((prev) => [...prev, ...modified]);
-            })
-            .catch((error) => {});
-        }
-      })
-      .catch((error) => {});
+              })
+              .catch((error) => {});
+          }
+        })
+        .catch((error) => {});
+    }
   };
 
   // Try 3
@@ -422,7 +440,7 @@ function StakeHolderRegister() {
         mulberrySourceId: "",
         mulberryArea: "",
         mulberryVarietyId: "",
-        plantationDate: "2023-11-07T12:12:27.400+00:00",
+        plantationDate: new Date(),
         plantationTypeId: "",
         irrigationSourceId: "",
         irrigationTypeId: "",
@@ -502,7 +520,7 @@ function StakeHolderRegister() {
         mulberrySourceId: "",
         mulberryArea: "",
         mulberryVarietyId: "",
-        plantationDate: "2023-11-07T12:12:27.400+00:00",
+        plantationDate: new Date(),
         plantationTypeId: "",
         irrigationSourceId: "",
         irrigationTypeId: "",
@@ -731,6 +749,14 @@ function StakeHolderRegister() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+
+    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "fruitsId" && value.length === 16) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
   };
 
   const handleBankInputs = (e) => {
@@ -781,7 +807,20 @@ function StakeHolderRegister() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+      if (
+        bank.farmerBankIfscCode.length < 11 ||
+        bank.farmerBankIfscCode.length > 11
+      ) {
+        return;
+      }
       api
         .post(baseURL2 + `farmer/add`, data)
         .then((response) => {
@@ -1473,6 +1512,14 @@ function StakeHolderRegister() {
     });
   };
 
+  const searchError = (message) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Data not Found!!!",
+      text: message,
+    });
+  };
+
   // const saveFamilyError = (message) => {
   //   Swal.fire({
   //     icon: "error",
@@ -1854,57 +1901,56 @@ function StakeHolderRegister() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
+        <Form noValidate validated={searchValidated} onSubmit={search}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Form.Group as={Row} className="form-group">
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                      {t("FRUITS ID")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col sm={4}>
+                      <Form.Control
+                        id="fruitsId"
+                        name="fruitsId"
+                        value={data.fruitsId}
+                        onChange={handleInputs}
+                        type="text"
+                        maxLength="16"
+                        placeholder={t("Enter FRUITS ID")}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Fruits ID 16 Digits is required.
+                      </Form.Control.Feedback>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary">
+                        {t("search")}
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                        target="_blank"
+                        // onClick={search}
+                      >
+                        Generate FRUITS ID
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
+
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                    <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        {t("FRUITS ID")}
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter FRUITS ID")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID is required.
-                        </Form.Control.Feedback>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={search}
-                        >
-                          {t("search")}
-                        </Button>
-                      </Col>
-                      <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -2019,6 +2065,7 @@ function StakeHolderRegister() {
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Form.Group>
@@ -2041,7 +2088,9 @@ function StakeHolderRegister() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
+                        <Form.Label>
+                          Caste<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="casteId"
@@ -2056,6 +2105,9 @@ function StakeHolderRegister() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Caste is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -2102,6 +2154,7 @@ function StakeHolderRegister() {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
+                            maxLength="10"
                             placeholder={t("enter_mobile_number")}
                             required
                           />
@@ -2350,7 +2403,7 @@ function StakeHolderRegister() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")}
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2763,6 +2816,7 @@ function StakeHolderRegister() {
                             value={bank.farmerBankIfscCode}
                             onChange={handleBankInputs}
                             type="text"
+                            maxLength="11"
                             placeholder={t("enter_ifsc_code")}
                             required
                           />
@@ -4041,6 +4095,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_hissa")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4561,6 +4616,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_owner_name")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4575,6 +4631,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4591,6 +4648,7 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("Enter owner Number")}
+                      readOnly
                     />
                   </div>
                 </Form.Group>
@@ -4613,7 +4671,12 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_number")}
+                          required
+                          readOnly
                         />
+                        <Form.Control.Feedback type="invalid">
+                          Survey Number is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
 
@@ -4627,6 +4690,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter acre")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4777,6 +4841,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("enter_survey_noc")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -4791,6 +4856,7 @@ function StakeHolderRegister() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter gunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
@@ -5358,6 +5424,7 @@ function StakeHolderRegister() {
                       placeholder={t("enter_address")}
                       rows="2"
                       required
+                      readOnly
                     />
                     <Form.Control.Feedback type="invalid">
                       Address is required

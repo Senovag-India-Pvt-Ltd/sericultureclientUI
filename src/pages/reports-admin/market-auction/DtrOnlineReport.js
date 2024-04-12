@@ -12,6 +12,8 @@ import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function DtrOnlineReport() {
   const [data, setData] = useState({
@@ -21,6 +23,9 @@ function DtrOnlineReport() {
     fromDate: "",
     toDate: "",
   });
+
+  const [realReelerId, setRealReelerId] = useState("");
+
   console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
@@ -132,10 +137,10 @@ function DtrOnlineReport() {
 
     try {
       const response = await api.post(
-        `https://api.senovagseri.com/reports-uat/marketreport/dtr-online-report`,
+        baseURLReport + `dtr-online-report`,
         {
           marketId: data.marketId,
-          reelerId: data.reelerId,
+          reelerId: realReelerId,
           fromDate: formattedFromDate,
           toDate: formattedToDate,
         },
@@ -178,23 +183,78 @@ function DtrOnlineReport() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
-          marketId: marketId,
-          // godownId: godownId,
-          reelerId: reelerId,
-          fromDate: formattedFromDate,
-          toDate: formattedToDate,
-        })
-        .then((response) => {
-          //  console.log(response);
-          if (response.data.content)
+      if (data.reelerId.trim()) {
+        api
+          .get(
+            baseURLFarmer +
+              `reeler/get-by-reeling-license-number/${data.reelerId}`
+          )
+          .then((response) => {
+            if (!response.data.content.error) {
+              if (response.data.content.reelerId) {
+                setRealReelerId(response.data.content.reelerId);
+
+                api
+                  .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
+                    marketId: marketId,
+                    // godownId: godownId,
+                    reelerId: response.data.content.reelerId,
+                    fromDate: formattedFromDate,
+                    toDate: formattedToDate,
+                  })
+                  .then((response) => {
+                    //  console.log(response);
+                    if (response.data.content)
+                      setListData(
+                        response.data.content.dtrOnlineReportUnitDetailList
+                      );
+                    setListDetails(response.data.content);
+                  })
+                  .catch((error) => {
+                    // console.log("error", error);
+                  });
+              }
+            } else {
+              Swal.fire({
+                icon: "warning",
+                // title: "Save",
+                text: response.data.content.error_description,
+              });
+              setListData([]);
+            }
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      } else {
+        api
+          .post(baseURLMarket + `auction/report/getDTROnlineReport`, {
+            marketId: marketId,
+            // godownId: godownId,
+            reelerId: 0,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
+          })
+          .then((response) => {
+            //  console.log(response);
+            if (response.data.content)
+              if (
+                response.data.content.dtrOnlineReportUnitDetailList.length === 0
+              ) {
+                setListData([]);
+                return Swal.fire({
+                  icon: "warning",
+                  title: "No Data Found",
+                  // text: "Something went wrong!",
+                });
+              }
             setListData(response.data.content.dtrOnlineReportUnitDetailList);
-          setListDetails(response.data.content);
-        })
-        .catch((error) => {
-          // console.log("error", error);
-        });
+            setListDetails(response.data.content);
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      }
     }
   };
 
@@ -260,7 +320,7 @@ function DtrOnlineReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number<span className="text-danger">*</span>
+                        Reeler Number
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -270,11 +330,11 @@ function DtrOnlineReport() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Reeler Number"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Reeler Number is required.
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
                         From Date
@@ -287,6 +347,7 @@ function DtrOnlineReport() {
                             selected={data.fromDate}
                             onChange={handleFromDateChange}
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>
@@ -301,6 +362,7 @@ function DtrOnlineReport() {
                             selected={data.toDate}
                             onChange={handleToDateChange}
                             className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>
@@ -414,7 +476,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Wt
+                            Weight
                           </th>
                           <th
                             style={{
@@ -423,7 +485,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Bid Amt
+                            Bid Amount
                           </th>
                           <th
                             style={{
@@ -432,7 +494,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Amt
+                            Amount
                           </th>
                           <th
                             style={{
@@ -441,7 +503,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Farmer Amt
+                            Farmer Amount
                           </th>
                           <th
                             style={{
@@ -450,7 +512,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            MF
+                            Market Fee
                           </th>
                           <th
                             style={{
@@ -459,7 +521,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Amt
+                            Reeler Amount
                           </th>
                           <th
                             style={{
@@ -497,6 +559,15 @@ function DtrOnlineReport() {
                           >
                             Account No
                           </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Auction Date
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -521,8 +592,29 @@ function DtrOnlineReport() {
                             <td>{list.bankName}</td>
                             <td>{list.ifscCode}</td>
                             <td>{list.accountNumber}</td>
+                            <td>{list.auctionDate}</td>
                           </tr>
                         ))}
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>Wt: {listDetails.totalWeight}</td>
+                          <td>Amt: {listDetails.totalBidAmount}</td>
+                          <td></td>
+                          <td>F Amt: {listDetails.totalFarmerAmount.toFixed(2)}</td>
+                          <td>
+                            MF:{" "}
+                            {(listDetails.totalFarmerMarketFee +
+                              listDetails.totalReelerMarketFee).toFixed(2)}
+                          </td>
+                          <td>R Amt: {listDetails.totalReelerAmount.toFixed(2)}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
                         {
                           <tr>
                             <td
@@ -530,7 +622,7 @@ function DtrOnlineReport() {
                                 fontWeight: "bold",
                                 background: "rgb(251 255 248)",
                               }}
-                              colSpan="13"
+                              colSpan="14"
                             >
                               <div>
                                 Total Lots:{" "}
@@ -539,7 +631,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                Farmers Cheque Amt:{" "}
+                                Farmers Cheque Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     listDetails.totalFarmerAmount.toFixed(2)
@@ -547,7 +639,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                MF Amount:{" "}
+                                Market Fee Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     (
@@ -558,7 +650,7 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
-                                Reeler Transaction Amt:{" "}
+                                Reeler Transaction Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
                                     listDetails.totalReelerAmount.toFixed(2)

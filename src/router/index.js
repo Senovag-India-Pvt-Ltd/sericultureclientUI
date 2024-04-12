@@ -543,6 +543,51 @@ import FarmerWithoutFruits from "../pages/stake-holder/FarmerWithoutFruits";
 import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmerAllow";
 import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
 import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
+import HomePage from "../pages/stake-holder/HomePage";
+import Tsc from "../pages/masters/tsc/TscMaster";
+import TscList from "../pages/masters/tsc/TscMasterList";
+import TscEdit from "../pages/masters/tsc/TscMasterEdit";
+import TscView from "../pages/masters/tsc/TscView";
+import ScCategory from "../pages/masters/sc-category/ScCategory";
+import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
+import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
+import ScCategoryEdit from "../pages/masters/sc-category/ScCategoryEdit";
+import DashboardReport from "../pages/reports-admin/market-auction/DashboardReport";
+import ScProgramAccountMapping from "../pages/masters/sc-program-account-mapping/ScProgramAccountMapping";
+import ScProgramAccountMappingList from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingList";
+import ScProgramAccountMappingEdit from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingEdit";
+import ScProgramAccountMappingView from "../pages/masters/sc-program-account-mapping/ScProgramAccountMappingView";
+import ScApprovalStage from "../pages/masters/sc-approval-stage/ScApprovalStage";
+import ScApprovalStageList from "../pages/masters/sc-approval-stage/ScApprovalStageList";
+import ScApprovalStageView from "../pages/masters/sc-approval-stage/ScApprovalStageView";
+import EditScApprovalStage from "../pages/masters/sc-approval-stage/EditScApprovalStage";
+import ScProgramApprovalMapping from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMapping";
+import ScProgramApprovalMappingList from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingList";
+import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingView";
+import ScProgramApprovalMappingEdit from "../pages/masters/sc-program-approval-mapping/EditScApprovalMapping";
+import ReelerPendingReport from "../pages/reports-admin/market-auction/ReelerPendingReport";
+import ReelerInitialAmount from "../pages/market-and-auction/ReelerInitialAmount";
+import Bank from "../pages/masters/bank/Bank";
+import BankList from "../pages/masters/bank/BankList";
+import BankView from "../pages/masters/bank/BankView";
+import BankEdit from "../pages/masters/bank/BankEdit";
+import PrintFarmerCopy from "../pages/market-and-auction/PrintFarmerCopy";
+import MaintenanceofMulberryfarmList from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmList";
+import ReceiptofDFLsfromtheP4grainageList from "../pages/seed-and-dfl-managment/ReceiptofDFLsfromtheP4grainageList";
+import MaintenanceofLineRecordsforEachRaceList from "../pages/seed-and-dfl-managment/MaintenanceofLineRecordsforEachRaceList";
+import MaintenanceofScreeningBatchRecordsList from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsList";
+import DispatchofCocoonstoP4GrainageList from "../pages/seed-and-dfl-managment/DispatchofCocoonstoP4GrainageList";
+import RearingofDFLsforthe8LinesList from "../pages/seed-and-dfl-managment/RearingofDFLsforthe8LinesList";
+import PreservationofseedcocoonforprocessingList from "../pages/seed-and-dfl-managment/PreservationofseedcocoonforprocessingList";
+import PreparationofeggsDFLsList from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsList";
+import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/MaintenanceofeggsatcoldstorageList";
+import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
+import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
+import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
+import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
+import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import EscalationDashboard from "../pages/helpdesk/EscalationDashboard";
+import EscalationView from "../pages/helpdesk/EscalationView";
 
 // Admin and Reports
 
@@ -696,6 +741,7 @@ function Router() {
             <Route path="*" element={<NotFound />} />
 
             {/* Sericulture */}
+            <Route path="homepage" element={<HomePage />} />
             <Route
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
@@ -863,12 +909,25 @@ function Router() {
               element={<MaintenanceofMulberryfarm />}
             />
             <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-list"
+              element={<MaintenanceofMulberryfarmList />}
+            />
+            <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
             />
             <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-list"
+              element={<ReceiptofDFLsfromtheP4grainageList />}
+            />
+            <Route
               path="Maintenance-of-Line-Records-for-Each-Race"
               element={<MaintenanceofLineRecordsforEachRace />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-List"
+              element={<MaintenanceofLineRecordsforEachRaceList />}
             />
 
             <Route
@@ -877,8 +936,18 @@ function Router() {
             />
 
             <Route
+              path="Maintenance-of-Screening-Batch-Records-List"
+              element={<MaintenanceofScreeningBatchRecordsList />}
+            />
+
+            <Route
               path="Dispatch-of-Cocoons-to-P4-Grainage"
               element={<DispatchofCocoonstoP4Grainage />}
+            />
+
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-List"
+              element={<DispatchofCocoonstoP4GrainageList />}
             />
 
             <Route
@@ -887,8 +956,18 @@ function Router() {
             />
 
             <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-List"
+              element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
               path="Preservation-of-seed-cocoon-for-processing"
               element={<Preservationofseedcocoonforprocessing />}
+            />
+
+            <Route
+              path="Preservation-of-seed-cocoon-for-processing-List"
+              element={<PreservationofseedcocoonforprocessingList />}
             />
 
             <Route
@@ -897,13 +976,43 @@ function Router() {
             />
 
             <Route
+              path="Preparation-of-eggs-DFLs-List"
+              element={<PreparationofeggsDFLsList />}
+            />
+
+            <Route
               path="Maintenance-of-eggs-at-cold-storage"
               element={<Maintenanceofeggsatcoldstorage />}
             />
 
             <Route
+              path="Maintenance-of-eggs-at-cold-storage-List"
+              element={<MaintenanceofeggsatcoldstorageList />}
+            />
+
+            <Route
               path="Cold-Storage-Schedule-BV"
               element={<ColdStorageScheduleBV />}
+            />
+
+            <Route
+              path="Cold-Storage-Schedule-BV-List"
+              element={<ColdStorageScheduleBVList />}
+            />
+
+            <Route path="testing-of-moth" element={<TestingOfMoth />} />
+            <Route
+              path="testing-of-moth-list"
+              element={<TestingOfMothList />}
+            />
+
+            <Route
+              path="testing-of-moth-edit/:id"
+              element={<EditTestingOfMoth />}
+            />
+            <Route
+              path="testing-of-moth-view/:id"
+              element={<TestingOfMothView />}
             />
 
             {/* Seed & DFL Management */}
@@ -1006,6 +1115,11 @@ function Router() {
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
             <Route path="help-desk" element={<HelpDesk />} />
+            <Route
+              path="escalate-dashboard"
+              element={<EscalationDashboard />}
+            />
+            <Route path="escalate-view/:id" element={<EscalationView />} />
             <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
             <Route path="raise-ticket-view/:id" element={<RaiseTicketView />} />
             <Route path="user-ticket-view/:id" element={<UserTicketView />} />
@@ -1423,10 +1537,67 @@ function Router() {
             <Route path="source-list" element={<SourceList />} />
             <Route path="source-view/:id" element={<SourceView />} />
             <Route path="source-edit/:id" element={<SourceEdit />} />
+            <Route path="bank" element={<Bank />} />
+            <Route path="bank-list" element={<BankList />} />
+            <Route path="bank-view/:id" element={<BankView />} />
+            <Route path="bank-edit/:id" element={<BankEdit />} />
             <Route path="sc-program" element={<ScProgram />} />
             <Route path="sc-program-list" element={<ScProgramList />} />
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
             <Route path="sc-program-edit/:id" element={<ScProgramEdit />} />
+            <Route path="sc-approval-stage" element={<ScApprovalStage />} />
+            <Route
+              path="sc-approval-stage-list"
+              element={<ScApprovalStageList />}
+            />
+            <Route
+              path="sc-approval-stage-view/:id"
+              element={<ScApprovalStageView />}
+            />
+            <Route
+              path="sc-approval-stage-edit/:id"
+              element={<EditScApprovalStage />}
+            />
+            <Route path="tsc" element={<Tsc />} />
+            <Route path="tsc-list" element={<TscList />} />
+            <Route path="tsc-view/:id" element={<TscView />} />
+            <Route path="tsc-edit/:id" element={<TscEdit />} />
+            <Route
+              path="sc-program-approval-mapping"
+              element={<ScProgramApprovalMapping />}
+            />
+            <Route
+              path="sc-program-approval-mapping-list"
+              element={<ScProgramApprovalMappingList />}
+            />
+            <Route
+              path="sc-program-approval-mapping-view/:id"
+              element={<ScProgramApprovalMappingView />}
+            />
+            <Route
+              path="sc-program-approval-mapping-edit/:id"
+              element={<ScProgramApprovalMappingEdit />}
+            />
+            <Route
+              path="sc-program-account-mapping"
+              element={<ScProgramAccountMapping />}
+            />
+            <Route
+              path="sc-program-account-mapping-list"
+              element={<ScProgramAccountMappingList />}
+            />
+            <Route
+              path="sc-program-account-mapping-view/:id"
+              element={<ScProgramAccountMappingView />}
+            />
+            <Route
+              path="sc-program-account-mapping-edit/:id"
+              element={<ScProgramAccountMappingEdit />}
+            />
+            <Route path="sc-category" element={<ScCategory />} />
+            <Route path="sc-category-list" element={<ScCategoryList />} />
+            <Route path="sc-category-view/:id" element={<ScCategoryView />} />
+            <Route path="sc-category-edit/:id" element={<ScCategoryEdit />} />
             <Route path="sc-component" element={<ScComponent />} />
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
@@ -1696,6 +1867,10 @@ function Router() {
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />
             <Route
+              path="reeler-initial-amount"
+              element={<ReelerInitialAmount />}
+            />
+            <Route
               path="reject-farmer-auction"
               element={<RejectFarmerAuction />}
             />
@@ -1703,6 +1878,7 @@ function Router() {
               path="generate-bidding-slip"
               element={<GenerateBiddingSlip />}
             />
+            <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route
@@ -1749,6 +1925,11 @@ function Router() {
               path="reeler-transaction-reports"
               element={<ReelerTransactionReports />}
             />
+            <Route
+              path="reeler-pending-report"
+              element={<ReelerPendingReport />}
+            />
+
             <Route path="bidding-report" element={<BiddingReport />} />
             <Route
               path="bidding-report-reeler"
@@ -1768,6 +1949,7 @@ function Router() {
               path="district-wise-abstract"
               element={<DistrictWiseAbstractReport />}
             />
+            <Route path="dashboard-report" element={<DashboardReport />} />
 
             {/* Display All Lot */}
             <Route path="display-all-lot" element={<DisplayAllLot />} />

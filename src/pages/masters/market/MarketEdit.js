@@ -24,6 +24,21 @@ function MarketEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleCheckBox = (e) => {
+    setData((prev) => ({
+      ...prev,
+      weighmentTripletGeneration: e.target.checked,
+    }));
+  };
+
+  const handleCheckBoxBidAmount = (e) => {
+    setData((prev) => ({
+      ...prev,
+      bidAmountFlag: e.target.checked,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -75,6 +90,8 @@ function MarketEdit() {
               snorkelRequestPath: "",
               snorkelResponsePath: "",
               clientCode: "",
+              weighmentTripletGeneration: "",
+              bidAmountFlag: "",
             });
             setValidated(false);
           }
@@ -122,6 +139,8 @@ function MarketEdit() {
       snorkelRequestPath: "",
       snorkelResponsePath: "",
       clientCode: "",
+      weighmentTripletGeneration: "",
+      bidAmountFlag: "",
     });
   };
 
@@ -364,7 +383,7 @@ function MarketEdit() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        Crate Weight(In Kg)
+                        Tare Weight(In Kg)
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -374,11 +393,11 @@ function MarketEdit() {
                           value={data.boxWeight}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Crate Weight"
+                          placeholder="Enter Tare Weight"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Crate Weight(In Kg) is required
+                          Tare Weight(In Kg) is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1120,13 +1139,45 @@ function MarketEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Market Address"
-                          rows="8"
+                          rows="6"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
                           Market Address is required
                         </Form.Control.Feedback>
                       </div>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="weighmentTripletGeneration"
+                          checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Triplet Generation After Weighment
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="bidAmountFlag"
+                          checked={data.bidAmountFlag}
+                          onChange={handleCheckBoxBidAmount}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Bid Amount Flag
+                      </Form.Label>
                     </Form.Group>
                   </Col>
                 </Row>

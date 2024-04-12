@@ -11,6 +11,7 @@ import axios from "axios";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BiddingReportReeler() {
   const [data, setData] = useState({
@@ -78,7 +79,7 @@ function BiddingReportReeler() {
       // event.stopPropagation();
       api
         .post(
-          `https://api.senovagseri.com/reports-uat/marketreport/get-reeler-bidding-report`,
+          baseURLReport + `get-reeler-bidding-report`,
           {
             marketId: marketId,
             godownId: godownId,
@@ -195,6 +196,8 @@ function BiddingReportReeler() {
                             dateFormat="dd/MM/yyyy"
                             selected={data.reportFromDate}
                             onChange={handleDateChange}
+                            className="form-control"
+                            maxDate={new Date()}
                           />
                         </div>
                       </Col>

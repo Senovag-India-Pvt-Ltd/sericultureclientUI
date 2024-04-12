@@ -215,6 +215,7 @@ function MarketList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Market",
@@ -238,7 +239,7 @@ function MarketList() {
     //   hide: "md",
     // },
     {
-      name: "Crate Weight",
+      name: "Tare Weight",
       selector: (row) => row.boxWeight,
       cell: (row) => <span>{row.boxWeight}</span>,
       sortable: true,

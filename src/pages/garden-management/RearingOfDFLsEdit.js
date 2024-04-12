@@ -254,6 +254,9 @@ function RearingOfDFLsEdit() {
                               </option>
                             ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                          Disinfactant Usage Details is required
+                      </Form.Control.Feedback>
                         </div>
                       </Col>
                     </Form.Group>
@@ -272,207 +275,131 @@ function RearingOfDFLsEdit() {
                           value={data.cropNumber}
                           onChange={handleInputs}
                           type="text"
+                          maxLength="12"
                           placeholder="Enter Crop Number"
                           required
                         />
+                        <Form.Control.Feedback type="invalid">
+                          Crop Number is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Crop Number is required
-                    </Form.Control.Feedback>
                   </Col>
 
-                  {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="plotNumber">
-                          Lot Number<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="lotNumber"
-                            name="lotNumber"
-                            value={data.lotNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Lot Number"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                    </Col> */}
-
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Lot Number<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="lotNumberId"
-                            value={data.lotNumberId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                          >
-                            <option value="">Select Lot Number</option>
-                            {lotNumberListData.map((list) => (
-                              <option
-                                key={list.lotNumber}
-                                value={list.lotNumber}
-                              >
-                                {list.lotNumber}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </div>
-                      </Col>
-                    </Form.Group>
-                  </Col> */}
-
-                  {/* <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Number Of DFLs<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="numberOfDFLs"
-                          name="numberOfDFLs"
-                          value={data.numberOfDFLs}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Number Of DFLs"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Number Of DFLs is required
-                    </Form.Control.Feedback>
-                  </Col> */}
+                  
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="coldStorageDetails">
-                        Cold Storage Details
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="coldStorageDetails"
-                          name="coldStorageDetails"
-                          value={data.coldStorageDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Cold Storage Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Chawki Percentage
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="chawkiPercentage"
-                          name="chawkiPercentage"
-                          value={data.chawkiPercentage}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Chawki Percentage"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Worm Weight(In Grams)
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="wormWeight"
-                          name="wormWeight"
-                          value={data.wormWeight}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter  Cold Storage Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Worm Test Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="wormTestDetails"
-                          name="wormTestDetails"
-                          value={data.wormTestDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Worm Test Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="plotNumber">
-                        Cocoon Assessment Details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="cocoonAssessmentDetails"
-                          name="cocoonAssessmentDetails"
-                          value={data.cocoonAssessmentDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Cocoon Assessment Details"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Form.Label column sm={2}>
-                    Brushing Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                      Cold Storage Status
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      {isDataLaidSet && (
-                        <DatePicker
-                          selected={new Date(data.brushingDate)}
-                          onChange={(date) =>
-                            handleDateChange(date, "brushingDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
+                      <Form.Control
+                        id="coldStorageDetails"
+                        name="coldStorageDetails"
+                        value={data.coldStorageDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter  Cold Storage Status"
                         />
-                      )}
-                    </div>
+                      </div>
+                    </Form.Group>
                   </Col>
 
-                  <Form.Label column sm={2}>
+                  <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="plotNumber">
+                      Chawki Percentage<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="chawkiPercentage"
+                        name="chawkiPercentage"
+                        value={data.chawkiPercentage}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Chawki Percentage"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Chawki Percentage is required
+                        </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="plotNumber">
+                      Worm Weight(In Grams)<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="wormWeight"
+                        name="wormWeight"
+                        value={data.wormWeight}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter  Cold Storage Details"
+                        required
+                      />
+                       <Form.Control.Feedback type="invalid">
+                       Worm Weight(In Grams) is required
+                        </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="plotNumber">
+                      Worm Test Status<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="wormTestDetails"
+                        name="wormTestDetails"
+                        value={data.wormTestDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Worm Test Details"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Worm Test Status is required
+                        </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="plotNumber">
+                      Cocoon Assessment(in Kgs/Grams)<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="cocoonAssessmentDetails"
+                        name="cocoonAssessmentDetails"
+                        value={data.cocoonAssessmentDetails}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Cocoon Assessment(in Kgs/Grams)"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Cocoon Assessment(in Kgs/Grams) is required
+                        </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                     Released On Date
                     <span className="text-danger">*</span>
                   </Form.Label>
-                  <Col sm={2}>
                     <div className="form-control-wrap">
                       {isDataReleasedSet && (
                         <DatePicker
@@ -486,16 +413,46 @@ function RearingOfDFLsEdit() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
+                          required
                         />
                       )}
                     </div>
+                    </Form.Group>
                   </Col>
 
-                  <Form.Label column sm={2}>
+                  <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
+                    Brushing Date
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                    <div className="form-control-wrap">
+                      {isDataLaidSet && (
+                        <DatePicker
+                          selected={new Date(data.brushingDate)}
+                          onChange={(date) =>
+                            handleDateChange(date, "brushingDate")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          required
+                        />
+                      )}
+                    </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="2">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">
                     Spun Date
                     <span className="text-danger">*</span>
                   </Form.Label>
-                  <Col sm={2}>
                     <div className="form-control-wrap">
                       {isDataSpunSet && (
                         <DatePicker
@@ -509,9 +466,11 @@ function RearingOfDFLsEdit() {
                           dropdownMode="select"
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
+                          required
                         />
                       )}
                     </div>
+                    </Form.Group>
                   </Col>
                 </Row>
               )}

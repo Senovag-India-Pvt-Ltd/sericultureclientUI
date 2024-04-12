@@ -17,6 +17,7 @@ import { useSpeechSynthesis } from "react-speech-kit";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function Weighment() {
   const [weighStream, setWeighStream] = useState("");
@@ -91,6 +92,29 @@ function Weighment() {
     }
   };
 
+  const [isTriplet, setIsTriplet] = useState("");
+  console.log(isTriplet);
+
+  const getMarketDetails = () => {
+    // console.log("hello world");
+    api
+      .get(baseURL + `marketMaster/get/${localStorage.getItem("marketId")}`)
+      .then((response) => {
+        if (!response.data.content.error) {
+          setIsTriplet(response.data.content.weighmentTripletGeneration);
+        } else {
+          console.error(response.data.content.error_description);
+        }
+
+        console.log(response);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    getMarketDetails();
+  }, []);
+
   const onchanging = (e) => {
     let value = e.target.value;
     setData((prev) => {
@@ -136,6 +160,15 @@ function Weighment() {
         console.log(response);
       })
       .catch((err) => {
+        if (
+          err.response.data &&
+          err.response.data.errorMessages[0] &&
+          err.response.data.errorMessages[0].message[0]
+        ) {
+          const message = err.response.data.errorMessages[0].message[0].message;
+          submitWarning(message);
+        }
+
         // debugger;
         // setData({});
         // saveError();
@@ -208,6 +241,36 @@ function Weighment() {
     });
   };
 
+  const submitWarning = (message = "Something went wrong!") => {
+    Swal.fire({
+      icon: "warning",
+      text: message,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setData({
+          allottedLotId: "",
+          noOfCrates: "0",
+        });
+        setWeigh({
+          date: new Date(),
+          bidAmount: "0",
+          reelerCurrentBalance: 0,
+          farmerFirstName: "",
+          farmerNumber: "",
+          reelerName: "",
+          reelerLicense: "",
+        });
+        setTableWeightData([]);
+        setTotalNetPrice(0);
+        setTotalWeight(0);
+        setTotalNetWeight(0);
+        setTareWeight(0);
+        setCounter(0);
+        setLastWeight("0");
+      }
+    });
+  };
+
   const submitSuccess = (amount, lot) => {
     Swal.fire({
       icon: "warning",
@@ -236,8 +299,11 @@ function Weighment() {
         setCounter(0);
         setLastWeight("0");
         // setLotNumber("");
-
-        printTriplet();
+        if (isTriplet) {
+          printTriplet();
+        } else {
+          console.log("In Market Master Change setting");
+        }
       }
     });
   };
@@ -252,7 +318,7 @@ function Weighment() {
       newDate.getDate().toString().padStart(2, "0");
     api
       .post(
-        `https://api.senovagseri.com/reports-uat/marketreport/gettripletpdf-kannada`,
+        baseURLReport + `gettripletpdf-kannada`,
         {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),
@@ -265,12 +331,22 @@ function Weighment() {
       )
       .then((response) => {
         //console.log("hello world", response.data);
-        //Create a Blob from the PDF Stream
+        // //Create a Blob from the PDF Stream
+        // const file = new Blob([response.data], { type: "application/pdf" });
+        // //Build a URL from the file
+        // const fileURL = URL.createObjectURL(file);
+        // //Open the URL on new Window
+        // window.open(fileURL);
         const file = new Blob([response.data], { type: "application/pdf" });
-        //Build a URL from the file
         const fileURL = URL.createObjectURL(file);
-        //Open the URL on new Window
-        window.open(fileURL);
+        const printWindow = window.open(fileURL);
+        if (printWindow) {
+          printWindow.onload = () => {
+            printWindow.print();
+          };
+        } else {
+          console.error("Failed to open the print window.");
+        }
       })
       .catch((error) => {
         // console.log("error", error);
@@ -954,6 +1030,8 @@ function Weighment() {
                                 <input
                                   name="noOfCrates"
                                   value={data.noOfCrates}
+                                  type="number"
+                                  min={0}
                                   onChange={handleInputs}
                                   onBlur={onchangingCrate}
                                   style={{
@@ -969,6 +1047,8 @@ function Weighment() {
                                 <input
                                   name="allottedLotId"
                                   value={data.allottedLotId}
+                                  type="number"
+                                  min={0}
                                   onChange={handleInputs}
                                   onBlur={onchanging}
                                   style={{
@@ -1119,12 +1199,17 @@ function Weighment() {
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.large}>{lastWeight}</td>
+                              {/* <td style={styles.large}>{lastWeight-tareWeight}</td> */}
+                              <td style={styles.large}>
+                                {Math.max(0, lastWeight - tareWeight).toFixed(
+                                  3
+                                )}
+                              </td>
                             </tr>
                             <tr>
                               <td style={styles.xxsmallcolor}>
                                 Reeler Wallet Amount: &#8377;{" "}
-                                {weigh.reelerCurrentBalance}
+                                {Math.round(weigh.reelerCurrentBalance)}
                               </td>
                             </tr>
                             <tr>
