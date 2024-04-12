@@ -8,7 +8,7 @@ import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggsAtColdView() {
   const styles = {
@@ -33,7 +33,7 @@ function MaintenanceOfEggsAtColdView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfEggsAtColdStorage/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggStorage/get-info-by-id/${id}`)
       .then((response) => {
         setColdStorage(response.data);
         setLoading(false);
@@ -50,12 +50,13 @@ function MaintenanceOfEggsAtColdView() {
     getIdList();
   }, [id]);
 
+
   return (
-    <Layout title="View Maintenance Of Egg At Cold Storage Details">
+    <Layout title="View Maintenance Of Egg At Cold Storage NSSO Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> View Maintenance Of Egg At Cold Storage Details </Block.Title>
+            <Block.Title tag="h2"> View Maintenance Of Egg At Cold Storage NSSO Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

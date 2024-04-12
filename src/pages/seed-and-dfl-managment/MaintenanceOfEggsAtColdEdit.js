@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceOfEggsAtColdEdit() {
   const { id } = useParams();
@@ -20,6 +20,7 @@ function MaintenanceOfEggsAtColdEdit() {
 
   const [validated, setValidated] = useState(false);
 
+  
 
   let name, value;
   const handleInputs = (e) => {
@@ -32,8 +33,9 @@ function MaintenanceOfEggsAtColdEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const isDataReleaseSet = !!data.releaseDate;
-  const isDataColdSet = !!data.coldDate;
+  const isDataReleaseSet = !!data.dateOfRelease;
+  const isDataColdSet = !!data.laidOnDate;
+  const isDataLaidDate = !!data.storageDate;
 
 
   const postData = (event) => {
@@ -46,19 +48,19 @@ function MaintenanceOfEggsAtColdEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `MaintenanceOfEggsAtColdStorage/update-info`, data)
+        .post(baseURLSeedDfl + `MaintenanceOfEggsAtColdStorage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-                lotNumber: "",
-                noOfDFLs: "",
-                grainageDetails: "",
-                scheduleDetails: "",
-                dateOfDeposit: "",
-                dateOfRetrieval: "",
+              lotNumber: "",
+              numberOfDFLs: "",
+              dateOfColdStore: "",
+              laidOnDate: "",
+              dateOfRelease: "",
+              incubationDetails: "",
             });
             setValidated(false);
           }
@@ -75,21 +77,22 @@ function MaintenanceOfEggsAtColdEdit() {
 
   const clear = () => {
     setData({
-        lotNumber: "",
-        noOfDFLs: "",
-        grainageDetails: "",
-        scheduleDetails: "",
-        dateOfDeposit: "",
-        dateOfRetrieval: "",
+      lotNumber: "",
+      numberOfDFLs: "",
+      dateOfColdStore: "",
+      laidOnDate: "",
+      dateOfRelease: "",
+      incubationDetails: "",
     });
   };
+
 
 
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `MaintenanceOfPiercedCocoons/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggPreparation/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -106,6 +109,24 @@ function MaintenanceOfEggsAtColdEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data.EggPreparation);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
 
    
   const navigate = useNavigate();
@@ -135,16 +156,16 @@ function MaintenanceOfEggsAtColdEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    });
-};
+    }).then(() => navigate("#"));
+  };
 
 return (
-  <Layout title="Maintenance of eggs at cold storage">
+  <Layout title="Edit Maintenance of eggs at cold storage NSSO">
     <Block.Head>
       <Block.HeadBetween>
         <Block.HeadContent>
           <Block.Title tag="h2">
-            Maintenance of eggs at cold storage
+            Edit Maintenance of eggs at cold storage NSSO
           </Block.Title>
          
         </Block.HeadContent>
@@ -174,189 +195,75 @@ return (
     </Block.Head>
 
     <Block className="mt-n4">
-      {/* <Form action="#"> */}
-      <Form noValidate validated={validated} onSubmit={postData}>
-        {/* <Row className="g-3 "> */}
-        <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>
-                      Maintenance of eggs at cold storage
-                    </Card.Header>
-                    <Card.Body>
-                    {loading ? (
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Edit Maintenance Of Eggs At Cold Storage
+            </Card.Header>
+            <Card.Body>
+              {loading ? (
                 <h1 className="d-flex justify-content-center align-items-center">
                   Loading...
                 </h1>
               ) : (
-                      <Row className="g-gs">
-                        <Col lg="4">
-                        <Form.Group className="form-group mt-n4 ">
-                  <Form.Label htmlFor="plotNumber">
+                <Row className="g-gs">
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
                     Lot Number<span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="lotNumber"
-                      name="lotNumber"
-                      value={data.lotNumber}
-                      onChange={handleInputs}
-                      maxLength="12"
-                      type="text"
-                      placeholder="Enter Lot Number"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Lot Number is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>           
-              </Col>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
 
-              <Col lg="4">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="numberOfDFLsReceived">
-                    Number Of DFLs 
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="numberOfDFLsReceived"
-                      name="numberOfDFLsReceived"
-                      value={data.numberOfDFLsReceived}
-                      onChange={handleInputs}
-                      maxLength="4"
-                      type="text"
-                      placeholder="Enter Number Of DFLs received"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Number Of DFLs is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                      Number Of DFLs 
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="numberOfDFLs"
+                        name="numberOfDFLs"
+                        value={data.numberOfDFLs}
+                        onChange={handleInputs}
+                        maxLength="4"
+                        type="text"
+                        placeholder="Enter Number Of DFLs received"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Number Of DFLs is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-              <Col lg="4">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="numberOfDFLsReceived">
-                    Grainage Details
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="grainageDetails"
-                      name="grainageDetails"
-                      value={data.grainageDetails}
-                      onChange={handleInputs}
-                      type="text"
-                      placeholder="Enter Grainage Details"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                    Grainage Details is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="4">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="numberOfDFLsReceived">
-                    Grainage Details
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="grainageDetails"
-                      name="grainageDetails"
-                      value={data.grainageDetails}
-                      onChange={handleInputs}
-                      type="text"
-                      placeholder="Enter Grainage Details"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                    Grainage Details is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="4">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="numberOfDFLsReceived">
-                    Schedule Details
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Control
-                      id="scheduleDetails"
-                      name="scheduleDetails"
-                      value={data.scheduleDetails}
-                      onChange={handleInputs}
-                      type="text"
-                      placeholder="Enter Schedule Details"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                    Schedule Details is required
-                    </Form.Control.Feedback>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date of Cold storage
-                              </Form.Label>
-                              <div className="Date of Cold Storage">
-                              { isDataColdSet && (
-                                <DatePicker
-                                  selected={new Date(data.dateOfColdStorage)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "dateOfColdStorage")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="2">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Date of release
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                              {isDataReleaseSet && (
-                                <DatePicker
-                                  selected={new Date(data.releaseDate)}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "releaseDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                                )}
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
+                <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Incubation Details
@@ -373,6 +280,85 @@ return (
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of Cold storage<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="Date of Cold Storage">
+                              { isDataColdSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfColdStore)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfColdStore")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Laid On Date<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                    {isDataLaidDate && (
+                      <DatePicker
+                        selected={new Date(data.laidOnDate)}
+                        onChange={(date) =>
+                          handleDateChange(date, "laidOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                      )}
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Date of release<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {isDataReleaseSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfRelease)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfRelease")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          
                 </Row>
               )}
             </Card.Body>
