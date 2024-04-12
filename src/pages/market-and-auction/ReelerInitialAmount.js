@@ -16,15 +16,9 @@ const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function ReelerInitialAmount() {
   const [data, setData] = useState({
     reelerId: "",
-    username: "",
-    password: "",
-    phoneNumber: "",
-    emailId: "",
-    roleId: "",
-    marketMasterId: "",
-    designationId: "",
-    deviceId: "",
-    walletAMount: "",
+    initialAmount: "",
+    accountNumber: "",
+    virtualAccount: "",
   });
 
   const styles = {
@@ -142,11 +136,8 @@ function ReelerInitialAmount() {
       setValidated(true);
     } else {
       event.preventDefault();
-      if (data.phoneNumber.length < 10 || data.phoneNumber.length > 10) {
-        return;
-      }
       api
-        .post(baseURL1 + `userMaster/save-reeler-user`, data)
+        .post(baseURL + `reeler/reeler-initial-amount`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -154,15 +145,9 @@ function ReelerInitialAmount() {
             saveSuccess();
             setData({
               reelerId: "",
-              username: "",
-              password: "",
-              phoneNumber: "",
-              emailId: "",
-              roleId: "",
-              marketMasterId: "",
-              designationId: "",
-              deviceId: "",
-              walletAMount: "",
+              initialAmount: "",
+              accountNumber: "",
+              virtualAccount: "",
             });
             setValidated(false);
           }
@@ -177,6 +162,11 @@ function ReelerInitialAmount() {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
             }
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: `Already initial amount is added !!!`,
+            });
           }
 
           // if (err.response && err.response.data.content) {
@@ -195,6 +185,7 @@ function ReelerInitialAmount() {
     reelerName: "",
     reelerNumber: "",
     reelingLicenseNumber: "",
+    virtualAccountNumber: "",
   });
 
   const display = (event) => {
@@ -245,7 +236,15 @@ function ReelerInitialAmount() {
               reelerName: response.data.content.reelerName,
               reelerNumber: response.data.content.reelerNumber,
               reelingLicenseNumber: response.data.content.reelingLicenseNumber,
+              virtualAccountNumber: response.data.content.virtualAccountNumber,
             }));
+
+            setData((prev) => ({
+              ...prev,
+              reelerId: response.data.content.reelerId,
+              virtualAccount: response.data.content.virtualAccountNumber,
+            }));
+            setShow(false);
           } else {
             Swal.fire({
               icon: "warning",
@@ -301,7 +300,7 @@ function ReelerInitialAmount() {
     setListData([]);
   };
 
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   createTheme(
     "solarized",
@@ -427,11 +426,11 @@ function ReelerInitialAmount() {
   };
 
   return (
-    <Layout title="Activate Reeler">
+    <Layout title="Reeler Initial Amount">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Activate Reeler</Block.Title>
+            <Block.Title tag="h2">Reeler Initial Amount</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -523,21 +522,21 @@ function ReelerInitialAmount() {
                     <Row className="g-gs">
                       <Col lg="6">
                         <Form.Group className="form-group">
-                          <Form.Label htmlFor="user">
+                          <Form.Label htmlFor="initial">
                             Initial Amount<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
-                              id="user"
-                              name="username"
-                              value={data.username}
+                              id="initial"
+                              name="initialAmount"
+                              value={data.initialAmount}
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter Initial Amount"
                               required
                             />
                             <Form.Control.Feedback type="invalid">
-                              User Name is required
+                              Initial Amount is required
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -586,6 +585,13 @@ function ReelerInitialAmount() {
                             Reeler License Number:
                           </td>
                           <td>{showData.reelingLicenseNumber}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>
+                            {" "}
+                            Virtual Account Number:
+                          </td>
+                          <td>{showData.virtualAccountNumber}</td>
                         </tr>
                       </tbody>
                     </table>
