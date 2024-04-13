@@ -1,33 +1,28 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
-import api from "../../../src/services/auth/api";
+import { useEffect } from "react";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ColdStorageScheduleBV() {
-  const [data, setData] = useState({
-    lotNumber: "",
-    laidOnDate: "",
-    dateOfDeposit: "",
-    scheduleType: "",
-    dateOfRelease: "",
-    
-  });
+function ColdStorageScheduleBVEdit() {
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
+  const isDataReleaseDate = !!data.dateOfRelease;
+  const isDataDepositDate = !!data.dateOfDeposit;
+  const isDataLaidDate = !!data.laidOnDate;
 
   let name, value;
   const handleInputs = (e) => {
@@ -35,11 +30,12 @@ function ColdStorageScheduleBV() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
 
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+ 
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -51,47 +47,68 @@ function ColdStorageScheduleBV() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `Cold-Storage/add-info`, data)
+        .post(baseURLSeedDfl + `Cold-Storage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
-            saveError(response.data.message);
+            updateError(response.data.message);
           } else {
-            saveSuccess();
+            updateSuccess();
             setData({
-              lotNumber: "",
-              laidOnDate: "",
-              dateOfDeposit: "",
-              scheduleType: "",
-              dateOfRelease: "",
+                lotNumber: "",
+                laidOnDate: "",
+                dateOfDeposit: "",
+                scheduleType: "",
+                dateOfRelease: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
+          // const message = err.response.data.errorMessages[0].message[0].message;
           if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+            updateError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
     }
   };
 
-
   const clear = () => {
     setData({
-      lotNumber: "",
-      laidOnDate: "",
-      dateOfDeposit: "",
-      scheduleType: "",
-      dateOfRelease: "",
+        lotNumber: "",
+        laidOnDate: "",
+        dateOfDeposit: "",
+        scheduleType: "",
+        dateOfRelease: "",
     });
   };
 
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
+
+  //   to get data from api
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLSeedDfl + `Cold-Storage/get-info-by-id/${id}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+        
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
+      });
   };
 
-  // to get Lot
+  useEffect(() => {
+    getIdList();
+  }, [id]);
+
+  
+
+   // to get Lot
   const [lotListData, setLotListData] = useState([]);
 
   const getLotList = () => {
@@ -108,30 +125,42 @@ function ColdStorageScheduleBV() {
   useEffect(() => {
     getLotList();
   }, []);
-
-  
+ 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+
+  const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
+      title: "Updated successfully",
+      text: message,
     });
   };
-  const saveError = () => {
+  const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
-
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
   return (
-    <Layout title=" Cold Storage Schedule BV">
+    <Layout title=" Edit Cold Storage Schedule BV">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Cold Storage Schedule BV</Block.Title>
+            <Block.Title tag="h2"> Edit Cold Storage Schedule BV</Block.Title>
             
           </Block.HeadContent>
           <Block.HeadContent>
@@ -163,9 +192,14 @@ function ColdStorageScheduleBV() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-            Cold Storage Schedule BV
+            Edit Cold Storage Schedule BV
                 </Card.Header>
                     <Card.Body>
+                    {loading ? (
+                <h1 className="d-flex justify-content-center align-items-center">
+                  Loading...
+                </h1>
+              ) : (
                         <Row className="g-gs">
 
                         {/* <Col lg="4">
@@ -258,8 +292,9 @@ function ColdStorageScheduleBV() {
                                 Laid on Date
                               </Form.Label>
                               <div className="form-control-wrap">
+                              {isDataDepositDate && (
                                 <DatePicker
-                                  selected={data.laidOnDate}
+                                  selected={new Date(data.laidOnDate)}
                                   onChange={(date) =>
                                     handleDateChange(date, "laidOnDate")
                                   }
@@ -272,6 +307,7 @@ function ColdStorageScheduleBV() {
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
@@ -280,8 +316,9 @@ function ColdStorageScheduleBV() {
                             <Form.Group className="form-group mt-n4 ">
                               <Form.Label> Date of Deposit</Form.Label>
                               <div className="form-control-wrap">
+                              {isDataDepositDate && (
                                 <DatePicker
-                                  selected={data.dateOfDeposit}
+                                  selected={new Date(data.dateOfDeposit)}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfDeposit")
                                   }
@@ -294,6 +331,7 @@ function ColdStorageScheduleBV() {
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
@@ -304,8 +342,9 @@ function ColdStorageScheduleBV() {
                                 Release Date
                               </Form.Label>
                               <div className="form-control-wrap">
+                              {isDataReleaseDate && (
                                 <DatePicker
-                                  selected={data.dateOfRelease}
+                                  selected={new Date(data.dateOfRelease)}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfRelease")
                                   }
@@ -318,10 +357,12 @@ function ColdStorageScheduleBV() {
                                   className="form-control"
                                   required
                                 />
+                                )}
                               </div>
                             </Form.Group>
                           </Col>
                         </Row>
+                    )}
                       </Card.Body>
                     </Card>
 
@@ -330,7 +371,7 @@ function ColdStorageScheduleBV() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    Update
                   </Button>
                 </li>
                 <li>
@@ -346,4 +387,4 @@ function ColdStorageScheduleBV() {
   );
 }
 
-export default ColdStorageScheduleBV;
+export default ColdStorageScheduleBVEdit;

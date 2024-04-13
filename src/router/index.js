@@ -639,6 +639,8 @@ import MaintenanceofScreeningBatchRecordsEdit from "../pages/seed-and-dfl-managm
 import MaintenanceofScreeningBatchRecordsView from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsView";
 import PreparationofeggsDFLsEdit from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsEdit";
 import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsView";
+import ColdStorageScheduleBVEdit from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVEdit";
+import ColdStorageScheduleBVView from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVView";
 
 // Admin and Reports
 
@@ -1145,6 +1147,9 @@ function Router() {
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
             />
+            <Route path="Cold-Storage-Schedule-BV-edit/:id" element={<ColdStorageScheduleBVEdit />} />
+            <Route path="Cold-Storage-Schedule-BV-view/:id" element={<ColdStorageScheduleBVView />} />
+
             <Route path="remittance" element={<Remittance />} />
             <Route path="remittance-list" element={<RemittanceList />} />
 
