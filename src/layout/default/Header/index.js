@@ -78,7 +78,7 @@ function Header({ show, ...props }) {
     // debugger;
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
-    if (name === "godownId") {
+    if (name === "godownId" && value) {
       // localStorage.setItem("godownId", value);
       api
         .post(baseURL + `userPreference/edit`, {
