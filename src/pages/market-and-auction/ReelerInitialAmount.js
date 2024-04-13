@@ -143,13 +143,7 @@ function ReelerInitialAmount() {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
-              reelerId: "",
-              initialAmount: "",
-              accountNumber: "",
-              virtualAccount: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
 
@@ -287,17 +281,18 @@ function ReelerInitialAmount() {
   const clear = () => {
     setData({
       reelerId: "",
-      username: "",
-      password: "",
-      phoneNumber: "",
-      emailId: "",
-      roleId: "",
-      marketMasterId: "",
-      designationId: "",
-      deviceId: "",
-      walletAMount: "",
+      initialAmount: "",
+      accountNumber: "",
+      virtualAccount: "",
     });
-    setListData([]);
+    setShowData({
+      reelerName: "",
+      reelerNumber: "",
+      reelingLicenseNumber: "",
+      virtualAccountNumber: "",
+    });
+    setValidated(false);
+    setShow(true);
   };
 
   const [show, setShow] = useState(true);
