@@ -217,6 +217,7 @@ function Menu() {
     Market_Gatepass: false,
     Market_Reject: false,
     Market_Show_Lot: false,
+    Market_Reeler_Initial_Amount: false,
 
     Market_Payment: false,
     Market_Payment_Ready_for_Payment: false,
@@ -1108,6 +1109,14 @@ function Menu() {
                 <MenuItemLink
                   text="Show Lot Details"
                   to="/seriui/display-all-lot"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Market_Reeler_Initial_Amount ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Reeler Initial Amount"
+                  to="/seriui/reeler-initial-amount"
                 />
               </MenuItem>
             ) : null}
