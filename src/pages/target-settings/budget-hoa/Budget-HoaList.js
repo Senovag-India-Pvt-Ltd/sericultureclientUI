@@ -9,7 +9,6 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
@@ -27,9 +26,9 @@ function BudgetHoaList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsActivityMaster/list`, _params)
+      .get(baseURL + `tsBudgetHoa/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsActivityMaster);
+        setListData(response.data.content.tsBudgetHoa);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +44,11 @@ function BudgetHoaList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+    navigate(`/seriui/budget-hoa-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+    navigate(`/seriui/budget-hoa-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +69,7 @@ function BudgetHoaList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURL + `tsBudgetHoa/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +146,7 @@ function BudgetHoaList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsActivityMasterId)}
+            onClick={() => handleView(row.tsBudgetHoaId)}
           >
             View
           </Button>
@@ -155,14 +154,14 @@ function BudgetHoaList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsActivityMasterId)}
+            onClick={() => handleEdit(row.tsBudgetHoaId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsActivityMasterId)}
+            onClick={() => deleteConfirm(row.tsBudgetHoaId)}
             className="ms-2"
           >
             Delete
@@ -173,34 +172,48 @@ function BudgetHoaList() {
       hide: "md",
     },
     {
-      name: "Activity Name",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
       sortable: false,
       hide: "md",
     },
 
     {
-      name: "Name In Kannada",
-      selector: (row) => row.nameInKannada,
-      cell: (row) => <span>{row.nameInKannada}</span>,
+      name: "Head of Account",
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Date",
+      selector: (row) => row.date,
+      cell: (row) => <span>{row.date}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Budget Amount",
+      selector: (row) => row.budgetAmount,
+      cell: (row) => <span>{row.budgetAmount}</span>,
       sortable: false,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Budget List">
+    <Layout title="List Of Hoa Budget">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget List</Block.Title>
+            <Block.Title tag="h2">List Of Hoa Budget</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-hoa"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -209,7 +222,7 @@ function BudgetHoaList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-hoa"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
