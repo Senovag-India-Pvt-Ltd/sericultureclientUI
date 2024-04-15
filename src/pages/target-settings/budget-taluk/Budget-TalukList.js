@@ -27,9 +27,9 @@ function BudgetTalukList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsActivityMaster/list`, _params)
+      .get(baseURL + `tsBudgetTaluk/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsActivityMaster);
+        setListData(response.data.content.tsBudgetTaluk);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function BudgetTalukList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+    navigate(`/seriui/budget-taluk-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+    navigate(`/seriui/budget-taluk-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -147,7 +147,7 @@ function BudgetTalukList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsActivityMasterId)}
+            onClick={() => handleView(row.tsBudgetTalukId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function BudgetTalukList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsActivityMasterId)}
+            onClick={() => handleEdit(row.tsBudgetTalukId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsActivityMasterId)}
+            onClick={() => deleteConfirm(row.tsBudgetTalukId)}
             className="ms-2"
           >
             Delete
@@ -173,17 +173,45 @@ function BudgetTalukList() {
       hide: "md",
     },
     {
-      name: "Activity Name",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
       sortable: false,
       hide: "md",
     },
 
     {
-      name: "Name In Kannada",
-      selector: (row) => row.nameInKannada,
-      cell: (row) => <span>{row.nameInKannada}</span>,
+      name: "Head of Account",
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Date",
+      selector: (row) => row.date,
+      cell: (row) => <span>{row.date}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Budget Amount",
+      selector: (row) => row.budgetAmount,
+      cell: (row) => <span>{row.budgetAmount}</span>,
       sortable: false,
       hide: "md",
     },

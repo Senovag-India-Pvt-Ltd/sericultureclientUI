@@ -4,8 +4,6 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import CasteDatas from "../../../store/masters/caste/CasteData";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -33,7 +31,7 @@ function BudgetTalukView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetMaster/get/${id}`)
+      .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -51,17 +49,17 @@ function BudgetTalukView() {
   }, [id]);
 
   return (
-    <Layout title="Budget View">
+    <Layout title=" View Budget Taluk Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget View</Block.Title>
+            <Block.Title tag="h2">View Budget Taluk Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budget-taluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +68,7 @@ function BudgetTalukView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budget-taluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -84,7 +82,7 @@ function BudgetTalukView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget View Details</Card.Header>
+          <Card.Header>View  Taluk Budget Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,20 +93,38 @@ function BudgetTalukView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> Budget:</td>
-                        <td>{AcivityData.name}</td>
+                    <tr>
+                        <td style={styles.ctstyle}>Financial Year:</td>
+                        <td>{AcivityData.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name In Kannada:</td>
+                        <td style={styles.ctstyle}>Head Of Account:</td>
                         <td>
-                          <span>{AcivityData.nameInKannada}</span>
+                          <span>{AcivityData.scHeadAccountName}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Code:</td>
+                        <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.code}</span>
+                          <span>{AcivityData.date}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District:</td>
+                        <td>
+                          <span>{AcivityData.districtName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Taluk:</td>
+                        <td>
+                          <span>{AcivityData.talukName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Budget Amount:</td>
+                        <td>
+                          <span>{AcivityData.budgetAmount}</span>
                         </td>
                       </tr>
                     </tbody>

@@ -2,7 +2,6 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import DatePicker from "react-datepicker";
@@ -311,7 +310,7 @@ function BudgetHoaEdit() {
                         <div className="form-control-wrap">
                          {isDataDateSet && (
                           <DatePicker
-                            selected={data.date}
+                            selected={new Date(data.date)}
                             onChange={(date) =>
                               handleDateChange(date, "date")
                             }
