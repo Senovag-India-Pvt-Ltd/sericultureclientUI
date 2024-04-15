@@ -639,7 +639,6 @@ import BudgetTaluk from "../pages/target-settings/budget-taluk/Budget-Taluk";
 import BudgetTsc from "../pages/target-settings/budget-tsc/Budget-Tsc";
 import BudgetEdit from "../pages/target-settings/budget/BudgetEdit";
 import BudgetList from "../pages/target-settings/budget/BudgetList";
-import TargetSettings from "../pages/target-settings/targetsettings/TargetSettings";
 import BudgetHoaEdit from "../pages/target-settings/budget-hoa/Budget-HoaEdit";
 import BudgetHoaList from "../pages/target-settings/budget-hoa/Budget-HoaList";
 import BudgetView from "../pages/target-settings/budget/BudgetView";
@@ -647,6 +646,10 @@ import BudgetHoaView from "../pages/target-settings/budget-hoa/Budget-HoaView";
 import BudgetDistrictList from "../pages/target-settings/budget-district/BudgetDistrictList";
 import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-DistrictView";
 import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
+import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
+import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrict";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/physicaltargetsettingtaluk";
+import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
 
 // Admin and Reports
 
@@ -1353,7 +1356,24 @@ function Router() {
             />
             <Route path="budget-taluk" element={<BudgetTaluk />} />
             <Route path="budget-tsc" element={<BudgetTsc />} />
-            <Route path="targetsettings" element={<TargetSettings />} />
+            <Route
+              path="financialtargetsettings"
+              element={<FinancialTargetSettings />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk"
+              element={<PhysicalTargetSettingsTaluk />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc"
+              element={<PhysicalTargetSettingsTsc />}
+            />
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
             <Route path="roles-list" element={<RolesList />} />
