@@ -218,17 +218,17 @@ function BudgetTalukList() {
   ];
 
   return (
-    <Layout title="Budget List">
+    <Layout title="Taluk Budget List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget List</Block.Title>
+            <Block.Title tag="h2">Taluk Budget List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-taluk"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -237,7 +237,7 @@ function BudgetTalukList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-taluk"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
