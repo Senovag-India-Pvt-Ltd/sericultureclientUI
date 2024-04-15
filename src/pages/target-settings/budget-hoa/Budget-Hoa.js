@@ -5,17 +5,18 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState } from "react";
-// import axios from "axios";
+import { useState,useEffect } from "react";
+import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BudgetHoa() {
   const [data, setData] = useState({
-    title: "",
-    code: "",
-    nameInKannada: "",
+    financialYearMasterId: "",
+    hoaId: "",
+    date: "",
+    budgetAmount: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -34,19 +35,7 @@ function BudgetHoa() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+  
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -58,16 +47,17 @@ function BudgetHoa() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `BudgetHoa/add`, data)
+        .post(baseURL + `tsBudgetHoa/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              title: "",
-              code: "",
-              //   nameInKannada: "",
+              financialYearMasterId: "",
+              hoaId: "",
+              date: "",
+              budgetAmount: "",
             });
             setValidated(false);
           }
@@ -83,11 +73,51 @@ function BudgetHoa() {
 
   const clear = () => {
     setData({
-      title: "",
-      code: "",
-      //   nameInKannada: "",
+      financialYearMasterId: "",
+      hoaId: "",
+      date: "",
+      budgetAmount: "",
     });
   };
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+ 
+   // to get Financial Year
+   const [financialYearListData, setFinancialYearListData] = useState([]);
+
+   const getFinancialYearList = () => {
+     const response = api
+       .get(baseURL + `financialYearMaster/get-all`)
+       .then((response) => {
+         setFinancialYearListData(response.data.content.financialYearMaster);
+       })
+       .catch((err) => {
+         setFinancialYearListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getFinancialYearList();
+   }, []);
+ 
+    // to get Head Of Account
+    const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+ 
+    const getHeadOfAccountList = () => {
+      const response = api
+        .get(baseURL + `scHeadAccount/get-all`)
+        .then((response) => {
+          setHeadOfAccountListData(response.data.content.scHeadAccount);
+        })
+        .catch((err) => {
+         setHeadOfAccountListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getHeadOfAccountList();
+    }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -121,7 +151,7 @@ function BudgetHoa() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budget-hoa-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +160,7 @@ function BudgetHoa() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budget-hoa-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -142,36 +172,41 @@ function BudgetHoa() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
             <Card>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
+              
+              <Card.Header style={{ fontWeight: "bold" }}>
+              Hoa Budget
+            </Card.Header>
+            <Card.Body>
                 <Row className="g-gs">
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Financial Year<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="stateId"
-                          value={data.stateId}
+                          name="financialYearMasterId"
+                          value={data.financialYearMasterId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
+                            data.financialYearMasterId === undefined || data.financialYearMasterId === "0"
                           }
                         >
-                          <option value="">Select Year</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
+                          <option value="">Select Financial Year</option>
+                          {financialYearListData.map((list) => (
+                          <option
+                            key={list.financialYearMasterId}
+                            value={list.financialYearMasterId}
+                          >
+                            {list.financialYear}
+                          </option>
+                        ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Financial Year is required
@@ -180,94 +215,54 @@ function BudgetHoa() {
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        BudgetHoa Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                 
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                      Head Of Account<span className="text-danger">*</span>
+                        Head Of Account<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="stateId"
-                          value={data.stateId}
+                          name="hoaId"
+                          value={data.hoaId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
+                            data.hoaId === undefined || data.hoaId === "0"
                           }
                         >
                           <option value="">Select Head Of Account</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
+                          {headOfAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={list.scHeadAccountId}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Head Of Account is required
+                          Head Of Account is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Date<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Date is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4 ">
                       <Form.Label htmlFor="title">
                         Budget Amount<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
+                          id="budgetAmount"
+                          name="budgetAmount"
+                          value={data.budgetAmount}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Title"
+                          placeholder="Enter Budget Amount"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -277,21 +272,30 @@ function BudgetHoa() {
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                  <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>Date<span className="text-danger">*</span></Form.Label>
+                        <div className="form-control-wrap">
+                         
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) =>
+                              handleDateChange(date, "date")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                        </Form.Group>
+                          <Form.Control.Feedback type="invalid">
+                         Date is Required
+                      </Form.Control.Feedback>
+                        </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -310,7 +314,6 @@ function BudgetHoa() {
                 </li>
               </ul>
             </div>
-          </Row>
         </Form>
       </Block>
     </Layout>

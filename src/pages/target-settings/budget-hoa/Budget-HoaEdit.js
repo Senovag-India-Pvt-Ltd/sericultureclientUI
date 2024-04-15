@@ -5,6 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
+import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
@@ -26,17 +27,7 @@ function BudgetHoaEdit() {
     setData({ ...data, [name]: value });
   };
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
-
-  // HTTP header configuration
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
+  
   // Function to submit form data
   const postData = (event) => {
     const form = event.currentTarget;
@@ -47,16 +38,17 @@ function BudgetHoaEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsActivityMaster/edit`, data)
+        .post(baseURL + `tsBudgetHoa/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-              title: "",
-              code: "",
-              nameInKannada: "",
+              financialYearMasterId: "",
+              hoaId: "",
+              date: "",
+              budgetAmount: "",
             });
             setValidated(false);
           }
@@ -73,37 +65,34 @@ function BudgetHoaEdit() {
   // Function to clear form data
   const clear = () => {
     setData({
-      name: "",
-      nameInKannada: "",
-      code: "",
+      financialYearMasterId: "",
+      hoaId: "",
+      date: "",
+      budgetAmount: "",
     });
   };
+
+  const isDataDateSet = !!data.date;
 
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsActivityMaster/get/${id}`)
+      .get(baseURL + `tsBudgetHoa/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
         let message = "An error occurred while fetching data.";
-
-        // Check if err.response is defined and not null
         if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
           if (
             Array.isArray(err.response.data.errorMessages) &&
             err.response.data.errorMessages.length > 0
           ) {
-            // Access the first error message from the array
             message = err.response.data.errorMessages[0].message[0].message;
           }
         }
-
-        // Display error message
-        editError(message);
+        // editError(message);
         setData({});
         setLoading(false);
       });
@@ -114,15 +103,51 @@ function BudgetHoaEdit() {
     getIdList();
   }, [id]);
 
-  // Navigation hook
-  const navigate = useNavigate();
+  // to get Financial Year
+  const [financialYearListData, setFinancialYearListData] = useState([]);
 
-  // Function to handle success alert
+  const getFinancialYearList = () => {
+    const response = api
+      .get(baseURL + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialYearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialYearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialYearList();
+  }, []);
+
+   // to get Head Of Account
+   const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+
+   const getHeadOfAccountList = () => {
+     const response = api
+       .get(baseURL + `scHeadAccount/get-all`)
+       .then((response) => {
+         setHeadOfAccountListData(response.data.content.scHeadAccount);
+       })
+       .catch((err) => {
+        setHeadOfAccountListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getHeadOfAccountList();
+   }, []);
+
+   const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
-    }).then(() => navigate("/seriui/budget-list"));
+    });
   };
 
   // Function to handle error alert
@@ -140,27 +165,20 @@ function BudgetHoaEdit() {
     });
   };
 
-  // Function to handle edit error
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+
 
   return (
-    <Layout title="Edit Budget">
+    <Layout title="Edit Budget To Hoa">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Budget</Block.Title>
+            <Block.Title tag="h2">Edit Budget To Hoa</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-list"
+                  to="/seriui/budget-hoa-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -169,7 +187,7 @@ function BudgetHoaEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-list"
+                  to="/seriui/budget-hoa-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -185,6 +203,9 @@ function BudgetHoaEdit() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Hoa Budget
+            </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
@@ -192,141 +213,123 @@ function BudgetHoaEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    {/* <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Budget
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="name"
-                            name="name"
-                            value={data.name}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Budget"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Budget is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
+                    
 
                     <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Finincial Year<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="title"
-                            name="title"
-                            value={data.title}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Title"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Finincial Year is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Name in Kannada
-                        <span className="text-danger">*</span>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Financial Year<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
+                        <Form.Select
+                          name="financialYearMasterId"
+                          value={data.financialYearMasterId}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
+                          onBlur={() => handleInputs}
                           required
-                        />
+                          isInvalid={
+                            data.financialYearMasterId === undefined || data.financialYearMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Financial Year</option>
+                          {financialYearListData.map((list) => (
+                          <option
+                            key={list.financialYearMasterId}
+                            value={list.financialYearMasterId}
+                          >
+                            {list.financialYear}
+                          </option>
+                        ))}
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
+                          Financial Year is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col> */}
+                  </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Amount<span className="text-danger">*</span>
-                        </Form.Label>
+                 
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Head Of Account<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="hoaId"
+                          value={data.hoaId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.hoaId === undefined || data.hoaId === "0"
+                          }
+                        >
+                          <option value="">Select Head Of Account</option>
+                          {headOfAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={list.scHeadAccountId}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Head Of Account is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4 ">
+                      <Form.Label htmlFor="title">
+                        Budget Amount<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="budgetAmount"
+                          name="budgetAmount"
+                          value={data.budgetAmount}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Budget Amount"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Budget Amount is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>Date<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Control
-                            id="title"
-                            name="title"
-                            value={data.title}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Title"
+                         {isDataDateSet && (
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) =>
+                              handleDateChange(date, "date")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
                             required
                           />
-                          <Form.Control.Feedback type="invalid">
-                            Amount is required.
-                          </Form.Control.Feedback>
+                          )}
                         </div>
-                      </Form.Group>
-                    </Col>
-
-                    {/* <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Budget Name in Kannada
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="nameInKannada"
-                            name="nameInKannada"
-                            value={data.nameInKannada}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Activity Name in Kannada"
-                            required
-                          />
+                        </Form.Group>
                           <Form.Control.Feedback type="invalid">
-                            Activity name in Kannada is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
-
-                    <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
-                          Code
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="code"
-                            name="code"
-                            value={data.code}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Code"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Code is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                         Date is Required
+                      </Form.Control.Feedback>
+                        </Col>
                   </Row>
                 )}
               </Card.Body>
