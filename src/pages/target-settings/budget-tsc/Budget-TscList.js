@@ -45,11 +45,11 @@ function BudgetTscList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+    navigate(`/seriui/budgettsc-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+    navigate(`/seriui/budgettsc-edit/${id}`);
   };
 
   const deleteError = () => {

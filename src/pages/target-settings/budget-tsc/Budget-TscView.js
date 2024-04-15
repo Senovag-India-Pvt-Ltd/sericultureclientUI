@@ -61,7 +61,7 @@ function BudgetTscView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budgettsc-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function BudgetTscView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budgettsc-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

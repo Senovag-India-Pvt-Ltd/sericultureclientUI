@@ -122,7 +122,7 @@ function BudgetTscEdit() {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
-    }).then(() => navigate("/seriui/budgethoa-list"));
+    }).then(() => navigate("/seriui/budgettsc-list"));
   };
 
   // Function to handle error alert
@@ -160,7 +160,7 @@ function BudgetTscEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budgettsc-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -169,7 +169,7 @@ function BudgetTscEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budgethoa-list"
+                  to="/seriui/budgettsc-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
