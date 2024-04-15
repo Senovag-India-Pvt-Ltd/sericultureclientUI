@@ -629,6 +629,24 @@ import ScSubSchemeDetailsView from "../pages/masters/sc-sub-scheme-details/ScSub
 import ScSubSchemeDetailsEdit from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsEdit";
 import FinancialYear from "../pages/masters/financial-year/FinancialYear";
 import Activity from "../pages/masters/activity/Activity";
+import ActivityList from "../pages/masters/activity/ActivityList";
+import ActivityView from "../pages/masters/activity/ActivityView";
+import ActivityEdit from "../pages/masters/activity/ActivityEdit";
+import Budget from "../pages/target-settings/budget/Budget";
+import BudgetHoa from "../pages/target-settings/budget-hoa/Budget-Hoa";
+import BudgetDistrict from "../pages/target-settings/budget-district/Budget-District";
+import BudgetTaluk from "../pages/target-settings/budget-taluk/Budget-Taluk";
+import BudgetTsc from "../pages/target-settings/budget-tsc/Budget-Tsc";
+import BudgetEdit from "../pages/target-settings/budget/BudgetEdit";
+import BudgetList from "../pages/target-settings/budget/BudgetList";
+import TargetSettings from "../pages/target-settings/targetsettings/TargetSettings";
+import BudgetHoaEdit from "../pages/target-settings/budget-hoa/Budget-HoaEdit";
+import BudgetHoaList from "../pages/target-settings/budget-hoa/Budget-HoaList";
+import BudgetView from "../pages/target-settings/budget/BudgetView";
+import BudgetHoaView from "../pages/target-settings/budget-hoa/Budget-HoaView";
+import BudgetDistrictList from "../pages/target-settings/budget-district/BudgetDistrictList";
+import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-DistrictView";
+import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
 
 // Admin and Reports
 
@@ -1305,10 +1323,37 @@ function Router() {
             <Route path="financial-year" element={<FinancialYear />} />
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
-            <Route path="activity" element={<Activity />} />
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
+            <Route path="activity" element={<Activity />} />
+            <Route path="Activity-list" element={<ActivityList />} />
+            <Route path="activity-view/:id" element={<ActivityView />} />
+            <Route path="activity-edit/:id" element={<ActivityEdit />} />
+            <Route path="budget" element={<Budget />} />
+            <Route path="budget-list" element={<BudgetList />} />
+            <Route path="budget-edit/:id" element={<BudgetEdit />} />
+            <Route path="budget-view/:id" element={<BudgetView />} />
+            <Route path="budget-hoa" element={<BudgetHoa />} />
+            <Route path="budget-hoa-list" element={<BudgetHoaList />} />
+            <Route path="budget-hoa-edit/:id" element={<BudgetHoaEdit />} />
+            <Route path="budget-hoa-view/:id" element={<BudgetHoaView />} />
+            <Route path="budget-district" element={<BudgetDistrict />} />
+            <Route
+              path="budget-district-view/:id"
+              element={<BudgetDistrictView />}
+            />
+            <Route
+              path="budget-district-edit/:id"
+              element={<BudgetDistrictEdit />}
+            />
+            <Route
+              path="budget-district-list"
+              element={<BudgetDistrictList />}
+            />
+            <Route path="budget-taluk" element={<BudgetTaluk />} />
+            <Route path="budget-tsc" element={<BudgetTsc />} />
+            <Route path="targetsettings" element={<TargetSettings />} />
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
             <Route path="roles-list" element={<RolesList />} />
