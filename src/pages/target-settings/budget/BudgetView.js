@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BudgetView() {
   const styles = {
@@ -21,8 +21,23 @@ function BudgetView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [AcivityData, setAcivityData] = useState({});
+  const [budgetData, setBudgetData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -33,13 +48,13 @@ function BudgetView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetMaster/get/${id}`)
+      .get(baseURLMasterData + `tsBudget/get/${id}`)
       .then((response) => {
-        setAcivityData(response.data.content);
+        setBudgetData(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setAcivityData({});
+        setBudgetData({});
         setLoading(false);
       });
   };
@@ -96,19 +111,31 @@ function BudgetView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Budget:</td>
-                        <td>{AcivityData.name}</td>
+                        <td style={styles.ctstyle}> Financial Year:</td>
+                        <td>{budgetData.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name In Kannada:</td>
+                        <td style={styles.ctstyle}>Central Budget Amount:</td>
                         <td>
-                          <span>{AcivityData.nameInKannada}</span>
+                          <span>{budgetData.centralBudget}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Code:</td>
+                        <td style={styles.ctstyle}>State Budget Amount:</td>
                         <td>
-                          <span>{AcivityData.code}</span>
+                          <span>{budgetData.stateBudget}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Amount:</td>
+                        <td>
+                          <span>{budgetData.amount}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Date:</td>
+                        <td>
+                          <span>{dateFormatter(budgetData.date)}</span>
                         </td>
                       </tr>
                     </tbody>

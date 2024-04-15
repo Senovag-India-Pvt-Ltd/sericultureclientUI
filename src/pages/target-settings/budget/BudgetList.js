@@ -13,7 +13,7 @@ import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BudgetList() {
   const [listData, setListData] = useState({});
@@ -26,10 +26,10 @@ function BudgetList() {
   const getList = () => {
     setLoading(true);
 
-    const response = api
-      .get(baseURL + `tsActivityMaster/list`, _params)
+     api
+      .get(baseURLMasterData + `tsBudget/list`, _params)
       .then((response) => {
-        setListData(response.data.content.tsActivityMaster);
+        setListData(response.data.content.tsBudget);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -70,7 +70,7 @@ function BudgetList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURLMasterData + `tsBudget/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function BudgetList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsActivityMasterId)}
+            onClick={() => handleView(row.tsBudgetId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function BudgetList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsActivityMasterId)}
+            onClick={() => handleEdit(row.tsBudgetId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsActivityMasterId)}
+            onClick={() => deleteConfirm(row.tsBudgetId)}
             className="ms-2"
           >
             Delete
@@ -173,17 +173,24 @@ function BudgetList() {
       hide: "md",
     },
     {
-      name: "Activity Name",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
       sortable: false,
       hide: "md",
     },
 
     {
-      name: "Name In Kannada",
-      selector: (row) => row.nameInKannada,
-      cell: (row) => <span>{row.nameInKannada}</span>,
+      name: "Central Budget Amount",
+      selector: (row) => row.centralBudget,
+      cell: (row) => <span>{row.centralBudget}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "State Budget Amount",
+      selector: (row) => row.stateBudget,
+      cell: (row) => <span>{row.stateBudget}</span>,
       sortable: false,
       hide: "md",
     },

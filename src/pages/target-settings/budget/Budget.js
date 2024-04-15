@@ -5,18 +5,43 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Budget() {
   const [data, setData] = useState({
-    title: "",
-    code: "",
-    nameInKannada: "",
+    financialYearMasterId: "",
+    date: "",
+    centralBudget: "",
+    stateBudget: "",
+    amount: "",
   });
+
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -36,7 +61,7 @@ function Budget() {
 
   // const postData = (e) => {
   //   axios
-  //     .post(baseURL + `Budget/add`, data, {
+  //     .post(baseURLMasterData + `Budget/add`, data, {
   //       headers: _header,
   //     })
   //     .then((response) => {
@@ -58,18 +83,13 @@ function Budget() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `Budget/add`, data)
+        .post(baseURLMasterData + `tsBudget/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
-              title: "",
-              code: "",
-              //   nameInKannada: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
         .catch((err) => {
@@ -83,10 +103,13 @@ function Budget() {
 
   const clear = () => {
     setData({
-      title: "",
-      code: "",
-      //   nameInKannada: "",
+      financialYearMasterId: "",
+      date: "",
+      centralBudget: "",
+      stateBudget: "",
+      amount: "",
     });
+    setValidated(false);
   };
 
   const navigate = useNavigate();
@@ -146,41 +169,49 @@ function Budget() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Year</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+            <Block>
+              <Card>
+                <Card.Header>
+                  Budget{" "}
+                </Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Year</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  {/* <Col lg="6">
+                    {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
                         Budget Name in Kannada
@@ -203,75 +234,95 @@ function Budget() {
                     </Form.Group>
                   </Col> */}
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Central Budget Amount
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Central Budget Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="centralBudget">
+                          Central Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="centralBudget"
+                            name="centralBudget"
+                            value={data.centralBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Central Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Central Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        State Budget Amount
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          State Budget Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="stateBudget">
+                          State Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="stateBudget"
+                            name="stateBudget"
+                            value={data.stateBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter State Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            State Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Amount<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  {/* <Col lg="6">
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="code">Code</Form.Label>
                       <div className="form-control-wrap">
@@ -286,9 +337,10 @@ function Budget() {
                       </div>
                     </Form.Group>
                   </Col> */}
-                </Row>
-              </Card.Body>
-            </Card>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
