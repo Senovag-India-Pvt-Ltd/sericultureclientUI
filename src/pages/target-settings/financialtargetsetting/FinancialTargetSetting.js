@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function TargetSettings() {
+function FinancialTargetSettings() {
   const [data, setData] = useState({
     title: "",
     code: "",
@@ -36,7 +36,7 @@ function TargetSettings() {
 
   // const postData = (e) => {
   //   axios
-  //     .post(baseURL + `TargetSettings/add`, data, {
+  //     .post(baseURL + `FinancialTargetSettings/add`, data, {
   //       headers: _header,
   //     })
   //     .then((response) => {
@@ -58,7 +58,7 @@ function TargetSettings() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `TargetSettings/add`, data)
+        .post(baseURL + `FinancialTargetSettings/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -121,7 +121,7 @@ function TargetSettings() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/TargetSettings-list"
+                  to="/seriui/FinancialTargetSettings-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +130,7 @@ function TargetSettings() {
               </li>
               <li>
                 <Link
-                  to="/seriui/TargetSettings-list"
+                  to="/seriui/FinancialTargetSettings-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -286,7 +286,7 @@ function TargetSettings() {
                   {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        TargetSettings Name in Kannada
+                        FinancialTargetSettings Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -368,4 +368,4 @@ function TargetSettings() {
   );
 }
 
-export default TargetSettings;
+export default FinancialTargetSettings;
