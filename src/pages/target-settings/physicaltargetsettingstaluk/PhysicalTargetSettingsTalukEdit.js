@@ -10,7 +10,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function PhysicalTargetSettingsTaluk() {
+function PhysicalTargetSettingsTalukEdit() {
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -460,4 +460,4 @@ function PhysicalTargetSettingsTaluk() {
   );
 }
 
-export default PhysicalTargetSettingsTaluk;
+export default PhysicalTargetSettingsTalukEdit;

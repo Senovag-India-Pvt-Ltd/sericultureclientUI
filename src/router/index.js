@@ -648,6 +648,9 @@ import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-
 import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
 import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
 import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrict";
+import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
+import PhysicalTargetSettingDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrictList";
+import PhysicalTargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictView";
 import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingTaluk";
 import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
 import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
@@ -660,6 +663,11 @@ import FinancialTargetSettingList from "../pages/target-settings/financialtarget
 import FinancialTargetSettingEdit from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingEdit";
 import FinancialTargetSettingView from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingView";
 import PhysicalTargetSettingsTscView from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscView";
+import PhysicalTargetSettingsTscList from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscList";
+import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscEdit";
+import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
+import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
+import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
 
 // Admin and Reports
 
@@ -1396,7 +1404,7 @@ function Router() {
 
             <Route
               path="physicaltargetsettingsdistrict-list"
-              element={<PhysicalTargetSettingsDistrictList />}
+              element={<PhysicalTargetSettingDistrictList />}
             />
             <Route
               path="physicaltargetsettingsdistrict-edit/:id"
