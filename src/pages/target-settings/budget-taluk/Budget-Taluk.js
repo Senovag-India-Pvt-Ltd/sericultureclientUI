@@ -50,7 +50,7 @@ function BudgetTaluk() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `BudgetTaluk/add`, data)
+        .post(baseURL + `tsBudgetTaluk/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
