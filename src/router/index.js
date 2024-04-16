@@ -653,6 +653,9 @@ import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetse
 import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
 import BudgetTalukEdit from "../pages/target-settings/budget-taluk/Budget-TalukEdit";
 import BudgetTalukList from "../pages/target-settings/budget-taluk/Budget-TalukList";
+import BudgetTscEdit from "../pages/target-settings/budget-tsc/Budget-TscEdit";
+import BudgetTscView from "../pages/target-settings/budget-tsc/Budget-TscView";
+import BudgetTscList from "../pages/target-settings/budget-tsc/Budget-TscList";
 
 // Admin and Reports
 
@@ -1362,9 +1365,9 @@ function Router() {
             <Route path="budget-taluk-edit/:id" element={<BudgetTalukEdit />} />
             <Route path="budget-taluk-view/:id" element={<BudgetTalukView />} />
             <Route path="budget-tsc" element={<BudgetTsc />} />
-            <Route path="budget-tsc-list" element={<BudgetTalukList />} />
-            <Route path="budget-tsc-edit/:id" element={<BudgetTalukEdit />} />
-            <Route path="budget-tsc-view/:id" element={<BudgetTalukView />} />
+            <Route path="budget-tsc-list" element={<BudgetTscList />} />
+            <Route path="budget-tsc-edit/:id" element={<BudgetTscEdit />} />
+            <Route path="budget-tsc-view/:id" element={<BudgetTscView />} />
             <Route
               path="financialtargetsettings"
               element={<FinancialTargetSettings />}

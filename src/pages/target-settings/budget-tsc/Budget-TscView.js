@@ -33,7 +33,7 @@ function BudgetTscView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetMaster/get/${id}`)
+      .get(baseURL + `tsBudgetTsc/get/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -51,17 +51,17 @@ function BudgetTscView() {
   }, [id]);
 
   return (
-    <Layout title="Budget View">
+    <Layout title="TSC Budget View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget View</Block.Title>
+            <Block.Title tag="h2">TSC Budget View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budgettsc-list"
+                  to="/seriui/budget-tsc-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function BudgetTscView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budgettsc-list"
+                  to="/seriui/budget-tsc-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -84,7 +84,7 @@ function BudgetTscView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget View Details</Card.Header>
+          <Card.Header>TSC Budget View Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -93,22 +93,40 @@ function BudgetTscView() {
             ) : (
               <Row className="g-gs">
                 <Col lg="12">
-                  <table className="table small table-bordered">
+                <table className="table small table-bordered">
                     <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}> Budget:</td>
-                        <td>{AcivityData.name}</td>
+                    <tr>
+                        <td style={styles.ctstyle}>Financial Year:</td>
+                        <td>{AcivityData.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Name In Kannada:</td>
+                        <td style={styles.ctstyle}>Head Of Account:</td>
                         <td>
-                          <span>{AcivityData.nameInKannada}</span>
+                          <span>{AcivityData.scHeadAccountName}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Code:</td>
+                        <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.code}</span>
+                          <span>{AcivityData.date}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District:</td>
+                        <td>
+                          <span>{AcivityData.districtName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Taluk:</td>
+                        <td>
+                          <span>{AcivityData.talukName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Budget Amount:</td>
+                        <td>
+                          <span>{AcivityData.budgetAmount}</span>
                         </td>
                       </tr>
                     </tbody>
