@@ -8,7 +8,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function BudgetTalukView() {
+function PhysicalTargetSettingsTalukView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -31,7 +31,7 @@ function BudgetTalukView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
+      .get(baseURL + `tsPhysicalTargetSettings/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -49,17 +49,19 @@ function BudgetTalukView() {
   }, [id]);
 
   return (
-    <Layout title=" View Budget Taluk Details">
+    <Layout title=" View Physical Target Settings Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Budget Taluk Details</Block.Title>
+            <Block.Title tag="h2">
+              View Physical Target Settings Details
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/physicaltargetsettings-taluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -68,7 +70,7 @@ function BudgetTalukView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/physicaltargetsettings-taluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +84,7 @@ function BudgetTalukView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>View Taluk Budget Details</Card.Header>
+          <Card.Header>View Taluk Physical Target Settings</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -139,4 +141,4 @@ function BudgetTalukView() {
   );
 }
 
-export default BudgetTalukView;
+export default PhysicalTargetSettingsTalukView;

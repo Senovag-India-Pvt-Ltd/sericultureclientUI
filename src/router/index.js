@@ -659,6 +659,7 @@ import BudgetTscList from "../pages/target-settings/budget-tsc/Budget-TscList";
 import FinancialTargetSettingList from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingList";
 import FinancialTargetSettingEdit from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingEdit";
 import FinancialTargetSettingView from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingView";
+import PhysicalTargetSettingsTscView from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscView";
 
 // Admin and Reports
 
@@ -1412,8 +1413,34 @@ function Router() {
             />
 
             <Route
+              path="physicaltargetsettingstaluk-list"
+              element={<PhysicalTargetSettingsTalukList />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-edit/:id"
+              element={<PhysicalTargetSettingsTalukEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-view/:id"
+              element={<PhysicalTargetSettingsTalukView />}
+            />
+
+            <Route
               path="physicaltargetsettingstsc"
               element={<PhysicalTargetSettingsTsc />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc-list"
+              element={<PhysicalTargetSettingsTscList />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-edit/:id"
+              element={<PhysicalTargetSettingsTscEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-view/:id"
+              element={<PhysicalTargetSettingsTscView />}
             />
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
