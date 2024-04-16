@@ -5,17 +5,20 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BudgetDistrict() {
   const [data, setData] = useState({
-    title: "",
-    code: "",
-    nameInKannada: "",
+    financialYearMasterId: "",
+    hoaId: "",
+    date: "",
+    budgetAmount: "",
+    districtId: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -25,6 +28,10 @@ function BudgetDistrict() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
   };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
@@ -36,7 +43,7 @@ function BudgetDistrict() {
 
   // const postData = (e) => {
   //   axios
-  //     .post(baseURL + `Budget/add`, data, {
+  //     .post(baseURLMasterData + `Budget/add`, data, {
   //       headers: _header,
   //     })
   //     .then((response) => {
@@ -48,6 +55,66 @@ function BudgetDistrict() {
   //     });
   // };
 
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  // Head of Account
+
+  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+
+  const getHeadOfAccountList = () => {
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .then((response) => {
+        setHeadOfAccountListData(response.data.content.scHeadAccount);
+      })
+      .catch((err) => {
+        setHeadOfAccountListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHeadOfAccountList();
+  }, []);
+
+  // District
+
+  // to get district
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURLMasterData + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -58,18 +125,13 @@ function BudgetDistrict() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `BudgetDistrict/add`, data)
+        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
-              title: "",
-              code: "",
-              //   nameInKannada: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
         .catch((err) => {
@@ -83,10 +145,13 @@ function BudgetDistrict() {
 
   const clear = () => {
     setData({
-      title: "",
-      code: "",
-      //   nameInKannada: "",
+      financialYearMasterId: "",
+      hoaId: "",
+      date: "",
+      budgetAmount: "",
+      districtId: "",
     });
+    setValidated(false);
   };
 
   const navigate = useNavigate();
@@ -121,7 +186,7 @@ function BudgetDistrict() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budgetdistrict-list"
+                  to="/seriui/budget-district-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -130,7 +195,7 @@ function BudgetDistrict() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budgetdistrict-list"
+                  to="/seriui/budget-district-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -146,185 +211,158 @@ function BudgetDistrict() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Year</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+            <Block>
+              <Card>
+                <Card.Header>Budget to District</Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Year</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        BudgetDistrict Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Head Of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hoaId"
+                            value={data.hoaId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hoaId === undefined || data.hoaId === "0"
+                            }
+                          >
+                            <option value="">Select Head Of Account</option>
+                            {headOfAccountListData.map((list) => (
+                              <option
+                                key={list.scHeadAccountId}
+                                value={list.scHeadAccountId}
+                              >
+                                {list.scHeadAccountName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head Of Account is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Head Of Account<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Head Of Account</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Head Of Account is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Select District<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="districtId"
+                            value={data.districtId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
+                          >
+                            <option value="">Select District</option>
+                            {districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            District is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Select District<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select District</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          District is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Budget Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Date<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Date is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Budget Amount<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Budget Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-                </Row>
-              </Card.Body>
-            </Card>
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

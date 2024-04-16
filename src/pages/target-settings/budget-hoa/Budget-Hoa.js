@@ -103,7 +103,7 @@ function BudgetHoa() {
   const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
   const getHeadOfAccountList = () => {
-    const response = api
+    api
       .get(baseURL + `scHeadAccount/get-all`)
       .then((response) => {
         setHeadOfAccountListData(response.data.content.scHeadAccount);

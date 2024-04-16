@@ -21,7 +21,7 @@ function BudgetDistrictView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [AcivityData, setAcivityData] = useState({});
+  const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -33,15 +33,30 @@ function BudgetDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetMaster/get/${id}`)
+      .get(baseURL + `tsBudgetDistrict/get/${id}`)
       .then((response) => {
-        setAcivityData(response.data.content);
+        setBudgetDistrictData(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setAcivityData({});
+        setBudgetDistrictData({});
         setLoading(false);
       });
+  };
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
   };
 
   //console.log(Caste);
@@ -51,11 +66,11 @@ function BudgetDistrictView() {
   }, [id]);
 
   return (
-    <Layout title="Budget View">
+    <Layout title="Budget District View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget View</Block.Title>
+            <Block.Title tag="h2">Budget District View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -84,7 +99,7 @@ function BudgetDistrictView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget View Details</Card.Header>
+          <Card.Header>Budget District View Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -96,19 +111,25 @@ function BudgetDistrictView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Budget:</td>
-                        <td>{AcivityData.name}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Name In Kannada:</td>
+                        <td style={styles.ctstyle}>Financial Year:</td>
                         <td>
-                          <span>{AcivityData.nameInKannada}</span>
+                          <span>{budgetDistrictData.financialYear}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Code:</td>
+                        <td style={styles.ctstyle}> District Name:</td>
+                        <td>{budgetDistrictData.districtName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
-                          <span>{AcivityData.code}</span>
+                          <span>{budgetDistrictData.budgetAmount}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Date:</td>
+                        <td>
+                          <span>{dateFormatter(budgetDistrictData.date)}</span>
                         </td>
                       </tr>
                     </tbody>

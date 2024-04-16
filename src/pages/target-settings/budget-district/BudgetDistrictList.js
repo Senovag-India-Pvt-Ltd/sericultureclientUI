@@ -27,9 +27,9 @@ function BudgetDistrictList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsActivityMaster/list`, _params)
+      .get(baseURL + `tsBudgetDistrict/list`, _params)
       .then((response) => {
-        setListData(response.data.content.tsActivityMaster);
+        setListData(response.data.content.tsBudgetDistrict);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function BudgetDistrictList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+    navigate(`/seriui/budget-district-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+    navigate(`/seriui/budget-district-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function BudgetDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURL + `tsBudgetDistrict/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function BudgetDistrictList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsActivityMasterId)}
+            onClick={() => handleView(row.tsBudgetDistrictId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function BudgetDistrictList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsActivityMasterId)}
+            onClick={() => handleEdit(row.tsBudgetDistrictId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsActivityMasterId)}
+            onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
             className="ms-2"
           >
             Delete
@@ -173,34 +173,48 @@ function BudgetDistrictList() {
       hide: "md",
     },
     {
-      name: "Activity Name",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
       sortable: false,
       hide: "md",
     },
 
     {
-      name: "Name In Kannada",
-      selector: (row) => row.nameInKannada,
-      cell: (row) => <span>{row.nameInKannada}</span>,
+      name: "District Name",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Budget Amount",
+      selector: (row) => row.budgetAmount,
+      cell: (row) => <span>{row.budgetAmount}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Head Of Account",
+      selector: (row) => row.hoaId,
+      cell: (row) => <span>{row.hoaId}</span>,
       sortable: false,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Budget List">
+    <Layout title="Budget District List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget List</Block.Title>
+            <Block.Title tag="h2">Budget District List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-district"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -209,7 +223,7 @@ function BudgetDistrictList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budget-district"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
