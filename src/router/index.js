@@ -1394,6 +1394,19 @@ function Router() {
             />
 
             <Route
+              path="physicaltargetsettingsdistrict-list"
+              element={<PhysicalTargetSettingsDistrictList />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-edit/:id"
+              element={<PhysicalTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-view/:id"
+              element={<PhysicalTargetSettingsDistrictView />}
+            />
+
+            <Route
               path="physicaltargetsettingstaluk"
               element={<PhysicalTargetSettingsTaluk />}
             />
