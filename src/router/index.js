@@ -648,7 +648,7 @@ import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-
 import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
 import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
 import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrict";
-import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/physicaltargetsettingtaluk";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingTaluk";
 import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
 import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
 import BudgetTalukEdit from "../pages/target-settings/budget-taluk/Budget-TalukEdit";
