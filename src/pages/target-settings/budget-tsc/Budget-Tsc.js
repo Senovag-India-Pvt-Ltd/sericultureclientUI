@@ -19,7 +19,8 @@ function BudgetTsc() {
     talukId: "",
     date: "",
     budgetAmount: "",
-    tscMasterId: "",
+    institutionType: "",
+    institutionId: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -83,7 +84,8 @@ function BudgetTsc() {
       talukId: "",
       date: "",
       budgetAmount: "",
-      tscMasterId: "",
+      institutionType: "",
+      institutionId: "",
     });
   };
 
@@ -159,7 +161,7 @@ function BudgetTsc() {
     getTalukList();
   }, []);
 
-  // to get Taluk
+  // to get TSC
   const [tscListData, setTscListData] = useState([]);
 
   const getTscList = () => {
@@ -175,6 +177,24 @@ function BudgetTsc() {
 
   useEffect(() => {
     getTscList();
+  }, []);
+
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
   }, []);
 
   const handleDateChange = (date, type) => {
@@ -277,6 +297,34 @@ function BudgetTsc() {
                   </Form.Group>
                 </Col>
 
+                {/* <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Target Type<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="financialYearMasterId"
+                        value={data.financialYearMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.financialYearMasterId === undefined ||
+                          data.financialYearMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Financial Year</option>
+                        <option value="1">Financial</option>
+                        <option value="2">Physical</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Target Type is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col> */}
+
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -367,6 +415,138 @@ function BudgetTsc() {
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         Taluk is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Institution Type<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="institutionType"
+                        value={data.institutionType}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.institutionType === undefined ||
+                          data.institutionType === "0"
+                        }
+                      >
+                        <option value="">Select Institution Type</option>
+                        <option value="1">TSC</option>
+                        <option value="2">Market</option>
+                        <option value="3">Farm</option>
+                        <option value="4">Grainage</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Institution Type is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      TSC<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="tscMasterId"
+                        value={data.tscMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.tscMasterId === undefined ||
+                          data.tscMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Tsc</option>
+                        {tscListData.map((list) => (
+                          <option
+                            key={list.tscMasterId}
+                            value={list.tscMasterId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        TSC is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label>
+                      Market<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="marketMasterId"
+                        value={data.marketMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.marketMasterId === undefined ||
+                          data.marketMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Market</option>
+                        {marketListData.map((list) => (
+                          <option
+                            key={list.marketMasterId}
+                            value={list.marketMasterId}
+                          >
+                            {list.marketMasterName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Market Name is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      TSC<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="tscMasterId"
+                        value={data.tscMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.tscMasterId === undefined ||
+                          data.tscMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Tsc</option>
+                        {tscListData.map((list) => (
+                          <option
+                            key={list.tscMasterId}
+                            value={list.tscMasterId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        TSC is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
