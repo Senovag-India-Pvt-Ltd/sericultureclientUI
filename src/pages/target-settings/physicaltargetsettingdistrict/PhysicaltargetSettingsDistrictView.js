@@ -10,7 +10,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function PhysicalTargetSettingsDistrictView() {
+function PhysicaltargetSettingsDistrictView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -133,4 +133,4 @@ function PhysicalTargetSettingsDistrictView() {
   );
 }
 
-export default PhysicalTargetSettingsDistrictView;
+export default PhysicaltargetSettingsDistrictView;

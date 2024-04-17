@@ -14,7 +14,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function PhysicalTargetSettingDistrictList() {
+function PhysicalTargetSettingsDistrictList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -261,4 +261,4 @@ function PhysicalTargetSettingDistrictList() {
   );
 }
 
-export default PhysicalTargetSettingDistrictList;
+export default PhysicalTargetSettingsDistrictList;

@@ -663,6 +663,11 @@ import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltarg
 import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
 import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
 import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTaluk";
+import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrict";
+import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
+import PhysicalTargetSettingsDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictList";
+import PhysicaltargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicaltargetSettingsDistrictView";
 // Admin and Reports
 
 function Router() {
@@ -1390,6 +1395,28 @@ function Router() {
             <Route
               path="financialtargetsettings-view/:id"
               element={<FinancialTargetSettingView />}
+            />
+
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-list"
+              element={<PhysicalTargetSettingsDistrictList />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-edit/:id"
+              element={<PhysicalTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-view/:id"
+              element={<PhysicaltargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk"
+              element={<PhysicalTargetSettingsTaluk />}
             />
 
             <Route
