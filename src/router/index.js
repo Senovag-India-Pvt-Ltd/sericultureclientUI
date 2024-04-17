@@ -647,11 +647,6 @@ import BudgetDistrictList from "../pages/target-settings/budget-district/BudgetD
 import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-DistrictView";
 import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
 import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
-import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrict";
-import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
-import PhysicalTargetSettingDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingDistrictList";
-import PhysicalTargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictView";
-import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingTaluk";
 import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
 import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
 import BudgetTalukEdit from "../pages/target-settings/budget-taluk/Budget-TalukEdit";
@@ -668,7 +663,6 @@ import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltarg
 import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
 import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
 import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
-
 // Admin and Reports
 
 function Router() {
@@ -1396,28 +1390,6 @@ function Router() {
             <Route
               path="financialtargetsettings-view/:id"
               element={<FinancialTargetSettingView />}
-            />
-            <Route
-              path="physicaltargetsettingsdistrict"
-              element={<PhysicalTargetSettingsDistrict />}
-            />
-
-            <Route
-              path="physicaltargetsettingsdistrict-list"
-              element={<PhysicalTargetSettingDistrictList />}
-            />
-            <Route
-              path="physicaltargetsettingsdistrict-edit/:id"
-              element={<PhysicalTargetSettingsDistrictEdit />}
-            />
-            <Route
-              path="physicaltargetsettingsdistrict-view/:id"
-              element={<PhysicalTargetSettingsDistrictView />}
-            />
-
-            <Route
-              path="physicaltargetsettingstaluk"
-              element={<PhysicalTargetSettingsTaluk />}
             />
 
             <Route
