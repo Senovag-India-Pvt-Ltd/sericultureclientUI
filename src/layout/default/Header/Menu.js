@@ -311,8 +311,16 @@ function Menu() {
 
     Admin_Master_Service: false,
     Admin_Master_Service_Program: false,
+    Admin_Master_Service_Scheme_Details: false,
+    Admin_Master_Service_Sub_Scheme_Details: false,
     Admin_Master_Service_Component: false,
     Admin_Master_Service_Head_of_Account: false,
+    Admin_Master_Service_Head_of_Account_Category: false,
+    Admin_Master_Service_Unit_Cost: false,
+    Admin_Master_Service_Vendor: false,
+    Admin_Master_Service_Vendor_Contact: false,
+    Admin_Master_Service_Vendor_Bank: false,
+    Admin_Master_Service_Approving_Authority: false,
     Admin_Master_Service_Category: false,
     Admin_Master_Service_Approval_Stage: false,
     Admin_Master_Service_Program_Account_Mapping: false,
@@ -1744,6 +1752,22 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Scheme_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Details"
+                              to="/seriui/sc-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Sub_Scheme_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Sub Scheme Details"
+                              to="/seriui/sc-sub-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Component ? (
                           <MenuItem>
                             <MenuItemLink
@@ -1757,6 +1781,54 @@ function Menu() {
                             <MenuItemLink
                               text="Head of Account"
                               to="/seriui/sc-head-account"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Head_of_Account_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Head of Account Category"
+                              to="/seriui/sc-head-account-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Unit_Cost ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Unit Cost"
+                              to="/seriui/sc-unit-cost"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor"
+                              to="/seriui/sc-vendor"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor_Contact ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor Contact"
+                              to="/seriui/sc-vendor-contact"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor_Bank ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor Bank"
+                              to="/seriui/sc-vendor-bank"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Approving_Authority ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Approving Authority"
+                              to="/seriui/sc-approving-authority"
                             />
                           </MenuItem>
                         ) : null}

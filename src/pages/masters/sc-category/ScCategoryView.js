@@ -63,7 +63,7 @@ function ScCategoryView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/npm"
+                  to="/seriui/sc-category-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

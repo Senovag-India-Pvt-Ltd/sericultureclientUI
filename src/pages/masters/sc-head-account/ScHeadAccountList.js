@@ -217,6 +217,7 @@ function ScHeadAccountList() {
       ),
       sortable: false,
       hide: "md",
+     
     },
     {
       name: "Head Account Name",

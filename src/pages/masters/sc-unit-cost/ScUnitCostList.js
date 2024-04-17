@@ -217,6 +217,7 @@ function ScUnitCostList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2,
     },
     {
       name: "Head Account Name",

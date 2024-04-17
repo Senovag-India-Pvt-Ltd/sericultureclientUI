@@ -62,7 +62,9 @@ function ScVendorBankEdit() {
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         });
       setValidated(true);
     }
@@ -129,10 +131,16 @@ function ScVendorBankEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
   const editError = (message) => {

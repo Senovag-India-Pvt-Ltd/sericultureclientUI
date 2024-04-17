@@ -217,7 +217,7 @@ function ScHeadAccount() {
                           value={data.scHeadAccountNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          placeholder="Enter Head Of Account Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">

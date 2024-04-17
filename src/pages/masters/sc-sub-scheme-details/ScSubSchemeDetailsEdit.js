@@ -195,7 +195,7 @@ function ScSubSchemeDetailsEdit() {
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Scheme Details<span className="text-danger">*</span>
                       </Form.Label>
@@ -224,7 +224,7 @@ function ScSubSchemeDetailsEdit() {
                     </Form.Group>
                   </Col>
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeName">
                         Sub Scheme Name<span className="text-danger">*</span>
                       </Form.Label>
@@ -246,7 +246,7 @@ function ScSubSchemeDetailsEdit() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeNameInKannada">
                         Sub Scheme Name In Kannada<span className="text-danger">*</span>
                       </Form.Label>
@@ -268,27 +268,35 @@ function ScSubSchemeDetailsEdit() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="subSchemeType">
-                        Sub Scheme Type
-                        <span className="text-danger">*</span>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                      Sub Scheme Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="subSchemeType"
-                          type="text"
+                        <Form.Select
                           name="subSchemeType"
                           value={data.subSchemeType}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Scheme Type"
-                          required
-                        />
+                          onBlur={() => handleInputs}
+                          // required
+                          isInvalid={
+                            data.subSchemeType === undefined || data.subSchemeType === "0"
+                          }
+                        >
+                          <option value="">Select Sub Scheme Type</option>
+                          {/* {scSchemeDetailsListData.map((list) => (
+                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                              {list.schemeName}
+                            </option>
+                          ))} */}
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Sub Scheme Type is required
+                        Sub Scheme Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
+                  
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="subSchemeStartDate">
