@@ -27,9 +27,9 @@ function BudgetTscList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetTsc/list`, _params)
+      .get(baseURL + `tsBudgetInstitution/list`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetTsc);
+        setListData(response.data.content.tsBudgetInstitution);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -70,7 +70,7 @@ function BudgetTscList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetTsc/delete/${id}`)
+          .delete(baseURL + `tsBudgetInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function BudgetTscList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetTscId)}
+            onClick={() => handleView(row.tsBudgetInstitutionId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function BudgetTscList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetTscId)}
+            onClick={() => handleEdit(row.tsBudgetInstitutionId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetTscId)}
+            onClick={() => deleteConfirm(row.tsBudgetInstitutionId)}
             className="ms-2"
           >
             Delete
@@ -218,17 +218,17 @@ function BudgetTscList() {
   ];
 
   return (
-    <Layout title="Tsc Budget List">
+    <Layout title="Allocate Budget to Institution List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Tsc Budget List</Block.Title>
+            <Block.Title tag="h2">Allocate Budget to Institution List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/budget-tsc"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -237,7 +237,7 @@ function BudgetTscList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/budget-tsc"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

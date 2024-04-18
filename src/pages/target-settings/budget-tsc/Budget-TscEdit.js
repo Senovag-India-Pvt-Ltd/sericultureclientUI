@@ -14,7 +14,16 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function BudgetTscEdit() {
   // Fetching id from URL params
   const { id } = useParams();
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+    scHeadAccountId: "",
+    districtId: "",
+    talukId: "",
+    date: "",
+    budgetAmount: "",
+    institutionType: "1",
+    institutionId: "",
+  });
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
 
@@ -113,17 +122,17 @@ function BudgetTscEdit() {
     getTalukList();
   }, []);
 
-  // to get Taluk
+  // to get tsc
   const [tscListData, setTscListData] = useState([]);
 
   const getTscList = () => {
     const response = api
       .get(baseURL + `tscMaster/get-all`)
       .then((response) => {
-        setTalukListData(response.data.content.tscMaster);
+        setTscListData(response.data.content.tscMaster);
       })
       .catch((err) => {
-        setTalukListData([]);
+        setTscListData([]);
       });
   };
 
@@ -198,18 +207,13 @@ function BudgetTscEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsBudgetTsc/edit`, data)
+        .post(baseURL + `tsBudgetInstitution/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            setData({
-              title: "",
-              code: "",
-              nameInKannada: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
         .catch((err) => {
@@ -225,7 +229,7 @@ function BudgetTscEdit() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      hoaId: "",
+      scHeadAccountId: "",
       districtId: "",
       talukId: "",
       date: "",
@@ -233,12 +237,13 @@ function BudgetTscEdit() {
       institutionType: "1",
       institutionId: "",
     });
+    setValidated(false);
   };
 
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTsc/get/${id}`)
+      .get(baseURL + `tsBudgetInstitution/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -306,11 +311,13 @@ function BudgetTscEdit() {
   };
 
   return (
-    <Layout title="Edit Budget">
+    <Layout title="Edit Allocate Budget to Institution">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Budget</Block.Title>
+            <Block.Title tag="h2">
+              Edit Allocate Budget to Institution
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -343,7 +350,7 @@ function BudgetTscEdit() {
             <Block>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Tsc Budget Edit
+                  Edit Allocate Budget to Institution
                 </Card.Header>
                 <Card.Body>
                   {loading ? (
@@ -422,13 +429,14 @@ function BudgetTscEdit() {
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
-                              name="hoaId"
-                              value={data.hoaId}
+                              name="scHeadAccountId"
+                              value={data.scHeadAccountId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               required
                               isInvalid={
-                                data.hoaId === undefined || data.hoaId === "0"
+                                data.scHeadAccountId === undefined ||
+                                data.scHeadAccountId === "0"
                               }
                             >
                               <option value="">Select Head Of Account</option>
@@ -545,6 +553,7 @@ function BudgetTscEdit() {
                       </Col>
 
                       {data.institutionType === "1" ||
+                      data.institutionType === 1 ||
                       data.institutionType === "" ? (
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
@@ -582,7 +591,8 @@ function BudgetTscEdit() {
                       ) : (
                         ""
                       )}
-                      {data.institutionType === "2" ? (
+                      {data.institutionType === "2" ||
+                      data.institutionType === 2 ? (
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -620,7 +630,8 @@ function BudgetTscEdit() {
                         ""
                       )}
 
-                      {data.institutionType === "3" ? (
+                      {data.institutionType === "3" ||
+                      data.institutionType === 3 ? (
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -659,7 +670,8 @@ function BudgetTscEdit() {
                         ""
                       )}
 
-                      {data.institutionType === "4" ? (
+                      {data.institutionType === "4" ||
+                      data.institutionType === 4 ? (
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>

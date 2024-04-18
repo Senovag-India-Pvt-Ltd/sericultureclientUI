@@ -33,7 +33,7 @@ function BudgetTscView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTsc/get/${id}`)
+      .get(baseURL + `tsBudgetInstitution/get/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -51,11 +51,11 @@ function BudgetTscView() {
   }, [id]);
 
   return (
-    <Layout title="TSC Budget View">
+    <Layout title="Allocate Budget to Institution View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">TSC Budget View</Block.Title>
+            <Block.Title tag="h2">Allocate Budget to Institution View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -84,7 +84,7 @@ function BudgetTscView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>TSC Budget View Details</Card.Header>
+          <Card.Header>Allocate Budget to Institution View Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
