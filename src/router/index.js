@@ -668,6 +668,18 @@ import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltar
 import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
 import PhysicalTargetSettingsDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictList";
 import PhysicaltargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicaltargetSettingsDistrictView";
+import ReleaseBudgetDistrict from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrict";
+import ReleaseBudgetDistrictView from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictView";
+import ReleaseBudgetDistrictList from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictList";
+import ReleaseBudgetDistrictEdit from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictEdit";
+import ReleaseBudgetTaluk from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTaluk";
+import ReleaseBudgetTalukList from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukList";
+import ReleaseBudgetTalukEdit from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukEdit";
+import ReleaseBudgetTalukView from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukView";
+import ReleaseBudgetInstitution from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitution";
+import ReleaseBudgetInstitutionList from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionList";
+import ReleaseBudgetInstitutionEdit from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionEdit";
+import ReleaseBudgetInstitutionView from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionView";
 // Admin and Reports
 
 function Router() {
@@ -1449,6 +1461,58 @@ function Router() {
               path="physicaltargetsettingstsc-view/:id"
               element={<PhysicalTargetSettingsTscView />}
             />
+
+            <Route
+              path="releasebudgetdistrict"
+              element={<ReleaseBudgetDistrict />}
+            />
+
+            <Route
+              path="releasebudgetdistrict-list"
+              element={<ReleaseBudgetDistrictList />}
+            />
+            <Route
+              path="releasebudgetdistrict-edit/:id"
+              element={<ReleaseBudgetDistrictEdit />}
+            />
+            <Route
+              path="releasebudgetdistrict-view/:id"
+              element={<ReleaseBudgetDistrictView />}
+            />
+
+            <Route path="releasebudgettaluk" element={<ReleaseBudgetTaluk />} />
+
+            <Route
+              path="releasebudgettaluk-list"
+              element={<ReleaseBudgetTalukList />}
+            />
+            <Route
+              path="releasebudgettaluk-edit/:id"
+              element={<ReleaseBudgetTalukEdit />}
+            />
+            <Route
+              path="releasebudgettaluk-view/:id"
+              element={<ReleaseBudgetTalukView />}
+            />
+
+            <Route
+              path="releasebudgetinstitution"
+              element={<ReleaseBudgetInstitution />}
+            />
+
+            <Route
+              path="releasebudgetinstitution-list"
+              element={<ReleaseBudgetInstitutionList />}
+            />
+            <Route
+              path="releasebudgetinstitution-edit/:id"
+              element={<ReleaseBudgetInstitutionEdit />}
+            />
+            <Route
+              path="releasebudgetinstitution-view/:id"
+              element={<ReleaseBudgetInstitutionView />}
+            />
+
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
             <Route path="roles-list" element={<RolesList />} />
