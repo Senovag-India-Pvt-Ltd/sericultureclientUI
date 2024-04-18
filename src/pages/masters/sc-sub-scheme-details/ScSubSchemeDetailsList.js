@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { format } from 'date-fns';
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -48,6 +48,13 @@ function ScSubSchemeDetailsList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
 
   // Search
   const search = (e) => {
@@ -185,7 +192,7 @@ function ScSubSchemeDetailsList() {
 
   const ScSubSchemeDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -239,24 +246,24 @@ function ScSubSchemeDetailsList() {
       sortable: true,
       hide: "md",
     },
-    {
-        name: "Sub Scheme Type",
-        selector: (row) => row.subSchemeType,
-        cell: (row) => <span>{row.subSchemeType}</span>,
-        sortable: true,
-        hide: "md",
-      },
+    // {
+    //     name: "Sub Scheme Type",
+    //     selector: (row) => row.subSchemeType,
+    //     cell: (row) => <span>{row.subSchemeType}</span>,
+    //     sortable: true,
+    //     hide: "md",
+    //   },
       {
         name: "Sub Scheme Start Date",
         selector: (row) => row.subSchemeStartDate,
-        cell: (row) => <span>{row.subSchemeStartDate}</span>,
+        cell: (row) => <span>{formatDate(row.subSchemeStartDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
         name: "Sub Scheme End Date",
         selector: (row) => row.subSchemeEndDate,
-        cell: (row) => <span>{row.subSchemeEndDate}</span>,
+        cell: (row) => <span>{formatDate(row.subSchemeEndDate)}</span>,
         sortable: true,
         hide: "md",
       },

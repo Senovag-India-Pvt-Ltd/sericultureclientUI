@@ -7,7 +7,7 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
-import ScSchemeDetailsView from "../sc-scheme-details/ScSchemeDetailsView";
+import { format } from 'date-fns';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -25,11 +25,11 @@ function ScSubSchemeDetailsView() {
   const [ScSubSchemeDetails, setScSubSchemeDetails] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  //   let findUser = data.find((item) => item.id === id);
-  //   setDistrict(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
 
   const getIdList = () => {
     setLoading(true);
@@ -115,17 +115,27 @@ function ScSubSchemeDetailsView() {
                         </td>
                         <td>{ScSubSchemeDetails.subSchemeNameInKannada}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}> Sub Scheme Type:</td>
                         <td>{ScSubSchemeDetails.subSchemeType}</td>
-                      </tr>
+                      </tr> */}
+                      <tr>
+                            <td style={styles.ctstyle}> Gender:</td>
+                            <td>
+                              {ScSubSchemeDetails.subSchemeType === 1
+                                ? "Subsidy"
+                                : ScSubSchemeDetails.subSchemeType === 2
+                                ? "Incentives"
+                                : "Other"}
+                            </td>
+                          </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sub Scheme Start Date:</td>
-                        <td>{ScSubSchemeDetails.subSchemeStartDate}</td>
+                        <td>{formatDate(ScSubSchemeDetails.subSchemeStartDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}> Sub Scheme End Date:</td>
-                        <td>{ScSubSchemeDetails.subSchemeEndDate}</td>
+                        <td>{formatDate(ScSubSchemeDetails.subSchemeEndDate)}</td>
                       </tr>
                     </tbody>
                   </table>
