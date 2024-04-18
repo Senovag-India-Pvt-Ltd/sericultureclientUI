@@ -631,6 +631,14 @@ import FinancialYear from "../pages/masters/financial-year/FinancialYear";
 import FinancialYearEdit from "../pages/masters/financial-year/FinancialYearEdit";
 import FinancialYearList from "../pages/masters/financial-year/FinancialYearList";
 import FinancialYearView from "../pages/masters/financial-year/FinancialYearView";
+import FarmType from "../pages/masters/farm-type/FarmType";
+import FarmTypeList from "../pages/masters/farm-type/FarmTypeList";
+import FarmTypeView from "../pages/masters/farm-type/FarmTypeView";
+import FarmTypeEdit from "../pages/masters/farm-type/FarmTypeEdit";
+import GrainageType from "../pages/masters/grainage-type/GrainageType";
+import GrainageTypeList from "../pages/masters/grainage-type/GrainageTypeList";
+import GrainageTypeView from "../pages/masters/grainage-type/GrainageTypeView";
+import GrainageTypeEdit from "../pages/masters/grainage-type/GrainageTypeEdit";
 // Admin and Reports
 
 function Router() {
@@ -1611,6 +1619,16 @@ function Router() {
             <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
             <Route path="sc-sub-scheme-details-view/:id" element={<ScSubSchemeDetailsView />} />
             <Route path="sc-sub-scheme-details-edit/:id" element={<ScSubSchemeDetailsEdit />} />
+
+            <Route path="farm-type" element={<FarmType />} />
+            <Route path="farm-type-list" element={<FarmTypeList/>} />
+            <Route path="farm-type-view/:id" element={<FarmTypeView />} />
+            <Route path="farm-type-edit/:id" element={<FarmTypeEdit />} />
+
+            <Route path="grainage-type" element={<GrainageType />} />
+            <Route path="grainage-type-list" element={<GrainageTypeList/>} />
+            <Route path="grainage-type-view/:id" element={<GrainageTypeView />} />
+            <Route path="grainage-type-edit/:id" element={<GrainageTypeEdit />} />
             
             <Route path="sc-vendor" element={<ScVendor />} />
             <Route path="sc-vendor-list" element={<ScVendorList />} />
