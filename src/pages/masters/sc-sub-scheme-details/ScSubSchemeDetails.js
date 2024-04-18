@@ -11,6 +11,8 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import ScSchemeDetails from "../sc-scheme-details/ScSchemeDetails";
 
+
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScSubSchemeDetails() {
@@ -23,6 +25,8 @@ function ScSubSchemeDetails() {
     subSchemeEndDate:"",
 
   });
+
+  const startOfYear = new Date(new Date().getFullYear(), 0, 1);
 
   const [validated, setValidated] = useState(false);
 
@@ -282,12 +286,10 @@ function ScSubSchemeDetails() {
                             data.subSchemeType === undefined || data.subSchemeType === "0"
                           }
                         >
-                          <option value="">Select Sub Scheme Type</option>
-                          {/* {scSchemeDetailsListData.map((list) => (
-                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                              {list.schemeName}
-                            </option>
-                          ))} */}
+                          <option value="0">Select Sub Scheme Type</option>
+                          <option value="1">Subsidy</option>
+                          <option value="2">Incentives</option>
+                         
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                         Sub Scheme Type is required
@@ -313,14 +315,16 @@ function ScSubSchemeDetails() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
-                              minDate={new Date()}
+                              // minDate={new Date()}
+                              minDate={startOfYear}
                               required
                             />
                           </div>
-                          </Form.Group>
                           <Form.Control.Feedback type="invalid">
                           Sub Scheme Start Date is Required
                       </Form.Control.Feedback>
+                          </Form.Group>
+                          
                         </Col>
 
                         <Col lg="2">
@@ -340,14 +344,15 @@ function ScSubSchemeDetails() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
-                              minDate={new Date(data.subSchemeStartDate)}
+                              minDate={startOfYear}
                               required
                             />
                           </div>
-                          </Form.Group>
                           <Form.Control.Feedback type="invalid">
                           Sub Scheme End Date is Required
                         </Form.Control.Feedback>
+                          </Form.Group>
+                          
                         </Col>
                 </Row>
               </Card.Body>

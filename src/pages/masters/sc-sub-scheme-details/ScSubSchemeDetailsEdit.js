@@ -26,6 +26,8 @@ function ScSubSchemeDetailsEdit() {
     setData({ ...data, [name]: value });
   };
 
+  const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -284,11 +286,8 @@ function ScSubSchemeDetailsEdit() {
                           }
                         >
                           <option value="">Select Sub Scheme Type</option>
-                          {/* {scSchemeDetailsListData.map((list) => (
-                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                              {list.schemeName}
-                            </option>
-                          ))} */}
+                          <option value="1">Subsidy</option>
+                          <option value="2">Incentives</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                         Sub Scheme Type is required
@@ -315,11 +314,14 @@ function ScSubSchemeDetailsEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  minDate={startOfYear}
                                   required
                                 />
                               )}
                             </div>
+                            <Form.Control.Feedback type="invalid">
+                          Sub Scheme Start Date is Required
+                      </Form.Control.Feedback>
                             </Form.Group>
                         </Col>
 
@@ -341,11 +343,14 @@ function ScSubSchemeDetailsEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date(data.subSchemeStartDate)}
+                                  minDate={startOfYear}
                                   required
                                 />
                               )}
                             </div>
+                            <Form.Control.Feedback type="invalid">
+                          Sub Scheme End Date is Required
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                   </Row>
