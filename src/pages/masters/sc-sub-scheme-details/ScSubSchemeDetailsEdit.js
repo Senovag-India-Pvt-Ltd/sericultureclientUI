@@ -289,9 +289,9 @@ function ScSubSchemeDetailsEdit() {
                           <option value="1">Subsidy</option>
                           <option value="2">Incentives</option>
                         </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                         Sub Scheme Type is required
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>

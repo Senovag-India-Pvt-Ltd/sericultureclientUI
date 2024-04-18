@@ -291,10 +291,10 @@ function ScSubSchemeDetails() {
                           <option value="2">Incentives</option>
                          
                         </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Sub Scheme Type is required
-                        </Form.Control.Feedback>
                       </div>
+                      {/* <Form.Control.Feedback type="invalid">
+                        Sub Scheme Type is required
+                        </Form.Control.Feedback> */}
                     </Form.Group>
                   </Col>
                   
