@@ -4,8 +4,6 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import axios from "axios";
-import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
 import { format } from 'date-fns';
 

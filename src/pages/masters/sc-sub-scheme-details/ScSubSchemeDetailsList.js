@@ -253,6 +253,21 @@ function ScSubSchemeDetailsList() {
     //     sortable: true,
     //     hide: "md",
     //   },
+    {
+      name: "Sub Scheme Type",
+      selector: (row) => row.subSchemeType,
+      cell: (row) => (
+        <td>
+          {row.subSchemeType === 1
+            ? "Subsidy"
+            : row.subSchemeType === 2
+            ? "Incentives"
+            : "Other"}
+        </td>
+      ),
+      sortable: true,
+      hide: "md",
+    },
       {
         name: "Sub Scheme Start Date",
         selector: (row) => row.subSchemeStartDate,
