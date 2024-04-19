@@ -27,17 +27,7 @@ function ReleaseBudgetDistrictEdit() {
     setData({ ...data, [name]: value });
   };
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
-
-  // HTTP header configuration
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
+ 
   // Function to submit form data
   const postData = (event) => {
     const form = event.currentTarget;
@@ -54,7 +44,13 @@ function ReleaseBudgetDistrictEdit() {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            clear();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              date: "",
+              budgetAmount: "",
+              districtId: "",
+            });
           }
         })
         .catch((err) => {
@@ -70,7 +66,7 @@ function ReleaseBudgetDistrictEdit() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      hoaId: "",
+      scHeadAccountId: "",
       date: "",
       budgetAmount: "",
       districtId: "",
@@ -147,7 +143,7 @@ function ReleaseBudgetDistrictEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLMasterData + `tsBudgetDistrict/get/${id}`)
+      .get(baseURLMasterData + `tsReleaseBudgetDistrict/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -179,7 +175,6 @@ function ReleaseBudgetDistrictEdit() {
     getIdList();
   }, [id]);
 
-  // Navigation hook
   const navigate = useNavigate();
 
   // Function to handle success alert
@@ -215,17 +210,17 @@ function ReleaseBudgetDistrictEdit() {
   };
 
   return (
-    <Layout title="Edit Released Budget">
+    <Layout title="Edit Released District Budget">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Released Budget District</Block.Title>
+            <Block.Title tag="h2">Edit Released District Budget </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/releasebudgetdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -234,7 +229,7 @@ function ReleaseBudgetDistrictEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/releasebudgetdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -301,13 +296,13 @@ function ReleaseBudgetDistrictEdit() {
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
-                              name="hoaId"
-                              value={data.hoaId}
+                              name="scHeadAccountId"
+                              value={data.scHeadAccountId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               required
                               isInvalid={
-                                data.hoaId === undefined || data.hoaId === "0"
+                                data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
                               }
                             >
                               <option value="">Select Head Of Account</option>
@@ -398,7 +393,7 @@ function ReleaseBudgetDistrictEdit() {
                                 showMonthDropdown
                                 showYearDropdown
                                 dropdownMode="select"
-                                maxDate={new Date()}
+                                // maxDate={new Date()}
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required

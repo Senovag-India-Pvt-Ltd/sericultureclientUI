@@ -27,9 +27,9 @@ function ReleaseBudgetInstitutionList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetInstitution/list`, _params)
+      .get(baseURL + `tsReleaseBudgetInstitution/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetInstitution);
+        setListData(response.data.content.tsReleaseBudgetInstitution);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function ReleaseBudgetInstitutionList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-tsc-view/${id}`);
+    navigate(`/seriui/releasebudgetinstitution-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-tsc-edit/${id}`);
+    navigate(`/seriui/releasebudgetinstitution-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function ReleaseBudgetInstitutionList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetInstitution/delete/${id}`)
+          .delete(baseURL + `tsReleaseBudgetInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function ReleaseBudgetInstitutionList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetInstitutionId)}
+            onClick={() => handleView(row.tsReleaseBudgetInstitutionId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function ReleaseBudgetInstitutionList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetInstitutionId)}
+            onClick={() => handleEdit(row.tsReleaseBudgetInstitutionId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetInstitutionId)}
+            onClick={() => deleteConfirm(row.tsReleaseBudgetInstitutionId)}
             className="ms-2"
           >
             Delete
@@ -230,7 +230,7 @@ function ReleaseBudgetInstitutionList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-tsc"
+                  to="/seriui/releasebudgetinstitution"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -239,7 +239,7 @@ function ReleaseBudgetInstitutionList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-tsc"
+                  to="/seriui/releasebudgetinstitution"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
