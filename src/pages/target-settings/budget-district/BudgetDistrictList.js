@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -13,7 +13,7 @@ import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function BudgetDistrictList() {
   const [listData, setListData] = useState({});
@@ -23,11 +23,17 @@ function BudgetDistrictList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+    hoaId: "",
+    districtId: "",
+  });
+
   const getList = () => {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetDistrict/list`, _params)
+      .get(baseURLMasterData + `tsBudgetDistrict/list`, _params)
       .then((response) => {
         setListData(response.data.content.tsBudgetDistrict);
         setTotalRows(response.data.content.totalItems);
@@ -42,6 +48,75 @@ function BudgetDistrictList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialYearList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialYearList();
+  }, []);
+
+  // Head of Account
+
+  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+
+  const getHeadOfAccountList = () => {
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .then((response) => {
+        setHeadOfAccountListData(response.data.content.scHeadAccount);
+      })
+      .catch((err) => {
+        setHeadOfAccountListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHeadOfAccountList();
+  }, []);
+
+  // District
+
+  // to get district
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURLMasterData + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  const [validated, setValidated] = useState(false);
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
 
   const navigate = useNavigate();
   const handleView = (id) => {
@@ -70,7 +145,7 @@ function BudgetDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetDistrict/delete/${id}`)
+          .delete(baseURLMasterData + `tsBudgetDistrict/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -87,6 +162,34 @@ function BudgetDistrictList() {
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            // saveError(response.data.content.error_description);
+          } else {
+            // saveSuccess();
+            // clear();
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
   };
 
   createTheme(
@@ -236,7 +339,136 @@ function BudgetDistrictList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card>
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-3 ">
+            <Block>
+              <Card>
+                <Card.Header>Budget to District</Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Year</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Head Of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hoaId"
+                            value={data.hoaId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.hoaId === undefined || data.hoaId === "0"
+                            }
+                          >
+                            <option value="">Select Head Of Account</option>
+                            {headOfAccountListData.map((list) => (
+                              <option
+                                key={list.scHeadAccountId}
+                                value={list.scHeadAccountId}
+                              >
+                                {list.scHeadAccountName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head Of Account is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Select District<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="districtId"
+                            value={data.districtId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
+                          >
+                            <option value="">Select District</option>
+                            {districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            District is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
+
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  <Button type="submit" variant="primary">
+                    Go
+                  </Button>
+                </li>
+                {/* <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li> */}
+              </ul>
+            </div>
+          </Row>
+        </Form>
+        <Card className="mt-2">
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={activityDataColumns}
