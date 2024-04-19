@@ -27,9 +27,9 @@ function ReleaseBudgetDistrictList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetDistrict/list`, _params)
+      .get(baseURL + `tsReleaseBudgetDistrict/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetDistrict);
+        setListData(response.data.content.tsReleaseBudgetDistrict);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function ReleaseBudgetDistrictList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-district-view/${id}`);
+    navigate(`/seriui/release-budget-district-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-district-edit/${id}`);
+    navigate(`/seriui/release-budget-district-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -214,7 +214,7 @@ function ReleaseBudgetDistrictList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/releasebudgetdistrict"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -223,7 +223,7 @@ function ReleaseBudgetDistrictList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/releasebudgetdistrict"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

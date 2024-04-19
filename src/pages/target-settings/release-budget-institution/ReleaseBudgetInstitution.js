@@ -49,13 +49,23 @@ function ReleaseBudgetInstitution() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `tsBudgetInstitution/add`, data)
+        .post(baseURL + `tsReleaseBudgetInstitution/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            clear();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              districtId: "",
+              talukId: "",
+              date: "",
+              budgetAmount: "",
+              institutionType: "1",
+              institutionId: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
@@ -261,7 +271,7 @@ function ReleaseBudgetInstitution() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -270,7 +280,7 @@ function ReleaseBudgetInstitution() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

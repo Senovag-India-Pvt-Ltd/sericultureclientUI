@@ -36,13 +36,7 @@ function ReleaseBudgetInstitutionEdit() {
     setData({ ...data, [name]: value });
   };
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
+  
 
   const isData = !!data.date;
 
@@ -50,149 +44,7 @@ function ReleaseBudgetInstitutionEdit() {
     setData({ ...data, [type]: date });
   };
 
-  // to get Financial Year
-  const [financialYearListData, setFinancialYearListData] = useState([]);
 
-  const getFinancialYearList = () => {
-    const response = api
-      .get(baseURL + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialYearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialYearListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getFinancialYearList();
-  }, []);
-
-  // to get Head Of Account
-  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
-
-  const getHeadOfAccountList = () => {
-    const response = api
-      .get(baseURL + `scHeadAccount/get-all`)
-      .then((response) => {
-        setHeadOfAccountListData(response.data.content.scHeadAccount);
-      })
-      .catch((err) => {
-        setHeadOfAccountListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getHeadOfAccountList();
-  }, []);
-
-  // to get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    const response = api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get Taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = () => {
-    const response = api
-      .get(baseURL + `taluk/get-all`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getTalukList();
-  }, []);
-
-  // to get tsc
-  const [tscListData, setTscListData] = useState([]);
-
-  const getTscList = () => {
-    const response = api
-      .get(baseURL + `tscMaster/get-all`)
-      .then((response) => {
-        setTscListData(response.data.content.tscMaster);
-      })
-      .catch((err) => {
-        setTscListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getTscList();
-  }, []);
-
-  // to get farm
-  const [farmListData, setFarmListData] = useState([]);
-
-  const getFarmList = () => {
-    api
-      .get(baseURL + `farmMaster/get-all`)
-      .then((response) => {
-        setFarmListData(response.data.content.farmMaster);
-      })
-      .catch((err) => {
-        setFarmListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getFarmList();
-  }, []);
-
-  // to get Grainage
-  const [grainageListData, setGrainageListData] = useState([]);
-
-  const getGrainageList = () => {
-    const response = api
-      .get(baseURL + `grainageMaster/get-all`)
-      .then((response) => {
-        setGrainageListData(response.data.content.grainageMaster);
-      })
-      .catch((err) => {
-        setGrainageListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getGrainageList();
-  }, []);
-
-  // to get Market
-  const [marketListData, setMarketListData] = useState([]);
-
-  const getList = () => {
-    const response = api
-      .get(baseURL + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
 
   // HTTP header configuration
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -207,13 +59,23 @@ function ReleaseBudgetInstitutionEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsBudgetInstitution/edit`, data)
+        .post(baseURL + `tsReleaseBudgetInstitution/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            clear();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              districtId: "",
+              talukId: "",
+              date: "",
+              budgetAmount: "",
+              institutionType: "1",
+              institutionId: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
@@ -240,10 +102,154 @@ function ReleaseBudgetInstitutionEdit() {
     setValidated(false);
   };
 
+    // to get Financial Year
+    const [financialYearListData, setFinancialYearListData] = useState([]);
+
+    const getFinancialYearList = () => {
+      const response = api
+        .get(baseURL + `financialYearMaster/get-all`)
+        .then((response) => {
+          setFinancialYearListData(response.data.content.financialYearMaster);
+        })
+        .catch((err) => {
+          setFinancialYearListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getFinancialYearList();
+    }, []);
+  
+    // to get Head Of Account
+    const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+  
+    const getHeadOfAccountList = () => {
+      const response = api
+        .get(baseURL + `scHeadAccount/get-all`)
+        .then((response) => {
+          setHeadOfAccountListData(response.data.content.scHeadAccount);
+        })
+        .catch((err) => {
+          setHeadOfAccountListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getHeadOfAccountList();
+    }, []);
+  
+    // to get District
+    const [districtListData, setDistrictListData] = useState([]);
+  
+    const getDistrictList = () => {
+      const response = api
+        .get(baseURL + `district/get-all`)
+        .then((response) => {
+          setDistrictListData(response.data.content.district);
+        })
+        .catch((err) => {
+          setDistrictListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getDistrictList();
+    }, []);
+  
+    // to get Taluk
+    const [talukListData, setTalukListData] = useState([]);
+  
+    const getTalukList = () => {
+      const response = api
+        .get(baseURL + `taluk/get-all`)
+        .then((response) => {
+          setTalukListData(response.data.content.taluk);
+        })
+        .catch((err) => {
+          setTalukListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getTalukList();
+    }, []);
+  
+    // to get tsc
+    const [tscListData, setTscListData] = useState([]);
+  
+    const getTscList = () => {
+      const response = api
+        .get(baseURL + `tscMaster/get-all`)
+        .then((response) => {
+          setTscListData(response.data.content.tscMaster);
+        })
+        .catch((err) => {
+          setTscListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getTscList();
+    }, []);
+  
+    // to get farm
+    const [farmListData, setFarmListData] = useState([]);
+  
+    const getFarmList = () => {
+      api
+        .get(baseURL + `farmMaster/get-all`)
+        .then((response) => {
+          setFarmListData(response.data.content.farmMaster);
+        })
+        .catch((err) => {
+          setFarmListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getFarmList();
+    }, []);
+  
+    // to get Grainage
+    const [grainageListData, setGrainageListData] = useState([]);
+  
+    const getGrainageList = () => {
+      const response = api
+        .get(baseURL + `grainageMaster/get-all`)
+        .then((response) => {
+          setGrainageListData(response.data.content.grainageMaster);
+        })
+        .catch((err) => {
+          setGrainageListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getGrainageList();
+    }, []);
+  
+    // to get Market
+    const [marketListData, setMarketListData] = useState([]);
+  
+    const getList = () => {
+      const response = api
+        .get(baseURL + `marketMaster/get-all`)
+        .then((response) => {
+          setMarketListData(response.data.content.marketMaster);
+        })
+        .catch((err) => {
+          setMarketListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getList();
+    }, []);
+
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetInstitution/get/${id}`)
+      .get(baseURL + `tsReleaseBudgetInstitution/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -323,7 +329,7 @@ function ReleaseBudgetInstitutionEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -332,7 +338,7 @@ function ReleaseBudgetInstitutionEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

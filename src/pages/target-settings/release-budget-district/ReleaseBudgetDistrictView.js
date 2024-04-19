@@ -33,7 +33,7 @@ function ReleaseBudgetDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+      .get(baseURL + `tsReleaseBudgetDistrict/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);

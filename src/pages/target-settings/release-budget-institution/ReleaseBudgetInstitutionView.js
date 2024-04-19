@@ -33,7 +33,7 @@ function ReleaseBudgetInstitutionView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetInstitution/get/${id}`)
+      .get(baseURL + `tsReleaseBudgetInstitution/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -63,7 +63,7 @@ function ReleaseBudgetInstitutionView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -72,7 +72,7 @@ function ReleaseBudgetInstitutionView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-tsc-list"
+                  to="/seriui/releasebudgetinstitution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
