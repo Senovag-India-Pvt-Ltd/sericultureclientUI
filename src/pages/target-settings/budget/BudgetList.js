@@ -23,17 +23,20 @@ function BudgetList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const [show, setShow] = useState(false);
 
   const getList = () => {
-    setLoading(true);
+    // setLoading(true);
 
     api
       .post(baseURLTargetSetting + `tsBudget/get-details`, data)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
+          setShow(false);
         } else {
           setListData(response.data.content.tsBudget);
+          setShow(true);
           // saveSuccess();
           // clear();
         }
@@ -44,6 +47,8 @@ function BudgetList() {
         }
       });
   };
+
+  console.log(listData);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -132,6 +137,7 @@ function BudgetList() {
       event.preventDefault();
       // event.stopPropagation();
       getList();
+      // setShow(true);
       setValidated(true);
     }
   };
@@ -360,25 +366,29 @@ function BudgetList() {
             </div>
           </Row>
         </Form>
-        <Card className="mt-2">
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={activityDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
+        {show ? (
+          <Card className="mt-2">
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={activityDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );
