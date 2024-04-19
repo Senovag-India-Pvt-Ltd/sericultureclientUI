@@ -27,9 +27,9 @@ function ReleaseBudgetTalukList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetTaluk/list-with-join`, _params)
+      .get(baseURL + `tsReleaseBudgetTaluk/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetTaluk);
+        setListData(response.data.content.tsReleaseBudgetTaluk);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function ReleaseBudgetTalukList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-taluk-view/${id}`);
+    navigate(`/seriui/releasebudgettaluk-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-taluk-edit/${id}`);
+    navigate(`/seriui/releasebudgettaluk-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function ReleaseBudgetTalukList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURL + `releasebudgettaluk/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function ReleaseBudgetTalukList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetTalukId)}
+            onClick={() => handleView(row.tsReleaseBudgetTalukId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function ReleaseBudgetTalukList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetTalukId)}
+            onClick={() => handleEdit(row.tsReleaseBudgetTalukId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetTalukId)}
+            onClick={() => deleteConfirm(row.tsReleaseBudgetTalukId)}
             className="ms-2"
           >
             Delete
@@ -228,7 +228,7 @@ function ReleaseBudgetTalukList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk"
+                  to="/seriui/releasebudgettaluk"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -237,7 +237,7 @@ function ReleaseBudgetTalukList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk"
+                  to="/seriui/releasebudgettaluk"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
