@@ -695,6 +695,62 @@ import GrainageType from "../pages/masters/grainage-type/GrainageType";
 import GrainageTypeList from "../pages/masters/grainage-type/GrainageTypeList";
 import GrainageTypeView from "../pages/masters/grainage-type/GrainageTypeView";
 import GrainageTypeEdit from "../pages/masters/grainage-type/GrainageTypeEdit";
+import Activity from "../pages/masters/activity/Activity";
+import ActivityList from "../pages/masters/activity/ActivityList";
+import ActivityView from "../pages/masters/activity/ActivityView";
+import ActivityEdit from "../pages/masters/activity/ActivityEdit";
+import Budget from "../pages/target-settings/budget/Budget";
+import BudgetHoa from "../pages/target-settings/budget-hoa/Budget-Hoa";
+import BudgetDistrict from "../pages/target-settings/budget-district/Budget-District";
+import BudgetTaluk from "../pages/target-settings/budget-taluk/Budget-Taluk";
+import BudgetTsc from "../pages/target-settings/budget-tsc/Budget-Tsc";
+import BudgetEdit from "../pages/target-settings/budget/BudgetEdit";
+import BudgetList from "../pages/target-settings/budget/BudgetList";
+import BudgetHoaEdit from "../pages/target-settings/budget-hoa/Budget-HoaEdit";
+import BudgetHoaList from "../pages/target-settings/budget-hoa/Budget-HoaList";
+import BudgetView from "../pages/target-settings/budget/BudgetView";
+import BudgetHoaView from "../pages/target-settings/budget-hoa/Budget-HoaView";
+import BudgetDistrictList from "../pages/target-settings/budget-district/BudgetDistrictList";
+import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-DistrictView";
+import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
+import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
+import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
+import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
+import BudgetTalukEdit from "../pages/target-settings/budget-taluk/Budget-TalukEdit";
+import BudgetTalukList from "../pages/target-settings/budget-taluk/Budget-TalukList";
+import BudgetTscEdit from "../pages/target-settings/budget-tsc/Budget-TscEdit";
+import BudgetTscView from "../pages/target-settings/budget-tsc/Budget-TscView";
+import BudgetTscList from "../pages/target-settings/budget-tsc/Budget-TscList";
+import FinancialTargetSettingList from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingList";
+import FinancialTargetSettingEdit from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingEdit";
+import FinancialTargetSettingView from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingView";
+import PhysicalTargetSettingsTscView from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscView";
+import PhysicalTargetSettingsTscList from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscList";
+import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscEdit";
+import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrict";
+import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
+import PhysicalTargetSettingsDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictList";
+import PhysicaltargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicaltargetSettingsDistrictView";
+import ReleaseBudgetDistrict from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrict";
+import ReleaseBudgetDistrictView from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictView";
+import ReleaseBudgetDistrictList from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictList";
+import ReleaseBudgetDistrictEdit from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictEdit";
+import ReleaseBudgetTaluk from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTaluk";
+import ReleaseBudgetTalukList from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukList";
+import ReleaseBudgetTalukEdit from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukEdit";
+import ReleaseBudgetTalukView from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukView";
+import ReleaseBudgetInstitution from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitution";
+import ReleaseBudgetInstitutionList from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionList";
+import ReleaseBudgetInstitutionEdit from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionEdit";
+import ReleaseBudgetInstitutionView from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionView";
+import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
+import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
+import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTaluk";
+import FinancialTargetSettingsDistrictEdit from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictEdit";
+import FinancialTargetSettingsDistrictView from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictView";
+import FinancialTargetSettingsDistrictList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsList";
+import FinancialTargetSettingsDistrict from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrict";
 // Admin and Reports
 
 function Router() {
@@ -1594,6 +1650,180 @@ function Router() {
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
+            <Route path="activity" element={<Activity />} />
+            <Route path="Activity-list" element={<ActivityList />} />
+            <Route path="activity-view/:id" element={<ActivityView />} />
+            <Route path="activity-edit/:id" element={<ActivityEdit />} />
+            <Route path="budget" element={<Budget />} />
+            <Route path="budget-list" element={<BudgetList />} />
+            <Route path="budget-edit/:id" element={<BudgetEdit />} />
+            <Route path="budget-view/:id" element={<BudgetView />} />
+            <Route path="budget-hoa" element={<BudgetHoa />} />
+            <Route path="budget-hoa-list" element={<BudgetHoaList />} />
+            <Route path="budget-hoa-edit/:id" element={<BudgetHoaEdit />} />
+            <Route path="budget-hoa-view/:id" element={<BudgetHoaView />} />
+            <Route path="budget-district" element={<BudgetDistrict />} />
+            <Route
+              path="budget-district-view/:id"
+              element={<BudgetDistrictView />}
+            />
+            <Route
+              path="budget-district-edit/:id"
+              element={<BudgetDistrictEdit />}
+            />
+            <Route
+              path="budget-district-list"
+              element={<BudgetDistrictList />}
+            />
+            <Route path="budget-taluk" element={<BudgetTaluk />} />
+            <Route path="budget-taluk-list" element={<BudgetTalukList />} />
+            <Route path="budget-taluk-edit/:id" element={<BudgetTalukEdit />} />
+            <Route path="budget-taluk-view/:id" element={<BudgetTalukView />} />
+            <Route path="budget-tsc" element={<BudgetTsc />} />
+            <Route path="budget-tsc-list" element={<BudgetTscList />} />
+            <Route path="budget-tsc-edit/:id" element={<BudgetTscEdit />} />
+            <Route path="budget-tsc-view/:id" element={<BudgetTscView />} />
+
+            <Route
+              path="financialtargetsettings"
+              element={<FinancialTargetSettings />}
+            />
+
+            <Route
+              path="financialtargetsettings-list"
+              element={<FinancialTargetSettingList />}
+            />
+            <Route
+              path="financialtargetsettings-edit/:id"
+              element={<FinancialTargetSettingEdit />}
+            />
+            <Route
+              path="financialtargetsettings-view/:id"
+              element={<FinancialTargetSettingView />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict"
+              element={<FinancialTargetSettingsDistrict />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict-list"
+              element={<FinancialTargetSettingsDistrictList />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-edit/:id"
+              element={<FinancialTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-view/:id"
+              element={<FinancialTargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-list"
+              element={<PhysicalTargetSettingsDistrictList />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-edit/:id"
+              element={<PhysicalTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-view/:id"
+              element={<PhysicaltargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk"
+              element={<PhysicalTargetSettingsTaluk />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk-list"
+              element={<PhysicalTargetSettingsTalukList />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-edit/:id"
+              element={<PhysicalTargetSettingsTalukEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-view/:id"
+              element={<PhysicalTargetSettingsTalukView />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc"
+              element={<PhysicalTargetSettingsTsc />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc-list"
+              element={<PhysicalTargetSettingsTscList />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-edit/:id"
+              element={<PhysicalTargetSettingsTscEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-view/:id"
+              element={<PhysicalTargetSettingsTscView />}
+            />
+
+            <Route
+              path="releasebudgetdistrict"
+              element={<ReleaseBudgetDistrict />}
+            />
+
+            <Route
+              path="releasebudgetdistrict-list"
+              element={<ReleaseBudgetDistrictList />}
+            />
+            <Route
+              path="releasebudgetdistrict-edit/:id"
+              element={<ReleaseBudgetDistrictEdit />}
+            />
+            <Route
+              path="releasebudgetdistrict-view/:id"
+              element={<ReleaseBudgetDistrictView />}
+            />
+
+            <Route path="releasebudgettaluk" element={<ReleaseBudgetTaluk />} />
+
+            <Route
+              path="releasebudgettaluk-list"
+              element={<ReleaseBudgetTalukList />}
+            />
+            <Route
+              path="releasebudgettaluk-edit/:id"
+              element={<ReleaseBudgetTalukEdit />}
+            />
+            <Route
+              path="releasebudgettaluk-view/:id"
+              element={<ReleaseBudgetTalukView />}
+            />
+
+            <Route
+              path="releasebudgetinstitution"
+              element={<ReleaseBudgetInstitution />}
+            />
+
+            <Route
+              path="releasebudgetinstitution-list"
+              element={<ReleaseBudgetInstitutionList />}
+            />
+            <Route
+              path="releasebudgetinstitution-edit/:id"
+              element={<ReleaseBudgetInstitutionEdit />}
+            />
+            <Route
+              path="releasebudgetinstitution-view/:id"
+              element={<ReleaseBudgetInstitutionView />}
+            />
+
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
             <Route path="roles-list" element={<RolesList />} />
@@ -1875,17 +2105,41 @@ function Router() {
               element={<ScVendorContactEdit />}
             />
 
-
             <Route path="sc-scheme-details" element={<ScSchemeDetails />} />
-            <Route path="sc-scheme-details-list" element={<ScSchemeDetailsList/>} />
-            <Route path="sc-scheme-details-view/:id" element={<ScSchemeDetailsView />} />
-            <Route path="sc-scheme-details-edit/:id" element={<ScSchemeDetailsEdit />} />
+            <Route
+              path="sc-scheme-details-list"
+              element={<ScSchemeDetailsList />}
+            />
+            <Route
+              path="sc-scheme-details-view/:id"
+              element={<ScSchemeDetailsView />}
+            />
+            <Route
+              path="sc-scheme-details-edit/:id"
+              element={<ScSchemeDetailsEdit />}
+            />
 
             <Route path="division" element={<DivisionMaster />} />
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
 
+            <Route
+              path="sc-sub-scheme-details"
+              element={<ScSubSchemeDetails />}
+            />
+            <Route
+              path="sc-sub-scheme-details-list"
+              element={<ScSubSchemeDetailsList />}
+            />
+            <Route
+              path="sc-sub-scheme-details-view/:id"
+              element={<ScSubSchemeDetailsView />}
+            />
+            <Route
+              path="sc-sub-scheme-details-edit/:id"
+              element={<ScSubSchemeDetailsEdit />}
+            />
 
             <Route path="sc-sub-scheme-details" element={<ScSubSchemeDetails />} />
             <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
@@ -2044,6 +2298,19 @@ function Router() {
             <Route path="sc-head-account-list" element={<ScHeadAccountList />} />
             <Route path="sc-head-account-view/:id" element={<ScHeadAccountView />} />
             <Route path="sc-head-account-edit/:id" element={<ScHeadAccountEdit />} />
+
+            <Route
+              path="sc-head-account-list"
+              element={<ScHeadAccountList />}
+            />
+            <Route
+              path="sc-head-account-view/:id"
+              element={<ScHeadAccountView />}
+            />
+            <Route
+              path="sc-head-account-edit/:id"
+              element={<ScHeadAccountEdit />}
+            />
 
             <Route path="empanelled-vendor" element={<EmpanelledVendor />} />
             <Route

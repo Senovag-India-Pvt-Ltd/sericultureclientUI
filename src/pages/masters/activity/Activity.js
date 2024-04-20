@@ -6,14 +6,16 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState } from "react";
+// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialYear() {
+function Activity() {
   const [data, setData] = useState({
-    financialYear: "",
-    isDefault: false,
+    title: "",
+    code: "",
+    nameInKannada: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -24,19 +26,27 @@ function FinancialYear() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
-
+  // const _header = { "Content-Type": "application/json", accept: "*/*" };
+  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
+
+  // const postData = (e) => {
+  //   axios
+  //     .post(baseURL + `Activity/add`, data, {
+  //       headers: _header,
+  //     })
+  //     .then((response) => {
+  //       saveSuccess();
+  //     })
+  //     .catch((err) => {
+  //       setData({});
+  //       saveError();
+  //     });
+  // };
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -48,28 +58,23 @@ function FinancialYear() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `financialYearMaster/add`, data)
+        .post(baseURL + `Activity/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              financialYear: "",
-              isDefault: false,
+              title: "",
+              code: "",
+              nameInKannada: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
@@ -78,8 +83,9 @@ function FinancialYear() {
 
   const clear = () => {
     setData({
-      financialYear: "",
-      isDefault: false,
+      title: "",
+      code: "",
+      nameInKannada: "",
     });
   };
 
@@ -88,6 +94,7 @@ function FinancialYear() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
+      // text: "You clicked the button!",
     });
   };
   const saveError = (message) => {
@@ -104,17 +111,17 @@ function FinancialYear() {
     });
   };
   return (
-    <Layout title="Financial Year">
+    <Layout title="Activity">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Financial Year</Block.Title>
+            <Block.Title tag="h2">Activity</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financial-year-list"
+                  to="/seriui/Activity-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -123,7 +130,7 @@ function FinancialYear() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financial-year-list"
+                  to="/seriui/Activity-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -141,55 +148,90 @@ function FinancialYear() {
           <Row className="g-3 ">
             <Card>
               <Card.Body>
+                {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="financialYear">
-                        Financial Year<span className="text-danger">*</span>
+                      <Form.Label htmlFor="title">
+                        Activity<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="financialYear"
-                          name="financialYear"
-                          value={data.financialYear}
+                          id="title"
+                          name="title"
+                          value={data.title}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Title"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Financial Year is required.
+                          Activity Name is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-
-                    <Form.Group as={Row} className="form-group mt-4">
-                      <Col sm={3}>
-                        <Form.Check
-                          className="form-check-sm"
-                          type="checkbox"
-                          id="isDefault"
-                          checked={data.isDefault}
-                          name="isDefault"
-                          label="Is Default"
-                          onChange={handleCheckBox}
-                        />
-                      </Col>
-                      {/* <Form.Label column sm={11} className="mt-n2">
-                        Triplet Generation After Weighment
-                      </Form.Label> */}
-                    </Form.Group>
-
-                    {/* <div style={{ marginTop: "10px" }}>
-                      <Form.Check
-                        className="form-check-sm"
-                        type="checkbox"
-                        id="isDefault"
-                        name="isDefault"
-                        label="Is Default"
-                      />
-                    </div> */}
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Activity Name in Kannada
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="nameInKannada"
+                          value={data.nameInKannada}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Title Name in Kannda"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Activity Name is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Code<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="title"
+                          value={data.title}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Title"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Code is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  {/* <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="code">Code</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="code"
+                          name="code"
+                          value={data.code}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Code"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>
@@ -215,4 +257,4 @@ function FinancialYear() {
   );
 }
 
-export default FinancialYear;
+export default Activity;

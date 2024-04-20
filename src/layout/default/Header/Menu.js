@@ -260,6 +260,12 @@ function Menu() {
 
     TargetSetting: false,
     TargetSetting_Assigning_Yearly_Targets: false,
+    TargetSetting_Allocate: false,
+    TargetSetting_Allocate_Budget: false,
+    TargetSetting_Allocate_Budget_Hoa: false,
+    TargetSetting_Allocate_Budget_District: false,
+    TargetSetting_Allocate_Budget_Taluk: false,
+    TargetSetting_Allocate_Budget_Institution: false,
 
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
@@ -1441,6 +1447,60 @@ function Menu() {
                   text="Assigning Yearly Targets"
                   to="/seriui/attribute-assigning"
                 />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Allocate"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.TargetSetting_Allocate_Budget ? (
+                    <MenuItem>
+                      <MenuItemLink text="Budget" to="/seriui/budget" />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to HOA"
+                        to="/seriui/budget-hoa"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to District"
+                        to="/seriui/budget-district"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to Taluk"
+                        to="/seriui/budget-taluk"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to Institution"
+                        to="/seriui/budget-tsc"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
+              <MenuItem>
+                <MenuItemLink text="Release" to="/seriui/attribute-assigning" />
               </MenuItem>
             ) : null}
           </MenuSub>
