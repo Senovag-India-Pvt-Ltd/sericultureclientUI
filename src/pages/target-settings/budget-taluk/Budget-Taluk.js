@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
@@ -31,6 +31,28 @@ function BudgetTaluk() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const [balanceAmount, setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetTaluk/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+        districtId: data.districtId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -38,8 +60,6 @@ function BudgetTaluk() {
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
-
- 
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -106,64 +126,64 @@ function BudgetTaluk() {
     getFinancialYearList();
   }, []);
 
-   // to get Head Of Account
-   const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+  // to get Head Of Account
+  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
-   const getHeadOfAccountList = () => {
-     const response = api
-       .get(baseURL + `scHeadAccount/get-all`)
-       .then((response) => {
-         setHeadOfAccountListData(response.data.content.scHeadAccount);
-       })
-       .catch((err) => {
+  const getHeadOfAccountList = () => {
+    const response = api
+      .get(baseURL + `scHeadAccount/get-all`)
+      .then((response) => {
+        setHeadOfAccountListData(response.data.content.scHeadAccount);
+      })
+      .catch((err) => {
         setHeadOfAccountListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getHeadOfAccountList();
-   }, []);
+      });
+  };
 
-   // to get District
-   const [districtListData, setDistrictListData] = useState([]);
+  useEffect(() => {
+    getHeadOfAccountList();
+  }, []);
 
-   const getDistrictList = () => {
-     const response = api
-       .get(baseURL + `district/get-all`)
-       .then((response) => {
-         setDistrictListData(response.data.content.district);
-       })
-       .catch((err) => {
+  // to get District
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        setDistrictListData(response.data.content.district);
+      })
+      .catch((err) => {
         setDistrictListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getDistrictList();
-   }, []);
+      });
+  };
 
-   // to get Taluk
-   const [talukListData, setTalukListData] = useState([]);
+  useEffect(() => {
+    getDistrictList();
+  }, []);
 
-   const getTalukList = () => {
-     const response = api
-       .get(baseURL + `taluk/get-all`)
-       .then((response) => {
-         setTalukListData(response.data.content.taluk);
-       })
-       .catch((err) => {
+  // to get Taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = () => {
+    const response = api
+      .get(baseURL + `taluk/get-all`)
+      .then((response) => {
+        setTalukListData(response.data.content.taluk);
+      })
+      .catch((err) => {
         setTalukListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getTalukList();
-   }, []);
+      });
+  };
 
-   const handleDateChange = (date, type) => {
+  useEffect(() => {
+    getTalukList();
+  }, []);
+
+  const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
- 
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -171,6 +191,31 @@ function BudgetTaluk() {
       title: "Saved successfully",
       // text: "You clicked the button!",
     });
+  };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
   };
   const saveError = (message) => {
     let errorMessage;
@@ -219,182 +264,176 @@ function BudgetTaluk() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              
-              <Card.Header style={{ fontWeight: "bold" }}>
-              Taluk Budget
-            </Card.Header>
-            <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="financialYearMasterId"
-                          value={data.financialYearMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.financialYearMasterId === undefined || data.financialYearMasterId === "0"
-                          }
-                        >
-                          <option value="">Select Financial Year</option>
-                          {financialYearListData.map((list) => (
-                          <option
-                            key={list.financialYearMasterId}
-                            value={list.financialYearMasterId}
-                          >
-                            {list.financialYear}
-                          </option>
-                        ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                 
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Head Of Account<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="scHeadAccountId"
-                          value={data.scHeadAccountId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
-                          }
-                        >
-                          <option value="">Select Head Of Account</option>
-                          {headOfAccountListData.map((list) => (
-                          <option
-                            key={list.scHeadAccountId}
-                            value={list.scHeadAccountId}
-                          >
-                            {list.scHeadAccountName}
-                          </option>
-                        ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Head Of Account is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Select District<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="districtId"
-                          value={data.districtId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.districtId === undefined || data.districtId === "0"
-                          }
-                        >
-                          <option value="">Select District</option>
-                          {districtListData.map((list) => (
-                          <option
-                            key={list.districtId}
-                            value={list.districtId}
-                          >
-                            {list.districtName}
-                          </option>
-                        ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          District is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label>
-                        Select Taluk<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="talukId"
-                          value={data.talukId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.talukId === undefined || data.talukId === "0"
-                          }
-                        >
-                          <option value="">Select Taluk</option>
-                          {talukListData.map((list) => (
-                          <option
-                            key={list.talukId}
-                            value={list.talukId}
-                          >
-                            {list.talukName}
-                          </option>
-                        ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Taluk is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                 
-
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-n4 ">
-                      <Form.Label htmlFor="title">
-                        Budget Amount<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="budgetAmount"
-                          name="budgetAmount"
-                          value={data.budgetAmount}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Budget Amount"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Budget Amount is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>Date</Form.Label>
+        <Row>
+          <Col lg="8">
+            <Form noValidate validated={validated} onSubmit={postData}>
+              <Card>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Taluk Budget
+                </Card.Header>
+                <Card.Body>
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
-                         
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Financial Year</option>
+                            {financialYearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Head Of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scHeadAccountId === undefined ||
+                              data.scHeadAccountId === "0"
+                            }
+                          >
+                            <option value="">Select Head Of Account</option>
+                            {headOfAccountListData.map((list) => (
+                              <option
+                                key={list.scHeadAccountId}
+                                value={list.scHeadAccountId}
+                              >
+                                {list.scHeadAccountName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head Of Account is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select District<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="districtId"
+                            value={data.districtId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
+                          >
+                            <option value="">Select District</option>
+                            {districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            District is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="talukId"
+                            value={data.talukId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {talukListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.talukName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4 ">
+                        <Form.Label htmlFor="title">
+                          Budget Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Date</Form.Label>
+                        <div className="form-control-wrap">
                           <DatePicker
                             selected={data.date}
-                            onChange={(date) =>
-                              handleDateChange(date, "date")
-                            }
+                            onChange={(date) => handleDateChange(date, "date")}
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
@@ -404,31 +443,50 @@ function BudgetTaluk() {
                             required
                           />
                         </div>
-                        </Form.Group>
-                          <Form.Control.Feedback type="invalid">
-                         Date is Required
+                      </Form.Group>
+                      <Form.Control.Feedback type="invalid">
+                        Date is Required
                       </Form.Control.Feedback>
-                        </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+
+              <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    <Button type="submit" variant="primary">
+                      Save
+                    </Button>
+                  </li>
+                  <li>
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </li>
+                </ul>
+              </div>
+              {/* </Row> */}
+            </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </Card.Body>
             </Card>
-
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          {/* </Row> */}
-        </Form>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

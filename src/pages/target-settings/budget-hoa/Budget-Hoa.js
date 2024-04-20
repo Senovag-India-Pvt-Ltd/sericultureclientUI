@@ -54,13 +54,12 @@ function BudgetHoa() {
     },
   };
 
-  const [balanceAmount,setBalanceAmount] = useState(0);
+  const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (data.financialYearMasterId && data.scHeadAccountId) {
+  if (data.financialYearMasterId) {
     api
       .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
-        scHeadAccountId: data.scHeadAccountId,
       })
       .then((response) => {
         if (!response.data.content) {
