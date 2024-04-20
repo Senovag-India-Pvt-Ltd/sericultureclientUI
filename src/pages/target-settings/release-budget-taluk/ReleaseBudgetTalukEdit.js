@@ -36,7 +36,7 @@ function ReleaseBudgetTalukEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsBudgetTaluk/edit`, data)
+        .post(baseURL + `tsReleaseBudgetTaluk/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -78,7 +78,7 @@ function ReleaseBudgetTalukEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTaluk/get/${id}`)
+      .get(baseURL + `tsReleaseBudgetTaluk/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -208,7 +208,7 @@ function ReleaseBudgetTalukEdit() {
   };
 
   return (
-    <Layout title="edit released taluk budget">
+    <Layout title="Edit released taluk budget">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -218,7 +218,7 @@ function ReleaseBudgetTalukEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -227,7 +227,7 @@ function ReleaseBudgetTalukEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
