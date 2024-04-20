@@ -15,7 +15,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialTargetSettingsDistrictList() {
+function FinancialTargetSettingsInstitutionList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -45,11 +45,11 @@ function FinancialTargetSettingsDistrictList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-district-view/${id}`);
+    navigate(`/seriui/FinancialTargetSettings-institution-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-district-edit/${id}`);
+    navigate(`/seriui/FinancialTargetSettings-institution-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function FinancialTargetSettingsDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetDistrict/delete/${id}`)
+          .delete(baseURL + `tsBudgetInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function FinancialTargetSettingsDistrictList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => handleView(row.tsBudgetInstitutionId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function FinancialTargetSettingsDistrictList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => handleEdit(row.tsBudgetInstitutionId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
+            onClick={() => deleteConfirm(row.tsBudgetInstitutionId)}
             className="ms-2"
           >
             Delete
@@ -188,6 +188,20 @@ function FinancialTargetSettingsDistrictList() {
       hide: "md",
     },
     {
+      name: "Taluk Name",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Institution Name",
+      selector: (row) => row.institutionName,
+      cell: (row) => <span>{row.institutionName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
       name: "Budget Amount",
       selector: (row) => row.budgetAmount,
       cell: (row) => <span>{row.budgetAmount}</span>,
@@ -204,19 +218,19 @@ function FinancialTargetSettingsDistrictList() {
   ];
 
   return (
-    <Layout title="District Financial Target Settings List">
+    <Layout title="Institution Financial Target Settings List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              District Financial Target Settings List
+              Institution Financial Target Settings List
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettings-institution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -225,7 +239,7 @@ function FinancialTargetSettingsDistrictList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettings-institution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -262,4 +276,4 @@ function FinancialTargetSettingsDistrictList() {
   );
 }
 
-export default FinancialTargetSettingsDistrictList;
+export default FinancialTargetSettingsInstitutionList;

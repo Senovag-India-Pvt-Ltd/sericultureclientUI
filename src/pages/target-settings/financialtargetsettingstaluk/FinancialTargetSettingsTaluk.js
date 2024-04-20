@@ -1,137 +1,85 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2/src/sweetalert2.js";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DatePicker from "react-datepicker";
-import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ReleaseBudgetTalukEdit() {
-  // Fetching id from URL params
-  const { id } = useParams();
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
+function FinancialTargetSettingsTaluk() {
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+    hoaId: "",
+    date: "",
+    budgetAmount: "",
+    districtId: "",
+  });
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
-
-  // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
 
-  // Function to submit form data
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      api
-        .post(baseURL + `tsReleaseBudgetTaluk/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scHeadAccountId: "",
-              districtId: "",
-              talukId: "",
-              date: "",
-              budgetAmount: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
-    }
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+  // const _header = { "Content-Type": "application/json", accept: "*/*" };
+  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  const _header = {
+    "Content-Type": "application/json",
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // Function to clear form data
-  const clear = () => {
-    setData({
-      financialYearMasterId: "",
-      scHeadAccountId: "",
-      districtId: "",
-      talukId: "",
-      date: "",
-      budgetAmount: "",
-    });
-  };
-  const isDataDateSet = !!data.date;
-
-  const getIdList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURL + `tsReleaseBudgetTaluk/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-          }
-        }
-
-        // Display error message
-        // editError(message);
-        setData({});
-        setLoading(false);
-      });
-  };
-
-  // Fetch data on component mount
-  useEffect(() => {
-    getIdList();
-  }, [id]);
+  // const postData = (e) => {
+  //   axios
+  //     .post(baseURLMasterData + `Budget/add`, data, {
+  //       headers: _header,
+  //     })
+  //     .then((response) => {
+  //       saveSuccess();
+  //     })
+  //     .catch((err) => {
+  //       setData({});
+  //       saveError();
+  //     });
+  // };
 
   // to get Financial Year
-  const [financialYearListData, setFinancialYearListData] = useState([]);
+  const [financialyearListData, setFinancialyearListData] = useState([]);
 
-  const getFinancialYearList = () => {
-    const response = api
-      .get(baseURL + `financialYearMaster/get-all`)
+  const getList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
-        setFinancialYearListData(response.data.content.financialYearMaster);
+        setFinancialyearListData(response.data.content.financialYearMaster);
       })
       .catch((err) => {
-        setFinancialYearListData([]);
+        setFinancialyearListData([]);
       });
   };
 
   useEffect(() => {
-    getFinancialYearList();
+    getList();
   }, []);
 
-  // to get Head Of Account
+  // Head of Account
+
   const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
   const getHeadOfAccountList = () => {
-    const response = api
-      .get(baseURL + `scHeadAccount/get-all`)
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
       .then((response) => {
         setHeadOfAccountListData(response.data.content.scHeadAccount);
       })
@@ -144,17 +92,22 @@ function ReleaseBudgetTalukEdit() {
     getHeadOfAccountList();
   }, []);
 
-  // to get District
+  // District
+
+  // to get district
   const [districtListData, setDistrictListData] = useState([]);
 
   const getDistrictList = () => {
     const response = api
-      .get(baseURL + `district/get-all`)
+      .get(baseURLMasterData + `district/get-all`)
       .then((response) => {
-        setDistrictListData(response.data.content.district);
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
       })
       .catch((err) => {
         setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
@@ -162,38 +115,54 @@ function ReleaseBudgetTalukEdit() {
     getDistrictList();
   }, []);
 
-  // to get Taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = () => {
-    const response = api
-      .get(baseURL + `taluk/get-all`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-      });
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
   };
 
-  useEffect(() => {
-    getTalukList();
-  }, []);
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
+  const clear = () => {
+    setData({
+      financialYearMasterId: "",
+      hoaId: "",
+      date: "",
+      budgetAmount: "",
+      districtId: "",
+    });
+    setValidated(false);
   };
 
-  // Function to handle success alert
-  const updateSuccess = () => {
+  const navigate = useNavigate();
+  const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
     });
   };
-
-  // Function to handle error alert
-  const updateError = (message) => {
+  const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -206,19 +175,18 @@ function ReleaseBudgetTalukEdit() {
       html: errorMessage,
     });
   };
-
   return (
-    <Layout title="Edit released taluk budget">
+    <Layout title="Taluk Financial Target Settings">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Released Taluk Budget</Block.Title>
+            <Block.Title tag="h2">Taluk Financial Target Settings</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/releasebudgettaluk-list"
+                  to="/seriui/ financialtargetsettingstaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -227,7 +195,7 @@ function ReleaseBudgetTalukEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/releasebudgettaluk-list"
+                  to="/seriui/financialtargetsettingstaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -240,21 +208,17 @@ function ReleaseBudgetTalukEdit() {
       </Block.Head>
 
       <Block className="mt-n5">
+        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <Card>
-              <Card.Header style={{ fontWeight: "bold" }}>
-                Released Taluk Budget
-              </Card.Header>
-              <Card.Body>
-                {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
-                  </h1>
-                ) : (
+            <Block>
+              <Card>
+                <Card.Header>Taluk Financial Target Settings</Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -270,8 +234,8 @@ function ReleaseBudgetTalukEdit() {
                               data.financialYearMasterId === "0"
                             }
                           >
-                            <option value="">Select Financial Year</option>
-                            {financialYearListData.map((list) => (
+                            <option value="">Select Year</option>
+                            {financialyearListData.map((list) => (
                               <option
                                 key={list.financialYearMasterId}
                                 value={list.financialYearMasterId}
@@ -288,20 +252,19 @@ function ReleaseBudgetTalukEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Head Of Account<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
+                            name="hoaId"
+                            value={data.hoaId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
+                              data.hoaId === undefined || data.hoaId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -322,7 +285,7 @@ function ReleaseBudgetTalukEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Select District<span className="text-danger">*</span>
                         </Form.Label>
@@ -349,14 +312,14 @@ function ReleaseBudgetTalukEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District is required
+                            Taluk is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Select Taluk<span className="text-danger">*</span>
                         </Form.Label>
@@ -372,7 +335,7 @@ function ReleaseBudgetTalukEdit() {
                             }
                           >
                             <option value="">Select Taluk</option>
-                            {talukListData.map((list) => (
+                            {districtListData.map((list) => (
                               <option key={list.talukId} value={list.talukId}>
                                 {list.talukName}
                               </option>
@@ -386,9 +349,55 @@ function ReleaseBudgetTalukEdit() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4 ">
-                        <Form.Label htmlFor="title">
-                          Budget Amount<span className="text-danger">*</span>
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Reporting Officer DDO">
+                          Reporting Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Reporting Officer DDO"
+                            name="Reporting Officer DDO"
+                            value={data.ReportingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reporting Officer DDO is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Implementing  Officer DDO">
+                          Implementing Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Implementing  Officer DDO"
+                            name="Implementing  Officer DDO"
+                            value={data.ImplementingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Implementing Officer DDO is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -397,51 +406,67 @@ function ReleaseBudgetTalukEdit() {
                             value={data.budgetAmount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Budget Amount"
+                            placeholder="Enter Amount"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Budget Amount is required.
+                            Amount is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>Date</Form.Label>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Use / Disburse<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
-                          {isDataDateSet && (
-                            <DatePicker
-                              selected={new Date(data.date)}
-                              onChange={(date) =>
-                                handleDateChange(date, "date")
-                              }
-                              peekNextMonth
-                              showMonthDropdown
-                              showYearDropdown
-                              dropdownMode="select"
-                              dateFormat="dd/MM/yyyy"
-                              className="form-control"
-                              required
-                            />
-                          )}
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Use / Disburse is required.
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        Date is Required
-                      </Form.Control.Feedback>
+                    </Col>
+
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
                     </Col>
                   </Row>
-                )}
-              </Card.Body>
-            </Card>
+                </Card.Body>
+              </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Update
+                    Save
                   </Button>
                 </li>
                 <li>
@@ -458,4 +483,4 @@ function ReleaseBudgetTalukEdit() {
   );
 }
 
-export default ReleaseBudgetTalukEdit;
+export default FinancialTargetSettingsTaluk;

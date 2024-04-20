@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialTargetSettingsDistrictEdit() {
+function FinancialTargetSettingsInstitutionEdit() {
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -48,7 +48,7 @@ function FinancialTargetSettingsDistrictEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURLMasterData + `tsBudgetDistrict/edit`, data)
+        .post(baseURLMasterData + `tsBudgetInstitution/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -220,14 +220,14 @@ function FinancialTargetSettingsDistrictEdit() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Financial Target Settings District
+              Edit Financial Target Settings Institution
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsinstitution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -236,7 +236,7 @@ function FinancialTargetSettingsDistrictEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsinstitution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -254,7 +254,7 @@ function FinancialTargetSettingsDistrictEdit() {
             <Block>
               <Card>
                 <Card.Header>
-                  Edit Financial Target Settings District
+                  Edit Financial Target Settings Institution
                 </Card.Header>
                 <Card.Body>
                   {loading ? (
@@ -368,6 +368,72 @@ function FinancialTargetSettingsDistrictEdit() {
 
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
+                          <Form.Label>
+                            Select Taluk<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="talukId"
+                              value={data.talukId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                              isInvalid={
+                                data.talukId === undefined ||
+                                data.talukId === "0"
+                              }
+                            >
+                              <option value="">Select Taluk</option>
+                              {districtListData.map((list) => (
+                                <option key={list.talukId} value={list.talukId}>
+                                  {list.talukName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Taluk is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label>
+                            Select Institution
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="talukId"
+                              value={data.talukId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                              isInvalid={
+                                data.talukId === undefined ||
+                                data.talukId === "0"
+                              }
+                            >
+                              <option value="">Select Institution</option>
+                              {districtListData.map((list) => (
+                                <option
+                                  key={list.institutionId}
+                                  value={list.institutionId}
+                                >
+                                  {list.institutionName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Institution is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
                           <Form.Label htmlFor="budgetAmount">
                             Budget Amount<span className="text-danger">*</span>
                           </Form.Label>
@@ -438,4 +504,4 @@ function FinancialTargetSettingsDistrictEdit() {
   );
 }
 
-export default FinancialTargetSettingsDistrictEdit;
+export default FinancialTargetSettingsInstitutionEdit;

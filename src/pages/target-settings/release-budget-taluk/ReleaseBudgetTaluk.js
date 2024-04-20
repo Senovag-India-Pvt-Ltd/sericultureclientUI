@@ -48,7 +48,7 @@ function ReleaseBudgetTaluk() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `tsBudgetTaluk/add`, data)
+        .post(baseURL + `tsReleaseBudgetTaluk/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -193,7 +193,7 @@ function ReleaseBudgetTaluk() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -202,7 +202,7 @@ function ReleaseBudgetTaluk() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

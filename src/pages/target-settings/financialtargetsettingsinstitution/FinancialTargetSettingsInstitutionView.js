@@ -10,7 +10,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialTargetSettingsDistrictView() {
+function FinancialTargetSettingsInstitutionView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -33,7 +33,7 @@ function FinancialTargetSettingsDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+      .get(baseURL + `tsBudgetTaluk/get/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -66,17 +66,19 @@ function FinancialTargetSettingsDistrictView() {
   }, [id]);
 
   return (
-    <Layout title="Financial Target Settings View">
+    <Layout title="Institutuion Financial Target Settings View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Financial Target Settings View</Block.Title>
+            <Block.Title tag="h2">
+              Institutuion Financial Target Settings View
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsinstitution-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -85,7 +87,7 @@ function FinancialTargetSettingsDistrictView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsinstitution-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -121,6 +123,14 @@ function FinancialTargetSettingsDistrictView() {
                         <td>{budgetDistrictData.districtName}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}> Taluk Name:</td>
+                        <td>{budgetDistrictData.talukName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Institution Name:</td>
+                        <td>{budgetDistrictData.talukName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
                           <span>{budgetDistrictData.budgetAmount}</span>
@@ -144,4 +154,4 @@ function FinancialTargetSettingsDistrictView() {
   );
 }
 
-export default FinancialTargetSettingsDistrictView;
+export default FinancialTargetSettingsInstitutionView;
