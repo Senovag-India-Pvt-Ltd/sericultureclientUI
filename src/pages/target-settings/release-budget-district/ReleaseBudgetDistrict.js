@@ -15,7 +15,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function ReleaseBudgetDistrict() {
   const [data, setData] = useState({
     financialYearMasterId: "",
-    hoaId: "",
+    scHeadAccountId: "",
     date: "",
     budgetAmount: "",
     districtId: "",
@@ -33,27 +33,46 @@ function ReleaseBudgetDistrict() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
-  // const _header = { "Content-Type": "application/json", accept: "*/*" };
-  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      api
+        .post(baseURLMasterData + `tsReleaseBudgetDistrict/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              date: "",
+              budgetAmount: "",
+              districtId: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
+  };
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -92,7 +111,6 @@ function ReleaseBudgetDistrict() {
     getHeadOfAccountList();
   }, []);
 
-  // District
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -115,38 +133,11 @@ function ReleaseBudgetDistrict() {
     getDistrictList();
   }, []);
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURLMasterData + `tsReleaseBudget-District/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
-    }
-  };
-
+  
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      hoaId: "",
+      scHeadAccountId: "",
       date: "",
       budgetAmount: "",
       districtId: "",
@@ -186,7 +177,7 @@ function ReleaseBudgetDistrict() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/releasebudgetdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -195,7 +186,7 @@ function ReleaseBudgetDistrict() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/releasebudgetdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -213,7 +204,7 @@ function ReleaseBudgetDistrict() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>released Budget to District</Card.Header>
+                <Card.Header>Released Budget to District</Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -234,7 +225,7 @@ function ReleaseBudgetDistrict() {
                               data.financialYearMasterId === "0"
                             }
                           >
-                            <option value="">Select Year</option>
+                            <option value="">Select Financial Year</option>
                             {financialyearListData.map((list) => (
                               <option
                                 key={list.financialYearMasterId}
@@ -258,13 +249,13 @@ function ReleaseBudgetDistrict() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="hoaId"
-                            value={data.hoaId}
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.hoaId === undefined || data.hoaId === "0"
+                              data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -351,7 +342,7 @@ function ReleaseBudgetDistrict() {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            maxDate={new Date()}
+                            // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required

@@ -12,8 +12,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FinancialYear() {
   const [data, setData] = useState({
-    financial_year: "",
-    is_default: false,
+    financialYear: "",
+    isDefault: false,
   });
 
   const [validated, setValidated] = useState(false);
@@ -40,7 +40,7 @@ function FinancialYear() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `FinancialYear/add`, data)
+        .post(baseURL + `financialYearMaster/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -65,8 +65,8 @@ function FinancialYear() {
 
   const clear = () => {
     setData({
-      financial_year: "",
-      is_default: false,
+      financialYear: "",
+      isDefault: false,
     });
   };
 
@@ -136,9 +136,9 @@ function FinancialYear() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="financial_year"
-                          name="financial_year"
-                          value={data.financial_year}
+                          id="financialYear"
+                          name="financialYear"
+                          value={data.financialYear}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Title"
@@ -154,8 +154,8 @@ function FinancialYear() {
                       <Form.Check
                         className="form-check-sm"
                         type="checkbox"
-                        id="is_default"
-                        name="is_default"
+                        id="isDefault"
+                        name="isDefault"
                         label="Is Default"
                       />
                     </div>

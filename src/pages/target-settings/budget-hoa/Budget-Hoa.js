@@ -10,11 +10,12 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoa() {
   const [data, setData] = useState({
     financialYearMasterId: "",
-    hoaId: "",
+    scHeadAccountId: "",
     date: "",
     budgetAmount: "",
   });
@@ -27,6 +28,24 @@ function BudgetHoa() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  if (data.financialYearMasterId && data.scHeadAccountId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          console.log(response.data.errorMessages[0]);
+        } else {
+          console.log(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -45,7 +64,7 @@ function BudgetHoa() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `tsBudgetHoa/add`, data)
+        .post(baseURLTargetSetting + `tsBudgetHoa/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -53,7 +72,7 @@ function BudgetHoa() {
             saveSuccess();
             setData({
               financialYearMasterId: "",
-              hoaId: "",
+              scHeadAccountId: "",
               date: "",
               budgetAmount: "",
             });
@@ -61,8 +80,15 @@ function BudgetHoa() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -72,7 +98,7 @@ function BudgetHoa() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      hoaId: "",
+      scHeadAccountId: "",
       date: "",
       budgetAmount: "",
     });
@@ -218,13 +244,14 @@ function BudgetHoa() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="hoaId"
-                        value={data.hoaId}
+                        name="scHeadAccountId"
+                        value={data.scHeadAccountId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.hoaId === undefined || data.hoaId === "0"
+                          data.scHeadAccountId === undefined ||
+                          data.scHeadAccountId === "0"
                         }
                       >
                         <option value="">Select Head Of Account</option>

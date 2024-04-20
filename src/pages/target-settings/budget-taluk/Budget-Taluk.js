@@ -11,6 +11,7 @@ import api from "../../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTaluk() {
   const [data, setData] = useState({

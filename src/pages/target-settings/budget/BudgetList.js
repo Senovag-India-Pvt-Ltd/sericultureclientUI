@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -14,6 +14,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetList() {
   const [listData, setListData] = useState({});
@@ -22,26 +23,70 @@ function BudgetList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const [show, setShow] = useState(false);
 
   const getList = () => {
-    setLoading(true);
+    // setLoading(true);
 
-     api
-      .get(baseURLMasterData + `tsBudget/list`, _params)
+    api
+      .post(baseURLTargetSetting + `tsBudget/get-details`, data)
       .then((response) => {
-        setListData(response.data.content.tsBudget);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsBudget);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
+      });
+  };
+
+  console.log(listData);
+
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialList = () => {
+    const response = api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
       });
   };
 
   useEffect(() => {
-    getList();
-  }, [page]);
+    getFinancialList();
+  }, []);
+
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+  });
+
+  const [validated, setValidated] = useState(false);
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
 
   const navigate = useNavigate();
   const handleView = (id) => {
@@ -86,6 +131,43 @@ function BudgetList() {
         console.log(result.value);
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
+    });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      getList();
+      // setShow(true);
+      setValidated(true);
+    }
+  };
+
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
 
@@ -229,25 +311,91 @@ function BudgetList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={activityDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-3 ">
+            <Block>
+              <Card>
+                <Card.Header>Budget List </Card.Header>
+                <Card.Body>
+                  {/* <h3>Farmers Details</h3> */}
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Year</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
+
+            <div className="gap-col">
+              <ul className="d-flex align-items-center justify-content-center gap g-3">
+                <li>
+                  <Button type="submit" variant="primary">
+                    Go
+                  </Button>
+                </li>
+                {/* <li>
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li> */}
+              </ul>
+            </div>
+          </Row>
+        </Form>
+        {show ? (
+          <Card className="mt-2">
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={activityDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );
