@@ -1,70 +1,64 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2/src/sweetalert2.js";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
-import DataTable, { createTheme } from "react-data-table-component";
-import Swal from "sweetalert2/src/sweetalert2.js";
-import { useNavigate } from "react-router-dom";
-import React from "react";
-import { useEffect, useState } from "react";
-import axios from "axios";
-
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+// import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetDistrictList() {
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-  const [show, setShow] = useState(false);
-
+function FinancialTargetSettingsDistrict() {
   const [data, setData] = useState({
     financialYearMasterId: "",
-    scHeadAccountId: "",
+    hoaId: "",
+    date: "",
+    budgetAmount: "",
     districtId: "",
   });
 
-  const getList = () => {
-    // setLoading(true);
+  const [validated, setValidated] = useState(false);
 
-    api
-      .post(baseURLTargetSetting + `tsBudgetDistrict/get-details`, data)
-      .then((response) => {
-        if (response.data.content.error) {
-          saveError(response.data.content.error_description);
-          setShow(false);
-        } else {
-          setListData(response.data.content.tsBudgetDistrict);
-          setShow(true);
-          // saveSuccess();
-          // clear();
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
-          }
-        }
-      });
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
   };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+  // const _header = { "Content-Type": "application/json", accept: "*/*" };
+  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  const _header = {
+    "Content-Type": "application/json",
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+  };
+
+  // const postData = (e) => {
+  //   axios
+  //     .post(baseURLMasterData + `Budget/add`, data, {
+  //       headers: _header,
+  //     })
+  //     .then((response) => {
+  //       saveSuccess();
+  //     })
+  //     .catch((err) => {
+  //       setData({});
+  //       saveError();
+  //     });
+  // };
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
-  const getFinancialYearList = () => {
+  const getList = () => {
     api
       .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
@@ -76,7 +70,7 @@ function BudgetDistrictList() {
   };
 
   useEffect(() => {
-    getFinancialYearList();
+    getList();
   }, []);
 
   // Head of Account
@@ -121,6 +115,46 @@ function BudgetDistrictList() {
     getDistrictList();
   }, []);
 
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
+      financialYearMasterId: "",
+      hoaId: "",
+      date: "",
+      budgetAmount: "",
+      districtId: "",
+    });
+    setValidated(false);
+  };
+
+  const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -128,7 +162,6 @@ function BudgetDistrictList() {
       // text: "You clicked the button!",
     });
   };
-
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -142,215 +175,33 @@ function BudgetDistrictList() {
       html: errorMessage,
     });
   };
-
-  const [validated, setValidated] = useState(false);
-
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-
-  const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budget-district-view/${id}`);
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/seriui/budget-district-edit/${id}`);
-  };
-
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
-
-  const deleteConfirm = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        const response = api
-          .delete(baseURLMasterData + `tsBudgetDistrict/delete/${id}`)
-          .then((response) => {
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      getList();
-      setValidated(true);
-    }
-  };
-
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-  const activityDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
-          >
-            View
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
-    {
-      name: "Financial Year",
-      selector: (row) => row.financialYear,
-      cell: (row) => <span>{row.financialYear}</span>,
-      sortable: false,
-      hide: "md",
-    },
-
-    {
-      name: "District Name",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: false,
-      hide: "md",
-    },
-    {
-      name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
-      sortable: false,
-      hide: "md",
-    },
-    {
-      name: "Head Of Account",
-      selector: (row) => row.scHeadAccountId,
-      cell: (row) => <span>{row.scHeadAccountId}</span>,
-      sortable: false,
-      hide: "md",
-    },
-  ];
-
   return (
-    <Layout title="Budget District List">
+    <Layout title="District Financial Target Settings">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget District List</Block.Title>
+            <Block.Title tag="h2">
+              District Financial Target Settings
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/ financialtargetsettingsdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
-                  <Icon name="plus" />
-                  <span>Create</span>
+                  <Icon name="arrow-long-left" />
+                  <span>Go to List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/financialtargetsettingsdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
-                  <Icon name="plus" />
-                  <span>Create</span>
+                  <Icon name="arrow-long-left" />
+                  <span>Go to List</span>
                 </Link>
               </li>
             </ul>
@@ -358,12 +209,13 @@ function BudgetDistrictList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
+        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Budget to District</Card.Header>
+                <Card.Header>District Financial Target Settings</Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -408,14 +260,13 @@ function BudgetDistrictList() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
+                            name="hoaId"
+                            value={data.hoaId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
+                              data.hoaId === undefined || data.hoaId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -468,6 +319,116 @@ function BudgetDistrictList() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Reporting Officer DDO">
+                          Reporting Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Reporting Officer DDO"
+                            name="Reporting Officer DDO"
+                            value={data.ReportingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reporting Officer DDO is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Implementing  Officer DDO">
+                          Implementing Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Implementing  Officer DDO"
+                            name="Implementing  Officer DDO"
+                            value={data.ImplementingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Implementing Officer DDO is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Use / Disburse<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Use / Disburse is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="2">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -477,45 +438,21 @@ function BudgetDistrictList() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="submit" variant="primary">
-                    Go
+                    Save
                   </Button>
                 </li>
-                {/* <li>
+                <li>
                   <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
-                </li> */}
+                </li>
               </ul>
             </div>
           </Row>
         </Form>
-
-        {show ? (
-          <Card className="mt-2">
-            <DataTable
-              tableClassName="data-table-head-light table-responsive"
-              columns={activityDataColumns}
-              data={listData}
-              highlightOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
-              progressPending={loading}
-              theme="solarized"
-              customStyles={customStyles}
-            />
-          </Card>
-        ) : (
-          ""
-        )}
       </Block>
     </Layout>
   );
 }
 
-export default BudgetDistrictList;
+export default FinancialTargetSettingsDistrict;

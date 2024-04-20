@@ -11,12 +11,11 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetDistrict() {
+function FinancialTargetSettingsTaluk() {
   const [data, setData] = useState({
     financialYearMasterId: "",
-    scHeadAccountId: "",
+    hoaId: "",
     date: "",
     budgetAmount: "",
     districtId: "",
@@ -126,7 +125,7 @@ function BudgetDistrict() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLTargetSetting + `tsBudgetDistrict/add`, data)
+        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -136,15 +135,8 @@ function BudgetDistrict() {
           }
         })
         .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
@@ -154,7 +146,7 @@ function BudgetDistrict() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      scHeadAccountId: "",
+      hoaId: "",
       date: "",
       budgetAmount: "",
       districtId: "",
@@ -184,17 +176,17 @@ function BudgetDistrict() {
     });
   };
   return (
-    <Layout title="Budget To District">
+    <Layout title="Taluk Financial Target Settings">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget To District</Block.Title>
+            <Block.Title tag="h2">Taluk Financial Target Settings</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/ financialtargetsettingstaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -203,7 +195,7 @@ function BudgetDistrict() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district-list"
+                  to="/seriui/financialtargetsettingstaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -221,7 +213,7 @@ function BudgetDistrict() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Budget to District</Card.Header>
+                <Card.Header>Taluk Financial Target Settings</Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -266,13 +258,13 @@ function BudgetDistrict() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
+                            name="hoaId"
+                            value={data.hoaId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
+                              data.hoaId === undefined || data.hoaId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -320,7 +312,83 @@ function BudgetDistrict() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District is required
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Select Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="talukId"
+                            value={data.talukId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {districtListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.talukName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Reporting Officer DDO">
+                          Reporting Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Reporting Officer DDO"
+                            name="Reporting Officer DDO"
+                            value={data.ReportingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Reporting Officer DDO is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="Implementing  Officer DDO">
+                          Implementing Officer DDO
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="Implementing  Officer DDO"
+                            name="Implementing  Officer DDO"
+                            value={data.ImplementingOfficerDDO}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Implementing Officer DDO is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -329,7 +397,7 @@ function BudgetDistrict() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="budgetAmount">
-                          Budget Amount<span className="text-danger">*</span>
+                          Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -338,11 +406,33 @@ function BudgetDistrict() {
                             value={data.budgetAmount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Budget Amount"
+                            placeholder="Enter Amount"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Budget Amount is required.
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="budgetAmount">
+                          Use / Disburse<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Use / Disburse is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -359,7 +449,7 @@ function BudgetDistrict() {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            // maxDate={new Date()}
+                            maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required
@@ -393,4 +483,4 @@ function BudgetDistrict() {
   );
 }
 
-export default BudgetDistrict;
+export default FinancialTargetSettingsTaluk;
