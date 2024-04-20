@@ -684,6 +684,10 @@ import FinancialTargetSettingsDistrictEdit from "../pages/target-settings/financ
 import FinancialTargetSettingsDistrictView from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictView";
 import FinancialTargetSettingsDistrictList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsList";
 import FinancialTargetSettingsDistrict from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrict";
+import FinancialTargetSettingsTalukEdit from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukEdit";
+import FinancialTargetSettingsTalukList from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukList";
+import FinancialTargetSettingsTaluk from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTaluk";
+import FinancialTargetSettingsTalukView from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukView";
 // Admin and Reports
 
 function Router() {
@@ -1430,6 +1434,29 @@ function Router() {
             <Route
               path="financialtargetsettingsdistrict-view/:id"
               element={<FinancialTargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="financialtargetsettingstaluk"
+              element={<FinancialTargetSettingsTaluk />}
+            />
+
+            <Route
+              path="financialtargetsettingstaluk-list"
+              element={<FinancialTargetSettingsTalukList />}
+            />
+            <Route
+              path="financialtargetsettingstaluk-edit/:id"
+              element={<FinancialTargetSettingsTalukEdit />}
+            />
+            <Route
+              path="financialtargetsettingstaluk-view/:id"
+              element={<FinancialTargetSettingsTalukView />}
+            />
+
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
             />
 
             <Route

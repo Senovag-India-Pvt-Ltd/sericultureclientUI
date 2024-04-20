@@ -12,7 +12,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialTargetSettingsDistrict() {
+function FinancialTargetSettingsTaluk() {
   const [data, setData] = useState({
     financialYearMasterId: "",
     hoaId: "",
@@ -176,19 +176,17 @@ function FinancialTargetSettingsDistrict() {
     });
   };
   return (
-    <Layout title="District Financial Target Settings">
+    <Layout title="Taluk Financial Target Settings">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              District Financial Target Settings
-            </Block.Title>
+            <Block.Title tag="h2">Taluk Financial Target Settings</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/ financialtargetsettingsdistrict-list"
+                  to="/seriui/ financialtargetsettingstaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -197,7 +195,7 @@ function FinancialTargetSettingsDistrict() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingstaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -215,7 +213,7 @@ function FinancialTargetSettingsDistrict() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>District Financial Target Settings</Card.Header>
+                <Card.Header>Taluk Financial Target Settings</Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -314,7 +312,37 @@ function FinancialTargetSettingsDistrict() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District is required
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Select Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="talukId"
+                            value={data.talukId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {districtListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.talukName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -455,4 +483,4 @@ function FinancialTargetSettingsDistrict() {
   );
 }
 
-export default FinancialTargetSettingsDistrict;
+export default FinancialTargetSettingsTaluk;
