@@ -14,6 +14,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukList() {
   const [listData, setListData] = useState({});
@@ -22,6 +23,7 @@ function BudgetTalukList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const [show, setShow] = useState(false);
 
   const [data, setData] = useState({
     financialYearMasterId: "",
@@ -48,52 +50,62 @@ function BudgetTalukList() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURL + `tsBudgetTaluk/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            // saveError(response.data.content.error_description);
-          } else {
-            // saveSuccess();
-            // setData({
-            //   financialYearMasterId: "",
-            //   scHeadAccountId: "",
-            //   districtId: "",
-            //   talukId: "",
-            //   date: "",
-            //   budgetAmount: "",
-            // });
-            // setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
-          }
-        });
+      getList();
       setValidated(true);
     }
   };
 
   const getList = () => {
-    setLoading(true);
+    // setLoading(true);
 
-    const response = api
-      .get(baseURL + `tsBudgetTaluk/list-with-join`, _params)
+    api
+      .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
       .then((response) => {
-        setListData(response.data.content.tsBudgetTaluk);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsBudgetTaluk);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
       });
   };
 
-  useEffect(() => {
-    getList();
-  }, [page]);
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
+  };
 
   // to get Financial Year
   const [financialYearListData, setFinancialYearListData] = useState([]);
@@ -529,25 +541,29 @@ function BudgetTalukList() {
           </div>
           {/* </Row> */}
         </Form>
-        <Card className="mt-1">
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={activityDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
+        {show ? (
+          <Card className="mt-1">
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={activityDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );

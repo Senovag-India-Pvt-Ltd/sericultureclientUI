@@ -11,11 +11,12 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrict() {
   const [data, setData] = useState({
     financialYearMasterId: "",
-    hoaId: "",
+    scHeadAccountId: "",
     date: "",
     budgetAmount: "",
     districtId: "",
@@ -125,7 +126,7 @@ function BudgetDistrict() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
+        .post(baseURLTargetSetting + `tsBudgetDistrict/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -135,8 +136,15 @@ function BudgetDistrict() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -146,7 +154,7 @@ function BudgetDistrict() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
-      hoaId: "",
+      scHeadAccountId: "",
       date: "",
       budgetAmount: "",
       districtId: "",
@@ -258,13 +266,13 @@ function BudgetDistrict() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="hoaId"
-                            value={data.hoaId}
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.hoaId === undefined || data.hoaId === "0"
+                              data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -351,7 +359,7 @@ function BudgetDistrict() {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            maxDate={new Date()}
+                            // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required

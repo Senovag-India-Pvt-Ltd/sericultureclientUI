@@ -14,6 +14,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrictList() {
   const [listData, setListData] = useState({});
@@ -22,32 +23,43 @@ function BudgetDistrictList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const [show, setShow] = useState(false);
 
   const [data, setData] = useState({
     financialYearMasterId: "",
-    hoaId: "",
+    scHeadAccountId: "",
     districtId: "",
   });
 
   const getList = () => {
-    setLoading(true);
+    // setLoading(true);
 
-    const response = api
-      .get(baseURLMasterData + `tsBudgetDistrict/list`, _params)
+    api
+      .post(baseURLTargetSetting + `tsBudgetDistrict/get-details`, data)
       .then((response) => {
-        setListData(response.data.content.tsBudgetDistrict);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsBudgetDistrict);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
       });
   };
-
-  useEffect(() => {
-    getList();
-  }, [page]);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -108,6 +120,28 @@ function BudgetDistrictList() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
+    });
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -173,21 +207,7 @@ function BudgetDistrictList() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            // saveError(response.data.content.error_description);
-          } else {
-            // saveSuccess();
-            // clear();
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
-          }
-        });
+      getList();
       setValidated(true);
     }
   };
@@ -299,8 +319,8 @@ function BudgetDistrictList() {
     },
     {
       name: "Head Of Account",
-      selector: (row) => row.hoaId,
-      cell: (row) => <span>{row.hoaId}</span>,
+      selector: (row) => row.scHeadAccountId,
+      cell: (row) => <span>{row.scHeadAccountId}</span>,
       sortable: false,
       hide: "md",
     },
@@ -388,13 +408,14 @@ function BudgetDistrictList() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="hoaId"
-                            value={data.hoaId}
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.hoaId === undefined || data.hoaId === "0"
+                              data.scHeadAccountId === undefined ||
+                              data.scHeadAccountId === "0"
                             }
                           >
                             <option value="">Select Head Of Account</option>
@@ -468,25 +489,30 @@ function BudgetDistrictList() {
             </div>
           </Row>
         </Form>
-        <Card className="mt-2">
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={activityDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
+
+        {show ? (
+          <Card className="mt-2">
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={activityDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );

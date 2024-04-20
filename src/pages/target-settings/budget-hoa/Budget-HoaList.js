@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaList() {
   const [listData, setListData] = useState({});
@@ -25,28 +26,61 @@ function BudgetHoaList() {
     financialYearMasterId: "",
     scHeadAccountId: "",
   });
+  const [show, setShow] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
   const getList = () => {
-    setLoading(true);
+    // setLoading(true);
 
-    const response = api
-      .get(baseURLMasterData + `tsBudgetHoa/list-with-join`, _params)
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-details`, data)
       .then((response) => {
-        setListData(response.data.content.tsBudgetHoa);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsBudgetHoa);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
       });
   };
 
-  useEffect(() => {
-    getList();
-  }, [page]);
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
+    });
+  };
 
   // to get Financial Year
   const [financialYearListData, setFinancialYearListData] = useState([]);
@@ -146,21 +180,7 @@ function BudgetHoaList() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            // saveError(response.data.content.error_description);
-          } else {
-            // saveSuccess();
-            // clear();
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
-          }
-        });
+      getList();
       setValidated(true);
     }
   };
@@ -364,7 +384,8 @@ function BudgetHoaList() {
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.scHeadAccountId === undefined || data.scHeadAccountId === "0"
+                          data.scHeadAccountId === undefined ||
+                          data.scHeadAccountId === "0"
                         }
                       >
                         <option value="">Select Head Of Account</option>
@@ -402,25 +423,29 @@ function BudgetHoaList() {
             </ul>
           </div>
         </Form>
-        <Card className="mt-1">
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={activityDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
+        {show ? (
+          <Card className="mt-1">
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={activityDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        ) : (
+          ""
+        )}
       </Block>
     </Layout>
   );
