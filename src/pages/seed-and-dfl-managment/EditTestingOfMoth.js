@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function EditTestingOfMoth() {
   const { id } = useParams();
@@ -43,7 +43,7 @@ function EditTestingOfMoth() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURLSeedDfl + `Testing/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -51,7 +51,7 @@ function EditTestingOfMoth() {
             updateSuccess();
             setData({
                 lotNumber: "",
-                pebrine: "",
+                pebrineFreeStatusOfPupaAndMoth: "",
                 sourceDetails: "",
             });
             setValidated(false);
@@ -70,7 +70,7 @@ function EditTestingOfMoth() {
   const clear = () => {
     setData({
         lotNumber: "",
-        pebrine: "",
+        pebrineFreeStatusOfPupaAndMoth: "",
         sourceDetails: "",
     });
   };
@@ -80,7 +80,7 @@ function EditTestingOfMoth() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `Testing/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -98,7 +98,25 @@ function EditTestingOfMoth() {
     getIdList();
   }, [id]);
 
-   
+    // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data.EggPreparation);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
+
   const navigate = useNavigate();
 
   const updateSuccess = (message) => {
@@ -175,26 +193,36 @@ function EditTestingOfMoth() {
                 <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
                     </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
                         Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
                   </Form.Group>
                 </Col>
+
 
                 <Col lg="4">
                   <Form.Group className="form-group">
@@ -204,9 +232,9 @@ function EditTestingOfMoth() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="pebrinePupaMoth"
-                        name="pebrinePupaMoth"
-                        value={data.pebrinePupaMoth}
+                        id="pebrineFreeStatusOfPupaAndMoth"
+                        name="pebrineFreeStatusOfPupaAndMoth"
+                        value={data.pebrineFreeStatusOfPupaAndMoth}
                         onChange={handleInputs}
                         // maxLength="4"
                         type="text"
@@ -232,7 +260,7 @@ function EditTestingOfMoth() {
                         value={data.sourceDetails}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Invoice No"
+                        placeholder="Enter Source Details"
                         required
                       />
                       <Form.Control.Feedback type="invalid">

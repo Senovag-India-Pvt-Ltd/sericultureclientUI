@@ -9,15 +9,14 @@ import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { format } from "date-fns";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingofDFLsforthe8LinesList() {
   const [listData, setListData] = useState({});
-  const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -30,11 +29,13 @@ function RearingofDFLsforthe8LinesList() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+  const [validated, setValidated] = useState(false);
+
   const getList = () => {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `Mulberry-garden/get-info`)
+      .get(baseURLSeedDfl + `8linesController/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -51,44 +52,105 @@ function RearingofDFLsforthe8LinesList() {
     getList();
   }, []);
 
-  const getLogsList = (_id, plot) => {
-    setLoading(true);
-    setShowModal(true);
+  const [cocoonAssesmentDetails, setCocoonAssesmentDetails] = useState({
+    id: "",
+    weightCacoons: "",
+    weightPupa: "",
+    weightShells: "",
+    shellPercentage: "",
+    err: "",
+    cacoonsFormed: "",
+    wormsBrushed: "",
+  });
 
-    api
-      .get(baseURL2 + `Mulberry-garden/get-logs/${_id}/${plot}`)
-      .then((response) => {
-        // console.log(response.data)
-        setListLogsData(response.data);
-        // setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        setLoading(false);
-      });
+  const clear = () => {
+    setCocoonAssesmentDetails((prev) => ({
+      ...prev,
+      weightCacoons: "",
+      weightPupa: "",
+      weightShells: "",
+      shellPercentage: "",
+      err: "",
+      cacoonsFormed: "",
+      wormsBrushed: "",
+    }));
+    setValidated(false);
+    handleCloseModal();
+  };
+
+  const handleInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setCocoonAssesmentDetails({ ...cocoonAssesmentDetails, [name]: value });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      api
+        .post(
+          baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
+          cocoonAssesmentDetails
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            clear();
+            handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
   };
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
+    navigate(`/seriui/Rearing-of-DFLs-for-the-8-Lines-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-edit/${_id}`);
+    navigate(`/seriui/Rearing-of-DFLs-for-the-8-Lines-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
+  const saveSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      text: message,
+    });
   };
 
-  const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
-  };
-
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
   };
 
   const deleteError = () => {
@@ -99,7 +161,7 @@ function RearingofDFLsforthe8LinesList() {
     });
   };
 
-  const deleteConfirm = (_id, plot) => {
+  const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -110,7 +172,7 @@ function RearingofDFLsforthe8LinesList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Mulberry-garden/delete-info/${_id}/${plot}`)
+          .delete(baseURLSeedDfl + `8linesController/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -180,7 +242,34 @@ function RearingofDFLsforthe8LinesList() {
     },
   };
 
-  const MaintenanceofmulberryGardenDataColumns = [
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
+  };
+
+  const getCocoonList = (_id) => {
+    setLoading(true);
+    handleShowModal();
+
+    api
+      .get(
+        baseURLSeedDfl +
+          `8linesController/get-cacoon-assesment-data-by-id/${_id}`
+      )
+      .then((response) => {
+        // console.log(response.data)
+        setCocoonAssesmentDetails(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
+  };
+
+  const RearingOfDFLSForThe8LinesDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -202,26 +291,10 @@ function RearingofDFLsforthe8LinesList() {
           >
             Edit
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleUpdate(row.id)}
-          >
-            Update
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleAlert(row.id)}
-          >
-            Alert
-          </Button>
           {/* <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
             Delete
@@ -230,195 +303,119 @@ function RearingofDFLsforthe8LinesList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
+    },
+    {
+      name: "Disinfectant Usage Details",
+      selector: (row) => row.disinfectantUsageDetails,
+      cell: (row) => <span>{row.disinfectantUsageDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Crop Details",
+      selector: (row) => row.cropDetail,
+      cell: (row) => <span>{row.cropDetail}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Crop Number",
+      selector: (row) => row.cropNumber,
+      cell: (row) => <span>{row.cropNumber}</span>,
+      sortable: true,
+      hide: "md",
     },
 
     {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
+      name: "Number Of DFLs",
+      selector: (row) => row.numberOfDFLs,
+      cell: (row) => <span>{row.numberOfDFLs}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: " Area(In Hectares)",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-    {
-      name: "Activity Logs",
-      cell: (row) => (
-        <div className="text-end">
-          <AiOutlineInfoCircle // Use the information icon instead of Button
-            size={20}
-            style={{ cursor: "pointer" }}
-            onClick={() => getLogsList(row.id, row.plotNumber)}
-          />
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
-  ];
 
-  const MaintenanceofmulberryGardenLogsDataColumns = [
     {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
+      name: "Laid On Date",
+      selector: (row) => row.laidOnDate,
+      cell: (row) => <span>{formatDate(row.laidOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
+      name: "Cold Storage Details",
+      selector: (row) => row.coldStorageDetails,
+      cell: (row) => <span>{row.coldStorageDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Released On",
+      selector: (row) => row.releasedOn,
+      cell: (row) => <span>{formatDate(row.releasedOn)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Area Under Each Variety",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
+      name: "Chawki Percentage",
+      selector: (row) => row.chawkiPercentage,
+      cell: (row) => <span>{row.chawkiPercentage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
+      name: "Worm Weight In Grams",
+      selector: (row) => row.wormWeightInGrams,
+      cell: (row) => <span>{row.wormWeightInGrams}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Spun On Date",
+      selector: (row) => row.spunOnDate,
+      cell: (row) => <span>{formatDate(row.spunOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      name: "Worm Test Dates And Results",
+      selector: (row) => row.wormTestDatesAndResults,
+      cell: (row) => <span>{row.wormTestDatesAndResults}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM Date",
-      selector: (row) => row.fymApplicationDate,
-      cell: (row) => <span>{row.fymApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Date",
-      selector: (row) => row.irrigationDate,
-      cell: (row) => <span>{row.irrigationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Date",
-      selector: (row) => row.brushingDate,
-      cell: (row) => <span>{row.brushingDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Status",
-      selector: (row) => row.fertilizerApplicationStatus,
+      name: "Cocoon Assesment Details",
       cell: (row) => (
-        <span>
-          {row.fertilizerApplicationStatus === 0
-            ? "Pending"
-            : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
+        <Button
+          className="d-flex justify-content-center"
+          variant="primary"
+          size="sm"
+          onClick={() => getCocoonList(row.id)}
+        >
+          Show
+        </Button>
       ),
       sortable: true,
       hide: "md",
     },
     {
-      name: "FYM Application Status",
-      selector: (row) => row.fymApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fymApplicationStatus === 0
-            ? "Pending"
-            : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Status",
-      selector: (row) => row.irrigationStatus,
-      cell: (row) => (
-        <span>
-          {row.irrigationStatus === 0
-            ? "Pending"
-            : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Status",
-      selector: (row) => row.brushingStatus,
-      cell: (row) => (
-        <span>
-          {row.brushingStatus === 0
-            ? "Pending"
-            : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
+      name: "Crop Failure Details",
+      selector: (row) => row.cropFailureDetails,
+      cell: (row) => <span>{row.cropFailureDetails}</span>,
       sortable: true,
       hide: "md",
     },
   ];
-
   return (
     <Layout title="Rearing of DFLs for the 8 lines List">
       <Block.Head>
@@ -458,7 +455,7 @@ function RearingofDFLsforthe8LinesList() {
           <DataTable
             // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
-            columns={MaintenanceofmulberryGardenDataColumns}
+            columns={RearingOfDFLSForThe8LinesDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -478,30 +475,210 @@ function RearingofDFLsforthe8LinesList() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
+          <Modal.Title>Cocoon Assesment Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Block className="mt-2">
-            <Card>
-              <DataTable
-                // title="New Trader License List"
-                tableClassName="data-table-head-light table-responsive"
-                columns={MaintenanceofmulberryGardenLogsDataColumns}
-                data={listLogsData}
-                highlightOnHover
-                pagination
-                paginationServer
-                paginationTotalRows={totalRows}
-                paginationPerPage={countPerPage}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                onChangePage={(page) => setPage(page - 1)}
-                progressPending={loading}
-                theme="solarized"
-                customStyles={customStyles}
-              />
-            </Card>
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postData}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Average Weight of 25 Cocoons
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="weightCacoons"
+                                  name="weightCacoons"
+                                  value={
+                                    cocoonAssesmentDetails.weightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Cocoons"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                Average Weight of 25 Pupa
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="weightPupa"
+                                  name="weightPupa"
+                                  value={
+                                    cocoonAssesmentDetails.weightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Pupa"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                Average Weight of 25 Shells
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="weightShells"
+                                  name="weightShells"
+                                  value={
+                                    cocoonAssesmentDetails.weightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Shells"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                                Shell Percentage
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="shellPercentage"
+                                  name="shellPercentage"
+                                  value={
+                                    cocoonAssesmentDetails.shellPercentage || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Shell Percentage"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                                ERR<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="err"
+                                  name="err"
+                                  value={cocoonAssesmentDetails.err || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="ERR"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="cacoonsFormed">
+                                No of Cocoon's Formed
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="cacoonsFormed"
+                                  name="cacoonsFormed"
+                                  value={
+                                    cocoonAssesmentDetails.cacoonsFormed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Cocoon's Formed"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  No of Cocoon's Formed is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                No of Worms Brushed
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="wormsBrushed"
+                                  name="wormsBrushed"
+                                  value={
+                                    cocoonAssesmentDetails.wormsBrushed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Worms Brushed"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        {/* </Card.Body>
+                    </Card> */}
+                      </Block>
+                      <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Save
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={clear}
+                            >
+                              Cancel
+                            </Button>
+                          </li>
+                        </ul>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
           </Block>
         </Modal.Body>
       </Modal>

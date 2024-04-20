@@ -582,12 +582,67 @@ import PreservationofseedcocoonforprocessingList from "../pages/seed-and-dfl-man
 import PreparationofeggsDFLsList from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsList";
 import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/MaintenanceofeggsatcoldstorageList";
 import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
+import SaleDisposalofDFLseggs from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggs";
+import SaleDisposalofDFLseggsList from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsList";
 import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
 import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
 import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
 import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
 import EscalationDashboard from "../pages/helpdesk/EscalationDashboard";
 import EscalationView from "../pages/helpdesk/EscalationView";
+import SaleDisposalOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoons";
+import SaleDisposalOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsList";
+import SaleDisposalOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsView";
+import SaleDisposalOfPiercedCocoonsEdit from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsEdit";
+import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
+import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
+import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
+import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
+import MaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheets";
+import Remittance from "../pages/seed-and-dfl-managment/Remittance";
+import RemittanceList from "../pages/seed-and-dfl-managment/RemittanceList";
+import RemittanceEdit from "../pages/seed-and-dfl-managment/RemittanceEdit";
+import RemittanceView from "../pages/seed-and-dfl-managment/RemittanceView";
+import MaintenanceOfEggsAtColdStorageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdStorageEdit";
+import MaintenanceOfEggsAtColdStorageView from "../pages/seed-and-dfl-managment/MaintenanceOfEggAtColdStorageView";
+import MaintenanceOfEggsAtCold from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtCold";
+import MaintenanceOfEggsAtColdList from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdList";
+import MaintenanceOfEggsAtColdEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdEdit";
+import MaintenanceOfEggsAtColdView from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdView";
+import RegisteredSeedProducerNssoGrainages from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainages";
+import RegisteredSeedProducerNssoGrainagesList from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesList";
+import RegisteredSeedProducerNssoGrainagesEdit from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesEdit";
+import RegisteredSeedProducerNssoGrainagesView from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesView";
+import SaleAndDisposalOfEggsNSSO from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSO";
+import SaleAndDisposalOfEggsNSSOList from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOList";
+import SaleAndDisposalOfEggsNSSOView from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOView";
+import SaleAndDisposalOfEggsNSSOEdit from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOEdit";
+import WormStage from "../pages/masters/worm-stage/WormStage";
+import WormStageList from "../pages/masters/worm-stage/WormStageList";
+import WormStageView from "../pages/masters/worm-stage/WormStageView";
+import WormStageEdit from "../pages/masters/worm-stage/WormStageEdit";
+import MaintenanceofMulberryfarmView from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmView";
+import MaintenanceofMulberryfarmUpdate from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmUpdate";
+import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmEdit";
+import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
+import SaleDisposalofDFLseggsView from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsView";
+import SaleDisposalofDFLseggsEdit from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsEdit";
+import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageEdit";
+import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
+import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesEdit";
+import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
+import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
+import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
+import ReceiptOfDFLsFromTheP4GrainageEdit from "../pages/seed-and-dfl-managment/ReceiptOfDFLsFromTheP4GrainageEdit";
+import MaintenanceofScreeningBatchRecordsEdit from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsEdit";
+import MaintenanceofScreeningBatchRecordsView from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsView";
+import PreparationofeggsDFLsEdit from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsEdit";
+import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsView";
+import ColdStorageScheduleBVEdit from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVEdit";
+import ColdStorageScheduleBVView from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVView";
 
 // Admin and Reports
 
@@ -913,8 +968,28 @@ function Router() {
               element={<MaintenanceofMulberryfarmList />}
             />
             <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-view/:id"
+              element={<MaintenanceofMulberryfarmView />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-update/:id"
+              element={<MaintenanceofMulberryfarmUpdate />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-edit/:id"
+              element={<MaintenanceofMulberryfarmEdit />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-alert"
+              element={<MaintenanceofMulberryfarmAlert />}
+            />
+            <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
+            />
+            <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-edit/:id"
+              element={<ReceiptOfDFLsFromTheP4GrainageEdit />}
             />
             <Route
               path="Receipt-of-DFLs-from-the-P4-grainage-list"
@@ -931,6 +1006,15 @@ function Router() {
             />
 
             <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceEdit />}
+            />
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceView />}
+            />
+
+            <Route
               path="Maintenance-of-Screening-Batch-Records"
               element={<MaintenanceofScreeningBatchRecords />}
             />
@@ -938,6 +1022,16 @@ function Router() {
             <Route
               path="Maintenance-of-Screening-Batch-Records-List"
               element={<MaintenanceofScreeningBatchRecordsList />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-edit/:id"
+              element={<MaintenanceofScreeningBatchRecordsEdit />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-view/:id"
+              element={<MaintenanceofScreeningBatchRecordsView />}
             />
 
             <Route
@@ -951,6 +1045,15 @@ function Router() {
             />
 
             <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-edit/:id"
+              element={<DispatchofCocoonstoP4GrainageEdit />}
+            />
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-view/:id"
+              element={<DispatchofCocoonstoP4GrainageView />}
+            />
+
+            <Route
               path="Rearing-of-DFLs-for-the-8-Lines"
               element={<RearingofDFLsforthe8Lines />}
             />
@@ -958,6 +1061,15 @@ function Router() {
             <Route
               path="Rearing-of-DFLs-for-the-8-Lines-List"
               element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-edit/:id"
+              element={<RearingOfDFLsForThe8LinesEdit />}
+            />
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-view/:id"
+              element={<RearingOfDFLsForThe8LinesView />}
             />
 
             <Route
@@ -981,13 +1093,51 @@ function Router() {
             />
 
             <Route
+              path="Preparation-of-eggs-DFLs-edit/:id"
+              element={<PreparationofeggsDFLsEdit />}
+            />
+
+            <Route
+              path="Preparation-of-eggs-DFLs-view/:id"
+              element={<PreparationofeggsDFLsView />}
+            />
+
+            <Route
               path="Maintenance-of-eggs-at-cold-storage"
               element={<Maintenanceofeggsatcoldstorage />}
             />
 
             <Route
-              path="Maintenance-of-eggs-at-cold-storage-List"
+              path="maintenance-of-eggs-at-cold-storage-list"
               element={<MaintenanceofeggsatcoldstorageList />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-storage-edit/:id"
+              element={<MaintenanceOfEggsAtColdStorageEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-storage-view/:id"
+              element={<MaintenanceOfEggsAtColdStorageView />}
+            />
+
+            <Route
+              path="Maintenance-of-eggs-at-cold"
+              element={<MaintenanceOfEggsAtCold />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-list"
+              element={<MaintenanceOfEggsAtColdList />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-edit/:id"
+              element={<MaintenanceOfEggsAtColdEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-view/:id"
+              element={<MaintenanceOfEggsAtColdView />}
             />
 
             <Route
@@ -999,6 +1149,14 @@ function Router() {
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
             />
+            <Route path="Cold-Storage-Schedule-BV-edit/:id" element={<ColdStorageScheduleBVEdit />} />
+            <Route path="Cold-Storage-Schedule-BV-view/:id" element={<ColdStorageScheduleBVView />} />
+
+            <Route path="remittance" element={<Remittance />} />
+            <Route path="remittance-list" element={<RemittanceList />} />
+
+            <Route path="remittance-edit/:id" element={<RemittanceEdit />} />
+            <Route path="remittance-view/:id" element={<RemittanceView />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route
@@ -1013,6 +1171,120 @@ function Router() {
             <Route
               path="testing-of-moth-view/:id"
               element={<TestingOfMothView />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons"
+              element={<MaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-list"
+              element={<MaintenanceOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="maintenance-of-pierced-cocoons-edit/:id"
+              element={<EditMaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-view/:id"
+              element={<MaintenanceOfPiercedCocoonsView />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets"
+              element={<MaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-list"
+              element={<MaintenanceOfEggLayingSheetsList />}
+            />
+
+            <Route
+              path="maintenance-of-egg-laying-sheets-edit/:id"
+              element={<EditMaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-view/:id"
+              element={<MaintenanceOfEggLayingSheetsView />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons"
+              element={<SaleDisposalOfPiercedCocoons />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-edit/:id"
+              element={<SaleDisposalOfPiercedCocoonsEdit />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-list"
+              element={<SaleDisposalOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-view/:id"
+              element={<SaleDisposalOfPiercedCocoonsView />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs"
+              element={<SaleDisposalofDFLseggs />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-list"
+              element={<SaleDisposalofDFLseggsList />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-view/:id"
+              element={<SaleDisposalofDFLseggsView />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-edit/:id"
+              element={<SaleDisposalofDFLseggsEdit />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages"
+              element={<RegisteredSeedProducerNssoGrainages />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-list"
+              element={<RegisteredSeedProducerNssoGrainagesList />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-edit/:id"
+              element={<RegisteredSeedProducerNssoGrainagesEdit />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-view/:id"
+              element={<RegisteredSeedProducerNssoGrainagesView />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso"
+              element={<SaleAndDisposalOfEggsNSSO />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-list"
+              element={<SaleAndDisposalOfEggsNSSOList />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-view/:id"
+              element={<SaleAndDisposalOfEggsNSSOView />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-edit/:id"
+              element={<SaleAndDisposalOfEggsNSSOEdit />}
             />
 
             {/* Seed & DFL Management */}
@@ -1349,6 +1621,10 @@ function Router() {
             <Route path="soil-type-list" element={<SoilTypeList />} />
             <Route path="soil-type-view/:id" element={<SoilTypeView />} />
             <Route path="soil-type-edit/:id" element={<SoilTypeEdit />} />
+            <Route path="worm-stage" element={<WormStage />} />
+            <Route path="worm-stage-list" element={<WormStageList />} />
+            <Route path="worm-stage-view/:id" element={<WormStageView />} />
+            <Route path="worm-stage-edit/:id" element={<WormStageEdit />} />
             <Route
               path="rear-house-roof-type"
               element={<RearHouseRoofType />}

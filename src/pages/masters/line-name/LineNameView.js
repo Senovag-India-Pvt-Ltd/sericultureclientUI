@@ -101,6 +101,10 @@ function LineNameView() {
                         <td>{LineName.lineName}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}> Line Code:</td>
+                        <td>{LineName.lineCode}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>
                           {" "}
                           Line Name In Kannada:

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function TestingOfMothView() {
   const styles = {
@@ -32,7 +32,7 @@ function TestingOfMothView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `Testing/get-info-by-id/${id}`)
       .then((response) => {
         setTestingOfMoth(response.data);
         setLoading(false);
@@ -106,7 +106,7 @@ function TestingOfMothView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Pebrine free status of pupa &Moth:</td>
-                        <td>{testingMoth.pebrine}</td>
+                        <td>{testingMoth.pebrineFreeStatusOfPupaAndMoth}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>

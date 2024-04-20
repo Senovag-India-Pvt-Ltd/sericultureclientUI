@@ -241,6 +241,10 @@ function Menu() {
     SeedDFL_Preparation_Egg_DFLs: false,
     SeedDFL_Eggs_Cold_storage: false,
     SeedDFL_Cold_Storage_Schedule_BV: false,
+    SeedDFL_Testing_Of_Moth: false,
+    SeedDFL_Maintenance_Of_Pierced_Cocoons: false,
+    SeedDFL_Maintenance_Of_Egg_Laying_Sheets: false,
+    SeedDFL_Remittance: false,
 
     GardenManagement: false,
     GardenManagement_Mulberry_Garden: false,
@@ -348,6 +352,7 @@ function Menu() {
     Admin_Master_Garden_Generation_Number: false,
     Admin_Master_Garden_Farm: false,
     Admin_Master_Garden_Tsc: false,
+    Admin_Master_Garden_Worm_Stage: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -1250,6 +1255,40 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.SeedDFL_Testing_Of_Moth ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Testing Of Moth/Pupa"
+                  to="/seriui/testing-of-moth"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.SeedDFL_Maintenance_Of_Pierced_Cocoons ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance Of Pierced Cocoons"
+                  to="/seriui/maintenance-of-pierced-cocoons"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.SeedDFL_Maintenance_Of_Egg_Laying_Sheets ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Maintenance Of Egg Laying Sheets"
+                  to="/seriui/maintenance-of-egg-laying-sheets"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.SeedDFL_Remittance ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Remittance (Eggs / PC / Others)"
+                  to="/seriui/remittance"
+                />
+              </MenuItem>
+            ) : null}
 
             {/* {showMenu.SeedDFL_Grainages ? (
             <MenuItem sub>
@@ -2058,6 +2097,11 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Tsc ? (
                           <MenuItem>
                             <MenuItemLink text="Tsc" to="/seriui/tsc" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Worm_Stage ? (
+                          <MenuItem>
+                            <MenuItemLink text="Worm Stage" to="/seriui/worm-stage" />
                           </MenuItem>
                         ) : null}
                       </MenuSub>

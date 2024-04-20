@@ -99,7 +99,7 @@ function LandOwnershipEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/land-ownership-list"));
+    })
   };
   const updateError = (message) => {
     let errorMessage;
@@ -119,7 +119,7 @@ function LandOwnershipEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("/seriui/state-list"));
+    })
   };
 
   return (
