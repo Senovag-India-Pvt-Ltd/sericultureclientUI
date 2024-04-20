@@ -96,7 +96,9 @@ import ExternalUnitRegister from "../pages/stake-holder/external-units/ExternalU
 import ExternalUnitRegisterList from "../pages/stake-holder/external-units/ExternalUnitRegisterList";
 import ExternalUnitRegisterView from "../pages/stake-holder/external-units/ExternalUnitRegisterView";
 import ExternalUnitRegisterEdit from "../pages/stake-holder/external-units/ExternalUnitRegisterEdit";
+
 // Services Module
+import ServiceApplication from "../pages/services-module/application/serviceApplication";
 import TrackDflProcurement from "../pages/services-module/TrackDflProcurement";
 import TrackingMulberryStatus from "../pages/services-module/TrackingMulberryStatus";
 import SupplyOfDisinfectants from "../pages/services-module/SupplyOfDisinfectants";
@@ -644,6 +646,55 @@ import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/Preparati
 import ColdStorageScheduleBVEdit from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVEdit";
 import ColdStorageScheduleBVView from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVView";
 
+import ScHeadAccountCategory from "../pages/masters/sc-head-account-category/ScHeadAccountCategory";
+import ScHeadAccountCategoryList from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryList";
+import ScHeadAccountCategoryView from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryView";
+import ScHeadAccountCategoryEdit from "../pages/masters/sc-head-account-category/EditScHeadAccountCategory";
+import ScApprovingAuthority from "../pages/masters/sc-approving-authority/ScApproving";
+import ScApprovingAuthorityList from "../pages/masters/sc-approving-authority/ScApprovingList";
+import ScApprovingAuthorityView from "../pages/masters/sc-approving-authority/ScApprovingView";
+import ScApprovingAuthorityEdit from "../pages/masters/sc-approving-authority/EditScApproving";
+import ScVendorContact from "../pages/masters/sc-vendor-contact/ScVendorContact";
+import ScVendorContactList from "../pages/masters/sc-vendor-contact/ScVendorContactList";
+import ScVendorContactView from "../pages/masters/sc-vendor-contact/ScVendorContactView";
+import ScVendorContactEdit from "../pages/masters/sc-vendor-contact/EditScVendorContact";
+import ScVendorBank from "../pages/masters/sc-vendor-bank/ScVendorBank";
+import ScVendorBankList from "../pages/masters/sc-vendor-bank/ScVendorBankList";
+import ScVendorBankView from "../pages/masters/sc-vendor-bank/ScVendorBankView";
+import ScVendorBankEdit from "../pages/masters/sc-vendor-bank/EditScVendorBank";
+import ScVendor from "../pages/masters/sc-vendor/ScVendor";
+import ScVendorList from "../pages/masters/sc-vendor/ScVendorList";
+import ScVendorView from "../pages/masters/sc-vendor/ScVendorView";
+import ScVendorEdit from "../pages/masters/sc-vendor/EditScVendor";
+import ScUunitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostView from "../pages/masters/sc-unit-cost/ScUnitCostView";
+import ScUnitCostEdit from "../pages/masters/sc-unit-cost/EditScUnitCost";
+import ScUnitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostList from "../pages/masters/sc-unit-cost/ScUnitCostList";
+import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
+import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
+import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
+import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
+import ScSchemeDetails from "../pages/masters/sc-scheme-details/ScSchemeDetails";
+import ScSchemeDetailsList from "../pages/masters/sc-scheme-details/ScSchemeDetailsList";
+import ScSchemeDetailsView from "../pages/masters/sc-scheme-details/ScSchemeDetailsView";
+import ScSchemeDetailsEdit from "../pages/masters/sc-scheme-details/ScSchemeDetailsEdit";
+import ScSubSchemeDetails from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetails";
+import ScSubSchemeDetailsList from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsList";
+import ScSubSchemeDetailsView from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsView";
+import ScSubSchemeDetailsEdit from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsEdit";
+import FinancialYear from "../pages/masters/financial-year/FinancialYear";
+import FinancialYearEdit from "../pages/masters/financial-year/FinancialYearEdit";
+import FinancialYearList from "../pages/masters/financial-year/FinancialYearList";
+import FinancialYearView from "../pages/masters/financial-year/FinancialYearView";
+import FarmType from "../pages/masters/farm-type/FarmType";
+import FarmTypeList from "../pages/masters/farm-type/FarmTypeList";
+import FarmTypeView from "../pages/masters/farm-type/FarmTypeView";
+import FarmTypeEdit from "../pages/masters/farm-type/FarmTypeEdit";
+import GrainageType from "../pages/masters/grainage-type/GrainageType";
+import GrainageTypeList from "../pages/masters/grainage-type/GrainageTypeList";
+import GrainageTypeView from "../pages/masters/grainage-type/GrainageTypeView";
+import GrainageTypeEdit from "../pages/masters/grainage-type/GrainageTypeEdit";
 // Admin and Reports
 
 function Router() {
@@ -918,6 +969,10 @@ function Router() {
             />
 
             {/* Services */}
+            <Route
+              path="service-application"
+              element={<ServiceApplication />}
+            />
             <Route
               path="track-dfl-procurement"
               element={<TrackDflProcurement />}
@@ -1524,6 +1579,16 @@ function Router() {
             />
 
             {/* Master */}
+            <Route path="financial-year" element={<FinancialYear />} />
+            <Route
+              path="financial-year-edit/:id"
+              element={<FinancialYearEdit />}
+            />
+            <Route path="financial-year-list" element={<FinancialYearList />} />
+            <Route
+              path="financial-year-view/:id"
+              element={<FinancialYearView />}
+            />
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
             <Route path="caste-list" element={<CasteList />} />
@@ -1750,6 +1815,102 @@ function Router() {
             <Route path="godawn-list" element={<GodawnList />} />
             <Route path="godawn-view/:id" element={<GodawnView />} />
             <Route path="godawn-edit/:id" element={<GodawnEdit />} />
+
+            <Route
+              path="sc-head-account-category"
+              element={<ScHeadAccountCategory />}
+            />
+            <Route
+              path="sc-head-account-category-list"
+              element={<ScHeadAccountCategoryList />}
+            />
+            <Route
+              path="sc-head-account-category-view/:id"
+              element={<ScHeadAccountCategoryView />}
+            />
+            <Route
+              path="sc-head-account-category-edit/:id"
+              element={<ScHeadAccountCategoryEdit />}
+            />
+
+            <Route
+              path="sc-approving-authority"
+              element={<ScApprovingAuthority />}
+            />
+            <Route
+              path="sc-approving-authority-list"
+              element={<ScApprovingAuthorityList />}
+            />
+            <Route
+              path="sc-approving-authority-view/:id"
+              element={<ScApprovingAuthorityView />}
+            />
+            <Route
+              path="sc-approving-authority-edit/:id"
+              element={<ScApprovingAuthorityEdit />}
+            />
+
+            <Route path="sc-vendor-bank" element={<ScVendorBank />} />
+            <Route path="sc-vendor-bank-list" element={<ScVendorBankList />} />
+            <Route
+              path="sc-vendor-bank-view/:id"
+              element={<ScVendorBankView />}
+            />
+            <Route
+              path="sc-vendor-bank-edit/:id"
+              element={<ScVendorBankEdit />}
+            />
+
+            <Route path="sc-vendor-contact" element={<ScVendorContact />} />
+            <Route
+              path="sc-vendor-contact-list"
+              element={<ScVendorContactList />}
+            />
+            <Route
+              path="sc-vendor-contact-view/:id"
+              element={<ScVendorContactView />}
+            />
+            <Route
+              path="sc-vendor-contact-edit/:id"
+              element={<ScVendorContactEdit />}
+            />
+
+
+            <Route path="sc-scheme-details" element={<ScSchemeDetails />} />
+            <Route path="sc-scheme-details-list" element={<ScSchemeDetailsList/>} />
+            <Route path="sc-scheme-details-view/:id" element={<ScSchemeDetailsView />} />
+            <Route path="sc-scheme-details-edit/:id" element={<ScSchemeDetailsEdit />} />
+
+            <Route path="division" element={<DivisionMaster />} />
+            <Route path="division-list" element={<DivisionMasterList />} />
+            <Route path="division-view/:id" element={<DivisionMasterView />} />
+            <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
+
+
+            <Route path="sc-sub-scheme-details" element={<ScSubSchemeDetails />} />
+            <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
+            <Route path="sc-sub-scheme-details-view/:id" element={<ScSubSchemeDetailsView />} />
+            <Route path="sc-sub-scheme-details-edit/:id" element={<ScSubSchemeDetailsEdit />} />
+
+            <Route path="farm-type" element={<FarmType />} />
+            <Route path="farm-type-list" element={<FarmTypeList/>} />
+            <Route path="farm-type-view/:id" element={<FarmTypeView />} />
+            <Route path="farm-type-edit/:id" element={<FarmTypeEdit />} />
+
+            <Route path="grainage-type" element={<GrainageType />} />
+            <Route path="grainage-type-list" element={<GrainageTypeList/>} />
+            <Route path="grainage-type-view/:id" element={<GrainageTypeView />} />
+            <Route path="grainage-type-edit/:id" element={<GrainageTypeEdit />} />
+
+            <Route path="sc-vendor" element={<ScVendor />} />
+            <Route path="sc-vendor-list" element={<ScVendorList />} />
+            <Route path="sc-vendor-view/:id" element={<ScVendorView />} />
+            <Route path="sc-vendor-edit/:id" element={<ScVendorEdit />} />
+
+            <Route path="sc-unit-cost" element={<ScUnitCost />} />
+            <Route path="sc-unit-cost-list" element={<ScUnitCostList />} />
+            <Route path="sc-unit-cost-view/:id" element={<ScUnitCostView />} />
+            <Route path="sc-unit-cost-edit/:id" element={<ScUnitCostEdit />} />
             <Route path="bin" element={<Bin />} />
             <Route path="bin-list" element={<BinList />} />
             <Route path="bin-view/:id" element={<BinView />} />
@@ -1878,19 +2039,12 @@ function Router() {
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
             <Route path="sc-component-edit/:id" element={<ScComponentEdit />} />
+
             <Route path="sc-head-account" element={<ScHeadAccount />} />
-            <Route
-              path="sc-head-account-list"
-              element={<ScHeadAccountList />}
-            />
-            <Route
-              path="sc-head-account-view/:id"
-              element={<ScHeadAccountView />}
-            />
-            <Route
-              path="sc-head-account-edit/:id"
-              element={<ScHeadAccountEdit />}
-            />
+            <Route path="sc-head-account-list" element={<ScHeadAccountList />} />
+            <Route path="sc-head-account-view/:id" element={<ScHeadAccountView />} />
+            <Route path="sc-head-account-edit/:id" element={<ScHeadAccountEdit />} />
+
             <Route path="empanelled-vendor" element={<EmpanelledVendor />} />
             <Route
               path="empanelled-vendor-list"

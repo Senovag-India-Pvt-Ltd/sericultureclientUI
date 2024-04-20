@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import React from "react";
@@ -16,6 +16,7 @@ function Farm() {
   const [data, setData] = useState({
     farmName: "",
     farmNameInKannada: "",
+    userMasterId:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -46,6 +47,7 @@ function Farm() {
             setData({
                 farmName: "",
                 farmNameInKannada: "",
+                userMasterId:"",
             });
             setValidated(false);
           }
@@ -61,8 +63,28 @@ function Farm() {
     setData({
         farmName: "",
         farmNameInKannada: "",
+        userMasterId:"",
     });
   };
+
+  // to get User Master
+  const [userListData, setUserListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -168,6 +190,36 @@ function Farm() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Farm Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        User<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="userMasterId"
+                          value={data.userMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.userMasterId === undefined || data.userMasterId === "0"
+                          }
+                        >
+                          <option value="">Select User</option>
+                          {userListData.map((list) => (
+                            <option key={list.userMasterId} value={list.userMasterId}>
+                              {list.username}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          User name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

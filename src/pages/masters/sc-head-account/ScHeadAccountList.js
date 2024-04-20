@@ -1,14 +1,17 @@
-import { Card, Button } from "react-bootstrap";
+// import { Card, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
-import { createTheme } from "react-data-table-component";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import { createTheme } from "react-data-table-component";
+// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -21,10 +24,16 @@ function ScHeadAccountList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [data, setData] = useState({
+    searchBy: "scHeadAccount",
+    text: "",
+  });
+
+  // console.log("Test",data);
   const getList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scHeadAccount/list`, _params)
+    const response = api
+      .get(baseURL + `scHeadAccount/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.scHeadAccount);
         setTotalRows(response.data.content.totalItems);
@@ -40,6 +49,42 @@ function ScHeadAccountList() {
     getList();
   }, [page]);
 
+  // Search
+  const search = (e) => {
+    let joinColumn;
+    if (data.searchBy === "scSchemeDetails") {
+      joinColumn = "scSchemeDetails.schemeName";
+    }
+    if (data.searchBy === "scHeadAccount") {
+      joinColumn = "scHeadAccount.scHeadAccountName";
+    }
+    console.log(joinColumn);
+    api
+      .post(baseURL + `scHeadAccount/search`, {
+        searchText: data.text,
+        joinColumn: joinColumn,
+      })
+      .then((response) => {
+        setListData(response.data.content.scHeadAccount);
+
+        // if (response.data.content.error) {
+        //   // saveError();
+        // } else {
+        //   console.log(response);
+        //   // saveSuccess();
+        // }
+      })
+      .catch((err) => {
+        // saveError();
+      });
+  };
+
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
   const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/seriui/sc-head-account-view/${_id}`);
@@ -47,7 +92,7 @@ function ScHeadAccountList() {
 
   const handleEdit = (_id) => {
     navigate(`/seriui/sc-head-account-edit/${_id}`);
-    // navigate("/seriui/soil-type");
+    // navigate("/seriui/district");
   };
 
   const deleteError = () => {
@@ -67,7 +112,7 @@ function ScHeadAccountList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        api
+        const response = api
           .delete(baseURL + `scHeadAccount/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
@@ -138,10 +183,9 @@ function ScHeadAccountList() {
     },
   };
 
-
   const ScHeadAccountDataColumns = [
     {
-      name: "Action",
+      name: "action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -173,31 +217,38 @@ function ScHeadAccountList() {
       ),
       sortable: false,
       hide: "md",
+     
     },
     {
-      name: "Head of Account",
+      name: "Head Account Name",
       selector: (row) => row.scHeadAccountName,
       cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: true,
       hide: "md",
     },
-
+    
     {
-      name: "Head of Account Name in Kannda",
+      name: "Head Account in Kannada",
       selector: (row) => row.scHeadAccountNameInKannada,
       cell: (row) => <span>{row.scHeadAccountNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Details",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Head of Account List">
+    <Layout title="Head Account List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head of Account List</Block.Title>
-           
+            <Block.Title tag="h2">Head Account List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -224,8 +275,58 @@ function ScHeadAccountList() {
         </Block.HeadBetween>
       </Block.Head>
 
+      {/* <Block>
+        <Card>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            data={DistrictDatas}
+            columns={DistrictDataColumns}
+            expandableRows
+          />
+        </Card>
+      </Block> */}
+
       <Block className="mt-n4">
         <Card>
+          <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                      {/* <option value="">Select</option> */}
+                      <option value="scHeadAccount">Head Account</option>
+                      <option value="scSchemeDetails">Scheme Name</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={3}>
+                  <Form.Control
+                    id="fruitsId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
+
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ScHeadAccountDataColumns}

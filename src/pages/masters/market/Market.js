@@ -50,6 +50,7 @@ function Market() {
     clientCode: "",
     weighmentTripletGeneration: true,
     bidAmountFlag: false,
+    divisionMasterId:"",
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -138,6 +139,7 @@ function Market() {
               clientCode: "",
               weighmentTripletGeneration: true,
               bidAmountFlag: false,
+              divisionMasterId:"",
             });
             setValidated(false);
           }
@@ -187,6 +189,8 @@ function Market() {
       clientCode: "",
       weighmentTripletGeneration: true,
       bidAmountFlag: false,
+      divisionMasterId:"",
+
     });
   };
 
@@ -273,6 +277,25 @@ function Market() {
   useEffect(() => {
     getMarketTypeList();
   }, []);
+
+  // to get Division
+  const [divisionListData, setDivisionListData] = useState([]);
+
+  const getDivisionList = () => {
+    const response = api
+      .get(baseURL + `divisionMaster/get-all`)
+      .then((response) => {
+        setDivisionListData(response.data.content.DivisionMaster);
+      })
+      .catch((err) => {
+        setDivisionListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDivisionList();
+  }, []);
+
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -1042,6 +1065,37 @@ function Market() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Taluk Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Division<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="divisionMasterId"
+                          value={data.divisionMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.divisionMasterId === undefined || data.divisionMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Division</option>
+                          {divisionListData && divisionListData.length
+                            ? divisionListData.map((list) => (
+                                <option key={list.divisionMasterId} value={list.divisionMasterId}>
+                                  {list.name}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Division Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
