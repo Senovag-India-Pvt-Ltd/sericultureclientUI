@@ -688,6 +688,10 @@ import FinancialTargetSettingsTalukEdit from "../pages/target-settings/financial
 import FinancialTargetSettingsTalukList from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukList";
 import FinancialTargetSettingsTaluk from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTaluk";
 import FinancialTargetSettingsTalukView from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukView";
+import FinancialTargetSettingsInstitutionList from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionList";
+import FinancialTargetSettingsInstitution from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitution";
+import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionEdit";
+import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
 // Admin and Reports
 
 function Router() {
@@ -1452,6 +1456,24 @@ function Router() {
             <Route
               path="financialtargetsettingstaluk-view/:id"
               element={<FinancialTargetSettingsTalukView />}
+            />
+
+            <Route
+              path="financialtargetsettingsinstitution"
+              element={<FinancialTargetSettingsInstitution />}
+            />
+
+            <Route
+              path="financialtargetsettingsinstitution-list"
+              element={<FinancialTargetSettingsInstitutionList />}
+            />
+            <Route
+              path="financialtargetsettingsinstitution-edit/:id"
+              element={<FinancialTargetSettingsInstitutionEdit />}
+            />
+            <Route
+              path="financialtargetsettingsinstitution-view/:id"
+              element={<FinancialTargetSettingsInstitutionView />}
             />
 
             <Route
