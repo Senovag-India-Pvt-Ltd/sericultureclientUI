@@ -660,10 +660,6 @@ import FinancialTargetSettingView from "../pages/target-settings/financialtarget
 import PhysicalTargetSettingsTscView from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscView";
 import PhysicalTargetSettingsTscList from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscList";
 import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscEdit";
-import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
-import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
-import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
-import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTaluk";
 import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrict";
 import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
 import PhysicalTargetSettingsDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictList";
@@ -680,6 +676,14 @@ import ReleaseBudgetInstitution from "../pages/target-settings/release-budget-in
 import ReleaseBudgetInstitutionList from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionList";
 import ReleaseBudgetInstitutionEdit from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionEdit";
 import ReleaseBudgetInstitutionView from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionView";
+import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
+import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
+import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTaluk";
+import FinancialTargetSettingsDistrictEdit from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictEdit";
+import FinancialTargetSettingsDistrictView from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictView";
+import FinancialTargetSettingsDistrictList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsList";
+import FinancialTargetSettingsDistrict from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrict";
 // Admin and Reports
 
 function Router() {
@@ -1391,6 +1395,7 @@ function Router() {
             <Route path="budget-tsc-list" element={<BudgetTscList />} />
             <Route path="budget-tsc-edit/:id" element={<BudgetTscEdit />} />
             <Route path="budget-tsc-view/:id" element={<BudgetTscView />} />
+
             <Route
               path="financialtargetsettings"
               element={<FinancialTargetSettings />}
@@ -1407,6 +1412,24 @@ function Router() {
             <Route
               path="financialtargetsettings-view/:id"
               element={<FinancialTargetSettingView />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict"
+              element={<FinancialTargetSettingsDistrict />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict-list"
+              element={<FinancialTargetSettingsDistrictList />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-edit/:id"
+              element={<FinancialTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-view/:id"
+              element={<FinancialTargetSettingsDistrictView />}
             />
 
             <Route
