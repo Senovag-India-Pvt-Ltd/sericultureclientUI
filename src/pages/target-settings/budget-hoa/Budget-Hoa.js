@@ -28,6 +28,24 @@ function BudgetHoa() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  if (data.financialYearMasterId && data.scHeadAccountId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          console.log(response.data.errorMessages[0]);
+        } else {
+          console.log(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
