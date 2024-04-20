@@ -49,7 +49,7 @@ function ReleaseBudgetTalukView() {
   }, [id]);
 
   return (
-    <Layout title=" view released budget taluk details">
+    <Layout title=" View released budget taluk details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
