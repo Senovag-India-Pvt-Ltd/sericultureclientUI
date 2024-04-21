@@ -31,7 +31,7 @@ function ReleaseBudgetTalukView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
+      .get(baseURL + `tsReleaseBudgetTaluk/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -49,7 +49,7 @@ function ReleaseBudgetTalukView() {
   }, [id]);
 
   return (
-    <Layout title=" view released budget taluk details">
+    <Layout title=" View released budget taluk details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -61,7 +61,7 @@ function ReleaseBudgetTalukView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function ReleaseBudgetTalukView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/releasebudgettaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
