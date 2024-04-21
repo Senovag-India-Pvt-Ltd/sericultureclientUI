@@ -141,7 +141,7 @@ function BudgetHoaEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetHoa/get/${id}`)
+      .get(baseURLTargetSetting + `tsBudgetHoa/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);

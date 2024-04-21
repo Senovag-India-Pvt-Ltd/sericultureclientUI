@@ -529,7 +529,7 @@ function BudgetTalukList() {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 <Button type="submit" variant="primary">
-                  Save
+                  Go
                 </Button>
               </li>
               {/* <li>
