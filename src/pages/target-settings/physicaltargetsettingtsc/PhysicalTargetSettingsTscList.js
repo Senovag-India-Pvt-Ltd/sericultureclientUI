@@ -239,7 +239,7 @@ function PhysicalTargetSettingsTscList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettings-tsc"
+                  to="/seriui/physicaltargetsettingstsc"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

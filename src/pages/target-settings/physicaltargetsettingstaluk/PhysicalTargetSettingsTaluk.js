@@ -111,19 +111,17 @@ function PhysicalTargetSettingsTaluk() {
     });
   };
   return (
-    <Layout title="Physical Target Setting - Monthly  - Taluk ">
+    <Layout title="Physical Target Setting - Taluk ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Physical Target Setting - Monthly - Taluk{" "}
-            </Block.Title>
+            <Block.Title tag="h2">Physical Target Setting - Taluk </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/PhysicalTargetSettingsTaluk-list"
+                  to="/seriui/physicaltargetsettingstaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -132,7 +130,7 @@ function PhysicalTargetSettingsTaluk() {
               </li>
               <li>
                 <Link
-                  to="/seriui/PhysicalTargetSettingsTaluk-list"
+                  to="/seriui/physicaltargetsettingstaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -149,6 +147,7 @@ function PhysicalTargetSettingsTaluk() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
+              <Card.Header>Physical Target Setting Taluk</Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">

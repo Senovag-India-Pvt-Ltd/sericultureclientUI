@@ -111,13 +111,11 @@ function PhysicalTargetSettingsTsc() {
     });
   };
   return (
-    <Layout title="Physical Target Setting - Monthly  - Tsc ">
+    <Layout title="Physical Target Setting - Tsc ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Physical Target Setting - Monthly - Tsc{" "}
-            </Block.Title>
+            <Block.Title tag="h2">Physical Target Setting - Tsc </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -149,6 +147,7 @@ function PhysicalTargetSettingsTsc() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
+              <Card.Header>Physical Target Setting Tsc</Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">

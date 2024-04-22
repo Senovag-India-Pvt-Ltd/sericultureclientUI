@@ -239,7 +239,7 @@ function PhysicalTargetSettingsTalukList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettings-taluk"
+                  to="/seriui/physicaltargetsettingstaluk"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
