@@ -61,7 +61,7 @@ function ReleaseBudgetInstitution() {
 
   if (data.financialYearMasterId && data.scHeadAccountId && data.districtId && data.talukId && data.institutionType) {
     api
-      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsReleaseBudgetInstitution/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
       })
@@ -338,6 +338,8 @@ function ReleaseBudgetInstitution() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
+        <Row>
+        <Col lg="8">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
@@ -741,6 +743,25 @@ function ReleaseBudgetInstitution() {
             </ul>
           </div>
         </Form>
+        </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

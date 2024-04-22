@@ -261,6 +261,10 @@ function Menu() {
     TargetSetting_Allocate_Budget_District: false,
     TargetSetting_Allocate_Budget_Taluk: false,
     TargetSetting_Allocate_Budget_Institution: false,
+    TargetSetting_Release: false,
+    TargetSetting_Release_District: false,
+    TargetSetting_Release_Taluk: false,
+    TargetSetting_Release_Institution: false,
 
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
@@ -1351,14 +1355,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
+            {/* {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
               <MenuItem>
                 <MenuItemLink
                   text="Assigning Yearly Targets"
                   to="/seriui/attribute-assigning"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
@@ -1408,14 +1412,45 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
-            {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
-              <MenuItem>
-                <MenuItemLink text="Release" to="/seriui/attribute-assigning" />
-              </MenuItem>
-            ) : null}
+            {showMenu.TargetSetting_Release ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Release"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                {showMenu.TargetSetting_Release_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Release Budget to District"
+                        to="/seriui/releasebudgetdistrict"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Release_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Release Budget to Taluk"
+                        to="/seriui/releasebudgettaluk"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Release_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Release Budget to Institution"
+                        to="/seriui/releasebudgetinstitution"
+                      />
+                    </MenuItem>
+                  ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
+      </MenuSub>
+    </MenuItem>
+    ) : null}
 
       {showMenu.Inspection ? (
         <MenuItem sub>
