@@ -692,6 +692,7 @@ import FinancialTargetSettingsInstitutionList from "../pages/target-settings/fin
 import FinancialTargetSettingsInstitution from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitution";
 import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionEdit";
 import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
+import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
 // Admin and Reports
 
 function Router() {
@@ -1374,6 +1375,7 @@ function Router() {
             <Route path="Activity-list" element={<ActivityList />} />
             <Route path="activity-view/:id" element={<ActivityView />} />
             <Route path="activity-edit/:id" element={<ActivityEdit />} />
+            <Route path="budget-dashboard" element={<BudgetDashboard />} />
             <Route path="budget" element={<Budget />} />
             <Route path="budget-list" element={<BudgetList />} />
             <Route path="budget-edit/:id" element={<BudgetEdit />} />
