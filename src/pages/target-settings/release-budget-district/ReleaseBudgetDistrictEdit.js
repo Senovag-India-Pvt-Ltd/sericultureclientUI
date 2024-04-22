@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetDistrictEdit() {
   // Fetching id from URL params
@@ -38,7 +39,7 @@ function ReleaseBudgetDistrictEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURLMasterData + `tsReleaseBudgetDistrict/edit`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetDistrict/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -143,7 +144,7 @@ function ReleaseBudgetDistrictEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLMasterData + `tsReleaseBudgetDistrict/get/${id}`)
+      .get(baseURLTargetSetting + `tsReleaseBudgetDistrict/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);

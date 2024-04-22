@@ -6,7 +6,8 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetTalukView() {
   const styles = {
@@ -31,7 +32,7 @@ function ReleaseBudgetTalukView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsReleaseBudgetTaluk/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsReleaseBudgetTaluk/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);

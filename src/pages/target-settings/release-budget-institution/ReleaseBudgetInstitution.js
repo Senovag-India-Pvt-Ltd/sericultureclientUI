@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetInstitution() {
   const [data, setData] = useState({
@@ -31,8 +32,51 @@ function ReleaseBudgetInstitution() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-  // const _header = { "Content-Type": "application/json", accept: "*/*" };
-  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+  const [balanceAmount,setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId && data.talukId && data.institutionType) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
@@ -49,7 +93,7 @@ function ReleaseBudgetInstitution() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `tsReleaseBudgetInstitution/add`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetInstitution/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);

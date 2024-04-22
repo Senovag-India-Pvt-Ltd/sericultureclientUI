@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetTalukEdit() {
   // Fetching id from URL params
@@ -36,7 +37,7 @@ function ReleaseBudgetTalukEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsReleaseBudgetTaluk/edit`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);

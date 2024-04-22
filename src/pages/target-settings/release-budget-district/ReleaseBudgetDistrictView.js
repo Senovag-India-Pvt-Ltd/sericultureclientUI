@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetDistrictView() {
   const styles = {
@@ -33,7 +33,7 @@ function ReleaseBudgetDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsReleaseBudgetDistrict/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsReleaseBudgetDistrict/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
