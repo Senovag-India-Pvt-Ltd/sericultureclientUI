@@ -664,7 +664,7 @@ function ServiceApplication() {
         <Block>
           <Form noValidate validated={validated} onSubmit={postData}>
             <Row className="g-1 ">
-              <Col lg={8}>
+              <Col lg={12}>
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ fontWeight: "bold" }}>
@@ -828,7 +828,7 @@ function ServiceApplication() {
                   </Card>
                 </Block>
               </Col>
-              <Col lg={4}>
+              {/* <Col lg={4}>
                 <Block>
                   <Card className="mt-3">
                     <Card.Header style={{ fontWeight: "bold" }}>
@@ -872,7 +872,7 @@ function ServiceApplication() {
                     </Card.Body>
                   </Card>
                 </Block>
-              </Col>
+              </Col> */}
 
               <Block className="mt-3">
                 <Card>
