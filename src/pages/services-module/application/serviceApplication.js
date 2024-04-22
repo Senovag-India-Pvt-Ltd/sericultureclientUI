@@ -24,6 +24,7 @@ function ServiceApplication() {
   const [data, setData] = useState({
     with: "withLand",
     subinc: "subsidy",
+    equordev: "land",
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
@@ -186,6 +187,18 @@ function ServiceApplication() {
     }
   };
 
+  const handleDevelopedLandInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setDevelopedLand({ ...developedLand, [name]: value });
+  };
+
+  const handleEquipmentInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setEquipment({ ...equipment, [name]: value });
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -295,6 +308,20 @@ function ServiceApplication() {
     });
   };
 
+  const [developedLand, setDevelopedLand] = useState({
+    acre: "",
+    gunta: "",
+    fgunta: "",
+    unitType: "",
+  });
+
+  const [equipment, setEquipment] = useState({
+    unitType: "",
+    description: "",
+    price: "",
+    vendorId: "",
+  });
+
   const [validated, setValidated] = useState(false);
   const [searchValidated, setSearchValidated] = useState(false);
   const [listLogsData, setListLogsData] = useState({});
@@ -340,6 +367,22 @@ function ServiceApplication() {
 
   const LandDetailsColumns = [
     {
+      name: "Select",
+      selector: "select",
+      cell: (row) => (
+        <input
+          type="radio"
+          name="selectedLand"
+          value={row.id}
+          // checked={selectedLandId === row.id}
+          // onChange={handleRadioChange}
+        />
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+    {
       name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
@@ -384,32 +427,34 @@ function ServiceApplication() {
     {
       name: "Acre",
       selector: (row) => row.acre,
-      cell: (row) => (
-        <Form.Control
-          // id="farmerName"
-          // name="farmerName"
-          type="text"
-          value={row.acre}
-          // onChange={handleInputs}
-          placeholder="Edit Acre"
-        />
-      ),
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.acre}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Acre"
+      //   />
+      // ),
+      cell: (row) => <span>{row.acre}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Gunta",
       selector: (row) => row.gunta,
-      cell: (row) => (
-        <Form.Control
-          // id="farmerName"
-          // name="farmerName"
-          type="text"
-          value={row.gunta}
-          // onChange={handleInputs}
-          placeholder="Edit Gunta"
-        />
-      ),
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.gunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Gunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.gunta}</span>,
       sortable: true,
       hide: "md",
     },
@@ -417,37 +462,39 @@ function ServiceApplication() {
     {
       name: "FGunta",
       selector: (row) => row.fgunta,
-      cell: (row) => (
-        <Form.Control
-          // id="farmerName"
-          // name="farmerName"
-          type="text"
-          value={row.fgunta}
-          // onChange={handleInputs}
-          placeholder="Edit FGunta"
-        />
-      ),
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.fgunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit FGunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.gunta}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={setIsDisabled(false)}
-          >
-            Update
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     //   Button style
+    //     <div className="text-start w-100">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         className="ms-2"
+    //         onClick={setIsDisabled(false)}
+    //       >
+    //         Update
+    //       </Button>
+    //     </div>
+    //   ),
+    //   // cell: (row) => <span>{row.gunta}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
   ];
 
   createTheme(
@@ -828,53 +875,8 @@ function ServiceApplication() {
                   </Card>
                 </Block>
               </Col>
-              {/* <Col lg={4}>
-                <Block>
-                  <Card className="mt-3">
-                    <Card.Header style={{ fontWeight: "bold" }}>
-                      Share Details
-                    </Card.Header>
-                    <Card.Body>
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <table className="table small table-bordered mt-n2 mb-n1">
-                            <tbody>
-                              <tr>
-                                <td style={styles.ctstyle}> Unit Cost:</td>
-                                <td>{shareDetails && shareDetails.unitCost}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  Beneficiary Share:
-                                </td>
-                                <td>
-                                  {shareDetails &&
-                                    shareDetails.benificiaryShare}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>State Share:</td>
-                                <td>
-                                  {shareDetails && shareDetails.stateShare}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}> Central Share:</td>
-                                <td>
-                                  {shareDetails && shareDetails.centralShare}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Block>
-              </Col> */}
 
-              <Block className="mt-3">
+              {/* <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
                     Vendors List
@@ -918,111 +920,328 @@ function ServiceApplication() {
                     </Row>
                   </Card.Body>
                 </Card>
-              </Block>
+              </Block> */}
               {data.with === "withLand" && landDetailsList.length > 0 ? (
-                <Block className="mt-3">
-                  <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
-                      RTC Details
-                    </Card.Header>
-                    <Card.Body>
-                      <Row>
-                        <DataTable
-                          tableClassName="data-table-head-light table-responsive"
-                          columns={LandDetailsColumns}
-                          data={landDetailsList}
-                          highlightOnHover
-                          pagination
-                          paginationServer
-                          paginationTotalRows={totalRows}
-                          paginationPerPage={countPerPage}
-                          paginationComponentOptions={{
-                            noRowsPerPage: true,
-                          }}
-                          onChangePage={(page) => setPage(page - 1)}
-                          progressPending={loading}
-                          theme="solarized"
-                          customStyles={customStyles}
-                        />
+                <>
+                  <Block className="mt-3">
+                    <Card>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        RTC Details
+                      </Card.Header>
+                      <Card.Body>
+                        <Row>
+                          <DataTable
+                            tableClassName="data-table-head-light table-responsive"
+                            columns={LandDetailsColumns}
+                            data={landDetailsList}
+                            highlightOnHover
+                            pagination
+                            paginationServer
+                            paginationTotalRows={totalRows}
+                            paginationPerPage={countPerPage}
+                            paginationComponentOptions={{
+                              noRowsPerPage: true,
+                            }}
+                            onChangePage={(page) => setPage(page - 1)}
+                            progressPending={loading}
+                            theme="solarized"
+                            customStyles={customStyles}
+                          />
+                        </Row>
+                      </Card.Body>
+
+                      <Row className="ms-1">
+                        <Col lg="2">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="land"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="equordev"
+                                value="land"
+                                checked={data.equordev === "land"}
+                                onChange={handleInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="land"
+                            >
+                              Developed Area
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="2">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="equip"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="equordev"
+                                value="equipment"
+                                checked={data.equordev === "equipment"}
+                                onChange={handleInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="equip"
+                            >
+                              Equipment Purchase
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
                       </Row>
-                      {/* <Row>
-                        <Block className="mt-3">
+                    </Card>
+                  </Block>
+                  {data.equordev === "land" ? (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          Developed Area
+                        </Card.Header>
+                        <Card.Body>
                           <Row className="g-gs">
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="sordfl">
-                                  Acre
+                                <Form.Label>
+                                  Unit Type
                                   <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="farmerName"
-                                    name="farmerName"
-                                    type="text"
-                                    // value={data.farmerName}
-                                    // onChange={handleInputs}
-                                    placeholder="Enter Lot Number"
+                                  <Form.Select
+                                    name="unitType"
+                                    value={developedLand.unitType}
+                                    onChange={handleDevelopedLandInputs}
+                                    onBlur={() => handleDevelopedLandInputs}
+                                    // multiple
                                     required
-                                  />
+                                    isInvalid={
+                                      developedLand.unitType === undefined ||
+                                      developedLand.unitType === "0"
+                                    }
+                                  >
+                                    <option value="">Select Unit Type</option>
+                                    {/* {scVendorListData.map((list) => (
+                                      <option
+                                        key={list.scVendorId}
+                                        value={list.scVendorId}
+                                      >
+                                        {list.name}
+                                      </option>
+                                    ))} */}
+                                  </Form.Select>
                                   <Form.Control.Feedback type="invalid">
-                                    Lot Number is required
+                                    Unit Type is required
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
                             </Col>
-
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="sordfl">
-                                  Gunta
-                                  <span className="text-danger">*</span>
+                                <Form.Label htmlFor="acre">
+                                  Acre<span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Control
-                                    id="farmerName"
-                                    name="farmerName"
+                                    id="acre"
                                     type="text"
-                                    // value={data.farmerName}
-                                    // onChange={handleInputs}
-                                    placeholder="Enter Egg Sheet Numbers"
+                                    name="acre"
+                                    value={developedLand.acre}
+                                    onChange={handleDevelopedLandInputs}
+                                    placeholder="Enter Acre"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                    Egg Sheet Numbers is required
+                                    Acre is required
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
                             </Col>
-
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="sordfl">
-                                  FGunta
-                                  <span className="text-danger">*</span>
+                                <Form.Label htmlFor="gunta">
+                                  Gunta<span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Control
-                                    id="area"
-                                    name="area"
-                                    // value={data.area}
-                                    // onChange={handleInputs}
+                                    id="gunta"
                                     type="text"
-                                    maxLength="4"
-                                    placeholder="Enter Number of DFLs disposed"
+                                    name="gunta"
+                                    value={developedLand.gunta}
+                                    onChange={handleDevelopedLandInputs}
+                                    placeholder="Enter Gunta"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                    Number of DFLs disposed is required
+                                    Gunta is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="fgunta">
+                                  FGunta<span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="fgunta"
+                                    type="text"
+                                    name="fgunta"
+                                    value={developedLand.fgunta}
+                                    onChange={handleDevelopedLandInputs}
+                                    placeholder="Enter FGunta"
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    FGunta is required
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
                             </Col>
                           </Row>
-                        </Block>
-                      </Row> */}
-                    </Card.Body>
-                  </Card>
-                </Block>
+                        </Card.Body>
+                      </Card>
+                    </Block>
+                  ) : (
+                    <Block className="mt-3">
+                      <Card>
+                        <Card.Header style={{ fontWeight: "bold" }}>
+                          Equipment Purchase
+                        </Card.Header>
+                        <Card.Body>
+                          <Row className="g-gs">
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label>
+                                  Unit Type
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    name="unitType"
+                                    value={equipment.unitType}
+                                    onChange={handleEquipmentInputs}
+                                    onBlur={() => handleEquipmentInputs}
+                                    // multiple
+                                    required
+                                    isInvalid={
+                                      equipment.unitType === undefined ||
+                                      equipment.unitType === "0"
+                                    }
+                                  >
+                                    <option value="">Select Unit Type</option>
+                                    {/* {scVendorListData.map((list) => (
+                                      <option
+                                        key={list.scVendorId}
+                                        value={list.scVendorId}
+                                      >
+                                        {list.name}
+                                      </option>
+                                    ))} */}
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    Unit Type is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label>
+                                  Vendor Name
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select
+                                    name="vendorId"
+                                    value={equipment.vendorId}
+                                    onChange={handleEquipmentInputs}
+                                    onBlur={() => handleEquipmentInputs}
+                                    // multiple
+                                    required
+                                    isInvalid={
+                                      equipment.vendorId === undefined ||
+                                      equipment.vendorId === "0"
+                                    }
+                                  >
+                                    <option value="">Select Vendor Name</option>
+                                    {scVendorListData.map((list) => (
+                                      <option
+                                        key={list.scVendorId}
+                                        value={list.scVendorId}
+                                      >
+                                        {list.name}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">
+                                    Vendor Name is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="description">
+                                  Description
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="description"
+                                    type="text"
+                                    name="description"
+                                    value={equipment.description}
+                                    onChange={handleEquipmentInputs}
+                                    placeholder="Enter Description"
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    Description is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="price">
+                                  Price
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="price"
+                                    type="text"
+                                    name="price"
+                                    value={equipment.price}
+                                    onChange={handleEquipmentInputs}
+                                    placeholder="Enter Price"
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    Price is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Block>
+                  )}
+                </>
               ) : (
                 ""
               )}
