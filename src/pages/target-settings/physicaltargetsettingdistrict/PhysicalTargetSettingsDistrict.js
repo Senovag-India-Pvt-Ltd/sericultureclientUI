@@ -111,12 +111,12 @@ function PhysicalTargetSettingsDistrict() {
     });
   };
   return (
-    <Layout title="Physical Target Setting - Monthly - District">
+    <Layout title="Physical Target Setting - District">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Physical Target Setting - Monthly - District{" "}
+              Physical Target Setting - District{" "}
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -148,291 +148,279 @@ function PhysicalTargetSettingsDistrict() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
-                <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Target Setting Type
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Target Setting Type</option>
-                          {/* {stateListData.map((list) => (
+            <Block>
+              <Card>
+                <Card.Header>Physical Target Setting District</Card.Header>
+                <Card.Body>
+                  <Row className="g-3 ">
+                    <Card>
+                      <Card.Body>
+                        {/* <h3>Farmers Details</h3> */}
+                        <Row className="g-gs">
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                Target Setting Type
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Target Setting Type
+                                  </option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Target Setting Type is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Target Setting Type is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Year</option>
-                          {/* {stateListData.map((list) => (
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                Financial Year
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">Select Year</option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Financial Year is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        BudgetDistrict Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title Name in Kannda"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        District<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select District</option>
-                          {/* {stateListData.map((list) => (
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                District<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">Select District</option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          District is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  District is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Select Date<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Date</option>
-                          {/* {stateListData.map((list) => (
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                Select Date
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">Select Date</option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Date is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Date is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Select Reporting Officer DDO
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Reporting Officer DDO</option>
-                          {/* {stateListData.map((list) => (
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                Select Reporting Officer DDO
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Reporting Officer DDO
+                                  </option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Reporting Officer DDO is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Reporting Officer DDO is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Select Officer DDO<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Officer DDO</option>
-                          {/* {stateListData.map((list) => (
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                                Select Officer DDO
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="stateId"
+                                  value={data.stateId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.stateId === undefined ||
+                                    data.stateId === "0"
+                                  }
+                                >
+                                  <option value="">Select Officer DDO</option>
+                                  {/* {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
                               {list.stateName}
                             </option>
                           ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Officer DDO is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Activity<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Activity is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Officer DDO is required.
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="title">
+                                Activity<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="title"
+                                  name="title"
+                                  value={data.title}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Title"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Activity is required.
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Unit of Measurment<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Title"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Unit of Measurment is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="title">
+                                Unit of Measurment
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="title"
+                                  name="title"
+                                  value={data.title}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Title"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Unit of Measurment is required.
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
 
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
-                </Row>
-              </Card.Body>
-            </Card>
-
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
+                    <div className="gap-col">
+                      <ul className="d-flex align-items-center justify-content-center gap g-3">
+                        <li>
+                          <Button type="submit" variant="primary">
+                            Save
+                          </Button>
+                        </li>
+                        <li>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={clear}
+                          >
+                            Cancel
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
           </Row>
         </Form>
       </Block>

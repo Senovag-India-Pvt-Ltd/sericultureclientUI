@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetInstitutionEdit() {
   // Fetching id from URL params
@@ -49,6 +50,71 @@ function ReleaseBudgetInstitutionEdit() {
   // HTTP header configuration
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+  const [balanceAmount, setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId) {
+    api
+      .post(baseURLTargetSetting + `tsReleaseBudgetInstitution/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+
   // Function to submit form data
   const postData = (event) => {
     const form = event.currentTarget;
@@ -59,7 +125,7 @@ function ReleaseBudgetInstitutionEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `tsReleaseBudgetInstitution/edit`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetInstitution/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -350,21 +416,23 @@ function ReleaseBudgetInstitutionEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Block>
+      <Block className="mt-n4">
+        <Row>
+          <Col lg="8">
+            <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
                   Edit Allocate Budget to Institution
                 </Card.Header>
                 <Card.Body>
+                <Row className="g-gs">
                   {loading ? (
                     <h1 className="d-flex justify-content-center align-items-center">
                       Loading...
                     </h1>
                   ) : (
-                    <Row className="g-gs">
+                    <>
+                    {/* <Row className="g-gs"> */}
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">
                           <Form.Label>
@@ -760,29 +828,51 @@ function ReleaseBudgetInstitutionEdit() {
                         <Form.Control.Feedback type="invalid">
                           Date is Required
                         </Form.Control.Feedback>
-                      </Col>
-                    </Row>
-                  )}
+                        </Col>
+                      </>
+                    )}
+
+                    <div className="gap-col">
+                      <ul className="d-flex align-items-center justify-content-center gap g-3">
+                        <li>
+                          <Button type="submit" variant="primary">
+                            Update
+                          </Button>
+                        </li>
+                        <li>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={clear}
+                          >
+                            Cancel
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
+                  </Row>
                 </Card.Body>
               </Card>
-            </Block>
-
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

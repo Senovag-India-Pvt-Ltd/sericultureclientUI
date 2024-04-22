@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetDistrict() {
   const [data, setData] = useState({
@@ -33,6 +34,51 @@ function ReleaseBudgetDistrict() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+  const [balanceAmount,setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId && data.scHeadAccountId) {
+    api
+      .post(baseURLTargetSetting + `tsReleaseBudgetDistrict/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
   
   const _header = {
     "Content-Type": "application/json",
@@ -49,7 +95,7 @@ function ReleaseBudgetDistrict() {
     } else {
       event.preventDefault();
       api
-        .post(baseURLMasterData + `tsReleaseBudgetDistrict/add`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetDistrict/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -198,15 +244,13 @@ function ReleaseBudgetDistrict() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4">
+      <Row>
+          <Col lg="8">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Block>
               <Card>
-                <Card.Header>Released Budget to District</Card.Header>
+                <Card.Header style={{ fontWeight: "bold" }}>Released Budget to District</Card.Header>
                 <Card.Body>
-                  {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">
@@ -353,7 +397,7 @@ function ReleaseBudgetDistrict() {
                   </Row>
                 </Card.Body>
               </Card>
-            </Block>
+            {/* </Block> */}
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -369,8 +413,26 @@ function ReleaseBudgetDistrict() {
                 </li>
               </ul>
             </div>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

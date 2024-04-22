@@ -11,6 +11,7 @@ import api from "../../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function ReleaseBudgetTaluk() {
   const [data, setData] = useState({
@@ -30,6 +31,52 @@ function ReleaseBudgetTaluk() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+  const [balanceAmount,setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+    api
+      .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+        districtId: data.districtId
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -48,7 +95,7 @@ function ReleaseBudgetTaluk() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `tsReleaseBudgetTaluk/add`, data)
+        .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -215,7 +262,8 @@ function ReleaseBudgetTaluk() {
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form action="#"> */}
+      <Row>
+          <Col lg="8">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
@@ -413,8 +461,26 @@ function ReleaseBudgetTaluk() {
               </li>
             </ul>
           </div>
-          {/* </Row> */}
-        </Form>
+          </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );

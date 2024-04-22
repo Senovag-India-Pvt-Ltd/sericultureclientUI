@@ -8,8 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 function ReleaseBudgetInstitutionView() {
   const styles = {
     ctstyle: {
@@ -33,7 +32,7 @@ function ReleaseBudgetInstitutionView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsReleaseBudgetInstitution/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsReleaseBudgetInstitution/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
