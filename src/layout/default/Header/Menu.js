@@ -231,20 +231,28 @@ function Menu() {
     // Market_Update_Lot_Weight: false,
 
     SeedDFL: false,
-    SeedDFL_Garden_Farms: false,
-    SeedDFL_DFLs_from_P4_Grainage: false,
-    SeedDFL_Line_Records_Each_race: false,
-    SeedDFL_Screening_batch_record: false,
-    SeedDFL_Cocoons_to_P4_Grainage: false,
-    SeedDFL_DFLs_for_the_8_lines: false,
-    SeedDFL_Seed_Cocoon_Processing: false,
-    SeedDFL_Preparation_Egg_DFLs: false,
-    SeedDFL_Eggs_Cold_storage: false,
-    SeedDFL_Cold_Storage_Schedule_BV: false,
-    SeedDFL_Testing_Of_Moth: false,
-    SeedDFL_Maintenance_Of_Pierced_Cocoons: false,
-    SeedDFL_Maintenance_Of_Egg_Laying_Sheets: false,
-    SeedDFL_Remittance: false,
+    SeedDFL_BSF: false,
+    SeedDFL_BSF_Garden_Farm: false,
+    SeedDFL_BSF_DFLs_from_P4_Grainage: false,
+    SeedDFL_BSF_Line_Records_Each_race: false,
+    SeedDFL_BSF_Screening_batch_record: false,
+    SeedDFL_BSF_Cocoons_to_P4_Grainage: false,
+    SeedDFL_BSF_DFLs_for_the_8_lines: false,
+    SeedDFL_Grainage: false,
+    SeedDFL_Grainage_Seed_Cocoon_Processing: false,
+    SeedDFL_Grainage_Preparation_Egg_DFLs: false,
+    SeedDFL_Grainage_Eggs_Cold_storage: false,
+    SeedDFL_Grainage_Cold_Storage_Schedule_BV: false,
+    SeedDFL_Grainage_Sale_of_DFLs_Eggs: false,
+    SeedDFL_Grainage_Testing_Of_Moth: false,
+    SeedDFL_Grainage_Maintenance_Of_Pierced_Cocoons: false,
+    SeedDFL_Grainage_Sale_Of_Pierced_Cocoons: false,
+    SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets: false,
+    SeedDFL_Grainage_Remittance: false,
+    SeedDFL_External: false,
+    SeedDFL_External_Preparation_Egg_DFLs: false,
+    SeedDFL_External_Sale_of_DFLs_Eggs: false,
+    SeedDFL_External_Eggs_Cold_storage: false,
 
     GardenManagement: false,
     GardenManagement_Mulberry_Garden: false,
@@ -1185,127 +1193,209 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.SeedDFL_Garden_Farms ? (
-              <MenuItem>
+            {showMenu.SeedDFL_BSF ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Maintenance of mulberry Garden in the Farms"
-                  to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms"
+                  text="BSF Kunigal"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {showMenu.SeedDFL_BSF_Garden_Farm ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of mulberry Garden in the Farms"
+                        to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_DFLs_from_P4_Grainage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Receipt of DFLs from the P4 grainage"
+                        to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Line_Records_Each_race ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of Line Records for Each Race"
+                        to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Screening_batch_record ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of Screening Batch Records"
+                        to="/seriui/Maintenance-of-Screening-Batch-Records"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Cocoons_to_P4_Grainage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Dispatch of Cocoons to P4 Grainage"
+                        to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_DFLs_for_the_8_lines ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Rearing of DFLs for the 8 Lines"
+                        to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
-            {showMenu.SeedDFL_DFLs_from_P4_Grainage ? (
-              <MenuItem>
+            {showMenu.SeedDFL_Grainage ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Receipt of DFLs from the P4 grainage"
-                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+                  text="Grainage"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {showMenu.SeedDFL_Grainage_Seed_Cocoon_Processing ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preservation of seed cocoon for processing"
+                        to="/seriui/Preservation-of-seed-cocoon-for-processing"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Preparation_Egg_DFLs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preparation of eggs DFLs"
+                        to="/seriui/Preparation-of-eggs-DFLs"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Eggs_Cold_storage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of eggs at cold storage"
+                        to="/seriui/Maintenance-of-eggs-at-cold-storage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Cold_Storage_Schedule_BV ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Cold Storage Schedule BV"
+                        to="/seriui/Cold-Storage-Schedule-BV"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Sale_of_DFLs_Eggs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale/Disposal of DFLs (eggs)"
+                        to="Sale-Disposal-of-DFLs-eggs"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Testing_Of_Moth ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Testing Of Moth/Pupa"
+                        to="/seriui/testing-of-moth"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.SeedDFL_Grainage_Maintenance_Of_Pierced_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance Of Pierced Cocoons"
+                        to="/seriui/maintenance-of-pierced-cocoons"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Sale_Of_Pierced_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale/Disposal of Pierced Cocoons"
+                        to="/seriui/sale-disposal-of-pierced-cocoons"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance Of Egg Laying Sheets"
+                        to="/seriui/maintenance-of-egg-laying-sheets"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Remittance ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Remittance (Eggs / PC / Others)"
+                        to="/seriui/remittance"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
-            {showMenu.SeedDFL_Line_Records_Each_race ? (
-              <MenuItem>
+            {showMenu.SeedDFL_External ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Maintenance of Line Records for Each Race"
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                  text="External Users"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
-              </MenuItem>
-            ) : null}
+                <MenuSub>
+                  {showMenu.SeedDFL_External_Preparation_Egg_DFLs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preparation of eggs (DFLs) RSP/NSSO"
+                        to="/seriui/registered-seed-producer-nsso-grainages"
+                      />
+                    </MenuItem>
+                  ) : null}
 
-            {showMenu.SeedDFL_Screening_batch_record ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance of Screening Batch Records"
-                  to="/seriui/Maintenance-of-Screening-Batch-Records"
-                />
-              </MenuItem>
-            ) : null}
+                  {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale / Dis posal of DFL’s (eggs) RSP/NSSO"
+                        to="/seriui/sale-and-disposal-of-eggs-nsso"
+                      />
+                    </MenuItem>
+                  ) : null}
 
-            {showMenu.SeedDFL_Cocoons_to_P4_Grainage ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Dispatch of Cocoons to P4 Grainage"
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_DFLs_for_the_8_lines ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Rearing of DFLs for the 8 Lines"
-                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Seed_Cocoon_Processing ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Preservation of seed cocoon for processing"
-                  to="/seriui/Preservation-of-seed-cocoon-for-processing"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Preparation_Egg_DFLs ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Preparation of eggs DFLs"
-                  to="/seriui/Preparation-of-eggs-DFLs"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Eggs_Cold_storage ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance of eggs at cold storage"
-                  to="/seriui/Maintenance-of-eggs-at-cold-storage"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Cold_Storage_Schedule_BV ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Cold Storage Schedule BV"
-                  to="/seriui/Cold-Storage-Schedule-BV"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.SeedDFL_Testing_Of_Moth ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Testing Of Moth/Pupa"
-                  to="/seriui/testing-of-moth"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.SeedDFL_Maintenance_Of_Pierced_Cocoons ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance Of Pierced Cocoons"
-                  to="/seriui/maintenance-of-pierced-cocoons"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Maintenance_Of_Egg_Laying_Sheets ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance Of Egg Laying Sheets"
-                  to="/seriui/maintenance-of-egg-laying-sheets"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Remittance ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Remittance (Eggs / PC / Others)"
-                  to="/seriui/remittance"
-                />
+                  {showMenu.SeedDFL_External_Eggs_Cold_storage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of eggs at cold storage RSP/NSSO"
+                        to="/seriui/Maintenance-of-eggs-at-cold"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
@@ -2277,7 +2367,10 @@ function Menu() {
                         ) : null}
                         {showMenu.Admin_Master_Garden_Worm_Stage ? (
                           <MenuItem>
-                            <MenuItemLink text="Worm Stage" to="/seriui/worm-stage" />
+                            <MenuItemLink
+                              text="Worm Stage"
+                              to="/seriui/worm-stage"
+                            />
                           </MenuItem>
                         ) : null}
                       </MenuSub>
