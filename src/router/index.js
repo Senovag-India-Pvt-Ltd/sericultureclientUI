@@ -760,6 +760,7 @@ import FinancialTargetSettingsInstitution from "../pages/target-settings/financi
 import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionEdit";
 import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
 import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
+import InspectionConfig from "../pages/masters/inspection/InspectionConfig";
 // Admin and Reports
 
 function Router() {
@@ -1269,8 +1270,14 @@ function Router() {
               path="Cold-Storage-Schedule-BV-List"
               element={<ColdStorageScheduleBVList />}
             />
-            <Route path="Cold-Storage-Schedule-BV-edit/:id" element={<ColdStorageScheduleBVEdit />} />
-            <Route path="Cold-Storage-Schedule-BV-view/:id" element={<ColdStorageScheduleBVView />} />
+            <Route
+              path="Cold-Storage-Schedule-BV-edit/:id"
+              element={<ColdStorageScheduleBVEdit />}
+            />
+            <Route
+              path="Cold-Storage-Schedule-BV-view/:id"
+              element={<ColdStorageScheduleBVView />}
+            />
 
             <Route path="remittance" element={<Remittance />} />
             <Route path="remittance-list" element={<RemittanceList />} />
@@ -1471,6 +1478,7 @@ function Router() {
             />
 
             {/* Inspection */}
+            <Route path="inspection-config" element={<InspectionConfig />} />
             <Route
               path="track-current-status"
               element={<TrackingCurrentStatus />}
@@ -2192,20 +2200,38 @@ function Router() {
               element={<ScSubSchemeDetailsEdit />}
             />
 
-            <Route path="sc-sub-scheme-details" element={<ScSubSchemeDetails />} />
-            <Route path="sc-sub-scheme-details-list" element={<ScSubSchemeDetailsList/>} />
-            <Route path="sc-sub-scheme-details-view/:id" element={<ScSubSchemeDetailsView />} />
-            <Route path="sc-sub-scheme-details-edit/:id" element={<ScSubSchemeDetailsEdit />} />
+            <Route
+              path="sc-sub-scheme-details"
+              element={<ScSubSchemeDetails />}
+            />
+            <Route
+              path="sc-sub-scheme-details-list"
+              element={<ScSubSchemeDetailsList />}
+            />
+            <Route
+              path="sc-sub-scheme-details-view/:id"
+              element={<ScSubSchemeDetailsView />}
+            />
+            <Route
+              path="sc-sub-scheme-details-edit/:id"
+              element={<ScSubSchemeDetailsEdit />}
+            />
 
             <Route path="farm-type" element={<FarmType />} />
-            <Route path="farm-type-list" element={<FarmTypeList/>} />
+            <Route path="farm-type-list" element={<FarmTypeList />} />
             <Route path="farm-type-view/:id" element={<FarmTypeView />} />
             <Route path="farm-type-edit/:id" element={<FarmTypeEdit />} />
 
             <Route path="grainage-type" element={<GrainageType />} />
-            <Route path="grainage-type-list" element={<GrainageTypeList/>} />
-            <Route path="grainage-type-view/:id" element={<GrainageTypeView />} />
-            <Route path="grainage-type-edit/:id" element={<GrainageTypeEdit />} />
+            <Route path="grainage-type-list" element={<GrainageTypeList />} />
+            <Route
+              path="grainage-type-view/:id"
+              element={<GrainageTypeView />}
+            />
+            <Route
+              path="grainage-type-edit/:id"
+              element={<GrainageTypeEdit />}
+            />
 
             <Route path="sc-vendor" element={<ScVendor />} />
             <Route path="sc-vendor-list" element={<ScVendorList />} />
@@ -2346,9 +2372,18 @@ function Router() {
             <Route path="sc-component-edit/:id" element={<ScComponentEdit />} />
 
             <Route path="sc-head-account" element={<ScHeadAccount />} />
-            <Route path="sc-head-account-list" element={<ScHeadAccountList />} />
-            <Route path="sc-head-account-view/:id" element={<ScHeadAccountView />} />
-            <Route path="sc-head-account-edit/:id" element={<ScHeadAccountEdit />} />
+            <Route
+              path="sc-head-account-list"
+              element={<ScHeadAccountList />}
+            />
+            <Route
+              path="sc-head-account-view/:id"
+              element={<ScHeadAccountView />}
+            />
+            <Route
+              path="sc-head-account-edit/:id"
+              element={<ScHeadAccountEdit />}
+            />
 
             <Route
               path="sc-head-account-list"
