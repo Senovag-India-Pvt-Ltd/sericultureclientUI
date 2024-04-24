@@ -11,7 +11,7 @@ import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetHoaEdit() {
+function BudgetHoaExtensionEdit() {
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -230,11 +230,13 @@ function BudgetHoaEdit() {
   };
 
   return (
-    <Layout title="Edit Budget To Hoa">
+    <Layout title="Edit Budget Mapping to Schemes and Programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Budget To Hoa</Block.Title>
+            <Block.Title tag="h2">
+              Edit Budget Mapping to Schemes and Programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -267,7 +269,7 @@ function BudgetHoaEdit() {
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Hoa Budget
+                  Budget Mapping to Schemes and Programs
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -446,4 +448,4 @@ function BudgetHoaEdit() {
   );
 }
 
-export default BudgetHoaEdit;
+export default BudgetHoaExtensionEdit;

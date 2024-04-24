@@ -15,7 +15,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetHoaList() {
+function BudgetHoaExtensionList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -300,11 +300,13 @@ function BudgetHoaList() {
   ];
 
   return (
-    <Layout title="List Of Hoa Budget">
+    <Layout title="Budget Mapping to Schemes and Programs List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Hoa Budget</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping to Schemes and Programs List
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -334,7 +336,9 @@ function BudgetHoaList() {
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>Hoa Budget</Card.Header>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Budget Mapping to Schemes and Programs List
+            </Card.Header>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="6">
@@ -451,4 +455,4 @@ function BudgetHoaList() {
   );
 }
 
-export default BudgetHoaList;
+export default BudgetHoaExtensionList;
