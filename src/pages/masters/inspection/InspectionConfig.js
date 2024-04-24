@@ -10,12 +10,14 @@ import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function InspectionConfig() {
   const [data, setData] = useState({
-    documentList: [5, 8],
+    documentMasterId: [],
     inspectionType: "",
-    required: "",
+    isRequired: true,
+    gpsRequired: false,
   });
 
   const [validated, setValidated] = useState(false);
@@ -31,7 +33,7 @@ function InspectionConfig() {
     // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
     setData((prev) => ({
       ...prev,
-      required: e.target.checked,
+      gpsRequired: e.target.checked,
     }));
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -46,19 +48,44 @@ function InspectionConfig() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `raceMaster/add`, data)
+        .post(baseURLTargetSetting + `inspectionTypeDocument/add`, {
+          isRequired: data.isRequired,
+          documentMasterId: data.documentMasterId,
+          inspectionType: data.inspectionType,
+        })
         .then((response) => {
           if (response.data.content.error) {
             // saveError();
             saveRaceError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
-              raceMasterName: "",
-              marketMasterId: -1,
-              raceNameInKannada: "",
-            });
-            setValidated(false);
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+
+      api
+        .post(baseURLTargetSetting + `inspectionTypeGps/add`, {
+          isRequired: data.isRequired,
+          inspectionType: data.inspectionType,
+        })
+        .then((response) => {
+          if (response.data.content.error) {
+            // saveError();
+            saveRaceError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            clear();
           }
         })
         .catch((err) => {
@@ -78,10 +105,12 @@ function InspectionConfig() {
 
   const clear = () => {
     setData({
-      documentList: [],
+      documentMasterId: [],
       inspectionType: "",
-      required: "",
+      isRequired: true,
+      gpsRequired: false,
     });
+    setValidated(false);
   };
 
   // to get Market
@@ -120,21 +149,53 @@ function InspectionConfig() {
     getDocumentList();
   }, []);
 
+  // to get Inspection
+  // const [getByInspectionListData, setGetByInspectionListData] = useState([]);
+
+  const getInspectionList = (_id) => {
+    api
+      .get(
+        baseURLTargetSetting +
+          `inspectionTypeDocument/get-by-inspection-type/${_id}`
+      )
+      .then((response) => {
+        // setGetByInspectionListData(response.data.content.marketMaster);
+        if (response.data.content.error) {
+          if (response.data.content.docMasters === null)
+            setData((prev) => ({ ...prev, documentMasterId: [] }));
+        } else {
+          setData((prev) => ({
+            ...prev,
+            documentMasterId: response.data.content.docMasters,
+          }));
+        }
+      })
+      .catch((err) => {
+        // setGetByInspectionListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (data.inspectionType) {
+      getInspectionList(data.inspectionType);
+    }
+  }, [data.inspectionType]);
+
   console.log(data);
 
   const handleCheckboxChange = (id) => {
     // console.log(id);
     // setData((prev) => ({ ...prev, documentList: [...prev.documentList, id] }));
     setData((prev) => {
-      if (prev.documentList.includes(id)) {
+      if (prev.documentMasterId.includes(id)) {
         return {
           ...prev,
-          documentList: prev.documentList.filter((item) => item !== id),
+          documentMasterId: prev.documentMasterId.filter((item) => item !== id),
         };
       } else {
         return {
           ...prev,
-          documentList: [...prev.documentList, id],
+          documentMasterId: [...prev.documentMasterId, id],
         };
       }
     });
@@ -243,8 +304,8 @@ function InspectionConfig() {
                       <Col sm={1}>
                         <Form.Check
                           type="checkbox"
-                          id="required"
-                          checked={data.required}
+                          id="gpsRequired"
+                          checked={data.gpsRequired}
                           onChange={handleCheckBox}
                           // Optional: disable the checkbox in view mode
                           // defaultChecked
@@ -256,14 +317,15 @@ function InspectionConfig() {
                     </Form.Group>
                   </Col>
                   <Col lg="6">
+                    <Form.Label>Select Documents</Form.Label>
                     {documentListData.map((doc) => (
                       <div key={doc.documentMasterId}>
-                        <Form.Group as={Row} className="form-group mt-2">
+                        <Form.Group as={Row} className="form-group mt-1">
                           <Col sm={1}>
                             <Form.Check
                               type="checkbox"
                               id="required"
-                              checked={data.documentList.includes(
+                              checked={data.documentMasterId.includes(
                                 doc.documentMasterId
                               )}
                               onChange={() =>
