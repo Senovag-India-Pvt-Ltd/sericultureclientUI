@@ -66,11 +66,11 @@ function BudgetView() {
   }, [id]);
 
   return (
-    <Layout title="Budget View">
+    <Layout title="Beneficiary Oriented Program View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget View</Block.Title>
+            <Block.Title tag="h2">Beneficiary Oriented Program View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -99,7 +99,7 @@ function BudgetView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget View Details</Card.Header>
+          <Card.Header>Beneficiary Oriented Program View Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

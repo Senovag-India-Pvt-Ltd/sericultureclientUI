@@ -254,6 +254,7 @@ function Menu() {
     ChawkiManagement_ChawkiManagement: false,
 
     TargetSetting: false,
+    TargetSetting_Dashboard: false,
     TargetSetting_Assigning_Yearly_Targets: false,
     TargetSetting_Allocate: false,
     TargetSetting_Allocate_Budget: false,
@@ -1363,6 +1364,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Dashboard"
+                  to="/seriui/budget-dashboard"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
@@ -1421,7 +1430,7 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
-                {showMenu.TargetSetting_Release_District ? (
+                  {showMenu.TargetSetting_Release_District ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Release Budget to District"
@@ -1445,12 +1454,12 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
-      </MenuSub>
-    </MenuItem>
-    ) : null}
 
       {showMenu.Inspection ? (
         <MenuItem sub>

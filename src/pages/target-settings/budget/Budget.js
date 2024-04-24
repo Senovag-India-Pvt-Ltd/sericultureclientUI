@@ -142,11 +142,11 @@ function Budget() {
     });
   };
   return (
-    <Layout title="Budget">
+    <Layout title="Beneficiary Oriented Program">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget</Block.Title>
+            <Block.Title tag="h2">Beneficiary Oriented Program</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -179,9 +179,7 @@ function Budget() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>
-                  Budget{" "}
-                </Card.Header>
+                <Card.Header>Beneficiary Oriented Program </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">

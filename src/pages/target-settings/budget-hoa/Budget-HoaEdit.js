@@ -230,11 +230,13 @@ function BudgetHoaEdit() {
   };
 
   return (
-    <Layout title="Edit Budget To Hoa">
+    <Layout title="Edit Budget Mapping to Schemes and Programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Budget To Hoa</Block.Title>
+            <Block.Title tag="h2">
+              Edit Budget Mapping to Schemes and Programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -267,7 +269,7 @@ function BudgetHoaEdit() {
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Hoa Budget
+                  Budget Mapping to Schemes and Programs
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">

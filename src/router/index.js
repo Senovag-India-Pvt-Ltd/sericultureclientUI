@@ -696,6 +696,7 @@ import BudgetExtensionList from "../pages/target-settings/budget-extension/Budge
 import BudgetExtensionEdit from "../pages/target-settings/budget-extension/BudgetExtensionEdit";
 import BudgetExtensionView from "../pages/target-settings/budget-extension/BudgetExtensionView";
 import BudgetExtension from "../pages/target-settings/budget-extension/BudgetExtension";
+import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
 // Admin and Reports
 
 function Router() {
@@ -1379,26 +1380,12 @@ function Router() {
             <Route path="Activity-list" element={<ActivityList />} />
             <Route path="activity-view/:id" element={<ActivityView />} />
             <Route path="activity-edit/:id" element={<ActivityEdit />} />
+            <Route path="budget-dashboard" element={<BudgetDashboard />} />
 
             <Route path="budget" element={<Budget />} />
             <Route path="budget-list" element={<BudgetList />} />
             <Route path="budget-edit/:id" element={<BudgetEdit />} />
             <Route path="budget-view/:id" element={<BudgetView />} />
-
-            <Route path="budgetextension" element={<BudgetExtension />} />
-            <Route
-              path="budgetextension-list"
-              element={<BudgetExtensionList />}
-            />
-            <Route
-              path="budgetextension-edit/:id"
-              element={<BudgetExtensionEdit />}
-            />
-            <Route
-              path="budgetextension-view/:id"
-              element={<BudgetExtensionView />}
-            />
-
             <Route path="budget-hoa" element={<BudgetHoa />} />
             <Route path="budget-hoa-list" element={<BudgetHoaList />} />
             <Route path="budget-hoa-edit/:id" element={<BudgetHoaEdit />} />
@@ -1421,10 +1408,45 @@ function Router() {
             <Route path="budget-taluk-list" element={<BudgetTalukList />} />
             <Route path="budget-taluk-edit/:id" element={<BudgetTalukEdit />} />
             <Route path="budget-taluk-view/:id" element={<BudgetTalukView />} />
+
+            <Route
+              path="budgettalukextension"
+              element={<BudgetTalukExtension />}
+            />
+            <Route
+              path="budgettalukextension-list"
+              element={<BudgetTalukExtensionList />}
+            />
+            <Route
+              path="budgettalukextension-edit/:id"
+              element={<BudgetTalukExtensionEdit />}
+            />
+            <Route
+              path="budgettalukextension-view/:id"
+              element={<BudgetTalukExtensionView />}
+            />
+
             <Route path="budget-tsc" element={<BudgetTsc />} />
             <Route path="budget-tsc-list" element={<BudgetTscList />} />
             <Route path="budget-tsc-edit/:id" element={<BudgetTscEdit />} />
             <Route path="budget-tsc-view/:id" element={<BudgetTscView />} />
+
+            <Route
+              path="budgettscextension-tsc"
+              element={<BudgetTscExtension />}
+            />
+            <Route
+              path="budgettscextension-list"
+              element={<BudgetTscExtensionList />}
+            />
+            <Route
+              path="budgettscextension-edit/:id"
+              element={<BudgetTscExtensionEdit />}
+            />
+            <Route
+              path="budgettscextension-view/:id"
+              element={<BudgetTscExtensionView />}
+            />
 
             <Route
               path="financialtargetsettings"

@@ -173,11 +173,11 @@ function BudgetEdit() {
   };
 
   return (
-    <Layout title="Edit Budget">
+    <Layout title="Edit Beneficiary Oriented Program">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Budget</Block.Title>
+            <Block.Title tag="h2">Edit Beneficiary Oriented Program</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -209,7 +209,7 @@ function BudgetEdit() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Edit Budget</Card.Header>
+                <Card.Header>Edit Beneficiary Oriented Program</Card.Header>
                 <Card.Body>
                   {loading ? (
                     <h1 className="d-flex justify-content-center align-items-center">

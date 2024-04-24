@@ -187,11 +187,13 @@ function BudgetHoa() {
     });
   };
   return (
-    <Layout title="Budget To Head Of Account">
+    <Layout title="Budget Mapping to Schemes and Programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget To Head Of Account</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping to Schemes and Programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -225,7 +227,7 @@ function BudgetHoa() {
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Hoa Budget
+                  Budget Mapping to Schemes and Programs
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
