@@ -692,6 +692,10 @@ import FinancialTargetSettingsInstitutionList from "../pages/target-settings/fin
 import FinancialTargetSettingsInstitution from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitution";
 import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionEdit";
 import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
+import BudgetExtensionList from "../pages/target-settings/budget-extension/BudgetExtensionList";
+import BudgetExtensionEdit from "../pages/target-settings/budget-extension/BudgetExtensionEdit";
+import BudgetExtensionView from "../pages/target-settings/budget-extension/BudgetExtensionView";
+import BudgetExtension from "../pages/target-settings/budget-extension/BudgetExtension";
 // Admin and Reports
 
 function Router() {
@@ -1370,18 +1374,36 @@ function Router() {
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
+
             <Route path="activity" element={<Activity />} />
             <Route path="Activity-list" element={<ActivityList />} />
             <Route path="activity-view/:id" element={<ActivityView />} />
             <Route path="activity-edit/:id" element={<ActivityEdit />} />
+
             <Route path="budget" element={<Budget />} />
             <Route path="budget-list" element={<BudgetList />} />
             <Route path="budget-edit/:id" element={<BudgetEdit />} />
             <Route path="budget-view/:id" element={<BudgetView />} />
+
+            <Route path="budgetextension" element={<BudgetExtension />} />
+            <Route
+              path="budgetextension-list"
+              element={<BudgetExtensionList />}
+            />
+            <Route
+              path="budgetextension-edit/:id"
+              element={<BudgetExtensionEdit />}
+            />
+            <Route
+              path="budgetextension-view/:id"
+              element={<BudgetExtensionView />}
+            />
+
             <Route path="budget-hoa" element={<BudgetHoa />} />
             <Route path="budget-hoa-list" element={<BudgetHoaList />} />
             <Route path="budget-hoa-edit/:id" element={<BudgetHoaEdit />} />
             <Route path="budget-hoa-view/:id" element={<BudgetHoaView />} />
+
             <Route path="budget-district" element={<BudgetDistrict />} />
             <Route
               path="budget-district-view/:id"
