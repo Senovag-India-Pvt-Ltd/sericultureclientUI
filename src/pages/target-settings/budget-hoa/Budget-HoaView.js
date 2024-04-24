@@ -51,11 +51,13 @@ function BudgetHoaView() {
   }, [id]);
 
   return (
-    <Layout title="View Budget Hoa">
+    <Layout title="Budget Mapping to Schemes and Programs View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Budget Hoa</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping to Schemes and Programs View
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -84,7 +86,9 @@ function BudgetHoaView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget Hoa View Details</Card.Header>
+          <Card.Header>
+            Budget Mapping to Schemes and Programs View Details
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">

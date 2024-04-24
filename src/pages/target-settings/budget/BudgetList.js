@@ -279,11 +279,11 @@ function BudgetList() {
   ];
 
   return (
-    <Layout title="Budget List">
+    <Layout title="Beneficiary Oriented Program List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget List</Block.Title>
+            <Block.Title tag="h2">Beneficiary Oriented Program List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -315,7 +315,7 @@ function BudgetList() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Budget List </Card.Header>
+                <Card.Header>Beneficiary Oriented Program List </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
