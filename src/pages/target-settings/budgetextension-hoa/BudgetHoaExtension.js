@@ -221,6 +221,40 @@ function BudgetHoaExtension() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Head of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Head of Account</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head of Account is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                     {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
