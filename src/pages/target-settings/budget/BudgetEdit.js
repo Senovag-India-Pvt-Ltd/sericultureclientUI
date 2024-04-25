@@ -41,6 +41,31 @@ function BudgetEdit() {
     }));
   };
 
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
   // HTTP header configuration
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -206,8 +231,10 @@ function BudgetEdit() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        <Form noValidate validated={validated} onSubmit={postData}>
+      <Block className="mt-n4">
+        <Row>
+          <Col lg="8">
+          <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Block>
               <Card>
@@ -459,6 +486,26 @@ function BudgetEdit() {
             </div>
           </Row>
         </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      {/* <td>{balanceAmount}</td> */}
+                      <td>0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );
