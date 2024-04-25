@@ -17,6 +17,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ServiceApplication() {
   // Translation
@@ -28,8 +29,45 @@ function ServiceApplication() {
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
-    scCategoryId: "",
+    scCategoryId: "1",
     scVendorId: "",
+  });
+
+  const [post, setPost] = useState({
+    farmerId: "",
+    payToVendor: "",
+    headOfAccountId: "",
+    schemeId: "",
+    subSchemeId: "",
+    categoryId: "",
+    applicationFormLandDetailRequestList: [
+      {
+        unitTypeMasterId: "",
+        landDeveloped: "",
+      },
+    ],
+    applicationFormLineItemRequestList: [
+      {
+        unitTypeMasterId: "",
+        lineItemComment: "",
+        cost: "",
+        vendorId: "",
+      },
+    ],
+  });
+
+  const [developedLand, setDevelopedLand] = useState({
+    acre: "",
+    gunta: "",
+    fgunta: "",
+    unitType: "",
+  });
+
+  const [equipment, setEquipment] = useState({
+    unitType: "",
+    description: "",
+    price: "",
+    vendorId: "",
   });
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -207,31 +245,52 @@ function ServiceApplication() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const sendPost = {
+        farmerId: data.farmerId,
+        payToVendor: "",
+        headOfAccountId: data.scHeadAccountId,
+        schemeId: data.scSchemeDetailsId,
+        subSchemeId: data.scSubSchemeDetailsId,
+        categoryId: data.scCategoryId,
+        applicationFormLandDetailRequestList: [
+          {
+            unitTypeMasterId: developedLand.unitType,
+          },
+        ],
+        applicationFormLineItemRequestList: [
+          {
+            unitTypeMasterId: equipment.unitType,
+            lineItemComment: equipment.description,
+            cost: equipment.price,
+            vendorId: equipment.vendorId,
+          },
+        ],
+      };
 
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
       api
-        .post(baseURLMasterData + `Maintenance-sale/add-info`, data)
+        .post(baseURLDBT + `service/`, sendPost)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
           } else {
             saveSuccess(response.data.receiptNo);
-            setData({
-              fruitsId: "",
-              farmerName: "",
-              mulberryVarietyId: "",
-              area: "",
-              dateOfPlanting: "",
-              nurserySaleDetails: "",
-              quantity: "",
-              date: "",
-              rate: "",
-              saplingAge: "",
-              remittanceDetails: "",
-              challanUploadKey: "",
-            });
+            // setData({
+            //   fruitsId: "",
+            //   farmerName: "",
+            //   mulberryVarietyId: "",
+            //   area: "",
+            //   dateOfPlanting: "",
+            //   nurserySaleDetails: "",
+            //   quantity: "",
+            //   date: "",
+            //   rate: "",
+            //   saplingAge: "",
+            //   remittanceDetails: "",
+            //   challanUploadKey: "",
+            // });
             setValidated(false);
           }
         })
@@ -308,20 +367,6 @@ function ServiceApplication() {
     });
   };
 
-  const [developedLand, setDevelopedLand] = useState({
-    acre: "",
-    gunta: "",
-    fgunta: "",
-    unitType: "",
-  });
-
-  const [equipment, setEquipment] = useState({
-    unitType: "",
-    description: "",
-    price: "",
-    vendorId: "",
-  });
-
   const [validated, setValidated] = useState(false);
   const [searchValidated, setSearchValidated] = useState(false);
   const [listLogsData, setListLogsData] = useState({});
@@ -348,6 +393,12 @@ function ServiceApplication() {
         .then((response) => {
           console.log(response);
           if (!response.data.content.error) {
+            if (response.data.content.farmerResponse) {
+              setPost((prev) => ({
+                ...prev,
+                farmerId: response.data.content.farmerResponse.farmerId,
+              }));
+            }
             if (response.data.content.farmerLandDetailsDTOList.length > 0) {
               setLandDetailsList(
                 response.data.content.farmerLandDetailsDTOList
@@ -364,6 +415,8 @@ function ServiceApplication() {
         });
     }
   };
+
+  console.log(post);
 
   const LandDetailsColumns = [
     {
@@ -848,7 +901,7 @@ function ServiceApplication() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                required
+                                // required
                                 isInvalid={
                                   data.scCategoryId === undefined ||
                                   data.scCategoryId === "0"
@@ -1025,7 +1078,7 @@ function ServiceApplication() {
                                     onChange={handleDevelopedLandInputs}
                                     onBlur={() => handleDevelopedLandInputs}
                                     // multiple
-                                    required
+                                    // required
                                     isInvalid={
                                       developedLand.unitType === undefined ||
                                       developedLand.unitType === "0"
@@ -1135,7 +1188,7 @@ function ServiceApplication() {
                                     onChange={handleEquipmentInputs}
                                     onBlur={() => handleEquipmentInputs}
                                     // multiple
-                                    required
+                                    // required
                                     isInvalid={
                                       equipment.unitType === undefined ||
                                       equipment.unitType === "0"
@@ -1170,7 +1223,7 @@ function ServiceApplication() {
                                     onChange={handleEquipmentInputs}
                                     onBlur={() => handleEquipmentInputs}
                                     // multiple
-                                    required
+                                    // required
                                     isInvalid={
                                       equipment.vendorId === undefined ||
                                       equipment.vendorId === "0"
