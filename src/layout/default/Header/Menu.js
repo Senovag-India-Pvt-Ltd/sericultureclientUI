@@ -1246,7 +1246,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Sale/Disposal of DFLs (eggs)"
-                        to="Sale-Disposal-of-DFLs-eggs"
+                        to="/seriui/Sale-Disposal-of-DFLs-eggs"
                       />
                     </MenuItem>
                   ) : null}

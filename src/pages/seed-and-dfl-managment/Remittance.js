@@ -14,19 +14,19 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 
 function Remittance() {
   const [data, setData] = useState({
     lotNumber: "",
-    race: "",
-    noOfDFLs: "",
+    raceId: "",
+    numberOfDFLs: "",
     totalAmount: "",
     billNumber: "",
-    bankChallanNo: "",
+    bankChallanNumber: "",
     bankChallanUpload: "",
+    ktc25AndDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -53,27 +53,28 @@ function Remittance() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `Remittance/add-info`, data)
+        .post(baseURLSeedDfl + `RemittanceOfEgg/add-info`, data)
         .then((response) => {
-          if (response.data.receiptOfDflsId) {
-            const receiptId = response.data.receiptOfDflsId;
-            handleReceiptUpload(receiptId);
-          }
+          // if (response.data.receiptOfDflsId) {
+          //   const receiptId = response.data.receiptOfDflsId;
+          //   handleReceiptUpload(receiptId);
+          // }
           if (response.data.error) {
             saveError(response.data.message);
           } else {
             saveSuccess();
             setData({
-                lotNumber: "",
-                race: "",
-                noOfDFLs: "",
-                totalAmount: "",
-                billNumber: "",
-                bankChallanNo: "",
-                bankChallanUpload: "",
+              lotNumber: "",
+              raceId: "",
+              numberOfDFLs: "",
+              totalAmount: "",
+              billNumber: "",
+              bankChallanNumber: "",
+              bankChallanUpload: "",
+              ktc25AndDate: "",
             });
-            setReceiptUpload("")
-document.getElementById("viewReceipt").value = "";
+            // setReceiptUpload("")
+            // document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -88,17 +89,36 @@ document.getElementById("viewReceipt").value = "";
 
   const clear = () => {
     setData({
-        lotNumber: "",
-        race: "",
-        noOfDFLs: "",
-        totalAmount: "",
-        billNumber: "",
-        bankChallanNo: "",
-        bankChallanUpload: "",
+      lotNumber: "",
+      raceId: "",
+      numberOfDFLs: "",
+      totalAmount: "",
+      billNumber: "",
+      bankChallanNumber: "",
+      bankChallanUpload: "",
+      ktc25AndDate: "",
     });
-    setReceiptUpload("")
-    document.getElementById("viewReceipt").value = "";
+    // setReceiptUpload("")
+    // document.getElementById("viewReceipt").value = "";
   };
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
 
  
   // to get Race
@@ -139,7 +159,7 @@ document.getElementById("viewReceipt").value = "";
       formData.append("multipartFile", receiptUpload);
 
       const response = await api.post(
-        baseURL2 + `Remittane/upload-reciept?${parameters}`,
+        baseURLSeedDfl + `RemittaneOfEgg/upload-reciept?${parameters}`,
         formData,
         {
           headers: {
@@ -220,7 +240,7 @@ document.getElementById("viewReceipt").value = "";
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-              <Col lg="4">
+              {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -241,6 +261,38 @@ document.getElementById("viewReceipt").value = "";
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
+                </Col> */}
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
                 </Col>
                 
                 <Col lg="4">
@@ -251,8 +303,8 @@ document.getElementById("viewReceipt").value = "";
                     <Col>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="raceOfDfls"
-                          value={data.raceOfDfls}
+                          name="raceId"
+                          value={data.raceId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
@@ -285,13 +337,13 @@ document.getElementById("viewReceipt").value = "";
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="numberOfDFLsReceived"
-                        name="numberOfDFLsReceived"
-                        value={data.numberOfDFLsReceived}
+                        id="numberOfDFLs"
+                        name="numberOfDFLs"
+                        value={data.numberOfDFLs}
                         onChange={handleInputs}
                         maxLength="4"
-                        type="text"
-                        placeholder="Enter Number Of DFLs received"
+                        type="number"
+                        placeholder="Enter Number Of DFLs"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -312,7 +364,7 @@ document.getElementById("viewReceipt").value = "";
                         name="totalAmount"
                         value={data.totalAmount}
                         onChange={handleInputs}
-                        type="text"
+                        type="number"
                         placeholder="Enter Total Amount"
                         required
                       />
@@ -348,20 +400,44 @@ document.getElementById("viewReceipt").value = "";
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bank Challan Number/Date<span className="text-danger">*</span>
+                      KTC 25 and Date<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="bankChallanDate"
-                        name="bankChallanDate"
-                        value={data.bankChallanDate}
+                        id="ktc25AndDate"
+                        name="ktc25AndDate"
+                        value={data.ktc25AndDate}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Bank Challan Number/Date"
+                        placeholder="Enter KTC 25 and Date"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Bank Challan Number/Date is required
+                      KTC 25 and Date is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                      Bank Challan Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="bankChallanNumber"
+                        name="bankChallanNumber"
+                        value={data.bankChallanNumber}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Bank Challan Number"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Bank Challan Number is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -369,7 +445,7 @@ document.getElementById("viewReceipt").value = "";
 
                
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="fileUploadPath">
                       Upload Bank Challan(png/jpg/pdf)(Max:2mb)
@@ -395,7 +471,7 @@ document.getElementById("viewReceipt").value = "";
                       ""
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
               </Row>
             </Card.Body>
           </Card>

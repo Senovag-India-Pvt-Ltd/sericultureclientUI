@@ -12,7 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RemittanceList() {
   const [listData, setListData] = useState({});
@@ -27,7 +27,7 @@ function RemittanceList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `Remittance/get-info`)
+      .get(baseURLSeedDfl + `RemittanceOfEgg/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -73,7 +73,7 @@ function RemittanceList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `Remittance/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `RemittanceOfEgg/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -188,15 +188,15 @@ function RemittanceList() {
     },
     {
       name: "Race",
-      selector: (row) => row.race,
-      cell: (row) => <span>{row.race}</span>,
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
         name: "No Of DFls",
-        selector: (row) => row.noOfDFLs,
-        cell: (row) => <span>{row.noOfDFLs}</span>,
+        selector: (row) => row.numberOfDFLs,
+        cell: (row) => <span>{row.numberOfDFLs}</span>,
         sortable: true,
         hide: "md",
       },
@@ -216,8 +216,15 @@ function RemittanceList() {
       },
       {
         name: "Bank Challan No",
-        selector: (row) => row.bankChallanNo,
-        cell: (row) => <span>{row.bankChallanNo}</span>,
+        selector: (row) => row.bankChallanNumber,
+        cell: (row) => <span>{row.bankChallanNumber}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Ktc 25 And Date",
+        selector: (row) => row.ktc25AndDate,
+        cell: (row) => <span>{row.ktc25AndDate}</span>,
         sortable: true,
         hide: "md",
       },
@@ -235,7 +242,7 @@ function RemittanceList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-pierced-cocoons"
+                  to="/seriui/remittance"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -244,7 +251,7 @@ function RemittanceList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-pierced-cocoons"
+                  to="/seriui/remittance"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

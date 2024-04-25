@@ -117,7 +117,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
     const response = api
       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
       .then((response) => {
-        setLotListData(response.data.EggPreparation);
+        setLotListData(response.data);
       })
       .catch((err) => {
         setLotListData([]);

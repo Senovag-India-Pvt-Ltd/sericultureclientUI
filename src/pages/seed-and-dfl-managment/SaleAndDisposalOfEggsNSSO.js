@@ -446,7 +446,7 @@ function SaleAndDisposalOfEggsNSSO() {
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Sale / Disposal of DFLs 's (egg) s{" "}
+                  Sale / Disposal of DFLs(egg)
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
