@@ -245,55 +245,9 @@ function BudgetHoaExtension() {
                   </Col> */}
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="centralBudget">
-                          Central Budget Amount
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="centralBudget"
-                            name="centralBudget"
-                            value={data.centralBudget}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Central Budget Amount"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Central Budget Amount is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="stateBudget">
-                          State Budget Amount
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="stateBudget"
-                            name="stateBudget"
-                            value={data.stateBudget}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter State Budget Amount"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            State Budget Amount is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="amount">
-                          Amount<span className="text-danger">*</span>
+                          Budget Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -302,11 +256,11 @@ function BudgetHoaExtension() {
                             value={data.amount}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Amount"
+                            placeholder="Enter Budget Amount"
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Amount is required.
+                            Budget Amount is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

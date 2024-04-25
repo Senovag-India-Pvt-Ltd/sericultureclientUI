@@ -709,6 +709,10 @@ import BudgetHoaExtension from "../pages/target-settings/budgetextension-hoa/Bud
 import BudgetHoaExtensionList from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionList";
 import BudgetHoaExtensionEdit from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionEdit";
 import BudgetHoaExtensionView from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionView";
+import BudgetDistrictExtensionView from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionView";
+import BudgetDistrictExtensionEdit from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionEdit";
+import BudgetDistrictExtensionList from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionList";
+import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
 
 // Admin and Reports
 
@@ -1445,6 +1449,23 @@ function Router() {
             <Route
               path="budget-district-list"
               element={<BudgetDistrictList />}
+            />
+
+            <Route
+              path="budgetdistrictextension"
+              element={<BudgetDistrictExtension />}
+            />
+            <Route
+              path="budgetdistrictextension-view/:id"
+              element={<BudgetDistrictExtensionView />}
+            />
+            <Route
+              path="budgetdistrictextension-edit/:id"
+              element={<BudgetDistrictExtensionEdit />}
+            />
+            <Route
+              path="budgetdistrictextension-list"
+              element={<BudgetDistrictExtensionList />}
             />
             <Route path="budget-taluk" element={<BudgetTaluk />} />
             <Route path="budget-taluk-list" element={<BudgetTalukList />} />
