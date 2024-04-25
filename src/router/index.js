@@ -705,6 +705,10 @@ import BudgetInstitutionExtension from "../pages/target-settings/budgetextension
 import BudgetInstitutionExtensionList from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionList";
 import BudgetInstitutionExtensionEdit from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionEdit";
 import BudgetInstitutionExtensionView from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionView";
+import BudgetHoaExtension from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtension";
+import BudgetHoaExtensionList from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionList";
+import BudgetHoaExtensionEdit from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionEdit";
+import BudgetHoaExtensionView from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionView";
 
 // Admin and Reports
 
@@ -1408,6 +1412,20 @@ function Router() {
             <Route
               path="budgetextension-view/:id"
               element={<BudgetExtensionView />}
+            />
+
+            <Route path="budgethoaextension" element={<BudgetHoaExtension />} />
+            <Route
+              path="budgethoaextension-list"
+              element={<BudgetHoaExtensionList />}
+            />
+            <Route
+              path="budgethoaextension-edit/:id"
+              element={<BudgetHoaExtensionEdit />}
+            />
+            <Route
+              path="budgethoaextension-view/:id"
+              element={<BudgetHoaExtensionView />}
             />
 
             <Route path="budget-hoa" element={<BudgetHoa />} />
