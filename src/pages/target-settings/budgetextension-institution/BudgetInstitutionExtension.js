@@ -442,6 +442,108 @@ function BudgetInstitutionExtension() {
                     </Col>
 
                     <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="schemeId"
+                            value={data.schemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.schemeId === undefined ||
+                              data.schemeId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {talukListData.map((list) => (
+                              <option key={list.schemeId} value={list.schemeId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="subschemeId"
+                            value={data.subschemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.subschemeId === undefined ||
+                              data.subschemeId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {talukListData.map((list) => (
+                              <option
+                                key={list.subschemeId}
+                                value={list.subschemeId}
+                              >
+                                {list.subschemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Institution</option>
+                            {talukListData.map((list) => (
+                              <option
+                                key={list.categoryId}
+                                value={list.categoryId}
+                              >
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
                           Budget Amount<span className="text-danger">*</span>

@@ -148,6 +148,12 @@ function BudgetTalukExtensionView() {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Category:</td>
+                        <td>
+                          <span>{budgetDistrictData.budgetCategory}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
                           <span>{dateFormatter(budgetDistrictData.date)}</span>
