@@ -145,6 +145,12 @@ function BudgetExtensionView() {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Category:</td>
+                        <td>
+                          <span>{budgetData.budgetCategory}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
                           <span>{dateFormatter(budgetData.date)}</span>

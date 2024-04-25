@@ -297,6 +297,27 @@ function BudgetHoaExtensionList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Scheme",
+      selector: (row) => row.scheme,
+      cell: (row) => <span>{row.scheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme",
+      selector: (row) => row.subscheme,
+      cell: (row) => <span>{row.subscheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
@@ -404,6 +425,104 @@ function BudgetHoaExtensionList() {
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         Head Of Account is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Scheme
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="schemeId"
+                        value={data.schemeId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.schemeId === undefined || data.schemeId === "0"
+                        }
+                      >
+                        <option value="">Select Scheme</option>
+                        {headOfAccountListData.map((list) => (
+                          <option key={list.schemeId} value={list.schemeId}>
+                            {list.schemeName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Scheme is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Sub Scheme
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="subschemeId"
+                        value={data.subschemeId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.subschemeId === undefined ||
+                          data.subschemeId === "0"
+                        }
+                      >
+                        <option value="">Select Sub Scheme</option>
+                        {headOfAccountListData.map((list) => (
+                          <option
+                            key={list.subschemeId}
+                            value={list.subschemeId}
+                          >
+                            {list.subschemeName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Sub Scheme is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Category
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="categoryId"
+                        value={data.categoryId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.categoryId === undefined ||
+                          data.categoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {headOfAccountListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.categoryName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>

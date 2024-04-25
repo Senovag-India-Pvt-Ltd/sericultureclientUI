@@ -127,6 +127,12 @@ function BudgetHoaExtensionView() {
                           <span>{AcivityData.date}</span>
                         </td>
                       </tr>
+
+                      <td style={styles.ctstyle}>Category:</td>
+                      <td>
+                        <span>{AcivityData.budgetCategory}</span>
+                      </td>
+
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>

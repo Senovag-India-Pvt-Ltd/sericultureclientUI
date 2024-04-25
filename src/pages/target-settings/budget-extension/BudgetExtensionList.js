@@ -290,6 +290,13 @@ function BudgetExtensionList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
@@ -364,6 +371,172 @@ function BudgetExtensionList() {
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="centralBudget">
+                          Central Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="centralBudget"
+                            name="centralBudget"
+                            value={data.centralBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Central Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Central Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="stateBudget">
+                          State Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="stateBudget"
+                            name="stateBudget"
+                            value={data.stateBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter State Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            State Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="schemeId"
+                            value={data.schemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.schemeId === undefined ||
+                              data.schemeId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {financialyearListData.map((list) => (
+                              <option key={list.schemeId} value={list.schemeId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="subschemeId"
+                            value={data.subschemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.subschemeId === undefined ||
+                              data.subschemeId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.subschemeId}
+                                value={list.subschemeId}
+                              >
+                                {list.subschemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {financialyearListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

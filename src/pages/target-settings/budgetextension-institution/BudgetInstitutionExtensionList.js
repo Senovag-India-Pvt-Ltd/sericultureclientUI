@@ -352,6 +352,13 @@ function BudgetInstitutionExtensionList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
@@ -567,9 +574,10 @@ function BudgetInstitutionExtensionList() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Select Scheme<span className="text-danger">*</span>
+                          Select Scheme
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -586,7 +594,7 @@ function BudgetInstitutionExtensionList() {
                             <option value="">Select Scheme</option>
                             {districtListData.map((list) => (
                               <option key={list.schemeId} value={list.schemeId}>
-                                {list.schemeId}
+                                {list.schemeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -596,8 +604,9 @@ function BudgetInstitutionExtensionList() {
                         </div>
                       </Form.Group>
                     </Col>
+
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Select Sub Scheme
                           <span className="text-danger">*</span>
@@ -620,12 +629,44 @@ function BudgetInstitutionExtensionList() {
                                 key={list.subschemeId}
                                 value={list.subschemeId}
                               >
-                                {list.subschemeId}
+                                {list.subschemeName}
                               </option>
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Scheme is required
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {districtListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
