@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetTaluk() {
+function BudgetInstitutionExtension() {
   const [data, setData] = useState({
     financialYearMasterId: "",
     scHeadAccountId: "",
@@ -23,10 +23,6 @@ function BudgetTaluk() {
     budgetAmount: "",
   });
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -34,12 +30,6 @@ function BudgetTaluk() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
-  };
-
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
@@ -80,70 +70,29 @@ function BudgetTaluk() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      if (type.budgetType === "allocate") {
-        api
-          .post(baseURL + `tsBudgetTaluk/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-              });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
-      if (type.budgetType === "release") {
-        api
-          .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-              });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
+      api
+        .post(baseURL + `tsBudgetTaluk/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              districtId: "",
+              talukId: "",
+              date: "",
+              budgetAmount: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
       setValidated(true);
     }
   };
@@ -157,11 +106,6 @@ function BudgetTaluk() {
       date: "",
       budgetAmount: "",
     });
-    setType({
-      budgetType: "allocate",
-    });
-    setValidated(false);
-    setBalanceAmount(0);
   };
 
   // to get Financial Year
@@ -287,17 +231,19 @@ function BudgetTaluk() {
     });
   };
   return (
-    <Layout title="Budget To Taluk">
+    <Layout title="Taluk  Budget mapping scheme and programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget To Taluk</Block.Title>
+            <Block.Title tag="h2">
+              Taluk Budget mapping scheme and programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/budgetinstitutionextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -306,7 +252,7 @@ function BudgetTaluk() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/budgetinstitutionextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -325,7 +271,7 @@ function BudgetTaluk() {
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Taluk Budget
+                  Institution Budget mapping scheme and programs
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -361,61 +307,6 @@ function BudgetTaluk() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
-
-                    <Col lg={6} className="mt-5">
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="with"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="allocate"
-                                checked={type.budgetType === "allocate"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="with"
-                            >
-                              Allocate
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="3" className="ms-n4">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="without"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="release"
-                                checked={type.budgetType === "release"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="without"
-                            >
-                              Release
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
                     </Col>
 
                     <Col lg="6">
@@ -517,6 +408,142 @@ function BudgetTaluk() {
                     </Col>
 
                     <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Institution
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="institutionId"
+                            value={data.institutionId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Institution</option>
+                            {talukListData.map((list) => (
+                              <option
+                                key={list.institutionId}
+                                value={list.institutionId}
+                              >
+                                {list.talukName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Institution is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="schemeId"
+                            value={data.schemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.schemeId === undefined ||
+                              data.schemeId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {talukListData.map((list) => (
+                              <option key={list.schemeId} value={list.schemeId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="subschemeId"
+                            value={data.subschemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.subschemeId === undefined ||
+                              data.subschemeId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {talukListData.map((list) => (
+                              <option
+                                key={list.subschemeId}
+                                value={list.subschemeId}
+                              >
+                                {list.subschemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Institution</option>
+                            {talukListData.map((list) => (
+                              <option
+                                key={list.categoryId}
+                                value={list.categoryId}
+                              >
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
                           Budget Amount<span className="text-danger">*</span>
@@ -603,4 +630,4 @@ function BudgetTaluk() {
   );
 }
 
-export default BudgetTaluk;
+export default BudgetInstitutionExtension;

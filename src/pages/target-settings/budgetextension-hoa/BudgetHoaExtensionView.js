@@ -10,7 +10,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function BudgetHoaView() {
+function BudgetHoaExtensionView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,11 +51,13 @@ function BudgetHoaView() {
   }, [id]);
 
   return (
-    <Layout title="View Budget Hoa">
+    <Layout title="Budget Mapping to Schemes and Programs View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Budget Hoa</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping to Schemes and Programs View
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -84,7 +86,9 @@ function BudgetHoaView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget Hoa View Details</Card.Header>
+          <Card.Header>
+            Budget Mapping to Schemes and Programs View Details
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -106,11 +110,29 @@ function BudgetHoaView() {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Scheme:</td>
+                        <td>
+                          <span>{AcivityData.scScheme}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td>
+                          <span>{AcivityData.scSubScheme}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
                           <span>{AcivityData.date}</span>
                         </td>
                       </tr>
+
+                      <td style={styles.ctstyle}>Category:</td>
+                      <td>
+                        <span>{AcivityData.budgetCategory}</span>
+                      </td>
+
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
@@ -129,4 +151,4 @@ function BudgetHoaView() {
   );
 }
 
-export default BudgetHoaView;
+export default BudgetHoaExtensionView;

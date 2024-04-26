@@ -10,7 +10,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function BudgetHoaView() {
+function BudgetDistrictExtensionView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -21,7 +21,7 @@ function BudgetHoaView() {
 
   const { id } = useParams();
   // const [data] = useState(CasteDatas);
-  const [AcivityData, setAcivityData] = useState({});
+  const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
@@ -33,15 +33,30 @@ function BudgetHoaView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetHoa/get-join/${id}`)
+      .get(baseURL + `tsBudgetDistrict/get/${id}`)
       .then((response) => {
-        setAcivityData(response.data.content);
+        setBudgetDistrictData(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setAcivityData({});
+        setBudgetDistrictData({});
         setLoading(false);
       });
+  };
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
   };
 
   //console.log(Caste);
@@ -51,17 +66,19 @@ function BudgetHoaView() {
   }, [id]);
 
   return (
-    <Layout title="View Budget Hoa">
+    <Layout title="View District Budget mapping scheme and programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Budget Hoa</Block.Title>
+            <Block.Title tag="h2">
+              View District Budget mapping scheme and programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgetdistrictextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +87,7 @@ function BudgetHoaView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgetdistrictextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -84,7 +101,9 @@ function BudgetHoaView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Budget Hoa View Details</Card.Header>
+          <Card.Header>
+            District Budget mapping scheme and programs View Details
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -97,24 +116,42 @@ function BudgetHoaView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>Financial Year:</td>
-                        <td>{AcivityData.financialYear}</td>
+                        <td>
+                          <span>{budgetDistrictData.financialYear}</span>
+                        </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Head Of Account:</td>
+                        <td style={styles.ctstyle}> District Name:</td>
+                        <td>{budgetDistrictData.districtName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
-                          <span>{AcivityData.scHeadAccountName}</span>
+                          <span>{budgetDistrictData.budgetAmount}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Scheme:</td>
+                        <td>
+                          <span>{budgetDistrictData.budgetScheme}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td>
+                          <span>{budgetDistrictData.budgetSubScheme}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Category:</td>
+                        <td>
+                          <span>{budgetDistrictData.budgetCategory}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.date}</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Budget Amount:</td>
-                        <td>
-                          <span>{AcivityData.budgetAmount}</span>
+                          <span>{dateFormatter(budgetDistrictData.date)}</span>
                         </td>
                       </tr>
                     </tbody>
@@ -129,4 +166,4 @@ function BudgetHoaView() {
   );
 }
 
-export default BudgetHoaView;
+export default BudgetDistrictExtensionView;

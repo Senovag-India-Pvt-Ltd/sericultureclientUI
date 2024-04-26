@@ -13,17 +13,13 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function Budget() {
+function BudgetExtension() {
   const [data, setData] = useState({
     financialYearMasterId: "",
     date: "",
     centralBudget: "",
     stateBudget: "",
     amount: "",
-  });
-
-  const [type, setType] = useState({
-    budgetType: "allocate",
   });
 
   // to get Financial Year
@@ -56,12 +52,6 @@ function Budget() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
-
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -93,58 +83,41 @@ function Budget() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      if (type.budgetType === "allocate") {
-        console.log("Entered Allocate");
-        api
-          .post(baseURLTargetSetting + `tsBudget/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              clear();
+      api
+        .post(baseURLTargetSetting + `tsBudget/add`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+          } else {
+            saveSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
             }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
-      if (type.budgetType === "release") {
-        console.log("Entered Release");
-        api
-          .post(baseURLTargetSetting + `tsBudget/add`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              saveError(response.data.content.error_description);
-            } else {
-              saveSuccess();
-              clear();
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
+          }
+        });
       setValidated(true);
     }
+  };
+
+  const clear = () => {
+    setData({
+      financialYearMasterId: "",
+      date: "",
+      centralBudget: "",
+      stateBudget: "",
+      amount: "",
+    });
+    setValidated(false);
   };
 
   const styles = {
@@ -172,20 +145,6 @@ function Budget() {
     },
   };
 
-  const clear = () => {
-    setData({
-      financialYearMasterId: "",
-      date: "",
-      centralBudget: "",
-      stateBudget: "",
-      amount: "",
-    });
-    setType({
-      budgetType: "allocate",
-    });
-    setValidated(false);
-  };
-
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -208,17 +167,19 @@ function Budget() {
     });
   };
   return (
-    <Layout title="Beneficiary Oriented Program">
+    <Layout title="Budget Mapping Scheme and Programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Beneficiary Oriented Program</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping Scheme and Programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budgetextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -227,7 +188,7 @@ function Budget() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budgetextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -242,12 +203,14 @@ function Budget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg="12">
+          <Col lg="8">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header>Beneficiary Oriented Program </Card.Header>
+                    <Card.Header>
+                      Budget Mapping Scheme and Programs{" "}
+                    </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -297,10 +260,10 @@ function Budget() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
+                                    name="with"
+                                    value="withLand"
+                                    checked={data.with === "withLand"}
+                                    onChange={handleInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -313,7 +276,7 @@ function Budget() {
                                 </Form.Label>
                               </Form.Group>
                             </Col>
-                            <Col lg="3" className="ms-n5">
+                            <Col lg="3" className="ms-n4">
                               <Form.Group
                                 as={Row}
                                 className="form-group"
@@ -322,10 +285,10 @@ function Budget() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
+                                    name="with"
+                                    value="withOutLand"
+                                    checked={data.with === "withOutLand"}
+                                    onChange={handleInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -368,7 +331,7 @@ function Budget() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="centralBudget">
                               Central Budget Amount
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -378,7 +341,7 @@ function Budget() {
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter Central Budget Amount"
-                                // required
+                                required
                               />
                               <Form.Control.Feedback type="invalid">
                                 Central Budget Amount is required.
@@ -391,7 +354,7 @@ function Budget() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="stateBudget">
                               State Budget Amount
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -401,7 +364,7 @@ function Budget() {
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter State Budget Amount"
-                                // required
+                                required
                               />
                               <Form.Control.Feedback type="invalid">
                                 State Budget Amount is required.
@@ -427,6 +390,111 @@ function Budget() {
                               />
                               <Form.Control.Feedback type="invalid">
                                 Amount is required.
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="schemeId"
+                                value={data.schemeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.schemeId === undefined ||
+                                  data.schemeId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.schemeId}
+                                    value={list.schemeId}
+                                  >
+                                    {list.schemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Sub Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="subschemeId"
+                                value={data.subschemeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.subschemeId === undefined ||
+                                  data.subschemeId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Scheme</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.subschemeId}
+                                    value={list.subschemeId}
+                                  >
+                                    {list.subschemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Category
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="categoryId"
+                                value={data.categoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.categoryId === undefined ||
+                                  data.categoryId === "0"
+                                }
+                              >
+                                <option value="">Select Category</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.categoryName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Category is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -491,7 +559,7 @@ function Budget() {
               </Row>
             </Form>
           </Col>
-          {/* <Col lg="4">
+          <Col lg="4">
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
                 Available Budget Balance
@@ -501,18 +569,18 @@ function Budget() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Balance Amount:</td>
-                      <td>{balanceAmount}</td>
+                      {/* <td>{balanceAmount}</td> */}
                       <td>0</td>
                     </tr>
                   </tbody>
                 </table>
               </Card.Body>
             </Card>
-          </Col> */}
+          </Col>
         </Row>
       </Block>
     </Layout>
   );
 }
 
-export default Budget;
+export default BudgetExtension;

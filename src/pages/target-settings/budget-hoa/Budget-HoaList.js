@@ -26,6 +26,10 @@ function BudgetHoaList() {
     financialYearMasterId: "",
     scHeadAccountId: "",
   });
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
   const [show, setShow] = useState(false);
 
   const [validated, setValidated] = useState(false);
@@ -171,6 +175,12 @@ function BudgetHoaList() {
     setData({ ...data, [name]: value });
   };
 
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -300,11 +310,11 @@ function BudgetHoaList() {
   ];
 
   return (
-    <Layout title="Budget Mapping to Schemes and Programs List">
+    <Layout title="List Of Hoa Budget">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget Mapping to Schemes and Programs List</Block.Title>
+            <Block.Title tag="h2">List Of Hoa Budget</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -334,7 +344,7 @@ function BudgetHoaList() {
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>Budget Mapping to Schemes and Programs List</Card.Header>
+            <Card.Header style={{ fontWeight: "bold" }}>Hoa Budget</Card.Header>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="6">
@@ -369,6 +379,56 @@ function BudgetHoaList() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
+                </Col>
+
+                <Col lg={6} className="mt-5">
+                  <Row>
+                    <Col lg="3">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="with"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="allocate"
+                            checked={type.budgetType === "allocate"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label column sm={9} className="mt-n2" id="with">
+                          Allocate
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="3" className="ms-n5">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="without"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="release"
+                            checked={type.budgetType === "release"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label
+                          column
+                          sm={9}
+                          className="mt-n2"
+                          id="without"
+                        >
+                          Release
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                 </Col>
 
                 <Col lg="6">

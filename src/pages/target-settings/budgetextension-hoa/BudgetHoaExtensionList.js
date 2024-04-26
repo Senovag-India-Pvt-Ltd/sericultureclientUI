@@ -9,74 +9,38 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetTalukList() {
+function BudgetHoaExtensionList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-  const [show, setShow] = useState(false);
-
   const [data, setData] = useState({
     financialYearMasterId: "",
     scHeadAccountId: "",
-    districtId: "",
-    talukId: "",
   });
-
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
-
+  const [show, setShow] = useState(false);
 
   const [validated, setValidated] = useState(false);
-
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
-
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      getList();
-      setValidated(true);
-    }
-  };
 
   const getList = () => {
     // setLoading(true);
 
     api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-details`, data)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
           setShow(false);
         } else {
-          setListData(response.data.content.tsBudgetTaluk);
+          setListData(response.data.content.tsBudgetHoa);
           setShow(true);
           // saveSuccess();
           // clear();
@@ -113,7 +77,7 @@ function BudgetTalukList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: "Save attempt was not successful",
       html: errorMessage,
     });
   };
@@ -123,7 +87,7 @@ function BudgetTalukList() {
 
   const getFinancialYearList = () => {
     const response = api
-      .get(baseURL + `financialYearMaster/get-all`)
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
         setFinancialYearListData(response.data.content.financialYearMaster);
       })
@@ -140,8 +104,8 @@ function BudgetTalukList() {
   const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
   const getHeadOfAccountList = () => {
-    const response = api
-      .get(baseURL + `scHeadAccount/get-all`)
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
       .then((response) => {
         setHeadOfAccountListData(response.data.content.scHeadAccount);
       })
@@ -154,49 +118,13 @@ function BudgetTalukList() {
     getHeadOfAccountList();
   }, []);
 
-  // to get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    const response = api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get Taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = () => {
-    const response = api
-      .get(baseURL + `taluk/get-all`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getTalukList();
-  }, []);
-
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-taluk-view/${id}`);
+    navigate(`/seriui/budget-hoa-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-taluk-edit/${id}`);
+    navigate(`/seriui/budget-hoa-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -217,9 +145,9 @@ function BudgetTalukList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURLMasterData + `tsBudgetHoa/delete/${id}`)
           .then((response) => {
-            getList();
+            // getList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -234,6 +162,27 @@ function BudgetTalukList() {
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
+  };
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      getList();
+      setValidated(true);
+    }
   };
 
   createTheme(
@@ -294,7 +243,7 @@ function BudgetTalukList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetTalukId)}
+            onClick={() => handleView(row.tsBudgetHoaId)}
           >
             View
           </Button>
@@ -302,14 +251,14 @@ function BudgetTalukList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetTalukId)}
+            onClick={() => handleEdit(row.tsBudgetHoaId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetTalukId)}
+            onClick={() => deleteConfirm(row.tsBudgetHoaId)}
             className="ms-2"
           >
             Delete
@@ -342,40 +291,49 @@ function BudgetTalukList() {
       hide: "md",
     },
     {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: false,
-      hide: "md",
-    },
-    {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: false,
-      hide: "md",
-    },
-    {
       name: "Budget Amount",
       selector: (row) => row.budgetAmount,
       cell: (row) => <span>{row.budgetAmount}</span>,
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Scheme",
+      selector: (row) => row.scheme,
+      cell: (row) => <span>{row.scheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme",
+      selector: (row) => row.subscheme,
+      cell: (row) => <span>{row.subscheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
-    <Layout title="Taluk Budget List">
+    <Layout title="Budget Mapping to Schemes and Programs List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Taluk Budget List</Block.Title>
+            <Block.Title tag="h2">
+              Budget Mapping to Schemes and Programs List
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk"
+                  to="/seriui/budget-hoa"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -384,7 +342,7 @@ function BudgetTalukList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk"
+                  to="/seriui/budget-hoa"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -400,7 +358,7 @@ function BudgetTalukList() {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Taluk Budget
+              Budget Mapping to Schemes and Programs List
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
@@ -437,61 +395,6 @@ function BudgetTalukList() {
                     </div>
                   </Form.Group>
                 </Col>
-
-                <Col lg={6} className="mt-5">
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="with"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="allocate"
-                                checked={type.budgetType === "allocate"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="with"
-                            >
-                              Allocate
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="3" className="ms-n4">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="without"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="release"
-                                checked={type.budgetType === "release"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="without"
-                            >
-                              Release
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </Col>
 
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
@@ -530,29 +433,29 @@ function BudgetTalukList() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Select District<span className="text-danger">*</span>
+                      Select Scheme
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="districtId"
-                        value={data.districtId}
+                        name="schemeId"
+                        value={data.schemeId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.districtId === undefined ||
-                          data.districtId === "0"
+                          data.schemeId === undefined || data.schemeId === "0"
                         }
                       >
-                        <option value="">Select District</option>
-                        {districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                        <option value="">Select Scheme</option>
+                        {headOfAccountListData.map((list) => (
+                          <option key={list.schemeId} value={list.schemeId}>
+                            {list.schemeName}
                           </option>
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        District is required
+                        Scheme is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -561,28 +464,65 @@ function BudgetTalukList() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Select Taluk<span className="text-danger">*</span>
+                      Select Sub Scheme
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="talukId"
-                        value={data.talukId}
+                        name="subschemeId"
+                        value={data.subschemeId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.talukId === undefined || data.talukId === "0"
+                          data.subschemeId === undefined ||
+                          data.subschemeId === "0"
                         }
                       >
-                        <option value="">Select Taluk</option>
-                        {talukListData.map((list) => (
-                          <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                        <option value="">Select Sub Scheme</option>
+                        {headOfAccountListData.map((list) => (
+                          <option
+                            key={list.subschemeId}
+                            value={list.subschemeId}
+                          >
+                            {list.subschemeName}
                           </option>
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Taluk is required
+                        Sub Scheme is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Category
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="categoryId"
+                        value={data.categoryId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.categoryId === undefined ||
+                          data.categoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {headOfAccountListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.categoryName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -599,13 +539,12 @@ function BudgetTalukList() {
                 </Button>
               </li>
               {/* <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li> */}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    Cancel
+                  </Button>
+                </li> */}
             </ul>
           </div>
-          {/* </Row> */}
         </Form>
         {show ? (
           <Card className="mt-1">
@@ -635,4 +574,4 @@ function BudgetTalukList() {
   );
 }
 
-export default BudgetTalukList;
+export default BudgetHoaExtensionList;

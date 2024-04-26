@@ -16,7 +16,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetDistrictList() {
+function BudgetTalukExtensionList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -31,21 +31,17 @@ function BudgetDistrictList() {
     districtId: "",
   });
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
-
   const getList = () => {
     // setLoading(true);
 
     api
-      .post(baseURLTargetSetting + `tsBudgetDistrict/get-details`, data)
+      .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
           setShow(false);
         } else {
-          setListData(response.data.content.tsBudgetDistrict);
+          setListData(response.data.content.tsBudgetTaluk);
           setShow(true);
           // saveSuccess();
           // clear();
@@ -156,19 +152,13 @@ function BudgetDistrictList() {
     setData({ ...data, [name]: value });
   };
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };  
-
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-district-view/${id}`);
+    navigate(`/seriui/budgettalukextension-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-district-edit/${id}`);
+    navigate(`/seriui/budgettalukextension-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -189,7 +179,7 @@ function BudgetDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLMasterData + `tsBudgetDistrict/delete/${id}`)
+          .delete(baseURLMasterData + `tsBudgetTaluk/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -321,6 +311,13 @@ function BudgetDistrictList() {
       hide: "md",
     },
     {
+      name: "Taluk Name",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
       name: "Budget Amount",
       selector: (row) => row.budgetAmount,
       cell: (row) => <span>{row.budgetAmount}</span>,
@@ -334,20 +331,43 @@ function BudgetDistrictList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Scheme",
+      selector: (row) => row.scheme,
+      cell: (row) => <span>{row.scheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme",
+      selector: (row) => row.subscheme,
+      cell: (row) => <span>{row.subscheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
-    <Layout title="Budget District List">
+    <Layout title="Edit Taluk Budget mapping scheme and programs List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Budget District List</Block.Title>
+            <Block.Title tag="h2">
+              Edit Taluk Budget mapping scheme and programs List
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/budgettalukextension"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -356,7 +376,7 @@ function BudgetDistrictList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-district"
+                  to="/seriui/budgettalukextension"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -373,7 +393,9 @@ function BudgetDistrictList() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Budget to District</Card.Header>
+                <Card.Header>
+                  Taluk Budget mapping scheme and programs List
+                </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -410,61 +432,6 @@ function BudgetDistrictList() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                    <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="3" className="ms-n4">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">
@@ -533,6 +500,135 @@ function BudgetDistrictList() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label>
+                          Select Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="talukId"
+                            value={data.talukId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {districtListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.districtName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="schemeId"
+                            value={data.schemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.schemeId === undefined ||
+                              data.schemeId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {districtListData.map((list) => (
+                              <option key={list.schemeId} value={list.schemeId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="subschemeId"
+                            value={data.subschemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.subschemeId === undefined ||
+                              data.subschemeId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {districtListData.map((list) => (
+                              <option
+                                key={list.subschemeId}
+                                value={list.subschemeId}
+                              >
+                                {list.subschemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {districtListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
@@ -583,4 +679,4 @@ function BudgetDistrictList() {
   );
 }
 
-export default BudgetDistrictList;
+export default BudgetTalukExtensionList;

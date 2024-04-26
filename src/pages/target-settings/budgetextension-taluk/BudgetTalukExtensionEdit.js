@@ -2,25 +2,22 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetTalukEdit() {
+function BudgetTalukExtensionEdit() {
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
-
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
 
   let name, value;
 
@@ -31,20 +28,13 @@ function BudgetTalukEdit() {
     setData({ ...data, [name]: value });
   };
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
-
   const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+  if (data.financialYearMasterId && data.scHeadAccountId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetDistrict/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
-        districtId: data.districtId,
       })
       .then((response) => {
         if (!response.data.content) {
@@ -79,6 +69,17 @@ function BudgetTalukEdit() {
     });
   };
 
+  // Function to handle checkbox change
+  const handleCheckBox = (e) => {
+    setData((prev) => ({
+      ...prev,
+      isDefault: e.target.checked,
+    }));
+  };
+
+  // HTTP header configuration
+  const _header = { "Content-Type": "application/json", accept: "*/*" };
+
   // Function to submit form data
   const postData = (event) => {
     const form = event.currentTarget;
@@ -88,71 +89,21 @@ function BudgetTalukEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      if (type.budgetType === "allocate") {
-        api
-          .post(baseURLTargetSetting + `tsBudgetTaluk/edit`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              updateError(response.data.content.error_description);
-            } else {
-              updateSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-              });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                updateError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
-      if (type.budgetType === "release") {
-        api
-          .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/edit`, data)
-          .then((response) => {
-            if (response.data.content.error) {
-              updateError(response.data.content.error_description);
-            } else {
-              updateSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-              });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                updateError(err.response.data.validationErrors);
-              }
-            }
-          });
-      }
-
+      api
+        .post(baseURLTargetSetting + `tsBudgetDistrict/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
+        });
       setValidated(true);
     }
   };
@@ -162,23 +113,83 @@ function BudgetTalukEdit() {
     setData({
       financialYearMasterId: "",
       scHeadAccountId: "",
-      districtId: "",
-      talukId: "",
       date: "",
       budgetAmount: "",
-    });
-    setType({
-      budgetType: "allocate",
+      districtId: "",
     });
     setValidated(false);
-    setBalanceAmount(0);
   };
-  const isDataDateSet = !!data.date;
+
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  // Head of Account
+
+  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+
+  const getHeadOfAccountList = () => {
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .then((response) => {
+        setHeadOfAccountListData(response.data.content.scHeadAccount);
+      })
+      .catch((err) => {
+        setHeadOfAccountListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHeadOfAccountList();
+  }, []);
+
+  // District
+
+  // to get district
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURLMasterData + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  const isData = !!data.date;
 
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `tsBudgetTaluk/get/${id}`)
+      .get(baseURLTargetSetting + `tsBudgetDistrict/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -193,11 +204,13 @@ function BudgetTalukEdit() {
             Array.isArray(err.response.data.errorMessages) &&
             err.response.data.errorMessages.length > 0
           ) {
+            // Access the first error message from the array
+            message = err.response.data.errorMessages[0].message[0].message;
           }
         }
 
         // Display error message
-        // editError(message);
+        editError(message);
         setData({});
         setLoading(false);
       });
@@ -208,81 +221,8 @@ function BudgetTalukEdit() {
     getIdList();
   }, [id]);
 
-  // to get Financial Year
-  const [financialYearListData, setFinancialYearListData] = useState([]);
-
-  const getFinancialYearList = () => {
-    const response = api
-      .get(baseURL + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialYearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialYearListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getFinancialYearList();
-  }, []);
-
-  // to get Head Of Account
-  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
-
-  const getHeadOfAccountList = () => {
-    const response = api
-      .get(baseURL + `scHeadAccount/get-all`)
-      .then((response) => {
-        setHeadOfAccountListData(response.data.content.scHeadAccount);
-      })
-      .catch((err) => {
-        setHeadOfAccountListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getHeadOfAccountList();
-  }, []);
-
-  // to get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    const response = api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get Taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = () => {
-    const response = api
-      .get(baseURL + `taluk/get-all`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getTalukList();
-  }, []);
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
+  // Navigation hook
+  const navigate = useNavigate();
 
   // Function to handle success alert
   const updateSuccess = () => {
@@ -307,6 +247,14 @@ function BudgetTalukEdit() {
     });
   };
 
+  // Function to handle edit error
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    }).then(() => navigate("#"));
+  };
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -333,17 +281,19 @@ function BudgetTalukEdit() {
   };
 
   return (
-    <Layout title="Edit Taluk Budget">
+    <Layout title="Edit Taluk Budget mapping scheme and programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Taluk Budget</Block.Title>
+            <Block.Title tag="h2">
+              Edit Taluk Budget mapping scheme and programs
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/budgettalukextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -352,7 +302,7 @@ function BudgetTalukEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-taluk-list"
+                  to="/seriui/budgettalukextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -371,8 +321,8 @@ function BudgetTalukEdit() {
               <Row className="g-3 ">
                 <Block>
                   <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
-                      Taluk Budget
+                    <Card.Header>
+                      Edit Taluk Budget mapping scheme and programs
                     </Card.Header>
                     <Card.Body>
                       {loading ? (
@@ -382,7 +332,7 @@ function BudgetTalukEdit() {
                       ) : (
                         <Row className="g-gs">
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 Financial Year
                                 <span className="text-danger">*</span>
@@ -399,10 +349,8 @@ function BudgetTalukEdit() {
                                     data.financialYearMasterId === "0"
                                   }
                                 >
-                                  <option value="">
-                                    Select Financial Year
-                                  </option>
-                                  {financialYearListData.map((list) => (
+                                  <option value="">Select Year</option>
+                                  {financialyearListData.map((list) => (
                                     <option
                                       key={list.financialYearMasterId}
                                       value={list.financialYearMasterId}
@@ -418,63 +366,8 @@ function BudgetTalukEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg={6} className="mt-5">
-                            <Row>
-                              <Col lg="3">
-                                <Form.Group
-                                  as={Row}
-                                  className="form-group"
-                                  controlId="with"
-                                >
-                                  <Col sm={1}>
-                                    <Form.Check
-                                      type="radio"
-                                      name="budgetType"
-                                      value="allocate"
-                                      checked={type.budgetType === "allocate"}
-                                      onChange={handleTypeInputs}
-                                    />
-                                  </Col>
-                                  <Form.Label
-                                    column
-                                    sm={9}
-                                    className="mt-n2"
-                                    id="with"
-                                  >
-                                    Allocate
-                                  </Form.Label>
-                                </Form.Group>
-                              </Col>
-                              <Col lg="3" className="ms-n4">
-                                <Form.Group
-                                  as={Row}
-                                  className="form-group"
-                                  controlId="without"
-                                >
-                                  <Col sm={1}>
-                                    <Form.Check
-                                      type="radio"
-                                      name="budgetType"
-                                      value="release"
-                                      checked={type.budgetType === "release"}
-                                      onChange={handleTypeInputs}
-                                    />
-                                  </Col>
-                                  <Form.Label
-                                    column
-                                    sm={9}
-                                    className="mt-n2"
-                                    id="without"
-                                  >
-                                    Release
-                                  </Form.Label>
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                          </Col>
-
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 Head Of Account
                                 <span className="text-danger">*</span>
@@ -511,7 +404,7 @@ function BudgetTalukEdit() {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 Select District
                                 <span className="text-danger">*</span>
@@ -546,7 +439,7 @@ function BudgetTalukEdit() {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 Select Taluk
                                 <span className="text-danger">*</span>
@@ -564,7 +457,7 @@ function BudgetTalukEdit() {
                                   }
                                 >
                                   <option value="">Select Taluk</option>
-                                  {talukListData.map((list) => (
+                                  {districtListData.map((list) => (
                                     <option
                                       key={list.talukId}
                                       value={list.talukId}
@@ -581,8 +474,8 @@ function BudgetTalukEdit() {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4 ">
-                              <Form.Label htmlFor="title">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="budgetAmount">
                                 Budget Amount
                                 <span className="text-danger">*</span>
                               </Form.Label>
@@ -603,13 +496,118 @@ function BudgetTalukEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          <Col lg="6">
                             <Form.Group className="form-group mt-n4">
-                              <Form.Label>Date</Form.Label>
+                              <Form.Label>
+                                Select Scheme
+                                <span className="text-danger">*</span>
+                              </Form.Label>
                               <div className="form-control-wrap">
-                                {isDataDateSet && (
+                                <Form.Select
+                                  name="schemeId"
+                                  value={data.schemeId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.schemeId === undefined ||
+                                    data.schemeId === "0"
+                                  }
+                                >
+                                  <option value="">Select Scheme</option>
+                                  {districtListData.map((list) => (
+                                    <option
+                                      key={list.schemeId}
+                                      value={list.schemeId}
+                                    >
+                                      {list.schemeName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Scheme is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                Select Sub Scheme
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="subschemeId"
+                                  value={data.subschemeId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.subschemeId === undefined ||
+                                    data.subschemeId === "0"
+                                  }
+                                >
+                                  <option value="">Select Sub Scheme</option>
+                                  {districtListData.map((list) => (
+                                    <option
+                                      key={list.subschemeId}
+                                      value={list.subschemeId}
+                                    >
+                                      {list.subschemeName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Sub Scheme is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                Select Category
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="categoryId"
+                                  value={data.categoryId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.categoryId === undefined ||
+                                    data.categoryId === "0"
+                                  }
+                                >
+                                  <option value="">Select Category</option>
+                                  {districtListData.map((list) => (
+                                    <option
+                                      key={list.talukId}
+                                      value={list.talukId}
+                                    >
+                                      {list.categoryName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Category is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                              <div className="form-control-wrap">
+                                {isData && (
                                   <DatePicker
-                                    selected={new Date(data.date)}
+                                    selected={new Date(data.date) || null}
                                     onChange={(date) =>
                                       handleDateChange(date, "date")
                                     }
@@ -617,6 +615,7 @@ function BudgetTalukEdit() {
                                     showMonthDropdown
                                     showYearDropdown
                                     dropdownMode="select"
+                                    maxDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     required
@@ -624,9 +623,6 @@ function BudgetTalukEdit() {
                                 )}
                               </div>
                             </Form.Group>
-                            <Form.Control.Feedback type="invalid">
-                              Date is Required
-                            </Form.Control.Feedback>
                           </Col>
                         </Row>
                       )}
@@ -674,4 +670,4 @@ function BudgetTalukEdit() {
   );
 }
 
-export default BudgetTalukEdit;
+export default BudgetTalukExtensionEdit;

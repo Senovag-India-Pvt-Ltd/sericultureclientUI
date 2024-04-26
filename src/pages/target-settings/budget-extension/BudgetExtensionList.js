@@ -16,7 +16,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
-function BudgetList() {
+function BudgetExtensionList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -79,10 +79,6 @@ function BudgetList() {
     financialYearMasterId: "",
   });
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -92,19 +88,13 @@ function BudgetList() {
     setData({ ...data, [name]: value });
   };
 
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
-
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+    navigate(`/seriui/budgetextension-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+    navigate(`/seriui/budgetextension-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -286,22 +276,43 @@ function BudgetList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Scheme",
+      selector: (row) => row.scheme,
+      cell: (row) => <span>{row.scheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme",
+      selector: (row) => row.subscheme,
+      cell: (row) => <span>{row.subscheme}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.category,
+      cell: (row) => <span>{row.category}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (
-    <Layout title="Beneficiary Oriented Program List">
+    <Layout title="Budget mapping scheme and programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Beneficiary Oriented Program List
+              Budget mapping scheme and programs List
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budgetextension"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -310,7 +321,7 @@ function BudgetList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget"
+                  to="/seriui/budgetextension"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -327,7 +338,7 @@ function BudgetList() {
           <Row className="g-3 ">
             <Block>
               <Card>
-                <Card.Header>Beneficiary Oriented Program List </Card.Header>
+                <Card.Header>Budget List </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -364,59 +375,171 @@ function BudgetList() {
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg={6} className="mt-5">
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="with"
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n3">
+                        <Form.Label htmlFor="centralBudget">
+                          Central Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="centralBudget"
+                            name="centralBudget"
+                            value={data.centralBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Central Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Central Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="stateBudget">
+                          State Budget Amount
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="stateBudget"
+                            name="stateBudget"
+                            value={data.stateBudget}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter State Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            State Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="schemeId"
+                            value={data.schemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.schemeId === undefined ||
+                              data.schemeId === "0"
+                            }
                           >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="allocate"
-                                checked={type.budgetType === "allocate"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="with"
-                            >
-                              Allocate
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="3" className="ms-n4">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="without"
+                            <option value="">Select Scheme</option>
+                            {financialyearListData.map((list) => (
+                              <option key={list.schemeId} value={list.schemeId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="subschemeId"
+                            value={data.subschemeId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.subschemeId === undefined ||
+                              data.subschemeId === "0"
+                            }
                           >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="release"
-                                checked={type.budgetType === "release"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="without"
-                            >
-                              Release
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                            <option value="">Select Sub Scheme</option>
+                            {financialyearListData.map((list) => (
+                              <option
+                                key={list.subschemeId}
+                                value={list.subschemeId}
+                              >
+                                {list.subschemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="categoryId"
+                            value={data.categoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.categoryId === undefined ||
+                              data.categoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {financialyearListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -467,4 +590,4 @@ function BudgetList() {
   );
 }
 
-export default BudgetList;
+export default BudgetExtensionList;
