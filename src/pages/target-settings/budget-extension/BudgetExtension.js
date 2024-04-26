@@ -18,8 +18,12 @@ function BudgetExtension() {
     financialYearMasterId: "",
     date: "",
     centralBudget: "",
-    stateBudget: "",
+    stateBudget: "",  
     amount: "",
+  });
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
   });
 
   // to get Financial Year
@@ -40,6 +44,60 @@ function BudgetExtension() {
     getList();
   }, []);
 
+   // to get get Scheme
+   const [schemeListData, setSchemeListData] = useState([]);
+
+   const getSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSchemeDetails/get-all`)
+       .then((response) => {
+         setSchemeListData(response.data.content.scSchemeDetails);
+       })
+       .catch((err) => {
+        setSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSchemeList();
+   }, []);
+
+   // to get Sub Scheme
+   const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+   const getSubSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+       .then((response) => {
+         setSubSchemeListData(response.data.content.scSubSchemeDetails);
+       })
+       .catch((err) => {
+        setSubSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSubSchemeList();
+   }, []);
+
+   // to get Category
+   const [categoryListData, setCategoryListData] = useState([]);
+
+   const getCategoryList = () => {
+     const response = api
+       .get(baseURLMasterData + `scCategory/get-all`)
+       .then((response) => {
+         setCategoryListData(response.data.content.scCategory);
+       })
+       .catch((err) => {
+        setCategoryListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getCategoryList();
+   }, []);
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -52,6 +110,12 @@ function BudgetExtension() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -60,19 +124,24 @@ function BudgetExtension() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+  const [balanceAmount, setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -83,6 +152,7 @@ function BudgetExtension() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (type.budgetType === "allocate") {
       api
         .post(baseURLTargetSetting + `tsBudget/add`, data)
         .then((response) => {
@@ -104,7 +174,34 @@ function BudgetExtension() {
               saveError(err.response.data.validationErrors);
             }
           }
-        });
+            });
+          }
+          if (type.budgetType === "release") {
+            api
+              .post(baseURLTargetSetting + `tsBudgetHoa/add`, data)
+              .then((response) => {
+                if (response.data.content.error) {
+                  saveError(response.data.content.error_description);
+                } else {
+                  saveSuccess();
+                  clear();
+                }
+              })
+              .catch((err) => {
+                if (
+                  err.response &&
+                  err.response &&
+                  err.response.data &&
+                  err.response.data.validationErrors
+                ) {
+                  if (Object.keys(err.response.data.validationErrors).length > 0) {
+                    saveError(err.response.data.validationErrors);
+                  }
+                }
+              });
+          }
+    
+        // });
       setValidated(true);
     }
   };
@@ -117,9 +214,14 @@ function BudgetExtension() {
       stateBudget: "",
       amount: "",
     });
+    setType({
+      budgetType: "allocate",
+    });
     setValidated(false);
+    setBalanceAmount(0);
   };
 
+ 
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -145,6 +247,7 @@ function BudgetExtension() {
     },
   };
 
+  
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -205,9 +308,7 @@ function BudgetExtension() {
         <Row>
           <Col lg="8">
             <Form noValidate validated={validated} onSubmit={postData}>
-              <Row className="g-3 ">
-                <Block>
-                  <Card>
+              <Card>
                     <Card.Header>
                       Budget Mapping Scheme and Programs{" "}
                     </Card.Header>
@@ -215,7 +316,7 @@ function BudgetExtension() {
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Financial Year
                               <span className="text-danger">*</span>
@@ -258,13 +359,13 @@ function BudgetExtension() {
                                 controlId="with"
                               >
                                 <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="with"
-                                    value="withLand"
-                                    checked={data.with === "withLand"}
-                                    onChange={handleInputs}
-                                  />
+                                <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="allocate"
+                                checked={type.budgetType === "allocate"}
+                                onChange={handleTypeInputs}
+                              />
                                 </Col>
                                 <Form.Label
                                   column
@@ -283,13 +384,13 @@ function BudgetExtension() {
                                 controlId="without"
                               >
                                 <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="with"
-                                    value="withOutLand"
-                                    checked={data.with === "withOutLand"}
-                                    onChange={handleInputs}
-                                  />
+                                <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="release"
+                                checked={type.budgetType === "release"}
+                                onChange={handleTypeInputs}
+                              />
                                 </Col>
                                 <Form.Label
                                   column
@@ -414,10 +515,10 @@ function BudgetExtension() {
                                 }
                               >
                                 <option value="">Select Scheme</option>
-                                {financialyearListData.map((list) => (
+                                {schemeListData.map((list) => (
                                   <option
-                                    key={list.schemeId}
-                                    value={list.schemeId}
+                                    key={list.scSchemeDetailsId}
+                                    value={list.scSchemeDetailsId}
                                   >
                                     {list.schemeName}
                                   </option>
@@ -449,12 +550,12 @@ function BudgetExtension() {
                                 }
                               >
                                 <option value="">Select Sub Scheme</option>
-                                {financialyearListData.map((list) => (
+                                {subSchemeListData.map((list) => (
                                   <option
-                                    key={list.subschemeId}
-                                    value={list.subschemeId}
+                                    key={list.scSubSchemeDetailsId}
+                                    value={list.scSubSchemeDetailsId}
                                   >
-                                    {list.subschemeName}
+                                    {list.subSchemeName}
                                   </option>
                                 ))}
                               </Form.Select>
@@ -484,10 +585,10 @@ function BudgetExtension() {
                                 }
                               >
                                 <option value="">Select Category</option>
-                                {financialyearListData.map((list) => (
+                                {categoryListData.map((list) => (
                                   <option
-                                    key={list.talukId}
-                                    value={list.talukId}
+                                    key={list.scCategoryId}
+                                    value={list.scCategoryId}
                                   >
                                     {list.categoryName}
                                   </option>
@@ -540,7 +641,7 @@ function BudgetExtension() {
                       </Row>
                     </Card.Body>
                   </Card>
-                </Block>
+                {/* </Block> */}
 
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -556,8 +657,7 @@ function BudgetExtension() {
                     </li>
                   </ul>
                 </div>
-              </Row>
-            </Form>
+                </Form>
           </Col>
           <Col lg="4">
             <Card>
@@ -569,8 +669,7 @@ function BudgetExtension() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Balance Amount:</td>
-                      {/* <td>{balanceAmount}</td> */}
-                      <td>0</td>
+                      <td>{balanceAmount}</td>
                     </tr>
                   </tbody>
                 </table>

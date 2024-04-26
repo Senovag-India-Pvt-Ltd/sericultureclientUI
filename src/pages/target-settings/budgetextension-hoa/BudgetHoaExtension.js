@@ -16,30 +16,73 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 function BudgetHoaExtension() {
   const [data, setData] = useState({
     financialYearMasterId: "",
+    tsBudgetHoaId: "",
+    scHeadAccountId: "",
     date: "",
+    budgetAmount: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
     centralBudget: "",
-    stateBudget: "",
-    amount: "",
+    stateShare: "",
+    centralShare: "",
   });
 
-  // to get Financial Year
-  const [financialyearListData, setFinancialyearListData] = useState([]);
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
 
-  const getList = () => {
-    const response = api
-      .get(baseURLMasterData + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialyearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialyearListData([]);
-      });
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
   };
 
-  useEffect(() => {
-    getList();
-  }, []);
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
 
+  const [balanceAmount, setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+
+ 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -82,9 +125,9 @@ function BudgetHoaExtension() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (type.budgetType === "allocate") {
       api
-        .post(baseURLTargetSetting + `tsBudget/add`, data)
+        .post(baseURLTargetSetting + `tsBudgetHoaExt/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -105,6 +148,32 @@ function BudgetHoaExtension() {
             }
           }
         });
+      }
+      if (type.budgetType === "release") {
+        api
+          .post(baseURLTargetSetting + `tsBudgetHoaExt/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+
       setValidated(true);
     }
   };
@@ -112,13 +181,115 @@ function BudgetHoaExtension() {
   const clear = () => {
     setData({
       financialYearMasterId: "",
+      tsBudgetHoaId: "",
+      scHeadAccountId: "",
       date: "",
+      budgetAmount: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
       centralBudget: "",
-      stateBudget: "",
-      amount: "",
+      stateShare: "",
+      centralShare: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
+    setBalanceAmount(0);
   };
+
+  // to get Head Of Account
+  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+
+  const getHeadOfAccountList = () => {
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .then((response) => {
+        setHeadOfAccountListData(response.data.content.scHeadAccount);
+      })
+      .catch((err) => {
+        setHeadOfAccountListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getHeadOfAccountList();
+  }, []);
+
+   // to get Financial Year
+   const [financialyearListData, setFinancialyearListData] = useState([]);
+
+   const getList = () => {
+     const response = api
+       .get(baseURLMasterData + `financialYearMaster/get-all`)
+       .then((response) => {
+         setFinancialyearListData(response.data.content.financialYearMaster);
+       })
+       .catch((err) => {
+         setFinancialyearListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getList();
+   }, []);
+
+
+   // to get get Scheme
+   const [schemeListData, setSchemeListData] = useState([]);
+
+   const getSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSchemeDetails/get-all`)
+       .then((response) => {
+         setSchemeListData(response.data.content.ScSchemeDetails);
+       })
+       .catch((err) => {
+        setSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSchemeList();
+   }, []);
+
+   // to get Sub Scheme
+   const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+   const getSubSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+       .then((response) => {
+         setSubSchemeListData(response.data.content.scSubSchemeDetails);
+       })
+       .catch((err) => {
+        setSubSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSubSchemeList();
+   }, []);
+
+   // to get Category
+   const [categoryListData, setCategoryListData] = useState([]);
+
+   const getCategoryList = () => {
+     const response = api
+       .get(baseURLMasterData + `scCategory/get-all`)
+       .then((response) => {
+         setCategoryListData(response.data.content.scCategory);
+       })
+       .catch((err) => {
+        setCategoryListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getCategoryList();
+   }, []);
+ 
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -142,12 +313,12 @@ function BudgetHoaExtension() {
     });
   };
   return (
-    <Layout title="Budget Mapping Scheme and Programs">
+    <Layout title="Budget Head Of Account Mapping">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Budget Mapping Scheme and Programs
+            Budget Head Of Account Mapping
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -175,14 +346,14 @@ function BudgetHoaExtension() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Block>
+        <Row>
+          <Col lg="8">
+            <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header>
-                  Hoa Budget Mapping Scheme and Programs{" "}
+                Budget Head Of Account Mapping{" "}
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
@@ -205,7 +376,7 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Year</option>
-                            {financialyearListData.map((list) => (
+                            {financialyearListData && financialyearListData.map((list) => (
                               <option
                                 key={list.financialYearMasterId}
                                 value={list.financialYearMasterId}
@@ -221,6 +392,61 @@ function BudgetHoaExtension() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg={6} className="mt-5">
+                      <Row>
+                        <Col lg="3">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="with"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="allocate"
+                                checked={type.budgetType === "allocate"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="with"
+                            >
+                              Allocate
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="3" className="ms-n4">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="without"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="release"
+                                checked={type.budgetType === "release"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="without"
+                            >
+                              Release
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Col>
+
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label>
@@ -228,23 +454,23 @@ function BudgetHoaExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="financialYearMasterId"
-                            value={data.financialYearMasterId}
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.financialYearMasterId === undefined ||
-                              data.financialYearMasterId === "0"
+                              data.scHeadAccountId === undefined ||
+                              data.scHeadAccountId === "0"
                             }
                           >
                             <option value="">Select Head of Account</option>
-                            {financialyearListData.map((list) => (
+                            {headOfAccountListData && headOfAccountListData.map((list) => (
                               <option
-                                key={list.financialYearMasterId}
-                                value={list.financialYearMasterId}
+                                key={list.scHeadAccountId}
+                                value={list.scHeadAccountId}
                               >
-                                {list.financialYear}
+                                {list.scHeadAccountName}
                               </option>
                             ))}
                           </Form.Select>
@@ -308,19 +534,19 @@ function BudgetHoaExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="schemeId"
-                            value={data.schemeId}
+                            name="scSchemeDetailsId"
+                            value={data.scSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.schemeId === undefined ||
-                              data.schemeId === "0"
+                              data.scSchemeDetailsId === undefined ||
+                              data.scSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Scheme</option>
-                            {financialyearListData.map((list) => (
-                              <option key={list.schemeId} value={list.schemeId}>
+                            {schemeListData && schemeListData.map((list) => (
+                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                                 {list.schemeName}
                               </option>
                             ))}
@@ -340,23 +566,23 @@ function BudgetHoaExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="subschemeId"
-                            value={data.subschemeId}
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.subschemeId === undefined ||
-                              data.subschemeId === "0"
+                              data.scSubSchemeDetailsId === undefined ||
+                              data.scSubSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {financialyearListData.map((list) => (
+                            {subSchemeListData && subSchemeListData.map((list) => (
                               <option
-                                key={list.subschemeId}
-                                value={list.subschemeId}
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
                               >
-                                {list.subschemeName}
+                                {list.subSchemeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -375,19 +601,19 @@ function BudgetHoaExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="categoryId"
-                            value={data.categoryId}
+                            name="scCategoryId"
+                            value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.categoryId === undefined ||
-                              data.categoryId === "0"
+                              data.scCategoryId === undefined ||
+                              data.scCategoryId === "0"
                             }
                           >
                             <option value="">Select Category</option>
-                            {financialyearListData.map((list) => (
-                              <option key={list.talukId} value={list.talukId}>
+                            {categoryListData && categoryListData.map((list) => (
+                              <option key={list.scCategoryId} value={list.scCategoryId}>
                                 {list.categoryName}
                               </option>
                             ))}
@@ -418,46 +644,48 @@ function BudgetHoaExtension() {
                         </div>
                       </Form.Group>
                     </Col>
-
-                    {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
                   </Row>
                 </Card.Body>
               </Card>
-            </Block>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Row>
-        </Form>
+              <div className="gap-col mt-1">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    <Button type="submit" variant="primary">
+                      Save
+                    </Button>
+                  </li>
+                  <li>
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </li>
+                </ul>
+              </div>
+            </Form>
+          </Col>
+          <Col lg="4">
+            <Card>
+              <Card.Header style={{ fontWeight: "bold" }}>
+                Available Budget Balance
+              </Card.Header>
+              <Card.Body>
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}> Balance Amount:</td>
+                      <td>{balanceAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Block>
     </Layout>
   );
 }
+
 
 export default BudgetHoaExtension;

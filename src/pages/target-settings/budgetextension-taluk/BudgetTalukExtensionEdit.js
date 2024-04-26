@@ -18,6 +18,10 @@ function BudgetTalukExtensionEdit() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
+
 
   let name, value;
 
@@ -28,11 +32,17 @@ function BudgetTalukExtensionEdit() {
     setData({ ...data, [name]: value });
   };
 
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
   const [balanceAmount, setBalanceAmount] = useState(0);
 
   if (data.financialYearMasterId && data.scHeadAccountId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetDistrict/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetTalukExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
       })
@@ -69,16 +79,9 @@ function BudgetTalukExtensionEdit() {
     });
   };
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
+ 
 
-  // HTTP header configuration
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
+ 
 
   // Function to submit form data
   const postData = (event) => {
@@ -89,33 +92,92 @@ function BudgetTalukExtensionEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (type.budgetType === "allocate") {
       api
-        .post(baseURLTargetSetting + `tsBudgetDistrict/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetTalukExt/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            clear();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              date: "",
+              budgetAmount: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
-      setValidated(true);
     }
-  };
-
+    if (type.budgetType === "release") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              financialYearMasterId: "",
+              tsBudgetTalukId: "",
+              scHeadAccountId: "",
+              districtId: "",
+              talukId: "",
+              date: "",
+              budgetAmount: "",
+              scSchemeDetailsId: "",
+              scSubSchemeDetailsId: "",
+              scCategoryId: "",
+              institutionType: "",
+              institutionId: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    setValidated(true);
+  }
+};
   // Function to clear form data
   const clear = () => {
     setData({
       financialYearMasterId: "",
+      tsBudgetTalukId: "",
       scHeadAccountId: "",
+      districtId: "",
+      talukId: "",
       date: "",
       budgetAmount: "",
-      districtId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      institutionType: "",
+      institutionId: "",
     });
     setValidated(false);
   };
@@ -179,6 +241,79 @@ function BudgetTalukExtensionEdit() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+   // to get Taluk
+   const [talukListData, setTalukListData] = useState([]);
+
+   const getTalukList = () => {
+     const response = api
+       .get(baseURLMasterData + `taluk/get-all`)
+       .then((response) => {
+         setTalukListData(response.data.content.taluk);
+       })
+       .catch((err) => {
+         setTalukListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getTalukList();
+   }, []);
+
+
+   // to get get Scheme
+   const [schemeListData, setSchemeListData] = useState([]);
+
+   const getSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSchemeDetails/get-all`)
+       .then((response) => {
+         setSchemeListData(response.data.content.scSchemeDetails);
+       })
+       .catch((err) => {
+        setSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSchemeList();
+   }, []);
+
+   // to get Sub Scheme
+   const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+   const getSubSchemeList = () => {
+     const response = api
+       .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+       .then((response) => {
+         setSubSchemeListData(response.data.content.scSubSchemeDetails);
+       })
+       .catch((err) => {
+        setSubSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSubSchemeList();
+   }, []);
+
+   // to get Category
+   const [categoryListData, setCategoryListData] = useState([]);
+
+   const getCategoryList = () => {
+     const response = api
+       .get(baseURLMasterData + `scCategory/get-all`)
+       .then((response) => {
+         setCategoryListData(response.data.content.scCategory);
+       })
+       .catch((err) => {
+        setCategoryListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getCategoryList();
+   }, []);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -281,12 +416,12 @@ function BudgetTalukExtensionEdit() {
   };
 
   return (
-    <Layout title="Edit Taluk Budget mapping scheme and programs">
+    <Layout title="Edit Taluk Budget mapping ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Taluk Budget mapping scheme and programs
+              Edit Taluk Budget mapping 
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -322,7 +457,7 @@ function BudgetTalukExtensionEdit() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      Edit Taluk Budget mapping scheme and programs
+                      Edit Taluk Budget mapping
                     </Card.Header>
                     <Card.Body>
                       {loading ? (
@@ -365,6 +500,61 @@ function BudgetTalukExtensionEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg={6} className="mt-5">
+                      <Row>
+                        <Col lg="3">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="with"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="allocate"
+                                checked={type.budgetType === "allocate"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="with"
+                            >
+                              Allocate
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="3" className="ms-n4">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="without"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="release"
+                                checked={type.budgetType === "release"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="without"
+                            >
+                              Release
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Col>
 
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
@@ -457,7 +647,7 @@ function BudgetTalukExtensionEdit() {
                                   }
                                 >
                                   <option value="">Select Taluk</option>
-                                  {districtListData.map((list) => (
+                                  {talukListData.map((list) => (
                                     <option
                                       key={list.talukId}
                                       value={list.talukId}
@@ -497,109 +687,103 @@ function BudgetTalukExtensionEdit() {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="schemeId"
-                                  value={data.schemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.schemeId === undefined ||
-                                    data.schemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Scheme</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.schemeId}
-                                      value={list.schemeId}
-                                    >
-                                      {list.schemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSchemeDetailsId"
+                            value={data.scSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSchemeDetailsId === undefined ||
+                              data.scSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {schemeListData && schemeListData.map((list) => (
+                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Sub Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="subschemeId"
-                                  value={data.subschemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.subschemeId === undefined ||
-                                    data.subschemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.subschemeId}
-                                      value={list.subschemeId}
-                                    >
-                                      {list.subschemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSubSchemeDetailsId === undefined ||
+                              data.scSubSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {subSchemeListData && subSchemeListData.map((list) => (
+                              <option
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
+                              >
+                                {list.subSchemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Category
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="categoryId"
-                                  value={data.categoryId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.categoryId === undefined ||
-                                    data.categoryId === "0"
-                                  }
-                                >
-                                  <option value="">Select Category</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.talukId}
-                                      value={list.talukId}
-                                    >
-                                      {list.categoryName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Category is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scCategoryId"
+                            value={data.scCategoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scCategoryId === undefined ||
+                              data.scCategoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {categoryListData && categoryListData.map((list) => (
+                              <option key={list.scCategoryId} value={list.scCategoryId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
