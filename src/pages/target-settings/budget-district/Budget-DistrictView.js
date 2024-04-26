@@ -9,6 +9,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrictView() {
   const styles = {
@@ -19,10 +20,14 @@ function BudgetDistrictView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -32,8 +37,9 @@ function BudgetDistrictView() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+    if (type.budgetType === "allocate") {
+      api
+      .get(baseURLTargetSetting + `tsBudgetDistrict/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -42,6 +48,19 @@ function BudgetDistrictView() {
         setBudgetDistrictData({});
         setLoading(false);
       });
+    }
+    if (type.budgetType === "release") {
+      api
+      .get(baseURLTargetSetting + `tsReleaseBudgetDistrict/get-join/${id}`)
+      .then((response) => {
+        setBudgetDistrictData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setBudgetDistrictData({});
+        setLoading(false);
+      });
+    }
   };
 
   // Date Formate

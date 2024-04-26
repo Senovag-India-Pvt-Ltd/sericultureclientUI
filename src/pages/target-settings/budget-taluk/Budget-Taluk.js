@@ -43,24 +43,55 @@ function BudgetTaluk() {
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
+  if (type.budgetType === "allocate") {
+    if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetTaluk/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+          scHeadAccountId: data.scHeadAccountId,
+          districtId: data.districtId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
 
-  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
-    api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-available-balance`, {
-        financialYearMasterId: data.financialYearMasterId,
-        scHeadAccountId: data.scHeadAccountId,
-        districtId: data.districtId,
-      })
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "release") {
+    if (
+      data.financialYearMasterId &&
+      data.scHeadAccountId &&
+      data.districtId &&
+      data.talukId
+    ) {
+      api
+        .post(
+          baseURLTargetSetting + `tsReleaseBudgetTaluk/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+            scHeadAccountId: data.scHeadAccountId,
+            districtId: data.districtId,
+            talukId: data.talukId,
+          }
+        )
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
 
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
