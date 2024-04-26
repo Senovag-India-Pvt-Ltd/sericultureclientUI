@@ -22,6 +22,10 @@ function BudgetDistrict() {
     districtId: "",
   });
 
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -29,6 +33,12 @@ function BudgetDistrict() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
@@ -145,28 +155,62 @@ function BudgetDistrict() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURLTargetSetting + `tsBudgetDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+      if (type.budgetType === "allocate") {
+        api
+          .post(baseURLTargetSetting + `tsBudgetDistrict/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
             }
-          }
-        });
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+      if (type.budgetType === "release") {
+        api
+          .post(baseURLTargetSetting + `tsReleaseBudgetDistrict/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              setData({
+                financialYearMasterId: "",
+                scHeadAccountId: "",
+                date: "",
+                budgetAmount: "",
+                districtId: "",
+              });
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+
       setValidated(true);
     }
   };
@@ -203,6 +247,9 @@ function BudgetDistrict() {
       date: "",
       budgetAmount: "",
       districtId: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
     setBalanceAmount(0);
@@ -319,10 +366,10 @@ function BudgetDistrict() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withLand"
-                                    checked={data.with === "withLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="allocate"
+                                    checked={type.budgetType === "allocate"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -344,10 +391,10 @@ function BudgetDistrict() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withOutLand"
-                                    checked={data.with === "withOutLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="release"
+                                    checked={type.budgetType === "release"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label

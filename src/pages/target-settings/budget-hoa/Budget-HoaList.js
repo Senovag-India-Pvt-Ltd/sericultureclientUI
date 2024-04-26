@@ -26,6 +26,10 @@ function BudgetHoaList() {
     financialYearMasterId: "",
     scHeadAccountId: "",
   });
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
   const [show, setShow] = useState(false);
 
   const [validated, setValidated] = useState(false);
@@ -169,6 +173,12 @@ function BudgetHoaList() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
   };
 
   const postData = (event) => {
@@ -369,6 +379,56 @@ function BudgetHoaList() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
+                </Col>
+
+                <Col lg={6} className="mt-5">
+                  <Row>
+                    <Col lg="3">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="with"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="allocate"
+                            checked={type.budgetType === "allocate"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label column sm={9} className="mt-n2" id="with">
+                          Allocate
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="3" className="ms-n5">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="without"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="release"
+                            checked={type.budgetType === "release"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label
+                          column
+                          sm={9}
+                          className="mt-n2"
+                          id="without"
+                        >
+                          Release
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                 </Col>
 
                 <Col lg="6">

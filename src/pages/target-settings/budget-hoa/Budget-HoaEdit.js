@@ -17,6 +17,9 @@ function BudgetHoaEdit() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
 
   let name, value;
 
@@ -25,6 +28,12 @@ function BudgetHoaEdit() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
   };
 
   const saveSuccess = () => {
@@ -101,27 +110,66 @@ function BudgetHoaEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      api
-        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scHeadAccountId: "",
-              date: "",
-              budgetAmount: "",
-            });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
-          }
-        });
+      if (type.budgetType === "allocate") {
+        api
+          .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              updateError(response.data.content.error_description);
+            } else {
+              updateSuccess();
+              setData({
+                financialYearMasterId: "",
+                scHeadAccountId: "",
+                date: "",
+                budgetAmount: "",
+              });
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                updateError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+      if (type.budgetType === "release") {
+        api
+          .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              updateError(response.data.content.error_description);
+            } else {
+              updateSuccess();
+              setData({
+                financialYearMasterId: "",
+                scHeadAccountId: "",
+                date: "",
+                budgetAmount: "",
+              });
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                updateError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
       setValidated(true);
     }
   };
@@ -134,6 +182,11 @@ function BudgetHoaEdit() {
       date: "",
       budgetAmount: "",
     });
+    setType({
+      budgetType: "allocate",
+    });
+    setValidated(false);
+    setBalanceAmount(0);
   };
 
   const isDataDateSet = !!data.date;
@@ -323,10 +376,10 @@ function BudgetHoaEdit() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withLand"
-                                    checked={data.with === "withLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="allocate"
+                                    checked={type.budgetType === "allocate"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -348,10 +401,10 @@ function BudgetHoaEdit() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withOutLand"
-                                    checked={data.with === "withOutLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="release"
+                                    checked={type.budgetType === "release"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label

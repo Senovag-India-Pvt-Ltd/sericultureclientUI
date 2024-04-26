@@ -22,6 +22,10 @@ function Budget() {
     amount: "",
   });
 
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
+
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -51,6 +55,12 @@ function Budget() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
   };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
@@ -83,28 +93,56 @@ function Budget() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
-      api
-        .post(baseURLTargetSetting + `tsBudget/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+      if (type.budgetType === "allocate") {
+        console.log("Entered Allocate");
+        api
+          .post(baseURLTargetSetting + `tsBudget/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
             }
-          }
-        });
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+      if (type.budgetType === "release") {
+        console.log("Entered Release");
+        api
+          .post(baseURLTargetSetting + `tsBudget/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
       setValidated(true);
     }
   };
@@ -141,6 +179,9 @@ function Budget() {
       centralBudget: "",
       stateBudget: "",
       amount: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
   };
@@ -201,7 +242,7 @@ function Budget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg="8">
+          <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
@@ -256,10 +297,10 @@ function Budget() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withLand"
-                                    checked={data.with === "withLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="allocate"
+                                    checked={type.budgetType === "allocate"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -272,7 +313,7 @@ function Budget() {
                                 </Form.Label>
                               </Form.Group>
                             </Col>
-                            <Col lg="3" className="ms-n4">
+                            <Col lg="3" className="ms-n5">
                               <Form.Group
                                 as={Row}
                                 className="form-group"
@@ -281,10 +322,10 @@ function Budget() {
                                 <Col sm={1}>
                                   <Form.Check
                                     type="radio"
-                                    name="with"
-                                    value="withOutLand"
-                                    checked={data.with === "withOutLand"}
-                                    onChange={handleInputs}
+                                    name="budgetType"
+                                    value="release"
+                                    checked={type.budgetType === "release"}
+                                    onChange={handleTypeInputs}
                                   />
                                 </Col>
                                 <Form.Label
@@ -327,7 +368,7 @@ function Budget() {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="centralBudget">
                               Central Budget Amount
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -337,7 +378,7 @@ function Budget() {
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter Central Budget Amount"
-                                required
+                                // required
                               />
                               <Form.Control.Feedback type="invalid">
                                 Central Budget Amount is required.
@@ -350,7 +391,7 @@ function Budget() {
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="stateBudget">
                               State Budget Amount
-                              <span className="text-danger">*</span>
+                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -360,7 +401,7 @@ function Budget() {
                                 onChange={handleInputs}
                                 type="text"
                                 placeholder="Enter State Budget Amount"
-                                required
+                                // required
                               />
                               <Form.Control.Feedback type="invalid">
                                 State Budget Amount is required.
@@ -450,7 +491,7 @@ function Budget() {
               </Row>
             </Form>
           </Col>
-          <Col lg="4">
+          {/* <Col lg="4">
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
                 Available Budget Balance
@@ -460,14 +501,14 @@ function Budget() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Balance Amount:</td>
-                      {/* <td>{balanceAmount}</td> */}
+                      <td>{balanceAmount}</td>
                       <td>0</td>
                     </tr>
                   </tbody>
                 </table>
               </Card.Body>
             </Card>
-          </Col>
+          </Col> */}
         </Row>
       </Block>
     </Layout>
