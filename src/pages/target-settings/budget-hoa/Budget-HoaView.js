@@ -9,6 +9,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaView() {
   const styles = {
@@ -19,10 +20,14 @@ function BudgetHoaView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [AcivityData, setAcivityData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
@@ -32,16 +37,30 @@ function BudgetHoaView() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetHoa/get-join/${id}`)
-      .then((response) => {
-        setAcivityData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setAcivityData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetHoa/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetReleaseHoa/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
   };
 
   //console.log(Caste);

@@ -9,6 +9,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetView() {
   const styles = {
@@ -19,10 +20,14 @@ function BudgetView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [budgetData, setBudgetData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   // Date Formate
   const dateFormatter = (date) => {
@@ -47,16 +52,30 @@ function BudgetView() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLMasterData + `tsBudget/get/${id}`)
-      .then((response) => {
-        setBudgetData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setBudgetData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudget/get-join/${id}`)
+        .then((response) => {
+          setBudgetData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setBudgetData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetRelease/get-join/${id}`)
+        .then((response) => {
+          setBudgetData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setBudgetData({});
+          setLoading(false);
+        });
+    }
   };
 
   //console.log(Caste);
@@ -70,7 +89,9 @@ function BudgetView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Beneficiary Oriented Program View</Block.Title>
+            <Block.Title tag="h2">
+              Beneficiary Oriented Program View
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

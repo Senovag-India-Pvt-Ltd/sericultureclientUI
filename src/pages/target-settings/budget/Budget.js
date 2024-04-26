@@ -121,7 +121,7 @@ function Budget() {
       if (type.budgetType === "release") {
         console.log("Entered Release");
         api
-          .post(baseURLTargetSetting + `tsBudget/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetRelease/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);

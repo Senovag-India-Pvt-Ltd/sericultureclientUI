@@ -36,32 +36,60 @@ function BudgetHoaList() {
 
   const getList = () => {
     // setLoading(true);
-
-    api
-      .post(baseURLTargetSetting + `tsBudgetHoa/get-details`, data)
-      .then((response) => {
-        if (response.data.content.error) {
-          saveError(response.data.content.error_description);
-          setShow(false);
-        } else {
-          setListData(response.data.content.tsBudgetHoa);
-          setShow(true);
-          // saveSuccess();
-          // clear();
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
+    if (type.budgetType === "allocate") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudgetHoa);
+            setShow(true);
+            // saveSuccess();
+            // clear();
           }
-        }
-      });
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetReleaseHoa/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudgetReleaseHoa);
+            setShow(true);
+            // saveSuccess();
+            // clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
   };
 
   const saveSuccess = () => {
@@ -123,12 +151,12 @@ function BudgetHoaList() {
   }, []);
 
   const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budget-hoa-view/${id}`);
+  const handleView = (id, type) => {
+    navigate(`/seriui/budget-hoa-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/seriui/budget-hoa-edit/${id}`);
+  const handleEdit = (id, type) => {
+    navigate(`/seriui/budget-hoa-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -253,7 +281,14 @@ function BudgetHoaList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetHoaId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetHoaId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsBudgetReleaseHoaId, "release");
+              }
+            }}
           >
             View
           </Button>
@@ -261,7 +296,14 @@ function BudgetHoaList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetHoaId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetHoaId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsBudgetReleaseHoaId, "release");
+              }
+            }}
           >
             Edit
           </Button>

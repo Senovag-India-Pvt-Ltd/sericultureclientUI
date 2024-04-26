@@ -27,32 +27,62 @@ function BudgetList() {
 
   const getList = () => {
     // setLoading(true);
-
-    api
-      .post(baseURLTargetSetting + `tsBudget/get-details`, data)
-      .then((response) => {
-        if (response.data.content.error) {
-          saveError(response.data.content.error_description);
-          setShow(false);
-        } else {
-          setListData(response.data.content.tsBudget);
-          setShow(true);
-          // saveSuccess();
-          // clear();
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
+    if (type.budgetType === "allocate") {
+      console.log("Entered allocate List");
+      api
+        .post(baseURLTargetSetting + `tsBudget/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudget);
+            setShow(true);
+            // saveSuccess();
+            // clear();
           }
-        }
-      });
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    if (type.budgetType === "release") {
+      console.log("Entered release List");
+      api
+        .post(baseURLTargetSetting + `tsBudgetRelease/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudgetRelease);
+            setShow(true);
+            // saveSuccess();
+            // clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
   };
 
   console.log(listData);
@@ -99,12 +129,12 @@ function BudgetList() {
   };
 
   const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budget-view/${id}`);
+  const handleView = (id, type) => {
+    navigate(`/seriui/budget-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/seriui/budget-edit/${id}`);
+  const handleEdit = (id, type) => {
+    navigate(`/seriui/budget-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -239,7 +269,14 @@ function BudgetList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsBudgetReleaseId, "release");
+              }
+            }}
           >
             View
           </Button>
@@ -247,7 +284,14 @@ function BudgetList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsBudgetReleaseId, "release");
+              }
+            }}
           >
             Edit
           </Button>

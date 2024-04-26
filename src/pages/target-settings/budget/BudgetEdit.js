@@ -10,16 +10,17 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetEdit() {
   // Fetching id from URL params
-  const { id } = useParams();
+  const { id, types } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
 
   const [type, setType] = useState({
-    budgetType: "allocate",
+    budgetType: types,
   });
 
   let name, value;
@@ -90,7 +91,7 @@ function BudgetEdit() {
       event.preventDefault();
       if (type.budgetType === "allocate") {
         api
-          .post(baseURLMasterData + `tsBudget/edit`, data)
+          .post(baseURLTargetSetting + `tsBudget/edit`, data)
           .then((response) => {
             if (response.data.content.error) {
               updateError(response.data.content.error_description);
@@ -114,7 +115,7 @@ function BudgetEdit() {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLMasterData + `tsBudget/edit`, data)
+          .post(baseURLTargetSetting + `tsBudget/edit`, data)
           .then((response) => {
             if (response.data.content.error) {
               updateError(response.data.content.error_description);
@@ -173,32 +174,62 @@ function BudgetEdit() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLMasterData + `tsBudget/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudget/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
 
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
+          // Check if err.response is defined and not null
+          if (err.response && err.response.data) {
+            // Check if err.response.data.errorMessages is an array and has length > 0
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              // Access the first error message from the array
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
 
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetRelease/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+
+          // Check if err.response is defined and not null
+          if (err.response && err.response.data) {
+            // Check if err.response.data.errorMessages is an array and has length > 0
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              // Access the first error message from the array
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -238,7 +269,7 @@ function BudgetEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("#"));
+    });
   };
 
   return (
@@ -336,10 +367,11 @@ function BudgetEdit() {
                                   <Col sm={1}>
                                     <Form.Check
                                       type="radio"
-                                      name="with"
-                                      value="withLand"
-                                      checked={data.with === "withLand"}
-                                      onChange={handleInputs}
+                                      name="budgetType"
+                                      value="allocate"
+                                      checked={type.budgetType === "allocate"}
+                                      onChange={handleTypeInputs}
+                                      disabled
                                     />
                                   </Col>
                                   <Form.Label
@@ -352,7 +384,7 @@ function BudgetEdit() {
                                   </Form.Label>
                                 </Form.Group>
                               </Col>
-                              <Col lg="3" className="ms-n4">
+                              <Col lg="3" className="ms-n5">
                                 <Form.Group
                                   as={Row}
                                   className="form-group"
@@ -361,10 +393,11 @@ function BudgetEdit() {
                                   <Col sm={1}>
                                     <Form.Check
                                       type="radio"
-                                      name="with"
-                                      value="withOutLand"
-                                      checked={data.with === "withOutLand"}
-                                      onChange={handleInputs}
+                                      name="budgetType"
+                                      value="release"
+                                      checked={type.budgetType === "release"}
+                                      onChange={handleTypeInputs}
+                                      disabled
                                     />
                                   </Col>
                                   <Form.Label
@@ -407,7 +440,7 @@ function BudgetEdit() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="centralBudget">
                                 Central Budget Amount
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -417,7 +450,7 @@ function BudgetEdit() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Enter Central Budget Amount"
-                                  required
+                                  // required
                                 />
                                 <Form.Control.Feedback type="invalid">
                                   Central Budget Amount is required.
@@ -430,7 +463,7 @@ function BudgetEdit() {
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="stateBudget">
                                 State Budget Amount
-                                <span className="text-danger">*</span>
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -440,7 +473,7 @@ function BudgetEdit() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Enter State Budget Amount"
-                                  required
+                                  // required
                                 />
                                 <Form.Control.Feedback type="invalid">
                                   State Budget Amount is required.
