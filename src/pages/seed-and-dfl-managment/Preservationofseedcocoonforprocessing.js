@@ -9,152 +9,31 @@ import Block from "../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import axios from "axios";
+import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function Preservationofseedcocoonforprocessing() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
-
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+  
 
   const [data, setData] = useState({
-    name: "",
-    wardNumber: "",
-    passbookNumber: "",
-    fatherName: "",
-    educationId: "",
-    reelingUnitBoundary: "",
-    dob: "",
-    rationCard: "",
-    machineTypeId: "",
-    gender: "",
-    dateOfMachineInstallation: "",
-    electricityRrNumber: "",
-    casteId: "",
-    revenueDocument: "",
-    numberOfBasins: "",
-    mobileNumber: "",
-    recipientId: "",
-    mahajarDetails: "",
-    emailId: "",
-    representativeNameAddress: "",
-    loanDetails: "",
-    assignToInspectId: "",
-    gpsLat: "",
-    gpsLng: "",
-    inspectionDate: "",
-    arnNumber: "",
-    chakbandiLat: "",
-    chakbandiLng: "",
-    address: "",
-    pincode: "",
-    stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
-    receiptDate: "",
-    functionOfUnit: "",
-    reelingLicenseNumber: "",
-    feeAmount: "",
-    memberLoanDetails: "",
-    mahajarEast: "",
-    mahajarWest: "",
-    mahajarNorth: "",
-    mahajarSouth: "",
-    mahajarNorthEast: "",
-    mahajarNorthWest: "",
-    mahajarSouthEast: "",
-    mahajarSouthWest: "",
-    bankName: "",
-    bankAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    status: "",
-    licenseRenewalDate: "",
+    lotNumber: "",
+    raceId: "",
+    dateOfSeedCocoonSupply: "",
+    nameOfTheGovernmentSeedFarmOrFarmer: "",
+    spunOnDate: "",
+    cropNumber: "",
+    lineNameId: "",
+    bedNumberOrKgsOfCocoonsSupplied: "",
+    numberOfPupaExamined: "",
+    cocoonRejectionDetails: "",
+    invoiceNo: "",
+    invoiceDate: "",
+    ratePerKg: "",
+    
   });
 
   let name, value;
@@ -164,277 +43,176 @@ function Preservationofseedcocoonforprocessing() {
     setData({ ...data, [name]: value });
   };
 
+  const [validated, setValidated] = useState(false);
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
-    axios
-      .post(baseURL + `reeler/add`, data, {
-        headers: _header,
-      })
-      .then((response) => {
-        if (vbAccountList.length > 0) {
-          const reelerId = response.data.content.reelerId;
-          vbAccountList.forEach((list) => {
-            const updatedVb = {
-              ...list,
-              reelerId: reelerId,
-            };
-            axios
-              .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb, {
-                headers: _header,
-              })
-              .then((response) => {
-                saveSuccess();
-              })
-              .catch((err) => {
-                setVbAccount({});
-                saveError();
-              });
-          });
-        } else {
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
-  };
-
-  // to get Caste
-  const [casteListData, setCasteListData] = useState([]);
-
-  const getCasteList = () => {
-    axios
-      .get(baseURL2 + `caste/get-all`)
-      .then((response) => {
-        setCasteListData(response.data.content.caste);
-      })
-      .catch((err) => {
-        setCasteListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getCasteList();
-  }, []);
-
-  // to get Education
-  const [educationListData, setEducationListData] = useState([]);
-
-  const getEducationList = () => {
-    axios
-      .get(baseURL2 + `education/get-all`)
-      .then((response) => {
-        setEducationListData(response.data.content.education);
-      })
-      .catch((err) => {
-        setEducationListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getEducationList();
-  }, []);
-
-  // to get Machine Type
-  const [machineTypeListData, setMachineTypeListData] = useState([]);
-
-  const getMachineTypeList = () => {
-    axios
-      .get(baseURL2 + `machine-type-master/get-all`)
-      .then((response) => {
-        setMachineTypeListData(response.data.content.machineTypeMaster);
-      })
-      .catch((err) => {
-        setMachineTypeListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMachineTypeList();
-  }, []);
-
-  // to get Market
-  const [marketMasterListData, setMarketMasterListData] = useState([]);
-
-  const getMarketMasterList = () => {
-    axios
-      .get(baseURL2 + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketMasterListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketMasterListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMarketMasterList();
-  }, []);
-
-  // to get State
-  const [stateListData, setStateListData] = useState([]);
-
-  const getList = () => {
-    axios
-      .get(baseURL2 + `state/get-all`)
-      .then((response) => {
-        setStateListData(response.data.content.state);
-      })
-      .catch((err) => {
-        setStateListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  // to get district
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = (_id) => {
-    axios
-      .get(baseURL2 + `district/get-by-state-id/${_id}`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.stateId) {
-      getDistrictList(data.stateId);
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      api
+        .post(baseURLSeedDfl + `PreservationOfSeed/add-info`, data)
+        .then((response) => {
+          // if (response.data.receiptOfDflsId) {
+          //   const receiptId = response.data.receiptOfDflsId;
+          //   handleReceiptUpload(receiptId);
+          // }
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.invoiceNo);
+            setData({
+              lotNumber: "",
+              raceId: "",
+              dateOfSeedCocoonSupply: "",
+              nameOfTheGovernmentSeedFarmOrFarmer: "",
+              spunOnDate: "",
+              cropNumber: "",
+              lineNameId: "",
+              bedNumberOrKgsOfCocoonsSupplied: "",
+              numberOfPupaExamined: "",
+              cocoonRejectionDetails: "",
+              invoiceNo: "",
+              invoiceDate: "",
+              ratePerKg: "",
+            });
+            // setReceiptUpload("")
+            // document.getElementById("viewReceipt").value = "";
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        });
+      setValidated(true);
     }
-  }, [data.stateId]);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    axios
-      .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        setTalukListData(response.data.content.taluk);
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
   };
 
-  useEffect(() => {
-    if (data.districtId) {
-      getTalukList(data.districtId);
-    }
-  }, [data.districtId]);
+  const clear = () => {
+    setData({
+      lotNumber: "",
+      raceId: "",
+      dateOfSeedCocoonSupply: "",
+      nameOfTheGovernmentSeedFarmOrFarmer: "",
+      spunOnDate: "",
+      cropNumber: "",
+      lineNameId: "",
+      bedNumberOrKgsOfCocoonsSupplied: "",
+      numberOfPupaExamined: "",
+      cocoonRejectionDetails: "",
+      invoiceNo: "",
+      invoiceDate: "",
+      ratePerKg: "",
+    })
+  }
 
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
+// to get Lot
+const [lineNameListData, setLineNameListData] = useState([]);
 
-  const getHobliList = (_id) => {
-    axios
-      .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        setHobliListData(response.data.content.hobli);
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.talukId) {
-      getHobliList(data.talukId);
-    }
-  }, [data.talukId]);
-
-  // to get Village
-  const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    axios
-      .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.hobliId) {
-      getVillageList(data.hobliId);
-    }
-  }, [data.hobliId]);
-
-  const navigate = useNavigate();
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/reeler-license-list"));
-  };
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+const getLineNameLotList = () => {
+  api
+    .get(baseURL+ `lineNameMaster/get-all`)
+    .then((response) => {
+      setLineNameListData(response.data.content.lineNameMaster);
+    })
+    .catch((err) => {
+      setLineNameListData([]);
     });
+};
+
+useEffect(() => {
+  getLineNameLotList();
+}, []);
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
-  };
+  useEffect(() => {
+    getLotList();
+  }, []);
+
+
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL + `raceMaster/get-all`)
+       .then((response) => {
+         setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+         setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getRaceList();
+   }, []);
+  
+
+   const navigate = useNavigate();
+   const saveSuccess = (message) => {
+     Swal.fire({
+       icon: "success",
+       title: "Saved successfully",
+       text: message,
+     });
+   };
+   const saveError = (message) => {
+     let errorMessage;
+     if (typeof message === "object") {
+       errorMessage = Object.values(message).join("<br>");
+     } else {
+       errorMessage = message;
+     }
+     Swal.fire({
+       icon: "error",
+       title: "Attempt was not successful",
+       html: errorMessage,
+     });
+   };
+ 
+
 
   return (
-    <Layout title="Preservation of seed cocoon for processing">
+    <Layout title="Preservation of seed Cocoon for processing">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {" "}
               Preservation of seed cocoon for processing
             </Block.Title>
-            {/* <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Preservation of seed cocoon for processing
-                </li>
-              </ol>
-            </nav> */}
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Preservation-of-seed-cocoon-for-processing-List"
+                  to="/seriui/preservation-of-seed-cocoon-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -443,7 +221,7 @@ function Preservationofseedcocoonforprocessing() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Preservation-of-seed-cocoon-for-processing-List"
+                  to="/seriui/preservation-of-seed-cocoon-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -455,311 +233,344 @@ function Preservationofseedcocoonforprocessing() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
-        <Form action="#">
-          <Row className="g-3 ">
-            <div>
+      <Block className="mt-n4">
+        {/* <Form action="#"> */}
+        <Form noValidate validated={validated} onSubmit={postData}>
+          {/* <Row className="g-3 "> */}
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+            Preservation of seed cocoon for processing
+            </Card.Header>
+            <Card.Body>
+              {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                <Col lg="12">
-                  <Block>
-                    <Card>
-                      <Card.Header>
-                        {" "}
-                        Preservation of seed cocoon for processing{" "}
-                      </Card.Header>
-                      <Card.Body>
-                        <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Lot number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder=" Lot number"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Race (MSC,CRS 2,FC1, FC2)
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Race (MSC,CRS 2,FC1, FC2)"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Name of the Government Seed Farm/Farmer
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Name of the Government Seed Farm/Farmer"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="2">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Date of seed cocoon supply
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.pruningDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "pruningDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="2">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Spun On date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.pruningDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "pruningDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Crop Number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Crop Number"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Source (Line) of the Cocoon
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder=" Source (Line) of the Cocoon"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group ">
-                              <Form.Label>
-                                {" "}
-                                Bed number Number / Kgs of cocoons supplied
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder=" Bed number Number / Kgs of cocoons supplied"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Number of pupa examined
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Number of pupa examined "
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Rate per Kg
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Rate per Kg "
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                              Cocoon rejection details/ numbers
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Cocoon rejection details/ numbers"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Invoice No. and Date
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <DatePicker
-                                  selected={data.pruningDate}
-                                  onChange={(date) =>
-                                    handleDateChange(date, "pruningDate")
-                                  }
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  maxDate={new Date()}
-                                  dateFormat="dd/MM/yyyy"
-                                  className="form-control"
-                                  required
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                    <Col lg="12" className="text-center mt-1">
-                      <Button type="button" variant="primary">
-                        {" "}
-                        Submit{" "}
-                      </Button>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
                     </Col>
-                  </Block>
+                  </Form.Group>
                 </Col>
-                {/* <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>
-                                    Race (MSC,CSR 2,FC1, FC2)
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Date of seed cocoon supply
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Name of the Government Seed Farm/Farmer
-                                  </th>
-                                  <th style={styles.ctstyle}>Spun On date</th>
-                                  <th style={styles.ctstyle}>Crop Number</th>
-                                  <th style={styles.ctstyle}>
-                                    Source (Line) of the Cocoon
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Bed number Number / Kgs of cocoons supplied{" "}
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Number of pupa examined
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Cocoon rejection details/ numbers
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Invoice No. and Date
-                                  </th>
-                                  <th style={styles.ctstyle}>Rate per Kg</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Lot number data </td>
-                                  <td>Race (MSC,CSR 2,FC1, FC2) data</td>
-                                  <td>Date of seed cocoon supply data</td>
-                                  <td>
-                                    Name of the Government Seed Farm/Farmer data
-                                  </td>
-                                  <td>12/20/2023</td>
-                                  <td>Crop Number data</td>
-                                  <td>Source (Line) of the Cocoon data </td>
-                                  <td>
-                                    Bed number Number / Kgs of cocoons supplied
-                                    data
-                                  </td>
-                                  <td>Number of pupa examined</td>
-                                  <td>Cocoon rejection details/ numbers</td>
-                                  <td>Invoice No. and Date</td>
-                                  <td>Rate per Kg data </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col> */}
+                
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Race<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="raceId"
+                          value={data.raceId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Race</option>
+                          {raceListData.map((list) => (
+                            <option
+                              key={list.raceMasterId}
+                              value={list.raceMasterId}
+                            >
+                              {list.raceMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Race is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                          <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Name of the Government Seed Farm/Farmer<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="nameOfTheGovernmentSeedFarmOrFarmer"
+                        name="nameOfTheGovernmentSeedFarmOrFarmer"
+                        value={data.nameOfTheGovernmentSeedFarmOrFarmer}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Name of the Government Seed Farm/Farmer"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Name of the Government Seed Farm/Farmer is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="numberOfDFLsReceived">
+                    Crop Number
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="cropNumber"
+                        name="cropNumber"
+                        value={data.cropNumber}
+                        onChange={handleInputs}
+                        // maxLength="4"
+                        type="number"
+                        placeholder="Enter Crop Number"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Crop Number is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Line Name<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lineNameId"
+                          value={data.lineNameId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Line Name</option>
+                          {lineNameListData.map((list) => (
+                            <option
+                              key={list.lineNameId}
+                              value={list.lineNameId}
+                            >
+                              {list.lineName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Line Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Bed Number/Kgs of cocoons supplied<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="bedNumberOrKgsOfCocoonsSupplied"
+                        name="bedNumberOrKgsOfCocoonsSupplied"
+                        value={data.bedNumberOrKgsOfCocoonsSupplied}
+                        onChange={handleInputs}
+                        type="number"
+                        placeholder="Enter Bed Number/Kgs of cocoons supplied"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Bed Number/Kgs of cocoons supplied is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Number of pupa examined<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="numberOfPupaExamined"
+                        name="numberOfPupaExamined"
+                        value={data.numberOfPupaExamined}
+                        onChange={handleInputs}
+                        type="number"
+                        placeholder="Enter Number of pupa examined"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Number of pupa examined is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Cocoon rejection details/ numbers<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="cocoonRejectionDetails"
+                        name="cocoonRejectionDetails"
+                        value={data.cocoonRejectionDetails}
+                        onChange={handleInputs}
+                        type="number"
+                        placeholder="Enter Cocoon rejection details/ numbers"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Cocoon rejection details/ numbers is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Rate Per Kg<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="ratePerKg"
+                        name="ratePerKg"
+                        value={data.ratePerKg}
+                        onChange={handleInputs}
+                        type="number"
+                        placeholder="Enter Rate Per Kg"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Rate Per Kg is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+               
+
+                <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                              Date of seed cocoon supply<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="Date of seed cocoon supply">
+                                <DatePicker
+                                  selected={data.dateOfSeedCocoonSupply}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfSeedCocoonSupply")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Spun On Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.spunOnDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "spunOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                    <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Invoice Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.invoiceDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "invoiceDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                
               </Row>
-            </div>
-          </Row>
+            </Card.Body>
+          </Card>
+
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
   );
 }
-
 export default Preservationofseedcocoonforprocessing;

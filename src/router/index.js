@@ -645,6 +645,8 @@ import PreparationofeggsDFLsEdit from "../pages/seed-and-dfl-managment/Preparati
 import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsView";
 import ColdStorageScheduleBVEdit from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVEdit";
 import ColdStorageScheduleBVView from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVView";
+import PreservationOfSeedCocoonForProcessingEdit from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingEdit";
+import PreservationOfSeedCocoonForProcessingView from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingView";
 
 import ScHeadAccountCategory from "../pages/masters/sc-head-account-category/ScHeadAccountCategory";
 import ScHeadAccountCategoryList from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryList";
@@ -1220,8 +1222,17 @@ function Router() {
             />
 
             <Route
-              path="Preservation-of-seed-cocoon-for-processing-List"
+              path="preservation-of-seed-cocoon-list"
               element={<PreservationofseedcocoonforprocessingList />}
+            />
+
+          <Route
+              path="preservation-of-seed-cocoon-edit/:id"
+              element={<PreservationOfSeedCocoonForProcessingEdit />}
+            />
+            <Route
+              path="preservation-of-seed-cocoon-view/:id"
+              element={<PreservationOfSeedCocoonForProcessingView />}
             />
 
             <Route

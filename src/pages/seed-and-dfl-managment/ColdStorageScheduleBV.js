@@ -98,7 +98,7 @@ function ColdStorageScheduleBV() {
     const response = api
       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
       .then((response) => {
-        setLotListData(response.data.EggPreparation);
+        setLotListData(response.data);
       })
       .catch((err) => {
         setLotListData([]);
@@ -216,7 +216,7 @@ function ColdStorageScheduleBV() {
                         >
                           <option value="">Select Lot Number</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option key={list.lotNumberId} value={list.lotNumberId}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))): ""}

@@ -14,9 +14,9 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+
 
 function RegisteredSeedProducerNssoGrainages() {
   const [data, setData] = useState({
@@ -149,7 +149,7 @@ function RegisteredSeedProducerNssoGrainages() {
       }
       api
         .post(
-          baseURLFarmer +
+          baseURL +
             `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
           { fruitsId: data.fruitsId }
         )
@@ -178,12 +178,31 @@ function RegisteredSeedProducerNssoGrainages() {
     }
   };
 
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
+
   // to get Mulberry Variety
   const [varietyListData, setVarietyListData] = useState([]);
 
   const getVarietyList = () => {
     const response = api
-      .get(baseURL2 + `mulberry-variety/get-all`)
+      .get(baseURL + `mulberry-variety/get-all`)
       .then((response) => {
         setVarietyListData(response.data.content.mulberryVariety);
       })

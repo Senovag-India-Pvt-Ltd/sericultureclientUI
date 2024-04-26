@@ -10,8 +10,8 @@ import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesEdit() {
   const { id } = useParams();
@@ -94,12 +94,30 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
     getIdList();
   }, [id]);
 
+   // to get Lot
+   const [lotListData, setLotListData] = useState([]);
+
+   const getLotList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+       .then((response) => {
+         setLotListData(response.data);
+       })
+       .catch((err) => {
+         setLotListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotList();
+   }, []);
+
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
 
   const getRaceList = () => {
     const response = api
-      .get(baseURL + `raceMaster/get-all`)
+      .get(baseURL2+ `raceMaster/get-all`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
       })

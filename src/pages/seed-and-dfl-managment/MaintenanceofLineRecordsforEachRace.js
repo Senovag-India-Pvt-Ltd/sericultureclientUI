@@ -161,6 +161,8 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
       setData({ ...data, [type]: date });
     };
 
+    
+
      // to get Generation Number
    const [generationListData, setGenerationListData] = useState([]);
 
@@ -238,9 +240,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
   const getLotList = () => {
     const response = api
-      .get(baseURL2 + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
       .then((response) => {
-        setLotListData(response.data.ReceiptOfDflsFromP4GrainageLinesController);
+        setLotListData(response.data);
       })
       .catch((err) => {
         setLotListData([]);
@@ -488,7 +490,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
                           
 
-                  {/* <Col lg="4">
+                  <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -504,7 +506,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                         >
                           <option value="">Select Lot Number</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option key={list.lotNumberId} value={list.lotNumberId}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))): ""}
@@ -515,9 +517,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -537,7 +539,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">

@@ -6,19 +6,21 @@ import Block from "../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import api from "../../../src/services/auth/api";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
-function RemittanceEdit() {
+function PreservationOfSeedCocoonForProcessingEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  
 
   let name, value;
   const handleInputs = (e) => {
@@ -31,6 +33,10 @@ function RemittanceEdit() {
     setData({ ...data, [type]: date });
   };
 
+  const isDataOfSeedCocoonSet = !!data.dateOfSeedCocoonSupply;
+  const isDataSpunSet = !!data.spunOnDate;
+  const isDataInvoiceDate = !!data.invoiceDate;
+
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -42,28 +48,27 @@ function RemittanceEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `RemittanceOfEgg/update-info`, data)
+        .post(baseURLSeedDfl + `PreservationOfSeed/update-info`, data)
         .then((response) => {
-            // const receiptOfDflsId = response.data.receiptOfDflsId;
-            // if (receiptOfDflsId) {
-            //   handleReceiptUpload(receiptOfDflsId);
-            // }
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-              lotNumber: "",
-              raceId: "",
-              numberOfDFLs: "",
-              totalAmount: "",
-              billNumber: "",
-              bankChallanNumber: "",
-              bankChallanUpload: "",
-              ktc25AndDate: "",
+                lotNumber: "",
+                raceId: "",
+                dateOfSeedCocoonSupply: "",
+                nameOfTheGovernmentSeedFarmOrFarmer: "",
+                spunOnDate: "",
+                cropNumber: "",
+                lineNameId: "",
+                bedNumberOrKgsOfCocoonsSupplied: "",
+                numberOfPupaExamined: "",
+                cocoonRejectionDetails: "",
+                invoiceNo: "",
+                invoiceDate: "",
+                ratePerKg: "",
             });
-    //         setReceiptUpload("")
-    // document.getElementById("viewReceipt").value = "";
             setValidated(false);
           }
         })
@@ -79,67 +84,33 @@ function RemittanceEdit() {
 
   const clear = () => {
     setData({
-      lotNumber: "",
-      raceId: "",
-      numberOfDFLs: "",
-      totalAmount: "",
-      billNumber: "",
-      bankChallanNumber: "",
-      bankChallanUpload: "",
-      ktc25AndDate: "",
+        lotNumber: "",
+        raceId: "",
+        dateOfSeedCocoonSupply: "",
+        nameOfTheGovernmentSeedFarmOrFarmer: "",
+        spunOnDate: "",
+        cropNumber: "",
+        lineNameId: "",
+        bedNumberOrKgsOfCocoonsSupplied: "",
+        numberOfPupaExamined: "",
+        cocoonRejectionDetails: "",
+        invoiceNo: "",
+        invoiceDate: "",
+        ratePerKg: "",
     });
-    // setReceiptUpload("")
-    // document.getElementById("viewReceipt").value = "";
   };
 
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
 
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL + `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
 
-  useEffect(() => {
-    getRaceList();
-  }, []);
-
-  // to get Lot
-  const [lotListData, setLotListData] = useState([]);
-
-  const getLotList = () => {
-    const response = api
-      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
-      .then((response) => {
-        setLotListData(response.data);
-      })
-      .catch((err) => {
-        setLotListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getLotList();
-  }, []);
-
-  
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `RemittanceOfEgg/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `PreservationOfSeed/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
-        // if (response.data.viewReceipt) {
-        //   getUploadReceipt(response.data.viewReceipt);
-        // }
+        
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -153,57 +124,63 @@ function RemittanceEdit() {
     getIdList();
   }, [id]);
 
-   // Display Image
-   const [receiptUpload, setReceiptUpload] = useState("");
- 
-   const handleUploadChange = (e) => {
-     const file = e.target.files[0];
-     setReceiptUpload(file);
-     setData((prev) => ({ ...prev, viewReceipt: file.name }));
-   };
- 
-   // Upload Image to S3 Bucket
-   const handleReceiptUpload = async (receiptid) => {
-     const parameters = `receiptOfDflsId=${receiptid}`;
-     try {
-       const formData = new FormData();
-       formData.append("multipartFile", receiptUpload);
- 
-       const response = await api.post(
-         baseURLSeedDfl + `RemittanceOfEgg/upload-reciept?${parameters}`,
-         formData,
-         {
-           headers: {
-             "Content-Type": "multipart/form-data",
-           },
-         }
-       );
-       console.log("File upload response:", response.data);
-     } catch (error) {
-       console.error("Error uploading file:", error);
-     }
-   };
- 
-// To get Photo from S3 Bucket
-const [selectedUploadReceipt, setSelectedUploadReceipt] = useState(null);
+ // to get Lot
+const [lineNameListData, setLineNameListData] = useState([]);
 
-const getUploadReceipt = async (file) => {
-  const parameters = `fileName=${file}`;
-  try {
-    const response = await api.get(
-      baseURLSeedDfl + `api/s3/download?${parameters}`,
-      {
-        responseType: "arraybuffer",
-      }
-    );
-    const blob = new Blob([response.data]);
-    const url = URL.createObjectURL(blob);
-    setSelectedUploadReceipt(url);
-  } catch (error) {
-    console.error("Error fetching file:", error);
-  }
+const getLineNameLotList = () => {
+  api
+    .get(baseURL + `lineNameMaster/get-all`)
+    .then((response) => {
+      setLineNameListData(response.data.content.lineNameMaster);
+    })
+    .catch((err) => {
+      setLineNameListData([]);
+    });
 };
 
+useEffect(() => {
+  getLineNameLotList();
+}, []);
+
+  // to get Lot
+  const [lotListData, setLotListData] = useState([]);
+
+  const getLotList = () => {
+    api
+      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getLotList();
+  }, []);
+
+
+   // to get Race
+   const [raceListData, setRaceListData] = useState([]);
+
+   const getRaceList = () => {
+     const response = api
+       .get(baseURL + `raceMaster/get-all`)
+       .then((response) => {
+         setRaceListData(response.data.content.raceMaster);
+       })
+       .catch((err) => {
+         setRaceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getRaceList();
+   }, []);
+  
+
+   
   const navigate = useNavigate();
 
   const updateSuccess = (message) => {
@@ -234,17 +211,20 @@ const getUploadReceipt = async (file) => {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Edit Remittance(Eggs/PC/Others) Details">
+    <Layout title="Preservation of seed Cocoon for processing">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Remittance(Eggs/PC/Others) Details</Block.Title>
+            <Block.Title tag="h2">
+              Preservation of seed cocoon for processing
+            </Block.Title>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/remittance-list"
+                  to="/seriui/preservation-of-seed-cocoon-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -253,7 +233,7 @@ const getUploadReceipt = async (file) => {
               </li>
               <li>
                 <Link
-                  to="/seriui/remittance-list"
+                  to="/seriui/preservation-of-seed-cocoon-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -264,12 +244,11 @@ const getUploadReceipt = async (file) => {
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
-
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
-              Edit Remittance(Eggs/PC/Others) Details
+              Edit Preservation of seed cocoon for processing
             </Card.Header>
             <Card.Body>
               {loading ? (
@@ -277,30 +256,8 @@ const getUploadReceipt = async (file) => {
                   Loading...
                 </h1>
               ) : (
-                <Row className="g-gs">
-                {/* <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col> */}
 
+                <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -365,27 +322,103 @@ const getUploadReceipt = async (file) => {
                   </Form.Group>
                 </Col>
 
-                
+                     
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Name of the Government Seed Farm/Farmer<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="nameOfTheGovernmentSeedFarmOrFarmer"
+                        name="nameOfTheGovernmentSeedFarmOrFarmer"
+                        value={data.nameOfTheGovernmentSeedFarmOrFarmer}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Name of the Government Seed Farm/Farmer"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Name of the Government Seed Farm/Farmer is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs 
+                    Crop Number
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="numberOfDFLs"
-                        name="numberOfDFLs"
-                        value={data.numberOfDFLs}
+                        id="cropNumber"
+                        name="cropNumber"
+                        value={data.cropNumber}
                         onChange={handleInputs}
-                        maxLength="4"
+                        // maxLength="4"
                         type="number"
-                        placeholder="Enter Number Of DFLs received"
+                        placeholder="Enter Crop Number"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Number Of DFLs is required
+                      Crop Number is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Line Name<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lineNameId"
+                          value={data.lineNameId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Line Name</option>
+                          {lineNameListData.map((list) => (
+                            <option
+                              key={list.lineNameId}
+                              value={list.lineNameId}
+                            >
+                              {list.lineName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Line Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="invoiceDetails">
+                    Bed Number/Kgs of cocoons supplied<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="bedNumberOrKgsOfCocoonsSupplied"
+                        name="bedNumberOrKgsOfCocoonsSupplied"
+                        value={data.bedNumberOrKgsOfCocoonsSupplied}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Bed Number/Kgs of cocoons supplied"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Bed Number/Kgs of cocoons supplied is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -394,20 +427,20 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Total Amount<span className="text-danger">*</span>
+                    Number of pupa examined<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="totalAmount"
-                        name="totalAmount"
-                        value={data.totalAmount}
+                        id="numberOfPupaExamined"
+                        name="numberOfPupaExamined"
+                        value={data.numberOfPupaExamined}
                         onChange={handleInputs}
                         type="number"
-                        placeholder="Enter Total Amount"
+                        placeholder="Enter Number of pupa examined"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Total Amounts is required
+                      Number of pupa examined is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -416,20 +449,20 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Bill Number<span className="text-danger">*</span>
+                    Cocoon rejection details/ numbers<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="billNumber"
-                        name="billNumber"
-                        value={data.billNumber}
+                        id="cocoonRejectionDetails"
+                        name="cocoonRejectionDetails"
+                        value={data.cocoonRejectionDetails}
                         onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Bill Number"
+                        type="number"
+                        placeholder="Enter Cocoon rejection details/ numbers"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Bill Number is required
+                      Cocoon rejection details/ numbers is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -438,77 +471,105 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      KTC 25 and Date<span className="text-danger">*</span>
+                    Rate Per Kg<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="ktc25AndDate"
-                        name="ktc25AndDate"
-                        value={data.ktc25AndDate}
+                        id="ratePerKg"
+                        name="ratePerKg"
+                        value={data.ratePerKg}
                         onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter KTC 25 and Date"
+                        type="number"
+                        placeholder="Enter Rate Per Kg"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      KTC 25 and Date is required
+                      Rate Per Kg is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+               
+                <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                              Date of seed cocoon supply<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="Date of Seed Cocoon supply">
+                              {isDataOfSeedCocoonSet && (
+                                <DatePicker
+                                  selected={new Date(data.dateOfSeedCocoonSupply)}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfSeedCocoonSupply")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                            )}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="invoiceDetails">
-                      Bank Challan Number<span className="text-danger">*</span>
+                    <Form.Label htmlFor="sordfl">
+                      Spun On Date
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                      <Form.Control
-                        id="bankChallanNumber"
-                        name="bankChallanNumber"
-                        value={data.bankChallanNumber}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Bank Challan Number"
+                    {isDataSpunSet && (
+                      <DatePicker
+                        selected={new Date(data.spunOnDate)}
+                        onChange={(date) =>
+                          handleDateChange(date, "spunOnDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
                         required
                       />
-                      <Form.Control.Feedback type="invalid">
-                      Bank Challan Number is required
-                      </Form.Control.Feedback>
+                      )}
                     </div>
                   </Form.Group>
                 </Col>
 
-
-                {/* <Col lg="4">
+                    <Col lg="2">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="fileUploadPath">
-                      Upload Bank Challan(png/jpg/pdf)(Max:2mb)
+                    <Form.Label htmlFor="sordfl">
+                      Invoice Date
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="viewReceipt"
-                        name="viewReceipt"
-                        // value={data.photoPath}
-                        onChange={handleUploadChange}
+                    {isDataInvoiceDate && (
+                      <DatePicker
+                        selected={new Date(data.invoiceDate)}
+                        onChange={(date) =>
+                          handleDateChange(date, "invoiceDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
                       />
+                      )}
                     </div>
                   </Form.Group>
-
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {receiptUpload ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(receiptUpload)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </Form.Group>
-                </Col> */}
-                </Row>
-              )}
+                </Col>
+              </Row>
+            )}
             </Card.Body>
           </Card>
 
@@ -534,4 +595,4 @@ const getUploadReceipt = async (file) => {
   );
 }
 
-export default RemittanceEdit;
+export default PreservationOfSeedCocoonForProcessingEdit;

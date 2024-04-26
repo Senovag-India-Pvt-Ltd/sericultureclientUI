@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RemittanceView() {
   const styles = {
@@ -32,7 +32,7 @@ function RemittanceView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `Remittance/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `RemittanceOfEgg/get-info-by-id/${id}`)
       .then((response) => {
         setRemittance(response.data);
         if (response.data.viewReceipt) {
@@ -53,7 +53,7 @@ const getUploadReceipt = async (file) => {
   const parameters = `fileName=${file}`;
   try {
     const response = await api.get(
-      baseURL2 + `v1/api/s3/download?${parameters}`,
+      baseURLSeedDfl + `v1/api/s3/download?${parameters}`,
       {
         responseType: "arraybuffer",
       }
@@ -74,7 +74,7 @@ const getUploadReceipt = async (file) => {
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
-        baseURL2 + `v1/api/s3/download?${parameters}`,
+        baseURLSeedDfl + `v1/api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
         }
@@ -159,7 +159,7 @@ const getUploadReceipt = async (file) => {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number Of DFLs:</td>
-                        <td>{remittance.numberOfDFLsReceived}</td>
+                        <td>{remittance.numberOfDFLs}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Total Amount:</td>
@@ -171,9 +171,13 @@ const getUploadReceipt = async (file) => {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Bank Challan No:</td>
-                        <td>{remittance.bankChallanNo}</td>
+                        <td>{remittance.bankChallanNumber}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>KTC 25 and Date:</td>
+                        <td>{remittance.ktc25AndDate}</td>
+                      </tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}> Uploaded Receipt:</td>
                         <td>
                           {" "}
@@ -200,7 +204,7 @@ const getUploadReceipt = async (file) => {
                             </>
                           )}
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </Col>

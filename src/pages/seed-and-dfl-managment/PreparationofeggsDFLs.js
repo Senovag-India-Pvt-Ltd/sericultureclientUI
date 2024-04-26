@@ -19,86 +19,6 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLs() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
-
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
 
   const [validated, setValidated] = useState(false);
 
@@ -227,17 +147,7 @@ function PreparationofeggsDFLs() {
     });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
-  };
+ 
 
   return (
     <Layout title="Preparation of Eggs (DFLs)">
@@ -245,19 +155,7 @@ function PreparationofeggsDFLs() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">Preparation of Eggs (DFLs)</Block.Title>
-            {/* <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Preparation of Eggs (DFLs)
-                </li>
-              </ol>
-            </nav> */}
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -296,7 +194,7 @@ function PreparationofeggsDFLs() {
                       <Card.Body>
                         <Row className="g-gs">
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="numberOfCocoonsCB">
                                 Number of Cocoons (CB, Hybrid)
                                 <span className="text-danger">*</span>

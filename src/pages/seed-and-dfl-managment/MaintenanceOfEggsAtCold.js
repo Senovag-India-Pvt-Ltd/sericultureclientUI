@@ -98,7 +98,7 @@ function MaintenanceOfEggsAtCold() {
     const response = api
       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
       .then((response) => {
-        setLotListData(response.data.EggPreparation);
+        setLotListData(response.data);
       })
       .catch((err) => {
         setLotListData([]);
@@ -179,30 +179,7 @@ function MaintenanceOfEggsAtCold() {
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
-                          {/* <Col lg="4">
-                          <Form.Group className="form-group mt-n4 ">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>           
-                </Col> */}
-
-                <Col lg="4">
+                        <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -234,6 +211,38 @@ function MaintenanceOfEggsAtCold() {
                   </Form.Group>
                 </Col>
 
+                {/* <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                    Lot Number<span className="text-danger">*</span>
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option
+                              key={list.id}
+                              value={list.lotNumber}
+                            >
+                              {list.lotNumber}
+                            </option>
+                          ))):""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col> */}
+
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="numberOfDFLsReceived">
@@ -258,7 +267,7 @@ function MaintenanceOfEggsAtCold() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+                    <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Incubation Details
@@ -276,7 +285,7 @@ function MaintenanceOfEggsAtCold() {
                             </Form.Group>
                           </Col>
 
-                <Col lg="2">
+                        <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Date of Cold storage<span className="text-danger">*</span>

@@ -132,6 +132,24 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
     setData({ ...data, [type]: date });
   };
 
+   // to get Lot
+   const [lotListData, setLotListData] = useState([]);
+
+   const getLotList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+       .then((response) => {
+         setLotListData(response.data);
+       })
+       .catch((err) => {
+         setLotListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotList();
+   }, []);
+
    // to get Generation Number
  const [generationListData, setGenerationListData] = useState([]);
 
@@ -204,23 +222,6 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
     getMarketList();
   }, []);
 
-  // to get Lot
-const [lotListData, setLotListData] = useState([]);
-
-const getLotList = () => {
-  const response = api
-    .get(baseURL2 + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
-    .then((response) => {
-      setLotListData(response.data.ReceiptOfDflsFromP4GrainageLinesController);
-    })
-    .catch((err) => {
-      setLotListData([]);
-    });
-};
-
-useEffect(() => {
-  getLotList();
-}, []);
 
 
 
@@ -446,7 +447,7 @@ useEffect(() => {
 
                           
 
-                  {/* <Col lg="4">
+                <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -462,7 +463,7 @@ useEffect(() => {
                         >
                           <option value="">Select Lot Number</option>
                           {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option key={list.lotNumberId} value={list.lotNumberId}>
+                            <option key={list.id} value={list.lotNumber}>
                               {list.lotNumber}
                             </option>
                           ))): ""}
@@ -473,9 +474,9 @@ useEffect(() => {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -495,7 +496,7 @@ useEffect(() => {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
