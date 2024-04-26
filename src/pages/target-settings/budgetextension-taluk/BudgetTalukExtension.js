@@ -9,18 +9,29 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
+import { date } from "react-i18next/icu.macro";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukExtension() {
   const [data, setData] = useState({
-    financialYearMasterId: "",
-    scHeadAccountId: "",
-    districtId: "",
-    talukId: "",
-    date: "",
-    budgetAmount: "",
+      financialYearMasterId: "",
+      tsBudgetTalukId: "",
+      scHeadAccountId: "",
+      districtId: "",
+      talukId: "",
+      date: "",
+      budgetAmount: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      institutionType: "",
+      institutionId: "",
+  });
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
   });
 
   const [validated, setValidated] = useState(false);
@@ -30,6 +41,41 @@ function BudgetTalukExtension() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
@@ -70,42 +116,77 @@ function BudgetTalukExtension() {
     } else {
       event.preventDefault();
       // event.stopPropagation();
+      if (type.budgetType === "allocate") {
       api
-        .post(baseURL + `tsBudgetTaluk/add`, data)
+        .post(baseURL + `tsBudgetTalukExt/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            setData({
-              financialYearMasterId: "",
-              scHeadAccountId: "",
-              districtId: "",
-              talukId: "",
-              date: "",
-              budgetAmount: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
+      }
+      if (type.budgetType === "release") {
+        api
+          .post(baseURLTargetSetting + `tsBudgetTalukExt/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+
       setValidated(true);
     }
   };
 
+
   const clear = () => {
     setData({
       financialYearMasterId: "",
+      tsBudgetTalukId: "",
       scHeadAccountId: "",
       districtId: "",
       talukId: "",
       date: "",
       budgetAmount: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      institutionType: "",
+      institutionId: "",
     });
+    setValidated(false);
+    setBalanceAmount(0);
   };
 
   // to get Financial Year
@@ -180,10 +261,62 @@ function BudgetTalukExtension() {
     getTalukList();
   }, []);
 
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
+   // to get get Scheme
+   const [schemeListData, setSchemeListData] = useState([]);
 
+   const getSchemeList = () => {
+     const response = api
+       .get(baseURL + `scSchemeDetails/get-all`)
+       .then((response) => {
+         setSchemeListData(response.data.content.scSchemeDetails);
+       })
+       .catch((err) => {
+        setSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSchemeList();
+   }, []);
+
+   // to get Sub Scheme
+   const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+   const getSubSchemeList = () => {
+     const response = api
+       .get(baseURL + `scSubSchemeDetails/get-all`)
+       .then((response) => {
+         setSubSchemeListData(response.data.content.scSubSchemeDetails);
+       })
+       .catch((err) => {
+        setSubSchemeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSubSchemeList();
+   }, []);
+
+   // to get Category
+   const [categoryListData, setCategoryListData] = useState([]);
+
+   const getCategoryList = () => {
+     const response = api
+       .get(baseURL + `scCategory/get-all`)
+       .then((response) => {
+         setCategoryListData(response.data.content.scCategory);
+       })
+       .catch((err) => {
+        setCategoryListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getCategoryList();
+   }, []);
+
+
+  
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -193,30 +326,7 @@ function BudgetTalukExtension() {
     });
   };
 
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-    top: {
-      backgroundColor: "rgb(15, 108, 190, 1)",
-      color: "rgb(255, 255, 255)",
-      width: "50%",
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    bottom: {
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    sweetsize: {
-      width: "100px",
-      height: "100px",
-    },
-  };
+  
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -236,7 +346,7 @@ function BudgetTalukExtension() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Taluk Budget mapping scheme and programs
+              Taluk Budget mapping 
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -271,7 +381,7 @@ function BudgetTalukExtension() {
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
-                  Taluk Budget mapping scheme and programs
+                  Taluk Budget mapping 
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -307,6 +417,61 @@ function BudgetTalukExtension() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
+
+                    <Col lg={6} className="mt-5">
+                      <Row>
+                        <Col lg="3">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="with"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="allocate"
+                                checked={type.budgetType === "allocate"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="with"
+                            >
+                              Allocate
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="3" className="ms-n4">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="without"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="release"
+                                checked={type.budgetType === "release"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="without"
+                            >
+                              Release
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                      </Row>
                     </Col>
 
                     <Col lg="6">
@@ -437,19 +602,19 @@ function BudgetTalukExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="schemeId"
-                            value={data.schemeId}
+                            name="scSchemeDetailsId"
+                            value={data.scSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.schemeId === undefined ||
-                              data.schemeId === "0"
+                              data.scSchemeDetailsId === undefined ||
+                              data.scSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Scheme</option>
-                            {districtListData.map((list) => (
-                              <option key={list.schemeId} value={list.schemeId}>
+                            {schemeListData && schemeListData.map((list) => (
+                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                                 {list.schemeName}
                               </option>
                             ))}
@@ -469,23 +634,23 @@ function BudgetTalukExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="subschemeId"
-                            value={data.subschemeId}
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.subschemeId === undefined ||
-                              data.subschemeId === "0"
+                              data.scSubSchemeDetailsId === undefined ||
+                              data.scSubSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {districtListData.map((list) => (
+                            {subSchemeListData && subSchemeListData.map((list) => (
                               <option
-                                key={list.subschemeId}
-                                value={list.subschemeId}
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
                               >
-                                {list.subschemeName}
+                                {list.subSchemeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -504,19 +669,19 @@ function BudgetTalukExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="categoryId"
-                            value={data.categoryId}
+                            name="scCategoryId"
+                            value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.categoryId === undefined ||
-                              data.categoryId === "0"
+                              data.scCategoryId === undefined ||
+                              data.scCategoryId === "0"
                             }
                           >
                             <option value="">Select Category</option>
-                            {districtListData.map((list) => (
-                              <option key={list.talukId} value={list.talukId}>
+                            {categoryListData && categoryListData.map((list) => (
+                              <option key={list.scCategoryId} value={list.scCategoryId}>
                                 {list.categoryName}
                               </option>
                             ))}
