@@ -14,13 +14,14 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrictExtensionEdit() {
   // Fetching id from URL params
-  const { id } = useParams();
+  const { id, types  } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
   const [type, setType] = useState({
-    budgetType: "allocate",
+    budgetType: types,
   });
+
 
   let name, value;
 
@@ -64,7 +65,7 @@ function BudgetDistrictExtensionEdit() {
 
 
   const [balanceAmount, setBalanceAmount] = useState(0);
-
+  if (type.budgetType === "allocate") {
   if (data.financialYearMasterId && data.scHeadAccountId) {
     api
       .post(baseURLTargetSetting + `tsBudgetDistrictExt/get-available-balance`, {
@@ -82,6 +83,34 @@ function BudgetDistrictExtensionEdit() {
         // setFinancialYearListData([]);
       });
   }
+
+}
+
+if (type.budgetType === "release") {
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+    api
+      .post(
+        baseURLTargetSetting +
+          `tsReleaseBudgetDistrictExt/get-available-balance`,
+        {
+          financialYearMasterId: data.financialYearMasterId,
+          scHeadAccountId: data.scHeadAccountId,
+          districtId: data.districtId,
+        }
+      )
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+}
+
 
   const saveSuccess = () => {
     Swal.fire({
@@ -132,20 +161,7 @@ function BudgetDistrictExtensionEdit() {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scHeadAccountId: "",
-              districtId: "",
-              tsBudgetDistrictId: "",
-              date: "",
-              budgetAmount: "",
-              scSchemeDetailsId: "",
-              scSubSchemeDetailsId: "",
-              scCategoryId: "",
-              institutionType: "",
-              institutionId: "",
-            });
-            setValidated(false);
+            clear();
           }
         })
         .catch((err) => {
@@ -169,22 +185,10 @@ function BudgetDistrictExtensionEdit() {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scHeadAccountId: "",
-              districtId: "",
-              tsBudgetDistrictId: "",
-              date: "",
-              budgetAmount: "",
-              scSchemeDetailsId: "",
-              scSubSchemeDetailsId: "",
-              scCategoryId: "",
-              institutionType: "",
-              institutionId: "",
-            });
-            setValidated(false);
-          }
-        })
+            updateSuccess();
+              clear();
+            }
+          })
         .catch((err) => {
           if (
             err.response &&
@@ -344,32 +348,56 @@ function BudgetDistrictExtensionEdit() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetDistrictExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
 
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
 
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -409,7 +437,7 @@ function BudgetDistrictExtensionEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("#"));
+    });
   };
   
 
@@ -498,6 +526,64 @@ function BudgetDistrictExtensionEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg={6} className="mt-5">
+                            <Row>
+                              <Col lg="3">
+                                <Form.Group
+                                  as={Row}
+                                  className="form-group"
+                                  controlId="with"
+                                >
+                                  <Col sm={1}>
+                                    <Form.Check
+                                      type="radio"
+                                      name="budgetType"
+                                      value="allocate"
+                                      checked={type.budgetType === "allocate"}
+                                      onChange={handleTypeInputs}
+                                      disabled
+                                    />
+                                  </Col>
+                                  <Form.Label
+                                    column
+                                    sm={9}
+                                    className="mt-n2"
+                                    id="with"
+                                  >
+                                    Allocate
+                                  </Form.Label>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="3" className="ms-n4">
+                                <Form.Group
+                                  as={Row}
+                                  className="form-group"
+                                  controlId="without"
+                                >
+                                  <Col sm={1}>
+                                    <Form.Check
+                                      type="radio"
+                                      name="budgetType"
+                                      value="release"
+                                      checked={type.budgetType === "release"}
+                                      onChange={handleTypeInputs}
+                                      disabled
+                                    />
+                                  </Col>
+                                  <Form.Label
+                                    column
+                                    sm={9}
+                                    className="mt-n2"
+                                    id="without"
+                                  >
+                                    Release
+                                  </Form.Label>
+                                </Form.Group>
+                              </Col>
+                            </Row>
+                          </Col>
+                          
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>

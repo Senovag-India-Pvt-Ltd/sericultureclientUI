@@ -73,7 +73,7 @@ function BudgetDistrictExtension() {
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
-
+  if (type.budgetType === "allocate") {
   if (data.financialYearMasterId && data.scHeadAccountId) {
     api
       .post(baseURLTargetSetting + `tsBudgetDistrictExt/get-available-balance`, {
@@ -91,6 +91,29 @@ function BudgetDistrictExtension() {
         // setFinancialYearListData([]);
       });
   }
+
+}
+
+if (type.budgetType === "release") {
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetReleaseHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+        scHeadAccountId: data.scHeadAccountId,
+            districtId: data.districtId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+}
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
