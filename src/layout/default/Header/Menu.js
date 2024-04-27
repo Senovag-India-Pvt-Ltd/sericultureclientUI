@@ -1372,6 +1372,75 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+
+            {showMenu.TargetSetting_Allocate_Budget ? (
+              <MenuItem>
+                <MenuItemLink text="Budget" to="/seriui/budget" />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+              <MenuItem>
+                <MenuItemLink text="Budget to HOA" to="/seriui/budget-hoa" />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_District ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to District"
+                  to="/seriui/budget-district"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to Taluk"
+                  to="/seriui/budget-taluk"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to Institution"
+                  to="/seriui/budget-tsc"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget HOA Extension"
+                  to="/seriui/budgethoaextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget District Extension"
+                  to="/seriui/budgetdistrictextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Taluk Extension"
+                  to="/seriui/budgettalukextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Institution Extension"
+                  to="/seriui/budgetinstitutionextension"
+                />
+              </MenuItem>
+            ) : null}
+
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink

@@ -66,10 +66,11 @@ function BudgetHoaExtension() {
   const [balanceAmount, setBalanceAmount] = useState(0);
 
   if (type.budgetType === "allocate") {
-    if (data.financialYearMasterId) {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
       api
         .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
           financialYearMasterId: data.financialYearMasterId,
+          scHeadAccountId: data.scHeadAccountId,
         })
         .then((response) => {
           if (!response.data.content) {
@@ -87,9 +88,13 @@ function BudgetHoaExtension() {
   if (type.budgetType === "release") {
     if (data.financialYearMasterId && data.scHeadAccountId) {
       api
-        .post(baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-available-balance`, {
-          financialYearMasterId: data.financialYearMasterId,
-        })
+        .post(
+          baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+            scHeadAccountId: data.scHeadAccountId,
+          }
+        )
         .then((response) => {
           if (!response.data.content) {
             saveError(response.data.errorMessages[0]);
@@ -103,7 +108,6 @@ function BudgetHoaExtension() {
     }
   }
 
- 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -147,28 +151,28 @@ function BudgetHoaExtension() {
     } else {
       event.preventDefault();
       if (type.budgetType === "allocate") {
-      api
-        .post(baseURLTargetSetting + `tsBudgetHoaExt/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+        api
+          .post(baseURLTargetSetting + `tsBudgetHoaExt/add`, data)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
             }
-          }
-        });
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
       }
       if (type.budgetType === "release") {
         api
@@ -238,79 +242,77 @@ function BudgetHoaExtension() {
     getHeadOfAccountList();
   }, []);
 
-   // to get Financial Year
-   const [financialyearListData, setFinancialyearListData] = useState([]);
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
 
-   const getList = () => {
-     const response = api
-       .get(baseURLMasterData + `financialYearMaster/get-all`)
-       .then((response) => {
-         setFinancialyearListData(response.data.content.financialYearMaster);
-       })
-       .catch((err) => {
-         setFinancialyearListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getList();
-   }, []);
+  const getList = () => {
+    const response = api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getList();
+  }, []);
 
-   // to get get Scheme
-   const [schemeListData, setSchemeListData] = useState([]);
+  // to get get Scheme
+  const [schemeListData, setSchemeListData] = useState([]);
 
-   const getSchemeList = () => {
-     const response = api
-       .get(baseURLMasterData + `scSchemeDetails/get-all`)
-       .then((response) => {
-         setSchemeListData(response.data.content.ScSchemeDetails);
-       })
-       .catch((err) => {
+  const getSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setSchemeListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
         setSchemeListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getSchemeList();
-   }, []);
+      });
+  };
 
-   // to get Sub Scheme
-   const [subSchemeListData, setSubSchemeListData] = useState([]);
+  useEffect(() => {
+    getSchemeList();
+  }, []);
 
-   const getSubSchemeList = () => {
-     const response = api
-       .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-       .then((response) => {
-         setSubSchemeListData(response.data.content.scSubSchemeDetails);
-       })
-       .catch((err) => {
+  // to get Sub Scheme
+  const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
         setSubSchemeListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getSubSchemeList();
-   }, []);
+      });
+  };
 
-   // to get Category
-   const [categoryListData, setCategoryListData] = useState([]);
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
 
-   const getCategoryList = () => {
-     const response = api
-       .get(baseURLMasterData + `scCategory/get-all`)
-       .then((response) => {
-         setCategoryListData(response.data.content.scCategory);
-       })
-       .catch((err) => {
+  // to get Category
+  const [categoryListData, setCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    const response = api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        setCategoryListData(response.data.content.scCategory);
+      })
+      .catch((err) => {
         setCategoryListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getCategoryList();
-   }, []);
- 
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -338,9 +340,7 @@ function BudgetHoaExtension() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-            Budget Head Of Account Mapping
-            </Block.Title>
+            <Block.Title tag="h2">Budget Head Of Account Mapping</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -373,9 +373,7 @@ function BudgetHoaExtension() {
           <Col lg="8">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
-                <Card.Header>
-                Budget Head Of Account Mapping{" "}
-                </Card.Header>
+                <Card.Header>Budget Head Of Account Mapping </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
@@ -397,14 +395,15 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Year</option>
-                            {financialyearListData && financialyearListData.map((list) => (
-                              <option
-                                key={list.financialYearMasterId}
-                                value={list.financialYearMasterId}
-                              >
-                                {list.financialYear}
-                              </option>
-                            ))}
+                            {financialyearListData &&
+                              financialyearListData.map((list) => (
+                                <option
+                                  key={list.financialYearMasterId}
+                                  value={list.financialYearMasterId}
+                                >
+                                  {list.financialYear}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Financial Year is required
@@ -486,14 +485,15 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Head of Account</option>
-                            {headOfAccountListData && headOfAccountListData.map((list) => (
-                              <option
-                                key={list.scHeadAccountId}
-                                value={list.scHeadAccountId}
-                              >
-                                {list.scHeadAccountName}
-                              </option>
-                            ))}
+                            {headOfAccountListData &&
+                              headOfAccountListData.map((list) => (
+                                <option
+                                  key={list.scHeadAccountId}
+                                  value={list.scHeadAccountId}
+                                >
+                                  {list.scHeadAccountName}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Head of Account is required
@@ -566,11 +566,15 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Scheme</option>
-                            {schemeListData && schemeListData.map((list) => (
-                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                                {list.schemeName}
-                              </option>
-                            ))}
+                            {schemeListData &&
+                              schemeListData.map((list) => (
+                                <option
+                                  key={list.scSchemeDetailsId}
+                                  value={list.scSchemeDetailsId}
+                                >
+                                  {list.schemeName}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Scheme is required
@@ -598,14 +602,15 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {subSchemeListData && subSchemeListData.map((list) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
-                              >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
+                            {subSchemeListData &&
+                              subSchemeListData.map((list) => (
+                                <option
+                                  key={list.scSubSchemeDetailsId}
+                                  value={list.scSubSchemeDetailsId}
+                                >
+                                  {list.subSchemeName}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Sub Scheme is required
@@ -633,11 +638,15 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Category</option>
-                            {categoryListData && categoryListData.map((list) => (
-                              <option key={list.scCategoryId} value={list.scCategoryId}>
-                                {list.categoryName}
-                              </option>
-                            ))}
+                            {categoryListData &&
+                              categoryListData.map((list) => (
+                                <option
+                                  key={list.scCategoryId}
+                                  value={list.scCategoryId}
+                                >
+                                  {list.categoryName}
+                                </option>
+                              ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Category is required
@@ -707,6 +716,5 @@ function BudgetHoaExtension() {
     </Layout>
   );
 }
-
 
 export default BudgetHoaExtension;
