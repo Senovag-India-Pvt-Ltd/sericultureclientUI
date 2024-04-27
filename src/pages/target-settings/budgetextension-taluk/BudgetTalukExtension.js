@@ -82,7 +82,7 @@ function BudgetTalukExtension() {
   if (type.budgetType === "allocate") {
   if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetTalukExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
         districtId: data.districtId,
