@@ -9,6 +9,7 @@ import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTscView() {
   const styles = {
@@ -19,7 +20,7 @@ function BudgetTscView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [AcivityData, setAcivityData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -30,18 +31,36 @@ function BudgetTscView() {
   // setCaste(findUser);
   // }, [id, data]);
 
+  const [type, setType] = useState({
+    budgetType: types,
+  });
+
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetInstitution/get/${id}`)
-      .then((response) => {
-        setAcivityData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setAcivityData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURL + `tsBudgetInstitution/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURL + `tsReleaseBudgetInstitution/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
   };
 
   //console.log(Caste);
@@ -55,7 +74,9 @@ function BudgetTscView() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Allocate Budget to Institution View</Block.Title>
+            <Block.Title tag="h2">
+              Allocate Budget to Institution View
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -93,9 +114,9 @@ function BudgetTscView() {
             ) : (
               <Row className="g-gs">
                 <Col lg="12">
-                <table className="table small table-bordered">
+                  <table className="table small table-bordered">
                     <tbody>
-                    <tr>
+                      <tr>
                         <td style={styles.ctstyle}>Financial Year:</td>
                         <td>{AcivityData.financialYear}</td>
                       </tr>
