@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrictExtensionView() {
   const styles = {
@@ -19,21 +19,20 @@ function BudgetDistrictExtensionView() {
     },
   };
 
-  const { id } = useParams();
+  const { id,types } = useParams();
   // const [data] = useState(CasteDatas);
   const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+    if (type.budgetType === "allocate") {
+      api
+      .get(baseURLTargetSetting + `tsBudgetDistrictExt/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -42,8 +41,20 @@ function BudgetDistrictExtensionView() {
         setBudgetDistrictData({});
         setLoading(false);
       });
+    }
+    if (type.budgetType === "release") {
+      api
+      .get(baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get-join/${id}`)
+      .then((response) => {
+        setBudgetDistrictData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setBudgetDistrictData({});
+        setLoading(false);
+      });
+    }
   };
-
   // Date Formate
   const dateFormatter = (date) => {
     if (date) {

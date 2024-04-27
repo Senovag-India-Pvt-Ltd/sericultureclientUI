@@ -84,21 +84,45 @@ function BudgetHoaExtensionEdit() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (data.financialYearMasterId) {
-    api
-      .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
-        financialYearMasterId: data.financialYearMasterId,
-      })
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "allocate") {
+    if (data.financialYearMasterId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
+
+  if (type.budgetType === "release") {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
+      api
+        .post(
+          baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+          }
+        )
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
 
   // Function to submit form data
@@ -191,32 +215,61 @@ function BudgetHoaExtensionEdit() {
       stateShare: "",
       centralShare: "",
     });
+    setType({
+      budgetType: "allocate",
+    });
+    setValidated(false);
+    setBalanceAmount(0);
   };
 
   const isDataDateSet = !!data.date;
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetHoa/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-        if (err.response && err.response.data) {
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            message = err.response.data.errorMessages[0].message[0].message;
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetHoaExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
-        // editError(message);
-        setData({});
-        setLoading(false);
-      });
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetReleaseHoaExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -339,6 +392,16 @@ useEffect(() => {
     });
   };
 
+  
+  // Function to handle edit error
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
+    });
+  };
+
   return (
     <Layout title="Edit Budget Head Of Account Mapping">
       <Block.Head>
@@ -423,6 +486,63 @@ useEffect(() => {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
+                        </Col>
+
+                        <Col lg={6} className="mt-5">
+                          <Row>
+                            <Col lg="3">
+                              <Form.Group
+                                as={Row}
+                                className="form-group"
+                                controlId="with"
+                              >
+                                <Col sm={1}>
+                                  <Form.Check
+                                    type="radio"
+                                    name="budgetType"
+                                    value="allocate"
+                                    checked={type.budgetType === "allocate"}
+                                    onChange={handleTypeInputs}
+                                    disabled
+                                  />
+                                </Col>
+                                <Form.Label
+                                  column
+                                  sm={9}
+                                  className="mt-n2"
+                                  id="with"
+                                >
+                                  Allocate
+                                </Form.Label>
+                              </Form.Group>
+                            </Col>
+                            <Col lg="3" className="ms-n4">
+                              <Form.Group
+                                as={Row}
+                                className="form-group"
+                                controlId="without"
+                              >
+                                <Col sm={1}>
+                                  <Form.Check
+                                    type="radio"
+                                    name="budgetType"
+                                    value="release"
+                                    checked={type.budgetType === "release"}
+                                    onChange={handleTypeInputs}
+                                    disabled
+                                  />
+                                </Col>
+                                <Form.Label
+                                  column
+                                  sm={9}
+                                  className="mt-n2"
+                                  id="without"
+                                >
+                                  Release
+                                </Form.Label>
+                              </Form.Group>
+                            </Col>
+                          </Row>
                         </Col>
 
                         <Col lg="6">

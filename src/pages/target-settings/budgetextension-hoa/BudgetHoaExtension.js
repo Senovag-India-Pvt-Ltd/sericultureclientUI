@@ -65,21 +65,42 @@ function BudgetHoaExtension() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (data.financialYearMasterId) {
-    api
-      .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
-        financialYearMasterId: data.financialYearMasterId,
-      })
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "allocate") {
+    if (data.financialYearMasterId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
+
+  if (type.budgetType === "release") {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
 
  
@@ -511,9 +532,9 @@ function BudgetHoaExtension() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="amount"
-                            name="amount"
-                            value={data.amount}
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Budget Amount"
