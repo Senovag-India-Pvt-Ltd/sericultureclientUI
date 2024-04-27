@@ -437,7 +437,7 @@ function BudgetEdit() {
                   </Col> */}
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="centralBudget">
                                 Central Budget Amount
                                 {/* <span className="text-danger">*</span> */}
