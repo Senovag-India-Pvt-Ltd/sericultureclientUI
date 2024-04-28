@@ -439,7 +439,7 @@ function BudgetEdit() {
                           <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="centralBudget">
-                                Central Budget Amount
+                                Central Budget Amount (in Lakhs)
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -462,7 +462,7 @@ function BudgetEdit() {
                           <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="stateBudget">
-                                State Budget Amount
+                                State Budget Amount (in Lakhs)
                                 {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -485,7 +485,7 @@ function BudgetEdit() {
                           <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="amount">
-                                Amount<span className="text-danger">*</span>
+                                Amount (in Lakhs) <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control

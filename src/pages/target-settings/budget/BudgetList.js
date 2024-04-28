@@ -206,7 +206,7 @@ function BudgetList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };

@@ -242,7 +242,7 @@ function Budget() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Row>
-          <Col lg="12">
+          <Col lg={type.budgetType === "release" ? "8" : "12"}>
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
@@ -313,7 +313,14 @@ function Budget() {
                                 </Form.Label>
                               </Form.Group>
                             </Col>
-                            <Col lg="3" className="ms-n5">
+                            <Col
+                              lg="3"
+                              className={
+                                type.budgetType === "release"
+                                  ? "ms-n3"
+                                  : "ms-n5"
+                              }
+                            >
                               <Form.Group
                                 as={Row}
                                 className="form-group"
@@ -367,7 +374,7 @@ function Budget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="centralBudget">
-                              Central Budget Amount
+                              Central Budget Amount (in Lakhs)
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -390,7 +397,7 @@ function Budget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="stateBudget">
-                              State Budget Amount
+                              State Budget Amount (in Lakhs)
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -413,7 +420,8 @@ function Budget() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="amount">
-                              Amount<span className="text-danger">*</span>
+                              Budget Amount (in Lakhs)
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -453,7 +461,6 @@ function Budget() {
                             </div>
                           </Form.Group>
                         </Col>
-
                         {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="code">Code</Form.Label>
@@ -491,24 +498,28 @@ function Budget() {
               </Row>
             </Form>
           </Col>
-          {/* <Col lg="4">
-            <Card>
-              <Card.Header style={{ fontWeight: "bold" }}>
-                Available Budget Balance
-              </Card.Header>
-              <Card.Body>
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}> Balance Amount:</td>
-                      <td>{balanceAmount}</td>
-                      <td>0</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Card.Body>
-            </Card>
-          </Col> */}
+          {type.budgetType === "release" ? (
+            <Col lg="4">
+              <Card>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Available Budget Balance
+                </Card.Header>
+                <Card.Body>
+                  <table className="table small table-bordered">
+                    <tbody>
+                      <tr>
+                        <td style={styles.ctstyle}> Balance Amount:</td>
+                        {/* <td>{balanceAmount}</td> */}
+                        <td>0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Card.Body>
+              </Card>
+            </Col>
+          ) : (
+            ""
+          )}
         </Row>
       </Block>
     </Layout>

@@ -416,7 +416,7 @@ function BudgetHoa() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
-                          Budget Amount<span className="text-danger">*</span>
+                          Budget Amount (in Lakhs)<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
