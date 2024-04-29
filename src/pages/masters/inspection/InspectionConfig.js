@@ -238,7 +238,7 @@ function InspectionConfig() {
           <Block.HeadContent>
             <Block.Title tag="h2">Inspection Config</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -259,7 +259,7 @@ function InspectionConfig() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 

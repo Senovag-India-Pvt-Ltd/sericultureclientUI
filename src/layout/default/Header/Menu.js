@@ -1721,6 +1721,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
+          {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Inspection Config"
+                  to="/seriui/inspection-config"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
