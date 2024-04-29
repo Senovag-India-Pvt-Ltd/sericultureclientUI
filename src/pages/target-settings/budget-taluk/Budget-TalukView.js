@@ -7,6 +7,7 @@ import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukView() {
   const styles = {
@@ -17,7 +18,7 @@ function BudgetTalukView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [AcivityData, setAcivityData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,18 +29,36 @@ function BudgetTalukView() {
   // setCaste(findUser);
   // }, [id, data]);
 
+  const [type, setType] = useState({
+    budgetType: types,
+  });
+
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
-      .then((response) => {
-        setAcivityData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setAcivityData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURL + `tsReleaseBudgetTaluk/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
   };
 
   //console.log(Caste);

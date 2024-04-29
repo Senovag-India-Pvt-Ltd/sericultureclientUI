@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetExtensionEdit() {
   // Fetching id from URL params
@@ -17,6 +18,10 @@ function BudgetExtensionEdit() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
 
   let name, value;
 
@@ -27,19 +32,82 @@ function BudgetExtensionEdit() {
     setData({ ...data, [name]: value });
   };
 
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
+  const saveSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      // text: "You clicked the button!",
+    });
+  };
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Save attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
   const isData = !!data.date;
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
   };
+
+  const [balanceAmount, setBalanceAmount] = useState(0);
+
+  if (data.financialYearMasterId) {
+    api
+      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+        financialYearMasterId: data.financialYearMasterId,
+      })
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
 
   // HTTP header configuration
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -53,24 +121,69 @@ function BudgetExtensionEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (type.budgetType === "allocate") {
       api
-        .post(baseURLMasterData + `tsBudget/edit`, data)
+        .post(baseURLTargetSetting + `tsBudget/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
-            clear();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              date: "",
+              budgetAmount: "",
+            });
+            setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
-      setValidated(true);
     }
-  };
+    if (type.budgetType === "release") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            setData({
+              financialYearMasterId: "",
+              scHeadAccountId: "",
+              date: "",
+              budgetAmount: "",
+            });
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    setValidated(true);
+  }
+};
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -90,6 +203,60 @@ function BudgetExtensionEdit() {
     getList();
   }, []);
 
+  // to get Scheme
+  const [schemeListData, setSchemeListData] = useState([]);
+
+  const getSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setSchemeListData(response.data.content.scSchemeDetails);
+      })
+      .catch((err) => {
+       setSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeList();
+  }, []);
+
+  // to get Sub Scheme
+  const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
+       setSubSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
+
+  // to get Category
+  const [categoryListData, setCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    const response = api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        setCategoryListData(response.data.content.scCategory);
+      })
+      .catch((err) => {
+       setCategoryListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
   // Function to clear form data
   const clear = () => {
     setData({
@@ -99,7 +266,11 @@ function BudgetExtensionEdit() {
       stateBudget: "",
       amount: "",
     });
+    setType({
+      budgetType: "allocate",
+    });
     setValidated(false);
+    setBalanceAmount(0);
   };
 
   const getIdList = () => {
@@ -126,7 +297,7 @@ function BudgetExtensionEdit() {
         }
 
         // Display error message
-        editError(message);
+        // editError(message);
         setData({});
         setLoading(false);
       });
@@ -172,31 +343,7 @@ function BudgetExtensionEdit() {
     }).then(() => navigate("#"));
   };
 
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-    top: {
-      backgroundColor: "rgb(15, 108, 190, 1)",
-      color: "rgb(255, 255, 255)",
-      width: "50%",
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    bottom: {
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    sweetsize: {
-      width: "100px",
-      height: "100px",
-    },
-  };
-
+ 
   return (
     <Layout title="Edit Budget">
       <Block.Head>
@@ -235,9 +382,7 @@ function BudgetExtensionEdit() {
         <Row>
           <Col lg="8">
             <Form noValidate validated={validated} onSubmit={postData}>
-              <Row className="g-3 ">
-                <Block>
-                  <Card>
+              <Card>
                     <Card.Header>
                       Edit Budget mapping scheme and programs
                     </Card.Header>
@@ -292,13 +437,13 @@ function BudgetExtensionEdit() {
                                   controlId="with"
                                 >
                                   <Col sm={1}>
-                                    <Form.Check
-                                      type="radio"
-                                      name="with"
-                                      value="withLand"
-                                      checked={data.with === "withLand"}
-                                      onChange={handleInputs}
-                                    />
+                                  <Form.Check
+                                    type="radio"
+                                    name="budgetType"
+                                    value="allocate"
+                                    checked={type.budgetType === "allocate"}
+                                    onChange={handleTypeInputs}
+                                  />
                                   </Col>
                                   <Form.Label
                                     column
@@ -317,14 +462,14 @@ function BudgetExtensionEdit() {
                                   controlId="without"
                                 >
                                   <Col sm={1}>
-                                    <Form.Check
-                                      type="radio"
-                                      name="with"
-                                      value="withOutLand"
-                                      checked={data.with === "withOutLand"}
-                                      onChange={handleInputs}
-                                    />
-                                  </Col>
+                                  <Form.Check
+                                    type="radio"
+                                    name="budgetType"
+                                    value="release"
+                                    checked={type.budgetType === "release"}
+                                    onChange={handleTypeInputs}
+                                  />
+                                </Col>
                                   <Form.Label
                                     column
                                     sm={9}
@@ -430,109 +575,109 @@ function BudgetExtensionEdit() {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="schemeId"
-                                  value={data.schemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.schemeId === undefined ||
-                                    data.schemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Scheme</option>
-                                  {financialyearListData.map((list) => (
-                                    <option
-                                      key={list.schemeId}
-                                      value={list.schemeId}
-                                    >
-                                      {list.schemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="schemeId"
+                                value={data.schemeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.schemeId === undefined ||
+                                  data.schemeId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme</option>
+                                {schemeListData.map((list) => (
+                                  <option
+                                    key={list.scSchemeDetailsId}
+                                    value={list.scSchemeDetailsId}
+                                  >
+                                    {list.schemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Sub Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="subschemeId"
-                                  value={data.subschemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.subschemeId === undefined ||
-                                    data.subschemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {financialyearListData.map((list) => (
-                                    <option
-                                      key={list.subschemeId}
-                                      value={list.subschemeId}
-                                    >
-                                      {list.subschemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Sub Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="subschemeId"
+                                value={data.subschemeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.subschemeId === undefined ||
+                                  data.subschemeId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Scheme</option>
+                                {subSchemeListData.map((list) => (
+                                  <option
+                                    key={list.scSubSchemeDetailsId}
+                                    value={list.scSubSchemeDetailsId}
+                                  >
+                                    {list.subSchemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Category
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="categoryId"
-                                  value={data.categoryId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.categoryId === undefined ||
-                                    data.categoryId === "0"
-                                  }
-                                >
-                                  <option value="">Select Category</option>
-                                  {financialyearListData.map((list) => (
-                                    <option
-                                      key={list.talukId}
-                                      value={list.talukId}
-                                    >
-                                      {list.categoryName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Category is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Select Category
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="categoryId"
+                                value={data.categoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.categoryId === undefined ||
+                                  data.categoryId === "0"
+                                }
+                              >
+                                <option value="">Select Category</option>
+                                {categoryListData.map((list) => (
+                                  <option
+                                    key={list.scCategoryId}
+                                    value={list.scCategoryId}
+                                  >
+                                    {list.categoryName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Category is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
@@ -577,7 +722,7 @@ function BudgetExtensionEdit() {
                       )}
                     </Card.Body>
                   </Card>
-                </Block>
+                {/* </Block> */}
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
@@ -592,8 +737,7 @@ function BudgetExtensionEdit() {
                     </li>
                   </ul>
                 </div>
-              </Row>
-            </Form>
+                </Form>
           </Col>
           <Col lg="4">
             <Card>
@@ -605,8 +749,7 @@ function BudgetExtensionEdit() {
                   <tbody>
                     <tr>
                       <td style={styles.ctstyle}> Balance Amount:</td>
-                      {/* <td>{balanceAmount}</td> */}
-                      <td>0</td>
+                      <td>{balanceAmount}</td>
                     </tr>
                   </tbody>
                 </table>

@@ -84,21 +84,45 @@ function BudgetHoaEdit() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (data.financialYearMasterId) {
-    api
-      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
-        financialYearMasterId: data.financialYearMasterId,
-      })
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "allocate") {
+    if (data.financialYearMasterId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
+
+  if (type.budgetType === "release") {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
+      api
+        .post(
+          baseURLTargetSetting + `tsBudgetReleaseHoa/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+          }
+        )
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
 
   // Function to submit form data
@@ -193,26 +217,50 @@ function BudgetHoaEdit() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetHoa/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-        if (err.response && err.response.data) {
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            message = err.response.data.errorMessages[0].message[0].message;
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetHoa/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
-        // editError(message);
-        setData({});
-        setLoading(false);
-      });
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetReleaseHoa/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -279,6 +327,15 @@ function BudgetHoaEdit() {
       icon: "error",
       title: "Save attempt was not successful",
       html: errorMessage,
+    });
+  };
+
+  // Function to handle edit error
+  const editError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: "Something went wrong!",
     });
   };
 
@@ -380,6 +437,7 @@ function BudgetHoaEdit() {
                                     value="allocate"
                                     checked={type.budgetType === "allocate"}
                                     onChange={handleTypeInputs}
+                                    disabled
                                   />
                                 </Col>
                                 <Form.Label
@@ -405,6 +463,7 @@ function BudgetHoaEdit() {
                                     value="release"
                                     checked={type.budgetType === "release"}
                                     onChange={handleTypeInputs}
+                                    disabled
                                   />
                                 </Col>
                                 <Form.Label
@@ -421,7 +480,7 @@ function BudgetHoaEdit() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Head Of Account
                               <span className="text-danger">*</span>

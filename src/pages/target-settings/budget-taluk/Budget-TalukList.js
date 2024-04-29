@@ -36,7 +36,6 @@ function BudgetTalukList() {
     budgetType: "allocate",
   });
 
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -68,32 +67,60 @@ function BudgetTalukList() {
 
   const getList = () => {
     // setLoading(true);
-
-    api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
-      .then((response) => {
-        if (response.data.content.error) {
-          saveError(response.data.content.error_description);
-          setShow(false);
-        } else {
-          setListData(response.data.content.tsBudgetTaluk);
-          setShow(true);
-          // saveSuccess();
-          // clear();
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
+    if (type.budgetType === "allocate") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudgetTaluk);
+            setShow(true);
+            // saveSuccess();
+            // clear();
           }
-        }
-      });
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .post(baseURLTargetSetting + `tsReleaseBudgetTaluk/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsReleaseBudgetTaluk);
+            setShow(true);
+            // saveSuccess();
+            // clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              // saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
   };
 
   const saveSuccess = () => {
@@ -191,12 +218,12 @@ function BudgetTalukList() {
   }, []);
 
   const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budget-taluk-view/${id}`);
+  const handleView = (id, type) => {
+    navigate(`/seriui/budget-taluk-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/seriui/budget-taluk-edit/${id}`);
+  const handleEdit = (id, type) => {
+    navigate(`/seriui/budget-taluk-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -294,7 +321,14 @@ function BudgetTalukList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetTalukId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetTalukId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsReleaseBudgetTalukId, "release");
+              }
+            }}
           >
             View
           </Button>
@@ -302,7 +336,14 @@ function BudgetTalukList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetTalukId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetTalukId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsReleaseBudgetTalukId, "release");
+              }
+            }}
           >
             Edit
           </Button>
@@ -439,59 +480,54 @@ function BudgetTalukList() {
                 </Col>
 
                 <Col lg={6} className="mt-5">
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="with"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="allocate"
-                                checked={type.budgetType === "allocate"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="with"
-                            >
-                              Allocate
-                            </Form.Label>
-                          </Form.Group>
+                  <Row>
+                    <Col lg="3">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="with"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="allocate"
+                            checked={type.budgetType === "allocate"}
+                            onChange={handleTypeInputs}
+                          />
                         </Col>
-                        <Col lg="3" className="ms-n4">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="without"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="budgetType"
-                                value="release"
-                                checked={type.budgetType === "release"}
-                                onChange={handleTypeInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="without"
-                            >
-                              Release
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                        <Form.Label column sm={9} className="mt-n2" id="with">
+                          Allocate
+                        </Form.Label>
+                      </Form.Group>
                     </Col>
+                    <Col lg="3" className="ms-n4">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="without"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="release"
+                            checked={type.budgetType === "release"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label
+                          column
+                          sm={9}
+                          className="mt-n2"
+                          id="without"
+                        >
+                          Release
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Col>
 
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">

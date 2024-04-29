@@ -14,7 +14,7 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTscEdit() {
   // Fetching id from URL params
-  const { id } = useParams();
+  const { id, types } = useParams();
   const [data, setData] = useState({
     financialYearMasterId: "",
     scHeadAccountId: "",
@@ -27,7 +27,7 @@ function BudgetTscEdit() {
   });
 
   const [type, setType] = useState({
-    budgetType: "allocate",
+    budgetType: types,
   });
 
   const [loading, setLoading] = useState(false);
@@ -50,32 +50,68 @@ function BudgetTscEdit() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
 
-  if (
-    data.financialYearMasterId &&
-    data.scHeadAccountId &&
-    data.districtId &&
-    data.talukId
-  ) {
-    api
-      .post(
-        baseURLTargetSetting + `tsBudgetInstitution/get-available-balance`,
-        {
-          financialYearMasterId: data.financialYearMasterId,
-          scHeadAccountId: data.scHeadAccountId,
-          districtId: data.districtId,
-          talukId: data.talukId,
-        }
-      )
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "allocate") {
+    if (
+      data.financialYearMasterId &&
+      data.scHeadAccountId &&
+      data.districtId &&
+      data.talukId
+    ) {
+      api
+        .post(
+          baseURLTargetSetting + `tsBudgetInstitution/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+            scHeadAccountId: data.scHeadAccountId,
+            districtId: data.districtId,
+            talukId: data.talukId,
+          }
+        )
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
+  if (type.budgetType === "release") {
+    if (
+      data.financialYearMasterId &&
+      data.scHeadAccountId &&
+      data.districtId &&
+      data.talukId &&
+      data.institutionType &&
+      data.institutionId
+    ) {
+      api
+        .post(
+          baseURLTargetSetting +
+            `tsReleaseBudgetInstitution/get-available-balance`,
+          {
+            financialYearMasterId: data.financialYearMasterId,
+            scHeadAccountId: data.scHeadAccountId,
+            districtId: data.districtId,
+            talukId: data.talukId,
+            institutionType: data.institutionType,
+            institutionId: data.institutionId,
+          }
+        )
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
 
   const saveSuccess = () => {
@@ -343,32 +379,51 @@ function BudgetTscEdit() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetInstitution/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetInstitution/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
 
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsReleaseBudgetInstitution/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -539,6 +594,7 @@ function BudgetTscEdit() {
                                       value="allocate"
                                       checked={type.budgetType === "allocate"}
                                       onChange={handleTypeInputs}
+                                      disabled
                                     />
                                   </Col>
                                   <Form.Label
@@ -564,6 +620,7 @@ function BudgetTscEdit() {
                                       value="release"
                                       checked={type.budgetType === "release"}
                                       onChange={handleTypeInputs}
+                                      disabled
                                     />
                                   </Col>
                                   <Form.Label
@@ -608,7 +665,7 @@ function BudgetTscEdit() {
                   </Col> */}
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 Head Of Account
                                 <span className="text-danger">*</span>

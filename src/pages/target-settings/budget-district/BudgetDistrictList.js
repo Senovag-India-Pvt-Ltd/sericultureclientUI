@@ -37,32 +37,63 @@ function BudgetDistrictList() {
 
   const getList = () => {
     // setLoading(true);
-
-    api
-      .post(baseURLTargetSetting + `tsBudgetDistrict/get-details`, data)
-      .then((response) => {
-        if (response.data.content.error) {
-          saveError(response.data.content.error_description);
-          setShow(false);
-        } else {
-          setListData(response.data.content.tsBudgetDistrict);
-          setShow(true);
-          // saveSuccess();
-          // clear();
-        }
-      })
-      .catch((err) => {
-        if (
-          err.response &&
-          err.response &&
-          err.response.data &&
-          err.response.data.validationErrors
-        ) {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            // saveError(err.response.data.validationErrors);
+    if (type.budgetType === "allocate") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetDistrict/get-details`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsBudgetDistrict);
+            setShow(true);
+            // saveSuccess();
+            // clear();
           }
-        }
-      });
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .post(
+          baseURLTargetSetting + `tsReleaseBudgetDistrict/get-details`,
+          data
+        )
+        .then((response) => {
+          if (response.data.content.error) {
+            saveError(response.data.content.error_description);
+            setShow(false);
+          } else {
+            setListData(response.data.content.tsReleaseBudgetDistrict);
+            setShow(true);
+            // saveSuccess();
+            // clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
   };
 
   // to get Financial Year
@@ -160,15 +191,15 @@ function BudgetDistrictList() {
     let name = e.target.name;
     let value = e.target.value;
     setType({ ...type, [name]: value });
-  };  
-
-  const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budget-district-view/${id}`);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/seriui/budget-district-edit/${id}`);
+  const navigate = useNavigate();
+  const handleView = (id, type) => {
+    navigate(`/seriui/budget-district-view/${id}/${type}`);
+  };
+
+  const handleEdit = (id, type) => {
+    navigate(`/seriui/budget-district-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -280,7 +311,14 @@ function BudgetDistrictList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetDistrictId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsReleaseBudgetDistrictId, "release");
+              }
+            }}
           >
             View
           </Button>
@@ -288,7 +326,15 @@ function BudgetDistrictList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            // onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetDistrictId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsReleaseBudgetDistrictId, "release");
+              }
+            }}
           >
             Edit
           </Button>
@@ -412,59 +458,59 @@ function BudgetDistrictList() {
                     </Col>
 
                     <Col lg={6} className="mt-5">
-                          <Row>
-                            <Col lg="3">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="with"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="allocate"
-                                    checked={type.budgetType === "allocate"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="with"
-                                >
-                                  Allocate
-                                </Form.Label>
-                              </Form.Group>
+                      <Row>
+                        <Col lg="3">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="with"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="allocate"
+                                checked={type.budgetType === "allocate"}
+                                onChange={handleTypeInputs}
+                              />
                             </Col>
-                            <Col lg="3" className="ms-n4">
-                              <Form.Group
-                                as={Row}
-                                className="form-group"
-                                controlId="without"
-                              >
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="budgetType"
-                                    value="release"
-                                    checked={type.budgetType === "release"}
-                                    onChange={handleTypeInputs}
-                                  />
-                                </Col>
-                                <Form.Label
-                                  column
-                                  sm={9}
-                                  className="mt-n2"
-                                  id="without"
-                                >
-                                  Release
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="with"
+                            >
+                              Allocate
+                            </Form.Label>
+                          </Form.Group>
                         </Col>
+                        <Col lg="3" className="ms-n4">
+                          <Form.Group
+                            as={Row}
+                            className="form-group"
+                            controlId="without"
+                          >
+                            <Col sm={1}>
+                              <Form.Check
+                                type="radio"
+                                name="budgetType"
+                                value="release"
+                                checked={type.budgetType === "release"}
+                                onChange={handleTypeInputs}
+                              />
+                            </Col>
+                            <Form.Label
+                              column
+                              sm={9}
+                              className="mt-n2"
+                              id="without"
+                            >
+                              Release
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">

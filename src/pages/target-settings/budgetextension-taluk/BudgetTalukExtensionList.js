@@ -29,19 +29,27 @@ function BudgetTalukExtensionList() {
     financialYearMasterId: "",
     scHeadAccountId: "",
     districtId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
   });
+
+  const [type, setType] = useState({
+    budgetType: "allocate",
+  });
+
 
   const getList = () => {
     // setLoading(true);
-
+    if (type.budgetType === "allocate") {
     api
-      .post(baseURLTargetSetting + `tsBudgetTaluk/get-details`, data)
+      .post(baseURLTargetSetting + `tsBudgetTalukExt/get-details`, data)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
           setShow(false);
         } else {
-          setListData(response.data.content.tsBudgetTaluk);
+          setListData(response.data.content.tsBudgetTalukExt);
           setShow(true);
           // saveSuccess();
           // clear();
@@ -59,7 +67,35 @@ function BudgetTalukExtensionList() {
           }
         }
       });
-  };
+  }
+  if (type.budgetType === "release") {
+    api
+      .post(baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-details`, data)
+      .then((response) => {
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsReleaseBudgetTalukExt);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
+      });
+  }
+};
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -121,6 +157,60 @@ function BudgetTalukExtensionList() {
     getDistrictList();
   }, []);
 
+  // to get get Scheme
+  const [schemeListData, setSchemeListData] = useState([]);
+
+  const getSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setSchemeListData(response.data.content.scSchemeDetails);
+      })
+      .catch((err) => {
+       setSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeList();
+  }, []);
+
+  // to get Sub Scheme
+  const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
+       setSubSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
+
+  // to get Category
+  const [categoryListData, setCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    const response = api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        setCategoryListData(response.data.content.scCategory);
+      })
+      .catch((err) => {
+       setCategoryListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -152,13 +242,20 @@ function BudgetTalukExtensionList() {
     setData({ ...data, [name]: value });
   };
 
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
+
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/budgettalukextension-view/${id}`);
+    navigate(`/seriui/budgettalukextension-view/${id}/${type}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/budgettalukextension-edit/${id}`);
+    navigate(`/seriui/budgettalukextension-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -267,10 +364,17 @@ function BudgetTalukExtensionList() {
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-          <Button
+           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetTalukExtId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsReleaseBudgetTalukExtId, "release");
+              }
+            }}
           >
             View
           </Button>
@@ -278,7 +382,14 @@ function BudgetTalukExtensionList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetTalukExtId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsReleaseBudgetTalukExtId, "release");
+              }
+            }}
           >
             Edit
           </Button>
@@ -326,29 +437,29 @@ function BudgetTalukExtensionList() {
     },
     {
       name: "Head Of Account",
-      selector: (row) => row.scHeadAccountId,
-      cell: (row) => <span>{row.scHeadAccountId}</span>,
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: false,
       hide: "md",
     },
     {
       name: "Scheme",
-      selector: (row) => row.scheme,
-      cell: (row) => <span>{row.scheme}</span>,
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: false,
       hide: "md",
     },
     {
       name: "Sub Scheme",
-      selector: (row) => row.subscheme,
-      cell: (row) => <span>{row.subscheme}</span>,
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: false,
       hide: "md",
     },
     {
       name: "Category",
-      selector: (row) => row.category,
-      cell: (row) => <span>{row.category}</span>,
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: false,
       hide: "md",
     },
@@ -432,6 +543,56 @@ function BudgetTalukExtensionList() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg={6} className="mt-5">
+                  <Row>
+                    <Col lg="3">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="with"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="allocate"
+                            checked={type.budgetType === "allocate"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label column sm={9} className="mt-n2" id="with">
+                          Allocate
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="3" className="ms-n4">
+                      <Form.Group
+                        as={Row}
+                        className="form-group"
+                        controlId="without"
+                      >
+                        <Col sm={1}>
+                          <Form.Check
+                            type="radio"
+                            name="budgetType"
+                            value="release"
+                            checked={type.budgetType === "release"}
+                            onChange={handleTypeInputs}
+                          />
+                        </Col>
+                        <Form.Label
+                          column
+                          sm={9}
+                          className="mt-n2"
+                          id="without"
+                        >
+                          Release
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n3">
@@ -520,7 +681,7 @@ function BudgetTalukExtensionList() {
                             <option value="">Select Taluk</option>
                             {districtListData.map((list) => (
                               <option key={list.talukId} value={list.talukId}>
-                                {list.districtName}
+                                {list.talukName}
                               </option>
                             ))}
                           </Form.Select>
@@ -539,19 +700,19 @@ function BudgetTalukExtensionList() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="schemeId"
-                            value={data.schemeId}
+                            name="scSchemeDetailsId"
+                            value={data.scSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.schemeId === undefined ||
-                              data.schemeId === "0"
+                              data.scSchemeDetailsId === undefined ||
+                              data.scSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Scheme</option>
-                            {districtListData.map((list) => (
-                              <option key={list.schemeId} value={list.schemeId}>
+                            {schemeListData && schemeListData.map((list) => (
+                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
                                 {list.schemeName}
                               </option>
                             ))}
@@ -571,23 +732,23 @@ function BudgetTalukExtensionList() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="subschemeId"
-                            value={data.subschemeId}
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.subschemeId === undefined ||
-                              data.subschemeId === "0"
+                              data.scSubSchemeDetailsId === undefined ||
+                              data.scSubSchemeDetailsId === "0"
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {districtListData.map((list) => (
+                            {subSchemeListData && subSchemeListData.map((list) => (
                               <option
-                                key={list.subschemeId}
-                                value={list.subschemeId}
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
                               >
-                                {list.subschemeName}
+                                {list.subSchemeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -606,19 +767,19 @@ function BudgetTalukExtensionList() {
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="categoryId"
-                            value={data.categoryId}
+                            name="scCategoryId"
+                            value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.categoryId === undefined ||
-                              data.categoryId === "0"
+                              data.scCategoryId === undefined ||
+                              data.scCategoryId === "0"
                             }
                           >
                             <option value="">Select Category</option>
-                            {districtListData.map((list) => (
-                              <option key={list.talukId} value={list.talukId}>
+                            {categoryListData && categoryListData.map((list) => (
+                              <option key={list.scCategoryId} value={list.scCategoryId}>
                                 {list.categoryName}
                               </option>
                             ))}

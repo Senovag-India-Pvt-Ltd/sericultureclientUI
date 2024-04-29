@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukExtensionView() {
   const styles = {
@@ -19,30 +19,48 @@ function BudgetTalukExtensionView() {
     },
   };
 
-  const { id } = useParams();
+  const { id,types } = useParams();
   // const [data] = useState(CasteDatas);
   const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setBudgetDistrictData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setBudgetDistrictData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetTalukExt/get-join/${id}`)
+        .then((response) => {
+          setBudgetDistrictData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setBudgetDistrictData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-join/${id}`)
+        .then((response) => {
+          setBudgetDistrictData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setBudgetDistrictData({});
+          setLoading(false);
+        });
+    }
   };
+
+  //console.log(Caste);
+
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
   // Date Formate
   const dateFormatter = (date) => {
@@ -61,9 +79,7 @@ function BudgetTalukExtensionView() {
 
   //console.log(Caste);
 
-  useEffect(() => {
-    getIdList();
-  }, [id]);
+  
 
   return (
     <Layout title="View Taluk Budget mapping scheme and programs">

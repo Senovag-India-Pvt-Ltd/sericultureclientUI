@@ -14,10 +14,14 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetDistrictExtensionEdit() {
   // Fetching id from URL params
-  const { id } = useParams();
+  const { id, types  } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [type, setType] = useState({
+    budgetType: types,
+  });
+
 
   let name, value;
 
@@ -28,11 +32,43 @@ function BudgetDistrictExtensionEdit() {
     setData({ ...data, [name]: value });
   };
 
-  const [balanceAmount, setBalanceAmount] = useState(0);
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
 
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+    top: {
+      backgroundColor: "rgb(15, 108, 190, 1)",
+      color: "rgb(255, 255, 255)",
+      width: "50%",
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    bottom: {
+      fontWeight: "bold",
+      fontSize: "25px",
+      textAlign: "center",
+    },
+    sweetsize: {
+      width: "100px",
+      height: "100px",
+    },
+  };
+
+
+  const [balanceAmount, setBalanceAmount] = useState(0);
+  if (type.budgetType === "allocate") {
   if (data.financialYearMasterId && data.scHeadAccountId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetDistrict/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetDistrictExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
       })
@@ -47,6 +83,34 @@ function BudgetDistrictExtensionEdit() {
         // setFinancialYearListData([]);
       });
   }
+
+}
+
+if (type.budgetType === "release") {
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+    api
+      .post(
+        baseURLTargetSetting +
+          `tsReleaseBudgetDistrictExt/get-available-balance`,
+        {
+          financialYearMasterId: data.financialYearMasterId,
+          scHeadAccountId: data.scHeadAccountId,
+          districtId: data.districtId,
+        }
+      )
+      .then((response) => {
+        if (!response.data.content) {
+          saveError(response.data.errorMessages[0]);
+        } else {
+          setBalanceAmount(response.data.content.remainingBalance);
+        }
+      })
+      .catch((err) => {
+        // setFinancialYearListData([]);
+      });
+  }
+}
+
 
   const saveSuccess = () => {
     Swal.fire({
@@ -89,8 +153,9 @@ function BudgetDistrictExtensionEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (type.budgetType === "allocate") {
       api
-        .post(baseURLTargetSetting + `tsBudgetDistrict/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetDistrictExt/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -100,24 +165,66 @@ function BudgetDistrictExtensionEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
-      setValidated(true);
     }
-  };
-
+    if (type.budgetType === "release") {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+        .then((response) => {
+          if (response.data.content.error) {
+            updateError(response.data.content.error_description);
+          } else {
+            updateSuccess();
+            updateSuccess();
+              clear();
+            }
+          })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
+        });
+    }
+    setValidated(true);
+  }
+};
   // Function to clear form data
   const clear = () => {
     setData({
       financialYearMasterId: "",
       scHeadAccountId: "",
+      districtId: "",
+      tsBudgetDistrictId: "",
       date: "",
       budgetAmount: "",
-      districtId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      institutionType: "",
+      institutionId: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
+    setBalanceAmount(0);
   };
 
   // to get Financial Year
@@ -157,7 +264,6 @@ function BudgetDistrictExtensionEdit() {
     getHeadOfAccountList();
   }, []);
 
-  // District
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -180,6 +286,60 @@ function BudgetDistrictExtensionEdit() {
     getDistrictList();
   }, []);
 
+  // to get get Scheme
+  const [schemeListData, setSchemeListData] = useState([]);
+
+  const getSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setSchemeListData(response.data.content.scSchemeDetails);
+      })
+      .catch((err) => {
+       setSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeList();
+  }, []);
+
+  // to get Sub Scheme
+  const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
+       setSubSchemeListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
+
+  // to get Category
+  const [categoryListData, setCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    const response = api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        setCategoryListData(response.data.content.scCategory);
+      })
+      .catch((err) => {
+       setCategoryListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
@@ -188,32 +348,56 @@ function BudgetDistrictExtensionEdit() {
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetDistrictExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
 
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
           }
-        }
 
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+
+          // Display error message
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
   };
 
   // Fetch data on component mount
@@ -253,32 +437,9 @@ function BudgetDistrictExtensionEdit() {
       icon: "error",
       title: message,
       text: "Something went wrong!",
-    }).then(() => navigate("#"));
+    });
   };
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-    top: {
-      backgroundColor: "rgb(15, 108, 190, 1)",
-      color: "rgb(255, 255, 255)",
-      width: "50%",
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    bottom: {
-      fontWeight: "bold",
-      fontSize: "25px",
-      textAlign: "center",
-    },
-    sweetsize: {
-      width: "100px",
-      height: "100px",
-    },
-  };
+  
 
   return (
     <Layout title="Edit District Budget mapping scheme and programs">
@@ -322,7 +483,7 @@ function BudgetDistrictExtensionEdit() {
                 <Block>
                   <Card>
                     <Card.Header>
-                      Edit District Budget mapping scheme and programs
+                      Edit District Budget mapping 
                     </Card.Header>
                     <Card.Body>
                       {loading ? (
@@ -365,6 +526,64 @@ function BudgetDistrictExtensionEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg={6} className="mt-5">
+                            <Row>
+                              <Col lg="3">
+                                <Form.Group
+                                  as={Row}
+                                  className="form-group"
+                                  controlId="with"
+                                >
+                                  <Col sm={1}>
+                                    <Form.Check
+                                      type="radio"
+                                      name="budgetType"
+                                      value="allocate"
+                                      checked={type.budgetType === "allocate"}
+                                      onChange={handleTypeInputs}
+                                      disabled
+                                    />
+                                  </Col>
+                                  <Form.Label
+                                    column
+                                    sm={9}
+                                    className="mt-n2"
+                                    id="with"
+                                  >
+                                    Allocate
+                                  </Form.Label>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="3" className="ms-n4">
+                                <Form.Group
+                                  as={Row}
+                                  className="form-group"
+                                  controlId="without"
+                                >
+                                  <Col sm={1}>
+                                    <Form.Check
+                                      type="radio"
+                                      name="budgetType"
+                                      value="release"
+                                      checked={type.budgetType === "release"}
+                                      onChange={handleTypeInputs}
+                                      disabled
+                                    />
+                                  </Col>
+                                  <Form.Label
+                                    column
+                                    sm={9}
+                                    className="mt-n2"
+                                    id="without"
+                                  >
+                                    Release
+                                  </Form.Label>
+                                </Form.Group>
+                              </Col>
+                            </Row>
+                          </Col>
+                          
                           <Col lg="6">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
@@ -458,149 +677,103 @@ function BudgetDistrictExtensionEdit() {
                             </Form.Group>
                           </Col>
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="schemeId"
-                                  value={data.schemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.schemeId === undefined ||
-                                    data.schemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Scheme</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.schemeId}
-                                      value={list.schemeId}
-                                    >
-                                      {list.schemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Sub Scheme
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="subschemeId"
-                                  value={data.subschemeId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.subschemeId === undefined ||
-                                    data.subschemeId === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.subschemeId}
-                                      value={list.subschemeId}
-                                    >
-                                      {list.subschemeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Select Category
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="categoryId"
-                                  value={data.categoryId}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  required
-                                  isInvalid={
-                                    data.categoryId === undefined ||
-                                    data.categoryId === "0"
-                                  }
-                                >
-                                  <option value="">Select Category</option>
-                                  {districtListData.map((list) => (
-                                    <option
-                                      key={list.talukId}
-                                      value={list.talukId}
-                                    >
-                                      {list.categoryName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Category is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>{" "}
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="scheme">
-                                Scheme<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="scheme"
-                                  name="scheme"
-                                  value={data.scheme}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Scheme"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Scheme is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="scheme">
-                                Sub Scheme<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="scheme"
-                                  name="scheme"
-                                  value={data.scheme}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Scheme"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSchemeDetailsId"
+                            value={data.scSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSchemeDetailsId === undefined ||
+                              data.scSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Scheme</option>
+                            {schemeListData && schemeListData.map((list) => (
+                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                                {list.schemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Sub Scheme
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSubSchemeDetailsId === undefined ||
+                              data.scSubSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme</option>
+                            {subSchemeListData && subSchemeListData.map((list) => (
+                              <option
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
+                              >
+                                {list.subSchemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Category
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scCategoryId"
+                            value={data.scCategoryId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scCategoryId === undefined ||
+                              data.scCategoryId === "0"
+                            }
+                          >
+                            <option value="">Select Category</option>
+                            {categoryListData && categoryListData.map((list) => (
+                              <option key={list.scCategoryId} value={list.scCategoryId}>
+                                {list.categoryName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Category is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl"> Date</Form.Label>

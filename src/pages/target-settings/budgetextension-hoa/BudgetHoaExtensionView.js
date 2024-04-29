@@ -4,11 +4,9 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import CasteDatas from "../../../store/masters/caste/CasteData";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaExtensionView() {
   const styles = {
@@ -19,29 +17,41 @@ function BudgetHoaExtensionView() {
     },
   };
 
-  const { id } = useParams();
+  const { id, types } = useParams();
   // const [data] = useState(CasteDatas);
   const [AcivityData, setAcivityData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetHoa/get-join/${id}`)
-      .then((response) => {
-        setAcivityData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setAcivityData({});
-        setLoading(false);
-      });
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetHoaExt/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-join/${id}`)
+        .then((response) => {
+          setAcivityData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setAcivityData({});
+          setLoading(false);
+        });
+    }
   };
 
   //console.log(Caste);
@@ -51,12 +61,12 @@ function BudgetHoaExtensionView() {
   }, [id]);
 
   return (
-    <Layout title="Budget Mapping to Schemes and Programs View">
+    <Layout title=" View  Budget To Head Of Account Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Budget Mapping to Schemes and Programs View
+            View  Budget To Head Of Account Details
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -87,7 +97,7 @@ function BudgetHoaExtensionView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header>
-            Budget Mapping to Schemes and Programs View Details
+          View  Budget To Head Of Account Details
           </Card.Header>
           <Card.Body>
             {loading ? (
@@ -112,13 +122,13 @@ function BudgetHoaExtensionView() {
                       <tr>
                         <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{AcivityData.scScheme}</span>
+                          <span>{AcivityData.schemeName}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>
-                          <span>{AcivityData.scSubScheme}</span>
+                          <span>{AcivityData.subSchemeName}</span>
                         </td>
                       </tr>
                       <tr>
@@ -130,7 +140,7 @@ function BudgetHoaExtensionView() {
 
                       <td style={styles.ctstyle}>Category:</td>
                       <td>
-                        <span>{AcivityData.budgetCategory}</span>
+                        <span>{AcivityData.categoryName}</span>
                       </td>
 
                       <tr>

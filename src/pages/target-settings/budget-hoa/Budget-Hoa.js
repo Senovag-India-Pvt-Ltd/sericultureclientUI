@@ -65,23 +65,44 @@ function BudgetHoa() {
   };
 
   const [balanceAmount, setBalanceAmount] = useState(0);
-
-  if (data.financialYearMasterId) {
-    api
-      .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
-        financialYearMasterId: data.financialYearMasterId,
-      })
-      .then((response) => {
-        if (!response.data.content) {
-          saveError(response.data.errorMessages[0]);
-        } else {
-          setBalanceAmount(response.data.content.remainingBalance);
-        }
-      })
-      .catch((err) => {
-        // setFinancialYearListData([]);
-      });
+  if (type.budgetType === "allocate") {
+    if (data.financialYearMasterId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetHoa/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
   }
+
+  if (type.budgetType === "release") {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
+      api
+        .post(baseURLTargetSetting + `tsBudgetReleaseHoa/get-available-balance`, {
+          financialYearMasterId: data.financialYearMasterId,
+        })
+        .then((response) => {
+          if (!response.data.content) {
+            saveError(response.data.errorMessages[0]);
+          } else {
+            setBalanceAmount(response.data.content.remainingBalance);
+          }
+        })
+        .catch((err) => {
+          // setFinancialYearListData([]);
+        });
+    }
+  }
+
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -125,7 +146,7 @@ function BudgetHoa() {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLTargetSetting + `tsBudgetHoa/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetReleaseHoa/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
@@ -270,7 +291,7 @@ function BudgetHoa() {
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -359,7 +380,7 @@ function BudgetHoa() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Head Of Account<span className="text-danger">*</span>
                         </Form.Label>
@@ -395,7 +416,7 @@ function BudgetHoa() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
-                          Budget Amount<span className="text-danger">*</span>
+                          Budget Amount (in Lakhs)<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
