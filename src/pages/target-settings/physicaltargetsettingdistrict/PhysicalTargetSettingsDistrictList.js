@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function PhysicalTargetSettingsDistrictList() {
   const [listData, setListData] = useState({});
@@ -26,9 +26,9 @@ function PhysicalTargetSettingsDistrictList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsPhysicalTargetSettingDistrict/list-with-join`, _params)
+      .get(baseURLTargetSetting + `tsPhysicalDistrict/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsPhysicalTargetSettingDistrict);
+        setListData(response.data.content.tsPhysicalDistrict);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -69,7 +69,7 @@ function PhysicalTargetSettingsDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsphysicaltargetsettingdistrict/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsPhysicalDistrict/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -146,7 +146,7 @@ function PhysicalTargetSettingsDistrictList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsPhysicalTargetSettingDistrictId)}
+            onClick={() => handleView(row.tsPhysicalDistrictId)}
           >
             View
           </Button>
@@ -154,14 +154,14 @@ function PhysicalTargetSettingsDistrictList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsPhysicalTargetSettingDistrictId)}
+            onClick={() => handleEdit(row.tsPhysicalDistrictId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsPhysicalTargetSettingDistrictId)}
+            onClick={() => deleteConfirm(row.tsPhysicalDistrictId)}
             className="ms-2"
           >
             Delete
@@ -170,6 +170,7 @@ function PhysicalTargetSettingsDistrictList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2
     },
     {
       name: "Financial Year",
@@ -180,9 +181,23 @@ function PhysicalTargetSettingsDistrictList() {
     },
 
     {
-      name: "Head of Account",
-      selector: (row) => row.scHeadAccountName,
-      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      name: "Scheme",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: false,
       hide: "md",
     },
@@ -194,9 +209,30 @@ function PhysicalTargetSettingsDistrictList() {
       hide: "md",
     },
     {
-      name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
+      name: "Reporting Officer",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Implementing Officer",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Activity",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Unit Of Measurement",
+      selector: (row) => row.unitMeasurementId,
+      cell: (row) => <span>{row.unitMeasurementId}</span>,
       sortable: false,
       hide: "md",
     },
