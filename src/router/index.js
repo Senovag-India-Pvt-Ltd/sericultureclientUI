@@ -761,6 +761,7 @@ import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/fin
 import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
 import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
 import InspectionConfig from "../pages/masters/inspection/InspectionConfig";
+import RequestInspectionMapping from "../pages/Inspection/request-inspection-mapping/RequestInspectionMapping";
 // Admin and Reports
 
 function Router() {
@@ -1479,6 +1480,11 @@ function Router() {
 
             {/* Inspection */}
             <Route path="inspection-config" element={<InspectionConfig />} />
+
+            <Route
+              path="requestinspectionmapping"
+              element={<RequestInspectionMapping />}
+            />
             <Route
               path="track-current-status"
               element={<TrackingCurrentStatus />}
