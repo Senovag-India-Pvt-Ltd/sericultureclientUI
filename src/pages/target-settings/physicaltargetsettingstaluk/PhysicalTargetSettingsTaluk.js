@@ -5,17 +5,24 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState } from "react";
-// import axios from "axios";
+import { useState,useEffect } from "react";
+import DatePicker from "react-datepicker";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function PhysicalTargetSettingsTaluk() {
   const [data, setData] = useState({
-    title: "",
-    code: "",
-    nameInKannada: "",
+    financialYearMasterId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    districtId: "",
+    date: "",
+    reportingOfficerId: "",
+    implementingOfficerId: "",
+    tsActivityMasterId: "",
+    unitMeasurementId: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -34,19 +41,7 @@ function PhysicalTargetSettingsTaluk() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
+ 
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -58,16 +53,22 @@ function PhysicalTargetSettingsTaluk() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `PhysicalTargetSettingsTaluk/add`, data)
+        .post(baseURLTargetSetting + `PhysicalTargetSettingsTaluk/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              title: "",
-              code: "",
-              //   nameInKannada: "",
+              financialYearMasterId: "",
+              scSchemeDetailsId: "",
+              scSubSchemeDetailsId: "",
+              districtId: "",
+              date: "",
+              reportingOfficerId: "",
+              implementingOfficerId: "",
+              tsActivityMasterId: "",
+              unitMeasurementId: "",
             });
             setValidated(false);
           }
@@ -83,11 +84,74 @@ function PhysicalTargetSettingsTaluk() {
 
   const clear = () => {
     setData({
-      title: "",
-      code: "",
-      //   nameInKannada: "",
+      financialYearMasterId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      districtId: "",
+      date: "",
+      reportingOfficerId: "",
+      implementingOfficerId: "",
+      tsActivityMasterId: "",
+      unitMeasurementId: "",
     });
   };
+// to get Financial Year
+const [financialYearListData, setFinancialYearListData] = useState([]);
+
+const getFinancialYearList = () => {
+  const response = api
+    .get(baseURL + `financialYearMaster/get-all`)
+    .then((response) => {
+      setFinancialYearListData(response.data.content.financialYearMaster);
+    })
+    .catch((err) => {
+      setFinancialYearListData([]);
+    });
+};
+
+useEffect(() => {
+  getFinancialYearList();
+}, []);
+
+ // to get District
+ const [districtListData, setDistrictListData] = useState([]);
+
+ const getDistrictList = () => {
+   const response = api
+     .get(baseURL + `district/get-all`)
+     .then((response) => {
+       setDistrictListData(response.data.content.district);
+     })
+     .catch((err) => {
+       setDistrictListData([]);
+     });
+ };
+
+ useEffect(() => {
+   getDistrictList();
+ }, []);
+
+ // to get Taluk
+ const [talukListData, setTalukListData] = useState([]);
+
+ const getTalukList = () => {
+   const response = api
+     .get(baseURL + `taluk/get-all`)
+     .then((response) => {
+       setTalukListData(response.data.content.taluk);
+     })
+     .catch((err) => {
+       setTalukListData([]);
+     });
+ };
+
+ useEffect(() => {
+   getTalukList();
+ }, []);
+  
+ const handleDateChange = (date, type) => {
+  setData({ ...data, [type]: date });
+};
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -183,34 +247,38 @@ function PhysicalTargetSettingsTaluk() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Financial Year<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Year</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Financial Year is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Financial Year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="financialYearMasterId"
+                            value={data.financialYearMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.financialYearMasterId === undefined ||
+                              data.financialYearMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Financial Year</option>
+                            {financialYearListData.map((list) => (
+                              <option
+                                key={list.financialYearMasterId}
+                                value={list.financialYearMasterId}
+                              >
+                                {list.financialYear}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Financial Year is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                   {/* <Col lg="6">
                     <Form.Group className="form-group">
@@ -236,94 +304,90 @@ function PhysicalTargetSettingsTaluk() {
                   </Col> */}
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        District<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select District</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          District is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select District<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="districtId"
+                            value={data.districtId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.districtId === undefined ||
+                              data.districtId === "0"
+                            }
+                          >
+                            <option value="">Select District</option>
+                            {districtListData.map((list) => (
+                              <option
+                                key={list.districtId}
+                                value={list.districtId}
+                              >
+                                {list.districtName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            District is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Taluk<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Taluk</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Taluk is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Select Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="talukId"
+                            value={data.talukId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.talukId === undefined || data.talukId === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {talukListData.map((list) => (
+                              <option key={list.talukId} value={list.talukId}>
+                                {list.talukName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        Select Date<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="stateId"
-                          value={data.stateId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
-                          }
-                        >
-                          <option value="">Select Date</option>
-                          {/* {stateListData.map((list) => (
-                            <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
-                            </option>
-                          ))} */}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Date is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>Date</Form.Label>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            selected={data.date}
+                            onChange={(date) => handleDateChange(date, "date")}
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            required
+                          />
+                        </div>
+                      </Form.Group>
+                      <Form.Control.Feedback type="invalid">
+                        Date is Required
+                      </Form.Control.Feedback>
+                    </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">
@@ -333,13 +397,13 @@ function PhysicalTargetSettingsTaluk() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="stateId"
-                          value={data.stateId}
+                          name="reportingOfficerId"
+                          value={data.reportingOfficerId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
+                            data.reportingOfficerId === undefined || data.reportingOfficerId === "0"
                           }
                         >
                           <option value="">Select Reporting Officer DDO</option>
@@ -363,13 +427,13 @@ function PhysicalTargetSettingsTaluk() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
-                          name="stateId"
-                          value={data.stateId}
+                          name="implementingOfficerId"
+                          value={data.implementingOfficerId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.stateId === undefined || data.stateId === "0"
+                            data.implementingOfficerId === undefined || data.implementingOfficerId === "0"
                           }
                         >
                           <option value="">Select Officer DDO</option>
@@ -385,6 +449,7 @@ function PhysicalTargetSettingsTaluk() {
                       </div>
                     </Form.Group>
                   </Col>
+
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
@@ -392,9 +457,9 @@ function PhysicalTargetSettingsTaluk() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
+                          id="tsActivityMasterId"
+                          name="tsActivityMasterId"
+                          value={data.tsActivityMasterId}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Title"
@@ -414,16 +479,16 @@ function PhysicalTargetSettingsTaluk() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
+                          id="unitMeasurementId"
+                          name="unitMeasurementId"
+                          value={data.unitMeasurementId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Title"
+                          placeholder="Enter Unit Of Measurement"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Unit of Measurment is required.
+                        Unit Of Measurement is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
