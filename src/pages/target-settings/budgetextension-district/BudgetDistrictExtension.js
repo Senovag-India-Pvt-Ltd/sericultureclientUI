@@ -98,7 +98,7 @@ function BudgetDistrictExtension() {
 if (type.budgetType === "release") {
   if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetReleaseHoa/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
             districtId: data.districtId,
@@ -161,7 +161,7 @@ if (type.budgetType === "release") {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLTargetSetting + `tsBudgetDistrictExt/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
@@ -203,6 +203,9 @@ if (type.budgetType === "release") {
       scCategoryId: "",
       institutionType: "",
       institutionId: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
     setBalanceAmount(0);

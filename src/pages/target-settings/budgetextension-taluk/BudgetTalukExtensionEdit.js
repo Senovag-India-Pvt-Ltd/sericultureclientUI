@@ -69,7 +69,7 @@ if (type.budgetType === "release") {
   ) {
     api
       .post(
-        baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-available-balance`,
+        baseURLTargetSetting + `tsBudgetReleaseTalukExt/get-available-balance`,
         {
           financialYearMasterId: data.financialYearMasterId,
           scHeadAccountId: data.scHeadAccountId,
@@ -151,7 +151,7 @@ if (type.budgetType === "release") {
     }
     if (type.budgetType === "release") {
       api
-        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetReleaseTalukExt/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -285,7 +285,7 @@ if (type.budgetType === "release") {
      const response = api
        .get(baseURLMasterData + `scSchemeDetails/get-all`)
        .then((response) => {
-         setSchemeListData(response.data.content.scSchemeDetails);
+         setSchemeListData(response.data.content.ScSchemeDetails);
        })
        .catch((err) => {
         setSchemeListData([]);
