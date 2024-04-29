@@ -12,7 +12,7 @@ import { Icon, Select } from "../../components";
 import api from "../../../src/services/auth/api";
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesList() {
   const [listData, setListData] = useState({});
@@ -27,11 +27,9 @@ function RegisteredSeedProducerNssoGrainagesList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info`)
+      .get(baseURLSeedDfl + `EggPreparationRsso/get-info`)
       .then((response) => {
-        // console.log(response.data)
         setListData(response.data);
-        // setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
       .catch((err) => {
@@ -46,11 +44,11 @@ function RegisteredSeedProducerNssoGrainagesList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/testing-of-moth-view/${_id}`);
+    navigate(`/seriui/registered-seed-producer-nsso-grainages-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/testing-of-moth-edit/${_id}`);
+    navigate(`/seriui/registered-seed-producer-nsso-grainages-edit/${_id}`);
     // navigate("/seriui/training Schedule");
   };
 
@@ -73,7 +71,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURL2 + `TestingOfMoth/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `EggPreparationRsso/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -143,7 +141,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
     },
   };
 
-  const TestingOfMothDataColumns = [
+  const RegisteredSeedProducerDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -180,107 +178,94 @@ function RegisteredSeedProducerNssoGrainagesList() {
       grow: 2,
     },
     {
-      name: "Name of the Grainage and Address",
+      name: "Lot Number",
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lot number/Year",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Number of Cocoons (CB, Hybrid)",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
+      selector: (row) => row.numberOfCocoonsCB,
+      cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Source of Seed Cocoon's",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
+      selector: (row) => row.sourceMasterName,
+      cell: (row) => <span>{row.sourceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Date of moth emergence",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
+      selector: (row) => row.dateOfMothEmergence,
+      cell: (row) => <span>{row.dateOfMothEmergence}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Laid On Date",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.laidOnDate,
+      cell: (row) => <span>{row.laidOnDate}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Egg sheet serial number",
-      selector: (row) => row.pebrineMoth,
-      cell: (row) => <span>{row.pebrineMoth}</span>,
+      selector: (row) => row.eggSheetSerialNumber,
+      cell: (row) => <span>{row.eggSheetSerialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Number of pairs",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.numberOfPairs,
+      cell: (row) => <span>{row.numberOfPairs}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Number of Rejection",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.numberOfRejection,
+      cell: (row) => <span>{row.numberOfRejection}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "DFLs obtained",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.dflsObtained,
+      cell: (row) => <span>{row.dflsObtained}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Egg Recovery %",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.eggRecoveryPercentage,
+      cell: (row) => <span>{row.eggRecoveryPercentage}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Examination details",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Test results",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.testResults,
+      cell: (row) => <span>{row.testResults}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Certification (Yes/No)",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.certification,
+      cell: (row) => <span>{row.certification}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Additional remarks",
-      selector: (row) => row.sourceDetails,
-      cell: (row) => <span>{row.sourceDetails}</span>,
+      selector: (row) => row.additionalRemarks,
+      cell: (row) => <span>{row.additionalRemarks}</span>,
       sortable: true,
       hide: "md",
     },
@@ -325,7 +310,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
           <DataTable
             // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
-            columns={TestingOfMothDataColumns}
+            columns={RegisteredSeedProducerDataColumns}
             data={listData}
             highlightOnHover
             pagination
