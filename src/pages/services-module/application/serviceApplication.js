@@ -988,13 +988,13 @@ function ServiceApplication() {
                             columns={LandDetailsColumns}
                             data={landDetailsList}
                             highlightOnHover
-                            pagination
-                            paginationServer
-                            paginationTotalRows={totalRows}
-                            paginationPerPage={countPerPage}
-                            paginationComponentOptions={{
-                              noRowsPerPage: true,
-                            }}
+                            // pagination
+                            // paginationServer
+                            // paginationTotalRows={totalRows}
+                            // paginationPerPage={countPerPage}
+                            // paginationComponentOptions={{
+                            //   noRowsPerPage: true,
+                            // }}
                             onChangePage={(page) => setPage(page - 1)}
                             progressPending={loading}
                             theme="solarized"
