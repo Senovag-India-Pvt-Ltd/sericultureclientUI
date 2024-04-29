@@ -24,15 +24,11 @@ function SaleAndDisposalOfEggsNSSO() {
     lotNumber: "",
     eggSheetNumbers: "",
     raceId: "",
-    releaseDate: "",
     dateOfDisposal: "",
-    expectedDateOfHatching: "",
     numberOfDflsDisposed: "",
     fruitsId: "",
     nameAndAddressOfTheFarm: "",
     ratePer100DflsPrice: "",
-    userType: "farm",
-    userTypeId: "",
   });
 
   const styles = {
@@ -80,7 +76,7 @@ function SaleAndDisposalOfEggsNSSO() {
       //   return;
       // }
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg/add-info`, data)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/add-info`, data)
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -90,15 +86,11 @@ function SaleAndDisposalOfEggsNSSO() {
               lotNumber: "",
               eggSheetNumbers: "",
               raceId: "",
-              releaseDate: "",
               dateOfDisposal: "",
-              expectedDateOfHatching: "",
               numberOfDflsDisposed: "",
               fruitsId: "",
               nameAndAddressOfTheFarm: "",
               ratePer100DflsPrice: "",
-              userType: "farm",
-              userTypeId: "",
             });
             setValidated(false);
           }
@@ -123,15 +115,11 @@ function SaleAndDisposalOfEggsNSSO() {
       lotNumber: "",
       eggSheetNumbers: "",
       raceId: "",
-      releaseDate: "",
       dateOfDisposal: "",
-      expectedDateOfHatching: "",
       numberOfDflsDisposed: "",
       fruitsId: "",
       nameAndAddressOfTheFarm: "",
       ratePer100DflsPrice: "",
-      userType: "farm",
-      userTypeId: "",
     });
     setValidated(false);
   };
@@ -332,7 +320,7 @@ function SaleAndDisposalOfEggsNSSO() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Card>
+        {/* <Card>
           <Card.Body>
             <Row lg="12" className="g-gs">
               <Col lg="1">
@@ -385,9 +373,9 @@ function SaleAndDisposalOfEggsNSSO() {
               </Col>
             </Row>
           </Card.Body>
-        </Card>
+        </Card> */}
 
-        {data.userType === "farmer" ? (
+        {/* {data.userType === "farmer" ? ( */}
           <Form
             noValidate
             validated={searchValidated}
@@ -421,26 +409,12 @@ function SaleAndDisposalOfEggsNSSO() {
                           Search
                         </Button>
                       </Col>
-                      {/* <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                          target="_blank"
-                          // onClick={search}
-                        >
-                          Generate FRUITS ID
-                        </Button>
-                      </Col> */}
                     </Form.Group>
                   </Col>
                 </Row>
               </Card.Body>
             </Card>
           </Form>
-        ) : (
-          ""
-        )}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
@@ -586,7 +560,7 @@ function SaleAndDisposalOfEggsNSSO() {
                       </Form.Group>
                     </Col>
 
-                    {data.userType === "farm" ? (
+                    {/* {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
@@ -668,7 +642,31 @@ function SaleAndDisposalOfEggsNSSO() {
                           </div>
                         </Form.Group>
                       </Col>
-                    )}
+                    )} */}
+
+                    <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="sordfl">
+                            Name and address of the Farm
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="nameAndAddressOfTheFarm"
+                              name="nameAndAddressOfTheFarm"
+                              value={data.nameAndAddressOfTheFarm}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder=" Enter Name and address farm"
+                              required
+                              readOnly
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Name and address farm is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -693,7 +691,7 @@ function SaleAndDisposalOfEggsNSSO() {
                         </div>
                       </Form.Group>
                     </Col>
-                    {data.userType === "farm" ? (
+                    {/* {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -718,8 +716,8 @@ function SaleAndDisposalOfEggsNSSO() {
                       </Col>
                     ) : (
                       ""
-                    )}
-                    <Col lg="2">
+                    )} */}
+                    {/* <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Release Date<span className="text-danger">*</span>
@@ -740,7 +738,7 @@ function SaleAndDisposalOfEggsNSSO() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
@@ -765,7 +763,7 @@ function SaleAndDisposalOfEggsNSSO() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="2">
+                    {/* <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Expected Date of Hatching
@@ -787,7 +785,7 @@ function SaleAndDisposalOfEggsNSSO() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </Card.Body>
               </Card>

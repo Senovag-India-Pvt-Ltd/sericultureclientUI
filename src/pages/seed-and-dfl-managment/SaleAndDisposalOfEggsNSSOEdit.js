@@ -91,7 +91,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `sale-disposal-of-egg/update-info`, data)
+        .post(baseURLSeedDfl + `sale-disposal-of-egg-rsso/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -101,15 +101,11 @@ function SaleAndDisposalOfEggsNSSOEdit() {
               lotNumber: "",
               eggSheetNumbers: "",
               raceId: "",
-              releaseDate: "",
               dateOfDisposal: "",
-              expectedDateOfHatching: "",
               numberOfDflsDisposed: "",
               fruitsId: "",
               nameAndAddressOfTheFarm: "",
               ratePer100DflsPrice: "",
-              userType: "farm",
-              userTypeId: "",
             });
             setValidated(false);
           }
@@ -133,8 +129,13 @@ function SaleAndDisposalOfEggsNSSOEdit() {
   const clear = () => {
     setData({
       lotNumber: "",
-      pebrine: "",
-      sourceDetails: "",
+      eggSheetNumbers: "",
+      raceId: "",
+      dateOfDisposal: "",
+      numberOfDflsDisposed: "",
+      fruitsId: "",
+      nameAndAddressOfTheFarm: "",
+      ratePer100DflsPrice: "",
     });
   };
 
@@ -142,7 +143,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
   const getIdList = () => {
     setLoading(true);
     api
-      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `sale-disposal-of-egg-rsso/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -276,7 +277,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Card>
+        {/* <Card>
           <Card.Body>
             <Row lg="12" className="g-gs">
               <Col lg="1">
@@ -329,9 +330,9 @@ function SaleAndDisposalOfEggsNSSOEdit() {
               </Col>
             </Row>
           </Card.Body>
-        </Card>
+        </Card> */}
 
-        {data.userType === "farmer" ? (
+        {/* {data.userType === "farmer" ? ( */}
           <Form
             noValidate
             validated={searchValidated}
@@ -382,9 +383,9 @@ function SaleAndDisposalOfEggsNSSOEdit() {
               </Card.Body>
             </Card>
           </Form>
-        ) : (
+        {/* ) : (
           ""
-        )}
+        )} */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
@@ -508,7 +509,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       </Form.Group>
                     </Col>
 
-                    {data.userType === "farm" ? (
+                    {/* {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
@@ -543,11 +544,11 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           </div>
                         </Form.Group>
                       </Col>
-                    ) : data.userType === "farmer" ? (
+                    ) : data.userType === "farmer" ? ( */}
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
-                            Name and address farmer
+                          Name and address of the Farm
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -557,17 +558,17 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                               value={data.nameAndAddressOfTheFarm}
                               onChange={handleInputs}
                               type="text"
-                              placeholder=" Enter Name and address farmer"
+                              placeholder=" Enter Name and address of the Farm"
                               required
                               readOnly
                             />
                             <Form.Control.Feedback type="invalid">
-                              Name and address farmer is required
+                            Name and address of the Farm is required
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
                       </Col>
-                    ) : (
+                    {/* ) : (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -590,7 +591,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           </div>
                         </Form.Group>
                       </Col>
-                    )}
+                    )} */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -615,7 +616,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                         </div>
                       </Form.Group>
                     </Col>
-                    {data.userType === "farm" ? (
+                    {/* {data.userType === "farm" ? (
                       <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="sordfl">
@@ -640,8 +641,8 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       </Col>
                     ) : (
                       ""
-                    )}
-                    <Col lg="2">
+                    )} */}
+                    {/* <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Release Date<span className="text-danger">*</span>
@@ -666,7 +667,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
@@ -695,7 +696,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="2">
+                    {/* <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Expected Date of Hatching
@@ -721,7 +722,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </Card.Body>
               </Card>
@@ -732,7 +733,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
-                    Save
+                    Update
                   </Button>
                 </li>
                 <li>
