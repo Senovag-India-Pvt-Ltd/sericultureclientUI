@@ -762,6 +762,9 @@ import FinancialTargetSettingsInstitutionView from "../pages/target-settings/fin
 import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
 import InspectionConfig from "../pages/masters/inspection/InspectionConfig";
 import RequestInspectionMapping from "../pages/Inspection/request-inspection-mapping/RequestInspectionMapping";
+import RequestInspectionMappingEdit from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingEdit";
+import RequestInspectionMappingList from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingList";
+import RequestInspectionMappingView from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingView";
 // Admin and Reports
 
 function Router() {
@@ -1484,6 +1487,18 @@ function Router() {
             <Route
               path="requestinspectionmapping"
               element={<RequestInspectionMapping />}
+            />
+            <Route
+              path="requestinspectionmapping-edit/:id"
+              element={<RequestInspectionMappingEdit />}
+            />
+            <Route
+              path="requestinspectionmapping-list"
+              element={<RequestInspectionMappingList />}
+            />
+            <Route
+              path="requestinspectionmapping-view/:id"
+              element={<RequestInspectionMappingView />}
             />
             <Route
               path="track-current-status"

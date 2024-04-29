@@ -238,11 +238,11 @@ function RequestInspectionMapping() {
           <Block.HeadContent>
             <Block.Title tag="h2">Request Inspection Mapping</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
+          <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/race-list"
+                  to="/seriui/requestinspectionmapping-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -251,7 +251,7 @@ function RequestInspectionMapping() {
               </li>
               <li>
                 <Link
-                  to="/seriui/race-list"
+                  to="/seriui/requestinspectionmapping-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -259,7 +259,7 @@ function RequestInspectionMapping() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent> */}
+          </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
