@@ -249,7 +249,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/PhysicalTargetSettingsDistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -258,7 +258,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/seriui/PhysicalTargetSettingsDistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -271,18 +271,11 @@ useEffect(() => {
       </Block.Head>
 
       <Block className="mt-n5">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Block>
               <Card>
                 <Card.Header>Physical Target Setting District</Card.Header>
                 <Card.Body>
                   <Row className="g-3 ">
-                    <Card>
-                      <Card.Body>
-                        {/* <h3>Farmers Details</h3> */}
-                        <Row className="g-gs">
                           <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
@@ -601,11 +594,7 @@ useEffect(() => {
                         </li>
                       </ul>
                     </div>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Block>
-          </Row>
+               
         </Form>
       </Block>
     </Layout>

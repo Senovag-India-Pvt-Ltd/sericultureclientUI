@@ -13,7 +13,7 @@ import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function PhysicalTargetSettingsTscList() {
   const [listData, setListData] = useState({});
@@ -27,9 +27,9 @@ function PhysicalTargetSettingsTscList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsPhysicalTargetSettingsTsc/list-with-join`, _params)
+      .get(baseURLTargetSetting + `tsPhysicalInstitution/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsPhysicalTargetSettingsTsc);
+        setListData(response.data.content.tsPhysicalInstitution);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function PhysicalTargetSettingsTscList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/physicaltargetsettings-tsc-view/${id}`);
+    navigate(`/seriui/physicaltargetsettingstsc-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/physicaltargetsettings-tsc-edit/${id}`);
+    navigate(`/seriui/physicaltargetsettingstsc-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function PhysicalTargetSettingsTscList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsActivityMaster/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsPhysicalInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function PhysicalTargetSettingsTscList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsPhysicalTargetSettingsTscId)}
+            onClick={() => handleView(row.tsPhysicalInstitutionId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function PhysicalTargetSettingsTscList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsPhysicalTargetSettingsTscId)}
+            onClick={() => handleEdit(row.tsPhysicalInstitutionId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsPhysicalTargetSettingsTscId)}
+            onClick={() => deleteConfirm(row.tsPhysicalInstitutionId)}
             className="ms-2"
           >
             Delete
@@ -171,6 +171,7 @@ function PhysicalTargetSettingsTscList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2
     },
     {
       name: "Financial Year",
@@ -181,16 +182,16 @@ function PhysicalTargetSettingsTscList() {
     },
 
     {
-      name: "Head of Account",
-      selector: (row) => row.scHeadAccountName,
-      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      name: "Scheme",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Date",
-      selector: (row) => row.date,
-      cell: (row) => <span>{row.date}</span>,
+      name: "Sub Scheme",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: false,
       hide: "md",
     },
@@ -209,9 +210,37 @@ function PhysicalTargetSettingsTscList() {
       hide: "md",
     },
     {
-      name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
+      name: "Date",
+      selector: (row) => row.date,
+      cell: (row) => <span>{row.date}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Reporting Officer",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Implementing Officer",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Activity",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Unit Of Measurement",
+      selector: (row) => row.unitMeasurementId,
+      cell: (row) => <span>{row.unitMeasurementId}</span>,
       sortable: false,
       hide: "md",
     },

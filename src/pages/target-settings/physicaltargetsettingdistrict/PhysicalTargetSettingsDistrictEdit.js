@@ -263,7 +263,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -272,7 +272,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -580,9 +580,8 @@ useEffect(() => {
                         <Form.Label htmlFor="sordfl"> Date</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={
-                              new Date ?
-                              (data.date)
+                            selected={data.date
+                            ? new Date(data.date)
                             : null}
                             onChange={(date) => handleDateChange(date, "date")}
                             peekNextMonth

@@ -44,11 +44,11 @@ function PhysicalTargetSettingsDistrictList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/physicaltargetsettingdistrict-view/${id}`);
+    navigate(`/seriui/physicaltargetsettingsdistrict-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/physicaltargetsettingdistrict-edit/${id}`);
+    navigate(`/seriui/physicaltargetsettingsdistrict-edit/${id}`);
   };
 
   const deleteError = () => {

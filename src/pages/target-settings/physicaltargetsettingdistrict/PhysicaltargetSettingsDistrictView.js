@@ -64,7 +64,7 @@ function PhysicaltargetSettingsDistrictView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -73,7 +73,7 @@ function PhysicaltargetSettingsDistrictView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
