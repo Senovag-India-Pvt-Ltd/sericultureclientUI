@@ -784,6 +784,7 @@ import BudgetDistrictExtensionEdit from "../pages/target-settings/budgetextensio
 import BudgetDistrictExtensionList from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionList";
 import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
 
+import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
 // Admin and Reports
 
 function Router() {
@@ -1061,6 +1062,10 @@ function Router() {
             <Route
               path="service-application"
               element={<ServiceApplication />}
+            />
+             <Route
+              path="application-selection"
+              element={<ApplicationSelection />}
             />
             <Route
               path="track-dfl-procurement"
