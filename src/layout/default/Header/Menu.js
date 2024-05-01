@@ -861,6 +861,14 @@ function Menu() {
             {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
+                  text="Service Application"
+                  to="/seriui/service-application"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
                   text="Subsidy Programmes"
                   to="/seriui/subsidy-programs"
                 />

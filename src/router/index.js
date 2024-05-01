@@ -639,6 +639,7 @@ import GrainageType from "../pages/masters/grainage-type/GrainageType";
 import GrainageTypeList from "../pages/masters/grainage-type/GrainageTypeList";
 import GrainageTypeView from "../pages/masters/grainage-type/GrainageTypeView";
 import GrainageTypeEdit from "../pages/masters/grainage-type/GrainageTypeEdit";
+import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
 // Admin and Reports
 
 function Router() {
@@ -916,6 +917,10 @@ function Router() {
             <Route
               path="service-application"
               element={<ServiceApplication />}
+            />
+             <Route
+              path="application-selection"
+              element={<ApplicationSelection />}
             />
             <Route
               path="track-dfl-procurement"

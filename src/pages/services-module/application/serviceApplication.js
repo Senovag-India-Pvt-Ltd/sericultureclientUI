@@ -29,37 +29,13 @@ function ServiceApplication() {
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
-    scCategoryId: "1",
+    scCategoryId: "",
     scVendorId: "",
-  });
-
-  const [post, setPost] = useState({
     farmerId: "",
-    payToVendor: "",
-    headOfAccountId: "",
-    schemeId: "",
-    subSchemeId: "",
-    categoryId: "",
-    applicationFormLandDetailRequestList: [
-      {
-        unitTypeMasterId: "",
-        landDeveloped: "",
-      },
-    ],
-    applicationFormLineItemRequestList: [
-      {
-        unitTypeMasterId: "",
-        lineItemComment: "",
-        cost: "",
-        vendorId: "",
-      },
-    ],
   });
 
   const [developedLand, setDevelopedLand] = useState({
-    acre: "",
-    gunta: "",
-    fgunta: "",
+    landDeveloped: "",
     unitType: "",
   });
 
@@ -68,7 +44,77 @@ function ServiceApplication() {
     description: "",
     price: "",
     vendorId: "",
+    payToVendor: false,
   });
+
+  // Display Image
+  const [documentAttachments, setDocumentAttachments] = useState({});
+  const handleAttachFileChange = (e, documentId) => {
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setDocumentAttachments((prevState) => ({
+        ...prevState,
+        [documentId]: file,
+      }));
+    } else {
+      setDocumentAttachments((prevState) => ({
+        ...prevState,
+        [documentId]: null,
+      }));
+      // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+      // document.getElementById("hdAttachFiles").value = "";
+    }
+    // setPhotoFile(file);
+  };
+
+  const handleRemoveImage = (documentId) => {
+    const updatedDocument = { ...documentAttachments };
+    delete updatedDocument[documentId];
+    setDocumentAttachments(updatedDocument);
+    document.getElementById(`attImage${documentId}`).value = "";
+    // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+  };
+
+  console.log(documentAttachments);
+
+  // Upload Image to S3 Bucket
+  const handleAttachFileUpload = async (documentId) => {
+    // const parameters = `applicationFormId =${data.applicationId}`;
+    const param = {
+      applicationFormId: applicationId,
+      documentTypeId: documentId,
+    };
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", documentAttachments[documentId]);
+
+      const response = await api.post(
+        baseURLDBT + `service/uploadDocument`,
+        formData,
+        {
+          params: param,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleCheckBox = (e) => {
+    setEquipment((prev) => ({
+      ...prev,
+      payToVendor: e.target.checked,
+    }));
+  };
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -96,12 +142,34 @@ function ServiceApplication() {
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
-  const getSubSchemeList = (_id) => {
+  // const getSubSchemeList = (_id) => {
+  //   const response = api
+  //     .get(
+  //       baseURLMasterData +
+  //         `scSubSchemeDetails/get-by-sc-scheme-details-id/${_id}`
+  //     )
+  //     .then((response) => {
+  //       if (response.data.content.scSubSchemeDetails) {
+  //         setScSubSchemeDetailsListData(
+  //           response.data.content.scSubSchemeDetails
+  //         );
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setScSubSchemeDetailsListData([]);
+  //       // alert(err.response.data.errorMessages[0].message[0].message);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (data.scSchemeDetailsId) {
+  //     getSubSchemeList(data.scSchemeDetailsId);
+  //   }
+  // }, [data.scSchemeDetailsId]);
+
+  const getSubSchemeList = () => {
     const response = api
-      .get(
-        baseURLMasterData +
-          `scSubSchemeDetails/get-by-sc-scheme-details-id/${_id}`
-      )
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
       .then((response) => {
         if (response.data.content.scSubSchemeDetails) {
           setScSubSchemeDetailsListData(
@@ -116,18 +184,35 @@ function ServiceApplication() {
   };
 
   useEffect(() => {
-    if (data.scSchemeDetailsId) {
-      getSubSchemeList(data.scSchemeDetailsId);
-    }
-  }, [data.scSchemeDetailsId]);
+    getSubSchemeList();
+  }, []);
 
   // to get head of account by sc-scheme-details
   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
-  const getHeadAccountList = (_id) => {
+  // const getHeadAccountList = (_id) => {
+  //   api
+  //     .get(
+  //       baseURLMasterData + `scHeadAccount/get-by-sc-scheme-details-id/${_id}`
+  //     )
+  //     .then((response) => {
+  //       if (response.data.content.scHeadAccount) {
+  //         setScHeadAccountListData(response.data.content.scHeadAccount);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setScHeadAccountListData([]);
+  //       // alert(err.response.data.errorMessages[0].message[0].message);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (data.scSchemeDetailsId) {
+  //     getHeadAccountList(data.scSchemeDetailsId);
+  //   }
+  // }, [data.scSchemeDetailsId]);
+  const getHeadAccountList = () => {
     api
-      .get(
-        baseURLMasterData + `scHeadAccount/get-by-sc-scheme-details-id/${_id}`
-      )
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
       .then((response) => {
         if (response.data.content.scHeadAccount) {
           setScHeadAccountListData(response.data.content.scHeadAccount);
@@ -140,22 +225,40 @@ function ServiceApplication() {
   };
 
   useEffect(() => {
-    if (data.scSchemeDetailsId) {
-      getHeadAccountList(data.scSchemeDetailsId);
-    }
-  }, [data.scSchemeDetailsId]);
+    getHeadAccountList();
+  }, []);
 
   // to get category by head of account id
   const [scCategoryListData, setScCategoryListData] = useState([]);
-  const getCategoryList = (_id) => {
+  // const getCategoryList = (_id) => {
+  //   api
+  //     .get(
+  //       baseURLMasterData +
+  //         `scHeadAccountCategory/get-by-sc-head-account-id/${_id}`
+  //     )
+  //     .then((response) => {
+  //       if (response.data.content.scHeadAccountCategory) {
+  //         setScCategoryListData(response.data.content.scHeadAccountCategory);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setScCategoryListData([]);
+  //       // alert(err.response.data.errorMessages[0].message[0].message);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (data.scHeadAccountId) {
+  //     getCategoryList(data.scHeadAccountId);
+  //   }
+  // }, [data.scHeadAccountId]);
+
+  const getCategoryList = () => {
     api
-      .get(
-        baseURLMasterData +
-          `scHeadAccountCategory/get-by-sc-head-account-id/${_id}`
-      )
+      .get(baseURLMasterData + `scCategory/get-all`)
       .then((response) => {
-        if (response.data.content.scHeadAccountCategory) {
-          setScCategoryListData(response.data.content.scHeadAccountCategory);
+        if (response.data.content.scCategory) {
+          setScCategoryListData(response.data.content.scCategory);
         }
       })
       .catch((err) => {
@@ -165,10 +268,8 @@ function ServiceApplication() {
   };
 
   useEffect(() => {
-    if (data.scHeadAccountId) {
-      getCategoryList(data.scHeadAccountId);
-    }
-  }, [data.scHeadAccountId]);
+    getCategoryList();
+  }, []);
 
   // to get sc-vendor
   const [scVendorListData, setScVendorListData] = useState([]);
@@ -188,20 +289,41 @@ function ServiceApplication() {
     getVendorList();
   }, []);
 
-  const [shareDetails, setShareDetails] = useState({});
+  // to get uploadable documents
+  const [docListData, setDocListData] = useState([]);
+
+  const getDocList = () => {
+    api
+      .post(baseURLDBT + `service/getApplicableDocumentList`)
+      .then((response) => {
+        setDocListData(response.data.content);
+      })
+      .catch((err) => {
+        setDocListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDocList();
+  }, []);
+
+  const [unitTypeList, setUnitTypeList] = useState([]);
   useEffect(() => {
     if (
+      data.scSchemeDetailsId &&
       data.scHeadAccountId &&
       data.scCategoryId &&
       data.scSubSchemeDetailsId
     ) {
       api
-        .get(
-          baseURLMasterData +
-            `scUnitCost/get-by-sc-head-account-id?scHeadAccountId=${data.scHeadAccountId}&scCategoryId=${data.scCategoryId}&scSubSchemeDetailsId=${data.scSubSchemeDetailsId}`
-        )
+        .post(baseURLDBT + `master/cost/getUnitType`, {
+          headOfAccountId: data.scHeadAccountId,
+          schemeId: data.scSchemeDetailsId,
+          subSchemeId: data.scSubSchemeDetailsId,
+          categoryId: data.scCategoryId,
+        })
         .then((response) => {
-          setShareDetails(response.data.content.scUnitCost[0]);
+          setUnitTypeList(response.data.content);
           // setScVendorListData(response.data.content.ScVendor);
         })
         .catch((err) => {
@@ -247,59 +369,38 @@ function ServiceApplication() {
       event.preventDefault();
       const sendPost = {
         farmerId: data.farmerId,
-        payToVendor: "",
+        payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
         categoryId: data.scCategoryId,
-        applicationFormLandDetailRequestList: [
+        landDetailId: landData.landId,
+        talukId: landData.talukId,
+        newFarmer: true,
+      };
+
+      if (data.equordev === "land") {
+        sendPost.applicationFormLandDetailRequestList = [
           {
             unitTypeMasterId: developedLand.unitType,
+            landDeveloped: developedLand.landDeveloped,
           },
-        ],
-        applicationFormLineItemRequestList: [
+        ];
+      } else if (data.equordev === "equipment") {
+        sendPost.applicationFormLineItemRequestList = [
           {
             unitTypeMasterId: equipment.unitType,
             lineItemComment: equipment.description,
             cost: equipment.price,
             vendorId: equipment.vendorId,
           },
-        ],
-      };
+        ];
+      }
 
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-      api
-        .post(baseURLDBT + `service/`, sendPost)
-        .then((response) => {
-          if (response.data.error) {
-            saveError(response.data.message);
-          } else {
-            saveSuccess(response.data.receiptNo);
-            // setData({
-            //   fruitsId: "",
-            //   farmerName: "",
-            //   mulberryVarietyId: "",
-            //   area: "",
-            //   dateOfPlanting: "",
-            //   nurserySaleDetails: "",
-            //   quantity: "",
-            //   date: "",
-            //   rate: "",
-            //   saplingAge: "",
-            //   remittanceDetails: "",
-            //   challanUploadKey: "",
-            // });
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
+      uploadFileConfirm(sendPost);
     }
   };
 
@@ -330,19 +431,29 @@ function ServiceApplication() {
 
   const clear = () => {
     setData({
-      fruitsId: "",
-      farmerName: "",
-      mulberryVarietyId: "",
-      area: "",
-      dateOfPlanting: "",
-      nurserySaleDetails: "",
-      quantity: "",
-      date: "",
-      rate: "",
-      saplingAge: "",
-      remittanceDetails: "",
-      challanUploadKey: "",
+      with: "withLand",
+      subinc: "subsidy",
+      equordev: "land",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scHeadAccountId: "",
+      scCategoryId: "",
+      scVendorId: "",
+      farmerId: "",
     });
+    setDevelopedLand({
+      landDeveloped: "",
+      unitType: "",
+    });
+    setEquipment({
+      unitType: "",
+      description: "",
+      price: "",
+      vendorId: "",
+      payToVendor: false,
+    });
+    setDocumentAttachments({});
+
   };
 
   const saveSuccess = (message) => {
@@ -350,6 +461,67 @@ function ServiceApplication() {
       icon: "success",
       title: "Saved successfully",
       text: `Receipt Number ${message}`,
+    });
+  };
+
+  const [applicationId, setApplicationId] = useState("");
+
+  const uploadFileConfirm = (post) => {
+    Swal.fire({
+      title: "Do you want to Upload the Documents?",
+      // text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Later"
+    }).then((result) => {
+      if (result.value) {
+        api
+          .post(baseURLDBT + `service/saveApplicationForm`, post)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              // saveSuccess(response.data.receiptNo);
+              setApplicationId(response.data.content.applicationDocumentId);
+              handleShowModal();
+
+              // setData({
+              //   fruitsId: "",
+              //   farmerName: "",
+              //   mulberryVarietyId: "",
+              //   area: "",
+              //   dateOfPlanting: "",
+              //   nurserySaleDetails: "",
+              //   quantity: "",
+              //   date: "",
+              //   rate: "",
+              //   saplingAge: "",
+              //   remittanceDetails: "",
+              //   challanUploadKey: "",
+              // });
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        clear();
+        // Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
     });
   };
 
@@ -365,6 +537,18 @@ function ServiceApplication() {
       title: "Attempt was not successful",
       html: errorMessage,
     });
+  };
+
+  const [landData, setLandData] = useState({
+    landId: "",
+    talukId: "",
+  });
+
+  const handleRadioChange = (_id, tId) => {
+    if (!tId) {
+      tId = 0;
+    }
+    setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
   };
 
   const [validated, setValidated] = useState(false);
@@ -394,7 +578,7 @@ function ServiceApplication() {
           console.log(response);
           if (!response.data.content.error) {
             if (response.data.content.farmerResponse) {
-              setPost((prev) => ({
+              setData((prev) => ({
                 ...prev,
                 farmerId: response.data.content.farmerResponse.farmerId,
               }));
@@ -409,14 +593,19 @@ function ServiceApplication() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
     }
   };
-
-  console.log(post);
 
   const LandDetailsColumns = [
     {
@@ -426,13 +615,15 @@ function ServiceApplication() {
         <input
           type="radio"
           name="selectedLand"
-          value={row.id}
+          value={row.farmerLandDetailsId}
           // checked={selectedLandId === row.id}
-          // onChange={handleRadioChange}
+          onChange={() =>
+            handleRadioChange(row.farmerLandDetailsId, row.talukId)
+          }
         />
       ),
-      ignoreRowClick: true,
-      allowOverflow: true,
+      // ignoreRowClick: true,
+      // allowOverflow: true,
       button: true,
     },
     {
@@ -607,26 +798,26 @@ function ServiceApplication() {
             <Block.Title tag="h2">{t("title_service_application")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
+            <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/application-selection"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>Old Applications</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/stake-holder-list"
+                  to="/seriui/application-selection"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
+                  <span>Old Applications</span>
                 </Link>
               </li>
-            </ul> */}
+            </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -774,86 +965,8 @@ function ServiceApplication() {
                       <Row className="g-gs">
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Component Type (Sub Schemes)/Program Names
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSchemeDetailsId"
-                                value={data.scSchemeDetailsId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  data.scSchemeDetailsId === undefined ||
-                                  data.scSchemeDetailsId === "0"
-                                }
-                              >
-                                <option value="">
-                                  Select Component Type (Sub Schemes)/Program
-                                  Names
-                                </option>
-                                {scSchemeDetailsListData.map((list) => (
-                                  <option
-                                    key={list.scSchemeDetailsId}
-                                    value={list.scSchemeDetailsId}
-                                  >
-                                    {list.schemeName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Component Type (Sub Schemes)/Program Names is
-                                required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Scheme (Head Of Account)
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scHeadAccountId"
-                                value={data.scHeadAccountId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  data.scHeadAccountId === undefined ||
-                                  data.scHeadAccountId === "0"
-                                }
-                              >
-                                <option value="">
-                                  Select Scheme (Head Of Account)
-                                </option>
-                                {scHeadAccountListData.map((list) => (
-                                  <option
-                                    key={list.scHeadAccountId}
-                                    value={list.scHeadAccountId}
-                                  >
-                                    {list.scHeadAccountName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Scheme (Head Of Account) is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component (Sub Program Name)
+                              Sub Scheme
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -869,9 +982,7 @@ function ServiceApplication() {
                                   data.scSubSchemeDetailsId === "0"
                                 }
                               >
-                                <option value="">
-                                  Select Component (Sub Program Name)
-                                </option>
+                                <option value="">Select Sub Scheme</option>
                                 {scSubSchemeDetailsListData.map((list) => (
                                   <option
                                     key={list.scSubSchemeDetailsId}
@@ -882,7 +993,7 @@ function ServiceApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component (Sub Program Name) is required
+                                Sub Scheme is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -891,7 +1002,79 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Sub Component
+                              Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSchemeDetailsId"
+                                value={data.scSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSchemeDetailsId === undefined ||
+                                  data.scSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme Names</option>
+                                {scSchemeDetailsListData.map((list) => (
+                                  <option
+                                    key={list.scSchemeDetailsId}
+                                    value={list.scSchemeDetailsId}
+                                  >
+                                    {list.schemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Head of Account
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scHeadAccountId"
+                                value={data.scHeadAccountId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scHeadAccountId === undefined ||
+                                  data.scHeadAccountId === "0"
+                                }
+                              >
+                                <option value="">Select Head of Account</option>
+                                {scHeadAccountListData.map((list) => (
+                                  <option
+                                    key={list.scHeadAccountId}
+                                    value={list.scHeadAccountId}
+                                  >
+                                    {list.scHeadAccountName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Head of Account is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Category
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -907,10 +1090,10 @@ function ServiceApplication() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Sub Component</option>
+                                <option value="">Select Category</option>
                                 {scCategoryListData.map((list) => (
                                   <option
-                                    key={list.scHeadAccountCategoryId}
+                                    key={list.scCategoryId}
                                     value={list.scCategoryId}
                                   >
                                     {list.categoryName}
@@ -918,7 +1101,7 @@ function ServiceApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Sub Component is required
+                                Category is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -995,7 +1178,7 @@ function ServiceApplication() {
                             // paginationComponentOptions={{
                             //   noRowsPerPage: true,
                             // }}
-                            onChangePage={(page) => setPage(page - 1)}
+                            // onChangePage={(page) => setPage(page - 1)}
                             progressPending={loading}
                             theme="solarized"
                             customStyles={customStyles}
@@ -1085,14 +1268,11 @@ function ServiceApplication() {
                                     }
                                   >
                                     <option value="">Select Unit Type</option>
-                                    {/* {scVendorListData.map((list) => (
-                                      <option
-                                        key={list.scVendorId}
-                                        value={list.scVendorId}
-                                      >
-                                        {list.name}
+                                    {unitTypeList.map((list) => (
+                                      <option key={list.id} value={list.id}>
+                                        {list.measurementUnit}
                                       </option>
-                                    ))} */}
+                                    ))}
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
                                     Unit Type is required
@@ -1102,26 +1282,27 @@ function ServiceApplication() {
                             </Col>
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="acre">
-                                  Acre<span className="text-danger">*</span>
+                                <Form.Label htmlFor="landDeveloped">
+                                  Land Developed
+                                  <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Control
-                                    id="acre"
+                                    id="landDeveloped"
                                     type="text"
-                                    name="acre"
-                                    value={developedLand.acre}
+                                    name="landDeveloped"
+                                    value={developedLand.landDeveloped}
                                     onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Acre"
+                                    placeholder="Enter Land Developed"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                    Acre is required
+                                    Land Developed is required
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
                             </Col>
-                            <Col lg="4">
+                            {/* <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="gunta">
                                   Gunta<span className="text-danger">*</span>
@@ -1162,7 +1343,7 @@ function ServiceApplication() {
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
-                            </Col>
+                            </Col> */}
                           </Row>
                         </Card.Body>
                       </Card>
@@ -1195,14 +1376,11 @@ function ServiceApplication() {
                                     }
                                   >
                                     <option value="">Select Unit Type</option>
-                                    {/* {scVendorListData.map((list) => (
-                                      <option
-                                        key={list.scVendorId}
-                                        value={list.scVendorId}
-                                      >
-                                        {list.name}
+                                    {unitTypeList.map((list) => (
+                                      <option key={list.id} value={list.id}>
+                                        {list.measurementUnit}
                                       </option>
-                                    ))} */}
+                                    ))}
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
                                     Unit Type is required
@@ -1289,6 +1467,23 @@ function ServiceApplication() {
                                 </div>
                               </Form.Group>
                             </Col>
+                            <Col lg="4">
+                              <Form.Group as={Row} className="form-group mt-4">
+                                <Col sm={1}>
+                                  <Form.Check
+                                    type="checkbox"
+                                    id="payToVendor"
+                                    checked={equipment.payToVendor}
+                                    onChange={handleCheckBox}
+                                    // Optional: disable the checkbox in view mode
+                                    // defaultChecked
+                                  />
+                                </Col>
+                                <Form.Label column sm={11} className="mt-n2">
+                                  Pay to Vendor
+                                </Form.Label>
+                              </Form.Group>
+                            </Col>
                           </Row>
                         </Card.Body>
                       </Card>
@@ -1318,6 +1513,79 @@ function ServiceApplication() {
           </Form>
         </Block>
       </Row>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>File Upload</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {docListData.map(({ documentId, documentName }) => (
+            <div key={documentId}>
+              <Row className="d-flex justify-content-center align-items-center">
+                <Col lg="2">
+                  <Form.Group className="form-group mt-1">
+                    <Form.Label htmlFor="trUploadPath">
+                      {documentName}
+                    </Form.Label>
+                  </Form.Group>
+                </Col>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-1">
+                    {/* <Form.Label htmlFor="trUploadPath">Attach Files</Form.Label> */}
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id={`attImage${documentId}`}
+                        // name="hdAttachFiles"
+                        // value={data.photoPath}
+                        onChange={(e) => handleAttachFileChange(e, documentId)}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4" style={{ position: "relative" }}>
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {documentAttachments[documentId] && (
+                      <div style={{ position: "relative" }}>
+                        <img
+                          style={{ height: "150px", width: "150px" }}
+                          src={URL.createObjectURL(
+                            documentAttachments[documentId]
+                          )}
+                        />
+                        <button
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            background: "transparent",
+                            border: "none",
+                            color: "black",
+                            fontSize: "24px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleRemoveImage(documentId)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col lg="2">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={() => handleAttachFileUpload(documentId)}
+                  >
+                    Upload
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
