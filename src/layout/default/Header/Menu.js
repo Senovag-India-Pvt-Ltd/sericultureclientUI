@@ -1444,7 +1444,7 @@ function Menu() {
             {showMenu.TargetSetting_Allocate ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="Allocate"
+                  text="Physical Target Setting"
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -1452,38 +1452,38 @@ function Menu() {
                 <MenuSub>
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
-                      <MenuItemLink text="Budget" to="/seriui/budget" />
+                      <MenuItemLink text="Physical Target Setting District" to="/seriui/physicaltargetsettingsdistrict" />
                     </MenuItem>
                   ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Budget to HOA"
                         to="/seriui/budget-hoa"
                       />
                     </MenuItem>
-                  ) : null}
-                  {showMenu.TargetSetting_Allocate_Budget_District ? (
+                  ) : null} */}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
                     <MenuItem>
                       <MenuItemLink
                         text="Budget to District"
                         to="/seriui/budget-district"
                       />
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
                   {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Budget to Taluk"
-                        to="/seriui/budget-taluk"
+                        text="Physical Target Setting Taluk"
+                        to="/seriui/physicaltargetsettingstaluk"
                       />
                     </MenuItem>
                   ) : null}
                   {showMenu.TargetSetting_Allocate_Budget_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Budget to Institution"
-                        to="/seriui/budget-tsc"
+                        text="Physical Target Setting Institution"
+                        to="/seriui/physicaltargetsettingstsc"
                       />
                     </MenuItem>
                   ) : null}
@@ -1493,7 +1493,7 @@ function Menu() {
             {showMenu.TargetSetting_Release ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text="Release"
+                  text="Financial Target Setting"
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -1502,24 +1502,24 @@ function Menu() {
                   {showMenu.TargetSetting_Release_District ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Release Budget to District"
-                        to="/seriui/releasebudgetdistrict"
+                        text="Financial Target Setting District"
+                        to="/seriui/financialtargetsettingsdistrict"
                       />
                     </MenuItem>
                   ) : null}
                   {showMenu.TargetSetting_Release_Taluk ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Release Budget to Taluk"
-                        to="/seriui/releasebudgettaluk"
+                        text="Financial Target Setting Taluk"
+                        to="/seriui/financialtargetsettingstaluk"
                       />
                     </MenuItem>
                   ) : null}
                   {showMenu.TargetSetting_Release_Institution ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Release Budget to Institution"
-                        to="/seriui/releasebudgetinstitution"
+                        text="Financial Target Setting  Institution"
+                        to="/seriui/financialtargetsettingsinstitution"
                       />
                     </MenuItem>
                   ) : null}

@@ -270,12 +270,12 @@ useEffect(() => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
               <Card>
                 <Card.Header>Physical Target Setting District</Card.Header>
                 <Card.Body>
-                  <Row className="g-3 ">
+                  <Row className="g-gs ">
                           <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
