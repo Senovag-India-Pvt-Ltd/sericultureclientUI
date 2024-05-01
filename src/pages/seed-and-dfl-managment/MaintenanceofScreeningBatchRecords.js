@@ -14,92 +14,11 @@ import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofScreeningBatchRecords() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
-
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
-
+  
   const [validated, setValidated] = useState(false);
 
   const [data, setData] = useState({
@@ -248,18 +167,7 @@ function MaintenanceofScreeningBatchRecords() {
     });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
-  };
-
+ 
   return (
     <Layout title="Maintenance of screening batch records">
       <Block.Head>
@@ -307,7 +215,7 @@ function MaintenanceofScreeningBatchRecords() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n5">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -316,7 +224,6 @@ function MaintenanceofScreeningBatchRecords() {
                   <Block>
                     <Card>
                       <Card.Header>
-                        {" "}
                         Maintenance of screening batch records{" "}
                       </Card.Header>
                       <Card.Body>
@@ -334,7 +241,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   name="cocoonsProducedAtEachGeneration"
                                   value={data.cocoonsProducedAtEachGeneration}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Total number of cocoons produced at each generation"
                                   required
                                 />
@@ -426,20 +333,7 @@ function MaintenanceofScreeningBatchRecords() {
                             </Form.Group>
                           </Col> */}
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="sordfl">
-                                Worm Test details and result
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Worm Test details  and result"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="screeningBatchNo">
@@ -452,8 +346,8 @@ function MaintenanceofScreeningBatchRecords() {
                                   name="screeningBatchNo"
                                   value={data.screeningBatchNo}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Screening Batch Number"
+                                  type="number"
+                                  placeholder="Enter Screening Batch Number"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -475,8 +369,9 @@ function MaintenanceofScreeningBatchRecords() {
                                   name="cocoonsProducedAtEachScreening"
                                   value={data.cocoonsProducedAtEachScreening}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Screening Batch Number"
+                                  type="number"
+                                  placeholder="Enter Total Number of Cocoons Produced at each
+                                  Screening"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -520,8 +415,8 @@ function MaintenanceofScreeningBatchRecords() {
                                   name="chawkiPercentage"
                                   value={data.chawkiPercentage}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Chawki Percentage"
+                                  type="number"
+                                  placeholder="Enter Chawki Percentage"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -544,8 +439,8 @@ function MaintenanceofScreeningBatchRecords() {
                                     data.selectedBedAsPerTheMeanPerformance
                                   }
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Selected Bed as per the Mean Performance"
+                                  type="number"
+                                  placeholder="Enter Selected Bed as per the Mean Performance"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -568,7 +463,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cropFailureDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Crop Failure Details"
+                                  placeholder="Enter Crop Failure Details"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">

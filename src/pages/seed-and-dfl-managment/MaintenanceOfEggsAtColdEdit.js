@@ -33,9 +33,9 @@ function MaintenanceOfEggsAtColdEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const isDataReleaseSet = !!data.dateOfRelease;
-  const isDataColdSet = !!data.laidOnDate;
-  const isDataLaidDate = !!data.storageDate;
+  // const isDataReleaseSet = !!data.dateOfRelease;
+  // const isDataColdSet = !!data.laidOnDate;
+  // const isDataLaidDate = !!data.storageDate;
 
 
   const postData = (event) => {
@@ -48,7 +48,7 @@ function MaintenanceOfEggsAtColdEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `MaintenanceOfEggsAtColdStorage/update-info`, data)
+        .post(baseURLSeedDfl + `EggStorage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -287,9 +287,11 @@ return (
                                 Date of Cold storage<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Cold Storage">
-                              { isDataColdSet && (
+                              {/* { isDataColdSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfColdStore)}
+                                  selected={data.dateOfColdStore
+                                  ? new Date(data.dateOfColdStore)
+                                  : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfColdStore")
                                   }
@@ -302,7 +304,7 @@ return (
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -313,9 +315,11 @@ return (
                       Laid On Date<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                    {isDataLaidDate && (
+                    {/* {isDataLaidDate && ( */}
                       <DatePicker
-                        selected={new Date(data.laidOnDate)}
+                        selected={data.laidOnDate
+                        ? new Date(data.laidOnDate)
+                        :null}
                         onChange={(date) =>
                           handleDateChange(date, "laidOnDate")
                         }
@@ -327,7 +331,7 @@ return (
                         className="form-control"
                         required
                       />
-                      )}
+                      {/* )} */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -338,9 +342,11 @@ return (
                                 Date of release<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                              {isDataReleaseSet && (
+                              {/* {isDataReleaseSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfRelease)}
+                                  selected={data.dateOfRelease
+                                  ?new Date(data.dateOfRelease)
+                                  :null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfRelease")
                                   }
@@ -353,11 +359,10 @@ return (
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
-
                           
                 </Row>
               )}

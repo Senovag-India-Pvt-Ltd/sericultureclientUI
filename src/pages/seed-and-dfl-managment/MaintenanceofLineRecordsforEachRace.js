@@ -608,7 +608,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   name="noOfCocoonsSelected"
                                   value={data.noOfCocoonsSelected}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter No. of cocoons selected"
                                   required
                                 />

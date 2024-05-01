@@ -565,7 +565,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                                   name="noOfCocoonsSelected"
                                   value={data.noOfCocoonsSelected}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter No. of cocoons selected"
                                   required
                                 />

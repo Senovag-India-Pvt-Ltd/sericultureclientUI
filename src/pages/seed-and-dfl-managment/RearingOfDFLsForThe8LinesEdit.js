@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RearingOfDFLsForThe8LinesEdit() {
   const { id } = useParams();
@@ -52,19 +52,18 @@ function RearingOfDFLsForThe8LinesEdit() {
           } else {
             updateSuccess();
             setData({
-              disinfectantUsageDetails: "",
+              disinfectantMasterId: "",
               cropDetail: "",
               cropNumber: "",
               lotNumber: "",
               numberOfDFLs: "",
               laidOnDate: "",
               coldStorageDetails: "",
-              releasedOn: "",
+              releasedOnDate: "",
               chawkiPercentage: "",
               wormWeightInGrams: "",
               spunOnDate: "",
               wormTestDatesAndResults: "",
-              cocoonAssessmentDetails: "",
               cropFailureDetails: "",
             });
             setValidated(false);
@@ -140,6 +139,24 @@ function RearingOfDFLsForThe8LinesEdit() {
   useEffect(() => {
     getLotList();
   }, []);
+
+    // to get Disinfectant
+    const [disinfectantListData, setDisinfectantListData] = useState([]);
+
+    const getDisinfectantList = () => {
+      const response = api
+        .get(baseURLMaster + `disinfectantMaster/get-all`)
+        .then((response) => {
+         setDisinfectantListData(response.data.content.disinfectantMaster);
+        })
+        .catch((err) => {
+         setDisinfectantListData([]);
+        });
+    };
+  
+    useEffect(() => {
+     getDisinfectantList();
+    }, []);
 
   const navigate = useNavigate();
 
@@ -217,28 +234,35 @@ function RearingOfDFLsForThe8LinesEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Disinfectant usage details
-                        <span className="text-danger">*</span>
-                      </Form.Label>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Disinfectant Usage Details
+                    </Form.Label>
+                    <Col>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="sordfl"
-                          name="disinfectantUsageDetails"
-                          value={data.disinfectantUsageDetails}
+                        <Form.Select
+                          name="disinfectantMasterId"
+                          value={data.disinfectantMasterId}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Disinfectant usage details"
-                          required
-                        />
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Disinfectant Usage Details</option>
+                          {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
+                            <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
+                              {list.disinfectantMasterName}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Disinfectant usage details is required
-                        </Form.Control.Feedback>
+                        Disinfectant Usage Details is required
+                      </Form.Control.Feedback>
                       </div>
-                    </Form.Group>
-                  </Col>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
@@ -323,7 +347,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           name="numberOfDFLs"
                           value={data.numberOfDFLs}
                           onChange={handleInputs}
-                          type="text"
+                          type="number"
                           placeholder="Enter Number of DFLs"
                           required
                         />
@@ -368,7 +392,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           name="chawkiPercentage"
                           value={data.chawkiPercentage}
                           onChange={handleInputs}
-                          type="text"
+                          type="number"
                           placeholder="Enter Chawki percentage "
                           required
                         />
@@ -391,7 +415,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           name="wormWeightInGrams"
                           value={data.wormWeightInGrams}
                           onChange={handleInputs}
-                          type="text"
+                          type="number"
                           placeholder="Enter Worm weight (In grms)"
                           required
                         />
@@ -425,28 +449,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Cocoon assessment details
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="sordfl"
-                          name="cocoonAssessmentDetails"
-                          value={data.cocoonAssessmentDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Cocoon assessment details"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Cocoon assessment details is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                 
 
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
@@ -505,9 +508,9 @@ function RearingOfDFLsForThe8LinesEdit() {
                       <div className="form-control-wrap">
                         {isDataReleasedDate && (
                           <DatePicker
-                            selected={new Date(data.releasedOn)}
+                            selected={new Date(data.releasedOnDate)}
                             onChange={(date) =>
-                              handleDateChange(date, "releasedOn")
+                              handleDateChange(date, "releasedOnDate")
                             }
                             peekNextMonth
                             showMonthDropdown
