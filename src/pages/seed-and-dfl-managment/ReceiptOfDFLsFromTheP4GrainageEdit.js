@@ -163,13 +163,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
       html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+  
   return (
     <Layout title="Receipt of DFLs from the P4 grainage ">
       <Block.Head>
@@ -248,10 +242,6 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                       </Form.Group>
                     </Col>
 
-                
-
-                    
-
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -284,10 +274,6 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                       </Form.Group>
                     </Col>
 
-                   
-
-                          
-
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
@@ -312,10 +298,7 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                                 )}
                               </div>
                             </Form.Group>
-                          </Col>
-
-                          
-                         
+                          </Col>   
                 </Row>
               )}
             </Card.Body>

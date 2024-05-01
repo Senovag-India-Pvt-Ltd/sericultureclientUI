@@ -318,7 +318,7 @@ function SaleDisposalOfPiercedCocoons() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
                       Number of cocoons
@@ -339,7 +339,7 @@ function SaleDisposalOfPiercedCocoons() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">

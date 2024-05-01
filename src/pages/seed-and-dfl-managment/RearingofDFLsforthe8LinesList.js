@@ -312,13 +312,13 @@ function RearingofDFLsforthe8LinesList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Crop Details",
-      selector: (row) => row.cropDetail,
-      cell: (row) => <span>{row.cropDetail}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Crop Details",
+    //   selector: (row) => row.cropDetail,
+    //   cell: (row) => <span>{row.cropDetail}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Crop Number",
       selector: (row) => row.cropNumber,
@@ -387,7 +387,7 @@ function RearingofDFLsforthe8LinesList() {
       hide: "md",
     },
     {
-      name: "Worm Test Dates And Results",
+      name: "Worm Test results",
       selector: (row) => row.wormTestDatesAndResults,
       cell: (row) => <span>{row.wormTestDatesAndResults}</span>,
       sortable: true,

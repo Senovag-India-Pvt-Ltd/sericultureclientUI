@@ -33,13 +33,13 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
     value = e.target.value;
     setData({ ...data, [name]: value });
 
-    if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-      e.target.classList.add("is-invalid");
-      e.target.classList.remove("is-valid");
-    } else if (name === "fruitsId" && value.length === 16) {
-      e.target.classList.remove("is-invalid");
-      e.target.classList.add("is-valid");
-    } 
+    // if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+    //   e.target.classList.add("is-invalid");
+    //   e.target.classList.remove("is-valid");
+    // } else if (name === "fruitsId" && value.length === 16) {
+    //   e.target.classList.remove("is-invalid");
+    //   e.target.classList.add("is-valid");
+    // } 
   };
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -102,10 +102,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
     });
   }
 
-  // const [chawkiList ,setChawkiList]= useState({
-  //   chawki_id: "",
-  // })
-
+  
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
@@ -284,45 +281,6 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1 ">
-            <Card>
-              <Card.Body>
-                <Row className="g-gs">
-                  <Col lg="12">
-                  <Form.Group as={Row} className="form-group" controlId="fid">
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        FRUITS ID<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4}>
-                        <Form.Control
-                          type="fruitsId"
-                          name="fruitsId"
-                          value={data.fruitsId}
-                          onChange={handleInputs}
-                          placeholder="Enter FRUITS ID "
-                          required
-                          maxLength= "16"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Fruits ID Should Contain 16 digits
-                        </Form.Control.Feedback>
-                      </Col>
-                      {/* <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          // onClick={display}
-                        >
-                          Search
-                        </Button>
-                      </Col> */}
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-
-            <Block className="mt-3">
               <Card>
                 <Card.Header>Maintenance of Line records for each race</Card.Header>
                   <Card.Body>
@@ -447,7 +405,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
 
                           
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -474,9 +432,9 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                {/* <Col lg="4">
+                <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -496,7 +454,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
@@ -626,7 +584,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                     </Row>
                 </Card.Body>
               </Card>
-              </Block>
+
 
               <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -643,7 +601,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                 </li>
               </ul>
             </div>
-          </Row>
+
         </Form>
       </Block>
     </Layout>

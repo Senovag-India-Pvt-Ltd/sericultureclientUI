@@ -243,7 +243,7 @@ function RearingofDFLsforthe8Lines() {
                     </Col>
                   </Form.Group>
                 </Col>
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Crop Detail<span className="text-danger">*</span>
@@ -263,7 +263,7 @@ function RearingofDFLsforthe8Lines() {
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -411,7 +411,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Worm Tests Dates And results<span className="text-danger">*</span>
+                              Worm Test results<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -420,11 +420,11 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.wormTestDatesAndResults}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Worm Tests Dates And results"
+                                  placeholder="Enter Worm Test results"
                                   required
                                 />
                                  <Form.Control.Feedback type="invalid">
-                                 Worm Tests Dates And results is required
+                                 Worm Test results is required
                             </Form.Control.Feedback>
                               </div>
                             </Form.Group>

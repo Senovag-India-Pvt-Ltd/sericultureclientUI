@@ -252,7 +252,7 @@ function MaintenanceofScreeningBatchRecords() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>Lot Number</Form.Label>
                               <Col>
@@ -281,6 +281,27 @@ function MaintenanceofScreeningBatchRecords() {
                                   </Form.Control.Feedback>
                                 </div>
                               </Col>
+                            </Form.Group>
+                          </Col> */}
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumber"
+                                  value={data.lotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
                             </Form.Group>
                           </Col>
 
@@ -488,7 +509,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
@@ -515,7 +536,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
@@ -543,7 +564,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
@@ -571,7 +592,7 @@ function MaintenanceofScreeningBatchRecords() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required

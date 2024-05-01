@@ -121,10 +121,10 @@ function MaintenanceOfLineRecordForEachRaceView() {
                         </td>
                         <td>{lineRecord.raceName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Fruits ID:</td>
                         <td>{lineRecord.fruitsId}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
                         Farmer Name:

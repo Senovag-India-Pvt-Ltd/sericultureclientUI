@@ -235,7 +235,7 @@ function PreparationofeggsDFLs() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  minDate={new Date()}
+                                  // minDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
@@ -263,7 +263,7 @@ function PreparationofeggsDFLs() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required

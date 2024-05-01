@@ -41,13 +41,13 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
       value = e.target.value;
       setData({ ...data, [name]: value });
   
-      if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
-        e.target.classList.add("is-invalid");
-        e.target.classList.remove("is-valid");
-      } else if (name === "fruitsId" && value.length === 16) {
-        e.target.classList.remove("is-invalid");
-        e.target.classList.add("is-valid");
-      }
+      // if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
+      //   e.target.classList.add("is-invalid");
+      //   e.target.classList.remove("is-valid");
+      // } else if (name === "fruitsId" && value.length === 16) {
+      //   e.target.classList.remove("is-invalid");
+      //   e.target.classList.add("is-valid");
+      // }
     };
   
     const _header = {
@@ -64,9 +64,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         setValidated(true);
       } else {
         event.preventDefault();
-        if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-          return;
-        }
+        // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        //   return;
+        // }
         api
           .post(baseURLSeedDfl + `LineRecord/add-info`, data)
           .then((response) => {
@@ -326,9 +326,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         {/* <Form action="#"> */}
-        <Form noValidate validated={searchValidated} onSubmit={search}>
+        {/* <Form noValidate validated={searchValidated} onSubmit={search}>
           <Card>
             <Card.Body>
               <Row className="g-gs">
@@ -361,7 +361,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
               </Row>
             </Card.Body>
           </Card>
-        </Form>
+        </Form> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
@@ -489,7 +489,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     </Col> */}
 
                           
-
+{/* 
                   <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -517,9 +517,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                {/* <Col lg="4">
+                <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -539,7 +539,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">

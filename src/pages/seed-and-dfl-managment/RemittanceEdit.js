@@ -438,7 +438,7 @@ const getUploadReceipt = async (file) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      KTC 25 and Date<span className="text-danger">*</span>
+                      KTC 25<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -447,11 +447,11 @@ const getUploadReceipt = async (file) => {
                         value={data.ktc25AndDate}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter KTC 25 and Date"
+                        placeholder="Enter KTC 25"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      KTC 25 and Date is required
+                      KTC 25 is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>

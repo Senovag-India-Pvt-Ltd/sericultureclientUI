@@ -111,10 +111,10 @@ function RearingOfDFLsForThe8LinesView() {
                         </td>
                         <td>{rearing8Lines.disinfectantMasterName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Crop Details:</td>
                         <td>{rearing8Lines.cropDetail}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
                         Crop Number:
@@ -171,7 +171,7 @@ function RearingOfDFLsForThe8LinesView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Worm Test Dates And Results:
+                        Worm Test Results:
                         </td>
                         <td>{rearing8Lines.wormTestDatesAndResults}</td>
                       </tr>

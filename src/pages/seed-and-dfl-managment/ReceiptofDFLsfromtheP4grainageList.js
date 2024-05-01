@@ -87,9 +87,7 @@ function ReceiptofDFLsfromtheP4grainageList() {
     navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
   };
 
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
+ 
 
   const deleteError = () => {
     Swal.fire({

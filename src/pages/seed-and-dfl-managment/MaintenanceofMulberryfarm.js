@@ -1,20 +1,15 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
@@ -80,9 +75,7 @@ function MaintenanceofMulberryfarm() {
           }
         })
         .catch((err) => {
-          // if (Object.keys(err.response.data.validationErrors).length > 0) {
-          //   saveError(err.response.data.validationErrors);
-          // }
+          
           if (
             err.response &&
             err.response.data &&
@@ -92,12 +85,7 @@ function MaintenanceofMulberryfarm() {
               saveError(err.response.data.validationErrors);
             }
           }
-          // else {
-          //   Swal.fire({
-          //     icon: "warning",
-          //     title: "Details not Found",
-          //   });
-          // }
+          
         });
       setValidated(true);
     }
@@ -361,7 +349,7 @@ function MaintenanceofMulberryfarm() {
                         showYearDropdown
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
-                        maxDate={new Date()}
+                        // maxDate={new Date()}
                         className="form-control"
                         required
                       />
