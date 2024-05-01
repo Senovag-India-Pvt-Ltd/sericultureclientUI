@@ -80,12 +80,13 @@ function BudgetTalukExtension() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
   if (type.budgetType === "allocate") {
-  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId && data.talukId) {
     api
       .post(baseURLTargetSetting + `tsBudgetTalukExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
         districtId: data.districtId,
+        talukId: data.talukId,
       })
       .then((response) => {
         if (!response.data.content) {
@@ -151,7 +152,7 @@ if (type.budgetType === "release") {
       // event.stopPropagation();
       if (type.budgetType === "allocate") {
       api
-        .post(baseURL + `tsBudgetTalukExt/add`, data)
+        .post(baseURLTargetSetting + `tsBudgetTalukExt/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -175,7 +176,7 @@ if (type.budgetType === "release") {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLTargetSetting + `tsBudgetTalukExt/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetReleaseTalukExt/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
@@ -304,7 +305,7 @@ if (type.budgetType === "release") {
      const response = api
        .get(baseURL + `scSchemeDetails/get-all`)
        .then((response) => {
-         setSchemeListData(response.data.content.scSchemeDetails);
+         setSchemeListData(response.data.content.ScSchemeDetails);
        })
        .catch((err) => {
         setSchemeListData([]);

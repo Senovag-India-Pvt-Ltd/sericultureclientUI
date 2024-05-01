@@ -47,7 +47,7 @@ function BudgetHoaExtensionList() {
           saveError(response.data.content.error_description);
           setShow(false);
         } else {
-          setListData(response.data.content.tsBudgetHoa);
+          setListData(response.data.content.tsBudgetHoaExt);
           setShow(true);
           // saveSuccess();
           // clear();

@@ -74,11 +74,12 @@ function BudgetDistrictExtension() {
 
   const [balanceAmount, setBalanceAmount] = useState(0);
   if (type.budgetType === "allocate") {
-  if (data.financialYearMasterId && data.scHeadAccountId) {
+  if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
     api
       .post(baseURLTargetSetting + `tsBudgetDistrictExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
+        districtId: data.districtId,
       })
       .then((response) => {
         if (!response.data.content) {
@@ -97,7 +98,7 @@ function BudgetDistrictExtension() {
 if (type.budgetType === "release") {
   if (data.financialYearMasterId && data.scHeadAccountId && data.districtId) {
     api
-      .post(baseURLTargetSetting + `tsBudgetReleaseHoa/get-available-balance`, {
+      .post(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/get-available-balance`, {
         financialYearMasterId: data.financialYearMasterId,
         scHeadAccountId: data.scHeadAccountId,
             districtId: data.districtId,
@@ -160,7 +161,7 @@ if (type.budgetType === "release") {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLTargetSetting + `tsBudgetDistrictExt/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
@@ -202,6 +203,9 @@ if (type.budgetType === "release") {
       scCategoryId: "",
       institutionType: "",
       institutionId: "",
+    });
+    setType({
+      budgetType: "allocate",
     });
     setValidated(false);
     setBalanceAmount(0);
@@ -273,7 +277,7 @@ if (type.budgetType === "release") {
      const response = api
        .get(baseURLMasterData + `scSchemeDetails/get-all`)
        .then((response) => {
-         setSchemeListData(response.data.content.scSchemeDetails);
+         setSchemeListData(response.data.content.ScSchemeDetails);
        })
        .catch((err) => {
         setSchemeListData([]);
@@ -389,7 +393,7 @@ if (type.budgetType === "release") {
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Financial Year
                               <span className="text-danger">*</span>
@@ -479,7 +483,7 @@ if (type.budgetType === "release") {
                     </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Head Of Account
                               <span className="text-danger">*</span>
@@ -514,7 +518,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Select District
                               <span className="text-danger">*</span>
@@ -549,7 +553,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="budgetAmount">
                               Budget Amount
                               <span className="text-danger">*</span>

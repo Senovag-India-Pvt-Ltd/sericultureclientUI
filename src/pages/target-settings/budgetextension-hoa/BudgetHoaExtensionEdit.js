@@ -85,10 +85,11 @@ function BudgetHoaExtensionEdit() {
   const [balanceAmount, setBalanceAmount] = useState(0);
 
   if (type.budgetType === "allocate") {
-    if (data.financialYearMasterId) {
+    if (data.financialYearMasterId && data.scHeadAccountId) {
       api
         .post(baseURLTargetSetting + `tsBudgetHoaExt/get-available-balance`, {
           financialYearMasterId: data.financialYearMasterId,
+          scHeadAccountId: data.scHeadAccountId,
         })
         .then((response) => {
           if (!response.data.content) {
@@ -110,6 +111,7 @@ function BudgetHoaExtensionEdit() {
           baseURLTargetSetting + `tsBudgetReleaseHoaExt/get-available-balance`,
           {
             financialYearMasterId: data.financialYearMasterId,
+            scHeadAccountId: data.scHeadAccountId,
           }
         )
         .then((response) => {

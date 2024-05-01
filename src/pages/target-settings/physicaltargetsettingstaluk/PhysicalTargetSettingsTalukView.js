@@ -6,7 +6,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function PhysicalTargetSettingsTalukView() {
   const styles = {
@@ -31,7 +31,7 @@ function PhysicalTargetSettingsTalukView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsPhysicalTargetSettings/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsPhysicalTaluk/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -61,7 +61,7 @@ function PhysicalTargetSettingsTalukView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettings-taluk-list"
+                  to="/seriui/physicaltargetsettingstaluk-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -70,7 +70,7 @@ function PhysicalTargetSettingsTalukView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettings-taluk-list"
+                  to="/seriui/physicaltargetsettingstaluk-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -95,20 +95,20 @@ function PhysicalTargetSettingsTalukView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                      <tr>
+                    <tr>
                         <td style={styles.ctstyle}>Financial Year:</td>
                         <td>{AcivityData.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Head Of Account:</td>
+                        <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{AcivityData.scHeadAccountName}</span>
+                          <span>{AcivityData.schemeName}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
+                        <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>
-                          <span>{AcivityData.date}</span>
+                          <span>{AcivityData.subSchemeName}</span>
                         </td>
                       </tr>
                       <tr>
@@ -124,9 +124,33 @@ function PhysicalTargetSettingsTalukView() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Budget Amount:</td>
+                        <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.budgetAmount}</span>
+                          <span>{AcivityData.date}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Reporting Officer:</td>
+                        <td>
+                          <span>{AcivityData.username}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Implementing Officer:</td>
+                        <td>
+                          <span>{AcivityData.username}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Activity:</td>
+                        <td>
+                          <span>{AcivityData.name}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Unit Of Measurement:</td>
+                        <td>
+                          <span>{AcivityData.unitMeasurementId}</span>
                         </td>
                       </tr>
                     </tbody>

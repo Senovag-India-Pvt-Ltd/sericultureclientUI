@@ -29,6 +29,7 @@ function BudgetTalukExtensionList() {
     financialYearMasterId: "",
     scHeadAccountId: "",
     districtId: "",
+    talukId: "",
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scCategoryId: "",
@@ -70,13 +71,13 @@ function BudgetTalukExtensionList() {
   }
   if (type.budgetType === "release") {
     api
-      .post(baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-details`, data)
+      .post(baseURLTargetSetting + `tsBudgetReleaseTalukExt/get-details`, data)
       .then((response) => {
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
           setShow(false);
         } else {
-          setListData(response.data.content.tsReleaseBudgetTalukExt);
+          setListData(response.data.content.tsBudgetReleaseTalukExt);
           setShow(true);
           // saveSuccess();
           // clear();
@@ -134,7 +135,23 @@ function BudgetTalukExtensionList() {
     getHeadOfAccountList();
   }, []);
 
-  // District
+ // to get Taluk
+ const [talukListData, setTalukListData] = useState([]);
+
+ const getTalukList = () => {
+   const response = api
+     .get(baseURLMasterData + `taluk/get-all`)
+     .then((response) => {
+       setTalukListData(response.data.content.taluk);
+     })
+     .catch((err) => {
+       setTalukListData([]);
+     });
+ };
+
+ useEffect(() => {
+   getTalukList();
+ }, []);
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -164,7 +181,7 @@ function BudgetTalukExtensionList() {
     const response = api
       .get(baseURLMasterData + `scSchemeDetails/get-all`)
       .then((response) => {
-        setSchemeListData(response.data.content.scSchemeDetails);
+        setSchemeListData(response.data.content.ScSchemeDetails);
       })
       .catch((err) => {
        setSchemeListData([]);
@@ -466,12 +483,12 @@ function BudgetTalukExtensionList() {
   ];
 
   return (
-    <Layout title="Edit Taluk Budget mapping scheme and programs List">
+    <Layout title="List Of Taluk Budget mapping ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Taluk Budget mapping scheme and programs List
+            List Of Taluk Budget mapping
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -499,13 +516,13 @@ function BudgetTalukExtensionList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Block>
               <Card>
                 <Card.Header>
-                  Taluk Budget mapping scheme and programs List
+                List Of Taluk Budget mapping
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Details</h3> */}
@@ -679,7 +696,7 @@ function BudgetTalukExtensionList() {
                             }
                           >
                             <option value="">Select Taluk</option>
-                            {districtListData.map((list) => (
+                            {talukListData.map((list) => (
                               <option key={list.talukId} value={list.talukId}>
                                 {list.talukName}
                               </option>

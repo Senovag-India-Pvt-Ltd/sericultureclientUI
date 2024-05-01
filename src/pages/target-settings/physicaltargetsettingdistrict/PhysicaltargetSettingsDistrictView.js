@@ -8,7 +8,8 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
+
 
 function PhysicaltargetSettingsDistrictView() {
   const styles = {
@@ -33,7 +34,7 @@ function PhysicaltargetSettingsDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsPhysicalTargetSettingDistrict/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsPhysicalDistrict/get-join/${id}`)
       .then((response) => {
         setAcivityData(response.data.content);
         setLoading(false);
@@ -63,7 +64,7 @@ function PhysicaltargetSettingsDistrictView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -72,7 +73,7 @@ function PhysicaltargetSettingsDistrictView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/physicaltargetsettingdistrict-list"
+                  to="/seriui/physicaltargetsettingsdistrict-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -104,9 +105,21 @@ function PhysicaltargetSettingsDistrictView() {
                         <td>{AcivityData.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Head Of Account:</td>
+                        <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{AcivityData.scHeadAccountName}</span>
+                          <span>{AcivityData.schemeName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td>
+                          <span>{AcivityData.subSchemeName}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District:</td>
+                        <td>
+                          <span>{AcivityData.districtName}</span>
                         </td>
                       </tr>
                       <tr>
@@ -116,9 +129,27 @@ function PhysicaltargetSettingsDistrictView() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Budget Amount:</td>
+                        <td style={styles.ctstyle}>Reporting Officer:</td>
                         <td>
-                          <span>{AcivityData.budgetAmount}</span>
+                          <span>{AcivityData.username}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Implementing Officer:</td>
+                        <td>
+                          <span>{AcivityData.username}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Activity:</td>
+                        <td>
+                          <span>{AcivityData.name}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Unit Of Measurement:</td>
+                        <td>
+                          <span>{AcivityData.unitMeasurementId}</span>
                         </td>
                       </tr>
                     </tbody>
