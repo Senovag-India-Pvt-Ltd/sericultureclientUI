@@ -118,6 +118,7 @@ function ApplicationSelection() {
           } else {
             saveSuccess();
             clear();
+            getList();
           }
         })
         .catch((err) => {
