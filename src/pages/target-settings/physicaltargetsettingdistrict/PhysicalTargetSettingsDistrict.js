@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import api from "../../../services/auth/api";
 
@@ -20,8 +20,8 @@ function PhysicalTargetSettingsDistrict() {
     districtId: "",
     date: "",
     reportingOfficerId: "",
-    implementingOfficerId:"",
-    tsActivityMasterId:"",
+    implementingOfficerId: "",
+    tsActivityMasterId: "",
     unitMeasurementId: "9",
   });
 
@@ -40,8 +40,6 @@ function PhysicalTargetSettingsDistrict() {
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
-
-  
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -66,8 +64,8 @@ function PhysicalTargetSettingsDistrict() {
               districtId: "",
               date: "",
               reportingOfficerId: "",
-              implementingOfficerId:"",
-              tsActivityMasterId:"",
+              implementingOfficerId: "",
+              tsActivityMasterId: "",
               unitMeasurementId: "9",
             });
             setValidated(false);
@@ -84,15 +82,15 @@ function PhysicalTargetSettingsDistrict() {
 
   const clear = () => {
     setData({
-    financialYearMasterId: "",
-    scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    districtId: "",
-    date: "",
-    reportingOfficerId: "",
-    implementingOfficerId:"",
-    tsActivityMasterId:"",
-    unitMeasurementId: "9",
+      financialYearMasterId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      districtId: "",
+      date: "",
+      reportingOfficerId: "",
+      implementingOfficerId: "",
+      tsActivityMasterId: "",
+      unitMeasurementId: "9",
     });
   };
 
@@ -100,23 +98,23 @@ function PhysicalTargetSettingsDistrict() {
     setData({ ...data, [type]: date });
   };
 
-// to get Financial Year
-const [financialyearListData, setFinancialyearListData] = useState([]);
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
 
-const getList = () => {
-  api
-    .get(baseURLMasterData + `financialYearMaster/get-all`)
-    .then((response) => {
-      setFinancialyearListData(response.data.content.financialYearMaster);
-    })
-    .catch((err) => {
-      setFinancialyearListData([]);
-    });
-};
+  const getList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
 
-useEffect(() => {
-  getList();
-}, []);
+  useEffect(() => {
+    getList();
+  }, []);
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -139,81 +137,77 @@ useEffect(() => {
     getDistrictList();
   }, []);
 
-   // to get get Scheme
-   const [schemeListData, setSchemeListData] = useState([]);
+  // to get get Scheme
+  const [schemeListData, setSchemeListData] = useState([]);
 
-   const getSchemeList = () => {
-     const response = api
-       .get(baseURLMasterData + `scSchemeDetails/get-all`)
-       .then((response) => {
-         setSchemeListData(response.data.content.ScSchemeDetails);
-       })
-       .catch((err) => {
+  const getSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setSchemeListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
         setSchemeListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getSchemeList();
-   }, []);
+      });
+  };
 
-   // to get Sub Scheme
-   const [subSchemeListData, setSubSchemeListData] = useState([]);
+  useEffect(() => {
+    getSchemeList();
+  }, []);
 
-   const getSubSchemeList = () => {
-     const response = api
-       .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-       .then((response) => {
-         setSubSchemeListData(response.data.content.scSubSchemeDetails);
-       })
-       .catch((err) => {
+  // to get Sub Scheme
+  const [subSchemeListData, setSubSchemeListData] = useState([]);
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
         setSubSchemeListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getSubSchemeList();
-   }, []);
+      });
+  };
 
-    // to get Sub Scheme
-    const [userListData, setUserListData] = useState([]);
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
 
-    const getUserList = () => {
-      const response = api
-        .get(baseURLMasterData + `userMaster/get-all`)
-        .then((response) => {
-          setUserListData(response.data.content.userMaster);
-        })
-        .catch((err) => {
-          setUserListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getUserList();
-    }, []);
+  // to get Sub Scheme
+  const [userListData, setUserListData] = useState([]);
 
-    // to get Sub Scheme
-    const [activityListData, setActivityListData] = useState([]);
+  const getUserList = () => {
+    const response = api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
 
-    const getActivityList = () => {
-      const response = api
-        .get(baseURLMasterData + `tsActivityMaster/get-all`)
-        .then((response) => {
-          setActivityListData(response.data.content.tsActivityMaster);
-        })
-        .catch((err) => {
-          setActivityListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getActivityList();
-    }, []);
+  useEffect(() => {
+    getUserList();
+  }, []);
 
-   
+  // to get Sub Scheme
+  const [activityListData, setActivityListData] = useState([]);
 
+  const getActivityList = () => {
+    const response = api
+      .get(baseURLMasterData + `tsActivityMaster/get-all`)
+      .then((response) => {
+        setActivityListData(response.data.content.tsActivityMaster);
+      })
+      .catch((err) => {
+        setActivityListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getActivityList();
+  }, []);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -272,272 +266,276 @@ useEffect(() => {
 
       <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-              <Card>
-                <Card.Header>Physical Target Setting District</Card.Header>
-                <Card.Body>
-                  <Row className="g-gs ">
-                          <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Financial Year
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="financialYearMasterId"
-                                value={data.financialYearMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.financialYearMasterId === undefined ||
-                                  data.financialYearMasterId === "0"
-                                }
-                              >
-                                <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Financial Year is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Select Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSchemeDetailsId"
-                            value={data.scSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSchemeDetailsId === undefined ||
-                              data.scSchemeDetailsId === "0"
-                            }
+          <Card>
+            <Card.Header>Physical Target Setting District</Card.Header>
+            <Card.Body>
+              <Row className="g-gs ">
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Financial Year
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="financialYearMasterId"
+                        value={data.financialYearMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.financialYearMasterId === undefined ||
+                          data.financialYearMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Year</option>
+                        {financialyearListData.map((list) => (
+                          <option
+                            key={list.financialYearMasterId}
+                            value={list.financialYearMasterId}
                           >
-                            <option value="">Select Scheme</option>
-                            {schemeListData && schemeListData.map((list) => (
-                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                                {list.schemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                            {list.financialYear}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Financial Year is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Select Sub Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSubSchemeDetailsId"
-                            value={data.scSubSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSubSchemeDetailsId === undefined ||
-                              data.scSubSchemeDetailsId === "0"
-                            }
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Scheme
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="scSchemeDetailsId"
+                        value={data.scSchemeDetailsId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.scSchemeDetailsId === undefined ||
+                          data.scSchemeDetailsId === "0"
+                        }
+                      >
+                        <option value="">Select Scheme</option>
+                        {schemeListData &&
+                          schemeListData.map((list) => (
+                            <option
+                              key={list.scSchemeDetailsId}
+                              value={list.scSchemeDetailsId}
+                            >
+                              {list.schemeName}
+                            </option>
+                          ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Scheme is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select Sub Scheme
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="scSubSchemeDetailsId"
+                        value={data.scSubSchemeDetailsId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.scSubSchemeDetailsId === undefined ||
+                          data.scSubSchemeDetailsId === "0"
+                        }
+                      >
+                        <option value="">Select Sub Scheme</option>
+                        {subSchemeListData &&
+                          subSchemeListData.map((list) => (
+                            <option
+                              key={list.scSubSchemeDetailsId}
+                              value={list.scSubSchemeDetailsId}
+                            >
+                              {list.subSchemeName}
+                            </option>
+                          ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Sub Scheme is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Select District
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="districtId"
+                        value={data.districtId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.districtId === undefined ||
+                          data.districtId === "0"
+                        }
+                      >
+                        <option value="">Select District</option>
+                        {districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        District is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Reporting Officer DDO
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="reportingOfficerId"
+                        value={data.reportingOfficerId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.reportingOfficerId === undefined ||
+                          data.reportingOfficerId === "0"
+                        }
+                      >
+                        <option value="">Select Reporting Officer DDO</option>
+                        {userListData.map((list) => (
+                          <option
+                            key={list.userMasterId}
+                            value={list.userMasterId}
                           >
-                            <option value="">Select Sub Scheme</option>
-                            {subSchemeListData && subSchemeListData.map((list) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
-                              >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Sub Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                            {list.username}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Reporting Officer DDO is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                    <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Select District
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="districtId"
-                                value={data.districtId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.districtId === undefined ||
-                                  data.districtId === "0"
-                                }
-                              >
-                                <option value="">Select District</option>
-                                {districtListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={list.districtId}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                District is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Implementing Officer DDO
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="implementingOfficerId"
+                        value={data.implementingOfficerId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.implementingOfficerId === undefined ||
+                          data.implementingOfficerId === "0"
+                        }
+                      >
+                        <option value="">
+                          Select Implementing Officer DDO
+                        </option>
+                        {userListData.map((list) => (
+                          <option
+                            key={list.userMasterId}
+                            value={list.userMasterId}
+                          >
+                            {list.username}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Officer DDO is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
-                            <Form.Label>
-                              Reporting Officer DDO
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="reportingOfficerId"
-                                value={data.reportingOfficerId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.reportingOfficerId === undefined ||
-                                  data.reportingOfficerId === "0"
-                                }
-                              >
-                                <option value="">Select Reporting Officer DDO</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                              Reporting Officer DDO is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Activity
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="tsActivityMasterId"
+                        value={data.tsActivityMasterId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.tsActivityMasterId === undefined ||
+                          data.tsActivityMasterId === "0"
+                        }
+                      >
+                        <option value="">Select Activity</option>
+                        {activityListData.map((list) => (
+                          <option
+                            key={list.tsActivityMasterId}
+                            value={list.tsActivityMasterId}
+                          >
+                            {list.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Activity is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Implementing Officer DDO
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="implementingOfficerId"
-                                value={data.implementingOfficerId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.implementingOfficerId === undefined ||
-                                  data.implementingOfficerId === "0"
-                                }
-                              >
-                                <option value="">Select  Implementing Officer DDO</option>
-                                {userListData.map((list) => (
-                                  <option
-                                    key={list.userMasterId}
-                                    value={list.userMasterId}
-                                  >
-                                    {list.username}
-                                  </option>
-                                ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Officer DDO is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Activity
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="tsActivityMasterId"
-                                value={data.tsActivityMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.tsActivityMasterId === undefined ||
-                                  data.tsActivityMasterId === "0"
-                                }
-                              >
-                                <option value="">Select  Activity</option>
-                                {activityListData.map((list) => (
-                                  <option
-                                    key={list.tsActivityMasterId}
-                                    value={list.tsActivityMasterId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Activity is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Unit Of Measurement
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="unitMeasurementId"
-                                value={data.unitMeasurementId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // required
-                                isInvalid={
-                                  data.unitMeasurementId === undefined ||
-                                  data.unitMeasurementId === "0"
-                                }
-                              >
-                                <option value="">Select  Unit Of Measurement</option>
-                                {/* {activityListData.map((list) => (
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Unit Of Measurement
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="unitMeasurementId"
+                        value={data.unitMeasurementId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // required
+                        isInvalid={
+                          data.unitMeasurementId === undefined ||
+                          data.unitMeasurementId === "0"
+                        }
+                      >
+                        <option value="">Select Unit Of Measurement</option>
+                        {/* {activityListData.map((list) => (
                                   <option
                                     key={list.tsActivityMasterId}
                                     value={list.tsActivityMasterId}
@@ -545,56 +543,306 @@ useEffect(() => {
                                     {list.tsActivityMasterName}
                                   </option>
                                 ))} */}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Unit Of Measurement is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="2">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl"> Date</Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.date}
-                            onChange={(date) => handleDateChange(date, "date")}
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            maxDate={new Date()}
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-
-                    <div className="gap-col">
-                      <ul className="d-flex align-items-center justify-content-center gap g-3">
-                        <li>
-                          <Button type="submit" variant="primary">
-                            Save
-                          </Button>
-                        </li>
-                        <li>
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={clear}
-                          >
-                            Cancel
-                          </Button>
-                        </li>
-                      </ul>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Unit Of Measurement is required.
+                      </Form.Control.Feedback>
                     </div>
-               
+                  </Form.Group>
+                </Col>
+
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl"> Date</Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.date}
+                        onChange={(date) => handleDateChange(date, "date")}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        maxDate={new Date()}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <div className="d-flex justify-content-center">
+            <Card className="mt-2" style={{ width: "90rem" }}>
+              <Card.Header className="d-flex justify-content-center">
+                {" "}
+                Monthly Target Setting
+              </Card.Header>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        April<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="April Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        May<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="May Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        June<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="June Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        July<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="July Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        August<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="August Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        September<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="September Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        October<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="October Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        November<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="November Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        December<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="December Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        January<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="January Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        February<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="February Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        March<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="March Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </div>
+
+          <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
         </Form>
       </Block>
     </Layout>
