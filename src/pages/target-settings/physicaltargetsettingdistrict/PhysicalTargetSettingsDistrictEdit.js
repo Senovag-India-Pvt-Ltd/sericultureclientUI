@@ -11,6 +11,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function PhysicalTargetSettingsDistrictEdit() {
   // Fetching id from URL params
@@ -48,6 +49,7 @@ function PhysicalTargetSettingsDistrictEdit() {
               financialYearMasterId: "",
               scSchemeDetailsId: "",
               scSubSchemeDetailsId: "",
+              scCategoryId: "",
               districtId: "",
               date: "",
               reportingOfficerId: "",
@@ -73,6 +75,7 @@ function PhysicalTargetSettingsDistrictEdit() {
       financialYearMasterId: "",
       scSchemeDetailsId: "",
       scSubSchemeDetailsId: "",
+      scCategoryId: "",
       districtId: "",
       date: "",
       reportingOfficerId: "",
@@ -223,6 +226,78 @@ useEffect(() => {
     useEffect(() => {
       getActivityList();
     }, []);
+
+     // get head of Account Id
+  const [scHeadAccountId, setScHeadAccountId] = useState("");
+  const getHeadAccountList = (_id) => {
+    api
+      .get(
+        baseURLMasterData + `scHeadAccount/get-by-sc-scheme-details-id/${_id}`
+      )
+      .then((response) => {
+        if (response.data.content.scHeadAccount) {
+          // setScHeadAccountListData(response.data.content.scHeadAccount);
+          setScHeadAccountId(
+            response.data.content.scHeadAccount[0].scHeadAccountId
+          );
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountId("");
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSchemeDetailsId) {
+      getHeadAccountList(data.scSchemeDetailsId);
+    }
+  }, [data.scSchemeDetailsId]);
+
+  // get category list
+  const [scCategoryListData, setScCategoryListData] = useState([]);
+  const getCategoryList = () => {
+    api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        if (response.data.content.scCategory) {
+          setScCategoryListData(response.data.content.scCategory);
+        }
+      })
+      .catch((err) => {
+        setScCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  // get unit of measurement
+  const [unitTypeList, setUnitTypeList] = useState([]);
+  useEffect(() => {
+    if (
+      data.scSchemeDetailsId &&
+      data.scCategoryId &&
+      data.scSubSchemeDetailsId
+    ) {
+      api
+        .post(baseURLDBT + `master/cost/getUnitType`, {
+          headOfAccountId: scHeadAccountId,
+          schemeId: data.scSchemeDetailsId,
+          subSchemeId: data.scSubSchemeDetailsId,
+          categoryId: data.scCategoryId,
+        })
+        .then((response) => {
+          setUnitTypeList(response.data.content);
+          // setScVendorListData(response.data.content.ScVendor);
+        })
+        .catch((err) => {
+          // setScVendorListData([]);
+        });
+    }
+  }, [data.scHeadAccountId, data.scCategoryId, data.scSubSchemeDetailsId]);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -401,6 +476,42 @@ useEffect(() => {
                     </Col>
 
                     <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Category
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="scCategoryId"
+                        value={data.scCategoryId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        // required
+                        isInvalid={
+                          data.scCategoryId === undefined ||
+                          data.scCategoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {scCategoryListData.map((list) => (
+                          <option
+                            key={list.scCategoryId}
+                            value={list.scCategoryId}
+                          >
+                            {list.categoryName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                    <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Select District
@@ -559,14 +670,11 @@ useEffect(() => {
                                 }
                               >
                                 <option value="">Select  Unit Of Measurement</option>
-                                {/* {activityListData.map((list) => (
-                                  <option
-                                    key={list.tsActivityMasterId}
-                                    value={list.tsActivityMasterId}
-                                  >
-                                    {list.tsActivityMasterName}
-                                  </option>
-                                ))} */}
+                                {unitTypeList.map((list) => (
+                          <option key={list.id} value={list.id}>
+                            {list.measurementUnit}
+                          </option>
+                        ))}
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                   Unit Of Measurement is required.
