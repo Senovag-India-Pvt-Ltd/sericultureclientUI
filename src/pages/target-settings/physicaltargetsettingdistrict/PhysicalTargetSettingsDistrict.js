@@ -24,8 +24,27 @@ function PhysicalTargetSettingsDistrict() {
     reportingOfficerId: "",
     implementingOfficerId: "",
     tsActivityMasterId: "",
-    unitMeasurementId: "9",
+    unitMeasurementId: "",
   });
+
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    july: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const [postMonths, setPostMonths] = useState([]);
+
+  console.log(months);
 
   const [validated, setValidated] = useState(false);
 
@@ -35,6 +54,12 @@ function PhysicalTargetSettingsDistrict() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
+  };
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
   const _header = {
@@ -43,7 +68,7 @@ function PhysicalTargetSettingsDistrict() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  const postData = (event) => {
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -51,34 +76,58 @@ function PhysicalTargetSettingsDistrict() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURLTargetSetting + `tsPhysicalDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            setData({
-              financialYearMasterId: "",
-              scSchemeDetailsId: "",
-              scSubSchemeDetailsId: "",
-              districtId: "",
-              date: "",
-              reportingOfficerId: "",
-              implementingOfficerId: "",
-              tsActivityMasterId: "",
-              unitMeasurementId: "9",
-            });
-            setValidated(false);
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsPhysicalDistrict/add`,
+          data
+        );
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+        } else {
+          const monthNumbers = {
+            jan: 1,
+            feb: 2,
+            mar: 3,
+            apr: 4,
+            may: 5,
+            jun: 6,
+            july: 7,
+            aug: 8,
+            sep: 9,
+            oct: 10,
+            nov: 11,
+            dec: 12,
+          };
+          const physicalDistrictId = response.data.content.tsPhysicalDistrictId;
+          for (const month in months) {
+            const monthResponse = await api.post(
+              baseURLTargetSetting + `tsPhysicalDistrictMonthly/add`,
+              {
+                tsPhysicalDistrictId: physicalDistrictId,
+                month: monthNumbers[month],
+                value: months[month],
+              }
+            );
+            if (monthResponse.data.content.error) {
+              saveError(monthResponse.data.content.error_description);
+            } else {
+              saveSuccess();
+              clear();
+            }
           }
-        })
-        .catch((err) => {
+          setValidated(true);
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
-        });
-      setValidated(true);
+        }
+      }
     }
   };
 
@@ -94,6 +143,7 @@ function PhysicalTargetSettingsDistrict() {
       tsActivityMasterId: "",
       unitMeasurementId: "",
     });
+    setValidated(false);
   };
 
   const handleDateChange = (date, type) => {
@@ -697,12 +747,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="apr"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.apr}
+                          onChange={handleMonthsInputs}
                           placeholder="April Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -717,12 +767,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="may"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.may}
+                          onChange={handleMonthsInputs}
                           placeholder="May Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -737,12 +787,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jun"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jun}
+                          onChange={handleMonthsInputs}
                           placeholder="June Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -757,12 +807,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="july"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jul}
+                          onChange={handleMonthsInputs}
                           placeholder="July Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -777,12 +827,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="aug"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.aug}
+                          onChange={handleMonthsInputs}
                           placeholder="August Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -797,12 +847,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="sep"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.sep}
+                          onChange={handleMonthsInputs}
                           placeholder="September Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -818,12 +868,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="oct"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.oct}
+                          onChange={handleMonthsInputs}
                           placeholder="October Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -838,12 +888,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="nov"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.nov}
+                          onChange={handleMonthsInputs}
                           placeholder="November Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -858,12 +908,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="dec"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.dec}
+                          onChange={handleMonthsInputs}
                           placeholder="December Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -878,12 +928,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jan"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jan}
+                          onChange={handleMonthsInputs}
                           placeholder="January Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -898,12 +948,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="feb"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.feb}
+                          onChange={handleMonthsInputs}
                           placeholder="February Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -918,12 +968,12 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="mar"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.mar}
+                          onChange={handleMonthsInputs}
                           placeholder="March Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
