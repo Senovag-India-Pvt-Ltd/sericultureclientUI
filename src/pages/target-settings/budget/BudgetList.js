@@ -25,6 +25,10 @@ function BudgetList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const [show, setShow] = useState(false);
 
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+  });
+
   const getList = () => {
     // setLoading(true);
     if (type.budgetType === "allocate") {
@@ -105,9 +109,28 @@ function BudgetList() {
     getFinancialList();
   }, []);
 
-  const [data, setData] = useState({
-    financialYearMasterId: "",
-  });
+  // Get Default Financial Year
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: response.data.content.financialYearMasterId,
+        }));
+      })
+      .catch((err) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: "",
+        }));
+      });
+  };
+
+  useEffect(() => {
+    getFinancialDefaultDetails();
+  }, []);
 
   const [type, setType] = useState({
     budgetType: "allocate",
