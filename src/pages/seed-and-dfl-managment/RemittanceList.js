@@ -222,7 +222,7 @@ function RemittanceList() {
         hide: "md",
       },
       {
-        name: "Ktc 25 And Date",
+        name: "Ktc 25",
         selector: (row) => row.ktc25AndDate,
         cell: (row) => <span>{row.ktc25AndDate}</span>,
         sortable: true,

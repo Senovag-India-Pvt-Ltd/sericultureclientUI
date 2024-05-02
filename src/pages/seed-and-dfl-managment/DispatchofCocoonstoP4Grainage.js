@@ -343,7 +343,7 @@ function DispatchofCocoonstoP4Grainage() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Source<span className="text-danger">*</span>
@@ -373,7 +373,7 @@ function DispatchofCocoonstoP4Grainage() {
                           </div>
                         </Col>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
@@ -429,7 +429,7 @@ function DispatchofCocoonstoP4Grainage() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -456,7 +456,28 @@ function DispatchofCocoonstoP4Grainage() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
+                <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumber"
+                                  value={data.lotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">

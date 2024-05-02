@@ -109,12 +109,12 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>
                         Disinfectant Usage Details:
                         </td>
-                        <td>{rearing8Lines.disinfectantUsageDetails}</td>
+                        <td>{rearing8Lines.disinfectantMasterName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Crop Details:</td>
                         <td>{rearing8Lines.cropDetail}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
                         Crop Number:
@@ -149,7 +149,7 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>
                         Released On:
                         </td>
-                        <td>{formatDate(rearing8Lines.releasedOn)}</td>
+                        <td>{formatDate(rearing8Lines.releasedOnDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
@@ -171,16 +171,11 @@ function RearingOfDFLsForThe8LinesView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Worm Test Dates And Results:
+                        Worm Test Results:
                         </td>
                         <td>{rearing8Lines.wormTestDatesAndResults}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        Cocoon Assessment Details:
-                        </td>
-                        <td>{rearing8Lines.cocoonAssessmentDetails}</td>
-                      </tr>
+                      
                       <tr>
                         <td style={styles.ctstyle}>
                         Crop Failure Details:

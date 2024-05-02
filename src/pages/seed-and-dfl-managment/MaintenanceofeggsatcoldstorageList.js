@@ -24,10 +24,7 @@ function MaintenanceofeggsatcoldstorageList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  
 
   const getList = () => {
     setLoading(true);

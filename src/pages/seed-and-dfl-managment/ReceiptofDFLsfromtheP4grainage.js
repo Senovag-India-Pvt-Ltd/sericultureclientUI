@@ -226,35 +226,39 @@ function ReceiptofDFLsfromtheP4grainage() {
   };
 
   const ReceiptofDFLsfromtheP4grainageDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleEdit(row.id)}
-          >
-            Edit
-          </Button>
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     <div className="text-start w-100">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => handleEdit(row.id)}
+    //       >
+    //         Edit
+    //       </Button>
          
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.id)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-      sortable: false,
+    //       <Button
+    //         variant="danger"
+    //         size="sm"
+    //         onClick={() => deleteConfirm(row.id)}
+    //         className="ms-2"
+    //       >
+    //         Delete
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    //   // grow: 3,
+    // },
+    {
+      name: "Laid On Date",
+      selector: (row) => row.laidOnDate,
+      cell: (row) => <span>{row.laidOnDate}</span>,
+      sortable: true,
       hide: "md",
-      // grow: 3,
     },
-
     {
       name: "Lot Number",
       selector: (row) => row.lotNumber,
@@ -284,7 +288,7 @@ function ReceiptofDFLsfromtheP4grainage() {
       hide: "md",
     },
     {
-      name: "No Of DFLs Disposed",
+      name: "No Of DFLs Received",
       selector: (row) => row.numberOfDflsReleased,
       cell: (row) => <span>{row.numberOfDflsReleased}</span>,
       sortable: true,
@@ -358,7 +362,7 @@ function ReceiptofDFLsfromtheP4grainage() {
       hide: "md",
     },
     {
-      name: "No Of DFLs Disposed",
+      name: "No Of DFLs Received",
       selector: (row) => row.numberOfDflsDisposed,
       cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
       sortable: true,
@@ -374,21 +378,7 @@ function ReceiptofDFLsfromtheP4grainage() {
   ];
 
 
-  const saveSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      // text: "You clicked the button!",
-    })
-  };
-  const saveError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
-
+  
   return (
     <Layout title="Receipt of DFLs from the P4 grainage">
       <Block.Head>

@@ -48,7 +48,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `MaintenanceOfEggsAtColdStorage/update-info`, data)
+        .post(baseURLSeedDfl + `EggStorage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -92,7 +92,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `EggPreparation/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggStorage/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -169,7 +169,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/maintenance-of-cold-storage-list"
+                  to="/seriui/maintenance-of-eggs-at-cold-storage-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -178,7 +178,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/maintenance-of-cold-storage-list"
+                  to="/seriui/maintenance-of-eggs-at-cold-storage-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -283,9 +283,11 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                 Date of Cold storage<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Cold Storage">
-                              { isDataColdSet && (
+                              {/* { isDataColdSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfColdStore)}
+                                  selected={data.dateOfColdStore
+                                  ? new Date(data.dateOfColdStore)
+                                  : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfColdStore")
                                   }
@@ -298,7 +300,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -309,9 +311,11 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                       Laid On Date<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                    {isDataLaidDate && (
+                    {/* {isDataLaidDate && ( */}
                       <DatePicker
-                        selected={new Date(data.laidOnDate)}
+                        selected={data.laidOnDate
+                        ? new Date(data.laidOnDate)
+                        :null}
                         onChange={(date) =>
                           handleDateChange(date, "laidOnDate")
                         }
@@ -323,7 +327,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                         className="form-control"
                         required
                       />
-                      )}
+                      {/* )} */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -334,9 +338,11 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                 Date of release<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                              {isDataReleaseSet && (
+                              {/* {isDataReleaseSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfRelease)}
+                                  selected={data.dateOfRelease
+                                  ?new Date(data.dateOfRelease)
+                                  :null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfRelease")
                                   }
@@ -349,7 +355,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>

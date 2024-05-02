@@ -23,19 +23,12 @@ function SaleAndDisposalOfEggsNSSOList() {
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const getList = () => {
     setLoading(true);
 
     api
-      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info`)
+      .get(baseURLSeedDfl + `sale-disposal-of-egg-rsso/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -52,24 +45,7 @@ function SaleAndDisposalOfEggsNSSOList() {
     getList();
   }, []);
 
-  const getLogsList = (_id, plot) => {
-    setLoading(true);
-    setShowModal(true);
-
-    api
-      .get(baseURL2 + `Mulberry-garden/get-logs/${_id}/${plot}`)
-      .then((response) => {
-        // console.log(response.data)
-        setListLogsData(response.data);
-        // setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        setLoading(false);
-      });
-  };
-
+  
   const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/seriui/sale-and-disposal-of-eggs-nsso-view/${_id}`);
@@ -101,7 +77,7 @@ function SaleAndDisposalOfEggsNSSOList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `sale-disposal-of-egg/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `sale-disposal-of-egg-rsso/delete-info/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -196,7 +172,7 @@ function SaleAndDisposalOfEggsNSSOList() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
             Delete
@@ -207,7 +183,13 @@ function SaleAndDisposalOfEggsNSSOList() {
       hide: "md",
       grow: 2,
     },
-
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Lot Number",
       selector: (row) => row.lotNumber,
@@ -229,13 +211,7 @@ function SaleAndDisposalOfEggsNSSOList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Release Date",
-      selector: (row) => row.releaseDate,
-      cell: (row) => <span>{row.releaseDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Date of Disposal",
       selector: (row) => row.dateOfDisposal,
@@ -244,50 +220,36 @@ function SaleAndDisposalOfEggsNSSOList() {
       hide: "md",
     },
     {
-      name: "Expected Date of Hatching",
-      selector: (row) => row.expectedDateOfHatching,
-      cell: (row) => <span>{row.expectedDateOfHatching}</span>,
+      name: "Number Of DFLs Disposed",
+      selector: (row) => row.numberOfDflsDisposed,
+      cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Name And Address Of the Farm",
+      selector: (row) => row.nameAndAddressOfTheFarm,
+      cell: (row) => <span>{row.nameAndAddressOfTheFarm}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Rate Per 100Dfls Price",
+      selector: (row) => row.ratePer100DflsPrice,
+      cell: (row) => <span>{row.ratePer100DflsPrice}</span>,
       sortable: true,
       hide: "md",
     },
 
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <AiOutlineInfoCircle // Use the information icon instead of Button
-    //         size={20}
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => getLogsList(row.id, row.plotNumber)}
-    //       />
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+    {
+      name: "Invoice Number",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+   
   ];
 
  

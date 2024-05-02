@@ -18,19 +18,18 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingofDFLsforthe8Lines() {
   const [data, setData] = useState({
-    disinfectantUsageDetails: "",
+    disinfectantMasterId: "",
     cropDetail: "",
     cropNumber: "",
     lotNumber: "",
     numberOfDFLs: "",
     laidOnDate: "",
     coldStorageDetails: "",
-    releasedOn: "",
+    releasedOnDate: "",
     chawkiPercentage: "",
     wormWeightInGrams: "",
     spunOnDate: "",
     wormTestDatesAndResults: "",
-    cocoonAssessmentDetails: "",
     cropFailureDetails: "",
   });
 
@@ -66,19 +65,18 @@ function RearingofDFLsforthe8Lines() {
           } else {
             saveSuccess();
             setData({
-              disinfectantUsageDetails: "",
+              disinfectantMasterId: "",
               cropDetail: "",
               cropNumber: "",
               lotNumber: "",
               numberOfDFLs: "",
               laidOnDate: "",
               coldStorageDetails: "",
-              releasedOn: "",
+              releasedOnDate: "",
               chawkiPercentage: "",
               wormWeightInGrams: "",
               spunOnDate: "",
               wormTestDatesAndResults: "",
-              cocoonAssessmentDetails: "",
               cropFailureDetails: "",
             });
             setValidated(false);
@@ -96,19 +94,18 @@ function RearingofDFLsforthe8Lines() {
 
   const clear = () => {
     setData({
-      disinfectantUsageDetails: "",
+      disinfectantMasterId: "",
       cropDetail: "",
       cropNumber: "",
       lotNumber: "",
       numberOfDFLs: "",
       laidOnDate: "",
       coldStorageDetails: "",
-      releasedOn: "",
+      releasedOnDate: "",
       chawkiPercentage: "",
       wormWeightInGrams: "",
       spunOnDate: "",
       wormTestDatesAndResults: "",
-      cocoonAssessmentDetails: "",
       cropFailureDetails: "",
     });
   };
@@ -134,6 +131,24 @@ function RearingofDFLsforthe8Lines() {
   useEffect(() => {
     getLotList();
   }, []);
+
+   // to get Disinfectant
+   const [disinfectantListData, setDisinfectantListData] = useState([]);
+
+   const getDisinfectantList = () => {
+     const response = api
+       .get(baseURLMaster + `disinfectantMaster/get-all`)
+       .then((response) => {
+        setDisinfectantListData(response.data.content.disinfectantMaster);
+       })
+       .catch((err) => {
+        setDisinfectantListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+    getDisinfectantList();
+   }, []);
 
  
   
@@ -200,28 +215,35 @@ function RearingofDFLsforthe8Lines() {
                 </Card.Header>
                     <Card.Body>
                         <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Disinfectant usage details<span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  name="disinfectantUsageDetails"
-                                  value={data.disinfectantUsageDetails}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Disinfectant usage details"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                Disinfectant usage details is required
-                                  </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
+                  <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Disinfectant Usage Details
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="disinfectantMasterId"
+                          value={data.disinfectantMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Disinfectant Usage Details</option>
+                          {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
+                            <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
+                              {list.disinfectantMasterName}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Disinfectant Usage Details is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Crop Detail<span className="text-danger">*</span>
@@ -241,7 +263,7 @@ function RearingofDFLsforthe8Lines() {
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
@@ -305,7 +327,7 @@ function RearingofDFLsforthe8Lines() {
                                   name="numberOfDFLs"
                                   value={data.numberOfDFLs}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter Number of DFLs"
                                   required
                                 />
@@ -351,7 +373,7 @@ function RearingofDFLsforthe8Lines() {
                                   name="chawkiPercentage"
                                   value={data.chawkiPercentage}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter Chawki percentage "
                                   required
                                 />
@@ -373,7 +395,7 @@ function RearingofDFLsforthe8Lines() {
                                   name="wormWeightInGrams"
                                   value={data.wormWeightInGrams}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter Worm weight (In grms)"
                                   required
                                 />
@@ -389,7 +411,7 @@ function RearingofDFLsforthe8Lines() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Worm Tests Dates And results<span className="text-danger">*</span>
+                              Worm Test results<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -398,11 +420,11 @@ function RearingofDFLsforthe8Lines() {
                                   value={data.wormTestDatesAndResults}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Enter Worm Tests Dates And results"
+                                  placeholder="Enter Worm Test results"
                                   required
                                 />
                                  <Form.Control.Feedback type="invalid">
-                                 Worm Tests Dates And results is required
+                                 Worm Test results is required
                             </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -481,9 +503,9 @@ function RearingofDFLsforthe8Lines() {
                               <Form.Label> Released on <span className="text-danger">*</span></Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker
-                                  selected={data.releasedOn}
+                                  selected={data.releasedOnDate}
                                   onChange={(date) =>
-                                    handleDateChange(date, "releasedOn")
+                                    handleDateChange(date, "releasedOnDate")
                                   }
                                   peekNextMonth
                                   showMonthDropdown

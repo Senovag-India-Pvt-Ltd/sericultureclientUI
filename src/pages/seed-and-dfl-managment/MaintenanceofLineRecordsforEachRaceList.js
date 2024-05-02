@@ -199,13 +199,13 @@ function MaintenanceofLineRecordsforEachRaceList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Fruits ID",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Fruits ID",
+    //   selector: (row) => row.fruitsId,
+    //   cell: (row) => <span>{row.fruitsId}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerName,

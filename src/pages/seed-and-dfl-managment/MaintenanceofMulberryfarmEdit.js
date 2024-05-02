@@ -377,7 +377,7 @@ function MaintenanceofMulberryfarmEdit() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
-                            maxDate={new Date()}
+                            // maxDate={new Date()}
                             className="form-control"
                             required
                           />

@@ -307,18 +307,18 @@ function RearingofDFLsforthe8LinesList() {
     },
     {
       name: "Disinfectant Usage Details",
-      selector: (row) => row.disinfectantUsageDetails,
-      cell: (row) => <span>{row.disinfectantUsageDetails}</span>,
+      selector: (row) => row.disinfectantMasterName,
+      cell: (row) => <span>{row.disinfectantMasterName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Crop Details",
-      selector: (row) => row.cropDetail,
-      cell: (row) => <span>{row.cropDetail}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Crop Details",
+    //   selector: (row) => row.cropDetail,
+    //   cell: (row) => <span>{row.cropDetail}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Crop Number",
       selector: (row) => row.cropNumber,
@@ -359,8 +359,8 @@ function RearingofDFLsforthe8LinesList() {
 
     {
       name: "Released On",
-      selector: (row) => row.releasedOn,
-      cell: (row) => <span>{formatDate(row.releasedOn)}</span>,
+      selector: (row) => row.releasedOnDate,
+      cell: (row) => <span>{formatDate(row.releasedOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
@@ -387,7 +387,7 @@ function RearingofDFLsforthe8LinesList() {
       hide: "md",
     },
     {
-      name: "Worm Test Dates And Results",
+      name: "Worm Test results",
       selector: (row) => row.wormTestDatesAndResults,
       cell: (row) => <span>{row.wormTestDatesAndResults}</span>,
       sortable: true,

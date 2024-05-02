@@ -33,7 +33,7 @@ function SaleAndDisposalOfEggsNSSOView() {
   const getIdList = () => {
     setLoading(true);
     api
-      .get(baseURLSeedDfl + `sale-disposal-of-egg/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `sale-disposal-of-egg-rsso/get-info-by-id/${id}`)
       .then((response) => {
         setSeedDisposal(response.data);
         setLoading(false);
@@ -105,6 +105,10 @@ function SaleAndDisposalOfEggsNSSOView() {
                         <td>{seedDisposal.id}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Fruits ID:</td>
+                        <td>{seedDisposal.fruitsId}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Lot Number:</td>
                         <td>{seedDisposal.lotNumber}</td>
                       </tr>
@@ -113,19 +117,14 @@ function SaleAndDisposalOfEggsNSSOView() {
                         <td>{seedDisposal.raceName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Release Date:</td>
-                        <td>{seedDisposal.releaseDate}</td>
+                        <td style={styles.ctstyle}>Egg Sheet Numbers:</td>
+                        <td>{seedDisposal.eggSheetNumbers}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date of disposal:</td>
                         <td>{seedDisposal.dateOfDisposal}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          Expected Date of Hatching:
-                        </td>
-                        <td>{seedDisposal.expectedDateOfHatching}</td>
-                      </tr>
+                    
 
                       <tr>
                         <td style={styles.ctstyle}>Number Of Dfls Disposed:</td>
@@ -133,18 +132,8 @@ function SaleAndDisposalOfEggsNSSOView() {
                       </tr>
 
                       <tr>
-                        <td style={styles.ctstyle}>Fruits Id:</td>
-                        <td>{seedDisposal.fruitsId}</td>
-                      </tr>
-
-                      <tr>
-                        <td style={styles.ctstyle}>Type:</td>
-                        <td>{seedDisposal.userType}</td>
-                      </tr>
-
-                      <tr>
                         <td style={styles.ctstyle}>
-                          Name and address of the PC Merchant:
+                          Name and address of the Farm:
                         </td>
                         <td>{seedDisposal.nameAndAddressOfTheFarm}</td>
                       </tr>

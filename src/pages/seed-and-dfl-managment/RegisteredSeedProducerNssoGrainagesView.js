@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import { Icon, Select } from "../../components";
 
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RegisteredSeedProducerNssoGrainagesView() {
   const styles = {
@@ -32,7 +32,7 @@ function RegisteredSeedProducerNssoGrainagesView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggPreparationRsso/get-info-by-id/${id}`)
       .then((response) => {
         setTestingOfMoth(response.data);
         setLoading(false);
@@ -105,61 +105,61 @@ function RegisteredSeedProducerNssoGrainagesView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Name of the Grainage and Address:
+                          Lot Number:
                         </td>
                         <td>{testingMoth.lotNumber}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>Lot number/Year:</td>
-                        <td>{testingMoth.race}</td>
-                      </tr>
+                      
                       <tr>
                         <td style={styles.ctstyle}>
                           Number of Cocoons (CB, Hybrid):
                         </td>
-                        <td>{testingMoth.dateOfDisposal}</td>
+                        <td>{testingMoth.numberOfCocoonsCB}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Source of Seed Cocoon's:</td>
+                        <td>{testingMoth.sourceMasterName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date of moth emergence:</td>
-                        <td>{testingMoth.name}</td>
+                        <td>{testingMoth.dateOfMothEmergence}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Laid On Date:</td>
+                        <td>{testingMoth.laidOnDate}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Egg sheet serial number:</td>
-                        <td>{testingMoth.numberCocoons}</td>
+                        <td>{testingMoth.eggSheetSerialNumber}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number of pairs:</td>
-                        <td>{testingMoth.quantityInkgs}</td>
+                        <td>{testingMoth.numberOfPairs}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Number of Rejection:</td>
-                        <td>{testingMoth.ratePerKgs}</td>
+                        <td>{testingMoth.numberOfRejection}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>DFLs obtained:</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{testingMoth.dflsObtained}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Egg Recovery %:</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{testingMoth.eggRecoveryPercentage}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          Examination details (Date, etc):
-                        </td>
-                        <td>{testingMoth.totalAmount}</td>
-                      </tr>
+                      
                       <tr>
                         <td style={styles.ctstyle}>Test results:</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{testingMoth.testResults}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Certification (Yes/No):</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{testingMoth.certification}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Additional remarks:</td>
-                        <td>{testingMoth.totalAmount}</td>
+                        <td>{testingMoth.additionalRemarks}</td>
                       </tr>
                     </tbody>
                   </table>

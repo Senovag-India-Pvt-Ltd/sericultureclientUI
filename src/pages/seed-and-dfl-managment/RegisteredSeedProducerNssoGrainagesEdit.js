@@ -41,16 +41,25 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL2 + `TestingOfMuth/update-info`, data)
+        .post(baseURLSeedDfl + `EggPreparationRsso/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
           } else {
             updateSuccess();
             setData({
-              lotNumber: "",
-              pebrine: "",
-              sourceDetails: "",
+              numberOfCocoonsCB: "",
+              sourceMasterId: "",
+              dateOfMothEmergence: "",
+              laidOnDate: "",
+              eggSheetSerialNumber: "",
+              numberOfPairs: "",
+              numberOfRejection: "",
+              dflsObtained: "",
+              eggRecoveryPercentage: "",
+              testResults: "",
+              certification: "",
+              additionalRemarks: "",
             });
             setValidated(false);
           }
@@ -67,9 +76,18 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
 
   const clear = () => {
     setData({
-      lotNumber: "",
-      pebrine: "",
-      sourceDetails: "",
+      numberOfCocoonsCB: "",
+      sourceMasterId: "",
+      dateOfMothEmergence: "",
+      laidOnDate: "",
+      eggSheetSerialNumber: "",
+      numberOfPairs: "",
+      numberOfRejection: "",
+      dflsObtained: "",
+      eggRecoveryPercentage: "",
+      testResults: "",
+      certification: "",
+      additionalRemarks: "",
     });
   };
 
@@ -77,7 +95,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL2 + `TestingOfMoth/get-info-by-id/${id}`)
+      .get(baseURLSeedDfl + `EggPreparationRsso/get-info-by-id/${id}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -94,41 +112,26 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
     getIdList();
   }, [id]);
 
-   // to get Lot
-   const [lotListData, setLotListData] = useState([]);
+   
 
-   const getLotList = () => {
-     const response = api
-       .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
-       .then((response) => {
-         setLotListData(response.data);
-       })
-       .catch((err) => {
-         setLotListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getLotList();
-   }, []);
+ // to get Source 
+ const [sourceListData, setSourceListData] = useState([]);
 
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
+ const getSourceList = () => {
+   const response = api
+     .get(baseURL2 + `sourceMaster/get-all`)
+     .then((response) => {
+       setSourceListData(response.data.content.sourceMaster);
+     })
+     .catch((err) => {
+       setSourceListData([]);
+     });
+ };
 
-  const getRaceList = () => {
-    const response = api
-      .get(baseURL2+ `raceMaster/get-all`)
-      .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
-      })
-      .catch((err) => {
-        setRaceListData([]);
-      });
-  };
+ useEffect(() => {
+   getSourceList();
+ }, []);
 
-  useEffect(() => {
-    getRaceList();
-  }, []);
 
   const navigate = useNavigate();
 
@@ -203,536 +206,59 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Name of the Grainage and Address
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Name of the Grainage and Address
-"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Name of the Grainage and Address is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+              <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Number of Cocoons (CB, Hybrid)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="numberOfCocoonsCB"
+                            name="numberOfCocoonsCB"
+                            type="number"
+                            value={data.numberOfCocoonsCB}
+                            onChange={handleInputs}
+                            placeholder="Enter Number of Cocoons CB"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Number of Cocoons CB is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Lot number/Year
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Lot number/Year
-"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Lot number/Year is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Number of Cocoons (CB, Hybrid)
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Number of Cocoons"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Number of Cocoons is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Date of moth emergence
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <DatePicker
-                        selected={data.dateOfPlanting}
-                        onChange={(date) =>
-                          handleDateChange(date, "dateOfPlanting")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        maxDate={new Date()}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Egg sheet serial number
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Egg sheet serial number
-"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Egg sheet serial number is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Number of pairs
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Number of pairs"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Number of pairs is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Number of Rejection
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Number of Rejection"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Number of Rejection is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      DFLs obtained
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter DFLs obtained"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        DFLs obtained is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Egg Recovery %<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Egg Recovery %"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Egg Recovery % is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Examination details (Date, etc)
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Examination details (Date, etc)"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Examination details (Date, etc) is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Test results
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Test results"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Test results is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Certification (Yes/No)
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Certification (Yes/No)"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Certification (Yes/No) is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n3">
-                    <Form.Label htmlFor="sordfl">
-                      Additional remarks
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="farmerName"
-                        name="farmerName"
-                        type="text"
-                        value={data.farmerName}
-                        onChange={handleInputs}
-                        placeholder="Enter Additional remarks"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Additional remarks is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Race<span className="text-danger">*</span>
+                          Source<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="mulberryVarietyId"
-                            value={data.mulberryVarietyId}
+                            name="sourceMasterId"
+                            value={data.sourceMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             // multiple
                             required
                             isInvalid={
-                              data.mulberryVarietyId === undefined ||
-                              data.mulberryVarietyId === "0"
+                              data.sourceMasterId === undefined ||
+                              data.sourceMasterId === "0"
                             }
                           >
-                            <option value="">Select Race</option>
-                            {varietyListData.map((list) => (
+                            <option value="">Select Source</option>
+                            {sourceListData.map((list) => (
                               <option
-                                key={list.mulberryVarietyId}
-                                value={list.mulberryVarietyId}
+                                key={list.sourceMasterId}
+                                value={list.sourceMasterId}
                               >
-                                {list.mulberryVarietyName}
+                                {list.sourceMasterName}
                               </option>
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Race is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Number of DFLs disposed
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="area"
-                            name="area"
-                            value={data.area}
-                            onChange={handleInputs}
-                            type="text"
-                            maxLength="4"
-                            placeholder="Enter Number of DFLs disposed"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Number of DFLs disposed is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
-
-                {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Nursery sale details
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="nurserySaleDetails"
-                                  name="nurserySaleDetails"
-                                  type="text"
-                                  value={data.nurserySaleDetails}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Nursery sale details"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col> */}
-
-                {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Name and address of the farm / farmer / CRC
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="quantity"
-                            name="quantity"
-                            value={data.quantity}
-                            onChange={handleInputs}
-                            type="text"
-                            maxLength="5"
-                            placeholder=" Enter Name and address of the farm / farmer / CRC"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Name and address of the farm / farmer / CRC is
-                            required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Date of disposal<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <DatePicker
-                            selected={data.dateOfPlanting}
-                            onChange={(date) =>
-                              handleDateChange(date, "dateOfPlanting")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            required
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Rate per 100 DFLs Price (in Rupees)
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="rate"
-                            name="rate"
-                            value={data.rate}
-                            onChange={handleInputs}
-                            type="text"
-                            maxLength="3"
-                            placeholder="Enter Rate per 100 DFLs Price"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Rate per 100 DFLs Price is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
-
-                {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Sapling age in Month/Year
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="saplingAge"
-                            name="saplingAge"
-                            value={data.saplingAge}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Sapling age in Month/Year"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sapling age in Month/Year is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
-
-                {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Generate Recipt
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="generateRecipt"
-                                  name="generateRecipt"
-                                  type="text"
-                                  value={data.generateRecipt}
-                                  onChange={handleInputs}
-                                  placeholder="Generate Recipt"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label htmlFor="sordfl">
-                                Receipt number
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="receiptNumber"
-                                  name="receiptNumber"
-                                  type="text"
-                                  value={data.receiptNumber}
-                                  onChange={handleInputs}
-                                  placeholder="Enter Receipt number"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col> */}
-
-                {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="sordfl">
-                          Remittance details
-                          <span className="text-danger">*</span>
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="remittanceDetails"
-                            name="remittanceDetails"
-                            type="text"
-                            value={data.remittanceDetails}
-                            onChange={handleInputs}
-                            placeholder="Enter Remittance details"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Remittance details is required
+                            Source is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -741,18 +267,24 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Date of planting<span className="text-danger">*</span>
+                          Date of moth emergence
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.dateOfPlanting}
+                            selected={
+                              data.dateOfMothEmergence
+                              ? new Date(data.dateOfMothEmergence)
+                                : null
+                                }
                             onChange={(date) =>
-                              handleDateChange(date, "dateOfPlanting")
+                              handleDateChange(date, "dateOfMothEmergence")
                             }
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required
@@ -764,16 +296,24 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Sale Date<span className="text-danger">*</span>
+                          Laid On Date
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
-                            selected={data.date}
-                            onChange={(date) => handleDateChange(date, "date")}
+                            selected={
+                              data.laidOnDate
+                              ? new Date(data.laidOnDate)
+                                : null
+                                }
+                            onChange={(date) =>
+                              handleDateChange(date, "laidOnDate")
+                            }
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
+                            maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required
@@ -784,31 +324,186 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="challanUploadKey">
-                          Upload Challan
+                        <Form.Label htmlFor="sordfl">
+                          Egg sheet serial number
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            type="file"
-                            id="challanUploadKey"
-                            name="challanUploadKey"
-                            // value={data.photoPath}
-                            onChange={handleChallanChange}
+                            id="eggSheetSerialNumber"
+                            name="eggSheetSerialNumber"
+                            type="number"
+                            value={data.eggSheetSerialNumber}
+                            onChange={handleInputs}
+                            placeholder="Enter Egg sheet serial number"                        required
                           />
+                          <Form.Control.Feedback type="invalid">
+                            Egg sheet serial number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
+                    </Col>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {challan ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(challan)}
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Number of pairs
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="numberOfPairs"
+                            name="numberOfPairs"
+                            type="number"
+                            value={data.numberOfPairs}
+                            onChange={handleInputs}
+                            placeholder="Enter Number of pairs"
+                            required
                           />
-                        ) : (
-                          ""
-                        )}
+                          <Form.Control.Feedback type="invalid">
+                            Number of pairs is required
+                          </Form.Control.Feedback>
+                        </div>
                       </Form.Group>
-                    </Col> */}
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Number of Rejection
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="numberOfRejection"
+                            name="numberOfRejection"
+                            type="number"
+                            value={data.numberOfRejection}
+                            onChange={handleInputs}
+                            placeholder="Enter Number of Rejection"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Number of Rejection is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          DFLs obtained
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="dflsObtained"
+                            name="dflsObtained"
+                            type="number"
+                            value={data.dflsObtained}
+                            onChange={handleInputs}
+                            placeholder="Enter DFLs obtained"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            DFLs obtained is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Egg Recovery %<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="eggRecoveryPercentage"
+                            name="eggRecoveryPercentage"
+                            type="number"
+                            value={data.eggRecoveryPercentage}
+                            onChange={handleInputs}
+                            placeholder="Enter Egg Recovery %"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Egg Recovery % is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Test results
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="testResults"
+                            name="testResults"
+                            type="text"
+                            value={data.testResults}
+                            onChange={handleInputs}
+                            placeholder="Enter Test results"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Test results is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Certification (Yes/No)
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="certification"
+                            name="certification"
+                            type="text"
+                            value={data.certification}
+                            onChange={handleInputs}
+                            placeholder="Enter Certification (Yes/No)"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Certification (Yes/No) is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Additional remarks
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="additionalRemarks"
+                            name="additionalRemarks"
+                            type="text"
+                            value={data.additionalRemarks}
+                            onChange={handleInputs}
+                            placeholder="Enter Additional remarks"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Additional remarks is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
               </Row>
             </Card.Body>
           </Card>
@@ -818,7 +513,7 @@ function RegisteredSeedProducerNssoGrainagesEdit() {
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary">
-                  Save
+                  Update
                 </Button>
               </li>
               <li>

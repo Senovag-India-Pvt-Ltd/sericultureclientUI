@@ -33,9 +33,9 @@ function MaintenanceOfEggsAtColdEdit() {
     setData({ ...data, [type]: date });
   };
 
-  const isDataReleaseSet = !!data.dateOfRelease;
-  const isDataColdSet = !!data.laidOnDate;
-  const isDataLaidDate = !!data.storageDate;
+  // const isDataReleaseSet = !!data.dateOfRelease;
+  // const isDataColdSet = !!data.laidOnDate;
+  // const isDataLaidDate = !!data.storageDate;
 
 
   const postData = (event) => {
@@ -48,7 +48,7 @@ function MaintenanceOfEggsAtColdEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLSeedDfl + `MaintenanceOfEggsAtColdStorage/update-info`, data)
+        .post(baseURLSeedDfl + `EggStorage/update-info`, data)
         .then((response) => {
           if (response.data.error) {
             updateError(response.data.message);
@@ -207,7 +207,7 @@ return (
                 </h1>
               ) : (
                 <Row className="g-gs">
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -237,7 +237,28 @@ return (
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
+                <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumber"
+                                  value={data.lotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -287,9 +308,11 @@ return (
                                 Date of Cold storage<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="Date of Cold Storage">
-                              { isDataColdSet && (
+                              {/* { isDataColdSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfColdStore)}
+                                  selected={data.dateOfColdStore
+                                  ? new Date(data.dateOfColdStore)
+                                  : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfColdStore")
                                   }
@@ -302,7 +325,7 @@ return (
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -313,9 +336,11 @@ return (
                       Laid On Date<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                    {isDataLaidDate && (
+                    {/* {isDataLaidDate && ( */}
                       <DatePicker
-                        selected={new Date(data.laidOnDate)}
+                        selected={data.laidOnDate
+                        ? new Date(data.laidOnDate)
+                        :null}
                         onChange={(date) =>
                           handleDateChange(date, "laidOnDate")
                         }
@@ -327,7 +352,7 @@ return (
                         className="form-control"
                         required
                       />
-                      )}
+                      {/* )} */}
                     </div>
                   </Form.Group>
                 </Col>
@@ -338,9 +363,11 @@ return (
                                 Date of release<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                              {isDataReleaseSet && (
+                              {/* {isDataReleaseSet && ( */}
                                 <DatePicker
-                                  selected={new Date(data.dateOfRelease)}
+                                  selected={data.dateOfRelease
+                                  ?new Date(data.dateOfRelease)
+                                  :null}
                                   onChange={(date) =>
                                     handleDateChange(date, "dateOfRelease")
                                   }
@@ -353,11 +380,10 @@ return (
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
                           </Col>
-
                           
                 </Row>
               )}

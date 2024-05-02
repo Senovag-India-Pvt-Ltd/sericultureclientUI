@@ -110,12 +110,12 @@ function DispatchofCocoonstoP4GrainageView() {
                         <td style={styles.ctstyle}>Line Year:</td>
                         <td>{dispatchCocoon.lineName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>
                         Source:
                         </td>
                         <td>{dispatchCocoon.sourceMasterName}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>
                         Screening Batch No:

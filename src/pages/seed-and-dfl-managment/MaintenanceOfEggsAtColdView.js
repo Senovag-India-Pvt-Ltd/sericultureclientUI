@@ -24,11 +24,7 @@ function MaintenanceOfEggsAtColdView() {
   const [coldStorage, setColdStorage] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  
 
   const getIdList = () => {
     setLoading(true);

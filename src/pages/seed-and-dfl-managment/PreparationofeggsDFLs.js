@@ -182,7 +182,7 @@ function PreparationofeggsDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -235,7 +235,7 @@ function PreparationofeggsDFLs() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  minDate={new Date()}
+                                  // minDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required
@@ -263,7 +263,7 @@ function PreparationofeggsDFLs() {
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"
-                                  maxDate={new Date()}
+                                  // maxDate={new Date()}
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
                                   required

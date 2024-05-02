@@ -292,7 +292,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   name="cocoonsProducedAtEachGeneration"
                                   value={data.cocoonsProducedAtEachGeneration}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Total number of cocoons produced at each generation"
                                   required
                                 />
@@ -303,30 +303,29 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                               </div>
                             </Form.Group>
                           </Col>
-                          {/* <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="lotNumber">
-                                Lot number
-                                <span className="text-danger">*</span>
+                          <Col lg="4">
+                            <Form.Group className="form-group  mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="lotNumber"
+                                  id="sordfl"
                                   name="lotNumber"
                                   value={data.lotNumber}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Lot number/Year"
+                                  placeholder="Enter Lot Number"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Lot number/Year is required
+                                Lot Number is required
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>Lot Number</Form.Label>
                               <Col>
@@ -356,7 +355,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </div>
                               </Col>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
@@ -392,20 +391,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="sordfl">
-                                Worm Test details and result
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Worm Test details  and result"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
+                          
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="screeningBatchNo">
@@ -418,8 +404,8 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   name="screeningBatchNo"
                                   value={data.screeningBatchNo}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Screening Batch Number"
+                                  type="number"
+                                  placeholder="Enter Screening Batch Number"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -441,8 +427,9 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   name="cocoonsProducedAtEachScreening"
                                   value={data.cocoonsProducedAtEachScreening}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Screening Batch Number"
+                                  type="number"
+                                  placeholder="Enter Total Number of Cocoons Produced at each
+                                  Screening"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -486,8 +473,8 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   name="chawkiPercentage"
                                   value={data.chawkiPercentage}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Chawki Percentage"
+                                  type="number"
+                                  placeholder="Enter Chawki Percentage"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -510,8 +497,8 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     data.selectedBedAsPerTheMeanPerformance
                                   }
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Selected Bed as per the Mean Performance"
+                                  type="number"
+                                  placeholder="Enter Selected Bed as per the Mean Performance"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -534,7 +521,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   value={data.cropFailureDetails}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder="Crop Failure Details"
+                                  placeholder="Enter Crop Failure Details"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -562,7 +549,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     showMonthDropdown
                                     showYearDropdown
                                     dropdownMode="select"
-                                    maxDate={new Date()}
+                                    // maxDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     required
@@ -593,7 +580,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     showMonthDropdown
                                     showYearDropdown
                                     dropdownMode="select"
-                                    maxDate={new Date()}
+                                    // maxDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     required
@@ -625,7 +612,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     showMonthDropdown
                                     showYearDropdown
                                     dropdownMode="select"
-                                    maxDate={new Date()}
+                                    // maxDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     required
@@ -655,7 +642,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                     showMonthDropdown
                                     showYearDropdown
                                     dropdownMode="select"
-                                    maxDate={new Date()}
+                                    // maxDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
                                     className="form-control"
                                     required
