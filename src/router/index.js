@@ -767,6 +767,10 @@ import BudgetExtensionView from "../pages/target-settings/budget-extension/Budge
 import BudgetExtension from "../pages/target-settings/budget-extension/BudgetExtension";
 import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
 import InspectionConfig from "../pages/masters/inspection/InspectionConfig";
+import RequestInspectionMapping from "../pages/Inspection/request-inspection-mapping/RequestInspectionMapping";
+import RequestInspectionMappingEdit from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingEdit";
+import RequestInspectionMappingList from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingList";
+import RequestInspectionMappingView from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingView";
 import BudgetTalukExtension from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtension";
 import BudgetTalukExtensionList from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtensionList";
 import BudgetTalukExtensionEdit from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtensionEdit";
@@ -1516,6 +1520,23 @@ function Router() {
 
             {/* Inspection */}
             <Route path="inspection-config" element={<InspectionConfig />} />
+
+            <Route
+              path="requestinspectionmapping"
+              element={<RequestInspectionMapping />}
+            />
+            <Route
+              path="requestinspectionmapping-edit/:id"
+              element={<RequestInspectionMappingEdit />}
+            />
+            <Route
+              path="requestinspectionmapping-list"
+              element={<RequestInspectionMappingList />}
+            />
+            <Route
+              path="requestinspectionmapping-view/:id"
+              element={<RequestInspectionMappingView />}
+            />
             <Route
               path="track-current-status"
               element={<TrackingCurrentStatus />}
