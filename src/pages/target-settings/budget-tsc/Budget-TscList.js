@@ -130,6 +130,29 @@ function BudgetTscList() {
     }
   };
 
+  // Get Default Financial Year
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURL + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: response.data.content.financialYearMasterId,
+        }));
+      })
+      .catch((err) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: "",
+        }));
+      });
+  };
+
+  useEffect(() => {
+    getFinancialDefaultDetails();
+  }, []);
+
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",

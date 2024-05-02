@@ -147,6 +147,29 @@ function Budget() {
     }
   };
 
+  // Get Default Financial Year
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: response.data.content.financialYearMasterId,
+        }));
+      })
+      .catch((err) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: "",
+        }));
+      });
+  };
+
+  useEffect(() => {
+    getFinancialDefaultDetails();
+  }, []);
+
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
