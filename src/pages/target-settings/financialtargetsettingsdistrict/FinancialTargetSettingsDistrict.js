@@ -434,6 +434,261 @@ function FinancialTargetSettingsDistrict() {
               </Card>
             </Block>
 
+            <div className="d-flex justify-content-center">
+            <Card className="mt-2" style={{ width: "90rem" }}>
+              <Card.Header className="d-flex justify-content-center">
+                {" "}
+                Monthly Target Setting
+              </Card.Header>
+              <Card.Body>
+                <Row className="g-gs">
+                  <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        April<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="April Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        May<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="May Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        June<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="June Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        July<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="July Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        August<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="August Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        September<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="September Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        October<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="October Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        November<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="November Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        December<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="December Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        January<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="January Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        February<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="February Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                      <Form.Label column sm={2}>
+                        March<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={8}>
+                        <Form.Control
+                          type="text"
+                          name="dflCount"
+                          // min={0}
+                          value={data.dflCount}
+                          onChange={handleInputs}
+                          placeholder="March Target"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </div>
+
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
