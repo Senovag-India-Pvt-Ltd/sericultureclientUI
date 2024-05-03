@@ -50,7 +50,7 @@ function FinancialTargetSettingsInstitutionEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURLMasterData + `tsBudgetInstitution/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetInstitution/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);

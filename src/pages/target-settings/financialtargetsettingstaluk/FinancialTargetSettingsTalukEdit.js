@@ -44,7 +44,7 @@ function FinancialTargetSettingsTalukEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURLMasterData + `tsBudgetTaluk/edit`, data)
+        .post(baseURLTargetSetting + `tsFinancialTaluk/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);

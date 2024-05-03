@@ -4,11 +4,9 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import CasteDatas from "../../../store/masters/caste/CasteData";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FinancialTargetSettingsInstitutionView() {
   const styles = {
@@ -24,16 +22,10 @@ function FinancialTargetSettingsInstitutionView() {
   const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
-
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetTaluk/get/${id}`)
+      .get(baseURLTargetSetting + `tsBudgetTaluk/get/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -133,7 +125,7 @@ function FinancialTargetSettingsInstitutionView() {
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetAmount}</span>
+                          <span>{budgetDistrictData.amount}</span>
                         </td>
                       </tr>
                       <tr>
