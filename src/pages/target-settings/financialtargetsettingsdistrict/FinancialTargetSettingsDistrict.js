@@ -29,6 +29,25 @@ function FinancialTargetSettingsDistrict() {
     useDisburse: "",
   });
 
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const [postMonths, setPostMonths] = useState([]);
+
+  console.log(months);
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -36,6 +55,12 @@ function FinancialTargetSettingsDistrict() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
   };
 
   const handleDateChange = (date, type) => {

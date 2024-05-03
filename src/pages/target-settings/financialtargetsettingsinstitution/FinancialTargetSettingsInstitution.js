@@ -32,6 +32,25 @@ function FinancialTargetSettingsInstitution() {
     useDisburse: "",
   });
 
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const [postMonths, setPostMonths] = useState([]);
+
+  console.log(months);
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -39,6 +58,12 @@ function FinancialTargetSettingsInstitution() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+  };
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
   };
 
   const handleDateChange = (date, type) => {
@@ -53,8 +78,7 @@ function FinancialTargetSettingsInstitution() {
   };
 
 
-
-  const postData = (event) => {
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -62,22 +86,53 @@ function FinancialTargetSettingsInstitution() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURLMasterData + `tsBudgetDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        monthlyList.push({
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsFinancialInstitution/add-primary-monthly`,
+          {
+            financialInstitutionRequest: data,
+            financialInstitutionMonthlyRequest: monthlyList,
           }
-        })
-        .catch((err) => {
+        );
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+        } else {
+          saveSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             saveError(err.response.data.validationErrors);
           }
-        });
+        }
+      }
       setValidated(true);
     }
   };
@@ -98,6 +153,20 @@ function FinancialTargetSettingsInstitution() {
     tsActivityMasterId: "",
     amount: "",
     useDisburse: "",
+    });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
     });
     setValidated(false);
   };
@@ -704,7 +773,7 @@ function FinancialTargetSettingsInstitution() {
                 Monthly Target Setting
               </Card.Header>
               <Card.Body>
-                <Row className="g-gs">
+              <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group as={Row} className="form-group mt-1" id="dfl">
                       <Form.Label column sm={2}>
@@ -713,12 +782,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="apr"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.apr}
+                          onChange={handleMonthsInputs}
                           placeholder="April Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -733,12 +802,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="may"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.may}
+                          onChange={handleMonthsInputs}
                           placeholder="May Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -753,12 +822,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jun"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jun}
+                          onChange={handleMonthsInputs}
                           placeholder="June Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -773,12 +842,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jul"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jul}
+                          onChange={handleMonthsInputs}
                           placeholder="July Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -793,12 +862,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="aug"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.aug}
+                          onChange={handleMonthsInputs}
                           placeholder="August Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -813,12 +882,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="sep"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.sep}
+                          onChange={handleMonthsInputs}
                           placeholder="September Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -834,12 +903,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="oct"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.oct}
+                          onChange={handleMonthsInputs}
                           placeholder="October Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -854,12 +923,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="nov"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.nov}
+                          onChange={handleMonthsInputs}
                           placeholder="November Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -874,12 +943,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="dec"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.dec}
+                          onChange={handleMonthsInputs}
                           placeholder="December Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -894,12 +963,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jan"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jan}
+                          onChange={handleMonthsInputs}
                           placeholder="January Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -914,12 +983,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="feb"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.feb}
+                          onChange={handleMonthsInputs}
                           placeholder="February Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -934,12 +1003,12 @@ function FinancialTargetSettingsInstitution() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="mar"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.mar}
+                          onChange={handleMonthsInputs}
                           placeholder="March Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required

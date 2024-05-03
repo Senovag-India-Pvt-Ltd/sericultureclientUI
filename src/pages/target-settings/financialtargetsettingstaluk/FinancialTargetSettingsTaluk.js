@@ -30,6 +30,26 @@ function FinancialTargetSettingsTaluk() {
     useDisburse: "",
   });
 
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const [postMonths, setPostMonths] = useState([]);
+
+  console.log(months);
+
+
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -39,32 +59,115 @@ function FinancialTargetSettingsTaluk() {
     setData({ ...data, [name]: value });
   };
 
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
+  };
+
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
-  // const _header = { "Content-Type": "application/json", accept: "*/*" };
-  // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
+  
   const _header = {
     "Content-Type": "application/json",
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
 
-  
+  const postData = async (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        monthlyList.push({
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsFinancialTaluk/add-primary-monthly`,
+          {
+            financialTalukRequest: data,
+            financialTalukMonthlyRequest: monthlyList,
+          }
+        );
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+        } else {
+          saveSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
+        }
+      }
+      setValidated(true);
+    }
+  };
+
+  const clear = () => {
+    setData({
+      financialYearMasterId: "",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scCategoryId: "",
+      districtId: "",
+      talukId:"",
+      date: "",
+      reportingOfficerId: "",
+      implementingOfficerId: "",
+      tsActivityMasterId: "",
+      amount: "",
+      useDisburse: "",
+    });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
+    });
+    setValidated(false);
+  };
+
+    
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -247,52 +350,6 @@ function FinancialTargetSettingsTaluk() {
        });
    }
  }, [data.scHeadAccountId, data.scCategoryId, data.scSubSchemeDetailsId]);
-
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURLTargetSetting + `tsBudgetDistrict/add`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            clear();
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
-    }
-  };
-
-  const clear = () => {
-    setData({
-      financialYearMasterId: "",
-      scSchemeDetailsId: "",
-      scSubSchemeDetailsId: "",
-      scCategoryId: "",
-      districtId: "",
-      talukId:"",
-      date: "",
-      reportingOfficerId: "",
-      implementingOfficerId: "",
-      tsActivityMasterId: "",
-      amount: "",
-      useDisburse: "",
-    });
-    setValidated(false);
-  };
 
   
   const navigate = useNavigate();
@@ -714,7 +771,7 @@ function FinancialTargetSettingsTaluk() {
                 Monthly Target Setting
               </Card.Header>
               <Card.Body>
-                <Row className="g-gs">
+              <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group as={Row} className="form-group mt-1" id="dfl">
                       <Form.Label column sm={2}>
@@ -723,12 +780,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="apr"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.apr}
+                          onChange={handleMonthsInputs}
                           placeholder="April Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -743,12 +800,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="may"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.may}
+                          onChange={handleMonthsInputs}
                           placeholder="May Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -763,12 +820,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jun"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jun}
+                          onChange={handleMonthsInputs}
                           placeholder="June Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -783,12 +840,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jul"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jul}
+                          onChange={handleMonthsInputs}
                           placeholder="July Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -803,12 +860,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="aug"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.aug}
+                          onChange={handleMonthsInputs}
                           placeholder="August Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -823,12 +880,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="sep"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.sep}
+                          onChange={handleMonthsInputs}
                           placeholder="September Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -844,12 +901,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="oct"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.oct}
+                          onChange={handleMonthsInputs}
                           placeholder="October Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -864,12 +921,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="nov"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.nov}
+                          onChange={handleMonthsInputs}
                           placeholder="November Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -884,12 +941,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="dec"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.dec}
+                          onChange={handleMonthsInputs}
                           placeholder="December Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -904,12 +961,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jan"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jan}
+                          onChange={handleMonthsInputs}
                           placeholder="January Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -924,12 +981,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="feb"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.feb}
+                          onChange={handleMonthsInputs}
                           placeholder="February Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -944,12 +1001,12 @@ function FinancialTargetSettingsTaluk() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="mar"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.mar}
+                          onChange={handleMonthsInputs}
                           placeholder="March Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
