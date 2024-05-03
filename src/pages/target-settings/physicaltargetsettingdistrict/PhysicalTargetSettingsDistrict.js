@@ -76,46 +76,40 @@ function PhysicalTargetSettingsDistrict() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        july: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        monthlyList.push({
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
       try {
         const response = await api.post(
-          baseURLTargetSetting + `tsPhysicalDistrict/add`,
-          data
+          baseURLTargetSetting + `tsPhysicalDistrict/add-primary-monthly`,
+          {
+            physicalDistrictRequest:data,
+            physicalDistrictMonthlyRequest: monthlyList,
+          }
         );
         if (response.data.content.error) {
           saveError(response.data.content.error_description);
         } else {
-          const monthNumbers = {
-            jan: 1,
-            feb: 2,
-            mar: 3,
-            apr: 4,
-            may: 5,
-            jun: 6,
-            july: 7,
-            aug: 8,
-            sep: 9,
-            oct: 10,
-            nov: 11,
-            dec: 12,
-          };
-          const physicalDistrictId = response.data.content.tsPhysicalDistrictId;
-          for (const month in months) {
-            const monthResponse = await api.post(
-              baseURLTargetSetting + `tsPhysicalDistrictMonthly/add`,
-              {
-                tsPhysicalDistrictId: physicalDistrictId,
-                month: monthNumbers[month],
-                value: months[month],
-              }
-            );
-            if (monthResponse.data.content.error) {
-              saveError(monthResponse.data.content.error_description);
-            } else {
-              saveSuccess();
-              clear();
-            }
-          }
-          setValidated(true);
+          saveSuccess();
         }
       } catch (err) {
         if (
