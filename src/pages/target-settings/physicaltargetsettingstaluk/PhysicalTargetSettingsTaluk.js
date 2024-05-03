@@ -126,7 +126,7 @@ function PhysicalTargetSettingsTaluk() {
       // setValidated(true);
       try {
         const response = await api.post(
-          baseURLTargetSetting + `physicalTalukRequest/add-primary-monthly`,
+          baseURLTargetSetting + `tsPhysicalTaluk/add-primary-monthly`,
           {
             physicalTalukRequest: data,
             physicalTalukMonthlyRequest: monthlyList,
@@ -149,7 +149,7 @@ function PhysicalTargetSettingsTaluk() {
           }
         }
       }
-      setValidated(true);
+      // setValidated(true);
     }
   };
 
