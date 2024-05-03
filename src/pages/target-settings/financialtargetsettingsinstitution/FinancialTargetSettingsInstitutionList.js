@@ -9,11 +9,10 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FinancialTargetSettingsInstitutionList() {
   const [listData, setListData] = useState({});
@@ -27,7 +26,7 @@ function FinancialTargetSettingsInstitutionList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetDistrict/list`, _params)
+      .get(baseURLTargetSetting + `tsBudgetDistrict/list`, _params)
       .then((response) => {
         setListData(response.data.content.tsBudgetDistrict);
         setTotalRows(response.data.content.totalItems);
@@ -70,7 +69,7 @@ function FinancialTargetSettingsInstitutionList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetInstitution/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsBudgetInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -179,18 +178,25 @@ function FinancialTargetSettingsInstitutionList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Scheme Details",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
 
     {
-      name: "District Name",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Taluk Name",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: false,
       hide: "md",
     },
@@ -203,13 +209,13 @@ function FinancialTargetSettingsInstitutionList() {
     },
     {
       name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Head Of Account",
+      name: "Use/Disburse",
       selector: (row) => row.hoaId,
       cell: (row) => <span>{row.hoaId}</span>,
       sortable: false,
