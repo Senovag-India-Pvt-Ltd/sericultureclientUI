@@ -34,7 +34,7 @@ function PhysicalTargetSettingsDistrict() {
     apr: "",
     may: "",
     jun: "",
-    july: "",
+    jul: "",
     aug: "",
     sep: "",
     oct: "",
@@ -84,7 +84,7 @@ function PhysicalTargetSettingsDistrict() {
         apr: 4,
         may: 5,
         jun: 6,
-        july: 7,
+        jul: 7,
         aug: 8,
         sep: 9,
         oct: 10,
@@ -102,7 +102,7 @@ function PhysicalTargetSettingsDistrict() {
         const response = await api.post(
           baseURLTargetSetting + `tsPhysicalDistrict/add-primary-monthly`,
           {
-            physicalDistrictRequest:data,
+            physicalDistrictRequest: data,
             physicalDistrictMonthlyRequest: monthlyList,
           }
         );
@@ -110,6 +110,7 @@ function PhysicalTargetSettingsDistrict() {
           saveError(response.data.content.error_description);
         } else {
           saveSuccess();
+          clear();
         }
       } catch (err) {
         if (
@@ -122,6 +123,7 @@ function PhysicalTargetSettingsDistrict() {
           }
         }
       }
+      setValidated(true);
     }
   };
 
@@ -136,6 +138,20 @@ function PhysicalTargetSettingsDistrict() {
       implementingOfficerId: "",
       tsActivityMasterId: "",
       unitMeasurementId: "",
+    });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
     });
     setValidated(false);
   };
@@ -801,7 +817,7 @@ function PhysicalTargetSettingsDistrict() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="july"
+                          name="jul"
                           // min={0}
                           value={months.jul}
                           onChange={handleMonthsInputs}
