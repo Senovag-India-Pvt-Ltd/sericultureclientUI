@@ -453,7 +453,6 @@ function ServiceApplication() {
       payToVendor: false,
     });
     setDocumentAttachments({});
-
   };
 
   const saveSuccess = (message) => {
@@ -473,7 +472,7 @@ function ServiceApplication() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes",
-      cancelButtonText: "Later"
+      cancelButtonText: "Later",
     }).then((result) => {
       if (result.value) {
         api
@@ -519,7 +518,47 @@ function ServiceApplication() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        clear();
+        api
+          .post(baseURLDBT + `service/saveApplicationForm`, post)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              // saveSuccess(response.data.receiptNo);
+              setApplicationId(response.data.content.applicationDocumentId);
+              // handleShowModal();
+
+              // setData({
+              //   fruitsId: "",
+              //   farmerName: "",
+              //   mulberryVarietyId: "",
+              //   area: "",
+              //   dateOfPlanting: "",
+              //   nurserySaleDetails: "",
+              //   quantity: "",
+              //   date: "",
+              //   rate: "",
+              //   saplingAge: "",
+              //   remittanceDetails: "",
+              //   challanUploadKey: "",
+              // });
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+        setValidated(true);
+        // clear();
         // Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
@@ -544,11 +583,11 @@ function ServiceApplication() {
     talukId: "",
   });
 
-  const handleRadioChange = (_id, tId) => {
-    if (!tId) {
-      tId = 0;
-    }
-    setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
+  const handleRadioChange = (_id) => {
+    // if (!tId) {
+    //   tId = 0;
+    // }
+    setLandData((prev) => ({ ...prev, landId: _id }));
   };
 
   const [validated, setValidated] = useState(false);
@@ -588,6 +627,13 @@ function ServiceApplication() {
                 response.data.content.farmerLandDetailsDTOList
               );
             }
+            if (response.data.content.farmerAddressDTOList.length > 0) {
+              setLandData((prev) => ({
+                ...prev,
+                talukId:
+                  response.data.content.farmerAddressDTOList[0].talukId || 0,
+              }));
+            }
           } else {
             saveError(response.data.content.error_description);
           }
@@ -617,9 +663,7 @@ function ServiceApplication() {
           name="selectedLand"
           value={row.farmerLandDetailsId}
           // checked={selectedLandId === row.id}
-          onChange={() =>
-            handleRadioChange(row.farmerLandDetailsId, row.talukId)
-          }
+          onChange={() => handleRadioChange(row.farmerLandDetailsId)}
         />
       ),
       // ignoreRowClick: true,

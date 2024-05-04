@@ -24,15 +24,15 @@ function ApplicationSelection() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [data, setData] = useState({
-    userMasterId: "",
-  });
+  // const [data, setData] = useState({
+  //   userMasterId: "",
+  // });
 
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  // const handleInputs = (e) => {
+  //   // debugger;
+  //   let { name, value } = e.target;
+  //   setData({ ...data, [name]: value });
+  // };
 
   // Search
   //   const search = (e) => {
@@ -101,7 +101,7 @@ function ApplicationSelection() {
     const post = {
       applicationFormIds: applicationIds,
       applicationFormIdsNotSelected: unselectedApplicationIds,
-      inspectorId: data.userMasterId,
+      inspectorId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -117,7 +117,6 @@ function ApplicationSelection() {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
-            clear();
             getList();
           }
         })
@@ -128,11 +127,12 @@ function ApplicationSelection() {
     }
   };
 
-  const clear = () => {
-    setData({
-      userMasterId: "",
-    });
-    setValidated(false);
+  const clear = (e) => {
+    e.preventDefault();
+    window.location.reload();
+    // setAllApplicationIds([]);
+    // setUnselectedApplicationIds([]);
+    // setAllApplicationIds([]);
   };
 
   const getList = () => {
@@ -160,22 +160,22 @@ function ApplicationSelection() {
   console.log(allApplicationIds);
 
   // to get User Master
-  const [userListData, setUserListData] = useState([]);
+  // const [userListData, setUserListData] = useState([]);
 
-  const getUserList = () => {
-    api
-      .get(baseURL + `userMaster/get-all`)
-      .then((response) => {
-        setUserListData(response.data.content.userMaster);
-      })
-      .catch((err) => {
-        setUserListData([]);
-      });
-  };
+  // const getUserList = () => {
+  //   api
+  //     .get(baseURL + `userMaster/get-all`)
+  //     .then((response) => {
+  //       setUserListData(response.data.content.userMaster);
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -506,7 +506,22 @@ function ApplicationSelection() {
           />
         </Card>
       </Block>
-      <Block className="">
+
+      <div className="gap-col mt-1">
+        <ul className="d-flex align-items-center justify-content-center gap g-3">
+          <li>
+            <Button type="submit" variant="primary" onClick={postData}>
+              Save
+            </Button>
+          </li>
+          <li>
+            <Button type="button" variant="secondary" onClick={(e) => clear(e)}>
+              Cancel
+            </Button>
+          </li>
+        </ul>
+      </div>
+      {/* <Block className="">
         <Row className="g-3 ">
           <Form noValidate validated={validated} onSubmit={postData}>
             <Card>
@@ -551,7 +566,6 @@ function ApplicationSelection() {
             <div className="gap-col mt-1">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary">
                     Save
                   </Button>
@@ -565,7 +579,7 @@ function ApplicationSelection() {
             </div>
           </Form>
         </Row>
-      </Block>
+      </Block> */}
     </Layout>
   );
 }
