@@ -401,7 +401,7 @@ function BudgetHoaExtension() {
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -491,7 +491,7 @@ function BudgetHoaExtension() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Head of Account<span className="text-danger">*</span>
                         </Form.Label>

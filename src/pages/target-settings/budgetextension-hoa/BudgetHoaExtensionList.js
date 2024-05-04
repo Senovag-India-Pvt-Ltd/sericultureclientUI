@@ -233,11 +233,11 @@ useEffect(() => {
 
   const navigate = useNavigate();
   const handleView = (id,type) => {
-    navigate(`/seriui/budget-hoa-view/${id}/${type}`);
+    navigate(`/seriui/budgethoaextension-view/${id}/${type}`);
   };
 
   const handleEdit = (id,type) => {
-    navigate(`/seriui/budget-hoa-edit/${id}/${type}`);
+    navigate(`/seriui/budgethoaextension-edit/${id}/${type}`);
   };
 
   const handleTypeInputs = (e) => {

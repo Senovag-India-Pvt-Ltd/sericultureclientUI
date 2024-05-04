@@ -288,7 +288,7 @@ if (type.budgetType === "release") {
     const response = api
       .get(baseURLMasterData + `scSchemeDetails/get-all`)
       .then((response) => {
-        setSchemeListData(response.data.content.scSchemeDetails);
+        setSchemeListData(response.data.content.ScSchemeDetails);
       })
       .catch((err) => {
        setSchemeListData([]);
@@ -437,12 +437,12 @@ if (type.budgetType === "release") {
   
 
   return (
-    <Layout title="Edit District Budget mapping scheme and programs">
+    <Layout title="Edit District Budget mapping ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit District Budget mapping scheme and programs
+              Edit District Budget mapping
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
