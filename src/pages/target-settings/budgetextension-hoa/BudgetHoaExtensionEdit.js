@@ -169,7 +169,7 @@ function BudgetHoaExtensionEdit() {
     }
     if (type.budgetType === "release") {
       api
-        .post(baseURLTargetSetting + `tsBudgetHoaExt/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetReleaseHoaExt/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -417,7 +417,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgethoaextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -426,7 +426,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgethoaextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

@@ -44,7 +44,7 @@ function BudgetTalukExtensionView() {
     }
     if (type.budgetType === "release") {
       api
-        .get(baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-join/${id}`)
+        .get(baseURLTargetSetting + `tsBudgetReleaseTalukExt/get-join/${id}`)
         .then((response) => {
           setBudgetDistrictData(response.data.content);
           setLoading(false);
@@ -82,12 +82,12 @@ function BudgetTalukExtensionView() {
   
 
   return (
-    <Layout title="View Taluk Budget mapping scheme and programs">
+    <Layout title="View Taluk Budget mapping">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              View Taluk Budget mapping scheme and programs
+              View Taluk Budget mapping 
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -118,7 +118,7 @@ function BudgetTalukExtensionView() {
       <Block className="mt-n4">
         <Card>
           <Card.Header>
-            Taluk Budget mapping scheme and programs View Details
+            Taluk Budget mapping Details
           </Card.Header>
           <Card.Body>
             {loading ? (
@@ -140,33 +140,30 @@ function BudgetTalukExtensionView() {
                         <td style={styles.ctstyle}> District Name:</td>
                         <td>{budgetDistrictData.districtName}</td>
                       </tr>
-                      <tr>
                         <tr>
                           <td style={styles.ctstyle}> Taluk Name:</td>
                           <td>{budgetDistrictData.talukName}</td>
                         </tr>
-                        <tr></tr>
+                        <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
-                        <td>
-                          <span>{budgetDistrictData.budgetAmount}</span>
-                        </td>
+                        <td>{budgetDistrictData.budgetAmount}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetScheme}</span>
+                          <span>{budgetDistrictData.schemeName}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetSubScheme}</span>
+                          <span>{budgetDistrictData.subSchemeName}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Category:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetCategory}</span>
+                          <span>{budgetDistrictData.categoryName}</span>
                         </td>
                       </tr>
                       <tr>

@@ -70,7 +70,7 @@ function BudgetDistrictExtensionList() {
     if (type.budgetType === "release") {
       api
         .post(
-          baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get-details`,
+          baseURLTargetSetting + `tsBudgetReleaseDistrictExt/get-details`,
           data
         )
         .then((response) => {
@@ -78,7 +78,7 @@ function BudgetDistrictExtensionList() {
             saveError(response.data.content.error_description);
             setShow(false);
           } else {
-            setListData(response.data.content.tsReleaseBudgetDistrictExt);
+            setListData(response.data.content.tsBudgetReleaseDistrictExt);
             setShow(true);
             // saveSuccess();
             // clear();
@@ -166,7 +166,7 @@ function BudgetDistrictExtensionList() {
     const response = api
       .get(baseURLMasterData + `scSchemeDetails/get-all`)
       .then((response) => {
-        setSchemeListData(response.data.content.scSchemeDetails);
+        setSchemeListData(response.data.content.ScSchemeDetails);
       })
       .catch((err) => {
        setSchemeListData([]);
@@ -275,11 +275,11 @@ function BudgetDistrictExtensionList() {
 
 
   const navigate = useNavigate();
-  const handleView = (id) => {
+  const handleView = (id,type) => {
     navigate(`/seriui/budgetdistrictextension-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (id,type) => {
     navigate(`/seriui/budgetdistrictextension-edit/${id}/${type}`);
   };
 
@@ -397,7 +397,7 @@ function BudgetDistrictExtensionList() {
                 handleView(row.tsBudgetDistrictExtId, "allocate");
               }
               if (type.budgetType === "release") {
-                handleView(row.tsReleaseBudgetDistrictExtId, "release");
+                handleView(row.tsBudgetReleaseDistrictExtId, "release");
               }
             }}
           >
@@ -413,7 +413,7 @@ function BudgetDistrictExtensionList() {
                 handleEdit(row.tsBudgetDistrictExtId, "allocate");
               }
               if (type.budgetType === "release") {
-                handleEdit(row.tsReleaseBudgetDistrictExtId, "release");
+                handleEdit(row.tsBudgetReleaseDistrictExtId, "release");
               }
             }}
           >
@@ -431,6 +431,7 @@ function BudgetDistrictExtensionList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Financial Year",
@@ -490,7 +491,7 @@ function BudgetDistrictExtensionList() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit District Budget mapping scheme and programs List
+              List Of District Budget mapping 
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -518,7 +519,7 @@ function BudgetDistrictExtensionList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n5">
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Block>
@@ -528,7 +529,7 @@ function BudgetDistrictExtensionList() {
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -617,7 +618,7 @@ function BudgetDistrictExtensionList() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Head Of Account<span className="text-danger">*</span>
                         </Form.Label>
@@ -651,7 +652,7 @@ function BudgetDistrictExtensionList() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Select District<span className="text-danger">*</span>
                         </Form.Label>

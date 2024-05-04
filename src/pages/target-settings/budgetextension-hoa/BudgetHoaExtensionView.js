@@ -73,7 +73,7 @@ function BudgetHoaExtensionView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgethoaextension-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -82,7 +82,7 @@ function BudgetHoaExtensionView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-hoa-list"
+                  to="/seriui/budgethoaextension-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />

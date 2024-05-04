@@ -176,7 +176,7 @@ function BudgetHoaExtension() {
       }
       if (type.budgetType === "release") {
         api
-          .post(baseURLTargetSetting + `tsBudgetHoaExt/add`, data)
+          .post(baseURLTargetSetting + `tsBudgetReleaseHoaExt/add`, data)
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);

@@ -92,7 +92,7 @@ if (type.budgetType === "release") {
     api
       .post(
         baseURLTargetSetting +
-          `tsReleaseBudgetDistrictExt/get-available-balance`,
+          `tsBudgetReleaseDistrictExt/get-available-balance`,
         {
           financialYearMasterId: data.financialYearMasterId,
           scHeadAccountId: data.scHeadAccountId,
@@ -134,13 +134,7 @@ if (type.budgetType === "release") {
     });
   };
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
+  
 
   // HTTP header configuration
   const _header = { "Content-Type": "application/json", accept: "*/*" };
@@ -180,7 +174,7 @@ if (type.budgetType === "release") {
     }
     if (type.budgetType === "release") {
       api
-        .post(baseURLTargetSetting + `tsBudgetHoa/edit`, data)
+        .post(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -376,7 +370,7 @@ if (type.budgetType === "release") {
     }
     if (type.budgetType === "release") {
       api
-        .get(baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get/${id}`)
+        .get(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/get/${id}`)
         .then((response) => {
           setData(response.data.content);
           setLoading(false);

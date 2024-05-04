@@ -39,6 +39,35 @@ function BudgetTalukExtensionList() {
     budgetType: "allocate",
   });
 
+  const [validated, setValidated] = useState(false);
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleTypeInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setType({ ...type, [name]: value });
+  };
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      // event.stopPropagation();
+      getList();
+      setValidated(true);
+    }
+  };
+
 
   const getList = () => {
     // setLoading(true);
@@ -273,28 +302,13 @@ function BudgetTalukExtensionList() {
     });
   };
 
-  const [validated, setValidated] = useState(false);
-
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-
-  const handleTypeInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setType({ ...type, [name]: value });
-  };
-
 
   const navigate = useNavigate();
-  const handleView = (id) => {
+  const handleView = (id, type) => {
     navigate(`/seriui/budgettalukextension-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (id, type) => {
     navigate(`/seriui/budgettalukextension-edit/${id}/${type}`);
   };
 
@@ -335,19 +349,7 @@ function BudgetTalukExtensionList() {
     });
   };
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      getList();
-      setValidated(true);
-    }
-  };
+  
 
   createTheme(
     "solarized",
@@ -412,7 +414,7 @@ function BudgetTalukExtensionList() {
                 handleView(row.tsBudgetTalukExtId, "allocate");
               }
               if (type.budgetType === "release") {
-                handleView(row.tsReleaseBudgetTalukExtId, "release");
+                handleView(row.tsBudgetReleaseTalukExtId, "release");
               }
             }}
           >
@@ -427,7 +429,7 @@ function BudgetTalukExtensionList() {
                 handleEdit(row.tsBudgetTalukExtId, "allocate");
               }
               if (type.budgetType === "release") {
-                handleEdit(row.tsReleaseBudgetTalukExtId, "release");
+                handleEdit(row.tsBudgetReleaseTalukExtId, "release");
               }
             }}
           >
@@ -445,6 +447,7 @@ function BudgetTalukExtensionList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2
     },
     {
       name: "Financial Year",
@@ -551,7 +554,7 @@ function BudgetTalukExtensionList() {
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -635,7 +638,7 @@ function BudgetTalukExtensionList() {
                 </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Head Of Account<span className="text-danger">*</span>
                         </Form.Label>
@@ -669,7 +672,7 @@ function BudgetTalukExtensionList() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Select District<span className="text-danger">*</span>
                         </Form.Label>
@@ -703,7 +706,7 @@ function BudgetTalukExtensionList() {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Select Taluk<span className="text-danger">*</span>
                         </Form.Label>

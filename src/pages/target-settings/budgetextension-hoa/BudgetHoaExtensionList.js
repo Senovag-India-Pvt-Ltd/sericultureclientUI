@@ -232,11 +232,11 @@ useEffect(() => {
 }, []);
 
   const navigate = useNavigate();
-  const handleView = (id) => {
+  const handleView = (id,type) => {
     navigate(`/seriui/budget-hoa-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (id,type) => {
     navigate(`/seriui/budget-hoa-edit/${id}/${type}`);
   };
 
@@ -388,18 +388,19 @@ useEffect(() => {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.tsBudgetHoaId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
+      grow:2
     },
     {
       name: "Financial Year",
@@ -466,7 +467,7 @@ useEffect(() => {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/budget-hoa"
+                  to="/seriui/budgethoaextension"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -475,7 +476,7 @@ useEffect(() => {
               </li>
               <li>
                 <Link
-                  to="/seriui/budget-hoa"
+                  to="/seriui/budgethoaextension"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

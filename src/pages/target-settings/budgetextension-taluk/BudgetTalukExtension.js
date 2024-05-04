@@ -111,7 +111,7 @@ if (type.budgetType === "release") {
   ) {
     api
       .post(
-        baseURLTargetSetting + `tsReleaseBudgetTalukExt/get-available-balance`,
+        baseURLTargetSetting + `tsBudgetReleaseTalukExt/get-available-balance`,
         {
           financialYearMasterId: data.financialYearMasterId,
           scHeadAccountId: data.scHeadAccountId,

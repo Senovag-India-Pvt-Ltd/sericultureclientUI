@@ -6,7 +6,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukView() {
@@ -37,7 +37,7 @@ function BudgetTalukView() {
     setLoading(true);
     if (type.budgetType === "allocate") {
       api
-        .get(baseURL + `tsBudgetTaluk/get-join/${id}`)
+        .get(baseURLTargetSetting + `tsBudgetTaluk/get-join/${id}`)
         .then((response) => {
           setAcivityData(response.data.content);
           setLoading(false);
@@ -49,7 +49,7 @@ function BudgetTalukView() {
     }
     if (type.budgetType === "release") {
       api
-        .get(baseURL + `tsReleaseBudgetTaluk/get-join/${id}`)
+        .get(baseURLTargetSetting + `tsReleaseBudgetTaluk/get-join/${id}`)
         .then((response) => {
           setAcivityData(response.data.content);
           setLoading(false);

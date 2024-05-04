@@ -367,7 +367,7 @@ if (type.budgetType === "release") {
     }
     if (type.budgetType === "release") {
       api
-        .get(baseURLTargetSetting + `tsReleaseBudgetTalukExt/get/${id}`)
+        .get(baseURLTargetSetting + `tsBudgetReleaseTalukExt/get/${id}`)
         .then((response) => {
           setData(response.data.content);
           setLoading(false);

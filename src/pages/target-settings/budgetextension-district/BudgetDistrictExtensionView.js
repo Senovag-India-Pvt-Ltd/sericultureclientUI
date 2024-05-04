@@ -44,7 +44,7 @@ function BudgetDistrictExtensionView() {
     }
     if (type.budgetType === "release") {
       api
-      .get(baseURLTargetSetting + `tsReleaseBudgetDistrictExt/get-join/${id}`)
+      .get(baseURLTargetSetting + `tsBudgetReleaseDistrictExt/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
