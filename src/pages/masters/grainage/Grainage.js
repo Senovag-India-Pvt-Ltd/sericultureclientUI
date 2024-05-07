@@ -16,6 +16,8 @@ function Grainage() {
   const [data, setData] = useState({
     grainageMasterName: "",
     grainageMasterNameInKannada: "",
+    grainageType: "",
+    grainageNameRepresentation: "",
     userMasterId:"",
   });
 
@@ -47,6 +49,8 @@ function Grainage() {
             setData({
                 grainageMasterName: "",
                 grainageMasterNameInKannada: "",
+                grainageType: "",
+                grainageNameRepresentation: "",
                 userMasterId:"",
             });
             setValidated(false);
@@ -63,6 +67,8 @@ function Grainage() {
     setData({
         grainageMasterName: "",
         grainageMasterNameInKannada: "",
+        grainageType: "",
+        grainageNameRepresentation: "",
         userMasterId:"",
     });
   };
@@ -188,6 +194,54 @@ function Grainage() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Grainage Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="grainageType"
+                          value={data.grainageType}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Grainage Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Grainage Type in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Grainage Name Representation
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="grainageNameRepresentation"
+                          value={data.grainageNameRepresentation}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Grainage Name Representation"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Grainage Name Representation is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
 
                   <Col lg="6">
                     <Form.Group className="form-group">

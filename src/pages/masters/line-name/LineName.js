@@ -16,6 +16,7 @@ function LineName() {
   const [data, setData] = useState({
     lineName: "",
     lineNameInKannada: "",
+    lineNameRepresentation: "",
     lineCode: "",
   });
 
@@ -47,6 +48,7 @@ function LineName() {
             setData({
                 lineName: "",
                 lineNameInKannada: "",
+                lineNameRepresentation: "",
                 lineCode: "",
             });
             setValidated(false);
@@ -63,6 +65,7 @@ function LineName() {
     setData({
         lineName: "",
         lineNameInKannada: "",
+        lineNameRepresentation: "",
         lineCode: "",
     });
   };
@@ -192,6 +195,29 @@ function LineName() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Line Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Line Name Representation
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="lineNameRepresentation"
+                          value={data.lineNameRepresentation}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Line Name Representation"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Line Name Representation is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

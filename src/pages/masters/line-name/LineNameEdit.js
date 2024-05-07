@@ -31,6 +31,7 @@ function LineNameEdit() {
       lineNameId: id,
       lineName: data.lineName,
       lineNameInKannada: data.lineNameInKannada,
+      lineNameRepresentation: data.lineNameRepresentation,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -49,6 +50,8 @@ function LineNameEdit() {
             setData({
                 lineName: "",
                 lineNameInKannada: "",
+                lineNameRepresentation: "",
+                lineCode: "",
             });
             setValidated(false);
           }
@@ -64,6 +67,8 @@ function LineNameEdit() {
     setData({
         lineName: "",
         lineNameInKannada: "",
+        lineNameRepresentation: "",
+        lineCode: "",
     });
   };
 
@@ -228,6 +233,29 @@ function LineNameEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Line Name Representation
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="lineNameRepresentation"
+                          value={data.lineNameRepresentation}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Line Name Representation"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Line Name Representation is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

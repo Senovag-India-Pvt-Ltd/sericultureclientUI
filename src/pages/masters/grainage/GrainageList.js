@@ -234,6 +234,22 @@ function GrainageList() {
     },
 
     {
+      name: "Grainage Name Representation",
+      selector: (row) => row.grainageNameRepresentation,
+      cell: (row) => <span>{row.grainageNameRepresentation}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Grainage Type",
+      selector: (row) => row.grainageType,
+      cell: (row) => <span>{row.grainageType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
       name: "User",
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,

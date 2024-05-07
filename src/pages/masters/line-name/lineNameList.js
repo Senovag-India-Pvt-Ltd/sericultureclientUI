@@ -197,6 +197,13 @@ function LineNameList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Line Name Representation",
+      selector: (row) => row.lineNameRepresentation,
+      cell: (row) => <span>{row.lineNameRepresentation}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

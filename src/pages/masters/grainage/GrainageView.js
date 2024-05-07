@@ -108,8 +108,12 @@ function GrainageView() {
                         <td>{Grainage.grainageMasterNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>User Name:</td>
-                        <td>{Grainage.username}</td>
+                        <td style={styles.ctstyle}>Grainage Name Representation:</td>
+                        <td>{Grainage.grainageNameRepresentation}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Grainage Type:</td>
+                        <td>{Grainage.grainageType}</td>
                       </tr>
                     </tbody>
                   </table>

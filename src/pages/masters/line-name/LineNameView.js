@@ -106,10 +106,15 @@ function LineNameView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
                           Line Name In Kannada:
                         </td>
                         <td>{LineName.lineNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          Line Name Representation:
+                        </td>
+                        <td>{LineName.lineNameRepresentation}</td>
                       </tr>
                     </tbody>
                   </table>
