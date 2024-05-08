@@ -941,7 +941,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Track_the_DFL_procurement ? (
+            {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink
                   text="Track DFL Procurement"
@@ -1004,7 +1004,7 @@ function Menu() {
                   to="/seriui/providing-reeler-subsidy"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}

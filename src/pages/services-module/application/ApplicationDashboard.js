@@ -246,7 +246,7 @@ function ApplicationDashboard() {
           <Block.HeadContent>
             <Block.Title tag="h2">User Dashboard</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -267,7 +267,7 @@ function ApplicationDashboard() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
