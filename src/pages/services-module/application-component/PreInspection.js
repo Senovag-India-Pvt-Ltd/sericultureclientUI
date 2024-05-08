@@ -125,7 +125,7 @@ const PreInspection = () => {
     const postData = {
       requestType: "SUBSIDY_PRE_INSPECTION",
       requestTypeId: workFlowId,
-    //   userMasterId: data.userMasterId,
+      //   userMasterId: data.userMasterId,
       userMasterId: 114,
     };
 
@@ -139,16 +139,31 @@ const PreInspection = () => {
         // setUserListData([]);
       });
 
-      api
-      .post(baseURLDBT + `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,{}, {params:{id:workFlowId}})
+    api
+      .post(
+        baseURLDBT +
+          `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
+        {},
+        { params: { id: workFlowId } }
+      )
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
+        api
+          .post(
+            baseURLDBT + `service/triggerWorkFlowNextStep`,
+            {},
+            { params: { id: workFlowId } }
+          )
+          .then((response) => {
+            // setUserListData(response.data.content.userMaster);
+          })
+          .catch((err) => {
+            // setUserListData([]);
+          });
       })
       .catch((err) => {
         // setUserListData([]);
       });
-
-    
   };
 
   const postData = (event) => {
