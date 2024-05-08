@@ -933,6 +933,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Service Dashboard"
+                  to="/seriui/application-dashboard"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink

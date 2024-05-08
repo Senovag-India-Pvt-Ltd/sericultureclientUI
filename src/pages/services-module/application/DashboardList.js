@@ -1,5 +1,5 @@
 import { Card, Button, Row, Col, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
@@ -12,11 +12,17 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import PreInspection from "../application-component/PreInspection";
+import WorkOrderIssue from "../application-component/WorkOrderIssue";
+import WorkOrderComplete from "../application-component/WorkOrderComplete";
+import InspectionComponent from "../application-component/InspectionComponent";
+import SanctionOrderGeneration from "../application-component/SanctionOrderGeneration";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-function ApplicationSelection() {
+function DashboardList() {
+  const { id } = useParams();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -297,41 +303,6 @@ function ApplicationSelection() {
   };
 
   const ApplicationDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.marketMasterId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.marketMasterId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.marketMasterId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // //   grow: 2,
-    // },
     {
       name: "Select",
       selector: "select",
@@ -355,20 +326,6 @@ function ApplicationSelection() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Head of Account",
       selector: (row) => row.headAccountName,
@@ -383,13 +340,6 @@ function ApplicationSelection() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Sub Scheme Name",
       selector: (row) => row.subSchemeName,
@@ -415,173 +365,14 @@ function ApplicationSelection() {
   ];
 
   return (
-    <Layout title="Application Selection List">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Application Selection List</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
-
-      <Block className="mt-n4">
-        <Card>
-          {/* <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                     
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="marketMasterId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row> */}
-          <DataTable
-            //  title="Market List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ApplicationDataColumns}
-            data={listData}
-            highlightOnHover
-            // pagination
-            // paginationServer
-            // paginationTotalRows={totalRows}
-            // paginationPerPage={countPerPage}
-            // paginationComponentOptions={{
-            //   noRowsPerPage: true,
-            // }}
-            // onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
-        </Card>
-      </Block>
-
-      <div className="gap-col mt-1">
-        <ul className="d-flex align-items-center justify-content-center gap g-3">
-          <li>
-            <Button type="submit" variant="primary" onClick={postData}>
-              Save
-            </Button>
-          </li>
-          <li>
-            <Button type="button" variant="secondary" onClick={(e) => clear(e)}>
-              Cancel
-            </Button>
-          </li>
-        </ul>
-      </div>
-      {/* <Block className="">
-        <Row className="g-3 ">
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs ">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Form>
-        </Row>
-      </Block> */}
+    <Layout title="Dashboard List">
+      {id == 1 ? <PreInspection /> : ""}
+      {id == 2 ? <WorkOrderIssue /> : ""}
+      {id == 3 ? <WorkOrderComplete /> : ""}
+      {id == 4 ? <InspectionComponent /> : ""}
+      {id == 5 ? <SanctionOrderGeneration/>:""}
     </Layout>
   );
 }
 
-export default ApplicationSelection;
+export default DashboardList;

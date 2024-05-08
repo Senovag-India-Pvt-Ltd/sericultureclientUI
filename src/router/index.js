@@ -789,6 +789,8 @@ import BudgetDistrictExtensionList from "../pages/target-settings/budgetextensio
 import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
 
 import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
+import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
+import DashboardList from "../pages/services-module/application/DashboardList";
 // Admin and Reports
 
 function Router() {
@@ -1067,9 +1069,17 @@ function Router() {
               path="service-application"
               element={<ServiceApplication />}
             />
-             <Route
+            <Route
               path="application-selection"
               element={<ApplicationSelection />}
+            />
+            <Route
+              path="application-dashboard"
+              element={<ApplicationDashboard />}
+            />
+            <Route
+              path="application-dashboard-list/:id"
+              element={<DashboardList />}
             />
             <Route
               path="track-dfl-procurement"
@@ -1235,7 +1245,7 @@ function Router() {
               element={<PreservationofseedcocoonforprocessingList />}
             />
 
-          <Route
+            <Route
               path="preservation-of-seed-cocoon-edit/:id"
               element={<PreservationOfSeedCocoonForProcessingEdit />}
             />
@@ -1767,8 +1777,14 @@ function Router() {
 
             <Route path="budget-hoa" element={<BudgetHoa />} />
             <Route path="budget-hoa-list" element={<BudgetHoaList />} />
-            <Route path="budget-hoa-edit/:id/:types" element={<BudgetHoaEdit />} />
-            <Route path="budget-hoa-view/:id/:types" element={<BudgetHoaView />} />
+            <Route
+              path="budget-hoa-edit/:id/:types"
+              element={<BudgetHoaEdit />}
+            />
+            <Route
+              path="budget-hoa-view/:id/:types"
+              element={<BudgetHoaView />}
+            />
 
             <Route path="budget-district" element={<BudgetDistrict />} />
             <Route
@@ -1802,8 +1818,14 @@ function Router() {
             />
             <Route path="budget-taluk" element={<BudgetTaluk />} />
             <Route path="budget-taluk-list" element={<BudgetTalukList />} />
-            <Route path="budget-taluk-edit/:id/:types" element={<BudgetTalukEdit />} />
-            <Route path="budget-taluk-view/:id/:types" element={<BudgetTalukView />} />
+            <Route
+              path="budget-taluk-edit/:id/:types"
+              element={<BudgetTalukEdit />}
+            />
+            <Route
+              path="budget-taluk-view/:id/:types"
+              element={<BudgetTalukView />}
+            />
 
             <Route
               path="budgettalukextension"
@@ -1824,8 +1846,14 @@ function Router() {
 
             <Route path="budget-tsc" element={<BudgetTsc />} />
             <Route path="budget-tsc-list" element={<BudgetTscList />} />
-            <Route path="budget-tsc-edit/:id/:types" element={<BudgetTscEdit />} />
-            <Route path="budget-tsc-view/:id/:types" element={<BudgetTscView />} />
+            <Route
+              path="budget-tsc-edit/:id/:types"
+              element={<BudgetTscEdit />}
+            />
+            <Route
+              path="budget-tsc-view/:id/:types"
+              element={<BudgetTscView />}
+            />
 
             <Route
               path="budgetinstitutionextension"
