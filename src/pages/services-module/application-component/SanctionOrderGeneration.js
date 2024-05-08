@@ -76,7 +76,8 @@ const SanctionOrderGeneration = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 113, stepId: 5 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
+        // { params: { userId: 113, stepId: 5 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -336,8 +337,13 @@ const SanctionOrderGeneration = () => {
             </Button> */}
           {/* <input type="file"></input> */}
           {/* <form action="/upload" method="post" enctype="multipart/form-data"> */}
-            <input type="file" name="fileToUpload" id="fileToUpload"></input>
-            <input type="submit" value="Choose File" name="submit" onClick={() => document.getElementById('fileToUpload').click()}></input>
+          <input type="file" name="fileToUpload" id="fileToUpload"></input>
+          <input
+            type="submit"
+            value="Choose File"
+            name="submit"
+            onClick={() => document.getElementById("fileToUpload").click()}
+          ></input>
           {/* </form> */}
         </div>
         // <span>This step to be done through mobile app</span>

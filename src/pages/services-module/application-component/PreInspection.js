@@ -76,7 +76,8 @@ const PreInspection = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 114, stepId: 1 } }
+        // { params: { userId: 114, stepId: 1 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 1 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -125,8 +126,8 @@ const PreInspection = () => {
     const postData = {
       requestType: "SUBSIDY_PRE_INSPECTION",
       requestTypeId: workFlowId,
-      //   userMasterId: data.userMasterId,
-      userMasterId: 114,
+      userMasterId: data.userMasterId,
+      // userMasterId: 114,
     };
 
     api

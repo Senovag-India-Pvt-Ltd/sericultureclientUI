@@ -76,7 +76,8 @@ const InspectionComponent = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 542, stepId: 4 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 4 } }
+        // { params: { userId: 542, stepId: 4 } }
       )
       .then((response) => {
         setListData(response.data.content);
