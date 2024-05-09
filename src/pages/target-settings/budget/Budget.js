@@ -54,7 +54,17 @@ function Budget() {
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    // setData({ ...data, [name]: value });
+    let updatedData = { ...data, [name]: value };
+    if (name === "centralBudget" || name === "stateBudget") {
+      const centralBudget = parseFloat(updatedData.centralBudget);
+      const stateBudget = parseFloat(updatedData.stateBudget);
+      const totalAmount =
+        (isNaN(centralBudget) ? 0 : centralBudget) +
+        (isNaN(stateBudget) ? 0 : stateBudget);
+      updatedData = { ...updatedData, amount: totalAmount.toString() };
+    }
+    setData(updatedData);
   };
 
   const handleTypeInputs = (e) => {
