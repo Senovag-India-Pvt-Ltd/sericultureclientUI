@@ -123,7 +123,7 @@ function PhysicalTargetSettingsDistrict() {
           }
         }
       }
-      setValidated(true);
+      // setValidated(true);
     }
   };
 
@@ -159,6 +159,27 @@ function PhysicalTargetSettingsDistrict() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: response.data.content.financialYearMasterId,
+        }));
+      })
+      .catch((err) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: "",
+        }));
+      });
+  };
+
+  useEffect(() => {
+    getFinancialDefaultDetails();
+  }, []);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -536,7 +557,7 @@ function PhysicalTargetSettingsDistrict() {
                             key={list.scCategoryId}
                             value={list.scCategoryId}
                           >
-                            {list.categoryName}
+                            {list.codeNumber}
                           </option>
                         ))}
                       </Form.Select>

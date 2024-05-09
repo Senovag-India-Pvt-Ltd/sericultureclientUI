@@ -118,10 +118,7 @@ function FinancialTargetSettingsInstitutionView() {
                         <td style={styles.ctstyle}> Taluk Name:</td>
                         <td>{budgetDistrictData.talukName}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Institution Name:</td>
-                        <td>{budgetDistrictData.talukName}</td>
-                      </tr>
+                      
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>

@@ -253,7 +253,7 @@ function BudgetDistrictExtensionList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -478,8 +478,8 @@ function BudgetDistrictExtensionList() {
     },
     {
       name: "Category",
-      selector: (row) => row.categoryName,
-      cell: (row) => <span>{row.categoryName}</span>,
+      selector: (row) => row.codeNumber,
+      cell: (row) => <span>{row.codeNumber}</span>,
       sortable: false,
       hide: "md",
     },
@@ -772,7 +772,7 @@ function BudgetDistrictExtensionList() {
                             <option value="">Select Category</option>
                             {categoryListData && categoryListData.map((list) => (
                               <option key={list.scCategoryId} value={list.scCategoryId}>
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

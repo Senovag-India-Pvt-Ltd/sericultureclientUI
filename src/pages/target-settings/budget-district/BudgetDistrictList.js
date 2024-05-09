@@ -196,7 +196,7 @@ function BudgetDistrictList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -275,6 +275,22 @@ function BudgetDistrictList() {
       setValidated(true);
     }
   };
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
+
 
   createTheme(
     "solarized",
@@ -373,6 +389,7 @@ function BudgetDistrictList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Financial Year",

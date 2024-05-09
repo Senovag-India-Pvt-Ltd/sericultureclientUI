@@ -136,7 +136,7 @@ useEffect(() => {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -353,6 +353,22 @@ useEffect(() => {
     },
   };
 
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
+
+
   const activityDataColumns = [
     {
       name: "Action",
@@ -420,7 +436,7 @@ useEffect(() => {
     {
       name: "Date",
       selector: (row) => row.date,
-      cell: (row) => <span>{row.date}</span>,
+      cell: (row) => <span>{dateFormatter(row.date)}</span>,
       sortable: false,
       hide: "md",
     },
@@ -447,8 +463,8 @@ useEffect(() => {
     },
     {
       name: "Category",
-      selector: (row) => row.categoryName,
-      cell: (row) => <span>{row.categoryName}</span>,
+      selector: (row) => row.codeNumber,
+      cell: (row) => <span>{row.codeNumber}</span>,
       sortable: false,
       hide: "md",
     },
@@ -702,7 +718,7 @@ useEffect(() => {
                             <option value="">Select Category</option>
                             {categoryListData && categoryListData.map((list) => (
                               <option key={list.scCategoryId} value={list.scCategoryId}>
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>
