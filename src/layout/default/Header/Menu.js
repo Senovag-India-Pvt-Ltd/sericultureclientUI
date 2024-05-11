@@ -400,6 +400,8 @@ function Menu() {
 
     Admin_Master_General: false,
     Admin_Master_General_Pages: false,
+    Admin_Master_Scheme_Quota: false,
+    Admin_Master_Map_Component_And_Head_Of_Account: false,
     Admin_Master_General_Config_Role: false,
     Admin_Master_General_Activate_External: false,
 
@@ -2596,6 +2598,22 @@ function Menu() {
                             <MenuItemLink
                               text="Pages"
                               to="/seriui/role-pages"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Scheme_Quota ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Quota"
+                              to="/seriui/scheme-quota"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Map_Component_And_Head_Of_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Map Component And Head Of Account"
+                              to="/seriui/map-component"
                             />
                           </MenuItem>
                         ) : null}

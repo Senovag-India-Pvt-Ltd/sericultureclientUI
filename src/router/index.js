@@ -789,6 +789,11 @@ import BudgetDistrictExtensionList from "../pages/target-settings/budgetextensio
 import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
 
 import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
+import SchemeQuotaList from "../pages/masters/scheme-quota/SchemeQuotaList";
+import SchemeQuota from "../pages/masters/scheme-quota/SchemeQuota";
+import SchemeQuotaView from "../pages/masters/scheme-quota/SchemeQuotaView";
+import SchemeQuotaEdit from "../pages/masters/scheme-quota/SchemeQuotaEdit";
+import MapComponent from "../pages/masters/map-component-hoa/MapComponentAndHoa";
 // Admin and Reports
 
 function Router() {
@@ -2067,6 +2072,10 @@ function Router() {
             <Route path="village-list" element={<VillageList />} />
             <Route path="village-view/:id" element={<VillageView />} />
             <Route path="village-edit/:id" element={<VillageEdit />} />
+            <Route path="scheme-quota" element={<SchemeQuota />} />
+            <Route path="scheme-quota-list" element={<SchemeQuotaList />} />
+            <Route path="scheme-quota-view/:id" element={<SchemeQuotaView />} />
+            <Route path="scheme-quota-edit/:id" element={<SchemeQuotaEdit />} />
             <Route path="land-category" element={<LandCategory />} />
             <Route path="land-category-list" element={<LandCategoryList />} />
             <Route
@@ -2584,6 +2593,7 @@ function Router() {
             <Route path="crate-edit/:id" element={<CrateEdit />} />
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
+            <Route path="map-component" element={<MapComponent />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
