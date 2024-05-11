@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -14,6 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function ScComponent() {
   const [data, setData] = useState({
     scComponentName: "",
+    scSubSchemeDetailsId: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -45,6 +46,7 @@ function ScComponent() {
         saveSuccess();
         setData({
           scComponentName: "",
+          scSubSchemeDetailsId: "",
         });
         setValidated(false);
         }
@@ -61,8 +63,27 @@ function ScComponent() {
   const clear = () => {
     setData({
       scComponentName: "",
+      scSubSchemeDetailsId: "",
     });
   };
+
+  // to get Sub Scheme Details
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsData] = useState([]);
+
+  const getScSubSchemeDetailsList = () => {
+    const response = api
+      .get(baseURL + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setScSubSchemeDetailsData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsData([]);
+      });
+  };
+
+  useEffect(() => {
+    getScSubSchemeDetailsList();
+  }, []);
 
 
   const navigate = useNavigate();
@@ -142,6 +163,36 @@ function ScComponent() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Sub Scheme Details<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSubSchemeDetailsId === undefined || data.scSubSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme Details</option>
+                            {scSubSchemeDetailsListData.map((list) => (
+                              <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>
+                                {list.subSchemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme Details Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
                 </Row>
               </Card.Body>
             </Card>

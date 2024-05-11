@@ -180,6 +180,13 @@ function ScComponentList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
