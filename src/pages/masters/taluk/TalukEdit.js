@@ -46,6 +46,7 @@ function TalukEdit() {
               stateId: "",
               districtId: "",
               talukNameInKannada: "",
+              lgTaluk:"",
             });
             setValidated(false);
           }
@@ -66,6 +67,7 @@ function TalukEdit() {
       stateId: "",
       districtId: "",
       talukNameInKannada: "",
+      lgTaluk:"",
     });
   };
 
@@ -313,6 +315,29 @@ function TalukEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+                    
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Taluk">
+                        Lg Taluk<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lgTaluk"
+                          name="lgTaluk"
+                          value={data.lgTaluk}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Lg Taluk"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Lg Taluk is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                    
                   </Row>
                 )}
               </Card.Body>

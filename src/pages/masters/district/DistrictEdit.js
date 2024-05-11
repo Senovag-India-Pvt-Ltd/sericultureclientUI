@@ -46,6 +46,7 @@ function DistrictEdit() {
               stateId: "",
               districtName: "",
               districtNameInKannada: "",
+              lgDistrict: "",
             });
             setValidated(false);
           }
@@ -64,6 +65,7 @@ function DistrictEdit() {
       stateId: "",
       districtName: "",
       districtNameInKannada: "",
+      lgDistrict: "",
     });
   };
 
@@ -253,6 +255,28 @@ function DistrictEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="district">
+                       Lg District<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lgDistrict"
+                          type="text"
+                          name="lgDistrict"
+                          value={data.lgDistrict}
+                          onChange={handleInputs}
+                          placeholder="Enter Lg District"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Lg District is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

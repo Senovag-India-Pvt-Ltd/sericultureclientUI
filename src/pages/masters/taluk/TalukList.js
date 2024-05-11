@@ -247,6 +247,13 @@ function TalukList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Lg Taluk",
+      selector: (row) => row.lgTaluk,
+      cell: (row) => <span>{row.lgTaluk}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
