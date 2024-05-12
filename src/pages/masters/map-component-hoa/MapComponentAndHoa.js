@@ -244,11 +244,11 @@ function MapComponent() {
     });
   };
   return (
-    <Layout title="Market">
+    <Layout title="Map Component And Head Of Account">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Market</Block.Title>
+            <Block.Title tag="h2">Map Component And Head Of Account</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -267,7 +267,7 @@ function MapComponent() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/market-list"
+                  to="/seriui/map-component-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -276,7 +276,7 @@ function MapComponent() {
               </li>
               <li>
                 <Link
-                  to="/seriui/market-list"
+                  to="/seriui/map-component-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
