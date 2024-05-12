@@ -148,23 +148,7 @@ function ScComponent() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="component">Component</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="component"
-                          name="scComponentName"
-                          type="text"
-                          value={data.scComponentName}
-                          onChange={handleInputs}
-                          placeholder="Enter Component"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
+                <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Sub Scheme Details<span className="text-danger">*</span>
@@ -193,6 +177,22 @@ function ScComponent() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="component">Component</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="component"
+                          name="scComponentName"
+                          type="text"
+                          value={data.scComponentName}
+                          onChange={handleInputs}
+                          placeholder="Enter Component"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -200,7 +200,7 @@ function ScComponent() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary" >
+                  <Button type="submit" variant="primary" >
                     Save
                   </Button>
                 </li>

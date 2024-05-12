@@ -24,7 +24,7 @@ function ScComponentView() {
   const getIdList = () => {
     setLoading(true);
     api
-      .get(baseURL + `scComponent/get/${id}`)
+      .get(baseURL + `scComponent/get-join/${id}`)
       .then((response) => {
         setScComponent(response.data.content);
         setLoading(false);

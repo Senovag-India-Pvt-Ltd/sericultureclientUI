@@ -726,7 +726,7 @@ function UsersEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="password">
-                        DDO Code<span className="text-danger">*</span>
+                        DDO Code
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -736,11 +736,9 @@ function UsersEdit() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter DDO Code"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
-                        DDO Code is required
-                        </Form.Control.Feedback>
+                       
                       </div>
                     </Form.Group>
                   </Col>
