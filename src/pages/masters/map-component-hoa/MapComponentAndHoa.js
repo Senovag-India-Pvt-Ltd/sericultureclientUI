@@ -17,6 +17,7 @@ function MapComponent() {
     headOfAccountId: "",
     schemeId: "",
     subSchemeId: "",
+    scComponentId: "",
     categoryId: "",
     unitType:"",
     measurementUnit: "",
@@ -61,6 +62,7 @@ function MapComponent() {
               schemeId: "",
               subSchemeId: "",
               categoryId: "",
+              scComponentId: "",
               unitType:"",
               measurementUnit: "",
               isFullPrice: "",
@@ -95,6 +97,7 @@ function MapComponent() {
       schemeId: "",
       subSchemeId: "",
       categoryId: "",
+      scComponentId: "",
       unitType:"",
       measurementUnit: "",
       isFullPrice: "",
@@ -306,41 +309,6 @@ function MapComponent() {
                 <Row className="g-gs">
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Head Of Account
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="headOfAccountId"
-                        value={data.headOfAccountId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        // multiple
-                        // required
-                        isInvalid={
-                          data.headOfAccountId === undefined ||
-                          data.headOfAccountId === "0"
-                        }
-                      >
-                        <option value="">Select Head Of Account</option>
-                        {scHeadAccountListData.map((list) => (
-                          <option
-                            key={list.scHeadAccountId}
-                            value={list.scHeadAccountId}
-                          >
-                            {list.scHeadAccountName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                      Head Of Account is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Select Scheme
                       <span className="text-danger">*</span>
@@ -378,7 +346,43 @@ function MapComponent() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Select Sub Scheme
+                      Scheme Quota
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="schemeQuotaId"
+                        value={data.schemeQuotaId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.schemeQuotaId === undefined ||
+                          data.schemeQuotaId === "0"
+                        }
+                      >
+                        <option value="">Select Scheme Quota</option>
+                        {schemeQuotaListData &&
+                            schemeQuotaListData.map((list) => (
+                            <option
+                              key={list.schemeQuotaId}
+                              value={list.schemeQuotaId}
+                            >
+                              {list.schemeQuotaName}
+                            </option>
+                          ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Scheme Quota is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Component Type
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -393,7 +397,7 @@ function MapComponent() {
                           data.subSchemeId === "0"
                         }
                       >
-                        <option value="">Select Sub Scheme</option>
+                        <option value="">Select Component Type</option>
                         {subSchemeListData &&
                           subSchemeListData.map((list) => (
                             <option
@@ -405,12 +409,88 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Sub Scheme is required
+                      Component Type is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Component 
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="scComponentId"
+                        value={data.scComponentId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.scComponentId === undefined ||
+                          data.scComponentId === "0"
+                        }
+                      >
+                        <option value="">Select Component </option>
+                        {scComponentListData &&
+                          scComponentListData.map((list) => (
+                            <option
+                              key={list.scComponentId}
+                              value={list.scComponentId}
+                            >
+                              {list.scComponentName}
+                            </option>
+                          ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Component  is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Head Of Account
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="headOfAccountId"
+                        value={data.headOfAccountId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        // required
+                        isInvalid={
+                          data.headOfAccountId === undefined ||
+                          data.headOfAccountId === "0"
+                        }
+                      >
+                        <option value="">Select Head Of Account</option>
+                        {scHeadAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={list.scHeadAccountId}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Head Of Account is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+               
+
+                
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
@@ -573,41 +653,7 @@ function MapComponent() {
                         </Form.Group>
                       </Col>
 
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Scheme Quota
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="schemeQuotaId"
-                        value={data.schemeQuotaId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        required
-                        isInvalid={
-                          data.schemeQuotaId === undefined ||
-                          data.schemeQuotaId === "0"
-                        }
-                      >
-                        <option value="">Select Scheme Quota</option>
-                        {schemeQuotaListData &&
-                            schemeQuotaListData.map((list) => (
-                            <option
-                              key={list.schemeQuotaId}
-                              value={list.schemeQuotaId}
-                            >
-                              {list.schemeQuotaName}
-                            </option>
-                          ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Scheme Quota is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+                
 
                 {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">

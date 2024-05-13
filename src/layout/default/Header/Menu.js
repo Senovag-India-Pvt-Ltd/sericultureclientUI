@@ -2151,7 +2151,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Sub_Scheme_Details ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Sub Scheme Details"
+                              text="Component Type"
                               to="/seriui/sc-sub-scheme-details"
                             />
                           </MenuItem>

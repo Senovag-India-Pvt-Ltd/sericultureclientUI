@@ -54,8 +54,15 @@ function ScComponent() {
         }
       })
       .catch((err) => {
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          saveError(err.response.data.validationErrors);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            saveError(err.response.data.validationErrors);
+          }
         }
       });
       setValidated(true);
@@ -151,7 +158,7 @@ function ScComponent() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                <Col lg="6">
+                {/* <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
                           Sub Scheme Details<span className="text-danger">*</span>
@@ -179,7 +186,7 @@ function ScComponent() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                   <Col lg="6">
                     <Form.Group className="form-group">
@@ -200,7 +207,7 @@ function ScComponent() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -210,11 +217,11 @@ function ScComponent() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder="Enter DBT Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

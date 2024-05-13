@@ -23,7 +23,9 @@ function ScSubSchemeDetails() {
     subSchemeType:"",
     subSchemeStartDate:"",
     subSchemeEndDate:"",
-    dbtCode: ""
+    dbtCode: "",
+    withLand: "",
+    beneficiaryType: "",
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -67,7 +69,9 @@ function ScSubSchemeDetails() {
                 subSchemeType:"",
                 subSchemeStartDate:"",
                 subSchemeEndDate:"",
-                dbtCode: ""
+                dbtCode: "",
+                withLand: "",
+                beneficiaryType: "",
             });
             setValidated(false);
           }
@@ -96,8 +100,18 @@ function ScSubSchemeDetails() {
         subSchemeType:"",
         subSchemeStartDate:"",
         subSchemeEndDate:"",
-        dbtCode: ""
+        dbtCode: "",
+        withLand: "",
+        beneficiaryType: "",
     });
+  };
+
+  const handleCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      withLand: e.target.checked,
+    }));
   };
 
   // to get Scheme Details
@@ -183,6 +197,22 @@ function ScSubSchemeDetails() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
+
+                <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="withLand"
+                          checked={data.withLand}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        With Land
+                      </Form.Label>
+                    </Form.Group>
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
@@ -310,7 +340,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -320,11 +350,11 @@ function ScSubSchemeDetails() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder="Enter DBT Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
