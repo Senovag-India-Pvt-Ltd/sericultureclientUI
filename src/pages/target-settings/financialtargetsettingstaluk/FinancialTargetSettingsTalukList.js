@@ -203,8 +203,8 @@ function FinancialTargetSettingsTalukList() {
     },
     {
       name: "Head Of Account",
-      selector: (row) => row.hoaId,
-      cell: (row) => <span>{row.hoaId}</span>,
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: false,
       hide: "md",
     },

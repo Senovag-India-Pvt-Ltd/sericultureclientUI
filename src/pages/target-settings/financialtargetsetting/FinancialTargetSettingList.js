@@ -137,6 +137,22 @@ function FinancialTargetSettingList() {
     },
   };
 
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
+
+
   const activityDataColumns = [
     {
       name: "Action",
@@ -170,6 +186,7 @@ function FinancialTargetSettingList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Financial Year",
@@ -189,7 +206,7 @@ function FinancialTargetSettingList() {
     {
       name: "Date",
       selector: (row) => row.date,
-      cell: (row) => <span>{row.date}</span>,
+      cell: (row) => <span>{dateFormatter(row.date)}</span>,
       sortable: false,
       hide: "md",
     },

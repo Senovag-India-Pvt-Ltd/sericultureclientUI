@@ -63,7 +63,21 @@ function BudgetTscView() {
     }
   };
 
-  //console.log(Caste);
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
+
 
   useEffect(() => {
     getIdList();
@@ -129,7 +143,7 @@ function BudgetTscView() {
                       <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.date}</span>
+                          <span>{dateFormatter(AcivityData.date)}</span>
                         </td>
                       </tr>
                       <tr>

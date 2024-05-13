@@ -2,33 +2,30 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import React from "react";
-// import axios from "axios";
+import { Icon } from "../../../components";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScVendor() {
+function SchemeQuota() {
   const [data, setData] = useState({
-    name: "",
-    nameInKannada: "",
-    type:"",
-    agencyCode: "",
-    agencyBankAcNo: "",
-    agencyIfscCode: "",
-    agencyDistrictCode: "",
-    agencyTalukCode: "",
-
+    scSchemeDetailsId: "",
+    schemeQuotaName: "",
+    schemeQuotaType: "",
+    schemeQuotaCode:"",
+    schemeQuotaPaymentType:"",
+    dbtCode: "",
   });
 
   const [validated, setValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
+    // debugger;
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
@@ -43,29 +40,35 @@ function ScVendor() {
       setValidated(true);
     } else {
       event.preventDefault();
+      // event.stopPropagation();
       api
-        .post(baseURL + `scVendor/add`, data)
+        .post(baseURL + `schemeQuota/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              name: "",
-              nameInKannada: "",
-              type:"",
-              agencyCode: "",
-              agencyBankAcNo: "",
-              agencyIfscCode: "",
-              agencyDistrictCode: "",
-              agencyTalukCode: "",
+                scSchemeDetailsId: "",
+                schemeQuotaName: "",
+                schemeQuotaType: "",
+                schemeQuotaCode:"",
+                schemeQuotaPaymentType:"",
+                dbtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -74,16 +77,34 @@ function ScVendor() {
 
   const clear = () => {
     setData({
-      name: "",
-      nameInKannada: "",
-      type:"",
-      agencyCode: "",
-      agencyBankAcNo: "",
-      agencyIfscCode: "",
-      agencyDistrictCode: "",
-      agencyTalukCode: "",
+        scSchemeDetailsId: "",
+        schemeQuotaName: "",
+        schemeQuotaType: "",
+        schemeQuotaCode:"",
+        schemeQuotaPaymentType:"",
+        dbtCode: "",
     });
   };
+
+ // to get Scheme Details
+ const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+
+ const getList = () => {
+   const response = api
+     .get(baseURL + `scSchemeDetails/get-all`)
+     .then((response) => {
+       setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+     })
+     .catch((err) => {
+       setScSchemeDetailsListData([]);
+     });
+ };
+
+ useEffect(() => {
+   getList();
+ }, []);
+
+
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -91,7 +112,9 @@ function ScVendor() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("#"));
+    }).then(() => {
+      navigate("#");
+    });
   };
 
   const saveError = (message) => {
@@ -109,17 +132,17 @@ function ScVendor() {
   };
 
   return (
-    <Layout title=" Vendor">
+    <Layout title="Scheme Quota">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Vendor</Block.Title>
+            <Block.Title tag="h2">Scheme Quota</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-vendor-list"
+                  to="/seriui/scheme-quota-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -128,7 +151,7 @@ function ScVendor() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-vendor-list"
+                  to="/seriui/scheme-quota-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -141,31 +164,128 @@ function ScVendor() {
       </Block.Head>
 
       <Block className="mt-n5">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
+          {/* <Form Action="#"> */}
           <Row className="g-3 ">
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
+                <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme Details<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="scSchemeDetailsId"
+                          value={data.scSchemeDetailsId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
+                          }
+                        >
+                          <option value="">Select Scheme Details</option>
+                          {scSchemeDetailsListData.map((list) => (
+                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                              {list.schemeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Scheme name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                         Vendor Name
+                         Scheme Quota
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="name"
-                          type="text"
-                          value={data.name}
+                          id="schemeQuotaName"
+                          name="schemeQuotaName"
+                          value={data.schemeQuotaName}
                           onChange={handleInputs}
-                          placeholder="Enter Sc Vendor name"
+                          type="text"
+                          placeholder="Enter Scheme Quota"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                           Vendor Name is required
+                        Scheme Quota is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="title">
+                        Scheme Quota Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="schemeQuotaType"
+                          name="schemeQuotaType"
+                          value={data.schemeQuotaType}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Scheme Quota Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Scheme Quota Type is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="title">
+                      Scheme Quota Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="schemeQuotaCode"
+                          name="schemeQuotaCode"
+                          value={data.schemeQuotaCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Scheme Quota Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Scheme Quota Code is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="title">
+                         Scheme Quota Payment Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="schemeQuotaPaymentType"
+                          name="schemeQuotaPaymentType"
+                          value={data.schemeQuotaPaymentType}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Scheme Quota Payment Type"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Scheme Quota Payment Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -174,160 +294,21 @@ function ScVendor() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                         Vendor Name in Kannada
+                      Dbt Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="nameInKannada"
-                          value={data.nameInKannada}
-                          onChange={handleInputs}
+                          id="dbtCode"
+                          name="dbtCode"
                           type="text"
-                          placeholder="Enter  Vendor Name in Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                           Vendor Name in Kannada is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Type
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="type"
-                          value={data.type}
+                          value={data.dbtCode}
                           onChange={handleInputs}
-                          type="number"
-                          placeholder="Enter Type"
+                          placeholder="Enter Dbt Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Type is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Agency Code
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="agencyCode"
-                          name="agencyCode"
-                          value={data.agencyCode}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Agency Code"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Agency Code is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Agency Bank Acc No
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="agencyBankAcNo"
-                          name="agencyBankAcNo"
-                          value={data.agencyBankAcNo}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Agency Bank Acc No"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Agency Bank Acc No is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Agency IFSC Code
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="agencyIfscCode"
-                          name="agencyIfscCode"
-                          value={data.agencyIfscCode}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Agency IFSC Code"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Agency IFSC Code is required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Agency District Code
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="agencyDistrictCode"
-                          name="agencyDistrictCode"
-                          value={data.agencyDistrictCode}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Agency District Code"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Agency District Codeis required.
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Agency Taluk Code
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="agencyTalukCode"
-                          name="agencyTalukCode"
-                          value={data.agencyTalukCode}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Agency Taluk Code"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Agency Taluk Code is required.
+                        Dbt Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -345,6 +326,9 @@ function ScVendor() {
                   </Button>
                 </li>
                 <li>
+                  {/* <Link to="/seriui/district-list" className="btn btn-secondary border-0">
+                    Cancel
+                  </Link> */}
                   <Button type="button" variant="secondary" onClick={clear}>
                     Cancel
                   </Button>
@@ -358,4 +342,4 @@ function ScVendor() {
   );
 }
 
-export default ScVendor;
+export default SchemeQuota;

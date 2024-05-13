@@ -18,6 +18,7 @@ function Village() {
     talukId: "",
     hobliId: "",
     villageName: "",
+    lgVillage: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -53,6 +54,7 @@ function Village() {
               talukId: "",
               hobliId: "",
               villageName: "",
+              lgVillage: "",
             });
             setValidated(false);
           }
@@ -73,6 +75,7 @@ function Village() {
       talukId: "",
       hobliId: "",
       villageName: "",
+      lgVillage: "",
     });
   };
 
@@ -394,6 +397,28 @@ function Village() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Village Name Name in Kannada is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Village">
+                        Lg Village<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lgVillage"
+                          name="lgVillage"
+                          value={data.lgVillage}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Lg Village"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Lg Village is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

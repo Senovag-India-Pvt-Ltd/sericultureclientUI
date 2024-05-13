@@ -44,13 +44,22 @@ function ScComponentEdit() {
         updateSuccess();
         setData({
           scComponentName: "",
+          scSubSchemeDetailsId: "",
+          dbtCode: "",
         });
         setValidated(false);
         }
       })
       .catch((err) => {
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          updateError(err.response.data.validationErrors);
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         }
       });
       setValidated(true);
@@ -79,14 +88,33 @@ function ScComponentEdit() {
   const clear = () => {
     setData({
       scComponentName: "",
+      scSubSchemeDetailsId: "",
     });
   };
+
+  // to get Sub Scheme Details
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsData] = useState([]);
+
+  const getScSubSchemeDetailsList = () => {
+    const response = api
+      .get(baseURL + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        setScSubSchemeDetailsData(response.data.content.scSubSchemeDetails);
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsData([]);
+      });
+  };
+
+  useEffect(() => {
+    getScSubSchemeDetailsList();
+  }, []);
 
   const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
     });
   };
@@ -156,6 +184,37 @@ function ScComponentEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
+
+                  <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          Sub Scheme Details<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scSubSchemeDetailsId"
+                            value={data.scSubSchemeDetailsId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scSubSchemeDetailsId === undefined || data.scSubSchemeDetailsId === "0"
+                            }
+                          >
+                            <option value="">Select Sub Scheme Details</option>
+                            {scSubSchemeDetailsListData.map((list) => (
+                              <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>
+                                {list.subSchemeName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Sub Scheme Details Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                     <Col lg="6">
                       <Form.Group className="form-group ">
                         <Form.Label htmlFor="component">Component</Form.Label>
@@ -171,6 +230,29 @@ function ScComponentEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>
@@ -179,7 +261,7 @@ function ScComponentEdit() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary">
+                  <Button type="submit" variant="primary">
                     Update
                   </Button>
                 </li>

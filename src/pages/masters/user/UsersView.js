@@ -147,6 +147,10 @@ function UsersView() {
                         <td style={styles.ctstyle}>Working Institution:</td>
                         <td>{user.workingInstitutionName}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>DDO Code:</td>
+                        <td>{user.ddoCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

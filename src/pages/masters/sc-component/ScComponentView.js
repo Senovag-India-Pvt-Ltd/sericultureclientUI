@@ -24,7 +24,7 @@ function ScComponentView() {
   const getIdList = () => {
     setLoading(true);
     api
-      .get(baseURL + `scComponent/get/${id}`)
+      .get(baseURL + `scComponent/get-join/${id}`)
       .then((response) => {
         setScComponent(response.data.content);
         setLoading(false);
@@ -93,6 +93,14 @@ function ScComponentView() {
                       <tr>
                         <td style={styles.ctstyle}> Component:</td>
                         <td>{scComponent.scComponentName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td>{scComponent.subSchemeName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{scComponent.dbtCode}</td>
                       </tr>
                     </tbody>
                   </table>

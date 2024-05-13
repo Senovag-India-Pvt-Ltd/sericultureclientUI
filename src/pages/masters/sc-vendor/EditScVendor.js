@@ -27,13 +27,7 @@ function ScVendorEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const datas = {
-      scVendorId: id,
-      name: data.name,
-      nameInKannada: data.nameInKannada,
-      type: data.type,
-
-    };
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -42,7 +36,7 @@ function ScVendorEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `scVendor/edit`, datas)
+        .post(baseURL + `scVendor/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -52,6 +46,11 @@ function ScVendorEdit() {
               name: "",
               nameInKannada: "",
               type:"",
+              agencyCode: "",
+              agencyBankAcNo: "",
+              agencyIfscCode: "",
+              agencyDistrictCode: "",
+              agencyTalukCode: "",
             });
             setValidated(false);
           }
@@ -70,6 +69,11 @@ function ScVendorEdit() {
       name: "",
       nameInKannada: "",
       type:"",
+      agencyCode: "",
+      agencyBankAcNo: "",
+      agencyIfscCode: "",
+      agencyDistrictCode: "",
+      agencyTalukCode: "",
     });
   };
 
@@ -226,12 +230,131 @@ function ScVendorEdit() {
                           name="type"
                           value={data.type}
                           onChange={handleInputs}
-                          type="text"
+                          type="number"
                           placeholder="Enter Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
                           Type is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Agency Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="agencyCode"
+                          name="agencyCode"
+                          value={data.agencyCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Agency Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Agency Code is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Agency Bank Acc No
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="agencyBankAcNo"
+                          name="agencyBankAcNo"
+                          value={data.agencyBankAcNo}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Agency Bank Acc No"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Agency Bank Acc No is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Agency IFSC Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="agencyIfscCode"
+                          name="agencyIfscCode"
+                          value={data.agencyIfscCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Agency IFSC Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Agency IFSC Code is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Agency District Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="agencyDistrictCode"
+                          name="agencyDistrictCode"
+                          value={data.agencyDistrictCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Agency District Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Agency District Codeis required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                 
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Agency Taluk Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="agencyTalukCode"
+                          name="agencyTalukCode"
+                          value={data.agencyTalukCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Agency Taluk Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Agency Taluk Code is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

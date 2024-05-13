@@ -239,6 +239,13 @@ function DistrictList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Lg District",
+      selector: (row) => row.lgDistrict,
+      cell: (row) => <span>{row.lgDistrict}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

@@ -109,10 +109,13 @@ function DistrictView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
                           District Name in Kannada:
                         </td>
                         <td>{District.districtNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Lg District:</td>
+                        <td>{District.lgDistrict}</td>
                       </tr>
                     </tbody>
                   </table>

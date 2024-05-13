@@ -102,7 +102,6 @@ function ScVendorView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
                            Vendor Name In Kannada:
                         </td>
                         <td>{scVendor.nameInKannada}</td>
@@ -110,6 +109,26 @@ function ScVendorView() {
                       <tr>
                         <td style={styles.ctstyle}>Type:</td>
                         <td>{scVendor.type}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Agency Code:</td>
+                        <td>{scVendor.agencyCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Agency Bank Acc No:</td>
+                        <td>{scVendor.agencyBankAcNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Agency IFSC Code:</td>
+                        <td>{scVendor.agencyIfscCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Agency District Code:</td>
+                        <td>{scVendor.agencyDistrictCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Agency Taluk Code:</td>
+                        <td>{scVendor.agencyTalukCode}</td>
                       </tr>
                     </tbody>
                   </table>

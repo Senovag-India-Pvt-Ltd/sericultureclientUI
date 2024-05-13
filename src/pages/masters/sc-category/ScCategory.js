@@ -18,7 +18,7 @@ function ScCategory() {
     categoryNameInKannada: "",
     codeNumber:"",
     description:"",
-
+    dbtCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -51,13 +51,21 @@ function ScCategory() {
               categoryNameInKannada: "",
               codeNumber:"",
               description:"",
+              dbtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -70,6 +78,7 @@ function ScCategory() {
       categoryNameInKannada: "",
       codeNumber:"",
       description:"",
+      dbtCode: "",
     });
   };
 
@@ -224,6 +233,29 @@ function ScCategory() {
                         />
                         <Form.Control.Feedback type="invalid">
                         Description is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

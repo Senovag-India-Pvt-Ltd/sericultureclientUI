@@ -602,7 +602,7 @@ function BudgetInstitutionExtensionEdit() {
                                       key={list.talukId}
                                       value={list.talukId}
                                     >
-                                      {list.categoryName}
+                                      {list.codeNumber}
                                     </option>
                                   ))}
                                 </Form.Select>

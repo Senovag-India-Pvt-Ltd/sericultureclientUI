@@ -144,19 +144,19 @@ function BudgetDistrictExtensionView() {
                       <tr>
                         <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetScheme}</span>
+                          <span>{budgetDistrictData.schemeName}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetSubScheme}</span>
+                          <span>{budgetDistrictData.subSchemeName}</span>
                         </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Category:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetCategory}</span>
+                          <span>{budgetDistrictData.codeNumber}</span>
                         </td>
                       </tr>
                       <tr>

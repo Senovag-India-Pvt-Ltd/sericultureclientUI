@@ -177,6 +177,7 @@ function ScVendorList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Sc Vendor",
@@ -192,6 +193,50 @@ function ScVendorList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      cell: (row) => <span>{row.type}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Agency Code",
+      selector: (row) => row.agencyCode,
+      cell: (row) => <span>{row.agencyCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Agency Bank Acc No",
+      selector: (row) => row.agencyBankAcNo,
+      cell: (row) => <span>{row.agencyBankAcNo}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Agency IFSC Code",
+      selector: (row) => row.agencyIfscCode,
+      cell: (row) => <span>{row.agencyIfscCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Agency District Code",
+      selector: (row) => row.agencyDistrictCode,
+      cell: (row) => <span>{row.agencyDistrictCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Agency Taluk Code",
+      selector: (row) => row.agencyTalukCode,
+      cell: (row) => <span>{row.agencyTalukCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
 
   ];
 

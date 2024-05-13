@@ -27,6 +27,7 @@ function User() {
     designationId: "",
     phoneNumber: "",
     workingInstitutionId: "",
+    ddoCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -76,6 +77,7 @@ function User() {
               designationId: "",
               phoneNumber: "",
               workingInstitutionId: "",
+              ddoCode: "",
             });
             setValidated(false);
           }
@@ -105,6 +107,7 @@ function User() {
       designationId: "",
       phoneNumber: "",
       workingInstitutionId: "",
+      ddoCode: "",
     });
   };
 
@@ -706,6 +709,27 @@ function User() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="password">
+                        DDO Code
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="ddoCode"
+                          name="ddoCode"
+                          value={data.ddoCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter DDO Code"
+                          // required
+                        />
+                       
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                 </Row>
               </Card.Body>
             </Card>

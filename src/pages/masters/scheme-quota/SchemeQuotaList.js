@@ -16,7 +16,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScHeadAccountList() {
+function SchemeQuotaList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -25,7 +25,7 @@ function ScHeadAccountList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
-    searchBy: "scHeadAccount",
+    searchBy: "scHeadAccountName",
     text: "",
   });
 
@@ -33,9 +33,9 @@ function ScHeadAccountList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scHeadAccount/list-with-join`, _params)
+      .get(baseURL + `schemeQuota/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.scHeadAccount);
+        setListData(response.data.content.schemeQuota);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -50,34 +50,34 @@ function ScHeadAccountList() {
   }, [page]);
 
   // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "scSchemeDetails") {
-      joinColumn = "scSchemeDetails.schemeName";
-    }
-    if (data.searchBy === "scHeadAccount") {
-      joinColumn = "scHeadAccount.scHeadAccountName";
-    }
-    console.log(joinColumn);
-    api
-      .post(baseURL + `scHeadAccount/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.scHeadAccount);
+//   const search = (e) => {
+//     let joinColumn;
+//     if (data.searchBy === "scHeadAccountName") {
+//       joinColumn = "scHeadAccount.scHeadAccountName";
+//     }
+//     if (data.searchBy === "categoryName") {
+//       joinColumn = "scCategory.categoryName";
+//     }
+//     console.log(joinColumn);
+//     api
+//       .post(baseURL + `scUnitCost/search`, {
+//         searchText: data.text,
+//         joinColumn: joinColumn,
+//       })
+//       .then((response) => {
+//         setListData(response.data.content.ScUnitCost);
 
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
-      })
-      .catch((err) => {
-        // saveError();
-      });
-  };
+//         // if (response.data.content.error) {
+//         //   // saveError();
+//         // } else {
+//         //   console.log(response);
+//         //   // saveSuccess();
+//         // }
+//       })
+//       .catch((err) => {
+//         // saveError();
+//       });
+//   };
 
   const handleInputs = (e) => {
     // debugger;
@@ -87,11 +87,11 @@ function ScHeadAccountList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/sc-head-account-view/${_id}`);
+    navigate(`/seriui/scheme-quota-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-head-account-edit/${_id}`);
+    navigate(`/seriui/scheme-quota-edit/${_id}`);
     // navigate("/seriui/district");
   };
 
@@ -113,7 +113,7 @@ function ScHeadAccountList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `scHeadAccount/delete/${_id}`)
+          .delete(baseURL + `schemeQuota/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -183,9 +183,9 @@ function ScHeadAccountList() {
     },
   };
 
-  const ScHeadAccountDataColumns = [
+  const ScUnitCostDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -193,7 +193,7 @@ function ScHeadAccountList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.scHeadAccountId)}
+            onClick={() => handleView(row.schemeQuotaId)}
           >
             View
           </Button>
@@ -201,14 +201,14 @@ function ScHeadAccountList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scHeadAccountId)}
+            onClick={() => handleEdit(row.schemeQuotaId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.scHeadAccountId)}
+            onClick={() => deleteConfirm(row.schemeQuotaId)}
             className="ms-2"
           >
             Delete
@@ -217,51 +217,66 @@ function ScHeadAccountList() {
       ),
       sortable: false,
       hide: "md",
-     
+      grow:2,
     },
     {
-      name: "Head Account Name",
-      selector: (row) => row.scHeadAccountName,
-      cell: (row) => <span>{row.scHeadAccountName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
+        name: "Scheme Details",
+        selector: (row) => row.schemeName,
+        cell: (row) => <span>{row.schemeName}</span>,
+        sortable: true,
+        hide: "md",
+      },
     {
-      name: "Head Account in Kannada",
-      selector: (row) => row.scHeadAccountNameInKannada,
-      cell: (row) => <span>{row.scHeadAccountNameInKannada}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Scheme Details",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      name: "Scheme Quota Name",
+      selector: (row) => row.schemeQuotaName,
+      cell: (row) => <span>{row.schemeQuotaName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Dbt Code",
+      name: "Scheme Quota Type",
+      selector: (row) => row.schemeQuotaType,
+      cell: (row) => <span>{row.schemeQuotaType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Quota Code",
+      selector: (row) => row.schemeQuotaCode,
+      cell: (row) => <span>{row.schemeQuotaCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Scheme Quota Payment Type",
+      selector: (row) => row.schemeQuotaPaymentType,
+      cell: (row) => <span>{row.schemeQuotaPaymentType}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DBT Code",
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
       hide: "md",
     },
+
   ];
 
   return (
-    <Layout title="Head Account List">
+    <Layout title="List Of Scheme Quota">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Head Account List</Block.Title>
+            <Block.Title tag="h2">List Of Scheme Quota</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sc-head-account"
+                  to="/seriui/scheme-quota"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -270,7 +285,7 @@ function ScHeadAccountList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sc-head-account"
+                  to="/seriui/scheme-quota"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -295,7 +310,7 @@ function ScHeadAccountList() {
 
       <Block className="mt-n4">
         <Card>
-          <Row className="m-2">
+          {/* <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -308,9 +323,8 @@ function ScHeadAccountList() {
                       value={data.searchBy}
                       onChange={handleInputs}
                     >
-                      {/* <option value="">Select</option> */}
-                      <option value="scHeadAccount">Head Account</option>
-                      <option value="scSchemeDetails">Scheme Name</option>
+                      <option value="scHeadAccountName">ScHeadAccount</option>
+                      <option value="categoryName">ScCategory</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -332,11 +346,11 @@ function ScHeadAccountList() {
                 </Col>
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
           <DataTable
             tableClassName="data-table-head-light table-responsive"
-            columns={ScHeadAccountDataColumns}
+            columns={ScUnitCostDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -357,4 +371,4 @@ function ScHeadAccountList() {
   );
 }
 
-export default ScHeadAccountList;
+export default SchemeQuotaList;

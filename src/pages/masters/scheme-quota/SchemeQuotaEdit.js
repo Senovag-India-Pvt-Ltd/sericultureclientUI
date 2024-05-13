@@ -4,14 +4,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
-//import axios from "axios";
 import { Icon } from "../../../components";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ScCategoryEdit() {
+function SchemeQuotaEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,6 @@ function ScCategoryEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -35,19 +34,22 @@ function ScCategoryEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      // event.stopPropagation();
       api
-        .post(baseURL + `scCategory/edit`, data)
+        .post(baseURL + `schemeQuota/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-              categoryName: "",
-              categoryNameInKannada: "",
-              codeNumber:"",
-              description:"",
-              dbtCode: "",
+                scSchemeDetailsId: "",
+                schemeQuotaName: "",
+                schemeQuotaType: "",
+                schemeQuotaCode:"",
+                schemeQuotaPaymentType:"",
+                dbtCode: "",
+
             });
             setValidated(false);
           }
@@ -70,19 +72,37 @@ function ScCategoryEdit() {
 
   const clear = () => {
     setData({
-      categoryName: "",
-      categoryNameInKannada: "",
-      codeNumber:"",
-      description:"",
-      dbtCode: "",
+        scSchemeDetailsId: "",
+        schemeQuotaName: "",
+        schemeQuotaType: "",
+        schemeQuotaCode:"",
+        schemeQuotaPaymentType:"",
+        dbtCode: "",
     });
   };
+// to get Scheme Details
+const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+
+const getList = () => {
+  const response = api
+    .get(baseURL + `scSchemeDetails/get-all`)
+    .then((response) => {
+      setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+    })
+    .catch((err) => {
+      setScSchemeDetailsListData([]);
+    });
+};
+
+useEffect(() => {
+  getList();
+}, []);
 
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scCategory/get/${id}`)
+      .get(baseURL + `schemeQuota/get/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -95,20 +115,23 @@ function ScCategoryEdit() {
       });
   };
 
-  // console.log(getIdList());
-
   useEffect(() => {
     getIdList();
   }, [id]);
 
+
+  
+
   const navigate = useNavigate();
+
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    });
+    }).then(() => navigate("#"));
   };
+
   const updateError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -129,138 +152,161 @@ function ScCategoryEdit() {
       text: "Something went wrong!",
     }).then(() => navigate("#"));
   };
-
   return (
-    <Layout title="Edit Program Category">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Edit Program Category</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/sc-category-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/sc-category-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+    <Layout title="Scheme Quota">
+    <Block.Head>
+      <Block.HeadBetween>
+        <Block.HeadContent>
+          <Block.Title tag="h2">Scheme Quota</Block.Title>
+        </Block.HeadContent>
+        <Block.HeadContent>
+          <ul className="d-flex">
+            <li>
+              <Link
+                to="/seriui/scheme-quota-list"
+                className="btn btn-primary btn-md d-md-none"
+              >
+                <Icon name="arrow-long-left" />
+                <span>Go to List</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/seriui/scheme-quota-list"
+                className="btn btn-primary d-none d-md-inline-flex"
+              >
+                <Icon name="arrow-long-left" />
+                <span>Go to List</span>
+              </Link>
+            </li>
+          </ul>
+        </Block.HeadContent>
+      </Block.HeadBetween>
+    </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
-            <Card>
-              <Card.Body>
-                {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
-                  </h1>
-                ) : (
-                  <Row className="g-gs">
-                    <Col lg="6">
-                    <Form.Group className="form-group">
+    <Block className="mt-n5">
+      <Form noValidate validated={validated} onSubmit={postData}>
+        {/* <Form Action="#"> */}
+        <Row className="g-3 ">
+          <Card>
+            <Card.Body>
+              {/* <h3>Farmers Details</h3> */}
+              <Row className="g-gs">
+              <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Scheme Details<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="scSchemeDetailsId"
+                          value={data.scSchemeDetailsId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.scSchemeDetailsId === undefined || data.scSchemeDetailsId === "0"
+                          }
+                        >
+                          <option value="">Select Scheme Details</option>
+                          {scSchemeDetailsListData.map((list) => (
+                            <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                              {list.schemeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Scheme name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+              <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                        Category Name
+                         Scheme Quota
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="categoryName"
-                          type="text"
-                          value={data.categoryName}
+                          id="schemeQuotaName"
+                          name="schemeQuotaName"
+                          value={data.schemeQuotaName}
                           onChange={handleInputs}
-                          placeholder="Enter  Category Name"
+                          type="text"
+                          placeholder="Enter Scheme Quota"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name is required
+                        Scheme Quota is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                       Category Name in Kannada
+                        Scheme Quota Type
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="categoryNameInKannada"
-                          value={data.categoryNameInKannada}
+                          id="schemeQuotaType"
+                          name="schemeQuotaType"
+                          value={data.schemeQuotaType}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          placeholder="Enter Scheme Quota Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name in Kannada is required.
+                        Scheme Quota Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Code  Number
+                      Scheme Quota Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="codeNumber"
-                          type="text"
-                          value={data.codeNumber}
+                          id="schemeQuotaCode"
+                          name="schemeQuotaCode"
+                          value={data.schemeQuotaCode}
                           onChange={handleInputs}
-                          placeholder="Enter Code Number"
+                          type="text"
+                          placeholder="Enter Scheme Quota Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Code Number is required
+                        Scheme Quota Code is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
-
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Description
+                         Scheme Quota Payment Type
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="description"
-                          type="text"
-                          value={data.description}
+                          id="schemeQuotaPaymentType"
+                          name="schemeQuotaPaymentType"
+                          value={data.schemeQuotaPaymentType}
                           onChange={handleInputs}
-                          placeholder="Enter Description"
+                          type="text"
+                          placeholder="Enter Scheme Quota Payment Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Description is required
+                        Scheme Quota Payment Type is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -288,31 +334,33 @@ function ScCategoryEdit() {
                       </div>
                     </Form.Group>
                   </Col>
-                  </Row>
-                )}
-              </Card.Body>
-            </Card>
+              </Row>
+            </Card.Body>
+          </Card>
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    Update
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Row>
-        </Form>
-      </Block>
-    </Layout>
-  );
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="submit" variant="primary">
+                  Save
+                </Button>
+              </li>
+              <li>
+                {/* <Link to="/seriui/district-list" className="btn btn-secondary border-0">
+                  Cancel
+                </Link> */}
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </div>
+        </Row>
+      </Form>
+    </Block>
+  </Layout>
+);
 }
 
-export default ScCategoryEdit;
+export default SchemeQuotaEdit;

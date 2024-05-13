@@ -44,14 +44,6 @@ function BudgetEdit() {
 
   const isData = !!data.date;
 
-  // Function to handle checkbox change
-  const handleCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      isDefault: e.target.checked,
-    }));
-  };
-
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -77,8 +69,6 @@ function BudgetEdit() {
     },
   };
 
-  // HTTP header configuration
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   // Function to submit form data
   const postData = (event) => {

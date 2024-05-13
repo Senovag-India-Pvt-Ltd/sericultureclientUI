@@ -138,7 +138,7 @@ function BudgetInstitutionExtensionList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -661,7 +661,7 @@ function BudgetInstitutionExtensionList() {
                             <option value="">Select Category</option>
                             {districtListData.map((list) => (
                               <option key={list.talukId} value={list.talukId}>
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

@@ -113,6 +113,10 @@ function VillageView() {
                       <td style={styles.ctstyle}> Village Name in Kannada:</td>
                       <td>{Village.villageNameInKannada}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Lg Village:</td>
+                      <td>{Village.lgVillage}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>

@@ -24,7 +24,7 @@ function ScComponentList() {
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURL + `scComponent/list`, _params)
+      .get(baseURL + `scComponent/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.scComponent);
         setTotalRows(response.data.content.totalItems);
@@ -140,7 +140,7 @@ function ScComponentList() {
 
   const ScComponentDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -177,6 +177,20 @@ function ScComponentList() {
       name: "Component",
       selector: (row) => row.scComponentName,
       cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Dbt Code",
+      selector: (row) => row.dbtCode,
+      cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
       hide: "md",
     },

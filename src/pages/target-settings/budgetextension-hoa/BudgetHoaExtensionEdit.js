@@ -693,7 +693,7 @@ useEffect(() => {
                             <option value="">Select Category</option>
                             {categoryListData && categoryListData.map((list) => (
                               <option key={list.scCategoryId} value={list.scCategoryId}>
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

@@ -25,11 +25,21 @@ function PhysicaltargetSettingsDistrictView() {
   const [AcivityData, setAcivityData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getDate().toString().padStart(2, "0") +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getFullYear()
+      );
+    } else {
+      return "";
+    }
+  };
+
 
   const getIdList = () => {
     setLoading(true);
@@ -125,7 +135,7 @@ function PhysicaltargetSettingsDistrictView() {
                       <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
-                          <span>{AcivityData.date}</span>
+                          <span>{dateFormatter(AcivityData.date)}</span>
                         </td>
                       </tr>
                       <tr>

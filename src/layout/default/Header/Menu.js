@@ -339,6 +339,8 @@ function Menu() {
     Admin_Master_Service_Scheme_Details: false,
     Admin_Master_Service_Sub_Scheme_Details: false,
     Admin_Master_Service_Component: false,
+    Admin_Master_Service_Scheme_Quota: false,
+    Admin_Master_Service_Map_Component_And_Head_Of_Account: false,
     Admin_Master_Service_Head_of_Account: false,
     Admin_Master_Service_Head_of_Account_Category: false,
     Admin_Master_Service_Unit_Cost: false,
@@ -2153,6 +2155,22 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Scheme_Quota ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Quota"
+                              to="/seriui/scheme-quota"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Map Component And Head Of Account"
+                              to="/seriui/map-component"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Head_of_Account ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2607,6 +2625,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        
                         {showMenu.Admin_Master_General_Config_Role ? (
                           <MenuItem>
                             <MenuItemLink

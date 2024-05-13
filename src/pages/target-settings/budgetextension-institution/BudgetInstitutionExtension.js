@@ -532,7 +532,7 @@ function BudgetInstitutionExtension() {
                                 key={list.categoryId}
                                 value={list.categoryId}
                               >
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

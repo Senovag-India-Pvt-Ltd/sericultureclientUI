@@ -6,9 +6,9 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 
-const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function FinancialTargetSettingsInstitutionView() {
+function SchemeQuotaView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -18,59 +18,48 @@ function FinancialTargetSettingsInstitutionView() {
   };
 
   const { id } = useParams();
-  // const [data] = useState(CasteDatas);
-  const [budgetDistrictData, setBudgetDistrictData] = useState({});
+  // const [data] = useState(EducationDatas);
+  const [ScUnitCost, setScUnitCost] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // // grabs the id form the url and loads the corresponding data
+  // useEffect(() => {
+  //   let findUser = data.find((item) => item.id === id);
+  //   setDistrict(findUser);
+  // }, [id, data]);
 
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `tsBudgetTaluk/get/${id}`)
+      .get(baseURL + `schemeQuota/get-join/${id}`)
       .then((response) => {
-        setBudgetDistrictData(response.data.content);
+        setScUnitCost(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setBudgetDistrictData({});
+        setScUnitCost({});
         setLoading(false);
       });
   };
 
-  // Date Formate
-  const dateFormatter = (date) => {
-    if (date) {
-      return (
-        new Date(date).getDate().toString().padStart(2, "0") +
-        "-" +
-        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
-        "-" +
-        new Date(date).getFullYear()
-      );
-    } else {
-      return "";
-    }
-  };
-
-  //console.log(Caste);
+  // console.log(getIdList());
 
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="Institutuion Financial Target Settings View">
+    <Layout title=" View Scheme Quota">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Institutuion Financial Target Settings View
-            </Block.Title>
+            <Block.Title tag="h2">View Scheme Quota</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsinstitution-list"
+                  to="/seriui/scheme-quota-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -79,7 +68,7 @@ function FinancialTargetSettingsInstitutionView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsinstitution-list"
+                  to="/seriui/scheme-quota-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -93,7 +82,7 @@ function FinancialTargetSettingsInstitutionView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Financial Target Settings View Details</Card.Header>
+          <Card.Header>Scheme Quota Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -105,32 +94,35 @@ function FinancialTargetSettingsInstitutionView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>Financial Year:</td>
-                        <td>
-                          <span>{budgetDistrictData.financialYear}</span>
-                        </td>
+                        <td style={styles.ctstyle}>ID:</td>
+                        <td>{ScUnitCost.schemeQuotaId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> District Name:</td>
-                        <td>{budgetDistrictData.districtName}</td>
+                        <td style={styles.ctstyle}>Scheme Details:</td>
+                        <td>{ScUnitCost.schemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Taluk Name:</td>
-                        <td>{budgetDistrictData.talukName}</td>
-                      </tr>
-                      
-                      <tr>
-                        <td style={styles.ctstyle}>Budget Amount:</td>
-                        <td>
-                          <span>{budgetDistrictData.amount}</span>
-                        </td>
+                        <td style={styles.ctstyle}>Scheme Quota Name:</td>
+                        <td>{ScUnitCost.schemeQuotaName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Date:</td>
-                        <td>
-                          <span>{dateFormatter(budgetDistrictData.date)}</span>
-                        </td>
+                        <td style={styles.ctstyle}>Scheme Quota Type:</td>
+                        <td>{ScUnitCost.schemeQuotaType}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}> Scheme Quota Code:</td>
+                        <td>{ScUnitCost.schemeQuotaCode}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Scheme Quota Payment Type:</td>
+                        <td>{ScUnitCost.schemeQuotaPaymentType}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td>{ScUnitCost.dbtCode}</td>
+                      </tr>
+                    
                     </tbody>
                   </table>
                 </Col>
@@ -143,4 +135,4 @@ function FinancialTargetSettingsInstitutionView() {
   );
 }
 
-export default FinancialTargetSettingsInstitutionView;
+export default SchemeQuotaView;
