@@ -794,6 +794,10 @@ import SchemeQuota from "../pages/masters/scheme-quota/SchemeQuota";
 import SchemeQuotaView from "../pages/masters/scheme-quota/SchemeQuotaView";
 import SchemeQuotaEdit from "../pages/masters/scheme-quota/SchemeQuotaEdit";
 import MapComponent from "../pages/masters/map-component-hoa/MapComponentAndHoa";
+import Department from "../pages/masters/department/Department";
+import DepartmentList from "../pages/masters/department/DepartmentList";
+import DepartmentEdit from "../pages/masters/department/EditDepartment";
+import DepartmentView from "../pages/masters/department/DepartmentView";
 // Admin and Reports
 
 function Router() {
@@ -1730,7 +1734,10 @@ function Router() {
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
-
+            <Route path="department" element={<Department />} />
+            <Route path="department-list" element={<DepartmentList />} />
+            <Route path="department-view/:id" element={<DepartmentView />} />
+            <Route path="department-edit/:id" element={<DepartmentEdit />} />
             <Route path="activity" element={<Activity />} />
             <Route path="Activity-list" element={<ActivityList />} />
             <Route path="activity-view/:id" element={<ActivityView />} />

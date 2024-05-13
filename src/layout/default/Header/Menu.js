@@ -335,6 +335,7 @@ function Menu() {
     Admin_Master_Land_Machine_Type: false,
 
     Admin_Master_Service: false,
+    Admin_Master_Service_Department: false,
     Admin_Master_Service_Program: false,
     Admin_Master_Service_Scheme_Details: false,
     Admin_Master_Service_Sub_Scheme_Details: false,
@@ -2115,6 +2116,14 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
+                      {showMenu.Admin_Master_Service_Department ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Department"
+                              to="/seriui/department"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Program ? (
                           <MenuItem>
                             <MenuItemLink
