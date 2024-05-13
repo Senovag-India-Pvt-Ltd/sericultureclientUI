@@ -236,7 +236,7 @@ function SchemeQuotaList() {
     {
       name: "Scheme Quota Type",
       selector: (row) => row.schemeQuotaType,
-      cell: (row) => <span>{row.schemeQuotaType}</span>,
+      cell: (row) =><span>{row.schemeQuotaType}</span>,
       sortable: true,
       hide: "md",
     },

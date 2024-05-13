@@ -109,7 +109,6 @@ function SchemeQuotaView() {
                         <td style={styles.ctstyle}>Scheme Quota Type:</td>
                         <td>{ScUnitCost.schemeQuotaType}</td>
                       </tr>
-
                       <tr>
                         <td style={styles.ctstyle}> Scheme Quota Code:</td>
                         <td>{ScUnitCost.schemeQuotaCode}</td>

@@ -225,22 +225,27 @@ function SchemeQuota() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="title">
-                        Scheme Quota Type
-                        <span className="text-danger">*</span>
+                      <Form.Label>
+                        Scheme Quota Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="schemeQuotaType"
+                        <Form.Select
                           name="schemeQuotaType"
                           value={data.schemeQuotaType}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Scheme Quota Type"
+                          onBlur={() => handleInputs}
                           required
-                        />
+                          isInvalid={
+                            data.schemeQuotaType === undefined || data.schemeQuotaType === "0"
+                          }
+                        >
+                          <option value="0">Select Scheme Quota Type</option>
+                          <option value="State">State</option>
+                          <option value="Central">Central</option>
+                          
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota Type is required.
+                        Scheme Quota Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -292,9 +297,9 @@ function SchemeQuota() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -304,11 +309,11 @@ function SchemeQuota() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder="Enter DBT Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
