@@ -6,35 +6,29 @@ import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../../../components";
 import { useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
-// import TimePicker from 'react-time-picker';
 import api from "../../../../src/services/auth/api";
-import TimePicker from "../../../components/Form/TimePicker";
 
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MapComponent() {
   const [data, setData] = useState({
-    scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    componentType: "",
-    scComponentId: "",
-    schemeQuotaId:"",
-    scCategoryId: "",
-    scHeadAccountId: "",
-    shareInPer: "",
-    unitCost: "",
-    fullPrice: "",
-    minStyle: "",
-    maxStyle: "",
-    measurementType: "",
+    headOfAccountId: "",
+    schemeId: "",
+    subSchemeId: "",
+    categoryId: "",
+    unitType:"",
+    measurementUnit: "",
+    isFullPrice: "",
+    minQty: "",
+    maxQty: "",
+    unitCostInRupees: "",
+    schemeQuotaId: "",
+    shareInPercentage: "",
     
   });
 
-  
-
-  
 
   const [validated, setValidated] = useState(false);
 
@@ -56,33 +50,39 @@ function MapComponent() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURLMasterData + `marketMaster/add`, data)
+        .post(baseURLDBT + `master/cost/saveUnitCost`, data)
         .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
+          // if (response.data.content.error) {
+          //   saveError(response.data.content.error_description);
+          // } else {
             saveSuccess();
             setData({
-                scSchemeDetailsId: "",
-                scSubSchemeDetailsId: "",
-                componentType: "",
-                scComponentId: "",
-                schemeQuotaId:"",
-                scCategoryId: "",
-                scHeadAccountId: "",
-                shareInPer: "",
-                unitCost: "",
-                fullPrice: "",
-                minStyle: "",
-                maxStyle: "",
-                measurementType: "",
+              headOfAccountId: "",
+              schemeId: "",
+              subSchemeId: "",
+              categoryId: "",
+              unitType:"",
+              measurementUnit: "",
+              isFullPrice: "",
+              minQty: "",
+              maxQty: "",
+              unitCostInRupees: "",
+              schemeQuotaId: "",
+              shareInPercentage: "",
             });
             setValidated(false);
-          }
+          // }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -91,22 +91,30 @@ function MapComponent() {
 
   const clear = () => {
     setData({
-        scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    componentType: "",
-    scComponentId: "",
-    schemeQuotaId:"",
-    scCategoryId: "",
-    scHeadAccountId: "",
-    shareInPer: "",
-    unitCost: "",
-    fullPrice: "",
-    minStyle: "",
-    maxStyle: "",
-    measurementType: "",
+      headOfAccountId: "",
+      schemeId: "",
+      subSchemeId: "",
+      categoryId: "",
+      unitType:"",
+      measurementUnit: "",
+      isFullPrice: "",
+      minQty: "",
+      maxQty: "",
+      unitCostInRupees: "",
+      schemeQuotaId: "",
+      shareInPercentage: "",
 
     });
   };
+
+  const handleCheckBox = (e) => {
+    // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
+    setData((prev) => ({
+      ...prev,
+      isFullPrice: e.target.checked,
+    }));
+  };
+
 
   // to get get Scheme
   const [schemeListData, setSchemeListData] = useState([]);
@@ -264,10 +272,10 @@ function MapComponent() {
             </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/map-component-list"
+                  to="#"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -276,14 +284,14 @@ function MapComponent() {
               </li>
               <li>
                 <Link
-                  to="/seriui/map-component-list"
+                  to="#"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -298,20 +306,55 @@ function MapComponent() {
                 <Row className="g-gs">
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Head Of Account
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="headOfAccountId"
+                        value={data.headOfAccountId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        // required
+                        isInvalid={
+                          data.headOfAccountId === undefined ||
+                          data.headOfAccountId === "0"
+                        }
+                      >
+                        <option value="">Select Head Of Account</option>
+                        {scHeadAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={list.scHeadAccountId}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Head Of Account is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Select Scheme
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="scSchemeDetailsId"
-                        value={data.scSchemeDetailsId}
+                        name="schemeId"
+                        value={data.schemeId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.scSchemeDetailsId === undefined ||
-                          data.scSchemeDetailsId === "0"
+                          data.schemeId === undefined ||
+                          data.schemeId === "0"
                         }
                       >
                         <option value="">Select Scheme</option>
@@ -340,14 +383,14 @@ function MapComponent() {
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="scSubSchemeDetailsId"
-                        value={data.scSubSchemeDetailsId}
+                        name="subSchemeId"
+                        value={data.subSchemeId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.scSubSchemeDetailsId === undefined ||
-                          data.scSubSchemeDetailsId === "0"
+                          data.subSchemeId === undefined ||
+                          data.subSchemeId === "0"
                         }
                       >
                         <option value="">Select Sub Scheme</option>
@@ -367,6 +410,168 @@ function MapComponent() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Category
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="categoryId"
+                        value={data.categoryId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        // required
+                        isInvalid={
+                          data.categoryId === undefined ||
+                          data.categoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {scCategoryListData.map((list) => (
+                          <option
+                            key={list.scCategoryId}
+                            value={list.scCategoryId}
+                          >
+                            {list.codeNumber}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidend">
+                            Unit Cost
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="unitType"
+                              name="unitType"
+                              value={data.unitType}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder="Enter  Unit Cost"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Unit Cost is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="6">
+
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Measurement Unit
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="measurementUnit"
+                        value={data.measurementUnit}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.measurementUnit === undefined ||
+                          data.measurementUnit === "0"
+                        }
+                      >
+                        <option value="">Select Measurement Unit</option>
+                        <option value="1">SQFT</option>
+                        <option value="2">QTY</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Measurement Unit is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+               
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidend">
+                            Min QTY
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="minQty"
+                              name="minQty"
+                              value={data.minQty}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Min QTY"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Min QTY is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="secbidstart">
+                           Max QTY
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="maxQty"
+                              name="maxQty"
+                              value={data.maxQty}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Max QTY"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Max QTY is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="secbidstart">
+                           Unit Cost In Rupees
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="unitCostInRupees"
+                              name="unitCostInRupees"
+                              value={data.unitCostInRupees}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Unit Cost In Rupees"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Unit Cost In Rupees is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
@@ -404,7 +609,7 @@ function MapComponent() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Component
@@ -438,79 +643,8 @@ function MapComponent() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Category
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="scCategoryId"
-                        value={data.scCategoryId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        // multiple
-                        // required
-                        isInvalid={
-                          data.scCategoryId === undefined ||
-                          data.scCategoryId === "0"
-                        }
-                      >
-                        <option value="">Select Category</option>
-                        {scCategoryListData.map((list) => (
-                          <option
-                            key={list.scCategoryId}
-                            value={list.scCategoryId}
-                          >
-                            {list.codeNumber}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Category is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Head Of Account
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="scHeadAccountId"
-                        value={data.scHeadAccountId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        // multiple
-                        // required
-                        isInvalid={
-                          data.scHeadAccountId === undefined ||
-                          data.scHeadAccountId === "0"
-                        }
-                      >
-                        <option value="">Select Head Of Account</option>
-                        {scHeadAccountListData.map((list) => (
-                          <option
-                            key={list.scHeadAccountId}
-                            value={list.scHeadAccountId}
-                          >
-                            {list.scHeadAccountName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                      Head Of Account is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
 
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
@@ -520,11 +654,11 @@ function MapComponent() {
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
-                              id="shareInPer"
-                              name="shareInPer"
-                              value={data.shareInPer}
+                              id="shareInPercentage"
+                              name="shareInPercentage"
+                              value={data.shareInPercentage}
                               onChange={handleInputs}
-                              type="text"
+                              type="number"
                               placeholder="Enter Share in %"
                               required
                             />
@@ -536,40 +670,16 @@ function MapComponent() {
                         </Form.Group>
                       </Col>
                       <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="bidend">
-                            Unit Cost
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="unitCost"
-                              name="unitCost"
-                              value={data.unitCost}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter  Unit Cost"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Unit Cost is required
-                            </Form.Control.Feedback>
-                            
-                          </div>
-                        </Form.Group>
-                      </Col>
-
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
+                        {/* <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
                             Full Price
                             <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
-                              id="fullPrice"
-                              name="fullPrice"
-                              value={data.fullPrice}
+                              id="ifFullPrice"
+                              name="ifFullPrice"
+                              value={data.ifFullPrice}
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter Full Price"
@@ -580,82 +690,24 @@ function MapComponent() {
                             </Form.Control.Feedback>
                             
                           </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="bidend">
-                            Min Style
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="minSty"
-                              name="minSty"
-                              value={data.minSty}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Min Style"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Min Style is required
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
+                        </Form.Group> */}
 
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="secbidstart">
-                           Max Style
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="maxSty"
-                              name="maxSty"
-                              value={data.maxSty}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Max Style"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Max Style is required
-                            </Form.Control.Feedback>
-                            
-                          </div>
-                        </Form.Group>
+                        <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="isFullPrice"
+                          checked={data.isFullPrice}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
                       </Col>
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Measurement Type
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="measurementType"
-                        value={data.measurementType}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        required
-                        isInvalid={
-                          data.measurementType === undefined ||
-                          data.measurementType === "0"
-                        }
-                      >
-                        <option value="">Select Measurement Type</option>
-                        <option value="1">SQFT</option>
-                        <option value="2">QTY</option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Financial Year is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Full Price 
+                      </Form.Label>
+                    </Form.Group>
+                      </Col>
                   </Row>    
               </Card.Body>
             </Card>
