@@ -19,7 +19,7 @@ const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-function ServiceApplication() {
+function DbtApplication() {
   // Translation
   const { t } = useTranslation();
   const [data, setData] = useState({
@@ -31,38 +31,20 @@ function ServiceApplication() {
     scHeadAccountId: "",
     scCategoryId: "",
     scSubSchemeType: "",
-    scVendorId: "",
-    farmerId: "",
-    expectedAmount: "",
-    financialYearMasterId: "",
     scComponentId: "",
+    sanctionAmount: "",
     schemeAmount: "",
     sanctionNumber: "",
+    farmerId: "",
+    financialYearMasterId: "",
   });
 
-  // to get scheme-Quota-details
-  const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
-    []
-  );
-
-  const getSchemeQuotaList = () => {
-    api
-      .get(baseURLMasterData + `schemeQuota/get-all`)
-      .then((response) => {
-        setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
-      })
-      .catch((err) => {
-        setSchemeQuotaDetailsListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getSchemeQuotaList();
-  }, []);
-
   const [developedLand, setDevelopedLand] = useState({
-    landDeveloped: "",
+    landDeveloped: 0,
     unitType: "",
+    gunta: "",
+    fgunta: "",
+    acre: "",
   });
 
   const [equipment, setEquipment] = useState({
@@ -164,6 +146,24 @@ function ServiceApplication() {
     getList();
   }, []);
 
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialList = () => {
+    const response = api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialList();
+  }, []);
+
   // to get sc-sub-scheme-details by sc-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
@@ -234,24 +234,6 @@ function ServiceApplication() {
 
   useEffect(() => {
     getFinancialDefaultDetails();
-  }, []);
-
-  // to get component
-  const [scComponentListData, setScComponentListData] = useState([]);
-
-  const getComponentList = () => {
-    api
-      .get(baseURLMasterData + `scComponent/get-all`)
-      .then((response) => {
-        setScComponentListData(response.data.content.scComponent);
-      })
-      .catch((err) => {
-        setScComponentListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getComponentList();
   }, []);
 
   console.log(data);
@@ -376,6 +358,44 @@ function ServiceApplication() {
     getDocList();
   }, []);
 
+  // to get scheme-Quota-details
+  const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
+    []
+  );
+
+  const getSchemeQuotaList = () => {
+    api
+      .get(baseURLMasterData + `schemeQuota/get-all`)
+      .then((response) => {
+        setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
+      })
+      .catch((err) => {
+        setSchemeQuotaDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeQuotaList();
+  }, []);
+
+  // to get component
+  const [scComponentListData, setScComponentListData] = useState([]);
+
+  const getComponentList = () => {
+    api
+      .get(baseURLMasterData + `scComponent/get-all`)
+      .then((response) => {
+        setScComponentListData(response.data.content.scComponent);
+      })
+      .catch((err) => {
+        setScComponentListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getComponentList();
+  }, []);
+
   const [unitTypeList, setUnitTypeList] = useState([]);
   useEffect(() => {
     if (
@@ -438,21 +458,23 @@ function ServiceApplication() {
       event.preventDefault();
       const sendPost = {
         farmerId: data.farmerId,
-        payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeDetailsId,
+        componentTypeName: "",
+        sanctionAmount: data.sanctionAmount,
+        schemeAmount: data.schemeAmount,
+        sanctionNo: data.sanctionNo,
+        devAcre: developedLand.acre,
+        devGunta:developedLand.gunta,
+        devFgunta:developedLand.fgunta,
         categoryId: data.scCategoryId,
         landDetailId: landData.landId,
         talukId: landData.talukId,
         newFarmer: true,
-        // expectedAmount: data.expectedAmount,
+        expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
-        devAcre: 0,
-        devGunta: 0,
-        devFGunta: 0,
-        schemeAmount: data.schemeAmount,
-        sanctionNumber: data.sanctionNumber,
       };
 
       if (data.equordev === "land") {
@@ -507,17 +529,20 @@ function ServiceApplication() {
 
   const clear = () => {
     setData({
-      with: "withLand",
-      subinc: "subsidy",
-      equordev: "land",
-      scSchemeDetailsId: "",
-      scSubSchemeDetailsId: "",
-      scHeadAccountId: "",
-      scCategoryId: "",
-      scVendorId: "",
-      farmerId: "",
-      expectedAmount: "",
-      financialYearMasterId: "",
+        with: "withLand",
+        subinc: "subsidy",
+        equordev: "land",
+        scSchemeDetailsId: "",
+        scSubSchemeDetailsId: "",
+        scSubSchemeType: "",
+        scHeadAccountId: "",
+        scCategoryId: "",
+        scComponentId: "",
+        sanctionAmount: "",
+        schemeAmount: "",
+        sanctionNumber: "",
+        farmerId: "",
+        financialYearMasterId: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -537,7 +562,7 @@ function ServiceApplication() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: `Receipt Number ${message}`,
+    //   text: `Receipt Number ${message}`,
     });
   };
 
@@ -554,12 +579,12 @@ function ServiceApplication() {
     }).then((result) => {
       if (result.value) {
         api
-          .post(baseURLDBT + `service/saveApplicationForm`, post)
+          .post(baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`, post)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
-              // saveSuccess(response.data.receiptNo);
+            //   saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
               handleShowModal();
 
@@ -597,15 +622,16 @@ function ServiceApplication() {
       } else {
         console.log(result.value);
         api
-          .post(baseURLDBT + `service/saveApplicationForm`, post)
+          .post(baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`, post)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
+              // saveSuccess(response.data.receiptNo);
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
+              clear();
               // handleShowModal();
-
               // setData({
               //   fruitsId: "",
               //   farmerName: "",
@@ -913,11 +939,11 @@ function ServiceApplication() {
   };
 
   return (
-    <Layout title="Application Form">
+    <Layout title="DBT Application">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Application Form</Block.Title>
+            <Block.Title tag="h2">DBT Application</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -1088,6 +1114,40 @@ function ServiceApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
+                              Financial Year
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="financialYearMasterId"
+                                value={data.financialYearMasterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.financialYearMasterId === undefined ||
+                                  data.financialYearMasterId === "0"
+                                }
+                              >
+                                <option value="">Select Year</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.financialYearMasterId}
+                                    value={list.financialYearMasterId}
+                                  >
+                                    {list.financialYear}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Financial Year is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
                               Component Type
                               <span className="text-danger">*</span>
                             </Form.Label>
@@ -1115,12 +1175,11 @@ function ServiceApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Component Type is required
+                              Component Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
-
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
@@ -1301,6 +1360,29 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
+                        {/* <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sanctionAmount">
+                              Sanction Amount
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="sanctionAmount"
+                                type="text"
+                                name="sanctionAmount"
+                                value={data.sanctionAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Sanction Amount"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Sanction Amount is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col> */}
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
@@ -1346,29 +1428,6 @@ function ServiceApplication() {
                             </div>
                           </Form.Group>
                         </Col>
-
-                        {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="expectedAmount">
-                              Expected Amount
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="expectedAmount"
-                                type="text"
-                                name="expectedAmount"
-                                value={data.expectedAmount}
-                                onChange={handleInputs}
-                                placeholder="Enter Expected Amount"
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Expected Amount is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col> */}
                       </Row>
                     </Card.Body>
                   </Card>
@@ -1543,7 +1602,7 @@ function ServiceApplication() {
                                 </div>
                               </Form.Group>
                             </Col> */}
-                            <Col lg="4">
+                            {/* <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="landDeveloped">
                                   Land Developed
@@ -1564,8 +1623,8 @@ function ServiceApplication() {
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
-                            </Col>
-                            {/* <Col lg="4">
+                            </Col> */}
+                            <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="gunta">
                                   Gunta<span className="text-danger">*</span>
@@ -1606,7 +1665,28 @@ function ServiceApplication() {
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
-                            </Col> */}
+                            </Col>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="acre">
+                                  Acre<span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="acre"
+                                    type="text"
+                                    name="acre"
+                                    value={developedLand.acre}
+                                    onChange={handleDevelopedLandInputs}
+                                    placeholder="Enter Acre"
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    Acre is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
                           </Row>
                         </Card.Body>
                       </Card>
@@ -1853,4 +1933,4 @@ function ServiceApplication() {
   );
 }
 
-export default ServiceApplication;
+export default DbtApplication;
