@@ -794,17 +794,14 @@ import SchemeQuota from "../pages/masters/scheme-quota/SchemeQuota";
 import SchemeQuotaView from "../pages/masters/scheme-quota/SchemeQuotaView";
 import SchemeQuotaEdit from "../pages/masters/scheme-quota/SchemeQuotaEdit";
 import MapComponent from "../pages/masters/map-component-hoa/MapComponentAndHoa";
-<<<<<<< HEAD
 import Department from "../pages/masters/department/Department";
 import DepartmentList from "../pages/masters/department/DepartmentList";
 import DepartmentEdit from "../pages/masters/department/EditDepartment";
 import DepartmentView from "../pages/masters/department/DepartmentView";
-=======
 import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
 import DashboardList from "../pages/services-module/application/DashboardList";
 import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
 import DbtApplication from "../pages/services-module/application/DbtApplication";
->>>>>>> origin/target_setting2
 // Admin and Reports
 
 function Router() {
