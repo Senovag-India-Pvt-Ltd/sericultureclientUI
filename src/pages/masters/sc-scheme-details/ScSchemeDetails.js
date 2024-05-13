@@ -200,7 +200,7 @@ function ScSchemeDetails() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
                       Dbt Code
                         <span className="text-danger">*</span>
