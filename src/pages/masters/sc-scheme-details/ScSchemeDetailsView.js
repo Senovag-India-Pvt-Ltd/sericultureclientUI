@@ -116,6 +116,10 @@ function ScSchemeDetailsView() {
                         <td style={styles.ctstyle}>Scheme End Date:</td>
                         <td>{ScSchemeDetails.schemeEndDate}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td>{ScSchemeDetails.dbtCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

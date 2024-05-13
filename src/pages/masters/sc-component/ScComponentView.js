@@ -98,6 +98,10 @@ function ScComponentView() {
                         <td style={styles.ctstyle}>Sub Scheme:</td>
                         <td>{scComponent.subSchemeName}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{scComponent.dbtCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

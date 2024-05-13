@@ -206,6 +206,13 @@ function ScCategoryList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Dbt Code",
+      selector: (row) => row.dbtCode,
+      cell: (row) => <span>{row.dbtCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

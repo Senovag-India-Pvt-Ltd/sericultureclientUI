@@ -35,14 +35,7 @@ function ScSchemeDetailsEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const datas = {
-      scSchemeDetailsId: id,
-      schemeName: data.schemeName,
-      schemeNameInKannada: data.schemeNameInKannada,
-      schemeStartDate: data.schemeStartDate,
-      schemeEndDate: data.schemeEndDate,
-
-    };
+   
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -51,7 +44,7 @@ function ScSchemeDetailsEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `scSchemeDetails/edit`, datas)
+        .post(baseURL + `scSchemeDetails/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -62,13 +55,21 @@ function ScSchemeDetailsEdit() {
                 schemeNameInKannada: "",
                 schemeStartDate:null,
                 schemeEndDate:null,
+                dbtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -81,6 +82,7 @@ function ScSchemeDetailsEdit() {
         schemeNameInKannada: "",
         schemeStartDate:null,
         schemeEndDate:null,
+        dbtCode: "",
     });
   };
 
@@ -221,6 +223,29 @@ function ScSchemeDetailsEdit() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Scheme Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

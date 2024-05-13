@@ -112,6 +112,10 @@ function ScCategoryView() {
                         <td style={styles.ctstyle}>Description:</td>
                         <td>{ScCategory.description}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{ScCategory.dbtCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

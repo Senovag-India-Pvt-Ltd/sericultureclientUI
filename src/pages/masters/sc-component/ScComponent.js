@@ -15,6 +15,7 @@ function ScComponent() {
   const [data, setData] = useState({
     scComponentName: "",
     scSubSchemeDetailsId: "",
+    dbtCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -47,6 +48,7 @@ function ScComponent() {
         setData({
           scComponentName: "",
           scSubSchemeDetailsId: "",
+          dbtCode: "",
         });
         setValidated(false);
         }
@@ -64,6 +66,7 @@ function ScComponent() {
     setData({
       scComponentName: "",
       scSubSchemeDetailsId: "",
+      dbtCode: "",
     });
   };
 
@@ -190,6 +193,29 @@ function ScComponent() {
                           onChange={handleInputs}
                           placeholder="Enter Component"
                         />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>

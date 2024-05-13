@@ -16,6 +16,7 @@ function ScHeadAccount() {
     scHeadAccountName: "",
     scHeadAccountNameInKannada: "",
     scSchemeDetailsId:"",
+    dbtCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -49,13 +50,21 @@ function ScHeadAccount() {
               scHeadAccountName: "",
               scHeadAccountNameInKannada: "",
               scSchemeDetailsId:"",
+              dbtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -67,6 +76,7 @@ function ScHeadAccount() {
       scHeadAccountName: "",
       scHeadAccountNameInKannada: "",
       scSchemeDetailsId:"",
+      dbtCode: "",
     });
   };
 
@@ -222,6 +232,29 @@ function ScHeadAccount() {
                         />
                         <Form.Control.Feedback type="invalid">
                          Head Of Account Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

@@ -114,6 +114,10 @@ function ScHeadAccountView() {
                         <td style={styles.ctstyle}> Scheme Name:</td>
                         <td>{ScHeadAccount.schemeName}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{ScHeadAccount.dbtCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>
