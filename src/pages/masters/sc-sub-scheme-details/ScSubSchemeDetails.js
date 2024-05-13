@@ -23,7 +23,7 @@ function ScSubSchemeDetails() {
     subSchemeType:"",
     subSchemeStartDate:"",
     subSchemeEndDate:"",
-
+    dbtCode: ""
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -67,13 +67,21 @@ function ScSubSchemeDetails() {
                 subSchemeType:"",
                 subSchemeStartDate:"",
                 subSchemeEndDate:"",
+                dbtCode: ""
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -88,6 +96,7 @@ function ScSubSchemeDetails() {
         subSchemeType:"",
         subSchemeStartDate:"",
         subSchemeEndDate:"",
+        dbtCode: ""
     });
   };
 
@@ -295,6 +304,29 @@ function ScSubSchemeDetails() {
                       {/* <Form.Control.Feedback type="invalid">
                         Sub Scheme Type is required
                         </Form.Control.Feedback> */}
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
+                        </Form.Control.Feedback>
+                      </div>
                     </Form.Group>
                   </Col>
                   

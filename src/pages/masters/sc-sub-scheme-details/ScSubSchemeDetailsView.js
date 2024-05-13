@@ -113,10 +113,10 @@ function ScSubSchemeDetailsView() {
                         </td>
                         <td>{ScSubSchemeDetails.subSchemeNameInKannada}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}> Sub Scheme Type:</td>
-                        <td>{ScSubSchemeDetails.subSchemeType}</td>
-                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}>DBT Code:</td>
+                        <td>{ScSubSchemeDetails.dbtCode}</td>
+                      </tr>
                       <tr>
                             <td style={styles.ctstyle}> Gender:</td>
                             <td>

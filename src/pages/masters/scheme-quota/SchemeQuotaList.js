@@ -255,6 +255,14 @@ function SchemeQuotaList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "DBT Code",
+      selector: (row) => row.dbtCode,
+      cell: (row) => <span>{row.dbtCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
   ];
 
   return (
