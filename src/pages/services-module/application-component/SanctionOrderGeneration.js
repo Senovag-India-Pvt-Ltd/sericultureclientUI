@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -24,6 +24,40 @@ const SanctionOrderGeneration = () => {
   const [data, setData] = useState({
     userMasterId: "",
   });
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  // To get Photo
+  const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
+  const [selectedDocumentFileName, setSelectedDocumentFileName] = useState([]);
+  const [
+    selectedDocumentOriginalFileName,
+    setSelectedDocumentOriginalFileName,
+  ] = useState([]);
+  const [workOrderId, setWorkOrderId] = useState("");
+
+  const getDocumentFile = async (file, name) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.post(
+        baseURLDBT + `service/downLoadFile?${parameters}`,
+        {},
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedDocumentFile((prev) => [...prev, url]);
+      setSelectedDocumentFileName((prev) => [...prev, name]);
+      setSelectedDocumentOriginalFileName((prev) => [...prev, file]);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -52,6 +86,82 @@ const SanctionOrderGeneration = () => {
     setData({ ...data, [name]: value });
   };
 
+  const click = async (file) => {
+    // console.log("you clicked", file);
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.post(
+        baseURLDBT + `service/downLoadFile?${parameters}`,
+        {},
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+
+      const fileExtension = file.split(".").pop();
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+      link.download = modifiedFileName;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
+
+  // Display Image
+  const [attachFiles, setAttachFiles] = useState("");
+  // const [photoFile,setPhotoFile] = useState("")
+
+  console.log("attached", attachFiles);
+
+  const handleAttachFileChange = (e) => {
+    const file = e.target.files[0];
+    setAttachFiles(file);
+    //  setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
+    // setPhotoFile(file);
+  };
+
+  // Upload Image to S3 Bucket
+  const handleAttachFileUpload = async (applicationId) => {
+    // const parameters = `hdTicketId=${hdTicketid}`;
+    const param = {
+      applicationFormId: applicationId,
+      // TODO need to get documentId from API
+      documentTypeId: 60,
+    };
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", attachFiles);
+
+      const response = await api.post(
+        baseURLDBT + `service/uploadDocument`,
+        formData,
+        {
+          params: param,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+      if(response.status === 200){
+        generateWorkOrder();
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   const [faqData, setFaqData] = useState([]);
   const [validated, setValidated] = useState(false);
 
@@ -70,14 +180,41 @@ const SanctionOrderGeneration = () => {
   //     getFaq();
   //   }, []);
 
+  // // Upload Image to S3 Bucket
+  // const handleAttachFileUpload = async (documentId) => {
+  //   // const parameters = `applicationFormId =${data.applicationId}`;
+  //   const param = {
+  //     applicationFormId: applicationId,
+  //     documentTypeId: documentId,
+  //   };
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("multipartFile", documentAttachments[documentId]);
+
+  //     const response = await api.post(
+  //       baseURLDBT + `service/uploadDocument`,
+  //       formData,
+  //       {
+  //         params: param,
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     console.log("File upload response:", response.data);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //   }
+  // };
+
   const getList = () => {
     setLoading(true);
     api
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
-        // { params: { userId: 113, stepId: 5 } }
+        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
+        { params: { userId: 113, stepId: 5 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -115,7 +252,9 @@ const SanctionOrderGeneration = () => {
     getUserList();
   }, []);
 
-  const assign = (workFlowId) => {
+  const assign = (workFlowId, applicationDocumentId) => {
+    setSelectedDocumentFile([]);
+    setWorkOrderId(workFlowId);
     // console.log(workFlowId);
     // const postData = {
     //     requestType: "sasa",
@@ -139,21 +278,114 @@ const SanctionOrderGeneration = () => {
     //   .catch((err) => {
     //     // setUserListData([]);
     //   });
-
+    // fodododbsjdsdhs
     api
-      .post(
-        baseURLDBT +
-          `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
-        {},
-        { params: { id: workFlowId } }
-      )
+      .post(baseURLDBT + `service/checkInspectionStatus`, {
+        applicationFormId: applicationDocumentId,
+        stepId: 4,
+      })
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
-        getList();
+        if (response.data.content) {
+          handleShowModal();
+          api
+            .post(
+              baseURLDBT +
+                `service/getInspectedDocumentsListAndGpsByApplicationDocId`,
+              {},
+              {
+                params: {
+                  docId: applicationDocumentId,
+                  type: "SUBSIDY_POST_INSPECTION",
+                },
+              }
+            )
+            .then((response) => {
+              if (response.data.content.documentResponses.length > 0) {
+                //TODO  Need to Change here after response
+              } else {
+                const resData = {
+                  content: {
+                    documentResponses: [
+                      {
+                        uploadPath:
+                          "applicationForm/_1c2cadf5-1ad1-4cf8-81a9-1f3fd67898bf_jpg",
+                        documentMasterName: "xyz",
+                      },
+                      {
+                        uploadPath:
+                          "applicationForm/_0529af52-77e7-48e9-bbc7-2921265b9842_jpeg",
+                        documentMasterName: "abc",
+                      },
+                    ],
+                    lat: 12.33,
+                    lng: 2.33,
+                  },
+                  errorMessages: [],
+                  errorCode: 0,
+                };
+                resData.content.documentResponses.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
+              }
+
+              // setUserListData(response.data.content.userMaster);
+              // api
+              //   .post(
+              //     baseURLDBT + `service/triggerWorkFlowNextStep`,
+              //     {},
+              //     { params: { id: workFlowId } }
+              //   )
+              //   .then((response) => {
+              //     // setUserListData(response.data.content.userMaster);
+              //     getList();
+              //   })
+              //   .catch((err) => {
+              //     // setUserListData([]);
+              //   });
+            })
+            .catch((err) => {
+              // setUserListData([]);
+            });
+
+          // api
+          //   .post(
+          //     baseURLDBT +
+          //       `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
+          //     {},
+          //     { params: { id: workFlowId } }
+          //   )
+          //   .then((response) => {
+          //     // setUserListData(response.data.content.userMaster);
+          //     api
+          //       .post(
+          //         baseURLDBT + `service/triggerWorkFlowNextStep`,
+          //         {},
+          //         { params: { id: workFlowId } }
+          //       )
+          //       .then((response) => {
+          //         // setUserListData(response.data.content.userMaster);
+          //         getList();
+          //       })
+          //       .catch((err) => {
+          //         // setUserListData([]);
+          //       });
+          //   })
+          //   .catch((err) => {
+          //     // setUserListData([]);
+          //   });
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "In Process",
+            // text: message,
+          });
+        }
       })
       .catch((err) => {
         // setUserListData([]);
       });
+    // fodododbsjdsdhs
   };
 
   const postData = (event) => {
@@ -213,6 +445,35 @@ const SanctionOrderGeneration = () => {
     // setAllApplicationIds([]);
     // setUnselectedApplicationIds([]);
     // setAllApplicationIds([]);
+  };
+
+  const generateWorkOrder = () => {
+    api
+      .post(
+        baseURLDBT + `service/updateCompletionStatusFromWeb`,
+        {},
+        { params: { id: workOrderId } }
+      )
+      .then((response) => {
+        // setUserListData(response.data.content.userMaster);
+        handleCloseModal();
+        api
+          .post(
+            baseURLDBT + `service/triggerWorkFlowNextStep`,
+            {},
+            { params: { id: workOrderId } }
+          )
+          .then((response) => {
+            // setUserListData(response.data.content.userMaster);
+            getList();
+          })
+          .catch((err) => {
+            // setUserListData([]);
+          });
+      })
+      .catch((err) => {
+        // setUserListData([]);
+      });
   };
 
   const ApplicationDataColumns = [
@@ -310,10 +571,10 @@ const SanctionOrderGeneration = () => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => assign(row.workFlowId)}
+            onClick={() => assign(row.workFlowId, row.applicationDocumentId)}
             // disabled={data.userMasterId ? false : true}
           >
-            Download Work Order
+            Show Status
           </Button>
         </div>
         // <span>This step to be done through mobile app</span>
@@ -337,13 +598,24 @@ const SanctionOrderGeneration = () => {
             </Button> */}
           {/* <input type="file"></input> */}
           {/* <form action="/upload" method="post" enctype="multipart/form-data"> */}
-          <input type="file" name="fileToUpload" id="fileToUpload"></input>
+          {/* <input type="file" name="fileToUpload" id="fileToUpload"></input>
           <input
             type="submit"
             value="Choose File"
             name="submit"
             onClick={() => document.getElementById("fileToUpload").click()}
-          ></input>
+            onChange={handleAttachFileChange}
+          ></input> */}
+          {/* <label htmlFor="fileToUpload" className="custom-file-upload">
+            Choose File
+          </label> */}
+          <input
+            type="file"
+            id={`fileToUpload${row.workFlowId}`}
+            // style={{ backgroundColor: "red" }}
+            onChange={handleAttachFileChange}
+          />
+
           {/* </form> */}
         </div>
         // <span>This step to be done through mobile app</span>
@@ -359,7 +631,7 @@ const SanctionOrderGeneration = () => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => assign(row.workFlowId)}
+            onClick={() => handleAttachFileUpload(row.applicationDocumentId)}
             // disabled={data.userMasterId ? false : true}
           >
             Upload
@@ -414,7 +686,7 @@ const SanctionOrderGeneration = () => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Dashboard List</Block.Title>
+            <Block.Title tag="h2">Sanction Order Generation List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -463,6 +735,41 @@ const SanctionOrderGeneration = () => {
           />
         </Card>
       </Block>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>File Upload</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedDocumentFile.length > 0 &&
+            selectedDocumentFile.map((file, i) => (
+              <div key={i}>
+                <div className="d-flex justify-content-center">
+                  <img
+                    style={{ height: "300px", width: "300px" }}
+                    src={file}
+                    alt="Selected File"
+                    onClick={(e) => click(selectedDocumentOriginalFileName[i])}
+                  />
+                </div>
+                {/* <div className="text-center">{file.documentMasterName}</div> */}
+                <div className="text-center">{selectedDocumentFileName[i]}</div>
+              </div>
+            ))}
+          {/* <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={generateWorkOrder}
+                >
+                  Generate Work Order
+                </Button>
+              </li>
+            </ul>
+          </div> */}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

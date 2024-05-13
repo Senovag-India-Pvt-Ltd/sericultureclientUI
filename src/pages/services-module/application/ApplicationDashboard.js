@@ -38,9 +38,20 @@ function ApplicationDashboard() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const styles = {
-    backgroundColor: "#cdefff",
-    borderRadius: "2%",
+    // backgroundColor: "#cdefff",
+    borderRadius: "3%",
+    cursor: "pointer",
   };
+
+  const rainbowColors = [
+    "#b82424",
+    "#ca8b17",
+    "#acac22",
+    "#287728",
+    "#575797",
+    "#88699f",
+    "#bf45bf",
+  ];
 
   const [data, setData] = useState({
     text: "",
@@ -81,8 +92,8 @@ function ApplicationDashboard() {
       .post(
         baseURLDBT + `service/getUserDashboardCount`,
         {},
-        { params: { id: localStorage.getItem("userMasterId") } }
-        // { params: { id: 113 } }
+        // { params: { id: localStorage.getItem("userMasterId") } }
+        { params: { id: 113 } }
       )
       .then((response) => {
         setDashboardList(response.data.content);
@@ -272,21 +283,56 @@ function ApplicationDashboard() {
       </Block.Head>
 
       <Row className="g-gs d-flex justify-content-center">
-        {dashboardList.map((dashboard) => (
-          <Col xxl="3">
-            <Card className="h-100">
-              <Card.Body style={{ ...styles }}>
+        {dashboardList.map((dashboard, i) => (
+          <Col xxl="3" key={i}>
+            <Card
+              className="h-100"
+              style={{ ...styles, backgroundColor: rainbowColors[i] }}
+              onClick={() => goto(dashboard.stepName)}
+            >
+              <Card.Body>
+                <div className="d-flex justify-content-center text-center">
+                  <div>
+                    <div className="card-title">
+                      <h4 className="title mb-1" style={{ color: "white" }}>
+                        {dashboard.stepName}
+                      </h4>
+                    </div>
+                    <div className="my-3">
+                      <div
+                        className="amount h2 fw-bold"
+                        style={{ color: "white" }}
+                      >
+                        {dashboard.count}
+                      </div>
+                    </div>
+                    {/* <Button
+                      size="sm"
+                      variant="primary"
+                      // onClick={() => goto(dashboard.stepName)}
+                    >
+                      View
+                    </Button> */}
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+
+        {/* {dashboardList.map((dashboard, index) => (
+          <Col key={index} xxl="3">
+            <Card className="h-100 dashboard-card">
+              <Card.Body>
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
                     <div className="card-title">
                       <h4 className="title mb-1">{dashboard.stepName}</h4>
-                      {/* <p className="small">Best seller of the month</p> */}
                     </div>
                     <div className="my-3">
                       <div className="amount h2 fw-bold text-primary">
                         {dashboard.count}
                       </div>
-                      {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
                     </div>
                     <Button
                       size="sm"
@@ -296,14 +342,11 @@ function ApplicationDashboard() {
                       View
                     </Button>
                   </div>
-                  {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
-                              <Image src="/images/award/a.png" alt=""/>
-                          </div> */}
                 </div>
               </Card.Body>
             </Card>
           </Col>
-        ))}
+        ))} */}
 
         {/* <Col xxl="3">
             <Card className="h-100">

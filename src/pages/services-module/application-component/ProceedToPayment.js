@@ -15,7 +15,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-const PreInspection = () => {
+const ProceedToPayment = () => {
   const [helpDeskFaq, setHelpDeskFaq] = useState({
     text: "",
     searchBy: "hdQuestionName",
@@ -76,8 +76,8 @@ const PreInspection = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 114, stepId: 1 } }
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 1 } }
+        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 3 } }
+        { params: { userId: 113, stepId: 7 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -115,7 +115,7 @@ const PreInspection = () => {
     getUserList();
   }, []);
 
-  const assign = (workFlowId) => {
+  const assign = (workFlowId,applicationDocumentId) => {
     // console.log(workFlowId);
     // const postData = {
     //     requestType: "sasa",
@@ -123,48 +123,49 @@ const PreInspection = () => {
     //     userMasterId: data.userMasterId,
     //   };
 
-    const postData = {
-      requestType: "SUBSIDY_PRE_INSPECTION",
-      requestTypeId: workFlowId,
-      userMasterId: data.userMasterId,
-      // userMasterId: 114,
-    };
-
-    api
-      .post(baseURLDBT + `service/assignInspection`, postData)
-      .then((response) => {
-        // setUserListData(response.data.content.userMaster);
-        getList();
-      })
-      .catch((err) => {
-        // setUserListData([]);
-      });
+    // const postData = {
+    //   requestType: "SUBSIDY_PRE_INSPECTION",
+    //   requestTypeId: workFlowId,
+    //   //   userMasterId: data.userMasterId,
+    //   userMasterId: 114,
+    // };
 
     // api
-    //   .post(
-    //     baseURLDBT +
-    //       `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
-    //     {},
-    //     { params: { id: workFlowId } }
-    //   )
+    //   .post(baseURLDBT + `service/assignInspection`, postData)
     //   .then((response) => {
     //     // setUserListData(response.data.content.userMaster);
-    //     api
-    //       .post(
-    //         baseURLDBT + `service/triggerWorkFlowNextStep`,
-    //         {},
-    //         { params: { id: workFlowId } }
-    //       )
-    //       .then((response) => {
-    //         // setUserListData(response.data.content.userMaster);
-    //       })
-    //       .catch((err) => {
-    //         // setUserListData([]);
-    //       });
+    //     getList();
     //   })
     //   .catch((err) => {
     //     // setUserListData([]);
     //   });
+
+    api
+      .post(
+        baseURLDBT + `service/updateCompletionStatusFromWeb`,
+        {},
+        { params: { id: workFlowId } }
+      )
+      .then((response) => {
+        // setUserListData(response.data.content.userMaster);
+        // getList();
+        api
+          .post(
+            baseURLDBT + `service/updateApplicationFormProcessCompleted`,
+            {},
+            { params: { docId : applicationDocumentId } }
+          )
+          .then((response) => {
+            // setUserListData(response.data.content.userMaster);
+            getList();
+          })
+          .catch((err) => {
+            // setUserListData([]);
+          });
+      })
+      .catch((err) => {
+        // setUserListData([]);
+      });
   };
 
   const postData = (event) => {
@@ -286,33 +287,33 @@ const PreInspection = () => {
     //   sortable: true,
     //   hide: "md",
     // },
-    {
-      name: "Assign To",
-      cell: (row) => (
-        <div className="text-start w-100">
-          <Form.Group className="form-group">
-            <div className="form-control-wrap">
-              <Form.Select
-                name="userMasterId"
-                value={data.userMasterId}
-                // onChange={(e) => handleListInput(e, row)}
-                onChange={handleInputs}
-                // onBlur={() => handleInputs}
-              >
-                <option value="">Select User</option>
-                {userListData.map((list) => (
-                  <option key={list.userMasterId} value={list.userMasterId}>
-                    {list.username}
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </div>
-      ),
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Assign To",
+    //   cell: (row) => (
+    //     <div className="text-start w-100">
+    //       <Form.Group className="form-group">
+    //         <div className="form-control-wrap">
+    //           <Form.Select
+    //             name="userMasterId"
+    //             value={data.userMasterId}
+    //             // onChange={(e) => handleListInput(e, row)}
+    //             onChange={handleInputs}
+    //             // onBlur={() => handleInputs}
+    //           >
+    //             <option value="">Select User</option>
+    //             {userListData.map((list) => (
+    //               <option key={list.userMasterId} value={list.userMasterId}>
+    //                 {list.username}
+    //               </option>
+    //             ))}
+    //           </Form.Select>
+    //         </div>
+    //       </Form.Group>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "action",
       cell: (row) => (
@@ -321,10 +322,10 @@ const PreInspection = () => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => assign(row.workFlowId)}
-            disabled={data.userMasterId ? false : true}
+            onClick={() => assign(row.workFlowId,row.applicationDocumentId)}
+            // disabled={data.userMasterId ? false : true}
           >
-            Assign
+            Send to Drawing officer
           </Button>
         </div>
       ),
@@ -375,7 +376,7 @@ const PreInspection = () => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Pre-Inspection List</Block.Title>
+            <Block.Title tag="h2">Proceed To Payment List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -424,23 +425,8 @@ const PreInspection = () => {
           />
         </Card>
       </Block>
-
-      {/* <div className="gap-col mt-1">
-        <ul className="d-flex align-items-center justify-content-center gap g-3">
-          <li>
-            <Button type="submit" variant="primary" onClick={postData}>
-              Save
-            </Button>
-          </li>
-          <li>
-            <Button type="button" variant="secondary" onClick={(e) => clear(e)}>
-              Cancel
-            </Button>
-          </li>
-        </ul>
-      </div> */}
     </div>
   );
 };
 
-export default PreInspection;
+export default ProceedToPayment;

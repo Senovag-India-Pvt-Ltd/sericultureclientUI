@@ -17,6 +17,8 @@ import WorkOrderIssue from "../application-component/WorkOrderIssue";
 import WorkOrderComplete from "../application-component/WorkOrderComplete";
 import InspectionComponent from "../application-component/InspectionComponent";
 import SanctionOrderGeneration from "../application-component/SanctionOrderGeneration";
+import SanctionOrderVerification from "../application-component/SanctionOrderVerification";
+import ProceedToPayment from "../application-component/ProceedToPayment";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -371,6 +373,8 @@ function DashboardList() {
       {id == 3 ? <WorkOrderComplete /> : ""}
       {id == 4 ? <InspectionComponent /> : ""}
       {id == 5 ? <SanctionOrderGeneration/>:""}
+      {id == 6 ? <SanctionOrderVerification/>:""}
+      {id == 7 ? <ProceedToPayment/>:""}
     </Layout>
   );
 }

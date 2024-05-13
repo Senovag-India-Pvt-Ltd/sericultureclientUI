@@ -76,8 +76,8 @@ const InspectionComponent = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: 4 } }
-        // { params: { userId: 542, stepId: 4 } }
+        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 4 } }
+        { params: { userId: 542, stepId: 4 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -260,21 +260,21 @@ const InspectionComponent = () => {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Minimum Quantity",
+    //   selector: (row) => row.minQty,
+    //   cell: (row) => <span>{row.minQty}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
-    {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Maximum Quantity",
+    //   selector: (row) => row.maxQty,
+    //   cell: (row) => <span>{row.maxQty}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Assign To",
     //   cell: (row) => (

@@ -791,6 +791,8 @@ import BudgetDistrictExtension from "../pages/target-settings/budgetextension-di
 import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
 import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
 import DashboardList from "../pages/services-module/application/DashboardList";
+import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
+import DbtApplication from "../pages/services-module/application/DbtApplication";
 // Admin and Reports
 
 function Router() {
@@ -1076,6 +1078,14 @@ function Router() {
             <Route
               path="application-dashboard"
               element={<ApplicationDashboard />}
+            />
+             <Route
+              path="dbt-application"
+              element={<DbtApplication />}
+            />
+            <Route
+              path="drawing-officer-list"
+              element={<DrawingOfficerList />}
             />
             <Route
               path="application-dashboard-list/:id"

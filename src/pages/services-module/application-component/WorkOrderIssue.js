@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -25,6 +25,11 @@ const WorkOrderIssue = () => {
     userMasterId: "",
   });
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -35,6 +40,29 @@ const WorkOrderIssue = () => {
   const handleHelpDeskFaqInputs = (e) => {
     let { name, value } = e.target;
     setHelpDeskFaq({ ...helpDeskFaq, [name]: value });
+  };
+
+  // To get Photo
+  const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
+  const [selectedDocumentFileName, setSelectedDocumentFileName] = useState([]);
+
+  const getDocumentFile = async (file, name) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.post(
+        baseURLDBT + `service/downLoadFile?${parameters}`,
+        {},
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedDocumentFile((prev) => [...prev, url]);
+      setSelectedDocumentFileName((prev) => [...prev, name]);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
   };
 
   const handleListInput = (e, row) => {
@@ -76,8 +104,8 @@ const WorkOrderIssue = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
-        // { params: { userId: 113, stepId: 2 } }
+        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
+        { params: { userId: 113, stepId: 2 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -115,7 +143,42 @@ const WorkOrderIssue = () => {
     getUserList();
   }, []);
 
-  const assign = (workFlowId) => {
+  // handleShowModal();
+  const [workOrderId,setWorkOrderId] = useState("")
+
+  const generateWorkOrder = () => {
+    api
+      .post(
+        baseURLDBT +
+          `service/updateCompletionStatusFromWeb`,
+        {},
+        { params: { id: workOrderId } }
+      )
+      .then((response) => {
+        // setUserListData(response.data.content.userMaster);
+        handleCloseModal()
+        api
+          .post(
+            baseURLDBT + `service/triggerWorkFlowNextStep`,
+            {},
+            { params: { id: workOrderId } }
+          )
+          .then((response) => {
+            // setUserListData(response.data.content.userMaster);
+            getList();
+          })
+          .catch((err) => {
+            // setUserListData([]);
+          });
+      })
+      .catch((err) => {
+        // setUserListData([]);
+      });
+  };
+
+  const assign = (workFlowId, applicationDocumentId) => {
+    setSelectedDocumentFile([]);
+    setWorkOrderId(workFlowId);
     // console.log(workFlowId);
     // const postData = {
     //     requestType: "sasa",
@@ -139,21 +202,114 @@ const WorkOrderIssue = () => {
     //   .catch((err) => {
     //     // setUserListData([]);
     //   });
-
+    // fodododbsjdsdhs
     api
-      .post(
-        baseURLDBT +
-          `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
-        {},
-        { params: { id: workFlowId } }
-      )
+      .post(baseURLDBT + `service/checkInspectionStatus`, {
+        applicationFormId: applicationDocumentId,
+        stepId:1
+      })
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
-        getList();
+        if (response.data.content) {
+          handleShowModal();
+          api
+            .post(
+              baseURLDBT +
+                `service/getInspectedDocumentsListAndGpsByApplicationDocId`,
+              {},
+              {
+                params: {
+                  docId: applicationDocumentId,
+                  type: "SUBSIDY_PRE_INSPECTION",
+                },
+              }
+            )
+            .then((response) => {
+              if (response.data.content.documentResponses.length > 0) {
+                //TODO  Need to Change here after response
+              } else {
+                const resData = {
+                  content: {
+                    documentResponses: [
+                      {
+                        uploadPath:
+                          "applicationForm/_1c2cadf5-1ad1-4cf8-81a9-1f3fd67898bf_jpg",
+                        documentMasterName: "xyz",
+                      },
+                      {
+                        uploadPath:
+                          "applicationForm/_0529af52-77e7-48e9-bbc7-2921265b9842_jpeg",
+                        documentMasterName: "abc",
+                      },
+                    ],
+                    lat: 12.33,
+                    lng: 2.33,
+                  },
+                  errorMessages: [],
+                  errorCode: 0,
+                };
+                resData.content.documentResponses.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
+              }
+
+              // setUserListData(response.data.content.userMaster);
+              // api
+              //   .post(
+              //     baseURLDBT + `service/triggerWorkFlowNextStep`,
+              //     {},
+              //     { params: { id: workFlowId } }
+              //   )
+              //   .then((response) => {
+              //     // setUserListData(response.data.content.userMaster);
+              //     getList();
+              //   })
+              //   .catch((err) => {
+              //     // setUserListData([]);
+              //   });
+            })
+            .catch((err) => {
+              // setUserListData([]);
+            });
+
+          // api
+          //   .post(
+          //     baseURLDBT +
+          //       `service/updateApplicationWorkFlowStatusAndTriggerNextStep`,
+          //     {},
+          //     { params: { id: workFlowId } }
+          //   )
+          //   .then((response) => {
+          //     // setUserListData(response.data.content.userMaster);
+          //     api
+          //       .post(
+          //         baseURLDBT + `service/triggerWorkFlowNextStep`,
+          //         {},
+          //         { params: { id: workFlowId } }
+          //       )
+          //       .then((response) => {
+          //         // setUserListData(response.data.content.userMaster);
+          //         getList();
+          //       })
+          //       .catch((err) => {
+          //         // setUserListData([]);
+          //       });
+          //   })
+          //   .catch((err) => {
+          //     // setUserListData([]);
+          //   });
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "In Process",
+            // text: message,
+          });
+        }
       })
       .catch((err) => {
         // setUserListData([]);
       });
+    // fodododbsjdsdhs
   };
 
   const postData = (event) => {
@@ -260,21 +416,21 @@ const WorkOrderIssue = () => {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Minimum Quantity",
+    //   selector: (row) => row.minQty,
+    //   cell: (row) => <span>{row.minQty}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
-    {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Maximum Quantity",
+    //   selector: (row) => row.maxQty,
+    //   cell: (row) => <span>{row.maxQty}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Assign To",
     //   cell: (row) => (
@@ -310,10 +466,10 @@ const WorkOrderIssue = () => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => assign(row.workFlowId)}
+            onClick={() => assign(row.workFlowId, row.applicationDocumentId)}
             // disabled={data.userMasterId ? false : true}
           >
-            Generate Work Order
+            Check Status
           </Button>
         </div>
       ),
@@ -364,7 +520,7 @@ const WorkOrderIssue = () => {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Dashboard List</Block.Title>
+            <Block.Title tag="h2">Work Order Issue List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -413,6 +569,42 @@ const WorkOrderIssue = () => {
           />
         </Card>
       </Block>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>File Upload</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedDocumentFile.length > 0 &&
+            selectedDocumentFile.map((file, i) => (
+              <div key={i}>
+                <div className="d-flex justify-content-center">
+                  <img
+                    style={{ height: "300px", width: "300px" }}
+                    src={file}
+                    alt="Selected File"
+                  />
+                </div>
+                {/* <div className="text-center">{file.documentMasterName}</div> */}
+                <div className="text-center">{selectedDocumentFileName[i]}</div>
+              </div>
+            ))}
+          <div className="gap-col">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="button" variant="primary" onClick={postData}> */}
+                <Button type="button" variant="primary" onClick={generateWorkOrder}>
+                  Generate Work Order
+                </Button>
+              </li>
+              {/* <li>
+                <Button type="button" variant="secondary" onClick={clear}>
+                  Cancel
+                </Button>
+              </li> */}
+            </ul>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
