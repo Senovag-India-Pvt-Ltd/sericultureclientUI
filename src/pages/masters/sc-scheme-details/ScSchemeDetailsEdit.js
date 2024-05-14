@@ -269,7 +269,7 @@ function ScSchemeDetailsEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date()}
+                                  // minDate={new Date()}
                                   required
                                 />
                               )}
@@ -295,7 +295,7 @@ function ScSchemeDetailsEdit() {
                                   dropdownMode="select"
                                   dateFormat="dd/MM/yyyy"
                                   className="form-control"
-                                  minDate={new Date(data.schemeStartDate)}
+                                  // minDate={new Date(data.schemeStartDate)}
                                   required
                                 />
                               )}

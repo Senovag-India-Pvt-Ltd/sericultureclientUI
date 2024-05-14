@@ -239,7 +239,7 @@ function ScSchemeDetails() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
-                              minDate={new Date()}
+                              // minDate={new Date()}
                               required
                             />
                           </div>
@@ -266,7 +266,7 @@ function ScSchemeDetails() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               className="form-control"
-                              minDate={new Date(data.schemeEndDate)}
+                              // minDate={new Date(data.schemeEndDate)}
                               required
                             />
                           </div>
