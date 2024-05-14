@@ -266,7 +266,7 @@ function ScHeadAccountEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -280,7 +280,7 @@ function ScHeadAccountEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
