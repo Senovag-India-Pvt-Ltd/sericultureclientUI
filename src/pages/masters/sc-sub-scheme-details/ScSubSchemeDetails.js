@@ -245,7 +245,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeName">
-                        Sub Scheme Name<span className="text-danger">*</span>
+                        Component Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -254,11 +254,11 @@ function ScSubSchemeDetails() {
                           name="subSchemeName"
                           value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Scheme Name"
+                          placeholder="Enter  Component Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Scheme Name is required
+                        Component Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -267,7 +267,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeNameInKannada">
-                        Sub Scheme Name In Kannada<span className="text-danger">*</span>
+                      Component Type In Kannada<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -276,11 +276,11 @@ function ScSubSchemeDetails() {
                           name="subSchemeNameInKannada"
                           value={data.subSchemeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Scheme Name"
+                          placeholder="Enter Component Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Scheme Name In Kannada is required
+                        Component Type In Kannada is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

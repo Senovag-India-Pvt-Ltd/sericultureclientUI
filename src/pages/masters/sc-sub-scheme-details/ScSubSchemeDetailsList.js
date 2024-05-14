@@ -234,14 +234,14 @@ function ScSubSchemeDetailsList() {
       hide: "md",
     },
     {
-      name: "Sub Scheme Name",
+      name: " Component Type",
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sub Scheme Name In Kannada",
+      name: " Component Type In Kannada",
       selector: (row) => row.subSchemeNameInKannada,
       cell: (row) => <span>{row.subSchemeNameInKannada}</span>,
       sortable: true,
