@@ -15,6 +15,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ApplicationSelection() {
   const [listData, setListData] = useState({});
@@ -33,6 +34,97 @@ function ApplicationSelection() {
   //   let { name, value } = e.target;
   //   setData({ ...data, [name]: value });
   // };
+
+  const [searchData, setSearchData] = useState({
+    year1: "",
+    year2: "",
+    type: 1,
+    searchText: "",
+  });
+
+  const [data, setData] = useState({
+    financialYearMasterId: "",
+  });
+
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
+    if (e.target.name === "financialYearMasterId") {
+      const selectedYearObject = financialyearListData.find(
+        (year) => year.financialYearMasterId === parseInt(e.target.value)
+      );
+      const year = selectedYearObject.financialYear;
+      const [fromDate, toDate] = year.split("-");
+      setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+    }
+  };
+
+  const handleSearchInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (e.target.name === "type") {
+      setSearchData({ ...searchData, [name]: value, searchText: "" });
+    } else {
+      setSearchData({ ...searchData, [name]: value });
+    }
+  };
+
+  const [validatedDisplay, setValidatedDisplay] = useState(false);
+
+  const display = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedDisplay(true);
+    } else {
+      event.preventDefault();
+
+      // const { text, select } = farmer;
+      // let sendData;
+
+      // if (select === "mobileNumber") {
+      //   sendData = {
+      //     mobileNumber: text,
+      //   };
+      // }
+      // if (select === "fruitsId") {
+      //   sendData = {
+      //     fruitsId: text,
+      //   };
+      // }
+      // if (select === "farmerNumber") {
+      //   sendData = {
+      //     farmerNumber: text,
+      //   };
+      // }
+
+      // const { year1, year2, type, searchText } = searchData;
+
+      setLoading(true);
+
+      api
+        .post(
+          baseURLDBT + `service/getSubmittedApplicationForm`,
+          {},
+          { params: searchData }
+        )
+        .then((response) => {
+          setListData(response.data.content);
+          const scApplicationFormIds = response.data.content.map(
+            (item) => item.scApplicationFormId
+          );
+          setAllApplicationIds(scApplicationFormIds);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setListData({});
+          setLoading(false);
+        });
+    }
+  };
 
   // Search
   //   const search = (e) => {
@@ -158,6 +250,48 @@ function ApplicationSelection() {
   }, [page]);
 
   console.log(allApplicationIds);
+
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialYearList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialYearList();
+  }, []);
+
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+    []
+  );
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        if (response.data.content.scSubSchemeDetails) {
+          setScSubSchemeDetailsListData(
+            response.data.content.scSubSchemeDetails
+          );
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
+  }, []);
 
   // to get User Master
   // const [userListData, setUserListData] = useState([]);
@@ -447,6 +581,139 @@ function ApplicationSelection() {
       </Block.Head>
 
       <Block className="mt-n4">
+        <Form noValidate validated={validatedDisplay} onSubmit={display}>
+          <Card>
+            <Card.Body>
+              <Row className="g-gs">
+                <Col sm={8} lg={12}>
+                  <Form.Group as={Row} className="form-group" id="fid">
+                    <Form.Label column sm={1} lg={2}>
+                      Search
+                    </Form.Label>
+                    <Col sm={1} lg={2} style={{ marginLeft: "-10%" }}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="financialYearMasterId"
+                          value={data.financialYearMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.financialYearMasterId === undefined ||
+                            data.financialYearMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Year</option>
+                          {financialyearListData.map((list) => (
+                            <option
+                              key={list.financialYearMasterId}
+                              value={list.financialYearMasterId}
+                            >
+                              {list.financialYear}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Col>
+
+                    <Col sm={1} lg={2}>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="type"
+                          value={searchData.type}
+                          onChange={handleSearchInputs}
+                        >
+                          {/* <option value="">Select</option> */}
+                          <option value="1">Application Id</option>
+                          <option value="2">Sub Scheme</option>
+                          <option value="3">Fruits Id</option>
+                          {/* <option value="4">Sanction Order Number</option> */}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                    {searchData.type == 2 ? (
+                      <Col sm={2} lg={2}>
+                        <Form.Select
+                          name="searchText"
+                          value={searchData.searchText}
+                          onChange={handleSearchInputs}
+                          onBlur={() => handleSearchInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            searchData.searchText === undefined ||
+                            searchData.searchText === "0"
+                          }
+                        >
+                          <option value="">Select Sub Scheme</option>
+                          {scSubSchemeDetailsListData.map((list) => (
+                            <option
+                              key={list.scSubSchemeDetailsId}
+                              value={list.scSubSchemeDetailsId}
+                            >
+                              {list.subSchemeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Sub Scheme is required
+                        </Form.Control.Feedback>
+                      </Col>
+                    ) : (
+                      <Col sm={2} lg={2}>
+                        <Form.Control
+                          id="fruitsId"
+                          name="searchText"
+                          value={searchData.searchText}
+                          onChange={handleSearchInputs}
+                          type="text"
+                          placeholder="Search"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Field Value is Required
+                        </Form.Control.Feedback>
+                      </Col>
+                    )}
+
+                    <Col sm={2} lg={3}>
+                      <Button type="submit" variant="primary">
+                        Search
+                      </Button>
+                    </Col>
+                    {}
+                    {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
+                    {/* <Col sm={1} lg={2} style={{ marginLeft: "-15%" }}>
+                      <Link
+                        to="/seriui/stake-holder-registration"
+                        className="btn btn-primary border-0"
+                      >
+                        Add New
+                      </Link>
+                    </Col> */}
+                    {/* <Col sm={1} lg={3} style={{ marginLeft: "-5%" }}>
+                      <Form.Group as={Row} className="form-group" id="date">
+                        <Form.Label column sm={2} lg={3}>
+                          Date
+                        </Form.Label>
+                        <Col sm={1} lg={1} style={{ marginLeft: "-10%" }}>
+                          <div className="form-control-wrap">
+                            <DatePicker
+                              dateFormat="dd/MM/yyyy"
+                              selected={new Date()}
+                              // className="form-control"
+                              readOnly
+                            />
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col> */}
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Form>
         <Card>
           {/* <Row className="m-2">
             <Col>
