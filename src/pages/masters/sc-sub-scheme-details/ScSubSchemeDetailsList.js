@@ -224,6 +224,7 @@ function ScSubSchemeDetailsList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Scheme Name",
@@ -283,12 +284,13 @@ function ScSubSchemeDetailsList() {
         hide: "md",
       },
       {
-        name: "Dbt Code",
+        name: "DBT Code",
         selector: (row) => row.dbtCode,
         cell: (row) => <span>{row.dbtCode}</span>,
         sortable: true,
         hide: "md",
       },
+      
   ];
 
   return (

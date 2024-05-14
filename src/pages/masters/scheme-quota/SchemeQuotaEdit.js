@@ -246,22 +246,27 @@ useEffect(() => {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="title">
-                        Scheme Quota Type
-                        <span className="text-danger">*</span>
+                      <Form.Label>
+                        Scheme Quota Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="schemeQuotaType"
+                        <Form.Select
                           name="schemeQuotaType"
                           value={data.schemeQuotaType}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Scheme Quota Type"
+                          onBlur={() => handleInputs}
                           required
-                        />
+                          isInvalid={
+                            data.schemeQuotaType === undefined || data.schemeQuotaType === "0"
+                          }
+                        >
+                          <option value="">Select Scheme Quota Type</option>
+                          <option value="1">State</option>
+                          <option value="2">Central</option>
+                          
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                        Scheme Quota Type is required.
+                        Scheme Quota Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -313,9 +318,9 @@ useEffect(() => {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group">
+                    <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -325,11 +330,11 @@ useEffect(() => {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder="Enter DBT Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

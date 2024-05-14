@@ -24,7 +24,7 @@ function ScComponentList() {
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURL + `scComponent/list-with-join`, _params)
+      .get(baseURL + `scComponent/list`, _params)
       .then((response) => {
         setListData(response.data.content.scComponent);
         setTotalRows(response.data.content.totalItems);
@@ -180,15 +180,15 @@ function ScComponentList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Sub Scheme Details",
+    //   selector: (row) => row.subSchemeName,
+    //   cell: (row) => <span>{row.subSchemeName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Sub Scheme Details",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Dbt Code",
+      name: "DBT Code",
       selector: (row) => row.dbtCode,
       cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,

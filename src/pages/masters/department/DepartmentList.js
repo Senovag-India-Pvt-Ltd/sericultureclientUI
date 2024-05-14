@@ -1,22 +1,19 @@
-// import { Card, Button } from "react-bootstrap";
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { createTheme } from "react-data-table-component";
-// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
+import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useState, useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function SchemeQuotaList() {
+function DepartmentList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -24,18 +21,12 @@ function SchemeQuotaList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [data, setData] = useState({
-    searchBy: "scHeadAccountName",
-    text: "",
-  });
-
-  // console.log("Test",data);
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `schemeQuota/list-with-join`, _params)
+      .get(baseURL + `departmentMaster/list`, _params)
       .then((response) => {
-        setListData(response.data.content.schemeQuota);
+        setListData(response.data.content.departmentMaster);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -49,50 +40,14 @@ function SchemeQuotaList() {
     getList();
   }, [page]);
 
-  // Search
-//   const search = (e) => {
-//     let joinColumn;
-//     if (data.searchBy === "scHeadAccountName") {
-//       joinColumn = "scHeadAccount.scHeadAccountName";
-//     }
-//     if (data.searchBy === "categoryName") {
-//       joinColumn = "scCategory.categoryName";
-//     }
-//     console.log(joinColumn);
-//     api
-//       .post(baseURL + `scUnitCost/search`, {
-//         searchText: data.text,
-//         joinColumn: joinColumn,
-//       })
-//       .then((response) => {
-//         setListData(response.data.content.ScUnitCost);
-
-//         // if (response.data.content.error) {
-//         //   // saveError();
-//         // } else {
-//         //   console.log(response);
-//         //   // saveSuccess();
-//         // }
-//       })
-//       .catch((err) => {
-//         // saveError();
-//       });
-//   };
-
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/scheme-quota-view/${_id}`);
+    navigate(`/seriui/department-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/scheme-quota-edit/${_id}`);
-    // navigate("/seriui/district");
+    navigate(`/seriui/department-edit/${_id}`);
+    // navigate("/seriui/taluk");
   };
 
   const deleteError = () => {
@@ -113,7 +68,7 @@ function SchemeQuotaList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `schemeQuota/delete/${_id}`)
+          .delete(baseURL + `departmentMaster/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -183,7 +138,7 @@ function SchemeQuotaList() {
     },
   };
 
-  const ScUnitCostDataColumns = [
+  const DepartmentDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -193,7 +148,7 @@ function SchemeQuotaList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.schemeQuotaId)}
+            onClick={() => handleView(row.departmentId)}
           >
             View
           </Button>
@@ -201,14 +156,14 @@ function SchemeQuotaList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.schemeQuotaId)}
+            onClick={() => handleEdit(row.departmentId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.schemeQuotaId)}
+            onClick={() => deleteConfirm(row.departmentId)}
             className="ms-2"
           >
             Delete
@@ -217,66 +172,50 @@ function SchemeQuotaList() {
       ),
       sortable: false,
       hide: "md",
-      grow:2,
-    },
-    {
-        name: "Scheme Details",
-        selector: (row) => row.schemeName,
-        cell: (row) => <span>{row.schemeName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: "Scheme Quota Name",
-      selector: (row) => row.schemeQuotaName,
-      cell: (row) => <span>{row.schemeQuotaName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Scheme Quota Type",
-      selector: (row) => row.schemeQuotaType,
-      cell: (row) =><span>{row.schemeQuotaType}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Scheme Quota Code",
-      selector: (row) => row.schemeQuotaCode,
-      cell: (row) => <span>{row.schemeQuotaCode}</span>,
-      sortable: true,
-      hide: "md",
     },
 
     {
-      name: "Scheme Quota Payment Type",
-      selector: (row) => row.schemeQuotaPaymentType,
-      cell: (row) => <span>{row.schemeQuotaPaymentType}</span>,
+      name: "Department Code",
+      selector: (row) => row.departmentCode,
+      cell: (row) => <span>{row.departmentCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "DBT Code",
-      selector: (row) => row.dbtCode,
-      cell: (row) => <span>{row.dbtCode}</span>,
+      name: "Department Name",
+      selector: (row) => row.departmentName,
+      cell: (row) => <span>{row.departmentName}</span>,
       sortable: true,
       hide: "md",
     },
-
+    {
+      name: "Department Name In Kannada",
+      selector: (row) => row.departmentNameInKannada,
+      cell: (row) => <span>{row.departmentNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Department Details",
+      selector: (row) => row.departmentDetails,
+      cell: (row) => <span>{row.departmentDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
-    <Layout title="List Of Scheme Quota">
+    <Layout title="List Of Department">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Scheme Quota</Block.Title>
+            <Block.Title tag="h2">List Of Department</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/scheme-quota"
+                  to="/seriui/department"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -285,7 +224,7 @@ function SchemeQuotaList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/scheme-quota"
+                  to="/seriui/department"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -297,60 +236,12 @@ function SchemeQuotaList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      {/* <Block>
-        <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            data={DistrictDatas}
-            columns={DistrictDataColumns}
-            expandableRows
-          />
-        </Card>
-      </Block> */}
-
       <Block className="mt-n4">
         <Card>
-          {/* <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      <option value="scHeadAccountName">ScHeadAccount</option>
-                      <option value="categoryName">ScCategory</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row> */}
-
           <DataTable
+            // title="Crate List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ScUnitCostDataColumns}
+            columns={DepartmentDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -371,4 +262,4 @@ function SchemeQuotaList() {
   );
 }
 
-export default SchemeQuotaList;
+export default DepartmentList;
