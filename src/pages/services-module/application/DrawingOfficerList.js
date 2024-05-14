@@ -73,6 +73,11 @@ function DrawingOfficerList() {
 
   const [data, setData] = useState({
     financialYearMasterId: "",
+    scHeadAccountId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    scCategoryId: "",
+    scComponentId: "",
   });
 
   const [farmer, setFarmer] = useState({
@@ -298,6 +303,81 @@ function DrawingOfficerList() {
     getSubSchemeList();
   }, []);
 
+  // to get sc-scheme-details
+  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+
+  const getSchemeList = () => {
+    api
+      .get(baseURLMasterData + `scSchemeDetails/get-all`)
+      .then((response) => {
+        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
+      })
+      .catch((err) => {
+        setScSchemeDetailsListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getSchemeList();
+  }, []);
+
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+
+  const getHeadAccountList = () => {
+    api
+      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .then((response) => {
+        if (response.data.content.scHeadAccount) {
+          setScHeadAccountListData(response.data.content.scHeadAccount);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getHeadAccountList();
+  }, []);
+
+  const [scCategoryListData, setScCategoryListData] = useState([]);
+
+  const getCategoryList = () => {
+    api
+      .get(baseURLMasterData + `scCategory/get-all`)
+      .then((response) => {
+        if (response.data.content.scCategory) {
+          setScCategoryListData(response.data.content.scCategory);
+        }
+      })
+      .catch((err) => {
+        setScCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  // to get component
+  const [scComponentListData, setScComponentListData] = useState([]);
+
+  const getComponentList = () => {
+    api
+      .get(baseURLMasterData + `scComponent/get-all`)
+      .then((response) => {
+        setScComponentListData(response.data.content.scComponent);
+      })
+      .catch((err) => {
+        setScComponentListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getComponentList();
+  }, []);
   // to get User Master
   // const [userListData, setUserListData] = useState([]);
 
@@ -398,8 +478,6 @@ function DrawingOfficerList() {
       setSearchData({ ...searchData, [name]: value });
     }
   };
-
-  console.log("Im obsess", searchData);
 
   // Get Default Financial Year
 
@@ -694,130 +772,316 @@ function DrawingOfficerList() {
           <Card>
             <Card.Body>
               <Row className="g-gs">
-                <Col sm={8} lg={12}>
-                  <Form.Group as={Row} className="form-group" id="fid">
-                    <Form.Label column sm={1} lg={2}>
-                      Search
-                    </Form.Label>
-                    <Col sm={1} lg={2} style={{ marginLeft: "-10%" }}>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="financialYearMasterId"
-                          value={data.financialYearMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.financialYearMasterId === undefined ||
-                            data.financialYearMasterId === "0"
-                          }
-                        >
-                          <option value="">Select Year</option>
-                          {financialyearListData.map((list) => (
-                            <option
-                              key={list.financialYearMasterId}
-                              value={list.financialYearMasterId}
-                            >
-                              {list.financialYear}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </div>
-                    </Col>
+                <Col lg={12}>
+                  {/* <Block className="mt-3"> */}
+                    {/* <Card> */}
+                      {/* <Card.Header style={{ fontWeight: "bold" }}>
+                        Scheme Details
+                      </Card.Header> */}
+                      {/* <Card.Body> */}
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n2">
+                              <Form.Label>
+                                Financial Year
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="financialYearMasterId"
+                                  value={data.financialYearMasterId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.financialYearMasterId === undefined ||
+                                    data.financialYearMasterId === "0"
+                                  }
+                                >
+                                  <option value="">Select Year</option>
+                                  {financialyearListData.map((list) => (
+                                    <option
+                                      key={list.financialYearMasterId}
+                                      value={list.financialYearMasterId}
+                                    >
+                                      {list.financialYear}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Financial Year is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n2">
+                              <Form.Label>
+                                Component Type
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scSubSchemeDetailsId"
+                                  value={data.scSubSchemeDetailsId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  required
+                                  isInvalid={
+                                    data.scSubSchemeDetailsId === undefined ||
+                                    data.scSubSchemeDetailsId === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Component Type
+                                  </option>
+                                  {scSubSchemeDetailsListData.map((list) => (
+                                    <option
+                                      key={list.scSubSchemeDetailsId}
+                                      value={list.scSubSchemeDetailsId}
+                                    >
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Component Type is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          {/* <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                                Scheme Type
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scSubSchemeType"
+                                  value={data.scSubSchemeType}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  required
+                                  isInvalid={
+                                    data.scSubSchemeType === undefined ||
+                                    data.scSubSchemeType === "0"
+                                  }
+                                >
+                                  <option value="">Select Sub Scheme</option>
+                                  {schemeQuotaDetailsListData.map((list) => (
+                                    <option
+                                      key={list.schemeQuotaId}
+                                      value={list.schemeQuotaId}
+                                    >
+                                      {list.schemeQuotaName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Sub Scheme is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col> */}
 
-                    <Col sm={1} lg={2}>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="type"
-                          value={searchData.type}
-                          onChange={handleSearchInputs}
-                        >
-                          {/* <option value="">Select</option> */}
-                          <option value="1">Application Id</option>
-                          <option value="2">Sub Scheme</option>
-                          <option value="3">Fruits Id</option>
-                          <option value="4">Sanction Order Number</option>
-                        </Form.Select>
-                      </div>
-                    </Col>
-                    {searchData.type == 2 ? (
-                      <Col sm={2} lg={2}>
-                        <Form.Select
-                          name="searchText"
-                          value={searchData.searchText}
-                          onChange={handleSearchInputs}
-                          onBlur={() => handleSearchInputs}
-                          // multiple
-                          required
-                          isInvalid={
-                            searchData.searchText === undefined ||
-                            searchData.searchText === "0"
-                          }
-                        >
-                          <option value="">Select Sub Scheme</option>
-                          {scSubSchemeDetailsListData.map((list) => (
-                            <option
-                              key={list.scSubSchemeDetailsId}
-                              value={list.scSubSchemeDetailsId}
-                            >
-                              {list.subSchemeName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Sub Scheme is required
-                        </Form.Control.Feedback>
-                      </Col>
-                    ) : (
-                      <Col sm={2} lg={2}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="searchText"
-                          value={searchData.searchText}
-                          onChange={handleSearchInputs}
-                          type="text"
-                          placeholder="Search"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Field Value is Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    )}
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Scheme
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scSchemeDetailsId"
+                                  value={data.scSchemeDetailsId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  required
+                                  isInvalid={
+                                    data.scSchemeDetailsId === undefined ||
+                                    data.scSchemeDetailsId === "0"
+                                  }
+                                >
+                                  <option value="">Select Scheme Names</option>
+                                  {scSchemeDetailsListData.map((list) => (
+                                    <option
+                                      key={list.scSchemeDetailsId}
+                                      value={list.scSchemeDetailsId}
+                                    >
+                                      {list.schemeName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Scheme is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
-                    <Col sm={2} lg={3}>
-                      <Button type="submit" variant="primary">
-                        Search
-                      </Button>
-                    </Col>
-                    {}
-                    {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
-                    {/* <Col sm={1} lg={2} style={{ marginLeft: "-15%" }}>
-                      <Link
-                        to="/seriui/stake-holder-registration"
-                        className="btn btn-primary border-0"
-                      >
-                        Add New
-                      </Link>
-                    </Col> */}
-                    {/* <Col sm={1} lg={3} style={{ marginLeft: "-5%" }}>
-                      <Form.Group as={Row} className="form-group" id="date">
-                        <Form.Label column sm={2} lg={3}>
-                          Date
-                        </Form.Label>
-                        <Col sm={1} lg={1} style={{ marginLeft: "-10%" }}>
-                          <div className="form-control-wrap">
-                            <DatePicker
-                              dateFormat="dd/MM/yyyy"
-                              selected={new Date()}
-                              // className="form-control"
-                              readOnly
-                            />
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col> */}
-                  </Form.Group>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Head of Account
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scHeadAccountId"
+                                  value={data.scHeadAccountId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  required
+                                  isInvalid={
+                                    data.scHeadAccountId === undefined ||
+                                    data.scHeadAccountId === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Head of Account
+                                  </option>
+                                  {scHeadAccountListData.map((list) => (
+                                    <option
+                                      key={list.scHeadAccountId}
+                                      value={list.scHeadAccountId}
+                                    >
+                                      {list.scHeadAccountName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Head of Account is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Category
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scCategoryId"
+                                  value={data.scCategoryId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  // required
+                                  isInvalid={
+                                    data.scCategoryId === undefined ||
+                                    data.scCategoryId === "0"
+                                  }
+                                >
+                                  <option value="">Select Category</option>
+                                  {scCategoryListData.map((list) => (
+                                    <option
+                                      key={list.scCategoryId}
+                                      value={list.scCategoryId}
+                                    >
+                                      {list.codeNumber}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Category is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">
+                                Component
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scComponentId"
+                                  value={data.scComponentId}
+                                  onChange={handleInputs}
+                                  onBlur={() => handleInputs}
+                                  // multiple
+                                  // required
+                                  isInvalid={
+                                    data.scComponentId === undefined ||
+                                    data.scComponentId === "0"
+                                  }
+                                >
+                                  <option value="">Select Component</option>
+                                  {scComponentListData.map((list) => (
+                                    <option
+                                      key={list.scComponentId}
+                                      value={list.scComponentId}
+                                    >
+                                      {list.scComponentName}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Component is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="schemeAmount">
+                                Scheme Amount
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="schemeAmount"
+                                  type="text"
+                                  name="schemeAmount"
+                                  value={data.schemeAmount}
+                                  onChange={handleInputs}
+                                  placeholder="Enter Scheme Amount"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Scheme Amount is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sanctionNumber">
+                                Sanction Number
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sanctionNumber"
+                                  type="text"
+                                  name="sanctionNumber"
+                                  value={data.sanctionNumber}
+                                  onChange={handleInputs}
+                                  placeholder="Enter Sanction Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Sanction Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      {/* </Card.Body> */}
+                    {/* </Card> */}
+                  {/* </Block> */}
                 </Col>
               </Row>
             </Card.Body>
