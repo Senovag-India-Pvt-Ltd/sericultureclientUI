@@ -231,7 +231,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="title">
-                      Dbt Code
+                      DBT Code
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -241,11 +241,11 @@ function ScSchemeDetailsEdit() {
                           type="text"
                           value={data.dbtCode}
                           onChange={handleInputs}
-                          placeholder="Enter Dbt Code"
+                          placeholder="Enter DBT Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Dbt Code is required
+                        DBT Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

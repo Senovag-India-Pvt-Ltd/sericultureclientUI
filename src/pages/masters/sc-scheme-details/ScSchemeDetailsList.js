@@ -206,7 +206,7 @@ function ScSchemeDetailsList() {
         hide: "md",
       },
       {
-        name: "Dbt Code",
+        name: "DBT Code",
         selector: (row) => row.dbtCode,
         cell: (row) => <span>{row.dbtCode}</span>,
         sortable: true,
