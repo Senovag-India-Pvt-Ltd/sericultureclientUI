@@ -217,6 +217,22 @@ function ScSubSchemeDetailsEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
+                  <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="withLand"
+                          checked={data.withLand}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        With Land
+                      </Form.Label>
+                    </Form.Group>
+
                     <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
@@ -249,7 +265,7 @@ function ScSubSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeName">
-                        Sub Scheme Name<span className="text-danger">*</span>
+                         Component Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -258,11 +274,11 @@ function ScSubSchemeDetailsEdit() {
                           name="subSchemeName"
                           value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Scheme Name"
+                          placeholder="Enter  Component Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Scheme Name is required
+                        Component Type is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -271,7 +287,7 @@ function ScSubSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="subSchemeNameInKannada">
-                        Sub Scheme Name In Kannada<span className="text-danger">*</span>
+                      Component Type In Kannada<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -280,11 +296,11 @@ function ScSubSchemeDetailsEdit() {
                           name="subSchemeNameInKannada"
                           value={data.subSchemeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Scheme Name"
+                          placeholder="Enter Component Type"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Sub Scheme Name In Kannada is required
+                        Component Type In Kannada is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

@@ -103,13 +103,13 @@ function ScSubSchemeDetailsView() {
                         <td>{ScSubSchemeDetails.schemeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Sub Scheme Name:</td>
+                        <td style={styles.ctstyle}> Component Type:</td>
                         <td>{ScSubSchemeDetails.subSchemeName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Sub Scheme Name in Kannada:
+                          Component Type in Kannada:
                         </td>
                         <td>{ScSubSchemeDetails.subSchemeNameInKannada}</td>
                       </tr>

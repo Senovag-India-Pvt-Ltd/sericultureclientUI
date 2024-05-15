@@ -419,7 +419,6 @@ function MapComponent() {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Component 
-                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -427,7 +426,7 @@ function MapComponent() {
                         value={data.scComponentId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
-                        required
+                        // required
                         isInvalid={
                           data.scComponentId === undefined ||
                           data.scComponentId === "0"
@@ -466,7 +465,7 @@ function MapComponent() {
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         // multiple
-                        // required
+                        required
                         isInvalid={
                           data.headOfAccountId === undefined ||
                           data.headOfAccountId === "0"
@@ -495,7 +494,6 @@ function MapComponent() {
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       Category
-                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -504,7 +502,7 @@ function MapComponent() {
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         // multiple
-                        // required
+                        required
                         isInvalid={
                           data.categoryId === undefined ||
                           data.categoryId === "0"
