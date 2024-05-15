@@ -73,6 +73,26 @@ function ServiceApplication() {
     payToVendor: false,
   });
 
+  const [developedArea, setDevelopedArea] = useState({
+    devacre: 0,
+    devgunta: 0,
+    devfgunta: 0,
+  });
+
+  // const
+
+  const handleInlineDevelopedLandChange = (e, row) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedRow = { ...row, [name]: value };
+    const updatedDataList = landDetailsList.map((rowData) =>
+      rowData.farmerLandDetailsId === row.farmerLandDetailsId ? updatedRow : rowData
+    );
+
+    console.log(updatedDataList);
+    // setDevelopedArea({ ...developedArea, [name]: value });
+  };
+
   // Display Image
   const [documentAttachments, setDocumentAttachments] = useState({});
   const handleAttachFileChange = (e, documentId) => {
@@ -92,6 +112,8 @@ function ServiceApplication() {
     }
     // setPhotoFile(file);
   };
+
+  console.log("showdev", developedArea);
 
   const handleRemoveImage = (documentId) => {
     const updatedDocument = { ...documentAttachments };
@@ -994,34 +1016,37 @@ function ServiceApplication() {
 
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
-      selector: (row) => row.acre,
+      // selector: (row) => row.acre,
       cell: (row) => (
         <>
           <Form.Control
             // id="farmerName"
-            // name="farmerName"
+            name="acre"
             type="text"
-            value={row.acre}
-            // onChange={handleInputs}
-            placeholder="Edit Acre"
+            value={developedArea.devacre}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="Acre"
+            className="m-1"
           />
 
           <Form.Control
             // id="farmerName"
-            // name="farmerName"
+            name="gunta"
             type="text"
-            value={row.acre}
-            // onChange={handleInputs}
-            placeholder="Edit Acre"
+            value={developedArea.devgunta}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="Gunta"
+            className="m-1"
           />
 
           <Form.Control
             // id="farmerName"
-            // name="farmerName"
+            name="fgunta"
             type="text"
-            value={row.acre}
-            // onChange={handleInputs}
-            placeholder="Edit Acre"
+            value={developedArea.devfgunta}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="Fgunta"
+            className="m-1"
           />
         </>
       ),
