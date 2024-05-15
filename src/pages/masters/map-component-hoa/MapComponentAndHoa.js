@@ -525,7 +525,7 @@ function MapComponent() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidend">
                             Unit Cost
@@ -547,7 +547,9 @@ function MapComponent() {
                             
                           </div>
                         </Form.Group>
-                      </Col>
+                      </Col> */}
+
+
                       <Col lg="6">
 
                   <Form.Group className="form-group mt-n4">
@@ -584,7 +586,6 @@ function MapComponent() {
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidend">
                             Min QTY
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -594,7 +595,7 @@ function MapComponent() {
                               onChange={handleInputs}
                               type="number"
                               placeholder="Enter Min QTY"
-                              required
+                              // required
                             />
                             <Form.Control.Feedback type="invalid">
                             Min QTY is required
@@ -607,7 +608,6 @@ function MapComponent() {
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
                            Max QTY
-                            <span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
@@ -617,7 +617,7 @@ function MapComponent() {
                               onChange={handleInputs}
                               type="number"
                               placeholder="Enter Max QTY"
-                              required
+                              // required
                             />
                             <Form.Control.Feedback type="invalid">
                             Max QTY is required
