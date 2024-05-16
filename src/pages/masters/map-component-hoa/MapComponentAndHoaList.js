@@ -28,9 +28,9 @@ function MapComponentAndHoaList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLDBT + `scSchemeDetails/list-with-join`, _params)
+      .get(baseURLDBT + `/master/cost/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.ScSchemeDetails);
+        setListData(response.data.content.unitCost);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -72,7 +72,7 @@ function MapComponentAndHoaList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLDBT + `scSchemeDetails/delete/${_id}`)
+          .delete(baseURLDBT + `/master/cost/scSchemeDetails/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();

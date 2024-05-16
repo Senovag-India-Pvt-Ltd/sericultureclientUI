@@ -1020,7 +1020,7 @@ function MapComponent() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Trainer</Modal.Title>
+          <Modal.Title>Add Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1146,7 +1146,7 @@ function MapComponent() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Trainer</Modal.Title>
+          <Modal.Title>Edit Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1241,23 +1241,13 @@ function MapComponent() {
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    {/* <Button
-                      variant="success"
-                      onClick={() => handleUpdate(vbId, vbAccount)}
-                    > */}
+                    
                     <Button type="submit" variant="success">
                       Update
                     </Button>
                   </div>
-                  {/* <div className="gap-col">
-                    <Button variant="danger" onClick={handleCloseModal1}>
-                      Reject
-                    </Button>
-                  </div> */}
+                  
                   <div className="gap-col">
-                    {/* <Button variant="secondary" onClick={handleCloseModal2}>
-                      Cancel
-                    </Button> */}
                     <Button
                       type="button"
                       variant="secondary"

@@ -802,6 +802,7 @@ import ApplicationDashboard from "../pages/services-module/application/Applicati
 import DashboardList from "../pages/services-module/application/DashboardList";
 import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
 import DbtApplication from "../pages/services-module/application/DbtApplication";
+import MapComponentAndHoaList from "../pages/masters/map-component-hoa/MapComponentAndHoaList";
 // Admin and Reports
 
 function Router() {
@@ -2639,6 +2640,7 @@ function Router() {
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route path="map-component" element={<MapComponent />} />
+            <Route path="map-component-list" element={<MapComponentAndHoaList />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
