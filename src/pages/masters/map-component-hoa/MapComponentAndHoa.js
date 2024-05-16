@@ -901,7 +901,7 @@ function MapComponent() {
 
             <Block className="mt-3">
             <Card>
-              <Card.Header>Add Trainer</Card.Header>
+              <Card.Header>Add Details</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -1029,7 +1029,7 @@ function MapComponent() {
             validated={validatedMapComponent}
             onSubmit={handleAdd}
           >
-            <Row className="g-5 px-5">
+            <Row className="g-5">
             <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
@@ -1155,7 +1155,7 @@ function MapComponent() {
             validated={validatedMapComponentEdit}
             onSubmit={(e) => handleUpdate(e, mapComponentId, mapComponent)}
           >
-            <Row className="g-5 px-5">
+            <Row className="g-5">
             <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
