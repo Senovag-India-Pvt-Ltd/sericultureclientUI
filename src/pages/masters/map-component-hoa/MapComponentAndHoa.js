@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import Layout from "../../../layout/default";
@@ -13,25 +13,106 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MapComponent() {
+  const [mapList, setMapList] = useState([]);
+  const [mapComponent, setMapComponent] = useState({
+    categoryId: "",
+    shareInPercentage: "",
+    unitCostInRupees: "",
+  });
+
+  const [validated, setValidated] = useState(false);
+  const [validatedMapComponent, setValidatedMapComponent] = useState(false);
+  const [validatedMapComponentEdit, setValidatedMapComponentEdit] =
+    useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleAdd = (e) => {
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidatedMapComponent(true);
+    } else {
+      e.preventDefault();
+      setMapList((prev) => [...prev, mapComponent]);
+      setMapComponent({
+        categoryId: "",
+        shareInPercentage: "",
+        unitCostInRupees: "",
+      });
+      setShowModal(false);
+      setValidatedMapComponent(false);
+    }
+  };
+
+  const handleDelete = (i) => {
+    setMapList((prev) => {
+      const newArray = prev.filter((item, place) => place !== i);
+      return newArray;
+    });
+  };
+
+  const [mapComponentId, setMapComponentId] = useState();
+  const handleGet = (i) => {
+    setMapComponent(mapList[i]);
+    setShowModal2(true);
+    setMapComponentId(i);
+  };
+
+  const handleUpdate = (e, i, changes) => {
+    setMapList((prev) =>
+      prev.map((item, ix) => {
+        if (ix === i) {
+          return { ...item, ...changes };
+        }
+        return item;
+      })
+    );
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidatedMapComponentEdit(true);
+    } else {
+      e.preventDefault();
+      setShowModal2(false);
+      setValidatedMapComponentEdit(false);
+      setMapComponent({
+        categoryId: "",
+        shareInPercentage: "",
+        unitCostInRupees: "",
+      });
+    }
+  };
+
+  const handleMapInputs = (e) => {
+    const { name, value } = e.target;
+    setMapComponent({ ...mapComponent, [name]: value });
+  };
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+
   const [data, setData] = useState({
     headOfAccountId: "",
     schemeId: "",
     subSchemeId: "",
     scComponentId: "",
-    categoryId: "",
     unitType:"",
     measurementUnit: "",
     isFullPrice: "",
     minQty: "",
     maxQty: "",
-    unitCostInRupees: "",
-    schemeQuotaId: "",
-    shareInPercentage: "",
-    
+    maxAmount: "",
+    minAmount: "",
+    schemeQuotaId: "", 
   });
-
-
-  const [validated, setValidated] = useState(false);
 
   let name, value;
   const handleInputs = (e) => {
@@ -61,16 +142,15 @@ function MapComponent() {
               headOfAccountId: "",
               schemeId: "",
               subSchemeId: "",
-              categoryId: "",
               scComponentId: "",
               unitType:"",
               measurementUnit: "",
               isFullPrice: "",
               minQty: "",
               maxQty: "",
-              unitCostInRupees: "",
+              maxAmount: "",
+              minAmount: "",
               schemeQuotaId: "",
-              shareInPercentage: "",
             });
             setValidated(false);
           // }
@@ -96,17 +176,24 @@ function MapComponent() {
       headOfAccountId: "",
       schemeId: "",
       subSchemeId: "",
-      categoryId: "",
       scComponentId: "",
       unitType:"",
       measurementUnit: "",
       isFullPrice: "",
       minQty: "",
       maxQty: "",
-      unitCostInRupees: "",
+      maxAmount: "",
+      minAmount: "",
       schemeQuotaId: "",
-      shareInPercentage: "",
 
+    });
+  };
+
+  const mapComponentClear = () => {
+    setMapComponent({
+      categoryId: "",
+        shareInPercentage: "",
+        unitCostInRupees: "",
     });
   };
 
@@ -116,6 +203,18 @@ function MapComponent() {
       ...prev,
       isFullPrice: e.target.checked,
     }));
+  };
+
+  // Handle Options
+  // TrainerUser
+  const handleMapComponentOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setMapComponent({
+      ...mapComponent,
+      categoryId: chooseId,
+      categoryName: chooseName,
+    });
   };
 
 
@@ -275,10 +374,10 @@ function MapComponent() {
             </nav> */}
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
+            <ul className="d-flex">
               <li>
                 <Link
-                  to="#"
+                  to="/seriui/map-component-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -287,14 +386,14 @@ function MapComponent() {
               </li>
               <li>
                 <Link
-                  to="#"
+                  to="/seriui/map-component-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul> */}
+            </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -490,7 +589,7 @@ function MapComponent() {
                
 
                 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
                       Category
@@ -501,7 +600,6 @@ function MapComponent() {
                         value={data.categoryId}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
-                        // multiple
                         required
                         isInvalid={
                           data.categoryId === undefined ||
@@ -523,9 +621,9 @@ function MapComponent() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                {/* <Col lg="6">
+                <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidend">
                             Unit Cost
@@ -547,7 +645,7 @@ function MapComponent() {
                             
                           </div>
                         </Form.Group>
-                      </Col> */}
+                      </Col>
 
 
                       <Col lg="6">
@@ -630,6 +728,51 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
+                           Maximum Amount
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="maxAmount"
+                              name="maxAmount"
+                              value={data.maxAmount}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Maximum Amount"
+                              // required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Maximum Amount is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="secbidstart">
+                          Minimum Amount
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="minAmount"
+                              name="minAmount"
+                              value={data.minAmount}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Minimum Amount"
+                              // required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Minimum Amount is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      {/* <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="secbidstart">
                            Unit Cost In Rupees
                             <span className="text-danger">*</span>
                           </Form.Label>
@@ -649,7 +792,7 @@ function MapComponent() {
                             
                           </div>
                         </Form.Group>
-                      </Col>
+                      </Col> */}
 
                 
 
@@ -690,7 +833,7 @@ function MapComponent() {
                 </Col> */}
 
 
-                      <Col lg="6">
+                      {/* <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
                             Share in %
@@ -712,7 +855,7 @@ function MapComponent() {
                            
                           </div>
                         </Form.Group>
-                      </Col>
+                      </Col> */}
                       <Col lg="6">
                         {/* <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
@@ -756,6 +899,106 @@ function MapComponent() {
               </Card.Body>
             </Card>
 
+            <Block className="mt-3">
+            <Card>
+              <Card.Header>Add Trainer</Card.Header>
+              <Card.Body>
+                {/* <h3>Virtual Bank account</h3> */}
+                <Row className="g-gs mb-1">
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-1">
+                      <div className="form-control-wrap"></div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
+                      <div className="form-control-wrap">
+                        <ul className="">
+                          <li>
+                            <Button
+                              className="d-md-none"
+                              size="md"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              className="d-none d-md-inline-flex"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                        </ul>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                {mapList.length > 0 ? (
+                  <Row className="g-gs">
+                    <Block>
+                      <Card>
+                        <div
+                          className="table-responsive"
+                          // style={{ paddingBottom: "30px" }}
+                        >
+                          <table className="table small">
+                            <thead>
+                              <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                {/* <th></th> */}
+                                <th>Action</th>
+                                <th>Category</th>
+                                <th>Unit Of Cost In Rupees</th>
+                                <th>Share in %</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {mapList.map((item, i) => (
+                                <tr>
+                                  <td>
+                                    <div>
+                                      <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() => handleGet(i)}
+                                      >
+                                        Edit
+                                      </Button>
+                                      <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() => handleDelete(i)}
+                                        className="ms-2"
+                                      >
+                                        Delete
+                                      </Button>
+                                    </div>
+                                  </td>
+                                  <td>{item.categoryId}</td>
+                                  <td>{item.unitCostInRupees}</td>
+                                  <td>{item.shareInPercentage}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </Card>
+                    </Block>
+                  </Row>
+                ) : (
+                  ""
+                )}
+              </Card.Body>
+            </Card>
+          </Block>
+
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
@@ -774,6 +1017,261 @@ function MapComponent() {
           </Row>
         </Form>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Add Trainer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedMapComponent}
+            onSubmit={handleAdd}
+          >
+            <Row className="g-5 px-5">
+            <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Category
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="categoryId"
+                        value={mapComponent.categoryId}
+                        onChange={handleMapComponentOption}
+                        onBlur={() => handleMapComponentOption}
+                        required
+                        isInvalid={
+                          data.categoryId === undefined ||
+                          data.categoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {scCategoryListData.map((list) => (
+                          <option
+                            key={list.scCategoryId}
+                            value={list.scCategoryId}
+                          >
+                            {list.codeNumber}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidend">
+                            Unit Cost
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="unitCostInRupees"
+                              name="unitCostInRupees"
+                              value={mapComponent.unitCostInRupees}
+                              onChange={handleMapInputs}
+                              type="text"
+                              placeholder="Enter  Unit Cost"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Unit Cost is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidstart">
+                            Share in %
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="shareInPercentage"
+                              name="shareInPercentage"
+                              value={mapComponent.shareInPercentage}
+                              onChange={handleMapInputs}
+                              type="number"
+                              placeholder="Enter Share in %"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Share in % is required
+                            </Form.Control.Feedback>
+                           
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="success">
+                      Add
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button variant="danger" onClick={handleCloseModal1}>
+                      Reject
+                    </Button>
+                  </div> */}
+                  <div className="gap-col">
+                    {/* <Button variant="secondary" onClick={handleCloseModal}>
+                      Cancel
+                    </Button> */}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={mapComponentClear}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Trainer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedMapComponentEdit}
+            onSubmit={(e) => handleUpdate(e, mapComponentId, mapComponent)}
+          >
+            <Row className="g-5 px-5">
+            <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Category
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="categoryId"
+                        value={mapComponent.categoryId}
+                        onChange={handleMapComponentOption}
+                        onBlur={() => handleMapComponentOption}
+                        required
+                        isInvalid={
+                          mapComponent.categoryId === undefined ||
+                          mapComponent.categoryId === "0"
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {scCategoryListData.map((list) => (
+                          <option
+                            key={list.scCategoryId}
+                            value={list.scCategoryId}
+                          >
+                            {list.codeNumber}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Category is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidend">
+                            Unit Cost
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="unitCostInRupees"
+                              name="unitCostInRupees"
+                              value={mapComponent.unitCostInRupees}
+                              onChange={handleMapInputs}
+                              type="text"
+                              placeholder="Enter  Unit Cost"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Unit Cost is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="bidstart">
+                            Share in %
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="shareInPercentage"
+                              name="shareInPercentage"
+                              value={mapComponent.shareInPercentage}
+                              onChange={handleMapInputs}
+                              type="number"
+                              placeholder="Enter Share in %"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Share in % is required
+                            </Form.Control.Feedback>
+                           
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button
+                      variant="success"
+                      onClick={() => handleUpdate(vbId, vbAccount)}
+                    > */}
+                    <Button type="submit" variant="success">
+                      Update
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button variant="danger" onClick={handleCloseModal1}>
+                      Reject
+                    </Button>
+                  </div> */}
+                  <div className="gap-col">
+                    {/* <Button variant="secondary" onClick={handleCloseModal2}>
+                      Cancel
+                    </Button> */}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={mapComponentClear}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
