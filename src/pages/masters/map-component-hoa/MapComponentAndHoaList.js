@@ -28,7 +28,7 @@ function MapComponentAndHoaList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLDBT + `/master/cost/list-with-join`, _params)
+      .get(baseURLDBT + `master/cost/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.unitCost);
         setTotalRows(response.data.content.totalItems);
@@ -143,40 +143,40 @@ function MapComponentAndHoaList() {
   };
 
   const ScSchemeDetailsDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.scSchemeDetailsId)}
-          >
-            View
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.scSchemeDetailsId)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.scSchemeDetailsId)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     //   Button style
+    //     <div className="text-start w-100">
+    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => handleView(row.scSchemeDetailsId)}
+    //       >
+    //         View
+    //       </Button>
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         className="ms-2"
+    //         onClick={() => handleEdit(row.scSchemeDetailsId)}
+    //       >
+    //         Edit
+    //       </Button>
+    //       <Button
+    //         variant="danger"
+    //         size="sm"
+    //         onClick={() => deleteConfirm(row.scSchemeDetailsId)}
+    //         className="ms-2"
+    //       >
+    //         Delete
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
     {
         name: "Head Of Account",
         selector: (row) => row.scHeadAccountName,

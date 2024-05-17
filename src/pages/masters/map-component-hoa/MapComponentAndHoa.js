@@ -64,6 +64,8 @@ function MapComponent() {
     setMapComponentId(i);
   };
 
+  console.log(mapList);
+
   const handleUpdate = (e, i, changes) => {
     setMapList((prev) =>
       prev.map((item, ix) => {
@@ -112,6 +114,7 @@ function MapComponent() {
     maxAmount: "",
     minAmount: "",
     schemeQuotaId: "", 
+    unitCostDetailsRequests: []
   });
 
   let name, value;
@@ -130,28 +133,46 @@ function MapComponent() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      const sendPost = {
+        headOfAccountId: data.headOfAccountId,
+        schemeId: data.schemeId,
+        subSchemeId: data.subSchemeId,
+        scComponentId: data.scComponentId,
+        // landDetailId: landDetailsIds[0],
+        unitType: data.unitType,
+        measurementUnit: data.measurementUnit,
+        isFullPrice: data.isFullPrice,
+        minQty: data.minQty,
+        maxQty: data.maxQty,
+        maxAmount: data.maxAmount,
+        minAmount: data.minAmount,
+        schemeQuotaId: data.schemeQuotaId,
+        unitCostDetailsRequests: mapList,
+
+        
+      };
       api
-        .post(baseURLDBT + `master/cost/saveUnitCost`, data)
+        .post(baseURLDBT + `master/cost/saveUnitCost`, sendPost)
         .then((response) => {
           // if (response.data.content.error) {
           //   saveError(response.data.content.error_description);
           // } else {
             saveSuccess();
-            setData({
-              headOfAccountId: "",
-              schemeId: "",
-              subSchemeId: "",
-              scComponentId: "",
-              unitType:"",
-              measurementUnit: "",
-              isFullPrice: "",
-              minQty: "",
-              maxQty: "",
-              maxAmount: "",
-              minAmount: "",
-              schemeQuotaId: "",
-            });
+            // setData({
+            //   headOfAccountId: "",
+            //   schemeId: "",
+            //   subSchemeId: "",
+            //   scComponentId: "",
+            //   unitType:"",
+            //   measurementUnit: "",
+            //   isFullPrice: "",
+            //   minQty: "",
+            //   maxQty: "",
+            //   maxAmount: "",
+            //   minAmount: "",
+            //   schemeQuotaId: "",
+            // });
+            clear();
             setValidated(false);
           // }
         })
