@@ -789,10 +789,10 @@ import BudgetDistrictExtensionList from "../pages/target-settings/budgetextensio
 import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
 
 import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
-import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
-import DashboardList from "../pages/services-module/application/DashboardList";
-import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
-import DbtApplication from "../pages/services-module/application/DbtApplication";
+// import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
+// import DashboardList from "../pages/services-module/application/DashboardList";
+// import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
+// import DbtApplication from "../pages/services-module/application/DbtApplication";
 import SchemeQuotaList from "../pages/masters/scheme-quota/SchemeQuotaList";
 import SchemeQuota from "../pages/masters/scheme-quota/SchemeQuota";
 import SchemeQuotaView from "../pages/masters/scheme-quota/SchemeQuotaView";
