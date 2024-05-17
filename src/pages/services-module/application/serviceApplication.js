@@ -18,6 +18,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function ServiceApplication() {
   // Translation
@@ -39,6 +40,8 @@ function ServiceApplication() {
     schemeAmount: "",
     sanctionNumber: "",
   });
+
+  const [applicationId, setApplicationId] = useState("");
 
   // to get scheme-Quota-details
   const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
@@ -73,25 +76,32 @@ function ServiceApplication() {
     payToVendor: false,
   });
 
-  const [developedArea, setDevelopedArea] = useState({
-    devacre: 0,
-    devgunta: 0,
-    devfgunta: 0,
-  });
+  const [developedArea, setDevelopedArea] = useState([]);
+
+  const transformedData = Object.keys(developedArea).map((id) => ({
+    landDeveloped: developedLand.landDeveloped,
+    landDetailId: parseInt(id),
+    ...developedArea[id],
+  }));
+
+  // console.log(transformedData);
 
   // const
 
   const handleInlineDevelopedLandChange = (e, row) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    const updatedRow = { ...row, [name]: value };
-    const updatedDataList = landDetailsList.map((rowData) =>
-      rowData.farmerLandDetailsId === row.farmerLandDetailsId ? updatedRow : rowData
-    );
+    const { name, value } = e.target;
+    const farmerLandDetailsId = row.farmerLandDetailsId;
 
-    console.log(updatedDataList);
-    // setDevelopedArea({ ...developedArea, [name]: value });
+    setDevelopedArea((prevData) => ({
+      ...prevData,
+      [farmerLandDetailsId]: {
+        ...prevData[farmerLandDetailsId],
+        [name]: value,
+      },
+    }));
   };
+
+  console.log(developedArea);
 
   // Display Image
   const [documentAttachments, setDocumentAttachments] = useState({});
@@ -122,6 +132,81 @@ function ServiceApplication() {
     document.getElementById(`attImage${documentId}`).value = "";
     // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
   };
+
+  const [landDetailsIds, setLandDetailsIds] = useState([]);
+
+  // const handleCheckboxChange = (_id) => {
+  //   // if (landDetailsIds.includes(_id)) {
+  //   //   const dataList = [...landDetailsIds];
+  //   //   const newDataList = dataList.filter((data) => data !== _id);
+  //   //   setLandDetailsIds(newDataList);
+  //   // } else {
+  //   //   setLandDetailsIds((prev) => [...prev, _id]);
+  //   // }
+  //   setLandDetailsIds((prevIds) => {
+  //     if (prevIds.includes(_id)) {
+  //       const updatedIds = prevIds.filter(id => id !== _id);
+  //       // Remove corresponding developed area data
+  //       const { [_id]: _, ...rest } = developedArea;
+  //       setDevelopedArea(rest);
+  //       return updatedIds;
+  //     } else {
+  //       return [...prevIds, _id];
+  //     }
+  //   });
+  // };
+
+  // const handleCheckboxChange = (farmerLandDetailsId) => {
+  //   setLandDetailsIds((prevIds) => {
+  //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+  //     const newIds = isAlreadySelected
+  //       ? prevIds.filter((id) => id !== farmerLandDetailsId)
+  //       : [...prevIds, farmerLandDetailsId];
+
+  //     if (!isAlreadySelected) {
+  //       setDevelopedArea((prevData) => ({
+  //         ...prevData,
+  //         [farmerLandDetailsId]: {
+  //           acre: prevData[farmerLandDetailsId]?.acre || "0",
+  //           gunta: prevData[farmerLandDetailsId]?.gunta || "0",
+  //           fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+  //         },
+  //       }));
+  //     }
+
+  //     return newIds;
+  //   });
+  // };
+
+  const handleCheckboxChange = (farmerLandDetailsId) => {
+    setLandDetailsIds((prevIds) => {
+      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      const newIds = isAlreadySelected
+        ? prevIds.filter((id) => id !== farmerLandDetailsId)
+        : [...prevIds, farmerLandDetailsId];
+
+      setDevelopedArea((prevData) => {
+        if (isAlreadySelected) {
+          const { [farmerLandDetailsId]: _, ...rest } = prevData;
+          return rest;
+        } else {
+          // If selected, add to developedArea
+          return {
+            ...prevData,
+            [farmerLandDetailsId]: {
+              acre: prevData[farmerLandDetailsId]?.acre || "0",
+              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
+              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+            },
+          };
+        }
+      });
+
+      return newIds;
+    });
+  };
+
+  console.log(landDetailsIds);
 
   // console.log(documentAttachments);
 
@@ -190,12 +275,29 @@ function ServiceApplication() {
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
-  // const getSubSchemeList = (_id) => {
-  //   const response = api
-  //     .get(
-  //       baseURLMasterData +
-  //         `scSubSchemeDetails/get-by-sc-scheme-details-id/${_id}`
-  //     )
+  const getSubSchemeList = (_id) => {
+    api
+      .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScSubSchemeDetailsListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSchemeDetailsId) {
+      getSubSchemeList(data.scSchemeDetailsId);
+    }
+  }, [data.scSchemeDetailsId]);
+
+  // const getSubSchemeList = () => {
+  //    api
+  //     .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
   //     .then((response) => {
   //       if (response.data.content.scSubSchemeDetails) {
   //         setScSubSchemeDetailsListData(
@@ -210,30 +312,8 @@ function ServiceApplication() {
   // };
 
   // useEffect(() => {
-  //   if (data.scSchemeDetailsId) {
-  //     getSubSchemeList(data.scSchemeDetailsId);
-  //   }
-  // }, [data.scSchemeDetailsId]);
-
-  const getSubSchemeList = () => {
-    const response = api
-      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-      .then((response) => {
-        if (response.data.content.scSubSchemeDetails) {
-          setScSubSchemeDetailsListData(
-            response.data.content.scSubSchemeDetails
-          );
-        }
-      })
-      .catch((err) => {
-        setScSubSchemeDetailsListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getSubSchemeList();
-  }, []);
+  //   getSubSchemeList();
+  // }, []);
 
   // Get Default Financial Year
 
@@ -261,11 +341,14 @@ function ServiceApplication() {
   // to get component
   const [scComponentListData, setScComponentListData] = useState([]);
 
-  const getComponentList = () => {
+  const getComponentList = (schemeId, subSchemeId) => {
     api
-      .get(baseURLMasterData + `scComponent/get-all`)
+      .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
       .then((response) => {
-        setScComponentListData(response.data.content.scComponent);
+        setScComponentListData(response.data.content.unitCost);
       })
       .catch((err) => {
         setScComponentListData([]);
@@ -273,8 +356,9 @@ function ServiceApplication() {
   };
 
   useEffect(() => {
-    getComponentList();
-  }, []);
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId)
+      getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   console.log(data);
 
@@ -301,12 +385,20 @@ function ServiceApplication() {
   //     getHeadAccountList(data.scSchemeDetailsId);
   //   }
   // }, [data.scSchemeDetailsId]);
-  const getHeadAccountList = () => {
+  const getHeadAccountList = (schemeId, subSchemeId, scComponentId) => {
     api
-      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .post(
+        baseURLDBT +
+          `master/cost/get-by-schemeId-and-subSchemeId-and-scComponentId`,
+        {
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+          scComponentId: scComponentId,
+        }
+      )
       .then((response) => {
-        if (response.data.content.scHeadAccount) {
-          setScHeadAccountListData(response.data.content.scHeadAccount);
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
         }
       })
       .catch((err) => {
@@ -316,8 +408,18 @@ function ServiceApplication() {
   };
 
   useEffect(() => {
-    getHeadAccountList();
-  }, []);
+    if (
+      data.scSchemeDetailsId &&
+      data.scSubSchemeDetailsId &&
+      data.scComponentId
+    ) {
+      getHeadAccountList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId,
+        data.scComponentId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, data.scComponentId]);
 
   // to get category by head of account id
   const [scCategoryListData, setScCategoryListData] = useState([]);
@@ -398,6 +500,8 @@ function ServiceApplication() {
     getDocList();
   }, []);
 
+  // console.log(applicationId[0]);
+
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
     hobli: "",
@@ -459,6 +563,11 @@ function ServiceApplication() {
   };
 
   const postData = (event) => {
+    const transformedData = Object.keys(developedArea).map((id) => ({
+      landDeveloped: developedLand.landDeveloped,
+      landDetailId: parseInt(id),
+      ...developedArea[id],
+    }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -473,7 +582,7 @@ function ServiceApplication() {
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
         categoryId: data.scCategoryId,
-        landDetailId: landData.landId,
+        landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
         // expectedAmount: data.expectedAmount,
@@ -483,19 +592,21 @@ function ServiceApplication() {
         devFGunta: 0,
         schemeAmount: data.schemeAmount,
         sanctionNumber: data.sanctionNumber,
+        initialAmount: data.expectedAmount,
       };
 
       if (data.equordev === "land") {
-        sendPost.applicationFormLandDetailRequestList = [
-          {
-            unitTypeMasterId: developedLand.unitType,
-            landDeveloped: developedLand.landDeveloped,
-          },
-        ];
+        // sendPost.applicationFormLandDetailRequestList = [
+        //   {
+        //     // unitTypeMasterId: developedLand.unitType,
+        //     landDeveloped: developedLand.landDeveloped,
+        //   },
+        // ];
+        sendPost.applicationFormLandDetailRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
-            unitTypeMasterId: equipment.unitType,
+            // unitTypeMasterId: equipment.unitType,
             lineItemComment: equipment.description,
             cost: equipment.price,
             vendorId: equipment.vendorId,
@@ -507,6 +618,45 @@ function ServiceApplication() {
         return;
       }
       uploadFileConfirm(sendPost);
+    }
+  };
+
+  const generateBiddingSlip = async (applicationId) => {
+    // const newDate = new Date();
+    // const formattedDate =
+    //   newDate.getFullYear() +
+    //   "-" +
+    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
+    //   "-" +
+    //   newDate.getDate().toString().padStart(2, "0");
+
+    try {
+      const response = await api.post(
+        baseURLReport + `getBlankSample`,
+        {
+          applicationFormId: applicationId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // const printWindow = window.open(fileURL);
+      // if (printWindow) {
+      //   printWindow.onload = () => {
+      //     printWindow.print();
+      //   };
+      // } else {
+      //   console.error("Failed to open the print window.");
+      // }
+    } catch (error) {
+      // console.log("error", error);
     }
   };
 
@@ -571,8 +721,6 @@ function ServiceApplication() {
     });
   };
 
-  const [applicationId, setApplicationId] = useState("");
-
   const uploadFileConfirm = (post) => {
     Swal.fire({
       title: "Do you want to Upload the Documents?",
@@ -634,6 +782,7 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
+              generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
 
               // setData({
@@ -910,9 +1059,9 @@ function ServiceApplication() {
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.scApplicationFormId}
-          // checked={applicationIds.includes(row.scApplicationFormId)}
-          // onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+          value={row.farmerLandDetailsId}
+          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
+          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
         />
       ),
       // ignoreRowClick: true,
@@ -1020,32 +1169,27 @@ function ServiceApplication() {
       cell: (row) => (
         <>
           <Form.Control
-            // id="farmerName"
             name="acre"
             type="text"
-            value={developedArea.devacre}
+            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row)}
             placeholder="Acre"
             className="m-1"
           />
-
           <Form.Control
-            // id="farmerName"
             name="gunta"
             type="text"
-            value={developedArea.devgunta}
+            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row)}
             placeholder="Gunta"
             className="m-1"
           />
-
           <Form.Control
-            // id="farmerName"
             name="fgunta"
             type="text"
-            value={developedArea.devfgunta}
+            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, row)}
-            placeholder="Fgunta"
+            placeholder="FGunta"
             className="m-1"
           />
         </>
@@ -1055,60 +1199,6 @@ function ServiceApplication() {
       hide: "md",
       grow: 3,
     },
-    // {
-    //   name: "Dev Gunta",
-    //   selector: (row) => row.gunta,
-    //   cell: (row) => (
-    //     <Form.Control
-    //       // id="farmerName"
-    //       // name="farmerName"
-    //       type="text"
-    //       value={row.gunta}
-    //       // onChange={handleInputs}
-    //       placeholder="Edit Gunta"
-    //     />
-    //   ),
-    //   // cell: (row) => <span>{row.gunta}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-
-    // {
-    //   name: "Dev FGunta",
-    //   selector: (row) => row.fgunta,
-    //   cell: (row) => (
-    //     <Form.Control
-    //       // id="farmerName"
-    //       // name="farmerName"
-    //       type="text"
-    //       value={row.fgunta}
-    //       // onChange={handleInputs}
-    //       placeholder="Edit FGunta"
-    //     />
-    //   ),
-    //   // cell: (row) => <span>{row.gunta}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={setIsDisabled(false)}
-    //       >
-    //         Update
-    //       </Button>
-    //     </div>
-    //   ),
-    //   // cell: (row) => <span>{row.gunta}</span>,
-    //   sortable: false,
-    //   hide: "md",
-    // },
   ];
 
   createTheme(
@@ -1414,11 +1504,8 @@ function ServiceApplication() {
                                 }
                               >
                                 <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData.map((list) => (
-                                  <option
-                                    key={list.scSubSchemeDetailsId}
-                                    value={list.scSubSchemeDetailsId}
-                                  >
+                                {scSubSchemeDetailsListData.map((list, i) => (
+                                  <option key={i} value={list.subSchemeId}>
                                     {list.subSchemeName}
                                   </option>
                                 ))}
@@ -1560,8 +1647,8 @@ function ServiceApplication() {
                                 <option value="">Select Head of Account</option>
                                 {scHeadAccountListData.map((list) => (
                                   <option
-                                    key={list.scHeadAccountId}
-                                    value={list.scHeadAccountId}
+                                    key={list.headOfAccountId}
+                                    value={list.headOfAccountId}
                                   >
                                     {list.scHeadAccountName}
                                   </option>
@@ -1574,10 +1661,10 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Category
+                              Sub Component
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1593,7 +1680,7 @@ function ServiceApplication() {
                                   data.scCategoryId === "0"
                                 }
                               >
-                                <option value="">Select Category</option>
+                                <option value="">Select Sub Component</option>
                                 {scCategoryListData.map((list) => (
                                   <option
                                     key={list.scCategoryId}
@@ -1604,11 +1691,11 @@ function ServiceApplication() {
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Category is required
+                                Sub Component is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col> */}
+                        </Col>
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -1656,10 +1743,10 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col> */}
 
-                        {/* <Col lg="6">
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="expectedAmount">
-                              Expected Amount
+                              Initial Amount
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -1677,7 +1764,7 @@ function ServiceApplication() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col> */}
+                        </Col>
                       </Row>
                     </Card.Body>
                   </Card>
@@ -1900,7 +1987,7 @@ function ServiceApplication() {
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="landDeveloped">
-                                  Land Developed
+                                  Unit Quantity
                                   <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
@@ -1910,11 +1997,11 @@ function ServiceApplication() {
                                     name="landDeveloped"
                                     value={developedLand.landDeveloped}
                                     onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Land Developed"
+                                    placeholder="Enter Unit Quantity"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                    Land Developed is required
+                                    Unit Quantity is required
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
@@ -1973,7 +2060,7 @@ function ServiceApplication() {
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
-                            <Col lg="4">
+                            {/* <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label>
                                   Unit Type
@@ -2004,7 +2091,7 @@ function ServiceApplication() {
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
-                            </Col>
+                            </Col> */}
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label>
