@@ -9,7 +9,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DesignationView() {
+function RejectReasonWorkFlowView() {
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -20,24 +20,24 @@ function DesignationView() {
 
   const { id } = useParams();
   // const [data] = useState(LandCategoryDatas);
-  const [designation, setDesignation] = useState({});
+  const [rejectReasonWorkFlow, setRejectReasonWorkFlow] = useState({});
   const [loading, setLoading] = useState(false);
 
   // grabs the id form the url and loads the corresponding data
   // useEffect(() => {
   //   let findUser = data.find((item) => item.id === id);
-  //   setState(findUser);
+  //   setReelerType(findUser);
   // }, [id, data]);
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `designation/get/${id}`)
+      .get(baseURL + `rejectReasonWorkFlowMaster/get/${id}`)
       .then((response) => {
-        setDesignation(response.data.content);
+        setRejectReasonWorkFlow(response.data.content);
         setLoading(false);
       })
       .catch((err) => {
-        setDesignation({});
+        setRejectReasonWorkFlow({});
         setLoading(false);
       });
   };
@@ -47,17 +47,17 @@ function DesignationView() {
   }, [id]);
 
   return (
-    <Layout title="Designation View">
+    <Layout title="View Reject Reason Work Flow ">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Designation View</Block.Title>
+            <Block.Title tag="h2">View Reject Reason Work Flow</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/designation-list"
+                  to="/seriui/reject-reason-workflow-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -66,7 +66,7 @@ function DesignationView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/designation-list"
+                  to="/seriui/reject-reason-workflow-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -80,7 +80,7 @@ function DesignationView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Designation Details</Card.Header>
+          <Card.Header>Reject Reason Work Flow Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -93,23 +93,13 @@ function DesignationView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{designation.designationId}</td>
+                        <td>{rejectReasonWorkFlow.rejectReasonWorkFlowMasterId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Designation:</td>
-                        <td>{designation.name}</td>
+                        <td style={styles.ctstyle}>Reason:</td>
+                        <td>{rejectReasonWorkFlow.reason}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {" "}
-                          Designation Name in Kannada:
-                        </td>
-                        <td>{designation.designationNameInKannada}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Amount:</td>
-                        <td>{designation.amount}</td>
-                      </tr>
+                      
                     </tbody>
                   </table>
                 </Col>
@@ -122,4 +112,4 @@ function DesignationView() {
   );
 }
 
-export default DesignationView;
+export default RejectReasonWorkFlowView;

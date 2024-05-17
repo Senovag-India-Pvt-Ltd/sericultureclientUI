@@ -8,16 +8,15 @@ import { Icon } from "../../../components";
 import DataTable from "react-data-table-component";
 import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function MapComponentAndHoaList() {
+function RejectReasonWorkFlowList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -28,9 +27,9 @@ function MapComponentAndHoaList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLDBT + `master/cost/list-with-join`, _params)
+      .get(baseURL + `rejectReasonWorkFlowMaster/list`, _params)
       .then((response) => {
-        setListData(response.data.content.unitCost);
+        setListData(response.data.content.rejectReasonWorkFlowMaster);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -46,12 +45,12 @@ function MapComponentAndHoaList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/sc-scheme-details-view/${_id}`);
+    navigate(`/seriui/reject-reason-workflow-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/sc-scheme-details-edit/${_id}`);
-    // navigate("/seriui/state");
+    navigate(`/seriui/reject-reason-workflow-edit/${_id}`);
+    // navigate("/seriui/releerTypeMaster");
   };
 
   const deleteError = () => {
@@ -72,7 +71,7 @@ function MapComponentAndHoaList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLDBT + `/master/cost/scSchemeDetails/delete/${_id}`)
+          .delete(baseURL + `rejectReasonWorkFlowMaster/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -142,153 +141,63 @@ function MapComponentAndHoaList() {
     },
   };
 
-  const ScSchemeDetailsDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.scSchemeDetailsId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.scSchemeDetailsId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.scSchemeDetailsId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+  const RejectReasonWorkFlowDataColumns = [
     {
-        name: "Head Of Account",
-        selector: (row) => row.scHeadAccountName,
-        cell: (row) => <span>{row.scHeadAccountName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: "Unit Type",
-      selector: (row) => row.unitType,
-      cell: (row) => <span>{row.unitType}</span>,
-      sortable: true,
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.rejectReasonWorkFlowMasterId)}
+          >
+            View
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.rejectReasonWorkFlowMasterId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.rejectReasonWorkFlowMasterId)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+      sortable: false,
       hide: "md",
     },
     {
-        name: "Measurement Unit",
-        selector: (row) => row.measurementUnit,
-        cell: (row) => <span>{row.measurementUnit}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Minimum Quantity",
-        selector: (row) => row.minQty,
-        cell: (row) => <span>{row.minQty}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Maximum Quantity",
-        selector: (row) => row.maxQty,
-        cell: (row) => <span>{row.maxQty}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Maximum Amount",
-        selector: (row) => row.maxAmount,
-        cell: (row) => <span>{row.maxAmount}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Minimum Amount",
-        selector: (row) => row.minAmount,
-        cell: (row) => <span>{row.minAmount}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Unit Cost In  Rupees",
-        selector: (row) => row.unitCostInRupees,
-        cell: (row) => <span>{row.unitCostInRupees}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Share in %",
-        selector: (row) => row.shareInPercentage,
-        cell: (row) => <span>{row.shareInPercentage}</span>,
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: "Scheme Name",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      name: "Reason",
+      selector: (row) => row.reason,
+      cell: (row) => <span>{row.reason}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-        name: "Sub Scheme",
-        selector: (row) => row.subSchemeName,
-        cell: (row) => <span>{row.subSchemeName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Category",
-        selector: (row) => row.codeNumber,
-        cell: (row) => <span>{row.codeNumber}</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Scheme Quota",
-        selector: (row) => row.schemeQuotaName,
-        cell: (row) => <span>{row.schemeQuotaName   }</span>,
-        sortable: true,
-        hide: "md",
-      },
-      {
-        name: "Component",
-        selector: (row) => row.scComponentName,
-        cell: (row) => <span>{row.scComponentName   }</span>,
-        sortable: true,
-        hide: "md",
-      },
+    
   ];
 
   return (
-    <Layout title="List Of Map Component and Hoa">
+    <Layout title="List of Reject Reason Work Flow">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Map Component and Hoa</Block.Title>
+            <Block.Title tag="h2">List of Reject Reason Work Flow</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/map-component"
+                  to="/seriui/reject-reason-workflow"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -297,7 +206,7 @@ function MapComponentAndHoaList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/map-component"
+                  to="/seriui/reject-reason-workflow"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -312,9 +221,8 @@ function MapComponentAndHoaList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
-            // title="TrainingProgram List"
             tableClassName="data-table-head-light table-responsive"
-            columns={ScSchemeDetailsDataColumns}
+            columns={RejectReasonWorkFlowDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -335,4 +243,4 @@ function MapComponentAndHoaList() {
   );
 }
 
-export default MapComponentAndHoaList;
+export default RejectReasonWorkFlowList;

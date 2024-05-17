@@ -803,6 +803,11 @@ import DashboardList from "../pages/services-module/application/DashboardList";
 import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
 import DbtApplication from "../pages/services-module/application/DbtApplication";
 import MapComponentAndHoaList from "../pages/masters/map-component-hoa/MapComponentAndHoaList";
+import UserHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserHierarchyMapping";
+import RejectReasonWorkFlowMaster from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlow";
+import RejectReasonWorkFlowList from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowList";
+import RejectReasonWorkFlowView from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowView";
+import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowEdit";
 // Admin and Reports
 
 function Router() {
@@ -2379,7 +2384,14 @@ function Router() {
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
-
+            <Route path="reject-reason-workflow" element={<RejectReasonWorkFlowMaster />} />
+            <Route path="reject-reason-workflow-list" element={<RejectReasonWorkFlowList />} />
+            <Route path="reject-reason-workflow-view/:id" element={<RejectReasonWorkFlowView />} />
+            <Route path="reject-reason-workflow-edit/:id" element={<RejectReasonWorkFlowEdit />} />
+            <Route
+              path="user-hierarchy-mapping"
+              element={<UserHierarchyMapping />}
+            />
             <Route
               path="sc-sub-scheme-details"
               element={<ScSubSchemeDetails />}
