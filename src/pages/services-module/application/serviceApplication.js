@@ -621,6 +621,75 @@ function ServiceApplication() {
     }
   };
 
+  const [amountValue, setAmountValue] = useState({
+    maxAmount: "",
+    minAmount: "",
+  });
+
+  if (
+    data.scSchemeDetailsId &&
+    data.scSubSchemeDetailsId &&
+    data.scComponentId
+  ) {
+    if (data.scCategoryId) {
+      api
+        .post(baseURLDBT + `master/cost/check-min-max-validation`, {
+          // headOfAccountId: data.scHeadAccountId,
+          // schemeId: data.scSchemeDetailsId,
+          // subSchemeId: data.scSubSchemeDetailsId,
+          // categoryId:data.scCategoryId
+
+          headOfAccountId: 53,
+          schemeId: 20,
+          subSchemeId: 56,
+          categoryId: 11,
+        })
+        .then((response) => {
+          // if (response.data.content.unitCost) {
+          //   setScHeadAccountListData(response.data.content.unitCost);
+          // }
+          console.log(response);
+          setAmountValue((prev) => ({
+            ...prev,
+            maxAmount: response.data.content.unitCostMaster[0].maxAmount,
+            minAmount: response.data.content.unitCostMaster[0].minAmount,
+          }));
+        })
+        .catch((err) => {
+          // setScHeadAccountListData([]);
+          // alert(err.response.data.errorMessages[0].message[0].message);
+        });
+    } else {
+      api
+        .post(baseURLDBT + `master/cost/check-min-max-validation`, {
+          // headOfAccountId: data.scHeadAccountId,
+          // schemeId: data.scSchemeDetailsId,
+          // subSchemeId: data.scSubSchemeDetailsId,
+
+          headOfAccountId: 53,
+          schemeId: 20,
+          subSchemeId: 56,
+        })
+        .then((response) => {
+          // if (response.data.content.unitCost) {
+          //   setScHeadAccountListData(response.data.content.unitCost);
+          // }
+          console.log(response);
+          setAmountValue((prev) => ({
+            ...prev,
+            maxAmount: response.data.content.unitCostMaster[0].maxAmount,
+            minAmount: response.data.content.unitCostMaster[0].minAmount,
+          }));
+        })
+        .catch((err) => {
+          // setScHeadAccountListData([]);
+          // alert(err.response.data.errorMessages[0].message[0].message);
+        });
+    }
+  }
+
+  console.log(amountValue);
+
   const generateBiddingSlip = async (applicationId) => {
     // const newDate = new Date();
     // const formattedDate =
