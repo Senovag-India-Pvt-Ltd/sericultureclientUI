@@ -17,7 +17,9 @@ function MapComponent() {
   const [mapComponent, setMapComponent] = useState({
     categoryId: "",
     shareInPercentage: "",
-    unitCostInRupees: "",
+    headOfAccountId: "",
+    // unitCostInRupees: "",
+
   });
 
   const [validated, setValidated] = useState(false);
@@ -43,7 +45,7 @@ function MapComponent() {
       setMapComponent({
         categoryId: "",
         shareInPercentage: "",
-        unitCostInRupees: "",
+        headOfAccountId: "",
       });
       setShowModal(false);
       setValidatedMapComponent(false);
@@ -87,7 +89,7 @@ function MapComponent() {
       setMapComponent({
         categoryId: "",
         shareInPercentage: "",
-        unitCostInRupees: "",
+        headOfAccountId: "",
       });
     }
   };
@@ -102,11 +104,11 @@ function MapComponent() {
 
 
   const [data, setData] = useState({
-    headOfAccountId: "",
+    // headOfAccountId: "",
     schemeId: "",
     subSchemeId: "",
     scComponentId: "",
-    unitType:"",
+    unitCostInRupees:"",
     measurementUnit: "",
     isFullPrice: "",
     minQty: "",
@@ -139,7 +141,7 @@ function MapComponent() {
         subSchemeId: data.subSchemeId,
         scComponentId: data.scComponentId,
         // landDetailId: landDetailsIds[0],
-        unitType: data.unitType,
+        unitCostInRupees: data.unitCostInRupees,
         measurementUnit: data.measurementUnit,
         isFullPrice: data.isFullPrice,
         minQty: data.minQty,
@@ -194,11 +196,11 @@ function MapComponent() {
 
   const clear = () => {
     setData({
-      headOfAccountId: "",
+      // headOfAccountId: "",
       schemeId: "",
       subSchemeId: "",
       scComponentId: "",
-      unitType:"",
+      unitCostInRupees:"",
       measurementUnit: "",
       isFullPrice: "",
       minQty: "",
@@ -208,14 +210,16 @@ function MapComponent() {
       schemeQuotaId: "",
 
     });
+    mapComponentClear();
   };
 
   const mapComponentClear = () => {
     setMapComponent({
-      categoryId: "",
+        categoryId: "",
         shareInPercentage: "",
-        unitCostInRupees: "",
+        headOfAccountId: "",
     });
+    setMapList([])
   };
 
   const handleCheckBox = (e) => {
@@ -234,7 +238,17 @@ function MapComponent() {
     setMapComponent({
       ...mapComponent,
       categoryId: chooseId,
-      categoryName: chooseName,
+      codeNumber: chooseName,
+    });
+  };
+
+  const handleHeadOfAccountOption = (e) => {
+    const value = e.target.value;
+    const [chooseId, chooseName] = value.split("_");
+    setMapComponent({
+      ...mapComponent,
+      headOfAccountId: chooseId,
+      scHeadAccountName: chooseName,
     });
   };
 
@@ -570,45 +584,6 @@ function MapComponent() {
                   </Form.Group>
                 </Col>
 
-
-
-                <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Head Of Account
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="headOfAccountId"
-                        value={data.headOfAccountId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs}
-                        // multiple
-                        required
-                        isInvalid={
-                          data.headOfAccountId === undefined ||
-                          data.headOfAccountId === "0"
-                        }
-                      >
-                        <option value="">Select Head Of Account</option>
-                        {scHeadAccountListData.map((list) => (
-                          <option
-                            key={list.scHeadAccountId}
-                            value={list.scHeadAccountId}
-                          >
-                            {list.scHeadAccountName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                      Head Of Account is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-               
-
                 
                 {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">
@@ -652,9 +627,9 @@ function MapComponent() {
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
-                              id="unitType"
-                              name="unitType"
-                              value={data.unitType}
+                              id="unitCostInRupees"
+                              name="unitCostInRupees"
+                              value={data.unitCostInRupees}
                               onChange={handleInputs}
                               type="text"
                               placeholder="Enter  Unit Cost"
@@ -749,28 +724,6 @@ function MapComponent() {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="secbidstart">
-                           Maximum Amount
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="maxAmount"
-                              name="maxAmount"
-                              value={data.maxAmount}
-                              onChange={handleInputs}
-                              type="number"
-                              placeholder="Enter Maximum Amount"
-                              // required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Maximum Amount is required
-                            </Form.Control.Feedback>
-                            
-                          </div>
-                        </Form.Group>
-                      </Col>
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="secbidstart">
                           Minimum Amount
                           </Form.Label>
                           <div className="form-control-wrap">
@@ -790,6 +743,30 @@ function MapComponent() {
                           </div>
                         </Form.Group>
                       </Col>
+
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor="secbidstart">
+                           Maximum Amount
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="maxAmount"
+                              name="maxAmount"
+                              value={data.maxAmount}
+                              onChange={handleInputs}
+                              type="number"
+                              placeholder="Enter Maximum Amount"
+                              // required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            Maximum Amount is required
+                            </Form.Control.Feedback>
+                            
+                          </div>
+                        </Form.Group>
+                      </Col>
+                      
 
                       {/* <Col lg="6">
                         <Form.Group className="form-group mt-n4">
@@ -922,7 +899,7 @@ function MapComponent() {
 
             <Block className="mt-3">
             <Card>
-              <Card.Header>Add Details</Card.Header>
+              <Card.Header>Add Category Details</Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
                 <Row className="g-gs mb-1">
@@ -976,7 +953,7 @@ function MapComponent() {
                                 {/* <th></th> */}
                                 <th>Action</th>
                                 <th>Category</th>
-                                <th>Unit Of Cost In Rupees</th>
+                                <th>Head Of Account</th>
                                 <th>Share in %</th>
                               </tr>
                             </thead>
@@ -1002,8 +979,8 @@ function MapComponent() {
                                       </Button>
                                     </div>
                                   </td>
-                                  <td>{item.categoryId}</td>
-                                  <td>{item.unitCostInRupees}</td>
+                                  <td>{item.codeNumber}</td>
+                                  <td>{item.scHeadAccountName}</td>
                                   <td>{item.shareInPercentage}</td>
                                 </tr>
                               ))}
@@ -1041,7 +1018,7 @@ function MapComponent() {
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Add Details</Modal.Title>
+          <Modal.Title>Add Category Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1059,20 +1036,20 @@ function MapComponent() {
                     <div className="form-control-wrap">
                       <Form.Select
                         name="categoryId"
-                        value={mapComponent.categoryId}
+                        value={`${mapComponent.categoryId}_${mapComponent.codeNumber}`}
                         onChange={handleMapComponentOption}
                         onBlur={() => handleMapComponentOption}
                         required
                         isInvalid={
-                          data.categoryId === undefined ||
-                          data.categoryId === "0"
+                          mapComponent.categoryId === undefined ||
+                          mapComponent.categoryId === "0"
                         }
                       >
                         <option value="">Select Category</option>
                         {scCategoryListData.map((list) => (
                           <option
                             key={list.scCategoryId}
-                            value={list.scCategoryId}
+                            value={`${list.scCategoryId}_${list.codeNumber}`}
                           >
                             {list.codeNumber}
                           </option>
@@ -1086,29 +1063,42 @@ function MapComponent() {
                 </Col>
 
                 <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="bidend">
-                            Unit Cost
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="unitCostInRupees"
-                              name="unitCostInRupees"
-                              value={mapComponent.unitCostInRupees}
-                              onChange={handleMapInputs}
-                              type="text"
-                              placeholder="Enter  Unit Cost"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Unit Cost is required
-                            </Form.Control.Feedback>
-                            
-                          </div>
-                        </Form.Group>
-                      </Col>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Head Of Account
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="headOfAccountId"
+                        value={`${mapComponent.headOfAccountId}_${mapComponent.scHeadAccountName}`}
+                        onChange={handleHeadOfAccountOption}
+                        onBlur={() => handleHeadOfAccountOption}
+                        // multiple
+                        required
+                        isInvalid={
+                          mapComponent.headOfAccountId === undefined ||
+                          mapComponent.headOfAccountId === "0"
+                        }
+                      >
+                        <option value="">Select Head Of Account</option>
+                        {scHeadAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={`${list.scHeadAccountId}_${list.scHeadAccountName}`}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Head Of Account is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
 
+                
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="bidstart">
@@ -1141,15 +1131,9 @@ function MapComponent() {
                       Add
                     </Button>
                   </div>
-                  {/* <div className="gap-col">
-                    <Button variant="danger" onClick={handleCloseModal1}>
-                      Reject
-                    </Button>
-                  </div> */}
+                  
                   <div className="gap-col">
-                    {/* <Button variant="secondary" onClick={handleCloseModal}>
-                      Cancel
-                    </Button> */}
+                    
                     <Button
                       type="button"
                       variant="secondary"
@@ -1167,7 +1151,7 @@ function MapComponent() {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Details</Modal.Title>
+          <Modal.Title>Edit Category Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -1185,7 +1169,7 @@ function MapComponent() {
                     <div className="form-control-wrap">
                       <Form.Select
                         name="categoryId"
-                        value={mapComponent.categoryId}
+                        value={`${mapComponent.categoryId}_${mapComponent.codeNumber}`}
                         onChange={handleMapComponentOption}
                         onBlur={() => handleMapComponentOption}
                         required
@@ -1198,7 +1182,7 @@ function MapComponent() {
                         {scCategoryListData.map((list) => (
                           <option
                             key={list.scCategoryId}
-                            value={list.scCategoryId}
+                            value={`${list.scCategoryId}_${list.codeNumber}`}
                           >
                             {list.codeNumber}
                           </option>
@@ -1212,28 +1196,42 @@ function MapComponent() {
                 </Col>
 
                 <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor="bidend">
-                            Unit Cost
-                            <span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="unitCostInRupees"
-                              name="unitCostInRupees"
-                              value={mapComponent.unitCostInRupees}
-                              onChange={handleMapInputs}
-                              type="text"
-                              placeholder="Enter  Unit Cost"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                            Unit Cost is required
-                            </Form.Control.Feedback>
-                            
-                          </div>
-                        </Form.Group>
-                      </Col>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Head Of Account
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="headOfAccountId"
+                        value={`${mapComponent.headOfAccountId}_${mapComponent.scHeadAccountName}`}
+                        onChange={handleHeadOfAccountOption}
+                        onBlur={() => handleHeadOfAccountOption}
+                        // multiple
+                        required
+                        isInvalid={
+                          mapComponent.headOfAccountId === undefined ||
+                          mapComponent.headOfAccountId === "0"
+                        }
+                      >
+                        <option value="">Select Head Of Account</option>
+                        {scHeadAccountListData.map((list) => (
+                          <option
+                            key={list.scHeadAccountId}
+                            value={`${list.scHeadAccountId}_${list.scHeadAccountName}`}
+                          >
+                            {list.scHeadAccountName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Head Of Account is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+              
 
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
