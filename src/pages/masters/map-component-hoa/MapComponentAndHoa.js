@@ -889,7 +889,7 @@ function MapComponent() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Full Price 
+                        Select For Unit Cost Schemes
                       </Form.Label>
                     </Form.Group>
                       </Col>

@@ -203,6 +203,23 @@ function DesignationEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="state">Amount</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="amount"
+                          name="amount"
+                          value={data.amount}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Amount"
+                        />
+                      </div>
+                    </Form.Group>
+                    </Col>
                   </Row>
                 )}
               </Card.Body>
