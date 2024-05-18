@@ -214,6 +214,7 @@ function UsersList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "User Name",

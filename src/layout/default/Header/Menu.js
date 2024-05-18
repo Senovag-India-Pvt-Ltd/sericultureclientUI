@@ -352,6 +352,7 @@ function Menu() {
     Admin_Master_Service_Approving_Authority: false,
     Admin_Master_Service_Category: false,
     Admin_Master_Service_Approval_Stage: false,
+    Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
@@ -2258,6 +2259,14 @@ function Menu() {
                             <MenuItemLink
                               text="Approval Stage"
                               to="/seriui/sc-approval-stage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_User_Hierarchy_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="User Hierarchy Mapping"
+                              to="/seriui/user-hierarchy-mapping"
                             />
                           </MenuItem>
                         ) : null}

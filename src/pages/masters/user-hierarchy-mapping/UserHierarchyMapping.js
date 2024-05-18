@@ -31,6 +31,12 @@ function UserHierarchyMapping() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+    if(name === "actualUserId"){
+      getUsersList(value);
+    }
+    if(name === "reportUserMasterId"){
+      getUserMastersList(value);
+    }
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -55,8 +61,14 @@ function UserHierarchyMapping() {
           } else {
             saveSuccess();
             setData({
-                reporteeUserMasterId: "",
-                reportToUserMasterId: "",
+              actualDesignationId: "",
+              actualUserId: "",
+              actualDistrictId: "",
+              actualFirstName: "",
+              reportUserMasterId: "",
+              reportDesignationId: "",
+              reportDistrictId: "",
+              reportFirstName: "",
             });
             setValidated(false);
           }
@@ -153,9 +165,65 @@ function UserHierarchyMapping() {
 
   useEffect(() => {
     if (data.actualDesignationId && data.actualDesignationId) {
-        getUserList(data.actualDistrictId, data.actualDistrictId);
+        getUserList(data.actualDesignationId, data.actualDistrictId);
       }
     }, [data.actualDesignationId, data.actualDistrictId]);
+
+    // to get hobli
+  const [userMasterListData, setUserMasterListData] = useState([]);
+
+  const getUserMasterList = (designationId, districtId) => {
+    const response = api
+      .post(baseURL + `userMaster/get-by-designationId-and-districtId`,{
+        designationId:designationId,
+        districtId:districtId
+      })
+      .then((response) => {
+        if (response.data.content.userMaster) {
+          setUserMasterListData(response.data.content.userMaster);
+        }
+      })
+      .catch((err) => {
+        setUserMasterListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.reportDesignationId && data.reportDesignationId) {
+        getUserMasterList(data.reportDesignationId, data.reportDistrictId);
+      }
+    }, [data.reportDesignationId, data.reportDistrictId]);
+
+   
+  
+    const getUsersList = (_id) => {
+       api
+        .get(baseURL + `userMaster/get-join/${_id}`)
+        .then((response) => {
+          if (response.data) {
+            setData(response.data.content);
+            
+          }
+        })
+        .catch((err) => {
+        });
+    };
+
+    const getUserMastersList = (_id) => {
+      api
+       .get(baseURL + `userMaster/get-join/${_id}`)
+       .then((response) => {
+         if (response.data) {
+           setData(response.data.content);
+           
+         }
+       })
+       .catch((err) => {
+       });
+   };
+    
+  
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -349,7 +417,7 @@ function UserHierarchyMapping() {
               </Card.Body>
             </Card>
 
-            <Card>
+            <Card >
             <Card.Header>Reported User</Card.Header>
               <Card.Body>
                 <Row className="g-gs">
@@ -442,8 +510,8 @@ function UserHierarchyMapping() {
                           }
                         >
                           <option value="">Select User</option>
-                          {userListData && userListData.length
-                            ? userListData.map((list) => (
+                          {userMasterListData && userMasterListData.length
+                            ? userMasterListData.map((list) => (
                                 <option key={list.userMasterId} value={list.userMasterId}>
                                   {list.username}
                                 </option>
