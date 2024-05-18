@@ -51,7 +51,6 @@ function UserHierarchyMapping() {
       const sendPost = {
         reporteeUserMasterId: data.actualUserId,
         reportToUserMasterId: data.reportUserMasterId,
-        
     };
       api
         .post(baseURL + `userHierarchyMapping/add`, sendPost)
@@ -280,10 +279,10 @@ function UserHierarchyMapping() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
             <Card.Header>Actual User</Card.Header>
               <Card.Body>
@@ -416,7 +415,9 @@ function UserHierarchyMapping() {
                 </Row>
               </Card.Body>
             </Card>
+            {/* </Block> */}
 
+        {/* <Block> */}
             <Card >
             <Card.Header>Reported User</Card.Header>
               <Card.Body>
@@ -571,7 +572,7 @@ function UserHierarchyMapping() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>
