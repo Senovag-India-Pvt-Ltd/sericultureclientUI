@@ -37,6 +37,8 @@ function DbtApplication() {
     sanctionNumber: "",
     farmerId: "",
     financialYearMasterId: "",
+    periodFrom: new Date(),
+    periodTo: new Date(),
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -124,9 +126,45 @@ function DbtApplication() {
     }));
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [landDetailsList, setLandDetailsList] = useState([]);
+
+  const [landDetailsIds, setLandDetailsIds] = useState([]);
+
+  const [developedArea, setDevelopedArea] = useState([]);
+
+  const handleCheckboxChange = (farmerLandDetailsId) => {
+    setLandDetailsIds((prevIds) => {
+      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      const newIds = isAlreadySelected
+        ? prevIds.filter((id) => id !== farmerLandDetailsId)
+        : [...prevIds, farmerLandDetailsId];
+
+      setDevelopedArea((prevData) => {
+        if (isAlreadySelected) {
+          const { [farmerLandDetailsId]: _, ...rest } = prevData;
+          return rest;
+        } else {
+          // If selected, add to developedArea
+          return {
+            ...prevData,
+            [farmerLandDetailsId]: {
+              acre: prevData[farmerLandDetailsId]?.acre || "0",
+              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
+              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+            },
+          };
+        }
+      });
+
+      return newIds;
+    });
+  };
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -168,12 +206,30 @@ function DbtApplication() {
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
-  // const getSubSchemeList = (_id) => {
+  const getSubSchemeList = (_id) => {
+    api
+      .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScSubSchemeDetailsListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.scSchemeDetailsId) {
+      getSubSchemeList(data.scSchemeDetailsId);
+      getSchemeQuotaList(data.scSchemeDetailsId);
+    }
+  }, [data.scSchemeDetailsId]);
+
+  // const getSubSchemeList = () => {
   //   const response = api
-  //     .get(
-  //       baseURLMasterData +
-  //         `scSubSchemeDetails/get-by-sc-scheme-details-id/${_id}`
-  //     )
+  //     .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
   //     .then((response) => {
   //       if (response.data.content.scSubSchemeDetails) {
   //         setScSubSchemeDetailsListData(
@@ -188,30 +244,8 @@ function DbtApplication() {
   // };
 
   // useEffect(() => {
-  //   if (data.scSchemeDetailsId) {
-  //     getSubSchemeList(data.scSchemeDetailsId);
-  //   }
-  // }, [data.scSchemeDetailsId]);
-
-  const getSubSchemeList = () => {
-    const response = api
-      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-      .then((response) => {
-        if (response.data.content.scSubSchemeDetails) {
-          setScSubSchemeDetailsListData(
-            response.data.content.scSubSchemeDetails
-          );
-        }
-      })
-      .catch((err) => {
-        setScSubSchemeDetailsListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getSubSchemeList();
-  }, []);
+  //   getSubSchemeList();
+  // }, []);
 
   // Get Default Financial Year
 
@@ -363,9 +397,9 @@ function DbtApplication() {
     []
   );
 
-  const getSchemeQuotaList = () => {
+  const getSchemeQuotaList = (_id) => {
     api
-      .get(baseURLMasterData + `schemeQuota/get-all`)
+      .get(baseURLMasterData + `schemeQuota/get-by-sc-scheme-details-id/${_id}`)
       .then((response) => {
         setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
       })
@@ -374,27 +408,67 @@ function DbtApplication() {
       });
   };
 
-  useEffect(() => {
-    getSchemeQuotaList();
-  }, []);
-
   // to get component
   const [scComponentListData, setScComponentListData] = useState([]);
 
-  const getComponentList = () => {
+  // const getComponentList = () => {
+  //   api
+  //     .get(baseURLMasterData + `scComponent/get-all`)
+  //     .then((response) => {
+  //       setScComponentListData(response.data.content.scComponent);
+  //     })
+  //     .catch((err) => {
+  //       setScComponentListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getComponentList();
+  // }, []);
+
+  const getComponentList = (schemeId, subSchemeId) => {
     api
-      .get(baseURLMasterData + `scComponent/get-all`)
+      .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
       .then((response) => {
-        setScComponentListData(response.data.content.scComponent);
+        setScComponentListData(response.data.content.unitCost);
       })
       .catch((err) => {
         setScComponentListData([]);
       });
   };
 
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
+    api
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
   useEffect(() => {
-    getComponentList();
-  }, []);
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      );
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   const [unitTypeList, setUnitTypeList] = useState([]);
   useEffect(() => {
@@ -467,14 +541,16 @@ function DbtApplication() {
         schemeAmount: data.schemeAmount,
         sanctionNo: data.sanctionNo,
         devAcre: developedLand.acre,
-        devGunta:developedLand.gunta,
-        devFgunta:developedLand.fgunta,
+        devGunta: developedLand.gunta,
+        devFgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
         landDetailId: landData.landId,
         talukId: landData.talukId,
         newFarmer: true,
         expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
+        periodFrom: data.periodFrom,
+        periodTo: data.periodTo,
       };
 
       if (data.equordev === "land") {
@@ -498,7 +574,34 @@ function DbtApplication() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-      uploadFileConfirm(sendPost);
+      api
+        .post(
+          baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
+          postData
+        )
+        .then((response) => {
+          if (response.data.errorCode === -1) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess();
+            setApplicationId(response.data.content.applicationDocumentId);
+            clear();
+            setValidated(false);
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
     }
   };
 
@@ -529,20 +632,20 @@ function DbtApplication() {
 
   const clear = () => {
     setData({
-        with: "withLand",
-        subinc: "subsidy",
-        equordev: "land",
-        scSchemeDetailsId: "",
-        scSubSchemeDetailsId: "",
-        scSubSchemeType: "",
-        scHeadAccountId: "",
-        scCategoryId: "",
-        scComponentId: "",
-        sanctionAmount: "",
-        schemeAmount: "",
-        sanctionNumber: "",
-        farmerId: "",
-        financialYearMasterId: "",
+      with: "withLand",
+      subinc: "subsidy",
+      equordev: "land",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scSubSchemeType: "",
+      scHeadAccountId: "",
+      scCategoryId: "",
+      scComponentId: "",
+      sanctionAmount: "",
+      schemeAmount: "",
+      sanctionNumber: "",
+      farmerId: "",
+      financialYearMasterId: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -562,7 +665,7 @@ function DbtApplication() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-    //   text: `Receipt Number ${message}`,
+      //   text: `Receipt Number ${message}`,
     });
   };
 
@@ -579,12 +682,15 @@ function DbtApplication() {
     }).then((result) => {
       if (result.value) {
         api
-          .post(baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`, post)
+          .post(
+            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
+            post
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
-            //   saveSuccess();
+              //   saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
               handleShowModal();
 
@@ -622,7 +728,10 @@ function DbtApplication() {
       } else {
         console.log(result.value);
         api
-          .post(baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`, post)
+          .post(
+            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
+            post
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
@@ -756,6 +865,169 @@ function DbtApplication() {
         });
     }
   };
+
+  const handleInlineDevelopedLandChange = (e, row) => {
+    const { name, value } = e.target;
+    const farmerLandDetailsId = row.farmerLandDetailsId;
+
+    setDevelopedArea((prevData) => ({
+      ...prevData,
+      [farmerLandDetailsId]: {
+        ...prevData[farmerLandDetailsId],
+        [name]: value,
+      },
+    }));
+  };
+
+  const LandDetailsForDevColumns = [
+    {
+      name: "Select",
+      selector: "select",
+      cell: (row) => (
+        <input
+          type="checkbox"
+          name="selectedLand"
+          value={row.farmerLandDetailsId}
+          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
+          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+        />
+      ),
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      button: true,
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Survey Number",
+      selector: (row) => row.surveyNumber,
+      cell: (row) => <span>{row.surveyNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Owner",
+      selector: (row) => row.ownerName,
+      cell: (row) => <span>{row.ownerName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Acre",
+      selector: (row) => row.acre,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.acre}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Acre"
+      //   />
+      // ),
+      cell: (row) => <span>{row.acre}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Gunta",
+      selector: (row) => row.gunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.gunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Gunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.gunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "FGunta",
+      selector: (row) => row.fgunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.fgunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit FGunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.gunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Developed Area (Acre/Gunta/FGunta)",
+      // selector: (row) => row.acre,
+      cell: (row) => (
+        <>
+          <Form.Control
+            name="acre"
+            type="text"
+            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="Acre"
+            className="m-1"
+          />
+          <Form.Control
+            name="gunta"
+            type="text"
+            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="Gunta"
+            className="m-1"
+          />
+          <Form.Control
+            name="fgunta"
+            type="text"
+            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            placeholder="FGunta"
+            className="m-1"
+          />
+        </>
+      ),
+      // cell: (row) => <span>{row.acre}</span>,
+      sortable: true,
+      hide: "md",
+      grow: 3,
+    },
+  ];
 
   const LandDetailsColumns = [
     {
@@ -1145,6 +1417,43 @@ function DbtApplication() {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSchemeDetailsId"
+                                value={data.scSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSchemeDetailsId === undefined ||
+                                  data.scSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme Names</option>
+                                {scSchemeDetailsListData.map((list) => (
+                                  <option
+                                    key={list.scSchemeDetailsId}
+                                    value={list.scSchemeDetailsId}
+                                  >
+                                    {list.schemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
@@ -1165,17 +1474,15 @@ function DbtApplication() {
                                 }
                               >
                                 <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData.map((list) => (
-                                  <option
-                                    key={list.scSubSchemeDetailsId}
-                                    value={list.scSubSchemeDetailsId}
-                                  >
-                                    {list.subSchemeName}
-                                  </option>
-                                ))}
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                              Component Type is required
+                                Component Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1219,34 +1526,70 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sordfl">
-                              Scheme
+                              Component
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="scSchemeDetailsId"
-                                value={data.scSchemeDetailsId}
+                                name="scComponentId"
+                                value={data.scComponentId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                required
+                                // required
                                 isInvalid={
-                                  data.scSchemeDetailsId === undefined ||
-                                  data.scSchemeDetailsId === "0"
+                                  data.scComponentId === undefined ||
+                                  data.scComponentId === "0"
                                 }
                               >
-                                <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData.map((list) => (
+                                <option value="">Select Component</option>
+                                {scComponentListData.map((list) => (
                                   <option
-                                    key={list.scSchemeDetailsId}
-                                    value={list.scSchemeDetailsId}
+                                    key={list.scComponentId}
+                                    value={list.scComponentId}
                                   >
-                                    {list.schemeName}
+                                    {list.scComponentName}
                                   </option>
                                 ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
-                                Scheme is required
+                                Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Sub Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scCategoryId"
+                                value={data.scCategoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scCategoryId === undefined ||
+                                  data.scCategoryId === "0"
+                                }
+                              >
+                                <option value="">Select Category</option>
+                                {scCategoryListData.map((list) => (
+                                  <option
+                                    key={list.scCategoryId}
+                                    value={list.scCategoryId}
+                                  >
+                                    {list.codeNumber}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Category is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1283,78 +1626,6 @@ function DbtApplication() {
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Head of Account is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Category
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scCategoryId"
-                                value={data.scCategoryId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                // required
-                                isInvalid={
-                                  data.scCategoryId === undefined ||
-                                  data.scCategoryId === "0"
-                                }
-                              >
-                                <option value="">Select Category</option>
-                                {scCategoryListData.map((list) => (
-                                  <option
-                                    key={list.scCategoryId}
-                                    value={list.scCategoryId}
-                                  >
-                                    {list.codeNumber}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Category is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Component
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scComponentId"
-                                value={data.scComponentId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                // required
-                                isInvalid={
-                                  data.scComponentId === undefined ||
-                                  data.scComponentId === "0"
-                                }
-                              >
-                                <option value="">Select Component</option>
-                                {scComponentListData.map((list) => (
-                                  <option
-                                    key={list.scComponentId}
-                                    value={list.scComponentId}
-                                  >
-                                    {list.scComponentName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Component is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1428,6 +1699,53 @@ function DbtApplication() {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              From Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodFrom}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodFrom")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              To Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodTo}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodTo")
+                                }
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
                       </Row>
                     </Card.Body>
                   </Card>
@@ -1483,14 +1801,14 @@ function DbtApplication() {
                 <>
                   <Block className="mt-3">
                     <Card>
-                      <Card.Header style={{ fontWeight: "bold" }}>
+                      {/* <Card.Header style={{ fontWeight: "bold" }}>
                         RTC Details
-                      </Card.Header>
+                      </Card.Header> */}
                       <Card.Body>
                         <Row>
                           <DataTable
                             tableClassName="data-table-head-light table-responsive"
-                            columns={LandDetailsColumns}
+                            columns={LandDetailsForDevColumns}
                             data={landDetailsList}
                             highlightOnHover
                             // pagination
@@ -1508,7 +1826,7 @@ function DbtApplication() {
                         </Row>
                       </Card.Body>
 
-                      <Row className="ms-1">
+                      {/* <Row className="ms-1">
                         <Col lg="2">
                           <Form.Group
                             as={Row}
@@ -1559,279 +1877,9 @@ function DbtApplication() {
                             </Form.Label>
                           </Form.Group>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </Card>
                   </Block>
-                  {data.equordev === "land" ? (
-                    <Block className="mt-3">
-                      <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
-                          Developed Area
-                        </Card.Header>
-                        <Card.Body>
-                          <Row className="g-gs">
-                            {/* <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Unit Type
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="unitType"
-                                    value={developedLand.unitType}
-                                    onChange={handleDevelopedLandInputs}
-                                    onBlur={() => handleDevelopedLandInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      developedLand.unitType === undefined ||
-                                      developedLand.unitType === "0"
-                                    }
-                                  >
-                                    <option value="">Select Unit Type</option>
-                                    {unitTypeList.map((list) => (
-                                      <option key={list.id} value={list.id}>
-                                        {list.measurementUnit}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Unit Type is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col> */}
-                            {/* <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="landDeveloped">
-                                  Land Developed
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="landDeveloped"
-                                    type="text"
-                                    name="landDeveloped"
-                                    value={developedLand.landDeveloped}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Land Developed"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Land Developed is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col> */}
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="gunta">
-                                  Gunta<span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="gunta"
-                                    type="text"
-                                    name="gunta"
-                                    value={developedLand.gunta}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Gunta"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Gunta is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="fgunta">
-                                  FGunta<span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="fgunta"
-                                    type="text"
-                                    name="fgunta"
-                                    value={developedLand.fgunta}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter FGunta"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    FGunta is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="acre">
-                                  Acre<span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="acre"
-                                    type="text"
-                                    name="acre"
-                                    value={developedLand.acre}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Acre"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Acre is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Block>
-                  ) : (
-                    <Block className="mt-3">
-                      <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
-                          Equipment Purchase
-                        </Card.Header>
-                        <Card.Body>
-                          <Row className="g-gs">
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Unit Type
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="unitType"
-                                    value={equipment.unitType}
-                                    onChange={handleEquipmentInputs}
-                                    onBlur={() => handleEquipmentInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      equipment.unitType === undefined ||
-                                      equipment.unitType === "0"
-                                    }
-                                  >
-                                    <option value="">Select Unit Type</option>
-                                    {unitTypeList.map((list) => (
-                                      <option key={list.id} value={list.id}>
-                                        {list.measurementUnit}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Unit Type is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Vendor Name
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="vendorId"
-                                    value={equipment.vendorId}
-                                    onChange={handleEquipmentInputs}
-                                    onBlur={() => handleEquipmentInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      equipment.vendorId === undefined ||
-                                      equipment.vendorId === "0"
-                                    }
-                                  >
-                                    <option value="">Select Vendor Name</option>
-                                    {scVendorListData.map((list) => (
-                                      <option
-                                        key={list.scVendorId}
-                                        value={list.scVendorId}
-                                      >
-                                        {list.name}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Vendor Name is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="description">
-                                  Description
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="description"
-                                    type="text"
-                                    name="description"
-                                    value={equipment.description}
-                                    onChange={handleEquipmentInputs}
-                                    placeholder="Enter Description"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Description is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="price">
-                                  Price
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="price"
-                                    type="text"
-                                    name="price"
-                                    value={equipment.price}
-                                    onChange={handleEquipmentInputs}
-                                    placeholder="Enter Price"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Price is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group as={Row} className="form-group mt-4">
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="checkbox"
-                                    id="payToVendor"
-                                    checked={equipment.payToVendor}
-                                    onChange={handleCheckBox}
-                                    // Optional: disable the checkbox in view mode
-                                    // defaultChecked
-                                  />
-                                </Col>
-                                <Form.Label column sm={11} className="mt-n2">
-                                  Pay to Vendor
-                                </Form.Label>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    </Block>
-                  )}
                 </>
               ) : (
                 ""
@@ -1856,7 +1904,7 @@ function DbtApplication() {
           </Form>
         </Block>
       </Row>
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
@@ -1873,13 +1921,11 @@ function DbtApplication() {
                 </Col>
                 <Col lg="4">
                   <Form.Group className="form-group mt-1">
-                    {/* <Form.Label htmlFor="trUploadPath">Attach Files</Form.Label> */}
                     <div className="form-control-wrap">
                       <Form.Control
                         type="file"
                         id={`attImage${documentId}`}
-                        // name="hdAttachFiles"
-                        // value={data.photoPath}
+                       
                         onChange={(e) => handleAttachFileChange(e, documentId)}
                       />
                     </div>
@@ -1928,7 +1974,7 @@ function DbtApplication() {
             </div>
           ))}
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </Layout>
   );
 }

@@ -41,6 +41,8 @@ function ServiceApplication() {
     sanctionNumber: "",
   });
 
+  console.log("nodu", data);
+
   const [applicationId, setApplicationId] = useState("");
 
   // to get scheme-Quota-details
@@ -242,6 +244,11 @@ function ServiceApplication() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+  const [showModalBreakUp, setShowModalBreakUp] = useState(false);
+
+  const handleShowModalBreakUp = () => setShowModalBreakUp(true);
+  const handleCloseModalBreakUp = () => setShowModalBreakUp(false);
+
   const handleCheckBox = (e) => {
     setEquipment((prev) => ({
       ...prev,
@@ -355,9 +362,34 @@ function ServiceApplication() {
       });
   };
 
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
+    api
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
+      .then((response) => {
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
+      })
+      .catch((err) => {
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
   useEffect(() => {
-    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId)
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
       getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      );
+    }
   }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   console.log(data);
@@ -624,69 +656,84 @@ function ServiceApplication() {
   const [amountValue, setAmountValue] = useState({
     maxAmount: "",
     minAmount: "",
+    unitPrice: "",
+    fullPrice: false,
   });
 
-  if (
-    data.scSchemeDetailsId &&
-    data.scSubSchemeDetailsId &&
-    data.scComponentId
-  ) {
-    if (data.scCategoryId) {
-      api
-        .post(baseURLDBT + `master/cost/check-min-max-validation`, {
-          // headOfAccountId: data.scHeadAccountId,
-          // schemeId: data.scSchemeDetailsId,
-          // subSchemeId: data.scSubSchemeDetailsId,
-          // categoryId:data.scCategoryId
+  useEffect(() => {
+    if (
+      data.scSchemeDetailsId &&
+      data.scSubSchemeDetailsId &&
+      data.scComponentId &&
+      data.scHeadAccountId
+    ) {
+      if (data.scCategoryId) {
+        api
+          .post(baseURLDBT + `master/cost/check-min-max-validation`, {
+            headOfAccountId: data.scHeadAccountId,
+            schemeId: data.scSchemeDetailsId,
+            subSchemeId: data.scSubSchemeDetailsId,
+            categoryId: data.scCategoryId,
 
-          headOfAccountId: 53,
-          schemeId: 20,
-          subSchemeId: 56,
-          categoryId: 11,
-        })
-        .then((response) => {
-          // if (response.data.content.unitCost) {
-          //   setScHeadAccountListData(response.data.content.unitCost);
-          // }
-          console.log(response);
-          setAmountValue((prev) => ({
-            ...prev,
-            maxAmount: response.data.content.unitCostMaster[0].maxAmount,
-            minAmount: response.data.content.unitCostMaster[0].minAmount,
-          }));
-        })
-        .catch((err) => {
-          // setScHeadAccountListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    } else {
-      api
-        .post(baseURLDBT + `master/cost/check-min-max-validation`, {
-          // headOfAccountId: data.scHeadAccountId,
-          // schemeId: data.scSchemeDetailsId,
-          // subSchemeId: data.scSubSchemeDetailsId,
+            // headOfAccountId: 53,
+            // schemeId: 20,
+            // subSchemeId: 56,
+            // categoryId: 11,
+          })
+          .then((response) => {
+            // if (response.data.content.unitCost) {
+            //   setScHeadAccountListData(response.data.content.unitCost);
+            // }
+            // console.log(response);
+            setAmountValue((prev) => ({
+              ...prev,
+              maxAmount: response.data.content.unitCostMaster[0].maxAmount,
+              minAmount: response.data.content.unitCostMaster[0].minAmount,
+              unitPrice:
+                response.data.content.unitCostMaster[0].unitCostInRupees,
+              fullPrice: response.data.content.unitCostMaster[0].fullPrice,
+              // fullPrice: true,
+            }));
+          })
+          .catch((err) => {
+            // setScHeadAccountListData([]);
+            // alert(err.response.data.errorMessages[0].message[0].message);
+          });
+      } else {
+        api
+          .post(baseURLDBT + `master/cost/check-min-max-validation`, {
+            headOfAccountId: data.scHeadAccountId,
+            schemeId: data.scSchemeDetailsId,
+            subSchemeId: data.scSubSchemeDetailsId,
 
-          headOfAccountId: 53,
-          schemeId: 20,
-          subSchemeId: 56,
-        })
-        .then((response) => {
-          // if (response.data.content.unitCost) {
-          //   setScHeadAccountListData(response.data.content.unitCost);
-          // }
-          console.log(response);
-          setAmountValue((prev) => ({
-            ...prev,
-            maxAmount: response.data.content.unitCostMaster[0].maxAmount,
-            minAmount: response.data.content.unitCostMaster[0].minAmount,
-          }));
-        })
-        .catch((err) => {
-          // setScHeadAccountListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
+            // headOfAccountId: 53,
+            // schemeId: 20,
+            // subSchemeId: 56,
+          })
+          .then((response) => {
+            // if (response.data.content.unitCost) {
+            //   setScHeadAccountListData(response.data.content.unitCost);
+            // }
+            console.log(response);
+            setAmountValue((prev) => ({
+              ...prev,
+              maxAmount: response.data.content.unitCostMaster[0].maxAmount,
+              minAmount: response.data.content.unitCostMaster[0].minAmount,
+            }));
+          })
+          .catch((err) => {
+            // setScHeadAccountListData([]);
+            // alert(err.response.data.errorMessages[0].message[0].message);
+          });
+      }
     }
-  }
+  }, [
+    data.scSchemeDetailsId,
+    data.scSubSchemeDetailsId,
+    data.scComponentId,
+    data.scCategoryId,
+    data.scHeadAccountId,
+  ]);
 
   console.log(amountValue);
 
@@ -1538,14 +1585,15 @@ function ServiceApplication() {
                                 }
                               >
                                 <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData.map((list) => (
-                                  <option
-                                    key={list.scSchemeDetailsId}
-                                    value={list.scSchemeDetailsId}
-                                  >
-                                    {list.schemeName}
-                                  </option>
-                                ))}
+                                {scSchemeDetailsListData &&
+                                  scSchemeDetailsListData.map((list) => (
+                                    <option
+                                      key={list.scSchemeDetailsId}
+                                      value={list.scSchemeDetailsId}
+                                    >
+                                      {list.schemeName}
+                                    </option>
+                                  ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Scheme is required
@@ -1573,11 +1621,12 @@ function ServiceApplication() {
                                 }
                               >
                                 <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData.map((list, i) => (
-                                  <option key={i} value={list.subSchemeId}>
-                                    {list.subSchemeName}
-                                  </option>
-                                ))}
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Component Type is required
@@ -1606,14 +1655,15 @@ function ServiceApplication() {
                                 }
                               >
                                 <option value="">Select Component</option>
-                                {scComponentListData.map((list) => (
-                                  <option
-                                    key={list.scComponentId}
-                                    value={list.scComponentId}
-                                  >
-                                    {list.scComponentName}
-                                  </option>
-                                ))}
+                                {scComponentListData &&
+                                  scComponentListData.map((list) => (
+                                    <option
+                                      key={list.scComponentId}
+                                      value={list.scComponentId}
+                                    >
+                                      {list.scComponentName}
+                                    </option>
+                                  ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Component is required
@@ -1693,6 +1743,42 @@ function ServiceApplication() {
                             </div>
                           </Form.Group>
                         </Col> */}
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Sub Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scCategoryId"
+                                value={data.scCategoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scCategoryId === undefined ||
+                                  data.scCategoryId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Component</option>
+                                {scCategoryListData &&
+                                  scCategoryListData.map((list) => (
+                                    <option
+                                      key={list.scCategoryId}
+                                      value={list.scCategoryId}
+                                    >
+                                      {list.codeNumber}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -1714,53 +1800,18 @@ function ServiceApplication() {
                                 }
                               >
                                 <option value="">Select Head of Account</option>
-                                {scHeadAccountListData.map((list) => (
-                                  <option
-                                    key={list.headOfAccountId}
-                                    value={list.headOfAccountId}
-                                  >
-                                    {list.scHeadAccountName}
-                                  </option>
-                                ))}
+                                {scHeadAccountListData &&
+                                  scHeadAccountListData.map((list) => (
+                                    <option
+                                      key={list.headOfAccountId}
+                                      value={list.headOfAccountId}
+                                    >
+                                      {list.scHeadAccountName}
+                                    </option>
+                                  ))}
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Head of Account is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              Sub Component
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scCategoryId"
-                                value={data.scCategoryId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                // required
-                                isInvalid={
-                                  data.scCategoryId === undefined ||
-                                  data.scCategoryId === "0"
-                                }
-                              >
-                                <option value="">Select Sub Component</option>
-                                {scCategoryListData.map((list) => (
-                                  <option
-                                    key={list.scCategoryId}
-                                    value={list.scCategoryId}
-                                  >
-                                    {list.codeNumber}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Sub Component is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1812,7 +1863,7 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col> */}
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="expectedAmount">
                               Initial Amount
@@ -1833,7 +1884,7 @@ function ServiceApplication() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Card.Body>
                   </Card>
@@ -2013,6 +2064,101 @@ function ServiceApplication() {
                       </Row> */}
                     </Card>
                   </Block>
+
+                  <Block className="mt-3">
+                    <Card>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        Sanction Amount
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="landDeveloped">
+                                Unit Price
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="landDeveloped"
+                                  type="text"
+                                  name="unitPrice"
+                                  value={amountValue.unitPrice}
+                                  onChange={handleDevelopedLandInputs}
+                                  placeholder="Enter Unit Price"
+                                  readOnly
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Unit Price is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="landDeveloped">
+                                Subsidy Amount
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="expectedAmount"
+                                  type="text"
+                                  name="expectedAmount"
+                                  value={data.expectedAmount}
+                                  onChange={handleInputs}
+                                  placeholder="Enter Expected Amount"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Subsidy Amount is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          {amountValue.fullPrice && (
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label htmlFor="landDeveloped">
+                                  Quantity
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id="landDeveloped"
+                                    type="text"
+                                    name="landDeveloped"
+                                    value={developedLand.landDeveloped}
+                                    onChange={handleDevelopedLandInputs}
+                                    placeholder="Enter Quantity"
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    Quantity is required
+                                  </Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+                          )}
+                        </Row>
+                        <Row className="mt-1">
+                          <Col>
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              size="sm"
+                              onClick={handleShowModalBreakUp}
+                            >
+                              Show Break up
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </Block>
+
                   {data.equordev === "land" ? (
                     <Block className="mt-3">
                       <Card>
@@ -2358,6 +2504,13 @@ function ServiceApplication() {
             </div>
           ))}
         </Modal.Body>
+      </Modal>
+
+      <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Break Up</Modal.Title>
+        </Modal.Header>
+        <Modal.Body></Modal.Body>
       </Modal>
     </Layout>
   );

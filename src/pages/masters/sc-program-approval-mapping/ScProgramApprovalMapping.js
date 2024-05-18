@@ -9,10 +9,11 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ScProgramApprovalMapping() {
   const [data, setData] = useState({
-    scProgramId: "",
+    scSubSchemeDetailsId: "",
     scApprovalStageId: "",
     designationId: "",
     orders: "",
@@ -45,10 +46,10 @@ function ScProgramApprovalMapping() {
           } else {
             saveSuccess();
             setData({
-                scProgramId: "",
-                scApprovalStageId: "",
-                designationId: "",
-                orders: "",
+              scProgramId: "",
+              scApprovalStageId: "",
+              designationId: "",
+              orders: "",
             });
             setValidated(false);
           }
@@ -62,10 +63,10 @@ function ScProgramApprovalMapping() {
 
   const clear = () => {
     setData({
-        scProgramId: "",
-        scApprovalStageId: "",
-        designationId: "",
-        orders: "",
+      scProgramId: "",
+      scApprovalStageId: "",
+      designationId: "",
+      orders: "",
     });
   };
 
@@ -87,6 +88,30 @@ function ScProgramApprovalMapping() {
 
   useEffect(() => {
     getProgramList();
+  }, []);
+
+  // to get sc-sub-scheme-details by sc-scheme-details
+  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+    []
+  );
+  const getSubSchemeList = () => {
+    api
+      .get(baseURL + `scSubSchemeDetails/get-all`)
+      .then((response) => {
+        if (response.data.content.scSubSchemeDetails) {
+          setScSubSchemeDetailsListData(
+            response.data.content.scSubSchemeDetails
+          );
+        }
+      })
+      .catch((err) => {
+        setScSubSchemeDetailsListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getSubSchemeList();
   }, []);
 
   const [approvalListData, setApprovalListData] = useState([]);
@@ -235,10 +260,10 @@ function ScProgramApprovalMapping() {
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Program<span className="text-danger">*</span>
+                        Component Type<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -268,6 +293,38 @@ function ScProgramApprovalMapping() {
                           </Form.Control.Feedback>
                         </div>
                       </Col>
+                    </Form.Group>
+                  </Col> */}
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n3">
+                      <Form.Label>
+                        Component Type
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="scSubSchemeDetailsId"
+                          value={data.scSubSchemeDetailsId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            data.scSubSchemeDetailsId === undefined ||
+                            data.scSubSchemeDetailsId === "0"
+                          }
+                        >
+                          <option value="">Select Component Type</option>
+                          {scSubSchemeDetailsListData && scSubSchemeDetailsListData.map((list, i) => (
+                            <option key={i} value={list.subSchemeId}>
+                              {list.subSchemeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Component Type is required
+                        </Form.Control.Feedback>
+                      </div>
                     </Form.Group>
                   </Col>
 
@@ -300,7 +357,7 @@ function ScProgramApprovalMapping() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Approval Stage  Name is required
+                            Approval Stage Name is required
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -310,7 +367,7 @@ function ScProgramApprovalMapping() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                       Designation<span className="text-danger">*</span>
+                        Designation<span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
                         <div className="form-control-wrap">
@@ -336,7 +393,7 @@ function ScProgramApprovalMapping() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                           Designation is required
+                            Designation is required
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -344,20 +401,20 @@ function ScProgramApprovalMapping() {
                   </Col>
 
                   <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="program">Orders</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="orders"
-                            name="orders"
-                            type="number"
-                            value={data.orders}
-                            onChange={handleInputs}
-                            placeholder="Enter Orders"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="program">Orders</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="orders"
+                          name="orders"
+                          type="number"
+                          value={data.orders}
+                          onChange={handleInputs}
+                          placeholder="Enter Orders"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
