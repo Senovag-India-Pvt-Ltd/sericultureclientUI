@@ -576,9 +576,7 @@ function DbtApplication() {
       }
       api
         .post(
-          baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
-          postData
-        )
+          baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,sendPost)
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.message);
@@ -1617,8 +1615,8 @@ function DbtApplication() {
                                 <option value="">Select Head of Account</option>
                                 {scHeadAccountListData.map((list) => (
                                   <option
-                                    key={list.scHeadAccountId}
-                                    value={list.scHeadAccountId}
+                                    key={list.headOfAccountId}
+                                    value={list.headOfAccountId}
                                   >
                                     {list.scHeadAccountName}
                                   </option>
