@@ -813,6 +813,7 @@ import RejectReasonWorkFlowList from "../pages/masters/reject-reason-workflow/Re
 import RejectReasonWorkFlowView from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowView";
 import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowEdit";
 import ApplicationFormList from "../pages/services-module/application/ApplicationFormList";
+import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 // Admin and Reports
 
 function Router() {
@@ -1106,6 +1107,10 @@ function Router() {
             <Route
               path="application-form-list"
               element={<ApplicationFormList />}
+            />
+            <Route
+              path="application-form-edit/:id"
+              element={<ApplicationFormEdit />}
             />
             <Route
               path="drawing-officer-list"

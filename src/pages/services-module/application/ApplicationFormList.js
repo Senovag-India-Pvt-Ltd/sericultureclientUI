@@ -63,10 +63,10 @@ function ApplicationFormList() {
   //         // saveError();
   //       });
   //   };
-//   const [landData, setLandData] = useState({
-//     landId: "",
-//     talukId: "",
-//   });
+  const [landData, setLandData] = useState({
+    landId: "",
+    talukId: "",
+  });
 
 //   const handleRadioChange = (_id, tId) => {
 //     if (!tId) {
@@ -138,7 +138,7 @@ function ApplicationFormList() {
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURLDBT + `service/list-with-join`)
+      .get(baseURLDBT + `service/list-with-join`,_params)
       .then((response) => {
         setListData(response.data.content.applicationForm);
         setTotalRows(response.data.content.totalItems);
@@ -354,25 +354,60 @@ function ApplicationFormList() {
       },
     {
       name: "Farmer Name",
-      selector: (row) => row.farmerFirstName,
-      cell: (row) => <span>{row.farmerFirstName}</span>,
+      selector: (row) => row.farmerId,
+      cell: (row) => <span>{row.farmerId}</span>,
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Pay To Vendor",
+      selector: (row) => row.payToVendor,
+      cell: (row) => <span>{row.payToVendor}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Actual Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Scheme Amount",
+      selector: (row) => row.schemeAmount,
+      cell: (row) => <span>{row.schemeAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sanction No",
+      selector: (row) => row.sanctionNo,
+      cell: (row) => <span>{row.sanctionNo}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Initial Amount",
+      selector: (row) => row.sanctionNo,
+      cell: (row) => <span>{row.sanctionNo}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Period From",
+      selector: (row) => row.periodFrom,
+      cell: (row) => <span>{row.periodFrom}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Period To",
+      selector: (row) => row.periodTo,
+      cell: (row) => <span>{row.periodTo}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Head of Account",
       selector: (row) => row.headAccountName,
@@ -387,13 +422,7 @@ function ApplicationFormList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    
     {
       name: "Sub Scheme Name",
       selector: (row) => row.subSchemeName,
@@ -402,17 +431,31 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: true,
       hide: "md",
     },
