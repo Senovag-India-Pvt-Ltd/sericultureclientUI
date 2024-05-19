@@ -946,6 +946,22 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+             {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Rejection List"
+                  to="/seriui/report-reject-list"
+                />
+              </MenuItem>
+            ) : null}
+             {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Success List"
+                  to="/seriui/application-dashboard"
+                />
+              </MenuItem>
+            ) : null}
             {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink
