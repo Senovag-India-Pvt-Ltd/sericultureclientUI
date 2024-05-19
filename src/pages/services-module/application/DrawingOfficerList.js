@@ -323,13 +323,44 @@ function DrawingOfficerList() {
     // setAllApplicationIds([]);
   };
 
+  // const getList = () => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getDrawingOfficerList`,
+  //       {},
+  //       { params: { type: 0 } }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content);
+  //       const scApplicationFormIds = response.data.content.map(
+  //         (item) => item.scApplicationFormId
+  //       );
+  //       setAllApplicationIds(scApplicationFormIds);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getList();
+  // }, [page]);
+
   const getList = () => {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getDrawingOfficerList`,
+        baseURLDBT + `service/getTscListForDBTPush`,
         {},
-        { params: { type: 0 } }
+        {
+          params: {
+            userMasterId: localStorage.getItem("userMasterId"),
+            displayAllRecords: true,
+          },
+        }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -763,16 +794,16 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Head of Account",
-      selector: (row) => row.headAccountName,
-      cell: (row) => <span>{row.headAccountName}</span>,
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Name",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -784,24 +815,16 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Sub Scheme Name",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1248,7 +1271,7 @@ function DrawingOfficerList() {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 <Button type="submit" variant="primary" onClick={postData}>
-                  Save
+                  Push All
                 </Button>
               </li>
               <li>
