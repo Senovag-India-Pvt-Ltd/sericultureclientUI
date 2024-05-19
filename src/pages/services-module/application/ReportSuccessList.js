@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
+import { Card, Button, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -12,33 +12,20 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerList() {
+function ReportSuccessList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-  };
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -157,25 +144,6 @@ function DrawingOfficerList() {
 
       setLoading(true);
 
-      // api
-      //   .post(
-      //     baseURLDBT + `service/getDrawingOfficerList`,
-      //     {},
-      //     { params: searchData }
-      //   )
-      //   .then((response) => {
-      //     setListData(response.data.content);
-      //     const scApplicationFormIds = response.data.content.map(
-      //       (item) => item.scApplicationFormId
-      //     );
-      //     setAllApplicationIds(scApplicationFormIds);
-      //     setLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     setListData({});
-      //     setLoading(false);
-      //   });
-
       api
         .post(
           baseURLDBT + `service/getDrawingOfficerList`,
@@ -210,22 +178,6 @@ function DrawingOfficerList() {
 
   console.log(applicationIds);
 
-  const [viewDetailsData, setViewDetailsData] = useState({});
-  const viewDetails = (_id) => {
-    handleShowModal();
-    api
-      .get(baseURLDBT + `service/get-join/${_id}`)
-      .then((response) => {
-        setViewDetailsData(response.data.content);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        setViewDetailsData({});
-        setLoading(false);
-      });
-  };
-
   const handleCheckboxChange = (_id) => {
     if (applicationIds.includes(_id)) {
       const dataList = [...applicationIds];
@@ -240,7 +192,7 @@ function DrawingOfficerList() {
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: "P",
+      paymentMode: 1,
     };
     api
       .post(
@@ -285,7 +237,7 @@ function DrawingOfficerList() {
   const postData = (event) => {
     const post = {
       applicationList: applicationIds,
-      paymentMode: "P",
+      paymentMode: 1,
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -327,9 +279,15 @@ function DrawingOfficerList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getDrawingOfficerList`,
+        baseURLDBT + `service/getDbtStatusByList`,
         {},
-        { params: { type: 0 } }
+        {
+          params: {
+            userMasterId: localStorage.getItem("userMasterId"),
+            displayAllRecords: true,
+            status: "Success",
+          },
+        }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -725,21 +683,26 @@ function DrawingOfficerList() {
     //   hide: "md",
     // //   grow: 2,
     // },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={row.scApplicationFormId}
+    //       checked={applicationIds.includes(row.scApplicationFormId)}
+    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+    //     />
+    //   ),
+    //   button: true,
+    // },
     {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="checkbox"
-          name="selectedLand"
-          value={row.scApplicationFormId}
-          checked={applicationIds.includes(row.scApplicationFormId)}
-          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
+      name: "Application Id",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row) => <span>{row.scApplicationFormId}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Farmer Name",
@@ -763,19 +726,13 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Head of Account",
-      selector: (row) => row.headAccountName,
-      cell: (row) => <span>{row.headAccountName}</span>,
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Scheme Name",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+
     // {
     //   name: "State",
     //   selector: (row) => row.stateName,
@@ -784,47 +741,42 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Sub Scheme Name",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     <text style={{ color: "green", fontWeight: "bold" }}>Successfull</text>
+    //   ),
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Action",
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
       cell: (row) => (
-        <>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-          >
-            Push
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => viewDetails(row.scApplicationFormId)}
-            className="ms-1"
-          >
-            view
-          </Button>
-        </>
+        <span style={{ color: "green", fontWeight: "bold" }}>
+          {row.applicationStatus}
+        </span>
       ),
       sortable: true,
       hide: "md",
@@ -832,11 +784,11 @@ function DrawingOfficerList() {
   ];
 
   return (
-    <Layout title="Drawing Officer List">
+    <Layout title="Report Success List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">Report Success List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -864,17 +816,11 @@ function DrawingOfficerList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Form noValidate validated={validatedDisplay} onSubmit={display}>
+        {/* <Form noValidate validated={validatedDisplay} onSubmit={display}>
           <Card>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg={12}>
-                  {/* <Block className="mt-3"> */}
-                  {/* <Card> */}
-                  {/* <Card.Header style={{ fontWeight: "bold" }}>
-                        Scheme Details
-                      </Card.Header> */}
-                  {/* <Card.Body> */}
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n2">
@@ -922,7 +868,6 @@ function DrawingOfficerList() {
                             value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scSubSchemeDetailsId === undefined ||
@@ -945,42 +890,6 @@ function DrawingOfficerList() {
                         </div>
                       </Form.Group>
                     </Col>
-                    {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label>
-                                Scheme Type
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="scSubSchemeType"
-                                  value={data.scSubSchemeType}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  // multiple
-                                  required
-                                  isInvalid={
-                                    data.scSubSchemeType === undefined ||
-                                    data.scSubSchemeType === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {schemeQuotaDetailsListData.map((list) => (
-                                    <option
-                                      key={list.schemeQuotaId}
-                                      value={list.schemeQuotaId}
-                                    >
-                                      {list.schemeQuotaName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col> */}
-
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
@@ -1065,8 +974,6 @@ function DrawingOfficerList() {
                             value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
                             isInvalid={
                               data.scCategoryId === undefined ||
                               data.scCategoryId === "0"
@@ -1101,8 +1008,6 @@ function DrawingOfficerList() {
                             value={data.scComponentId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
                             isInvalid={
                               data.scComponentId === undefined ||
                               data.scComponentId === "0"
@@ -1171,53 +1076,12 @@ function DrawingOfficerList() {
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* </Card.Body> */}
-                  {/* </Card> */}
-                  {/* </Block> */}
                 </Col>
               </Row>
             </Card.Body>
           </Card>
-        </Form>
+        </Form> */}
         <Card className="mt-1">
-          {/* <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                     
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="marketMasterId"
-                    name="text"
-                    value={data.text}
-                    onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
-              </Form.Group>
-            </Col>
-          </Row> */}
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
@@ -1238,7 +1102,7 @@ function DrawingOfficerList() {
           />
         </Card>
 
-        <Form
+        {/* <Form
           noValidate
           validated={validated}
           onSubmit={postData}
@@ -1251,6 +1115,7 @@ function DrawingOfficerList() {
                   Save
                 </Button>
               </li>
+              .
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
@@ -1258,77 +1123,8 @@ function DrawingOfficerList() {
               </li>
             </ul>
           </div>
-          {/* <Row className="d-flex justify-content-center mt-2">
-            <Col sm={2}>
-              <Button type="submit" variant="primary">
-                Save
-              </Button>
-            </Col>
-          </Row> */}
-        </Form>
+        </Form> */}
       </Block>
-
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>View</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {loading ? (
-            <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
-            </h1>
-          ) : (
-            <Row className="g-gs">
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}>Scheme Name:</td>
-                      <td>{viewDetailsData.schemeName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                      <td>{viewDetailsData.subSchemeName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Head of Account:</td>
-                      <td>{viewDetailsData.scHeadAccountName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Application Status:</td>
-                      <td>{viewDetailsData.applicationStatus}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Initial Amount:</td>
-                      <td>{viewDetailsData.initialAmount}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> ARN Number:</td>
-                      <td>{viewDetailsData.arn}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Financial Year:</td>
-                      <td>{viewDetailsData.financialYear}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Category Name:</td>
-                      <td>{viewDetailsData.categoryName}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}> State Name in Kannada:</td>
-                      <td>{viewDetailsData.stateNameInKannada}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Initial Amount:</td>
-                      <td>{viewDetailsData.stateNameInKannada}</td>
-                    </tr> */}
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
-          )}
-        </Modal.Body>
-      </Modal>
 
       {/* <Block className="">
         <Row className="g-3 ">
@@ -1393,4 +1189,4 @@ function DrawingOfficerList() {
   );
 }
 
-export default DrawingOfficerList;
+export default ReportSuccessList;

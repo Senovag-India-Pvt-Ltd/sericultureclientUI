@@ -12,33 +12,20 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerList() {
+function ReportRejectList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-  };
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -103,6 +90,11 @@ function DrawingOfficerList() {
     periodTo: new Date(),
   });
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   // console.log(searchData);
 
   // to get Financial Year
@@ -122,6 +114,22 @@ function DrawingOfficerList() {
   useEffect(() => {
     getFinancialYearList();
   }, []);
+
+  const [viewDetailsData, setViewDetailsData] = useState({});
+  const viewDetails = (_id) => {
+    handleShowModal();
+    api
+      .get(baseURLDBT + `service/get-join/${_id}`)
+      .then((response) => {
+        setViewDetailsData(response.data.content);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        setViewDetailsData({});
+        setLoading(false);
+      });
+  };
 
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
@@ -157,25 +165,6 @@ function DrawingOfficerList() {
 
       setLoading(true);
 
-      // api
-      //   .post(
-      //     baseURLDBT + `service/getDrawingOfficerList`,
-      //     {},
-      //     { params: searchData }
-      //   )
-      //   .then((response) => {
-      //     setListData(response.data.content);
-      //     const scApplicationFormIds = response.data.content.map(
-      //       (item) => item.scApplicationFormId
-      //     );
-      //     setAllApplicationIds(scApplicationFormIds);
-      //     setLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     setListData({});
-      //     setLoading(false);
-      //   });
-
       api
         .post(
           baseURLDBT + `service/getDrawingOfficerList`,
@@ -210,22 +199,6 @@ function DrawingOfficerList() {
 
   console.log(applicationIds);
 
-  const [viewDetailsData, setViewDetailsData] = useState({});
-  const viewDetails = (_id) => {
-    handleShowModal();
-    api
-      .get(baseURLDBT + `service/get-join/${_id}`)
-      .then((response) => {
-        setViewDetailsData(response.data.content);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        setViewDetailsData({});
-        setLoading(false);
-      });
-  };
-
   const handleCheckboxChange = (_id) => {
     if (applicationIds.includes(_id)) {
       const dataList = [...applicationIds];
@@ -240,7 +213,7 @@ function DrawingOfficerList() {
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: "P",
+      paymentMode: "R",
     };
     api
       .post(
@@ -285,7 +258,7 @@ function DrawingOfficerList() {
   const postData = (event) => {
     const post = {
       applicationList: applicationIds,
-      paymentMode: "P",
+      paymentMode: "R",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -327,9 +300,15 @@ function DrawingOfficerList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getDrawingOfficerList`,
+        baseURLDBT + `service/getDbtStatusByList`,
         {},
-        { params: { type: 0 } }
+        {
+          params: {
+            userMasterId: localStorage.getItem("userMasterId"),
+            displayAllRecords: true,
+            status: "rejected",
+          },
+        }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -484,6 +463,14 @@ function DrawingOfficerList() {
       title: "Delete attempt was not successful",
       text: "Something went wrong!",
     });
+  };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
   };
 
   const deleteConfirm = (_id) => {
@@ -742,6 +729,13 @@ function DrawingOfficerList() {
       button: true,
     },
     {
+      name: "Application Id",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row) => <span>{row.scApplicationFormId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
@@ -763,16 +757,16 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Head of Account",
-      selector: (row) => row.headAccountName,
-      cell: (row) => <span>{row.headAccountName}</span>,
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Name",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
@@ -784,24 +778,24 @@ function DrawingOfficerList() {
     //   hide: "md",
     // },
     {
-      name: "Sub Scheme Name",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Minimum Quantity",
-      selector: (row) => row.minQty,
-      cell: (row) => <span>{row.minQty}</span>,
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
 
     {
-      name: "Maximum Quantity",
-      selector: (row) => row.maxQty,
-      cell: (row) => <span>{row.maxQty}</span>,
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -814,7 +808,7 @@ function DrawingOfficerList() {
             size="sm"
             onClick={() => handlePush(row.scApplicationFormId)}
           >
-            Push
+            Re-Push
           </Button>
           <Button
             variant="primary"
@@ -832,13 +826,13 @@ function DrawingOfficerList() {
   ];
 
   return (
-    <Layout title="Drawing Officer List">
+    <Layout title="Report Rejected List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">Report Rejected List</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -859,22 +853,16 @@ function DrawingOfficerList() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
         <Form noValidate validated={validatedDisplay} onSubmit={display}>
-          <Card>
+          {/* <Card>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg={12}>
-                  {/* <Block className="mt-3"> */}
-                  {/* <Card> */}
-                  {/* <Card.Header style={{ fontWeight: "bold" }}>
-                        Scheme Details
-                      </Card.Header> */}
-                  {/* <Card.Body> */}
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n2">
@@ -922,7 +910,6 @@ function DrawingOfficerList() {
                             value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scSubSchemeDetailsId === undefined ||
@@ -945,41 +932,6 @@ function DrawingOfficerList() {
                         </div>
                       </Form.Group>
                     </Col>
-                    {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label>
-                                Scheme Type
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="scSubSchemeType"
-                                  value={data.scSubSchemeType}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  // multiple
-                                  required
-                                  isInvalid={
-                                    data.scSubSchemeType === undefined ||
-                                    data.scSubSchemeType === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {schemeQuotaDetailsListData.map((list) => (
-                                    <option
-                                      key={list.schemeQuotaId}
-                                      value={list.schemeQuotaId}
-                                    >
-                                      {list.schemeQuotaName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
@@ -1065,8 +1017,7 @@ function DrawingOfficerList() {
                             value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
+                           
                             isInvalid={
                               data.scCategoryId === undefined ||
                               data.scCategoryId === "0"
@@ -1101,8 +1052,7 @@ function DrawingOfficerList() {
                             value={data.scComponentId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
+                          
                             isInvalid={
                               data.scComponentId === undefined ||
                               data.scComponentId === "0"
@@ -1171,13 +1121,11 @@ function DrawingOfficerList() {
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* </Card.Body> */}
-                  {/* </Card> */}
-                  {/* </Block> */}
+                 
                 </Col>
               </Row>
             </Card.Body>
-          </Card>
+          </Card> */}
         </Form>
         <Card className="mt-1">
           {/* <Row className="m-2">
@@ -1248,9 +1196,10 @@ function DrawingOfficerList() {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 <Button type="submit" variant="primary" onClick={postData}>
-                  Save
+                  Re-Push All
                 </Button>
               </li>
+              .
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
@@ -1393,4 +1342,4 @@ function DrawingOfficerList() {
   );
 }
 
-export default DrawingOfficerList;
+export default ReportRejectList;

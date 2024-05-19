@@ -813,6 +813,8 @@ import RejectReasonWorkFlowList from "../pages/masters/reject-reason-workflow/Re
 import RejectReasonWorkFlowView from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowView";
 import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowEdit";
 import ApplicationFormList from "../pages/services-module/application/ApplicationFormList";
+import ReportSuccessList from "../pages/services-module/application/ReportSuccessList";
+import ReportRejectList from "../pages/services-module/application/ReportRejectList";
 // Admin and Reports
 
 function Router() {
@@ -1102,6 +1104,14 @@ function Router() {
              <Route
               path="dbt-application"
               element={<DbtApplication />}
+            />
+            <Route
+              path="report-success-list"
+              element={<ReportSuccessList />}
+            />
+            <Route
+              path="report-reject-list"
+              element={<ReportRejectList />}
             />
             <Route
               path="application-form-list"

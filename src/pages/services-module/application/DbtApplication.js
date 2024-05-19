@@ -39,6 +39,7 @@ function DbtApplication() {
     financialYearMasterId: "",
     periodFrom: new Date(),
     periodTo: new Date(),
+    beneficiaryId: "",
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -551,6 +552,7 @@ function DbtApplication() {
         financialYearMasterId: data.financialYearMasterId,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
+        beneficiaryId: data.beneficiaryId,
       };
 
       if (data.equordev === "land") {
@@ -576,7 +578,9 @@ function DbtApplication() {
       }
       api
         .post(
-          baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,sendPost)
+          baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
+          sendPost
+        )
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.message);
@@ -1687,6 +1691,29 @@ function DbtApplication() {
                                 type="text"
                                 name="sanctionNumber"
                                 value={data.sanctionNumber}
+                                onChange={handleInputs}
+                                placeholder="Enter Sanction Number"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                Sanction Number is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="beneficiaryId">
+                              Beneficiary Id
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="beneficiaryId"
+                                type="text"
+                                name="beneficiaryId"
+                                value={data.beneficiaryId}
                                 onChange={handleInputs}
                                 placeholder="Enter Sanction Number"
                                 required
