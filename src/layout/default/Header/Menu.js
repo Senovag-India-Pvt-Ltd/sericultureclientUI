@@ -946,7 +946,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-             {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
                   text="Report Rejection List"
@@ -954,11 +954,27 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-             {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
                   text="Report Success List"
-                  to="/seriui/application-dashboard"
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Dbt Application"
+                  to="/seriui/dbt-application"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Drawing Officer List"
+                  to="/seriui/drawing-officer-list"
                 />
               </MenuItem>
             ) : null}
@@ -1669,7 +1685,10 @@ function Menu() {
                 <MenuSub>
                   {showMenu.TargetSetting_Allocate_Budget ? (
                     <MenuItem>
-                      <MenuItemLink text="Physical Target Setting District" to="/seriui/physicaltargetsettingsdistrict" />
+                      <MenuItemLink
+                        text="Physical Target Setting District"
+                        to="/seriui/physicaltargetsettingsdistrict"
+                      />
                     </MenuItem>
                   ) : null}
                   {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
@@ -1758,7 +1777,7 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-          {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
+            {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
                   text="Inspection Config"
@@ -2142,7 +2161,7 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                      {showMenu.Admin_Master_Service_Department ? (
+                        {showMenu.Admin_Master_Service_Department ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Department"
@@ -2150,7 +2169,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                      {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
+                        {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Reject Reason"
@@ -2668,7 +2687,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        
+
                         {showMenu.Admin_Master_General_Config_Role ? (
                           <MenuItem>
                             <MenuItemLink

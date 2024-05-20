@@ -862,7 +862,7 @@ function DrawingOfficerList() {
             <Block.Title tag="h2">Drawing Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/service-application"
@@ -881,23 +881,17 @@ function DrawingOfficerList() {
                   <span>New Application</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-        <Form noValidate validated={validatedDisplay} onSubmit={display}>
+        {/* <Form noValidate validated={validatedDisplay} onSubmit={display}>
           <Card>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg={12}>
-                  {/* <Block className="mt-3"> */}
-                  {/* <Card> */}
-                  {/* <Card.Header style={{ fontWeight: "bold" }}>
-                        Scheme Details
-                      </Card.Header> */}
-                  {/* <Card.Body> */}
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group mt-n2">
@@ -968,41 +962,6 @@ function DrawingOfficerList() {
                         </div>
                       </Form.Group>
                     </Col>
-                    {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label>
-                                Scheme Type
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="scSubSchemeType"
-                                  value={data.scSubSchemeType}
-                                  onChange={handleInputs}
-                                  onBlur={() => handleInputs}
-                                  // multiple
-                                  required
-                                  isInvalid={
-                                    data.scSubSchemeType === undefined ||
-                                    data.scSubSchemeType === "0"
-                                  }
-                                >
-                                  <option value="">Select Sub Scheme</option>
-                                  {schemeQuotaDetailsListData.map((list) => (
-                                    <option
-                                      key={list.schemeQuotaId}
-                                      value={list.schemeQuotaId}
-                                    >
-                                      {list.schemeQuotaName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Sub Scheme is required
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
@@ -1016,7 +975,6 @@ function DrawingOfficerList() {
                             value={data.scSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scSchemeDetailsId === undefined ||
@@ -1052,7 +1010,6 @@ function DrawingOfficerList() {
                             value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scHeadAccountId === undefined ||
@@ -1088,8 +1045,6 @@ function DrawingOfficerList() {
                             value={data.scCategoryId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
                             isInvalid={
                               data.scCategoryId === undefined ||
                               data.scCategoryId === "0"
@@ -1124,8 +1079,6 @@ function DrawingOfficerList() {
                             value={data.scComponentId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
-                            // required
                             isInvalid={
                               data.scComponentId === undefined ||
                               data.scComponentId === "0"
@@ -1194,14 +1147,11 @@ function DrawingOfficerList() {
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* </Card.Body> */}
-                  {/* </Card> */}
-                  {/* </Block> */}
                 </Col>
               </Row>
             </Card.Body>
           </Card>
-        </Form>
+        </Form> */}
         <Card className="mt-1">
           {/* <Row className="m-2">
             <Col>
