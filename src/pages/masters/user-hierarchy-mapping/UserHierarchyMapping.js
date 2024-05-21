@@ -154,6 +154,9 @@ function UserHierarchyMapping() {
       .then((response) => {
         if (response.data.content.userMaster) {
           setUserListData(response.data.content.userMaster);
+        }else{
+          setUserListData([]);
+          setData(prev=>({...prev,actualFirstName:""}))
         }
       })
       .catch((err) => {
@@ -162,11 +165,7 @@ function UserHierarchyMapping() {
       });
   };
 
-  useEffect(() => {
-    if (data.actualDesignationId && data.actualDesignationId) {
-        getUserList(data.actualDesignationId, data.actualDistrictId);
-      }
-    }, [data.actualDesignationId, data.actualDistrictId]);
+  
 
     // to get hobli
   const [userMasterListData, setUserMasterListData] = useState([]);
@@ -180,6 +179,9 @@ function UserHierarchyMapping() {
       .then((response) => {
         if (response.data.content.userMaster) {
           setUserMasterListData(response.data.content.userMaster);
+        }else{
+          setUserMasterListData([]);
+          setData(prev=>({...prev,reportFirstName:""}))
         }
       })
       .catch((err) => {
@@ -189,7 +191,13 @@ function UserHierarchyMapping() {
   };
 
   useEffect(() => {
-    if (data.reportDesignationId && data.reportDesignationId) {
+    if (data.actualDesignationId && data.actualDistrictId) {
+        getUserList(data.actualDesignationId, data.actualDistrictId);
+      }
+    }, [data.actualDesignationId, data.actualDistrictId]);
+
+  useEffect(() => {
+    if (data.reportDesignationId && data.reportDistrictId) {
         getUserMasterList(data.reportDesignationId, data.reportDistrictId);
       }
     }, [data.reportDesignationId, data.reportDistrictId]);
@@ -201,11 +209,14 @@ function UserHierarchyMapping() {
         .get(baseURL + `userMaster/get-join/${_id}`)
         .then((response) => {
           if (response.data) {
-            setData(response.data.content);
-            
+            setData(prev=>({...prev,
+              actualFirstName:response.data.content.firstName
+            }));
+            setValidated(false);
           }
         })
         .catch((err) => {
+          setValidated(false);
         });
     };
 
@@ -214,11 +225,14 @@ function UserHierarchyMapping() {
        .get(baseURL + `userMaster/get-join/${_id}`)
        .then((response) => {
          if (response.data) {
-           setData(response.data.content);
-           
+          setData(prev=>({...prev,
+            reportFirstName:response.data.content.firstName
+          }));
+           setValidated(false);
          }
        })
        .catch((err) => {
+        setValidated(false);
        });
    };
     
@@ -254,7 +268,7 @@ function UserHierarchyMapping() {
           <Block.HeadContent>
             <Block.Title tag="h2">User Hierarchy Mapping</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -275,7 +289,7 @@ function UserHierarchyMapping() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
