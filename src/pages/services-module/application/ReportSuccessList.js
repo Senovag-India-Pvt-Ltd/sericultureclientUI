@@ -285,7 +285,7 @@ function ReportSuccessList() {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            status: "Success",
+            status: "ACKNOWLEDGEMENT SUCCESS",
           },
         }
       )

@@ -131,6 +131,10 @@ function ReportRejectList() {
       });
   };
 
+  const editDetails = (_id) => {
+    navigate(`/seriui/application-form-edit/${_id}`);
+  };
+
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
   const display = (event) => {
@@ -294,6 +298,7 @@ function ReportRejectList() {
     // setAllApplicationIds([]);
     // setUnselectedApplicationIds([]);
     // setAllApplicationIds([]);
+    setApplicationIds([]);
   };
 
   const getList = () => {
@@ -306,7 +311,7 @@ function ReportRejectList() {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            status: "rejected",
+            status: "ACKNOWLEDGEMENT FAILED",
           },
         }
       )
@@ -728,13 +733,13 @@ function ReportRejectList() {
       // allowOverflow: true,
       button: true,
     },
-    {
-      name: "Application Id",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row) => <span>{row.scApplicationFormId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Application Id",
+    //   selector: (row) => row.scApplicationFormId,
+    //   cell: (row) => <span>{row.scApplicationFormId}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -818,10 +823,19 @@ function ReportRejectList() {
           >
             view
           </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => editDetails(row.scApplicationFormId)}
+            className="ms-1"
+          >
+            Edit
+          </Button>
         </>
       ),
       sortable: true,
       hide: "md",
+      grow: 1,
     },
   ];
 

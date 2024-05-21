@@ -612,7 +612,7 @@ function DrawingOfficerList() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Pushed successfully",
       text: message,
     });
   };
@@ -625,7 +625,7 @@ function DrawingOfficerList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };

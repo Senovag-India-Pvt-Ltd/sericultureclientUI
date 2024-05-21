@@ -139,12 +139,17 @@ function DbtApplication() {
 
   const [developedArea, setDevelopedArea] = useState([]);
 
+  console.log(landDetailsIds);
+
   const handleCheckboxChange = (farmerLandDetailsId) => {
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-      const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== farmerLandDetailsId)
-        : [...prevIds, farmerLandDetailsId];
+      // for single Select
+      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+      // For Multiple Select
+      // const newIds = isAlreadySelected
+      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+      //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
@@ -531,6 +536,11 @@ function DbtApplication() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const transformedData = Object.keys(developedArea).map((id) => ({
+        // landDeveloped: developedLand.landDeveloped,
+        landDetailId: parseInt(id),
+        ...developedArea[id],
+      }));
       const sendPost = {
         farmerId: data.farmerId,
         headOfAccountId: data.scHeadAccountId,
@@ -545,7 +555,8 @@ function DbtApplication() {
         devGunta: developedLand.gunta,
         devFgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
-        landDetailId: landData.landId,
+        // landDetailId: landData.landId,
+        landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
         expectedAmount: data.expectedAmount,
@@ -553,13 +564,15 @@ function DbtApplication() {
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
         beneficiaryId: data.beneficiaryId,
+        // ...transformedData[0],
       };
 
       if (data.equordev === "land") {
         sendPost.applicationFormLandDetailRequestList = [
           {
             unitTypeMasterId: developedLand.unitType,
-            landDeveloped: developedLand.landDeveloped,
+            landDeveloped: 0,
+            ...transformedData[0],
           },
         ];
       } else if (data.equordev === "equipment") {
@@ -797,6 +810,8 @@ function DbtApplication() {
     landId: "",
     talukId: "",
   });
+
+  console.log("land details", landData);
 
   const handleRadioChange = (_id) => {
     // if (!tId) {
