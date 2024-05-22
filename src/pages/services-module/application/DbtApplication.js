@@ -42,6 +42,14 @@ function DbtApplication() {
     beneficiaryId: "",
   });
 
+  const [farmerDetails, setFarmerDetails] = useState({
+    farmerName: "",
+    hobli: "",
+    village: "",
+  });
+
+  const [showFarmerDetails, setShowFarmerDetails] = useState(false);
+
   const [developedLand, setDevelopedLand] = useState({
     landDeveloped: 0,
     unitType: "",
@@ -528,7 +536,10 @@ function DbtApplication() {
     setEquipment({ ...equipment, [name]: value });
   };
 
+  const [disabled, setDisabled] = useState(false);
+
   const postData = (event) => {
+    setDisabled(true);
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -599,6 +610,7 @@ function DbtApplication() {
             saveError(response.data.message);
           } else {
             saveSuccess();
+            setDisabled(false)
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
             setValidated(false);
@@ -624,7 +636,7 @@ function DbtApplication() {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
-      width: "50%",
+      width: "10%",
     },
     top: {
       backgroundColor: "rgb(15, 108, 190, 1)",
@@ -851,6 +863,14 @@ function DbtApplication() {
                 ...prev,
                 farmerId: response.data.content.farmerResponse.farmerId,
               }));
+              setFarmerDetails((prev) => ({
+                ...prev,
+                farmerName: response.data.content.farmerResponse.firstName,
+                hobli: response.data.content.farmerAddressDTOList[0].hobliName,
+                village:
+                  response.data.content.farmerAddressDTOList[0].villageName,
+              }));
+              setShowFarmerDetails(true);
             }
             if (response.data.content.farmerLandDetailsDTOList.length > 0) {
               setLandDetailsList(
@@ -1238,20 +1258,20 @@ function DbtApplication() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/application-form-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Old Applications</span>
+                  <span>List Page</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/application-form-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Old Applications</span>
+                  <span>List Page</span>
                 </Link>
               </li>
             </ul>
@@ -1293,6 +1313,31 @@ function DbtApplication() {
                   </Form.Group>
                 </Col>
               </Row>
+              {showFarmerDetails && (
+                // <Col lg="12" className="mt-1">
+                //   <Card>
+                //     <Card.Header>Farmer Personal Info</Card.Header>
+                //     <Card.Body>
+                <Row className="g-gs mt-1">
+                  <Col lg="12">
+                    <table className="table small table-bordered">
+                      <tbody>
+                        <tr>
+                          <td style={styles.ctstyle}> Farmer Name:</td>
+                          <td>{farmerDetails.farmerName}</td>
+                          <td style={styles.ctstyle}> Hobli :</td>
+                          <td>{farmerDetails.hobli}</td>
+                          <td style={styles.ctstyle}> Village:</td>
+                          <td>{farmerDetails.village}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+                //     </Card.Body>
+                //   </Card>
+                // </Col>
+              )}
             </Card.Body>
           </Card>
         </Form>
@@ -1717,7 +1762,7 @@ function DbtApplication() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="beneficiaryId">
                               Beneficiary Id
@@ -1738,7 +1783,7 @@ function DbtApplication() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
@@ -1929,7 +1974,7 @@ function DbtApplication() {
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
-                    <Button type="submit" variant="primary">
+                    <Button type="submit" variant="primary" disabled={disabled}>
                       Save
                     </Button>
                   </li>

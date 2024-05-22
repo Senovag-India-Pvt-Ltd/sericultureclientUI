@@ -384,10 +384,10 @@ function Header({ show, ...props }) {
                       </div>
                       <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                         <LinkList>
-                          <LinkListItem to="/seriui/admin/profile">
+                          {/* <LinkListItem to="/seriui/admin/profile">
                             <Icon name="user"></Icon>
                             <span>My Profile</span>
-                          </LinkListItem>
+                          </LinkListItem> */}
                           {/* <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
                           {/* <LinkListItem to="/seriui/admin/profile-settings">
                             <Icon name="setting-alt"></Icon>

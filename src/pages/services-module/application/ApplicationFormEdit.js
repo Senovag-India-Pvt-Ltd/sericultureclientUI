@@ -20,7 +20,6 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ApplicationFormEdit() {
-
   const { id } = useParams();
   // Translation
   const { t } = useTranslation();
@@ -79,6 +78,13 @@ function ApplicationFormEdit() {
     // setPhotoFile(file);
   };
 
+  const [farmerDetails, setFarmerDetails] = useState({
+    farmerName: "",
+    hobli: "",
+    village: "",
+    talukName: "",
+  });
+
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -86,24 +92,73 @@ function ApplicationFormEdit() {
       .then((response) => {
         // setData(response.data.content);
         const datas = response.data.content;
-        console.log("hellohello",response.data.content);
-        setData(prev=>({
+        // console.log("hellohello", response.data.content);
+        setData((prev) => ({
           ...prev,
-          scSchemeDetailsId:datas.schemeId,
-          scSubSchemeDetailsId:datas.subSchemeId,
-          scComponentId:datas.componentId,
-          scCategoryId:datas.categoryId,
-          scHeadAccountId:datas.headOfAccountId,
-          financialYearMasterId:datas.financialYearMasterId,
-          schemeAmount:datas.schemeAmount,
-          sanctionNumber:datas.sanctionNo,
-
-
+          scSchemeDetailsId: datas.schemeId,
+          scSubSchemeDetailsId: datas.subSchemeId,
+          scComponentId: datas.componentId,
+          scCategoryId: datas.categoryId,
+          scHeadAccountId: datas.headOfAccountId,
+          financialYearMasterId: datas.financialYearMasterId,
+          schemeAmount: datas.schemeAmount,
+          sanctionNumber: datas.sanctionNo,
           // scSubSchemeType:datas.  Need to get from api
-          
+        }));
 
-          
-        }))
+        api
+          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${id}`)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              setFarmerDetails((prev) => ({
+                ...prev,
+                village: response.data.content.farmerAddress[0].villageName,
+                talukName: response.data.content.farmerAddress[0].talukName,
+              }));
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+
+        api
+          .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${id}`)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              setFarmerDetails((prev) => ({
+                ...prev,
+                farmerName: response.data.content.firstName,
+              }));
+              setValidated(false);
+            }
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+
         setLoading(false);
       })
       .catch((err) => {
@@ -118,7 +173,7 @@ function ApplicationFormEdit() {
     getIdList();
   }, [id]);
 
-  console.log("changes",data);
+  console.log("changes", data);
 
   const handleRemoveImage = (documentId) => {
     const updatedDocument = { ...documentAttachments };
@@ -618,8 +673,7 @@ function ApplicationFormEdit() {
         return;
       }
       api
-        .post(
-          baseURLDBT + `service/editApplicationForm`,sendPost)
+        .post(baseURLDBT + `service/editApplicationForm`, sendPost)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
@@ -650,7 +704,7 @@ function ApplicationFormEdit() {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
       color: "rgb(0, 0, 0)",
-      width: "50%",
+      width: "10%",
     },
     top: {
       backgroundColor: "rgb(15, 108, 190, 1)",
@@ -1291,9 +1345,9 @@ function ApplicationFormEdit() {
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="12">
-                  <Form.Group as={Row} className="form-group" controlId="fid">
+                  {/* <Form.Group as={Row} className="form-group" controlId="fid">
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
+                      Farmer Name<span className="text-danger">*</span>
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
@@ -1309,12 +1363,23 @@ function ApplicationFormEdit() {
                         Fruits ID Should Contain 16 digits
                       </Form.Control.Feedback>
                     </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary">
-                        Search
-                      </Button>
+                  </Form.Group> */}
+                  <Row className="g-gs mt-1">
+                    <Col lg="12">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}> Farmer Name:</td>
+                            <td>{farmerDetails.farmerName}</td>
+                            <td style={styles.ctstyle}> Taluk :</td>
+                            <td>{farmerDetails.talukName}</td>
+                            <td style={styles.ctstyle}> Village:</td>
+                            <td>{farmerDetails.village}</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </Col>
-                  </Form.Group>
+                  </Row>
                 </Col>
               </Row>
             </Card.Body>

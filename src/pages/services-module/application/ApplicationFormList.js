@@ -24,124 +24,112 @@ function ApplicationFormList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
+  const [data, setData] = useState({
+    userMasterId: localStorage.getItem("userMasterId"),
+    text: "",
+    type: 0,
+  });
 
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
+  const handleInputs = (e) => {
+    // debugger;
+    let { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
+  const search = (e) => {
+    api
+      .post(baseURLDBT + `service/getSubmittedRecordsForMaker`, {}, { params: data })
+      .then((response) => {
+        setListData(response.data.content);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
   const [landData, setLandData] = useState({
     landId: "",
     talukId: "",
   });
 
-//   const handleRadioChange = (_id, tId) => {
-//     if (!tId) {
-//       tId = 0;
-//     }
-//     setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
-//   };
+  //   const handleRadioChange = (_id, tId) => {
+  //     if (!tId) {
+  //       tId = 0;
+  //     }
+  //     setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
+  //   };
 
-//   const [applicationIds, setApplicationIds] = useState([]);
-//   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
-//   const [allApplicationIds, setAllApplicationIds] = useState([]);
+  //   const [applicationIds, setApplicationIds] = useState([]);
+  //   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
+  //   const [allApplicationIds, setAllApplicationIds] = useState([]);
 
-//   const handleCheckboxChange = (_id) => {
-//     if (applicationIds.includes(_id)) {
-//       const dataList = [...applicationIds];
-//       const newDataList = dataList.filter((data) => data !== _id);
-//       setApplicationIds(newDataList);
-//     } else {
-//       setApplicationIds((prev) => [...prev, _id]);
-//     }
-//   };
+  //   const handleCheckboxChange = (_id) => {
+  //     if (applicationIds.includes(_id)) {
+  //       const dataList = [...applicationIds];
+  //       const newDataList = dataList.filter((data) => data !== _id);
+  //       setApplicationIds(newDataList);
+  //     } else {
+  //       setApplicationIds((prev) => [...prev, _id]);
+  //     }
+  //   };
 
-//   useEffect(() => {
-//     setUnselectedApplicationIds(
-//       allApplicationIds.filter((id) => !applicationIds.includes(id))
-//     );
-//   }, [allApplicationIds, applicationIds]);
+  //   useEffect(() => {
+  //     setUnselectedApplicationIds(
+  //       allApplicationIds.filter((id) => !applicationIds.includes(id))
+  //     );
+  //   }, [allApplicationIds, applicationIds]);
 
-//   //   console.log("Unselected",unselectedApplicationIds);
-//   const [validated, setValidated] = useState(false);
-//   const postData = (event) => {
-//     const post = {
-//       applicationFormIds: applicationIds,
-//       applicationFormIdsNotSelected: unselectedApplicationIds,
-//       inspectorId: localStorage.getItem("userMasterId"),
-//     };
-//     const form = event.currentTarget;
-//     if (form.checkValidity() === false) {
-//       event.preventDefault();
-//       event.stopPropagation();
-//       setValidated(true);
-//     } else {
-//       event.preventDefault();
-//       api
-//         .post(baseURLDBT + `service/updateApplicationStatus`, post)
-//         .then((response) => {
-//           if (response.data.content.errorCode) {
-//             saveError(response.data.content.error_description);
-//           } else {
-//             saveSuccess();
-//             getList();
-//           }
-//         })
-//         .catch((err) => {
-//           saveError(err.response.data.validationErrors);
-//         });
-//       setValidated(true);
-//     }
-//   };
+  //   //   console.log("Unselected",unselectedApplicationIds);
+  //   const [validated, setValidated] = useState(false);
+  //   const postData = (event) => {
+  //     const post = {
+  //       applicationFormIds: applicationIds,
+  //       applicationFormIdsNotSelected: unselectedApplicationIds,
+  //       inspectorId: localStorage.getItem("userMasterId"),
+  //     };
+  //     const form = event.currentTarget;
+  //     if (form.checkValidity() === false) {
+  //       event.preventDefault();
+  //       event.stopPropagation();
+  //       setValidated(true);
+  //     } else {
+  //       event.preventDefault();
+  //       api
+  //         .post(baseURLDBT + `service/updateApplicationStatus`, post)
+  //         .then((response) => {
+  //           if (response.data.content.errorCode) {
+  //             saveError(response.data.content.error_description);
+  //           } else {
+  //             saveSuccess();
+  //             getList();
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           saveError(err.response.data.validationErrors);
+  //         });
+  //       setValidated(true);
+  //     }
+  //   };
 
-//   const clear = (e) => {
-//     e.preventDefault();
-//     window.location.reload();
-//     // setAllApplicationIds([]);
-//     // setUnselectedApplicationIds([]);
-//     // setAllApplicationIds([]);
-//   };
+  //   const clear = (e) => {
+  //     e.preventDefault();
+  //     window.location.reload();
+  //     // setAllApplicationIds([]);
+  //     // setUnselectedApplicationIds([]);
+  //     // setAllApplicationIds([]);
+  //   };
 
   const getList = () => {
     setLoading(true);
     api
-      .get(baseURLDBT + `service/list-with-join`,_params)
+      .post(
+        baseURLDBT + `service/getSubmittedRecordsForMaker`,
+        {},
+        { params: data }
+      )
       .then((response) => {
-        setListData(response.data.content.applicationForm);
-        setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content);
+        // setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
       .catch((err) => {
@@ -154,7 +142,7 @@ function ApplicationFormList() {
     getList();
   }, [page]);
 
-//   console.log(allApplicationIds);
+  //   console.log(allApplicationIds);
 
   // to get User Master
   // const [userListData, setUserListData] = useState([]);
@@ -273,62 +261,52 @@ function ApplicationFormList() {
   const customStyles = {
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "10px", // adjust this value to your desired row height
       },
     },
+    // header: {
+    //   style: {
+    //     minHeight: "56px",
+    //   },
+    // },
+    // headRow: {
+    //   style: {
+    //     borderTopStyle: "solid",
+    //     borderTopWidth: "1px",
+    //     // borderTop:"none",
+    //     // borderTopColor: defaultThemes.default.divider.default,
+    //     borderColor: "black",
+    //   },
+    // },
     headCells: {
       style: {
+        // '&:not(:last-of-type)': {
         backgroundColor: "#1e67a8",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        borderStyle: "solid",
+        bordertWidth: "1px",
+        // borderColor: defaultThemes.default.divider.default,
+        borderColor: "black",
+        // },
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
+        // '&:not(:last-of-type)': {
+        borderStyle: "solid",
+        borderWidth: "1px",
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
         paddingRight: "8px",
+        // borderColor: defaultThemes.default.divider.default,
+        borderColor: "black",
+        // },
       },
     },
   };
 
   const ApplicationDataColumns = [
-    {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {/* <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.marketMasterId)}
-          >
-            View
-          </Button> */}
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.id)}
-          >
-            Edit
-          </Button>
-          {/* <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.marketMasterId)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    //   grow: 2,
-    },
     // {
     //   name: "Select",
     //   selector: "select",
@@ -345,24 +323,24 @@ function ApplicationFormList() {
     //   // allowOverflow: true,
     //   button: true,
     // },
-    {
-        name: "Arn Number",
-        selector: (row) => row.arn,
-        cell: (row) => <span>{row.arn}</span>,
-        sortable: true,
-        hide: "md",
-      },
+    // {
+    //     name: "Arn Number",
+    //     selector: (row) => row.arn,
+    //     cell: (row) => <span>{row.arn}</span>,
+    //     sortable: true,
+    //     hide: "md",
+    //   },
     {
       name: "Farmer Name",
-      selector: (row) => row.farmerId,
-      cell: (row) => <span>{row.farmerId}</span>,
+      selector: (row) => row.farmerFirstName,
+      cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Pay To Vendor",
-      selector: (row) => row.payToVendor,
-      cell: (row) => <span>{row.payToVendor}</span>,
+      name: "Sanction No.",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
       sortable: true,
       hide: "md",
     },
@@ -374,59 +352,9 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
-      name: "Scheme Amount",
-      selector: (row) => row.schemeAmount,
-      cell: (row) => <span>{row.schemeAmount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Sanction No",
-      selector: (row) => row.sanctionNo,
-      cell: (row) => <span>{row.sanctionNo}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Initial Amount",
-      selector: (row) => row.sanctionNo,
-      cell: (row) => <span>{row.sanctionNo}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Period From",
-      selector: (row) => row.periodFrom,
-      cell: (row) => <span>{row.periodFrom}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Period To",
-      selector: (row) => row.periodTo,
-      cell: (row) => <span>{row.periodTo}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Head of Account",
-      selector: (row) => row.headAccountName,
-      cell: (row) => <span>{row.headAccountName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Scheme Name",
-      selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Sub Scheme Name",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
@@ -437,27 +365,40 @@ function ApplicationFormList() {
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "Financial Year",
-      selector: (row) => row.financialYear,
-      cell: (row) => <span>{row.financialYear}</span>,
-      sortable: true,
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* {!(
+            row.applicationStatus === "ACKNOWLEDGEMENT SUCCESS" ||
+            row.applicationStatus === "DBT PUSHED"
+          ) && (
+            <Button
+              variant="primary"
+              size="sm"
+              className="ms-2"
+              onClick={() => handleEdit(row.id)}
+            >
+              Edit
+            </Button>
+          )} */}
+          {row.applicationStatus === "ACKNOWLEDGMENT SUCCESS" ||
+          row.applicationStatus === "DBT PUSHED" ? null : (
+            <Button
+              variant="primary"
+              size="sm"
+              className="ms-2"
+              onClick={() => handleEdit(row.scApplicationFormId)}
+            >
+              Edit
+            </Button>
+          )}
+        </div>
+      ),
+      sortable: false,
       hide: "md",
-    },
-    {
-      name: "Component",
-      selector: (row) => row.scComponentName,
-      cell: (row) => <span>{row.scComponentName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Category",
-      selector: (row) => row.categoryName,
-      cell: (row) => <span>{row.categoryName}</span>,
-      sortable: true,
-      hide: "md",
+      //   grow: 2,
     },
   ];
 
@@ -466,7 +407,7 @@ function ApplicationFormList() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Application Form List</Block.Title>
+            <Block.Title tag="h2">Application List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -495,7 +436,7 @@ function ApplicationFormList() {
 
       <Block className="mt-n4">
         <Card>
-          {/* <Row className="m-2">
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -504,26 +445,30 @@ function ApplicationFormList() {
                 <Col sm={3}>
                   <div className="form-control-wrap">
                     <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
+                      name="type"
+                      value={data.type}
                       onChange={handleInputs}
                     >
-                     
-                      <option value="marketMasterName">Market</option>
-                      <option value="marketTypeMasterName">Market Type</option>
+                      <option value="0">All</option>
+                      <option value="1">Sanction No.</option>
+                      <option value="2">FruitsId</option>
                     </Form.Select>
                   </div>
                 </Col>
 
-                <Col sm={3}>
+                <Col sm={2} lg={2}>
                   <Form.Control
-                    id="marketMasterId"
+                    id="fruitsId"
                     name="text"
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
                     placeholder="Search"
+                    required
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Field Value is Required
+                  </Form.Control.Feedback>
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
@@ -532,7 +477,7 @@ function ApplicationFormList() {
                 </Col>
               </Form.Group>
             </Col>
-          </Row> */}
+          </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ApplicationDataColumns}

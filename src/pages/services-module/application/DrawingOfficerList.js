@@ -226,6 +226,24 @@ function DrawingOfficerList() {
       });
   };
 
+  const rejectDetails = (_id) => {
+    api
+      .get(
+        baseURLDBT + `service/updateApplicationFormAsRejectedByChecker`,
+        {},
+        { params: { docId: _id } }
+      )
+      .then((response) => {
+        // setViewDetailsData(response.data.content);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setViewDetailsData({});
+        setLoading(false);
+      });
+  };
+
   const handleCheckboxChange = (_id) => {
     if (applicationIds.includes(_id)) {
       const dataList = [...applicationIds];
@@ -680,20 +698,25 @@ function DrawingOfficerList() {
   //   };
 
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
+        minHeight: "30px", // adjust this value to your desired row height
       },
     },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-      },
-    },
+    // header: {
+    //   style: {
+    //     minHeight: "56px",
+    //   },
+    // },
+    // headRow: {
+    //   style: {
+    //     borderTopStyle: "solid",
+    //     borderTopWidth: "1px",
+    //     // borderTop:"none",
+    //     // borderTopColor: defaultThemes.default.divider.default,
+    //     borderColor: "black",
+    //   },
+    // },
     headCells: {
       style: {
         // '&:not(:last-of-type)': {
@@ -710,9 +733,11 @@ function DrawingOfficerList() {
       style: {
         // '&:not(:last-of-type)': {
         borderStyle: "solid",
-        // borderRightWidth: "3px",
         borderWidth: "1px",
-        padding: "10px",
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
         // borderColor: defaultThemes.default.divider.default,
         borderColor: "black",
         // },
@@ -846,6 +871,14 @@ function DrawingOfficerList() {
             className="ms-1"
           >
             view
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => rejectDetails(row.scApplicationFormId)}
+            className="ms-1"
+          >
+            Reject
           </Button>
         </>
       ),
