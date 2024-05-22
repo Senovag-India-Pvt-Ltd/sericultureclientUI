@@ -790,7 +790,7 @@ function ReportSuccessList() {
           <Block.HeadContent>
             <Block.Title tag="h2">Report Success List</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
+          {/* <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
@@ -811,7 +811,7 @@ function ReportSuccessList() {
                 </Link>
               </li>
             </ul>
-          </Block.HeadContent>
+          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
