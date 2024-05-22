@@ -1262,20 +1262,20 @@ function ApplicationFormEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/application-form-list"
+                  to="/seriui/report-reject-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application List</span>
+                  <span>Application Reject List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/application-form-list"
+                  to="/seriui/report-reject-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application List</span>
+                  <span>Application Reject List</span>
                 </Link>
               </li>
             </ul>
