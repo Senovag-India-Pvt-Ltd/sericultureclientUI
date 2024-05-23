@@ -711,6 +711,20 @@ function ReportSuccessList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Sanction Number",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Actual Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "Market Name in Kannada",
     //   selector: (row) => row.marketNameInKannada,

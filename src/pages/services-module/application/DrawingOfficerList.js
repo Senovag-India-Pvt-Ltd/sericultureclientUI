@@ -237,7 +237,6 @@ function DrawingOfficerList() {
         // setViewDetailsData(response.data.content);
         getList();
 
-
         setLoading(false);
       })
       .catch((err) => {
@@ -820,10 +819,24 @@ function DrawingOfficerList() {
     //   sortable: true,
     //   hide: "md",
     // },
+    // {
+    //   name: "Application Status",
+    //   selector: (row) => row.applicationStatus,
+    //   cell: (row) => <span>{row.applicationStatus}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Application Status",
-      selector: (row) => row.applicationStatus,
-      cell: (row) => <span>{row.applicationStatus}</span>,
+      name: "Sanction Number",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Actual Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
       hide: "md",
     },
