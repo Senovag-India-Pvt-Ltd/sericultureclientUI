@@ -383,7 +383,7 @@ function ApplicationFormList() {
               Edit
             </Button>
           )} */}
-          {row.applicationStatus === "ACKNOWLEDGMENT SUCCESS" ||
+          {row.applicationStatus === "ACKNOWLEDGEMENT SUCCESS" ||
           row.applicationStatus === "DBT PUSHED" ? null : (
             <Button
               variant="primary"

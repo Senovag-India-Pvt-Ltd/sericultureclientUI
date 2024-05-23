@@ -965,7 +965,7 @@ function Menu() {
             {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
-                  text="Dbt Application"
+                  text="DBT Application"
                   to="/seriui/dbt-application"
                 />
               </MenuItem>
@@ -975,6 +975,14 @@ function Menu() {
                 <MenuItemLink
                   text="Drawing Officer List"
                   to="/seriui/drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+             {showMenu.Services_Subsidy_Programmes ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="TSC Officer List"
+                  to="/seriui/tsc-officer-list"
                 />
               </MenuItem>
             ) : null}

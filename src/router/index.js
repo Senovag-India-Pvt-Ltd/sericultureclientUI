@@ -816,6 +816,7 @@ import ApplicationFormList from "../pages/services-module/application/Applicatio
 import ReportSuccessList from "../pages/services-module/application/ReportSuccessList";
 import ReportRejectList from "../pages/services-module/application/ReportRejectList";
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
+import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 // Admin and Reports
 
 function Router() {
@@ -1125,6 +1126,10 @@ function Router() {
             <Route
               path="drawing-officer-list"
               element={<DrawingOfficerList />}
+            />
+            <Route
+              path="tsc-officer-list"
+              element={<TscOfficerList />}
             />
             <Route
               path="application-dashboard-list/:id"

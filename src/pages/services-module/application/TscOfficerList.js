@@ -19,7 +19,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerList() {
+function TscOfficerList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -237,7 +237,6 @@ function DrawingOfficerList() {
         // setViewDetailsData(response.data.content);
         getList();
 
-
         setLoading(false);
       })
       .catch((err) => {
@@ -378,7 +377,7 @@ function DrawingOfficerList() {
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
+            displayAllRecords: false,
           },
         }
       )
@@ -890,11 +889,11 @@ function DrawingOfficerList() {
   ];
 
   return (
-    <Layout title="Drawing Officer List">
+    <Layout title="TSC Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">TSC Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1401,4 +1400,4 @@ function DrawingOfficerList() {
   );
 }
 
-export default DrawingOfficerList;
+export default TscOfficerList;

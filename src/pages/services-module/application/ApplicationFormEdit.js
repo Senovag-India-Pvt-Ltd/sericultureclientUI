@@ -629,6 +629,7 @@ function ApplicationFormEdit() {
     } else {
       event.preventDefault();
       const sendPost = {
+        id: id,
         farmerId: data.farmerId,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
@@ -637,11 +638,12 @@ function ApplicationFormEdit() {
         componentTypeName: "",
         sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
-        sanctionNo: data.sanctionNo,
+        sanctionNo: data.sanctionNumber,
         devAcre: developedLand.acre,
         devGunta: developedLand.gunta,
         devFgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
+        componentId: data.scComponentId,
         landDetailId: landData.landId,
         talukId: landData.talukId,
         newFarmer: true,
@@ -669,9 +671,9 @@ function ApplicationFormEdit() {
         ];
       }
 
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
+      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+      //   return;
+      // }
       api
         .post(baseURLDBT + `service/editApplicationForm`, sendPost)
         .then((response) => {

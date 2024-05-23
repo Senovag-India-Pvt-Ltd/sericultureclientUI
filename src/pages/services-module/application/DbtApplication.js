@@ -561,7 +561,7 @@ function DbtApplication() {
         componentTypeName: "",
         sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
-        sanctionNo: data.sanctionNo,
+        sanctionNo: data.sanctionNumber,
         devAcre: developedLand.acre,
         devGunta: developedLand.gunta,
         devFgunta: developedLand.fgunta,
@@ -607,10 +607,10 @@ function DbtApplication() {
         )
         .then((response) => {
           if (response.data.errorCode === -1) {
-            saveError(response.data.message);
+            saveError(response.data.errorMessages[0]);
           } else {
             saveSuccess();
-            setDisabled(false)
+            setDisabled(false);
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
             setValidated(false);
@@ -673,6 +673,7 @@ function DbtApplication() {
       sanctionNumber: "",
       farmerId: "",
       financialYearMasterId: "",
+      fruitsId: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -686,6 +687,10 @@ function DbtApplication() {
       payToVendor: false,
     });
     setDocumentAttachments({});
+    setValidated(false);
+    setLandDetailsList([]);
+    setShowFarmerDetails(false);
+    setDisabled(false);
   };
 
   const saveSuccess = () => {
@@ -715,7 +720,7 @@ function DbtApplication() {
           )
           .then((response) => {
             if (response.data.errorCode === -1) {
-              saveError(response.data.message);
+              saveError(response.data.errorMessages[0]);
             } else {
               //   saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
