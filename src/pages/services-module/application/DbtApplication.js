@@ -557,7 +557,7 @@ function DbtApplication() {
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
-        componentType: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeType,
         componentTypeName: "",
         sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
