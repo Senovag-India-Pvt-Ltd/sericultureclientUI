@@ -525,6 +525,79 @@ function Menu() {
         }
       });
     }
+
+    if (data.includes("Admin_Master")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Registration")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Registration_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Land")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Land_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Service")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Service_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Training")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Training_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_HelpDesk")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_HelpDesk_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Garden")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Garden_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Auction")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Auction_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_General")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_General_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
     if (data.includes("Admin_Report")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Admin_Report_")) {
@@ -978,7 +1051,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-             {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
                   text="TSC Officer List"
