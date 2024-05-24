@@ -2310,7 +2310,7 @@ function StakeHolderRegister() {
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rid">
                           {t("farmer_number")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2321,7 +2321,7 @@ function StakeHolderRegister() {
                             type="text"
                             // placeholder={t("enter_farmer_number")}
                             placeholder="eg: TTH00001"
-                            required
+                            // required
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Number is required
@@ -2851,7 +2851,7 @@ function StakeHolderRegister() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbok
+                          Upload Bank Passbook (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
