@@ -871,9 +871,14 @@ function DbtApplication() {
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
-                hobli: response.data.content.farmerAddressDTOList[0].hobliName,
+                hobli:
+                  response.data.content.farmerAddressDTOList > 0
+                    ? response.data.content.farmerAddressDTOList[0].hobliName
+                    : "",
                 village:
-                  response.data.content.farmerAddressDTOList[0].villageName,
+                  response.data.content.farmerAddressDTOList > 0
+                    ? response.data.content.farmerAddressDTOList[0].villageName
+                    : "",
               }));
               setShowFarmerDetails(true);
             }

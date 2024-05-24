@@ -2611,7 +2611,7 @@ function StakeHolderRegister() {
                                         >
                                           {t("edit")}
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() =>
@@ -2620,7 +2620,7 @@ function StakeHolderRegister() {
                                           className="ms-2"
                                         >
                                           {t("delete")}
-                                        </Button>
+                                        </Button> */}
                                       </div>
                                     </td>
                                     <td>{item.addressText}</td>
@@ -2720,9 +2720,9 @@ function StakeHolderRegister() {
                                           size="sm"
                                           onClick={() => handleGetFl(i)}
                                         >
-                                          {t("edit")}
+                                          {t("update")}
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() =>
@@ -2731,7 +2731,7 @@ function StakeHolderRegister() {
                                           className="ms-2"
                                         >
                                           {t("delete")}
-                                        </Button>
+                                        </Button> */}
                                       </div>
                                     </td>
                                     <td>{item.landOwnershipName}</td>
