@@ -37,8 +37,8 @@ function DbtApplication() {
     sanctionNumber: "",
     farmerId: "",
     financialYearMasterId: "",
-    periodFrom: new Date("2024-03-31"),
-    periodTo: new Date("2023-04-01"),
+    periodFrom: new Date("2023-04-01"),
+    periodTo: new Date("2024-03-31"),
     beneficiaryId: "",
   });
 
