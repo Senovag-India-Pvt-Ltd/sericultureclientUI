@@ -103,19 +103,20 @@ function ApplicationFormEdit() {
           financialYearMasterId: datas.financialYearMasterId,
           schemeAmount: datas.schemeAmount,
           sanctionNumber: datas.sanctionNo,
+          scSubSchemeType: datas.componentType,
           // scSubSchemeType:datas.  Need to get from api
         }));
 
         api
-          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${id}`)
+          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
               setFarmerDetails((prev) => ({
                 ...prev,
-                village: response.data.content.farmerAddress[0].villageName,
-                talukName: response.data.content.farmerAddress[0].talukName,
+                village: response.data.content.farmerAddress && response.data.content.farmerAddress[0].villageName,
+                talukName:  response.data.content.farmerAddress && response.data.content.farmerAddress[0].talukName,
               }));
               setValidated(false);
             }
@@ -134,7 +135,7 @@ function ApplicationFormEdit() {
           });
 
         api
-          .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${id}`)
+          .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
@@ -634,7 +635,7 @@ function ApplicationFormEdit() {
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
-        componentType: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeType,
         componentTypeName: "",
         sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
