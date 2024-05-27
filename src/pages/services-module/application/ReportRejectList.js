@@ -662,6 +662,7 @@ function ReportRejectList() {
         color: "#fff",
         borderStyle: "solid",
         bordertWidth: "1px",
+        padding: "10px",
         // borderColor: defaultThemes.default.divider.default,
         borderColor: "black",
         // },
@@ -849,7 +850,7 @@ function ReportRejectList() {
       ),
       sortable: true,
       hide: "md",
-      grow: 1,
+      grow: 2,
     },
   ];
 

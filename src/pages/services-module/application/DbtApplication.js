@@ -37,8 +37,8 @@ function DbtApplication() {
     sanctionNumber: "",
     farmerId: "",
     financialYearMasterId: "",
-    periodFrom: new Date(),
-    periodTo: new Date(),
+    periodFrom: new Date("2023-04-01"),
+    periodTo: new Date("2024-03-31"),
     beneficiaryId: "",
   });
 
@@ -557,7 +557,7 @@ function DbtApplication() {
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
-        componentType: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeType,
         componentTypeName: "",
         sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
@@ -575,6 +575,7 @@ function DbtApplication() {
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
         beneficiaryId: data.beneficiaryId,
+        componentId: data.scComponentId,
         // ...transformedData[0],
       };
 
@@ -608,6 +609,7 @@ function DbtApplication() {
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
+            setDisabled(false);
           } else {
             saveSuccess();
             setDisabled(false);
@@ -627,6 +629,7 @@ function DbtApplication() {
               saveError(err.response.data.validationErrors);
             }
           }
+          setDisabled(false);
         });
       setValidated(true);
     }
@@ -868,15 +871,16 @@ function DbtApplication() {
                 ...prev,
                 farmerId: response.data.content.farmerResponse.farmerId,
               }));
+              // debugger
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
                 hobli:
-                  response.data.content.farmerAddressDTOList > 0
+                  response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].hobliName
                     : "",
                 village:
-                  response.data.content.farmerAddressDTOList > 0
+                  response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].villageName
                     : "",
               }));
@@ -1529,39 +1533,6 @@ function DbtApplication() {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
-                              Component Type
-                              <span className="text-danger">*</span>
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="scSubSchemeDetailsId"
-                                value={data.scSubSchemeDetailsId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // multiple
-                                required
-                                isInvalid={
-                                  data.scSubSchemeDetailsId === undefined ||
-                                  data.scSubSchemeDetailsId === "0"
-                                }
-                              >
-                                <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData &&
-                                  scSubSchemeDetailsListData.map((list, i) => (
-                                    <option key={i} value={list.subSchemeId}>
-                                      {list.subSchemeName}
-                                    </option>
-                                  ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                Component Type is required
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
                               Scheme Type
                               <span className="text-danger">*</span>
                             </Form.Label>
@@ -1590,6 +1561,40 @@ function DbtApplication() {
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Sub Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Component Type
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSubSchemeDetailsId"
+                                value={data.scSubSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSubSchemeDetailsId === undefined ||
+                                  data.scSubSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Component Type</option>
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component Type is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -1807,6 +1812,8 @@ function DbtApplication() {
                                 onChange={(date) =>
                                   handleDateChange(date, "periodFrom")
                                 }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
                                 peekNextMonth
                                 showMonthDropdown
                                 showYearDropdown
@@ -1830,6 +1837,8 @@ function DbtApplication() {
                                 onChange={(date) =>
                                   handleDateChange(date, "periodTo")
                                 }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
                                 peekNextMonth
                                 showMonthDropdown
                                 showYearDropdown
