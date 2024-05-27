@@ -2418,6 +2418,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                         {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Financial Year"
+                              to="/seriui/financial-year"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}

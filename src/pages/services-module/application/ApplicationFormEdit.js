@@ -85,6 +85,8 @@ function ApplicationFormEdit() {
     talukName: "",
   });
 
+  const[farmerId,setFarmerId] = useState(0);
+
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -106,6 +108,8 @@ function ApplicationFormEdit() {
           scSubSchemeType: datas.componentType,
           // scSubSchemeType:datas.  Need to get from api
         }));
+
+        setFarmerId(datas.farmerId)
 
         api
           .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
@@ -631,7 +635,7 @@ function ApplicationFormEdit() {
       event.preventDefault();
       const sendPost = {
         id: id,
-        farmerId: data.farmerId,
+        farmerId: farmerId,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
