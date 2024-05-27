@@ -329,7 +329,7 @@ function ScProgramAccountMapping() {
                                 key={list.scCategoryId}
                                 value={list.scCategoryId}
                               >
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>
