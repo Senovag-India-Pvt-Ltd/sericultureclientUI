@@ -826,13 +826,6 @@ function ReportRejectList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-          >
-            Re-Push
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
             onClick={() => viewDetails(row.scApplicationFormId)}
             className="ms-1"
           >
@@ -845,6 +838,13 @@ function ReportRejectList() {
             className="ms-1"
           >
             Edit
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handlePush(row.scApplicationFormId)}
+          >
+            Re-Push
           </Button>
         </>
       ),

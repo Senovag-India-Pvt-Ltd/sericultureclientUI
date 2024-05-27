@@ -965,13 +965,6 @@ function DrawingOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-          >
-            Push
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
             onClick={() => viewDetails(row.scApplicationFormId)}
             className="ms-1"
           >
@@ -984,6 +977,13 @@ function DrawingOfficerList() {
             className="ms-1"
           >
             Reject
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handlePush(row.scApplicationFormId)}
+          >
+            Push
           </Button>
         </>
       ),
