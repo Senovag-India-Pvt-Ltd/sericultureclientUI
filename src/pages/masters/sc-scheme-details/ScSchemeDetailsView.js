@@ -5,6 +5,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
+import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -23,11 +24,11 @@ function ScSchemeDetailsView() {
   const [ScSchemeDetails, setScSchemeDetails] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // grabs the id form the url and loads the corresponding data
-  // useEffect(() => {
-  //   let findUser = data.find((item) => item.id === id);
-  //   setState(findUser);
-  // }, [id, data]);
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
+  };
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -110,11 +111,11 @@ function ScSchemeDetailsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Scheme Start Date:</td>
-                        <td>{ScSchemeDetails.schemeStartDate}</td>
+                        <td>{formatDate(ScSchemeDetails.schemeStartDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Scheme End Date:</td>
-                        <td>{ScSchemeDetails.schemeEndDate}</td>
+                        <td>{formatDate(ScSchemeDetails.schemeEndDate)}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>DBT Code:</td>

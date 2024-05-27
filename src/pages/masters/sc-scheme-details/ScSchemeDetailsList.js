@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import React from "react";
 import Swal from "sweetalert2";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
@@ -142,6 +143,12 @@ function ScSchemeDetailsList() {
     },
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
+  };
+
   const ScSchemeDetailsDataColumns = [
     {
       name: "Action",
@@ -194,14 +201,14 @@ function ScSchemeDetailsList() {
     {
         name: "Scheme Start Date",
         selector: (row) => row.schemeStartDate,
-        cell: (row) => <span>{row.schemeStartDate}</span>,
+        cell: (row) => <span>{formatDate(row.schemeStartDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
         name: "Scheme End Date",
         selector: (row) => row.schemeEndDate,
-        cell: (row) => <span>{row.schemeEndDate}</span>,
+        cell: (row) => <span>{formatDate(row.schemeEndDate)}</span>,
         sortable: true,
         hide: "md",
       },

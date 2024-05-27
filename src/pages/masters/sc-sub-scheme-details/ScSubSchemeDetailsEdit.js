@@ -217,21 +217,7 @@ function ScSubSchemeDetailsEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                  <Form.Group as={Row} className="form-group mt-4">
-                      <Col sm={1}>
-                        <Form.Check
-                          type="checkbox"
-                          id="withLand"
-                          checked={data.withLand}
-                          onChange={handleCheckBox}
-                          // Optional: disable the checkbox in view mode
-                          // defaultChecked
-                        />
-                      </Col>
-                      <Form.Label column sm={11} className="mt-n2">
-                        With Land
-                      </Form.Label>
-                    </Form.Group>
+                  
 
                     <Col lg="6">
                     <Form.Group className="form-group mt-n4">
@@ -413,6 +399,22 @@ function ScSubSchemeDetailsEdit() {
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
+
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="withLand"
+                          checked={data.withLand}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        With Land
+                      </Form.Label>
+                    </Form.Group>
                   </Row>
                 )}
               </Card.Body>
