@@ -1323,16 +1323,16 @@ function ApplicationFormEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/report-reject-list"
+                  to="/seriui/application-form-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Application Reject List</span>
+                  <span>Application Form List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/report-reject-list"
+                  to="/seriui/application-form-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
