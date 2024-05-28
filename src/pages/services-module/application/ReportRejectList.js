@@ -843,6 +843,7 @@ function ReportRejectList() {
             variant="primary"
             size="sm"
             onClick={() => handlePush(row.scApplicationFormId)}
+            className="ms-1"
           >
             Re-Push
           </Button>
@@ -1281,8 +1282,8 @@ function ReportRejectList() {
                       <td>{viewDetailsData.initialAmount}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> ARN Number:</td>
-                      <td>{viewDetailsData.arn}</td>
+                      <td style={styles.ctstyle}> Beneficiary Id:</td>
+                      <td>{viewDetailsData.beneficiaryId}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Financial Year:</td>
