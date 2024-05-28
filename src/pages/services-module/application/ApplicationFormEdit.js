@@ -85,7 +85,7 @@ function ApplicationFormEdit() {
     talukName: "",
   });
 
-  const[farmerId,setFarmerId] = useState(0);
+  const [farmerId, setFarmerId] = useState(0);
 
   const getIdList = () => {
     setLoading(true);
@@ -106,21 +106,30 @@ function ApplicationFormEdit() {
           schemeAmount: datas.schemeAmount,
           sanctionNumber: datas.sanctionNo,
           scSubSchemeType: datas.componentType,
+          periodFrom: datas.periodFrom,
+          periodTo: datas.periodTo,
           // scSubSchemeType:datas.  Need to get from api
         }));
 
-        setFarmerId(datas.farmerId)
+        setFarmerId(datas.farmerId);
 
         api
-          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
+          .get(
+            baseURLFarmer +
+              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
               setFarmerDetails((prev) => ({
                 ...prev,
-                village: response.data.content.farmerAddress && response.data.content.farmerAddress[0].villageName,
-                talukName:  response.data.content.farmerAddress && response.data.content.farmerAddress[0].talukName,
+                village:
+                  response.data.content.farmerAddress &&
+                  response.data.content.farmerAddress[0].villageName,
+                talukName:
+                  response.data.content.farmerAddress &&
+                  response.data.content.farmerAddress[0].talukName,
               }));
               setValidated(false);
             }
@@ -232,6 +241,8 @@ function ApplicationFormEdit() {
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
+
+  console.log("hehehehehe", data);
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -688,6 +699,7 @@ function ApplicationFormEdit() {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
+            getIdList();
             setValidated(false);
           }
         })
@@ -748,6 +760,8 @@ function ApplicationFormEdit() {
       sanctionNumber: "",
       farmerId: "",
       financialYearMasterId: "",
+      periodFrom: new Date(),
+      periodTo: new Date(),
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -1821,7 +1835,7 @@ function ApplicationFormEdit() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={data.periodFrom}
+                                selected={new Date(data.periodFrom)}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodFrom")
                                 }
@@ -1844,7 +1858,7 @@ function ApplicationFormEdit() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={data.periodTo}
+                                selected={new Date(data.periodTo)}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodTo")
                                 }
