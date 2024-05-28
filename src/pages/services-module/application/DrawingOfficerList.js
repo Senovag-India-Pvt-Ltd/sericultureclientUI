@@ -104,6 +104,8 @@ function DrawingOfficerList() {
       .then((response) => {
         if (response.data.content.taluk) {
           setTalukListData(response.data.content.taluk);
+        } else {
+          setTalukListData([]);
         }
       })
       .catch((err) => {
