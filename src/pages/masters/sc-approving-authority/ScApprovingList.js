@@ -181,7 +181,7 @@ function ScApprovingAuthorityList() {
 
   const ScApprovingAuthorityDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">

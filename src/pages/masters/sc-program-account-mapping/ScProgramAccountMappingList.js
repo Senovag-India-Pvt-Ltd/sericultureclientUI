@@ -224,8 +224,8 @@ function ScProgramAccountMappingList() {
     },
     {
       name: "Category",
-      selector: (row) => row.categoryName,
-      cell: (row) => <span>{row.categoryName}</span>,
+      selector: (row) => row.codeNumber,
+      cell: (row) => <span>{row.codeNumber}</span>,
       sortable: true,
       hide: "md",
     },

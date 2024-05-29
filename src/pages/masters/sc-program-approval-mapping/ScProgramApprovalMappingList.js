@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ScProgramApprovalMappingList() {
   const [listData, setListData] = useState({});
@@ -20,45 +20,45 @@ function ScProgramApprovalMappingList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [data, setData] = useState({
-    text: "",
-    searchBy: "scProgramName",
-  });
+  // const [data, setData] = useState({
+  //   text: "",
+  //   searchBy: "scProgramName",
+  // });
 
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  // const handleInputs = (e) => {
+  //   // debugger;
+  //   let { name, value } = e.target;
+  //   setData({ ...data, [name]: value });
+  // };
 
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "scProgramName") {
-      joinColumn = "scProgram.scProgramName";
-    }
-    if (data.searchBy === "stageName") {
-      joinColumn = "scApprovalStage.stageName";
-    }
-    // console.log(joinColumn);
-    api
-      .post(baseURL + `scProgramApprovalMapping/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
-      .then((response) => {
-        setListData(response.data.content.scProgramApprovalMapping);
-      })
-      .catch((err) => {
-      });
-  };
+  // // Search
+  // const search = (e) => {
+  //   let joinColumn;
+  //   if (data.searchBy === "scProgramName") {
+  //     joinColumn = "scProgram.scProgramName";
+  //   }
+  //   if (data.searchBy === "stageName") {
+  //     joinColumn = "scApprovalStage.stageName";
+  //   }
+  //   // console.log(joinColumn);
+  //   api
+  //     .post(baseURL + `scProgramApprovalMapping/search`, {
+  //       searchText: data.text,
+  //       joinColumn: joinColumn,
+  //     })
+  //     .then((response) => {
+  //       setListData(response.data.content.scProgramApprovalMapping);
+  //     })
+  //     .catch((err) => {
+  //     });
+  // };
 
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `scProgramApprovalMapping/list-with-join`, _params)
+      .get(baseURLDBT + `master/cost/subScheme-work-flow-list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.scProgramApprovalMapping);
+        setListData(response.data.content.subSchemeWorkFlow);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -73,9 +73,9 @@ function ScProgramApprovalMappingList() {
   }, [page]);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/sc-program-approval-mapping-view/${_id}`);
-  };
+  // const handleView = (_id) => {
+  //   navigate(`/seriui/sc-program-approval-mapping-view/${_id}`);
+  // };
 
   const handleEdit = (_id) => {
     navigate(`/seriui/sc-program-approval-mapping-edit/${_id}`);
@@ -100,7 +100,7 @@ function ScProgramApprovalMappingList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `scProgramApprovalMapping/delete/${_id}`)
+          .delete(baseURLDBT + `master/cost/deleteSubSchemeWorkFlowDetails/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -150,26 +150,50 @@ function ScProgramApprovalMappingList() {
   const customStyles = {
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "10px", // adjust this value to your desired row height
       },
     },
+    // header: {
+    //   style: {
+    //     minHeight: "56px",
+    //   },
+    // },
+    // headRow: {
+    //   style: {
+    //     borderTopStyle: "solid",
+    //     borderTopWidth: "1px",
+    //     // borderTop:"none",
+    //     // borderTopColor: defaultThemes.default.divider.default,
+    //     borderColor: "black",
+    //   },
+    // },
     headCells: {
       style: {
+        // '&:not(:last-of-type)': {
         backgroundColor: "#1e67a8",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        borderStyle: "solid",
+        bordertWidth: "1px",
+        // borderColor: defaultThemes.default.divider.default,
+        borderColor: "black",
+        // },
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
+        // '&:not(:last-of-type)': {
+        borderStyle: "solid",
+        borderWidth: "1px",
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
         paddingRight: "8px",
+        // borderColor: defaultThemes.default.divider.default,
+        borderColor: "black",
+        // },
       },
     },
   };
-
   const ScProgramApprovalMappingDataColumns = [
     {
       name: "Action",
@@ -177,25 +201,25 @@ function ScProgramApprovalMappingList() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
+          {/* <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.scProgramApprovalMappingId)}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.scProgramApprovalMappingId)}
+            onClick={() => handleEdit(row.id)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.scProgramApprovalMappingId)}
+            onClick={() => deleteConfirm(row.id)}
             className="ms-2"
           >
             Delete
@@ -204,19 +228,19 @@ function ScProgramApprovalMappingList() {
       ),
       sortable: false,
       hide: "md",
-      grow:2,
+      // grow:2,
     },
     {
-      name: "Program",
-      selector: (row) => row.scProgramName,
-      cell: (row) => <span>{row.scProgramName}</span>,
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Approval Stage",
-      selector: (row) => row.stageName,
-      cell: (row) => <span>{row.stageName}</span>,
+      selector: (row) => row.stepName,
+      cell: (row) => <span>{row.stepName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -230,8 +254,15 @@ function ScProgramApprovalMappingList() {
 
     {
       name: "Orders",
-      selector: (row) => row.orders,
-      cell: (row) => <span>{row.orders}</span>,
+      selector: (row) => row.stepId,
+      cell: (row) => <span>{row.stepId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Version",
+      selector: (row) => row.version,
+      cell: (row) => <span>{row.version}</span>,
       sortable: true,
       hide: "md",
     },
@@ -272,7 +303,7 @@ function ScProgramApprovalMappingList() {
 
       <Block className="mt-n4">
         <Card>
-          <Row className="m-2">
+          {/* <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -285,7 +316,6 @@ function ScProgramApprovalMappingList() {
                       value={data.searchBy}
                       onChange={handleInputs}
                     >
-                      {/* <option value="">Select</option> */}
                       <option value="scProgramName">Program</option>
                       <option value="stageName">Approval Stage</option>
                     </Form.Select>
@@ -309,7 +339,7 @@ function ScProgramApprovalMappingList() {
                 </Col>
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
           <DataTable
             tableClassName="data-table-head-light table-responsive"

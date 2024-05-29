@@ -43,11 +43,11 @@ function ScProgramView() {
   }, [id]);
 
   return (
-    <Layout title="Program View" content="container">
+    <Layout title="View Program Details" >
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Program View</Block.Title>
+            <Block.Title tag="h2">View Program Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">

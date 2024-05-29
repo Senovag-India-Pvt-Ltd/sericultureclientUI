@@ -148,7 +148,7 @@ function ScProgram() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary">
+                  <Button type="submit" variant="primary">
                     Save
                   </Button>
                 </li>

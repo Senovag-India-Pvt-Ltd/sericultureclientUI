@@ -298,7 +298,7 @@ function ScProgramAccountMapping() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Head Account is required
+                            Head Of Account is required
                           </Form.Control.Feedback>
                         </div>
                       </Col>
@@ -329,7 +329,7 @@ function ScProgramAccountMapping() {
                                 key={list.scCategoryId}
                                 value={list.scCategoryId}
                               >
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

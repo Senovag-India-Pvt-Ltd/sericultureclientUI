@@ -202,7 +202,7 @@ function ScApprovingAuthorityEdit() {
                             name="minAmount"
                             value={data.minAmount}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
                             placeholder="Enter Min Amount"
                             required
                           />
@@ -225,7 +225,7 @@ function ScApprovingAuthorityEdit() {
                             name="maxAmount"
                             value={data.maxAmount}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
                             placeholder="Enter Max Amount"
                             required
                           />
@@ -248,7 +248,7 @@ function ScApprovingAuthorityEdit() {
                             name="type"
                             value={data.type}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
                             placeholder="Enter Type"
                             required
                           />

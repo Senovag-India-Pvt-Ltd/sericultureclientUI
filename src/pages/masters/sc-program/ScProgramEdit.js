@@ -89,7 +89,7 @@ function ScProgramEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -182,7 +182,7 @@ function ScProgramEdit() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="button" variant="primary">
+                  <Button type="submit" variant="primary">
                     Update
                   </Button>
                 </li>
