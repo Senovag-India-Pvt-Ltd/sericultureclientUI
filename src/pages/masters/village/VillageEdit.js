@@ -50,6 +50,8 @@ function VillageEdit() {
               hobliId: "",
               villageName: "",
               lgVillage: "",
+              villageCode: "",
+              villageNameInKannada: "",
             });
             setValidated(false);
           }
@@ -73,6 +75,8 @@ function VillageEdit() {
       hobliId: "",
       villageName: "",
       lgVillage: "",
+      villageCode: "",
+      villageNameInKannada: "",
     });
   };
   //   to get data from api
@@ -452,6 +456,28 @@ function VillageEdit() {
                         />
                         <Form.Control.Feedback type="invalid">
                         Lg Village is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Village">
+                        Village Code<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="villageCode"
+                          name="villageCode"
+                          value={data.villageCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Village Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Village Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

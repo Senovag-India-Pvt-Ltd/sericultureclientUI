@@ -117,6 +117,10 @@ function DistrictView() {
                         <td style={styles.ctstyle}>Lg District:</td>
                         <td>{District.lgDistrict}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District Code:</td>
+                        <td>{District.districtCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

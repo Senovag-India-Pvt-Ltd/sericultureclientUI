@@ -115,6 +115,10 @@ function HobliView() {
                       <td style={styles.ctstyle}> Hobli Name in Kannada:</td>
                       <td>{Hobli.hobliNameInKannada}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Hobli Code:</td>
+                      <td>{Hobli.hobliCode}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>

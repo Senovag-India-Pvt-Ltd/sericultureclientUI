@@ -117,6 +117,10 @@ function VillageView() {
                       <td style={styles.ctstyle}>Lg Village:</td>
                       <td>{Village.lgVillage}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Village Code:</td>
+                      <td>{Village.villageCode}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>

@@ -48,6 +48,7 @@ function HobliEdit() {
               talukId: "",
               hobliName: "",
               hobliNameInKannada: "",
+              hobliCode: "",
             });
             setValidated(false);
           }
@@ -70,6 +71,7 @@ function HobliEdit() {
       talukId: "",
       hobliName: "",
       hobliNameInKannada: "",
+      hobliCode: "",
     });
   };
 
@@ -378,6 +380,29 @@ function HobliEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="hobli">
+                        Hobli Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="hobli"
+                          name="hobliCode"
+                          value={data.hobliCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Hobli Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Hobli Code is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>
