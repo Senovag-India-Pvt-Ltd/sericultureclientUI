@@ -19,7 +19,6 @@ function ScUnitCost() {
     centralShare:"",
     stateShare:"",
     benificiaryShare:"",
-    unitCost:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -56,7 +55,6 @@ function ScUnitCost() {
               centralShare:"",
               stateShare:"",
               benificiaryShare:"",
-              unitCost:"",
             });
             setValidated(false);
           }
@@ -78,7 +76,6 @@ function ScUnitCost() {
       centralShare:"",
       stateShare:"",
       benificiaryShare:"",
-      unitCost:"",
     });
   };
 
@@ -381,7 +378,7 @@ function ScUnitCost() {
                       </div>
                     </Form.Group>
                   </Col>
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
                          Unit Cost 
@@ -402,7 +399,7 @@ function ScUnitCost() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>

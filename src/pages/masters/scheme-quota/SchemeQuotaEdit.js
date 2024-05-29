@@ -261,8 +261,8 @@ useEffect(() => {
                           }
                         >
                           <option value="">Select Scheme Quota Type</option>
-                          <option value="1">State</option>
-                          <option value="2">Central</option>
+                          <option value="State">State</option>
+                          <option value="Central">Central</option>
                           
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">

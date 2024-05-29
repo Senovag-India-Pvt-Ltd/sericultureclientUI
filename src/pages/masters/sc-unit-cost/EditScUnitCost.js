@@ -49,7 +49,6 @@ function ScUnitCostEdit() {
               centralShare:"",
               stateShare:"",
               benificiaryShare:"",
-              unitCost:"",
 
             });
             setValidated(false);
@@ -72,7 +71,6 @@ function ScUnitCostEdit() {
       centralShare:"",
       stateShare:"",
       benificiaryShare:"",
-      unitCost:"",
     });
   };
 
@@ -387,7 +385,7 @@ function ScUnitCostEdit() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
                          Unit Cost 
@@ -408,7 +406,7 @@ function ScUnitCostEdit() {
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
                   </Row>
                 )}
               </Card.Body>

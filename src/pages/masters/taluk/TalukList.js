@@ -185,7 +185,7 @@ function TalukList() {
 
   const TalukDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
