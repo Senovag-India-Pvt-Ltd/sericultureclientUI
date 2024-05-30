@@ -1895,7 +1895,7 @@ function StakeHolderEdit() {
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="rid">
                           {t("farmer_number")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1905,7 +1905,7 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("enter_farmer_number")}
-                            required
+                            // required
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Number is required
