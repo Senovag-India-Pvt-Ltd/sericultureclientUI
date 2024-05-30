@@ -388,7 +388,7 @@ function ReelerInitialAmount() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Credited successfully",
       // text: "You clicked the button!",
     });
   };
