@@ -3517,6 +3517,7 @@ function StakeHolderEdit() {
                           onChange={handleFLInputs}
                           type="text"
                           placeholder={t("Enter fgunta")}
+                          readOnly
                         />
                       </div>
                     </Form.Group>
