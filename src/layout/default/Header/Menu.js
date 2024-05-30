@@ -194,15 +194,21 @@ function Menu() {
     Registration_Other_State_Farmer: false,
 
     Services: false,
-    Services_Subsidy_Programmes: false,
-    Services_Track_the_DFL_procurement: false,
-    Services_Track_Mulberry_Status: false,
-    Services_Supply_of_Disinfection: false,
-    Services_Apply_Incentives: false,
-    Services_Apply_Subsidy: false,
-    Services_Providing_Chawki_Rearing_Incentives: false,
-    Services_Providing_Incentives_To_Reelers: false,
-    Services_Providing_Subsidy_To_Reelers: false,
+    Services_Service_Application: false,
+    Services_Service_Application: false,
+    Services_Service_Dashboard: false,
+    Services_Reject_List:false,
+    Services_Success_List:false,
+    Services_Dbt_Application:false,
+    Services_Drawing_Officer_List:false,
+    Services_Tsc_Officer_List:false,
+    // Services_Track_Mulberry_Status: false,
+    // Services_Supply_of_Disinfection: false,
+    // Services_Apply_Incentives: false,
+    // Services_Apply_Subsidy: false,
+    // Services_Providing_Chawki_Rearing_Incentives: false,
+    // Services_Providing_Incentives_To_Reelers: false,
+    // Services_Providing_Subsidy_To_Reelers: false,
 
     DBT: false,
     DBT_Subsidy_Verification: false,
@@ -357,6 +363,7 @@ function Menu() {
     Admin_Master_Service_Program_Approval_Mapping: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
+    Admin_Master_Service_Financial_Year: false,
 
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
@@ -402,6 +409,7 @@ function Menu() {
     Admin_Master_Auction_Empaneled_Vendor: false,
     Admin_Master_Auction_Reeler_Device_Mapping: false,
     Admin_Master_Auction_Race_Mapping: false,
+    Admin_Master_Auction_Division: false,
 
     Admin_Master_General: false,
     Admin_Master_General_Pages: false,
@@ -995,7 +1003,7 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Service_Application ? (
               <MenuItem>
                 <MenuItemLink
                   text="Service Application"
@@ -1003,15 +1011,15 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {/* {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
                   text="Subsidy Programmes"
                   to="/seriui/subsidy-programs"
                 />
               </MenuItem>
-            ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            ) : null} */}
+            {showMenu.Services_Service_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
                   text="Service Dashboard"
@@ -1019,7 +1027,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Reject_List ? (
               <MenuItem>
                 <MenuItemLink
                   text="Report Rejection List"
@@ -1027,7 +1035,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Success_List ? (
               <MenuItem>
                 <MenuItemLink
                   text="Report Success List"
@@ -1035,7 +1043,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Dbt_Application ? (
               <MenuItem>
                 <MenuItemLink
                   text="DBT Application"
@@ -1043,7 +1051,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text="Drawing Officer List"
@@ -1051,7 +1059,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text="TSC Officer List"
@@ -2410,15 +2418,15 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
+                        {/* {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Reason for bid Rejection"
                               to="/seriui/reason-bid-rejection"
                             />
                           </MenuItem>
-                        ) : null}
-                         {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
+                        ) : null} */}
+                         {showMenu.Admin_Master_Service_Financial_Year ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Financial Year"
@@ -2747,6 +2755,14 @@ function Menu() {
                             <MenuItemLink
                               text="Race Mapping"
                               to="/seriui/race-mapping"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Auction_Division ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Division"
+                              to="/seriui/division"
                             />
                           </MenuItem>
                         ) : null}
