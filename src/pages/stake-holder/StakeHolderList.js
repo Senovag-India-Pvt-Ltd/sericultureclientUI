@@ -288,7 +288,7 @@ function StakeHolderList() {
       hide: "md",
     },
     {
-      name: "Passbook Number",
+      name: "Seri Passbook Number",
       selector: (row) => row.passbookNumber,
       cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,
