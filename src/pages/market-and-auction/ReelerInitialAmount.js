@@ -209,7 +209,7 @@ function ReelerInitialAmount() {
 
       if (select === "reelingLicenseNumber") {
         sendData = {
-          reelerNumber: text,
+          reelingLicenseNumber: text,
           marketId: localStorage.getItem("marketId"),
         };
       }
