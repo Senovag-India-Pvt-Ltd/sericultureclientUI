@@ -280,7 +280,7 @@ function StakeHolderViewPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Passbook Number:</td>
+                      <td style={styles.ctstyle}>Seri Passbook Number:</td>
                       <td>{StakeHolder.passbookNumber}</td>
                     </tr>
                   </tbody>
