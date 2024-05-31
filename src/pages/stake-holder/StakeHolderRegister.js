@@ -983,7 +983,7 @@ function StakeHolderRegister() {
       api
         .post(baseURL2 + `farmer/save-complete-farmer-details`, sendData)
         .then((response) => {
-          console.log(response.data)
+          // console.log(response.data)
           // const farmerId = response.data.content.farmerId;
           if (response.data.content.error) {
             saveFarmerError(response.data.content.error_description);
