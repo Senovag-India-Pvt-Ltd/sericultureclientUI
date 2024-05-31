@@ -108,6 +108,14 @@ function TalukView() {
                         <td style={styles.ctstyle}> Taluk Name in Kannada:</td>
                         <td>{Taluk.talukNameInKannada}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Lg Taluk:</td>
+                        <td>{Taluk.lgTaluk}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Taluk Code:</td>
+                        <td>{Taluk.talukCode}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

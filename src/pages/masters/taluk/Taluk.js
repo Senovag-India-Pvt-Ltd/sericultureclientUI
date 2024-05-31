@@ -17,6 +17,8 @@ function Taluk() {
     stateId: "",
     districtId: "",
     talukNameInKannada: "",
+    lgTaluk:"",
+    talukCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -50,13 +52,22 @@ function Taluk() {
               stateId: "",
               districtId: "",
               talukNameInKannada: "",
+              lgTaluk:"",
+              talukCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -69,6 +80,8 @@ function Taluk() {
       stateId: "",
       districtId: "",
       talukNameInKannada: "",
+      lgTaluk:"",
+      talukCode: "",
     });
   };
 
@@ -281,6 +294,50 @@ function Taluk() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Taluk Name in Kannada is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="Taluk">
+                        Lg Taluk<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lgTaluk"
+                          name="lgTaluk"
+                          value={data.lgTaluk}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Lg Taluk"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Lg Taluk is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="district">
+                      Taluk Code<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="talukCode"
+                          type="text"
+                          name="talukCode"
+                          value={data.talukCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Taluk Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Taluk Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

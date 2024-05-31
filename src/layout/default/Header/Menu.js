@@ -194,15 +194,20 @@ function Menu() {
     Registration_Other_State_Farmer: false,
 
     Services: false,
-    Services_Subsidy_Programmes: false,
-    Services_Track_the_DFL_procurement: false,
-    Services_Track_Mulberry_Status: false,
-    Services_Supply_of_Disinfection: false,
-    Services_Apply_Incentives: false,
-    Services_Apply_Subsidy: false,
-    Services_Providing_Chawki_Rearing_Incentives: false,
-    Services_Providing_Incentives_To_Reelers: false,
-    Services_Providing_Subsidy_To_Reelers: false,
+    Services_Service_Application: false,
+    Services_Service_Dashboard: false,
+    Services_Reject_List:false,
+    Services_Success_List:false,
+    Services_Dbt_Application:false,
+    Services_Drawing_Officer_List:false,
+    Services_Tsc_Officer_List:false,
+    // Services_Track_Mulberry_Status: false,
+    // Services_Supply_of_Disinfection: false,
+    // Services_Apply_Incentives: false,
+    // Services_Apply_Subsidy: false,
+    // Services_Providing_Chawki_Rearing_Incentives: false,
+    // Services_Providing_Incentives_To_Reelers: false,
+    // Services_Providing_Subsidy_To_Reelers: false,
 
     DBT: false,
     DBT_Subsidy_Verification: false,
@@ -217,6 +222,7 @@ function Menu() {
     Market_Gatepass: false,
     Market_Reject: false,
     Market_Show_Lot: false,
+    Market_Reeler_Initial_Amount: false,
 
     Market_Payment: false,
     Market_Payment_Ready_for_Payment: false,
@@ -230,16 +236,28 @@ function Menu() {
     // Market_Update_Lot_Weight: false,
 
     SeedDFL: false,
-    SeedDFL_Garden_Farms: false,
-    SeedDFL_DFLs_from_P4_Grainage: false,
-    SeedDFL_Line_Records_Each_race: false,
-    SeedDFL_Screening_batch_record: false,
-    SeedDFL_Cocoons_to_P4_Grainage: false,
-    SeedDFL_DFLs_for_the_8_lines: false,
-    SeedDFL_Seed_Cocoon_Processing: false,
-    SeedDFL_Preparation_Egg_DFLs: false,
-    SeedDFL_Eggs_Cold_storage: false,
-    SeedDFL_Cold_Storage_Schedule_BV: false,
+    SeedDFL_BSF: false,
+    SeedDFL_BSF_Garden_Farm: false,
+    SeedDFL_BSF_DFLs_from_P4_Grainage: false,
+    SeedDFL_BSF_Line_Records_Each_race: false,
+    SeedDFL_BSF_Screening_batch_record: false,
+    SeedDFL_BSF_Cocoons_to_P4_Grainage: false,
+    SeedDFL_BSF_DFLs_for_the_8_lines: false,
+    SeedDFL_Grainage: false,
+    SeedDFL_Grainage_Seed_Cocoon_Processing: false,
+    SeedDFL_Grainage_Preparation_Egg_DFLs: false,
+    SeedDFL_Grainage_Eggs_Cold_storage: false,
+    SeedDFL_Grainage_Cold_Storage_Schedule_BV: false,
+    SeedDFL_Grainage_Sale_of_DFLs_Eggs: false,
+    SeedDFL_Grainage_Testing_Of_Moth: false,
+    SeedDFL_Grainage_Maintenance_Of_Pierced_Cocoons: false,
+    SeedDFL_Grainage_Sale_Of_Pierced_Cocoons: false,
+    SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets: false,
+    SeedDFL_Grainage_Remittance: false,
+    SeedDFL_External: false,
+    SeedDFL_External_Preparation_Egg_DFLs: false,
+    SeedDFL_External_Sale_of_DFLs_Eggs: false,
+    SeedDFL_External_Eggs_Cold_storage: false,
 
     GardenManagement: false,
     GardenManagement_Mulberry_Garden: false,
@@ -254,7 +272,18 @@ function Menu() {
     ChawkiManagement_ChawkiManagement: false,
 
     TargetSetting: false,
+    TargetSetting_Dashboard: false,
     TargetSetting_Assigning_Yearly_Targets: false,
+    TargetSetting_Allocate: false,
+    TargetSetting_Allocate_Budget: false,
+    TargetSetting_Allocate_Budget_Hoa: false,
+    TargetSetting_Allocate_Budget_District: false,
+    TargetSetting_Allocate_Budget_Taluk: false,
+    TargetSetting_Allocate_Budget_Institution: false,
+    TargetSetting_Release: false,
+    TargetSetting_Release_District: false,
+    TargetSetting_Release_Taluk: false,
+    TargetSetting_Release_Institution: false,
 
     Inspection: false,
     Inspection_Tracking_Status_of_Mulberry: false,
@@ -270,6 +299,7 @@ function Menu() {
     Helpdesk_Raise_a_Ticket: false,
     Helpdesk_Dashboard: false,
     Helpdesk_User_Dashboard: false,
+    Helpdesk_Escalated_Dashboard: false,
     Helpdesk_My_Tickets: false,
     Helpdesk_FAQ: false,
 
@@ -310,15 +340,29 @@ function Menu() {
     Admin_Master_Land_Machine_Type: false,
 
     Admin_Master_Service: false,
+    Admin_Master_Service_Department: false,
+    Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Program: false,
+    Admin_Master_Service_Scheme_Details: false,
+    Admin_Master_Service_Sub_Scheme_Details: false,
     Admin_Master_Service_Component: false,
+    Admin_Master_Service_Scheme_Quota: false,
+    Admin_Master_Service_Map_Component_And_Head_Of_Account: false,
     Admin_Master_Service_Head_of_Account: false,
+    Admin_Master_Service_Head_of_Account_Category: false,
+    Admin_Master_Service_Unit_Cost: false,
+    Admin_Master_Service_Vendor: false,
+    Admin_Master_Service_Vendor_Contact: false,
+    Admin_Master_Service_Vendor_Bank: false,
+    Admin_Master_Service_Approving_Authority: false,
     Admin_Master_Service_Category: false,
     Admin_Master_Service_Approval_Stage: false,
+    Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
+    Admin_Master_Service_Financial_Year: false,
 
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
@@ -346,6 +390,7 @@ function Menu() {
     Admin_Master_Garden_Generation_Number: false,
     Admin_Master_Garden_Farm: false,
     Admin_Master_Garden_Tsc: false,
+    Admin_Master_Garden_Worm_Stage: false,
 
     Admin_Master_Auction: false,
     Admin_Master_Auction_Bin: false,
@@ -363,6 +408,7 @@ function Menu() {
     Admin_Master_Auction_Empaneled_Vendor: false,
     Admin_Master_Auction_Reeler_Device_Mapping: false,
     Admin_Master_Auction_Race_Mapping: false,
+    Admin_Master_Auction_Division: false,
 
     Admin_Master_General: false,
     Admin_Master_General_Pages: false,
@@ -381,6 +427,8 @@ function Menu() {
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_Reeler_Transaction_Report: false,
     Admin_Report_GeneratedTriplet: false,
+    Admin_Report_GeneratedFarmerCopy: false,
+    Admin_Report_ReelerPendingReport: false,
   });
 
   // Old show menu using mapcode
@@ -484,6 +532,79 @@ function Menu() {
         }
       });
     }
+
+    if (data.includes("Admin_Master")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Registration")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Registration_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Land")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Land_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Service")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Service_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Training")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Training_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_HelpDesk")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_HelpDesk_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Garden")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Garden_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_Auction")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_Auction_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
+    if (data.includes("Admin_Master_General")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Admin_Master_General_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+
     if (data.includes("Admin_Report")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Admin_Report_")) {
@@ -527,6 +648,39 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         DBT: true,
+      }));
+    }
+
+    const hasTraining = data.some((item) => item.startsWith("Training_"));
+    if (hasTraining) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Training: true,
+      }));
+    }
+
+    const hasHelpdesk = data.some((item) => item.startsWith("Helpdesk_"));
+    if (hasHelpdesk) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Helpdesk: true,
+      }));
+    }
+
+    const hasReport = data.some((item) => item.startsWith("Admin_Report_"));
+    if (hasReport) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin_Report: true,
+        Admin: true,
+      }));
+    }
+
+    const hasGarden = data.some((item) => item.startsWith("GardenManagement_"));
+    if (hasGarden) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        GardenManagement: true,
       }));
     }
 
@@ -848,15 +1002,71 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.Services_Subsidy_Programmes ? (
+            {showMenu.Services_Service_Application ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Service Application"
+                  to="/seriui/service-application"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Services_Subsidy_Programmes ? (
               <MenuItem>
                 <MenuItemLink
                   text="Subsidy Programmes"
                   to="/seriui/subsidy-programs"
                 />
               </MenuItem>
+            ) : null} */}
+            {showMenu.Services_Service_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Service Dashboard"
+                  to="/seriui/application-dashboard"
+                />
+              </MenuItem>
             ) : null}
-            {showMenu.Services_Track_the_DFL_procurement ? (
+            {showMenu.Services_Reject_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Rejection List"
+                  to="/seriui/report-reject-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Success_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Success List"
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Dbt_Application ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="DBT Application"
+                  to="/seriui/dbt-application"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Drawing Officer List"
+                  to="/seriui/drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Tsc_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="TSC Officer List"
+                  to="/seriui/tsc-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink
                   text="Track DFL Procurement"
@@ -919,7 +1129,7 @@ function Menu() {
                   to="/seriui/providing-reeler-subsidy"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -1075,6 +1285,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Market_Reeler_Initial_Amount ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Reeler Initial Amount"
+                  to="/seriui/reeler-initial-amount"
+                />
+              </MenuItem>
+            ) : null}
             {/* {showMenu.Market_Permit ? (
             <MenuItem>
               <MenuItemLink text="e-Permit" to="#" />
@@ -1116,93 +1334,209 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.SeedDFL_Garden_Farms ? (
-              <MenuItem>
+            {showMenu.SeedDFL_BSF ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Maintenance of mulberry Garden in the Farms"
-                  to="/seriui/garden-mulberry-farm"
+                  text="BSF Kunigal"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {showMenu.SeedDFL_BSF_Garden_Farm ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of mulberry Garden in the Farms"
+                        to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_DFLs_from_P4_Grainage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Receipt of DFLs from the P4 grainage"
+                        to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Line_Records_Each_race ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of Line Records for Each Race"
+                        to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Screening_batch_record ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of Screening Batch Records"
+                        to="/seriui/Maintenance-of-Screening-Batch-Records"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_Cocoons_to_P4_Grainage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Dispatch of Cocoons to P4 Grainage"
+                        to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_BSF_DFLs_for_the_8_lines ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Rearing of DFLs for the 8 Lines"
+                        to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
-            {showMenu.SeedDFL_DFLs_from_P4_Grainage ? (
-              <MenuItem>
+            {showMenu.SeedDFL_Grainage ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Receipt of DFLs from the P4 grainage"
-                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage"
+                  text="Grainage"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {showMenu.SeedDFL_Grainage_Seed_Cocoon_Processing ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preservation of seed cocoon for processing"
+                        to="/seriui/Preservation-of-seed-cocoon-for-processing"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Preparation_Egg_DFLs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preparation of eggs DFLs"
+                        to="/seriui/Preparation-of-eggs-DFLs"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Eggs_Cold_storage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of eggs at cold storage"
+                        to="/seriui/Maintenance-of-eggs-at-cold-storage"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Cold_Storage_Schedule_BV ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Cold Storage Schedule BV"
+                        to="/seriui/Cold-Storage-Schedule-BV"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Sale_of_DFLs_Eggs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale/Disposal of DFLs (eggs)"
+                        to="/seriui/Sale-Disposal-of-DFLs-eggs"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Testing_Of_Moth ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Testing Of Moth/Pupa"
+                        to="/seriui/testing-of-moth"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.SeedDFL_Grainage_Maintenance_Of_Pierced_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance Of Pierced Cocoons"
+                        to="/seriui/maintenance-of-pierced-cocoons"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Sale_Of_Pierced_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale/Disposal of Pierced Cocoons"
+                        to="/seriui/sale-disposal-of-pierced-cocoons"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Maintenance_Of_Egg_Laying_Sheets ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance Of Egg Laying Sheets"
+                        to="/seriui/maintenance-of-egg-laying-sheets"
+                      />
+                    </MenuItem>
+                  ) : null}
+
+                  {showMenu.SeedDFL_Grainage_Remittance ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Remittance (Eggs / PC / Others)"
+                        to="/seriui/remittance"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
-            {showMenu.SeedDFL_Line_Records_Each_race ? (
-              <MenuItem>
+            {showMenu.SeedDFL_External ? (
+              <MenuItem sub>
                 <MenuItemLink
-                  text="Maintenance of Line Records for Each Race"
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                  text="External Users"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
-              </MenuItem>
-            ) : null}
+                <MenuSub>
+                  {showMenu.SeedDFL_External_Preparation_Egg_DFLs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Preparation of eggs (DFLs) RSP/NSSO"
+                        to="/seriui/registered-seed-producer-nsso-grainages"
+                      />
+                    </MenuItem>
+                  ) : null}
 
-            {showMenu.SeedDFL_Screening_batch_record ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance of Screening Batch Records"
-                  to="/seriui/Maintenance-of-Screening-Batch-Records"
-                />
-              </MenuItem>
-            ) : null}
+                  {showMenu.SeedDFL_External_Sale_of_DFLs_Eggs ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Sale / Dis posal of DFL’s (eggs) RSP/NSSO"
+                        to="/seriui/sale-and-disposal-of-eggs-nsso"
+                      />
+                    </MenuItem>
+                  ) : null}
 
-            {showMenu.SeedDFL_Cocoons_to_P4_Grainage ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Dispatch of Cocoons to P4 Grainage"
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_DFLs_for_the_8_lines ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Rearing of DFLs for the 8 Lines"
-                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Seed_Cocoon_Processing ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Preservation of seed cocoon for processing"
-                  to="/seriui/Preservation-of-seed-cocoon-for-processing"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Preparation_Egg_DFLs ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Preparation of eggs DFLs"
-                  to="/seriui/Preparation-of-eggs-DFLs"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Eggs_Cold_storage ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Maintenance of eggs at cold storage"
-                  to="/seriui/Maintenance-of-eggs-at-cold-storage"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.SeedDFL_Cold_Storage_Schedule_BV ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Cold Storage Schedule BV"
-                  to="/seriui/Cold-Storage-Schedule-BV"
-                />
+                  {showMenu.SeedDFL_External_Eggs_Cold_storage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Maintenance of eggs at cold storage RSP/NSSO"
+                        to="/seriui/Maintenance-of-eggs-at-cold"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
 
@@ -1343,12 +1677,177 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
+            {/* {showMenu.TargetSetting_Assigning_Yearly_Targets ? (
               <MenuItem>
                 <MenuItemLink
                   text="Assigning Yearly Targets"
                   to="/seriui/attribute-assigning"
                 />
+              </MenuItem>
+            ) : null} */}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Dashboard"
+                  to="/seriui/budget-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Allocate_Budget ? (
+              <MenuItem>
+                <MenuItemLink text="Budget" to="/seriui/budget" />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+              <MenuItem>
+                <MenuItemLink text="Budget to HOA" to="/seriui/budget-hoa" />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_District ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to District"
+                  to="/seriui/budget-district"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to Taluk"
+                  to="/seriui/budget-taluk"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget to Institution"
+                  to="/seriui/budget-tsc"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget HOA Extension"
+                  to="/seriui/budgethoaextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget District Extension"
+                  to="/seriui/budgetdistrictextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Taluk Extension"
+                  to="/seriui/budgettalukextension"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Budget Institution Extension"
+                  to="/seriui/budgetinstitutionextension"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.TargetSetting_Allocate ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Physical Target Setting"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.TargetSetting_Allocate_Budget ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Physical Target Setting District"
+                        to="/seriui/physicaltargetsettingsdistrict"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_Hoa ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to HOA"
+                        to="/seriui/budget-hoa"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {/* {showMenu.TargetSetting_Allocate_Budget_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Budget to District"
+                        to="/seriui/budget-district"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  {showMenu.TargetSetting_Allocate_Budget_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Physical Target Setting Taluk"
+                        to="/seriui/physicaltargetsettingstaluk"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Allocate_Budget_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Physical Target Setting Institution"
+                        to="/seriui/physicaltargetsettingstsc"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
+              </MenuItem>
+            ) : null}
+            {showMenu.TargetSetting_Release ? (
+              <MenuItem sub>
+                <MenuItemLink
+                  text="Financial Target Setting"
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
+                />
+                <MenuSub>
+                  {showMenu.TargetSetting_Release_District ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Financial Target Setting District"
+                        to="/seriui/financialtargetsettingsdistrict"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Release_Taluk ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Financial Target Setting Taluk"
+                        to="/seriui/financialtargetsettingstaluk"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.TargetSetting_Release_Institution ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Financial Target Setting  Institution"
+                        to="/seriui/financialtargetsettingsinstitution"
+                      />
+                    </MenuItem>
+                  ) : null}
+                </MenuSub>
               </MenuItem>
             ) : null}
           </MenuSub>
@@ -1366,6 +1865,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
+            {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Inspection Config"
+                  to="/seriui/inspection-config"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
@@ -1467,6 +1974,14 @@ function Menu() {
                 <MenuItemLink
                   text="User Dashboard"
                   to="/seriui/user-dashboard"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Helpdesk_Escalated_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Escalate Dashboard"
+                  to="/seriui/escalate-dashboard"
                 />
               </MenuItem>
             ) : null}
@@ -1734,11 +2249,43 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
+                        {showMenu.Admin_Master_Service_Department ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Department"
+                              to="/seriui/department"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reject Reason"
+                              to="/seriui/reject-reason-workflow"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Program ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Program"
                               to="/seriui/sc-program"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Scheme_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Details"
+                              to="/seriui/sc-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Sub_Scheme_Details ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Component Type"
+                              to="/seriui/sc-sub-scheme-details"
                             />
                           </MenuItem>
                         ) : null}
@@ -1750,11 +2297,75 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Scheme_Quota ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Quota"
+                              to="/seriui/scheme-quota"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Map Component And Head Of Account"
+                              to="/seriui/map-component"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Head_of_Account ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Head of Account"
                               to="/seriui/sc-head-account"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Head_of_Account_Category ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Head of Account Category"
+                              to="/seriui/sc-head-account-category"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Unit_Cost ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Unit Cost"
+                              to="/seriui/sc-unit-cost"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor"
+                              to="/seriui/sc-vendor"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor_Contact ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor Contact"
+                              to="/seriui/sc-vendor-contact"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Vendor_Bank ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Vendor Bank"
+                              to="/seriui/sc-vendor-bank"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Approving_Authority ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Approving Authority"
+                              to="/seriui/sc-approving-authority"
                             />
                           </MenuItem>
                         ) : null}
@@ -1771,6 +2382,14 @@ function Menu() {
                             <MenuItemLink
                               text="Approval Stage"
                               to="/seriui/sc-approval-stage"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_User_Hierarchy_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="User Hierarchy Mapping"
+                              to="/seriui/user-hierarchy-mapping"
                             />
                           </MenuItem>
                         ) : null}
@@ -1798,11 +2417,19 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
+                        {/* {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Reason for bid Rejection"
                               to="/seriui/reason-bid-rejection"
+                            />
+                          </MenuItem>
+                        ) : null} */}
+                         {showMenu.Admin_Master_Service_Financial_Year ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Financial Year"
+                              to="/seriui/financial-year"
                             />
                           </MenuItem>
                         ) : null}
@@ -2007,6 +2634,14 @@ function Menu() {
                             <MenuItemLink text="Tsc" to="/seriui/tsc" />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Garden_Worm_Stage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Worm Stage"
+                              to="/seriui/worm-stage"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
                   ) : null}
@@ -2122,6 +2757,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Auction_Division ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Division"
+                              to="/seriui/division"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {/* {showMenu.Admin_Master_Auction_Accept_Bid ? (
                         <MenuItem>
                           <MenuItemLink text="Accept Bid" to="/seriui/accept-bid" />
@@ -2148,6 +2791,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+
                         {showMenu.Admin_Master_General_Config_Role ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2262,6 +2906,22 @@ function Menu() {
                       <MenuItemLink
                         text="Generated Triplet"
                         to="/seriui/print-bid-slip"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_GeneratedFarmerCopy ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Generated Bidding Slip"
+                        to="/seriui/print-farmer-copy"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_ReelerPendingReport ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Reeler Pending Report"
+                        to="/seriui/reeler-pending-report"
                       />
                     </MenuItem>
                   ) : null}

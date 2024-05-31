@@ -9,7 +9,7 @@ import StakeHolderDatas from "../../store/stakeHolder/StakeHolderData";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useState, useEffect } from "react";
-// import axios from "axios";
+import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -192,6 +192,12 @@ function StakeHolderList() {
     },
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
+  };
+
   const StakeHolderDataColumns = [
     {
       name: "Action",
@@ -229,6 +235,7 @@ function StakeHolderList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Name",
@@ -251,13 +258,13 @@ function StakeHolderList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "DOB",
-    //   selector: (row) => row.dob,
-    //   cell: (row) => <span>{row.dob}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "DOB",
+      selector: (row) => row.dob,
+      cell: (row) => <span>{formatDate(row.dob)}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "District",
     //   selector: (row) => row.districtName,
@@ -281,7 +288,7 @@ function StakeHolderList() {
       hide: "md",
     },
     {
-      name: "Passbook Number",
+      name: "Seri Passbook Number",
       selector: (row) => row.passbookNumber,
       cell: (row) => <span>{row.passbookNumber}</span>,
       sortable: true,

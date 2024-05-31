@@ -102,7 +102,7 @@ function ScProgramAccountMappingView() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Category:</td>
-                      <td>{scAccountMapping.categoryName}</td>
+                      <td>{scAccountMapping.codeNumber}</td>
                     </tr>
                   </tbody>
                 </table>

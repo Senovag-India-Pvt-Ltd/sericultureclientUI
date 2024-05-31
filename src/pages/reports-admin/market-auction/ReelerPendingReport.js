@@ -12,6 +12,7 @@ import api from "../../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ReelerPendingReport() {
   const [data, setData] = useState({
@@ -74,7 +75,48 @@ function ReelerPendingReport() {
   //     });
   // };
 
-  const postData = (event) => {
+  const postData = () => {
+    const { marketId } = data;
+    // event.stopPropagation();
+    api
+      .post(
+        baseURLReport + `get-reeler-pending-report`,
+        {
+          marketId: marketId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      )
+      .then((response) => {
+        console.log(response.data.size);
+        if (response.data.size > 800) {
+          const file = new Blob([response.data], { type: "application/pdf" });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL);
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "No Record Found",
+          });
+        }
+        //console.log("hello world", response.data);
+      })
+      .catch((error) => {
+        // console.log("error", error);
+      });
+  };
+
+  const [pendingData, setPendingData] = useState([]);
+  const [amountData, setAmountData] = useState({
+    reelerDebit: "",
+    reelerCredit: "",
+    reelerDepositToday: "",
+    marketName: "",
+  });
+  const [show, setShow] = useState(false);
+
+  const getData = (event) => {
     const { marketId } = data;
 
     const form = event.currentTarget;
@@ -86,31 +128,34 @@ function ReelerPendingReport() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(
-          baseURLReport + `get-reeler-pending-report`,
-          {
-            marketId: marketId,
-          },
-          {
-            responseType: "blob", //Force to receive data in a Blob Format
-          }
-        )
-        .then((response) => {
-          console.log(response.data.size);
-          if (response.data.size > 800) {
-            const file = new Blob([response.data], { type: "application/pdf" });
-            const fileURL = URL.createObjectURL(file);
-            window.open(fileURL);
-          } else {
-            Swal.fire({
-              icon: "warning",
-              title: "No Record Found",
-            });
-          }
-          //console.log("hello world", response.data);
+        .post(baseURLMarket + `auction/report/getReelerPendingReport`, {
+          marketId: marketId,
         })
-        .catch((error) => {
-          // console.log("error", error);
+        .then((response) => {
+          //   console.log(response);
+          if (response.data.content) {
+            setShow(true);
+            const result = response.data.content;
+            setAmountData((prev) => ({
+              ...prev,
+              reelerDebit: result.debitTotal,
+              reelerCredit: result.balance,
+              reelerDepositToday: result.creditTotal,
+              marketName: result.marketName,
+            }));
+            setPendingData(response.data.content.reelerPendingInfoList);
+          } else {
+            saveError();
+          }
+
+          //   setMarketListData(response.data.content.marketMaster);
+        })
+        .catch((err) => {
+          if (err.response.data) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
+            setPendingData([]);
+            setShow(false);
+          }
         });
     }
   };
@@ -125,19 +170,19 @@ function ReelerPendingReport() {
       navigate("/seriui/caste-list");
     });
   };
-  const saveError = () => {
+  const saveError = (message = "Something went wrong!") => {
     Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      icon: "warning",
+      title: "Not Found",
+      text: message,
     });
   };
   return (
-    <Layout title="Bidding Report Reeler">
+    <Layout title="Reeler Pending Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Report Reeler</Block.Title>
+            <Block.Title tag="h2">Reeler Pending Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -166,7 +211,7 @@ function ReelerPendingReport() {
 
       <Block className="mt-n5">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
+        <Form noValidate validated={validated} onSubmit={getData}>
           <Row className="g-3 ">
             <Card>
               <Card.Body>
@@ -203,8 +248,7 @@ function ReelerPendingReport() {
                           onBlur={() => handleInputs}
                           required
                           isInvalid={
-                            data.marketId === undefined ||
-                            data.marketId === "0"
+                            data.marketId === undefined || data.marketId === "0"
                           }
                         >
                           <option value="">Select Market</option>
@@ -254,6 +298,219 @@ function ReelerPendingReport() {
                 </Row>
               </Card.Body>
             </Card>
+
+            {show ? (
+              <Block className="mt-3">
+                <Card>
+                  <Card.Header
+                    className="d-flex flex-column justify-content-center align-items-center"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    <span style={{ fontSize: "x-large" }}>
+                      Government Cocoon Market, {amountData.marketName}
+                    </span>
+                    <span>
+                      Reeler Balance Report{" "}
+                      {new Date().getDate().toString().padStart(2, "0") +
+                        "-" +
+                        (new Date().getMonth() + 1)
+                          .toString()
+                          .padStart(2, "0") +
+                        "-" +
+                        new Date().getFullYear()}
+                    </span>
+                  </Card.Header>
+                  <Card.Body>
+                    <Row className="g-gs">
+                      <Col lg="12">
+                        <div className="mt-n3 d-flex justify-content-between">
+                          <Form.Group as={Row} className="form-group">
+                            <Form.Label
+                              column
+                              sm={12}
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Reeler Debited Balance:{" "}
+                              <span style={{ color: "green" }}>
+                                {" "}
+                                &#8377; {amountData.reelerDebit}
+                              </span>
+                            </Form.Label>
+                          </Form.Group>
+                          <Button
+                            type="submit"
+                            variant="danger"
+                            size="sm"
+                            onClick={postData}
+                          >
+                            Print
+                          </Button>
+                        </div>
+
+                        <div className="mt-n3">
+                          <Form.Group as={Row} className="form-group">
+                            <Form.Label
+                              column
+                              sm={4}
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Reeler Credit Balance:{" "}
+                              <span style={{ color: "green" }}>
+                                {" "}
+                                &#8377; {amountData.reelerCredit}
+                              </span>
+                            </Form.Label>
+                          </Form.Group>
+                        </div>
+                        <div className="mt-n3">
+                          <Form.Group as={Row} className="form-group">
+                            <Form.Label
+                              column
+                              sm={4}
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Reeler Deposit Today:{" "}
+                              <span style={{ color: "green" }}>
+                                {" "}
+                                &#8377; {amountData.reelerDepositToday}
+                              </span>
+                            </Form.Label>
+                          </Form.Group>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row className="g-gs pt-2">
+                      <Col lg="12">
+                        <table className="table table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                SL No
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Reeler Number
+                              </th>
+
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Reeler Name
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Counter
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Phone
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                License Number
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Current Balance
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Online
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                Suspend
+                              </th>
+                              <th
+                                style={{
+                                  backgroundColor: "#0f6cbe",
+                                  color: "#fff",
+                                }}
+                                // colSpan="2"
+                              >
+                                U Date_Time
+                              </th>
+                              {/* <th
+                          style={{
+                            backgroundColor: "#0f6cbe",
+                            color: "#fff",
+                          }}
+                          // colSpan="2"
+                        >
+                          Balance
+                        </th> */}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {pendingData.map((list, i) => (
+                              <tr key={i}>
+                                <td>{list.serialNumber}</td>
+                                <td>{list.reelerNumber}</td>
+                                <td>{list.reelerName}</td>
+                                <td>{list.counter}</td>
+                                <td>{list.mobileNumber}</td>
+                                <td>{list.reelingLicenseNumber}</td>
+                                <td>{list.currentBalance}</td>
+                                <td>{list.onlineTxn}</td>
+                                <td>{list.suspend}</td>
+                                <td>{list.lastTxnTime}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Block>
+            ) : (
+              ""
+            )}
 
             {/* <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

@@ -256,6 +256,13 @@ function HobliList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Hobli Code",
+      selector: (row) => row.hobliCode,
+      cell: (row) => <span>{row.hobliCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

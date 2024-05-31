@@ -30,7 +30,7 @@ function GrainageView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get/${id}`)
+      .get(baseURL + `grainageMaster/get-join/${id}`)
       .then((response) => {
         setGrainage(response.data.content);
         setLoading(false);
@@ -106,6 +106,14 @@ function GrainageView() {
                           Grainage Name In Kannada:
                         </td>
                         <td>{Grainage.grainageMasterNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Grainage Name Representation:</td>
+                        <td>{Grainage.grainageNameRepresentation}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Grainage Type:</td>
+                        <td>{Grainage.grainageType}</td>
                       </tr>
                     </tbody>
                   </table>

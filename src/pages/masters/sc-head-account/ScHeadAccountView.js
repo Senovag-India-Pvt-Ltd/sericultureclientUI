@@ -4,8 +4,9 @@ import { Card, Row, Col } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import axios from "axios";
+import DistrictDatas from "../../../store/masters/district/DistrictData";
 import api from "../../../../src/services/auth/api";
-import ScHeadAccount from "./ScHeadAccount";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -19,13 +20,20 @@ function ScHeadAccountView() {
   };
 
   const { id } = useParams();
-  const [scHeadAccount, setScHeadAccount] = useState({});
+  // const [data] = useState(EducationDatas);
+  const [ScHeadAccount, setScHeadAccount] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // // grabs the id form the url and loads the corresponding data
+  // useEffect(() => {
+  //   let findUser = data.find((item) => item.id === id);
+  //   setDistrict(findUser);
+  // }, [id, data]);
 
   const getIdList = () => {
     setLoading(true);
-    api
-      .get(baseURL + `scHeadAccount/get/${id}`)
+    const response = api
+      .get(baseURL + `scHeadAccount/get-join/${id}`)
       .then((response) => {
         setScHeadAccount(response.data.content);
         setLoading(false);
@@ -36,18 +44,18 @@ function ScHeadAccountView() {
       });
   };
 
-  // grabs the id form the url and loads the corresponding data
+  // console.log(getIdList());
+
   useEffect(() => {
     getIdList();
   }, [id]);
 
   return (
-    <Layout title="View Head of Account Details">
+    <Layout title="Head Account View">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Head of Account Details</Block.Title>
-           
+            <Block.Title tag="h2">Head Account View</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -76,7 +84,7 @@ function ScHeadAccountView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Head of Account Details</Card.Header>
+          <Card.Header>Head Account Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -89,15 +97,26 @@ function ScHeadAccountView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>ID:</td>
-                        <td>{scHeadAccount.scHeadAccountId}</td>
+                        <td>{ScHeadAccount.scHeadAccountId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head of Account:</td>
-                        <td>{scHeadAccount.scHeadAccountName}</td>
+                        <td style={styles.ctstyle}> Head Account Name:</td>
+                        <td>{ScHeadAccount.scHeadAccountName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Head of Account Name In Kannada:</td>
-                        <td>{scHeadAccount.scHeadAccountNameInKannada}</td>
+                        <td style={styles.ctstyle}>
+                          {" "}
+                          Head Account Name in Kannada:
+                        </td>
+                        <td>{ScHeadAccount.scHeadAccountNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td>{ScHeadAccount.schemeName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{ScHeadAccount.dbtCode}</td>
                       </tr>
                     </tbody>
                   </table>

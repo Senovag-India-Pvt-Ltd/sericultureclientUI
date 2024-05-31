@@ -28,20 +28,24 @@ function RaiseTicketView() {
     solution: "",
     hdSeverityId: "",
     assignedTo: "",
+    userMasterId: "",
   });
   const [loading, setLoading] = useState(false);
 
-  // grabsthe id form the url and loads the corresponding data
-  // useEffect(() => {
-  // let findUser = data.find((item) => item.id === id);
-  // setCaste(findUser);
-  // }, [id, data]);
+  const [hideByStatus, setHideByStatus] = useState(false);
 
   const getIdList = () => {
     setLoading(true);
     api
       .get(baseURL + `hdTicket/get-join/${id}`)
       .then((response) => {
+        if (response.data.content.hdStatusId === 3) {
+          setHideByStatus(true);
+        }
+        if (response.data.content.hdStatusId === 5) {
+          setHideByStatus(true);
+        }
+
         setRaiseTicket((prev) => ({ ...prev, ...response.data.content }));
         setLoading(false);
       })
@@ -118,6 +122,26 @@ function RaiseTicketView() {
     getStatusList();
   }, []);
 
+  // to get Escalate Users
+  const [escalateListData, setEscalateListData] = useState([]);
+
+  const getEscalateList = () => {
+    const response = api
+      .post(baseURLMaster + `userMaster/get-escalate-users`, {
+        roleName: "escalate",
+      })
+      .then((response) => {
+        setEscalateListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setEscalateListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getEscalateList();
+  }, []);
+
   // Submit
   const submit = (esc) => {
     const { solution, hdSeverityId, hdTicketId } = raiseTicket;
@@ -129,7 +153,7 @@ function RaiseTicketView() {
       };
     } else {
       escalateDetails = {
-        hdStatusId: 2,
+        hdStatusId: 5,
       };
     }
     api
@@ -144,7 +168,7 @@ function RaiseTicketView() {
         if (esc === "1") {
           escalateSuccess();
           setRaiseTicket({
-            assignedTo: "",
+            userMasterId: "",
           });
         }
         if (esc === "0") {
@@ -405,7 +429,7 @@ function RaiseTicketView() {
             </Row>
             {escalate === "1" ? (
               <Row className="mt-2">
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="assignedTo">Assign To</Form.Label>
                     <div className="form-control-wrap">
@@ -417,6 +441,36 @@ function RaiseTicketView() {
                         type="text"
                         placeholder="Enter Name"
                       />
+                    </div>
+                  </Form.Group>
+                </Col> */}
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label>
+                      Escalated To<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="userMasterId"
+                        value={raiseTicket.userMasterId}
+                        onChange={handleInput}
+                        onBlur={() => handleInput}
+                        // multiple
+                        required
+                        // isInvalid={
+                        //   raiseTicket.userMasterId === undefined || raiseTicket.userMasterId === "0"
+                        // }
+                      >
+                        <option value="">Select Escalate To</option>
+                        {escalateListData.map((list) => (
+                          <option
+                            key={list.userMasterId}
+                            value={list.userMasterId}
+                          >
+                            {list.firstName}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </div>
                   </Form.Group>
                 </Col>
@@ -451,6 +505,7 @@ function RaiseTicketView() {
                       type="button"
                       variant="primary"
                       onClick={() => submit(escalate)}
+                      disabled={hideByStatus}
                     >
                       Submit
                     </Button>

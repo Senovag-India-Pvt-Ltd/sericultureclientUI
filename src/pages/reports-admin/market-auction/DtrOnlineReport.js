@@ -320,7 +320,7 @@ function DtrOnlineReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number<span className="text-danger">*</span>
+                        Reeler Number
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -559,6 +559,15 @@ function DtrOnlineReport() {
                           >
                             Account No
                           </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Auction Date
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -583,8 +592,29 @@ function DtrOnlineReport() {
                             <td>{list.bankName}</td>
                             <td>{list.ifscCode}</td>
                             <td>{list.accountNumber}</td>
+                            <td>{list.auctionDate}</td>
                           </tr>
                         ))}
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>Wt: {listDetails.totalWeight}</td>
+                          <td>Amt: {listDetails.totalBidAmount}</td>
+                          <td></td>
+                          <td>F Amt: {listDetails.totalFarmerAmount.toFixed(2)}</td>
+                          <td>
+                            MF:{" "}
+                            {(listDetails.totalFarmerMarketFee +
+                              listDetails.totalReelerMarketFee).toFixed(2)}
+                          </td>
+                          <td>R Amt: {listDetails.totalReelerAmount.toFixed(2)}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
                         {
                           <tr>
                             <td
@@ -592,7 +622,7 @@ function DtrOnlineReport() {
                                 fontWeight: "bold",
                                 background: "rgb(251 255 248)",
                               }}
-                              colSpan="13"
+                              colSpan="14"
                             >
                               <div>
                                 Total Lots:{" "}

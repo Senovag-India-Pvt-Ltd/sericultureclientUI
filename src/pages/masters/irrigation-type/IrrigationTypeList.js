@@ -141,7 +141,7 @@ function IrrigationTypeList() {
 
   const IrrigationTypeDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -225,7 +225,7 @@ function IrrigationTypeList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
-            title="Irrigation Type List"
+            // title="Irrigation Type List"
             tableClassName="data-table-head-light table-responsive"
             columns={IrrigationTypeDataColumns}
             data={listData}

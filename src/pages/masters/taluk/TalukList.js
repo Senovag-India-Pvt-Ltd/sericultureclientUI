@@ -185,7 +185,7 @@ function TalukList() {
 
   const TalukDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -244,6 +244,20 @@ function TalukList() {
       name: "Taluk Name in Kannada",
       selector: (row) => row.talukNameInKannada,
       cell: (row) => <span>{row.talukNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lg Taluk",
+      selector: (row) => row.lgTaluk,
+      cell: (row) => <span>{row.lgTaluk}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Taluk",
+      selector: (row) => row.talukCode,
+      cell: (row) => <span>{row.talukCode}</span>,
       sortable: true,
       hide: "md",
     },

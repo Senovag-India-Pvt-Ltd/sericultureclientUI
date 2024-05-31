@@ -106,6 +106,10 @@ function DesignationView() {
                         </td>
                         <td>{designation.designationNameInKannada}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Amount:</td>
+                        <td>{designation.amount}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

@@ -92,10 +92,7 @@ function ScCategoryView() {
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{ScCategory.scCategoryId}</td>
                       </tr>
-                      <tr>
-                        <td style={styles.ctstyle}> Category Number:</td>
-                        <td>{ScCategory.categoryNumber}</td>
-                      </tr>
+            
                       <tr>
                         <td style={styles.ctstyle}>Category Name:</td>
                         <td>{ScCategory.categoryName}</td>
@@ -106,6 +103,18 @@ function ScCategoryView() {
                           Category Name In Kannada:
                         </td>
                         <td>{ScCategory.categoryNameInKannada}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Code Number:</td>
+                        <td>{ScCategory.codeNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Description:</td>
+                        <td>{ScCategory.description}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Dbt Code:</td>
+                        <td>{ScCategory.dbtCode}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -1209,7 +1209,7 @@ function Weighment() {
                             <tr>
                               <td style={styles.xxsmallcolor}>
                                 Reeler Wallet Amount: &#8377;{" "}
-                                {weigh.reelerCurrentBalance}
+                                {Math.round(weigh.reelerCurrentBalance)}
                               </td>
                             </tr>
                             <tr>

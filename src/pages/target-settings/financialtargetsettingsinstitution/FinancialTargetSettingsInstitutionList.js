@@ -1,0 +1,285 @@
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
+import { Icon } from "../../../components";
+// import DataTable from "../../../components/DataTable/DataTable";
+import DataTable, { createTheme } from "react-data-table-component";
+import Swal from "sweetalert2/src/sweetalert2.js";
+import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useEffect, useState } from "react";
+
+import api from "../../../../src/services/auth/api";
+
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
+
+function FinancialTargetSettingsInstitutionList() {
+  const [listData, setListData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
+
+  const getList = () => {
+    setLoading(true);
+
+    const response = api
+      .get(baseURLTargetSetting + `tsBudgetDistrict/list`, _params)
+      .then((response) => {
+        setListData(response.data.content.tsBudgetDistrict);
+        setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setListData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, [page]);
+
+  const navigate = useNavigate();
+  const handleView = (id) => {
+    navigate(`/seriui/FinancialTargetSettings-institution-view/${id}`);
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/seriui/FinancialTargetSettings-institution-edit/${id}`);
+  };
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        const response = api
+          .delete(baseURLTargetSetting + `tsBudgetInstitution/delete/${id}`)
+          .then((response) => {
+            getList();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#004b8e",
+        secondary: "#2aa198",
+      },
+      background: {
+        default: "#fff",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#d3d3d3",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.02)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "light"
+  );
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const activityDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.tsBudgetInstitutionId)}
+          >
+            View
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.tsBudgetInstitutionId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.tsBudgetInstitutionId)}
+            className="ms-2"
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Scheme Details",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+
+    {
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Category",
+      selector: (row) => row.codeNumber,
+      cell: (row) => <span>{row.codeNumber}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Institution Name",
+      selector: (row) => row.institutionName,
+      cell: (row) => <span>{row.institutionName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Budget Amount",
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Use/Disburse",
+      selector: (row) => row.hoaId,
+      cell: (row) => <span>{row.hoaId}</span>,
+      sortable: false,
+      hide: "md",
+    },
+  ];
+
+  return (
+    <Layout title="Institution Financial Target Settings List">
+      <Block.Head>
+        <Block.HeadBetween>
+          <Block.HeadContent>
+            <Block.Title tag="h2">
+              Institution Financial Target Settings List
+            </Block.Title>
+          </Block.HeadContent>
+          <Block.HeadContent>
+            <ul className="d-flex">
+              <li>
+                <Link
+                  to="/seriui/financialtargetsettings-institution-list"
+                  className="btn btn-primary btn-md d-md-none"
+                >
+                  <Icon name="plus" />
+                  <span>Create</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/seriui/financialtargetsettings-institution-list"
+                  className="btn btn-primary d-none d-md-inline-flex"
+                >
+                  <Icon name="plus" />
+                  <span>Create</span>
+                </Link>
+              </li>
+            </ul>
+          </Block.HeadContent>
+        </Block.HeadBetween>
+      </Block.Head>
+
+      <Block className="mt-n4">
+        <Card>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={activityDataColumns}
+            data={listData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </Card>
+      </Block>
+    </Layout>
+  );
+}
+
+export default FinancialTargetSettingsInstitutionList;

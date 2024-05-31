@@ -27,12 +27,7 @@ function ScCategoryEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    const datas = {
-      scCategoryId: id,
-      categoryNumber: data.categoryNumber,
-      categoryName: data.categoryName,
-      categoryNameInKannada: data.categoryNameInKannada,
-    };
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -41,23 +36,32 @@ function ScCategoryEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `scCategory/edit`, datas)
+        .post(baseURL + `scCategory/edit`, data)
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
           } else {
             updateSuccess();
             setData({
-                categoryNumber: "",
-                categoryName: "",
-                categoryNameInKannada: "",
+              categoryName: "",
+              categoryNameInKannada: "",
+              codeNumber:"",
+              description:"",
+              dbtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -66,9 +70,11 @@ function ScCategoryEdit() {
 
   const clear = () => {
     setData({
-        categoryNumber: "",
-        categoryName: "",
-        categoryNameInKannada: "",
+      categoryName: "",
+      categoryNameInKannada: "",
+      codeNumber:"",
+      description:"",
+      dbtCode: "",
     });
   };
 
@@ -171,29 +177,6 @@ function ScCategoryEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Category  Number
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="categoryNumber"
-                          type="text"
-                          value={data.categoryNumber}
-                          onChange={handleInputs}
-                          placeholder="Enter Category Number"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Category Number is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
                         Category Name
                         <span className="text-danger">*</span>
                       </Form.Label>
@@ -232,6 +215,75 @@ function ScCategoryEdit() {
                         />
                         <Form.Control.Feedback type="invalid">
                          Category Name in Kannada is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Code  Number
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="codeNumber"
+                          type="text"
+                          value={data.codeNumber}
+                          onChange={handleInputs}
+                          placeholder="Enter Code Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Code Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Description
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="title"
+                          name="description"
+                          type="text"
+                          value={data.description}
+                          onChange={handleInputs}
+                          placeholder="Enter Description"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Description is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                      Dbt Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="dbtCode"
+                          name="dbtCode"
+                          type="text"
+                          value={data.dbtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter Dbt Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Dbt Code is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

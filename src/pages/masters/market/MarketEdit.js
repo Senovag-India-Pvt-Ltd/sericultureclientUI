@@ -32,6 +32,13 @@ function MarketEdit() {
     }));
   };
 
+  const handleCheckBoxBidAmount = (e) => {
+    setData((prev) => ({
+      ...prev,
+      bidAmountFlag: e.target.checked,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
@@ -84,6 +91,8 @@ function MarketEdit() {
               snorkelResponsePath: "",
               clientCode: "",
               weighmentTripletGeneration: "",
+              bidAmountFlag: "",
+              divisionMasterId:"",
             });
             setValidated(false);
           }
@@ -132,6 +141,8 @@ function MarketEdit() {
       snorkelResponsePath: "",
       clientCode: "",
       weighmentTripletGeneration: "",
+      bidAmountFlag: "",
+      divisionMasterId:"",
     });
   };
 
@@ -238,6 +249,24 @@ function MarketEdit() {
 
   useEffect(() => {
     getMarketTypeList();
+  }, []);
+
+  // to get Division
+  const [divisionListData, setDivisionListData] = useState([]);
+
+  const getDivisionList = () => {
+    const response = api
+      .get(baseURL + `divisionMaster/get-all`)
+      .then((response) => {
+        setDivisionListData(response.data.content.DivisionMaster);
+      })
+      .catch((err) => {
+        setDivisionListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDivisionList();
   }, []);
 
   const navigate = useNavigate();
@@ -1070,6 +1099,36 @@ function MarketEdit() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
+                      <Form.Label>
+                        Division<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="divisionMasterId"
+                          value={data.divisionMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.divisionMasterId === undefined || data.divisionMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Division</option>
+                          {divisionListData && divisionListData.length
+                            ? divisionListData.map((list) => (
+                                <option key={list.divisionMasterId} value={list.divisionMasterId}>
+                                  {list.name}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Division Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="chakbandi">
                         Market Coordinates
                       </Form.Label>
@@ -1152,6 +1211,22 @@ function MarketEdit() {
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
                         Triplet Generation After Weighment
+                      </Form.Label>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="form-group">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          id="bidAmountFlag"
+                          checked={data.bidAmountFlag}
+                          onChange={handleCheckBoxBidAmount}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={11} className="mt-n2">
+                        Bid Amount Flag
                       </Form.Label>
                     </Form.Group>
                   </Col>

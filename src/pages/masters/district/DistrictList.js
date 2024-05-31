@@ -185,7 +185,7 @@ function DistrictList() {
 
   const DistrictDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -236,6 +236,20 @@ function DistrictList() {
       name: "District Name in Kannada",
       selector: (row) => row.districtNameInKannada,
       cell: (row) => <span>{row.districtNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lg District",
+      selector: (row) => row.lgDistrict,
+      cell: (row) => <span>{row.lgDistrict}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District Code",
+      selector: (row) => row.districtCode,
+      cell: (row) => <span>{row.districtCode}</span>,
       sortable: true,
       hide: "md",
     },

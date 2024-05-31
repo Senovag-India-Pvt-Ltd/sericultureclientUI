@@ -96,7 +96,9 @@ import ExternalUnitRegister from "../pages/stake-holder/external-units/ExternalU
 import ExternalUnitRegisterList from "../pages/stake-holder/external-units/ExternalUnitRegisterList";
 import ExternalUnitRegisterView from "../pages/stake-holder/external-units/ExternalUnitRegisterView";
 import ExternalUnitRegisterEdit from "../pages/stake-holder/external-units/ExternalUnitRegisterEdit";
+
 // Services Module
+import ServiceApplication from "../pages/services-module/application/serviceApplication";
 import TrackDflProcurement from "../pages/services-module/TrackDflProcurement";
 import TrackingMulberryStatus from "../pages/services-module/TrackingMulberryStatus";
 import SupplyOfDisinfectants from "../pages/services-module/SupplyOfDisinfectants";
@@ -571,7 +573,250 @@ import Bank from "../pages/masters/bank/Bank";
 import BankList from "../pages/masters/bank/BankList";
 import BankView from "../pages/masters/bank/BankView";
 import BankEdit from "../pages/masters/bank/BankEdit";
+import PrintFarmerCopy from "../pages/market-and-auction/PrintFarmerCopy";
+import MaintenanceofMulberryfarmList from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmList";
+import ReceiptofDFLsfromtheP4grainageList from "../pages/seed-and-dfl-managment/ReceiptofDFLsfromtheP4grainageList";
+import MaintenanceofLineRecordsforEachRaceList from "../pages/seed-and-dfl-managment/MaintenanceofLineRecordsforEachRaceList";
+import MaintenanceofScreeningBatchRecordsList from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsList";
+import DispatchofCocoonstoP4GrainageList from "../pages/seed-and-dfl-managment/DispatchofCocoonstoP4GrainageList";
+import RearingofDFLsforthe8LinesList from "../pages/seed-and-dfl-managment/RearingofDFLsforthe8LinesList";
+import PreservationofseedcocoonforprocessingList from "../pages/seed-and-dfl-managment/PreservationofseedcocoonforprocessingList";
+import PreparationofeggsDFLsList from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsList";
+import MaintenanceofeggsatcoldstorageList from "../pages/seed-and-dfl-managment/MaintenanceofeggsatcoldstorageList";
+import ColdStorageScheduleBVList from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVList";
+import SaleDisposalofDFLseggs from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggs";
+import SaleDisposalofDFLseggsList from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsList";
+import TestingOfMoth from "../pages/seed-and-dfl-managment/TestingOfMoth";
+import TestingOfMothList from "../pages/seed-and-dfl-managment/TestingOfMothList";
+import EditTestingOfMoth from "../pages/seed-and-dfl-managment/EditTestingOfMoth";
+import TestingOfMothView from "../pages/seed-and-dfl-managment/TestingOfMothView";
+import EscalationDashboard from "../pages/helpdesk/EscalationDashboard";
+import EscalationView from "../pages/helpdesk/EscalationView";
+import SaleDisposalOfPiercedCocoons from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoons";
+import SaleDisposalOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsList";
+import SaleDisposalOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsView";
+import SaleDisposalOfPiercedCocoonsEdit from "../pages/seed-and-dfl-managment/SaleDisposalOfPiercedCocoonsEdit";
+import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
+import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
+import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
+import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
+import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
+import MaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheets";
+import Remittance from "../pages/seed-and-dfl-managment/Remittance";
+import RemittanceList from "../pages/seed-and-dfl-managment/RemittanceList";
+import RemittanceEdit from "../pages/seed-and-dfl-managment/RemittanceEdit";
+import RemittanceView from "../pages/seed-and-dfl-managment/RemittanceView";
+import MaintenanceOfEggsAtColdStorageEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdStorageEdit";
+import MaintenanceOfEggsAtColdStorageView from "../pages/seed-and-dfl-managment/MaintenanceOfEggAtColdStorageView";
+import MaintenanceOfEggsAtCold from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtCold";
+import MaintenanceOfEggsAtColdList from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdList";
+import MaintenanceOfEggsAtColdEdit from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdEdit";
+import MaintenanceOfEggsAtColdView from "../pages/seed-and-dfl-managment/MaintenanceOfEggsAtColdView";
+import RegisteredSeedProducerNssoGrainages from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainages";
+import RegisteredSeedProducerNssoGrainagesList from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesList";
+import RegisteredSeedProducerNssoGrainagesEdit from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesEdit";
+import RegisteredSeedProducerNssoGrainagesView from "../pages/seed-and-dfl-managment/RegisteredSeedProducerNssoGrainagesView";
+import SaleAndDisposalOfEggsNSSO from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSO";
+import SaleAndDisposalOfEggsNSSOList from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOList";
+import SaleAndDisposalOfEggsNSSOView from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOView";
+import SaleAndDisposalOfEggsNSSOEdit from "../pages/seed-and-dfl-managment/SaleAndDisposalOfEggsNSSOEdit";
+import WormStage from "../pages/masters/worm-stage/WormStage";
+import WormStageList from "../pages/masters/worm-stage/WormStageList";
+import WormStageView from "../pages/masters/worm-stage/WormStageView";
+import WormStageEdit from "../pages/masters/worm-stage/WormStageEdit";
+import MaintenanceofMulberryfarmView from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmView";
+import MaintenanceofMulberryfarmUpdate from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmUpdate";
+import MaintenanceofMulberryfarmEdit from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmEdit";
+import MaintenanceofMulberryfarmAlert from "../pages/seed-and-dfl-managment/MaintenanceofMulberryfarmAlert";
+import SaleDisposalofDFLseggsView from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsView";
+import SaleDisposalofDFLseggsEdit from "../pages/seed-and-dfl-managment/SaleDisposalofDFLseggsEdit";
+import DispatchofCocoonstoP4GrainageEdit from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageEdit";
+import DispatchofCocoonstoP4GrainageView from "../pages/seed-and-dfl-managment/DispatchOfCocoonsToP4GrainageView";
+import RearingOfDFLsForThe8LinesEdit from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesEdit";
+import RearingOfDFLsForThe8LinesView from "../pages/seed-and-dfl-managment/RearingOfDFLsForThe8LinesView";
+import MaintenanceOfLineRecordForEachRaceView from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordForEachRaceView";
+import MaintenanceOfLineRecordsForEachRaceEdit from "../pages/seed-and-dfl-managment/MaintenanceOfLineRecordsForEachRaceEdit";
+import ReceiptOfDFLsFromTheP4GrainageEdit from "../pages/seed-and-dfl-managment/ReceiptOfDFLsFromTheP4GrainageEdit";
+import MaintenanceofScreeningBatchRecordsEdit from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsEdit";
+import MaintenanceofScreeningBatchRecordsView from "../pages/seed-and-dfl-managment/MaintenanceofScreeningBatchRecordsView";
+import PreparationofeggsDFLsEdit from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsEdit";
+import PreparationofeggsDFLsView from "../pages/seed-and-dfl-managment/PreparationofeggsDFLsView";
+import ColdStorageScheduleBVEdit from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVEdit";
+import ColdStorageScheduleBVView from "../pages/seed-and-dfl-managment/ColdStorageScheduleBVView";
+import PreservationOfSeedCocoonForProcessingEdit from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingEdit";
+import PreservationOfSeedCocoonForProcessingView from "../pages/seed-and-dfl-managment/PreservationOfSeedCocoonForProcessingView";
 
+import ScHeadAccountCategory from "../pages/masters/sc-head-account-category/ScHeadAccountCategory";
+import ScHeadAccountCategoryList from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryList";
+import ScHeadAccountCategoryView from "../pages/masters/sc-head-account-category/ScHeadAccountCategoryView";
+import ScHeadAccountCategoryEdit from "../pages/masters/sc-head-account-category/EditScHeadAccountCategory";
+import ScApprovingAuthority from "../pages/masters/sc-approving-authority/ScApproving";
+import ScApprovingAuthorityList from "../pages/masters/sc-approving-authority/ScApprovingList";
+import ScApprovingAuthorityView from "../pages/masters/sc-approving-authority/ScApprovingView";
+import ScApprovingAuthorityEdit from "../pages/masters/sc-approving-authority/EditScApproving";
+import ScVendorContact from "../pages/masters/sc-vendor-contact/ScVendorContact";
+import ScVendorContactList from "../pages/masters/sc-vendor-contact/ScVendorContactList";
+import ScVendorContactView from "../pages/masters/sc-vendor-contact/ScVendorContactView";
+import ScVendorContactEdit from "../pages/masters/sc-vendor-contact/EditScVendorContact";
+import ScVendorBank from "../pages/masters/sc-vendor-bank/ScVendorBank";
+import ScVendorBankList from "../pages/masters/sc-vendor-bank/ScVendorBankList";
+import ScVendorBankView from "../pages/masters/sc-vendor-bank/ScVendorBankView";
+import ScVendorBankEdit from "../pages/masters/sc-vendor-bank/EditScVendorBank";
+import ScVendor from "../pages/masters/sc-vendor/ScVendor";
+import ScVendorList from "../pages/masters/sc-vendor/ScVendorList";
+import ScVendorView from "../pages/masters/sc-vendor/ScVendorView";
+import ScVendorEdit from "../pages/masters/sc-vendor/EditScVendor";
+import ScUunitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostView from "../pages/masters/sc-unit-cost/ScUnitCostView";
+import ScUnitCostEdit from "../pages/masters/sc-unit-cost/EditScUnitCost";
+import ScUnitCost from "../pages/masters/sc-unit-cost/ScUnitCost";
+import ScUnitCostList from "../pages/masters/sc-unit-cost/ScUnitCostList";
+import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
+import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
+import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
+import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
+import ScSchemeDetails from "../pages/masters/sc-scheme-details/ScSchemeDetails";
+import ScSchemeDetailsList from "../pages/masters/sc-scheme-details/ScSchemeDetailsList";
+import ScSchemeDetailsView from "../pages/masters/sc-scheme-details/ScSchemeDetailsView";
+import ScSchemeDetailsEdit from "../pages/masters/sc-scheme-details/ScSchemeDetailsEdit";
+import ScSubSchemeDetails from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetails";
+import ScSubSchemeDetailsList from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsList";
+import ScSubSchemeDetailsView from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsView";
+import ScSubSchemeDetailsEdit from "../pages/masters/sc-sub-scheme-details/ScSubSchemeDetailsEdit";
+import FinancialYear from "../pages/masters/financial-year/FinancialYear";
+import FinancialYearEdit from "../pages/masters/financial-year/FinancialYearEdit";
+import FinancialYearList from "../pages/masters/financial-year/FinancialYearList";
+import FinancialYearView from "../pages/masters/financial-year/FinancialYearView";
+import FarmType from "../pages/masters/farm-type/FarmType";
+import FarmTypeList from "../pages/masters/farm-type/FarmTypeList";
+import FarmTypeView from "../pages/masters/farm-type/FarmTypeView";
+import FarmTypeEdit from "../pages/masters/farm-type/FarmTypeEdit";
+import GrainageType from "../pages/masters/grainage-type/GrainageType";
+import GrainageTypeList from "../pages/masters/grainage-type/GrainageTypeList";
+import GrainageTypeView from "../pages/masters/grainage-type/GrainageTypeView";
+import GrainageTypeEdit from "../pages/masters/grainage-type/GrainageTypeEdit";
+import Activity from "../pages/masters/activity/Activity";
+import ActivityList from "../pages/masters/activity/ActivityList";
+import ActivityView from "../pages/masters/activity/ActivityView";
+import ActivityEdit from "../pages/masters/activity/ActivityEdit";
+import Budget from "../pages/target-settings/budget/Budget";
+import BudgetHoa from "../pages/target-settings/budget-hoa/Budget-Hoa";
+import BudgetDistrict from "../pages/target-settings/budget-district/Budget-District";
+import BudgetTaluk from "../pages/target-settings/budget-taluk/Budget-Taluk";
+import BudgetTsc from "../pages/target-settings/budget-tsc/Budget-Tsc";
+import BudgetEdit from "../pages/target-settings/budget/BudgetEdit";
+import BudgetList from "../pages/target-settings/budget/BudgetList";
+import BudgetHoaEdit from "../pages/target-settings/budget-hoa/Budget-HoaEdit";
+import BudgetHoaList from "../pages/target-settings/budget-hoa/Budget-HoaList";
+import BudgetView from "../pages/target-settings/budget/BudgetView";
+import BudgetHoaView from "../pages/target-settings/budget-hoa/Budget-HoaView";
+import BudgetDistrictList from "../pages/target-settings/budget-district/BudgetDistrictList";
+import BudgetDistrictView from "../pages/target-settings/budget-district/Budget-DistrictView";
+import BudgetDistrictEdit from "../pages/target-settings/budget-district/Budget-DistrictEdit";
+import FinancialTargetSettings from "../pages/target-settings/financialtargetsetting/FinancialTargetSetting";
+import PhysicalTargetSettingsTsc from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingTsc";
+import BudgetTalukView from "../pages/target-settings/budget-taluk/Budget-TalukView";
+import BudgetTalukEdit from "../pages/target-settings/budget-taluk/Budget-TalukEdit";
+import BudgetTalukList from "../pages/target-settings/budget-taluk/Budget-TalukList";
+import BudgetTscEdit from "../pages/target-settings/budget-tsc/Budget-TscEdit";
+import BudgetTscView from "../pages/target-settings/budget-tsc/Budget-TscView";
+import BudgetTscList from "../pages/target-settings/budget-tsc/Budget-TscList";
+import FinancialTargetSettingList from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingList";
+import FinancialTargetSettingEdit from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingEdit";
+import FinancialTargetSettingView from "../pages/target-settings/financialtargetsetting/FinancialTargetSettingView";
+import PhysicalTargetSettingsTscView from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscView";
+import PhysicalTargetSettingsTscList from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscList";
+import PhysicalTargetSettingsTscEdit from "../pages/target-settings/physicaltargetsettingtsc/PhysicalTargetSettingsTscEdit";
+import PhysicalTargetSettingsDistrict from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrict";
+import PhysicalTargetSettingsDistrictEdit from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictEdit";
+import PhysicalTargetSettingsDistrictList from "../pages/target-settings/physicaltargetsettingdistrict/PhysicalTargetSettingsDistrictList";
+import PhysicaltargetSettingsDistrictView from "../pages/target-settings/physicaltargetsettingdistrict/PhysicaltargetSettingsDistrictView";
+import ReleaseBudgetDistrict from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrict";
+import ReleaseBudgetDistrictView from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictView";
+import ReleaseBudgetDistrictList from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictList";
+import ReleaseBudgetDistrictEdit from "../pages/target-settings/release-budget-district/ReleaseBudgetDistrictEdit";
+import ReleaseBudgetTaluk from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTaluk";
+import ReleaseBudgetTalukList from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukList";
+import ReleaseBudgetTalukEdit from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukEdit";
+import ReleaseBudgetTalukView from "../pages/target-settings/release-budget-taluk/ReleaseBudgetTalukView";
+import ReleaseBudgetInstitution from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitution";
+import ReleaseBudgetInstitutionList from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionList";
+import ReleaseBudgetInstitutionEdit from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionEdit";
+import ReleaseBudgetInstitutionView from "../pages/target-settings/release-budget-institution/ReleaseBudgetInstitutionView";
+import PhysicalTargetSettingsTalukList from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukList";
+import PhysicalTargetSettingsTalukEdit from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukEdit";
+import PhysicalTargetSettingsTalukView from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTalukView";
+import PhysicalTargetSettingsTaluk from "../pages/target-settings/physicaltargetsettingstaluk/PhysicalTargetSettingsTaluk";
+import FinancialTargetSettingsDistrictEdit from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictEdit";
+import FinancialTargetSettingsDistrictView from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictView";
+import FinancialTargetSettingsDistrictList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsList";
+import FinancialTargetSettingsDistrict from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrict";
+import FinancialTargetSettingsTalukEdit from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukEdit";
+import FinancialTargetSettingsTalukList from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukList";
+import FinancialTargetSettingsTaluk from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTaluk";
+import FinancialTargetSettingsTalukView from "../pages/target-settings/financialtargetsettingstaluk/FinancialTargetSettingsTalukView";
+import FinancialTargetSettingsInstitutionList from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionList";
+import FinancialTargetSettingsInstitution from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitution";
+import FinancialTargetSettingsInstitutionEdit from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionEdit";
+import FinancialTargetSettingsInstitutionView from "../pages/target-settings/financialtargetsettingsinstitution/FinancialTargetSettingsInstitutionView";
+import BudgetExtensionList from "../pages/target-settings/budget-extension/BudgetExtensionList";
+import BudgetExtensionEdit from "../pages/target-settings/budget-extension/BudgetExtensionEdit";
+import BudgetExtensionView from "../pages/target-settings/budget-extension/BudgetExtensionView";
+import BudgetExtension from "../pages/target-settings/budget-extension/BudgetExtension";
+import BudgetDashboard from "../pages/target-settings/budget-dashboard/BudgetDashboard";
+import InspectionConfig from "../pages/masters/inspection/InspectionConfig";
+import RequestInspectionMapping from "../pages/Inspection/request-inspection-mapping/RequestInspectionMapping";
+import RequestInspectionMappingEdit from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingEdit";
+import RequestInspectionMappingList from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingList";
+import RequestInspectionMappingView from "../pages/Inspection/request-inspection-mapping/RequestInspectionMappingView";
+import BudgetTalukExtension from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtension";
+import BudgetTalukExtensionList from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtensionList";
+import BudgetTalukExtensionEdit from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtensionEdit";
+import BudgetTalukExtensionView from "../pages/target-settings/budgetextension-taluk/BudgetTalukExtensionView";
+import BudgetInstitutionExtension from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtension";
+import BudgetInstitutionExtensionList from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionList";
+import BudgetInstitutionExtensionEdit from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionEdit";
+import BudgetInstitutionExtensionView from "../pages/target-settings/budgetextension-institution/BudgetInstitutionExtensionView";
+import BudgetHoaExtension from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtension";
+import BudgetHoaExtensionList from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionList";
+import BudgetHoaExtensionEdit from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionEdit";
+import BudgetHoaExtensionView from "../pages/target-settings/budgetextension-hoa/BudgetHoaExtensionView";
+import BudgetDistrictExtensionView from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionView";
+import BudgetDistrictExtensionEdit from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionEdit";
+import BudgetDistrictExtensionList from "../pages/target-settings/budgetextension-district/BudgetDistrictExtensionList";
+import BudgetDistrictExtension from "../pages/target-settings/budgetextension-district/BudgetDistrictExtension";
+
+import ApplicationSelection from "../pages/services-module/application/ApplicationSelection";
+// import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
+// import DashboardList from "../pages/services-module/application/DashboardList";
+// import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
+// import DbtApplication from "../pages/services-module/application/DbtApplication";
+import SchemeQuotaList from "../pages/masters/scheme-quota/SchemeQuotaList";
+import SchemeQuota from "../pages/masters/scheme-quota/SchemeQuota";
+import SchemeQuotaView from "../pages/masters/scheme-quota/SchemeQuotaView";
+import SchemeQuotaEdit from "../pages/masters/scheme-quota/SchemeQuotaEdit";
+import MapComponent from "../pages/masters/map-component-hoa/MapComponentAndHoa";
+import Department from "../pages/masters/department/Department";
+import DepartmentList from "../pages/masters/department/DepartmentList";
+import DepartmentEdit from "../pages/masters/department/EditDepartment";
+import DepartmentView from "../pages/masters/department/DepartmentView";
+import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
+import DashboardList from "../pages/services-module/application/DashboardList";
+import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
+import DbtApplication from "../pages/services-module/application/DbtApplication";
+import MapComponentAndHoaList from "../pages/masters/map-component-hoa/MapComponentAndHoaList";
+import UserHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserHierarchyMapping";
+import RejectReasonWorkFlowMaster from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlow";
+import RejectReasonWorkFlowList from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowList";
+import RejectReasonWorkFlowView from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowView";
+import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowEdit";
+import ApplicationFormList from "../pages/services-module/application/ApplicationFormList";
+import ReportSuccessList from "../pages/services-module/application/ReportSuccessList";
+import ReportRejectList from "../pages/services-module/application/ReportRejectList";
+import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
+import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 // Admin and Reports
 
 function Router() {
@@ -847,6 +1092,50 @@ function Router() {
 
             {/* Services */}
             <Route
+              path="service-application"
+              element={<ServiceApplication />}
+            />
+            <Route
+              path="application-selection"
+              element={<ApplicationSelection />}
+            />
+            <Route
+              path="application-dashboard"
+              element={<ApplicationDashboard />}
+            />
+             <Route
+              path="dbt-application"
+              element={<DbtApplication />}
+            />
+            <Route
+              path="report-success-list"
+              element={<ReportSuccessList />}
+            />
+            <Route
+              path="report-reject-list"
+              element={<ReportRejectList />}
+            />
+            <Route
+              path="application-form-list"
+              element={<ApplicationFormList />}
+            />
+            <Route
+              path="application-form-edit/:id"
+              element={<ApplicationFormEdit />}
+            />
+            <Route
+              path="drawing-officer-list"
+              element={<DrawingOfficerList />}
+            />
+            <Route
+              path="tsc-officer-list"
+              element={<TscOfficerList />}
+            />
+            <Route
+              path="application-dashboard-list/:id"
+              element={<DashboardList />}
+            />
+            <Route
               path="track-dfl-procurement"
               element={<TrackDflProcurement />}
             />
@@ -892,12 +1181,54 @@ function Router() {
               element={<MaintenanceofMulberryfarm />}
             />
             <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-list"
+              element={<MaintenanceofMulberryfarmList />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-view/:id"
+              element={<MaintenanceofMulberryfarmView />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-update/:id"
+              element={<MaintenanceofMulberryfarmUpdate />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-edit/:id"
+              element={<MaintenanceofMulberryfarmEdit />}
+            />
+            <Route
+              path="Maintenance-of-mulberry-Garden-in-the-Farms-alert"
+              element={<MaintenanceofMulberryfarmAlert />}
+            />
+            <Route
               path="Receipt-of-DFLs-from-the-P4-grainage"
               element={<ReceiptofDFLsfromtheP4grainage />}
             />
             <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-edit/:id"
+              element={<ReceiptOfDFLsFromTheP4GrainageEdit />}
+            />
+            <Route
+              path="Receipt-of-DFLs-from-the-P4-grainage-list"
+              element={<ReceiptofDFLsfromtheP4grainageList />}
+            />
+            <Route
               path="Maintenance-of-Line-Records-for-Each-Race"
               element={<MaintenanceofLineRecordsforEachRace />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-List"
+              element={<MaintenanceofLineRecordsforEachRaceList />}
+            />
+
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-edit/:id"
+              element={<MaintenanceOfLineRecordsForEachRaceEdit />}
+            />
+            <Route
+              path="Maintenance-of-Line-Records-for-Each-Race-view/:id"
+              element={<MaintenanceOfLineRecordForEachRaceView />}
             />
 
             <Route
@@ -906,8 +1237,37 @@ function Router() {
             />
 
             <Route
+              path="Maintenance-of-Screening-Batch-Records-List"
+              element={<MaintenanceofScreeningBatchRecordsList />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-edit/:id"
+              element={<MaintenanceofScreeningBatchRecordsEdit />}
+            />
+
+            <Route
+              path="maintenance-of-Screening-Batch-Records-view/:id"
+              element={<MaintenanceofScreeningBatchRecordsView />}
+            />
+
+            <Route
               path="Dispatch-of-Cocoons-to-P4-Grainage"
               element={<DispatchofCocoonstoP4Grainage />}
+            />
+
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-List"
+              element={<DispatchofCocoonstoP4GrainageList />}
+            />
+
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-edit/:id"
+              element={<DispatchofCocoonstoP4GrainageEdit />}
+            />
+            <Route
+              path="Dispatch-of-Cocoons-to-P4-Grainage-view/:id"
+              element={<DispatchofCocoonstoP4GrainageView />}
             />
 
             <Route
@@ -916,8 +1276,36 @@ function Router() {
             />
 
             <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-List"
+              element={<RearingofDFLsforthe8LinesList />}
+            />
+
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-edit/:id"
+              element={<RearingOfDFLsForThe8LinesEdit />}
+            />
+            <Route
+              path="Rearing-of-DFLs-for-the-8-Lines-view/:id"
+              element={<RearingOfDFLsForThe8LinesView />}
+            />
+
+            <Route
               path="Preservation-of-seed-cocoon-for-processing"
               element={<Preservationofseedcocoonforprocessing />}
+            />
+
+            <Route
+              path="preservation-of-seed-cocoon-list"
+              element={<PreservationofseedcocoonforprocessingList />}
+            />
+
+            <Route
+              path="preservation-of-seed-cocoon-edit/:id"
+              element={<PreservationOfSeedCocoonForProcessingEdit />}
+            />
+            <Route
+              path="preservation-of-seed-cocoon-view/:id"
+              element={<PreservationOfSeedCocoonForProcessingView />}
             />
 
             <Route
@@ -926,13 +1314,209 @@ function Router() {
             />
 
             <Route
+              path="Preparation-of-eggs-DFLs-List"
+              element={<PreparationofeggsDFLsList />}
+            />
+
+            <Route
+              path="Preparation-of-eggs-DFLs-edit/:id"
+              element={<PreparationofeggsDFLsEdit />}
+            />
+
+            <Route
+              path="Preparation-of-eggs-DFLs-view/:id"
+              element={<PreparationofeggsDFLsView />}
+            />
+
+            <Route
               path="Maintenance-of-eggs-at-cold-storage"
               element={<Maintenanceofeggsatcoldstorage />}
             />
 
             <Route
+              path="maintenance-of-eggs-at-cold-storage-list"
+              element={<MaintenanceofeggsatcoldstorageList />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-storage-edit/:id"
+              element={<MaintenanceOfEggsAtColdStorageEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-storage-view/:id"
+              element={<MaintenanceOfEggsAtColdStorageView />}
+            />
+
+            <Route
+              path="Maintenance-of-eggs-at-cold"
+              element={<MaintenanceOfEggsAtCold />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-list"
+              element={<MaintenanceOfEggsAtColdList />}
+            />
+
+            <Route
+              path="maintenance-of-eggs-at-cold-edit/:id"
+              element={<MaintenanceOfEggsAtColdEdit />}
+            />
+            <Route
+              path="maintenance-of-eggs-at-cold-view/:id"
+              element={<MaintenanceOfEggsAtColdView />}
+            />
+
+            <Route
               path="Cold-Storage-Schedule-BV"
               element={<ColdStorageScheduleBV />}
+            />
+
+            <Route
+              path="Cold-Storage-Schedule-BV-List"
+              element={<ColdStorageScheduleBVList />}
+            />
+            <Route
+              path="Cold-Storage-Schedule-BV-edit/:id"
+              element={<ColdStorageScheduleBVEdit />}
+            />
+            <Route
+              path="Cold-Storage-Schedule-BV-view/:id"
+              element={<ColdStorageScheduleBVView />}
+            />
+
+            <Route path="remittance" element={<Remittance />} />
+            <Route path="remittance-list" element={<RemittanceList />} />
+
+            <Route path="remittance-edit/:id" element={<RemittanceEdit />} />
+            <Route path="remittance-view/:id" element={<RemittanceView />} />
+
+            <Route path="testing-of-moth" element={<TestingOfMoth />} />
+            <Route
+              path="testing-of-moth-list"
+              element={<TestingOfMothList />}
+            />
+
+            <Route
+              path="testing-of-moth-edit/:id"
+              element={<EditTestingOfMoth />}
+            />
+            <Route
+              path="testing-of-moth-view/:id"
+              element={<TestingOfMothView />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons"
+              element={<MaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-list"
+              element={<MaintenanceOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="maintenance-of-pierced-cocoons-edit/:id"
+              element={<EditMaintenanceOfPiercedCocoons />}
+            />
+            <Route
+              path="maintenance-of-pierced-cocoons-view/:id"
+              element={<MaintenanceOfPiercedCocoonsView />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets"
+              element={<MaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-list"
+              element={<MaintenanceOfEggLayingSheetsList />}
+            />
+
+            <Route
+              path="maintenance-of-egg-laying-sheets-edit/:id"
+              element={<EditMaintenanceOfEggLayingSheets />}
+            />
+            <Route
+              path="maintenance-of-egg-laying-sheets-view/:id"
+              element={<MaintenanceOfEggLayingSheetsView />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons"
+              element={<SaleDisposalOfPiercedCocoons />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-edit/:id"
+              element={<SaleDisposalOfPiercedCocoonsEdit />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-list"
+              element={<SaleDisposalOfPiercedCocoonsList />}
+            />
+
+            <Route
+              path="sale-disposal-of-pierced-cocoons-view/:id"
+              element={<SaleDisposalOfPiercedCocoonsView />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs"
+              element={<SaleDisposalofDFLseggs />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-list"
+              element={<SaleDisposalofDFLseggsList />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-view/:id"
+              element={<SaleDisposalofDFLseggsView />}
+            />
+
+            <Route
+              path="Sale-Disposal-of-DFLs-eggs-edit/:id"
+              element={<SaleDisposalofDFLseggsEdit />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages"
+              element={<RegisteredSeedProducerNssoGrainages />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-list"
+              element={<RegisteredSeedProducerNssoGrainagesList />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-edit/:id"
+              element={<RegisteredSeedProducerNssoGrainagesEdit />}
+            />
+
+            <Route
+              path="registered-seed-producer-nsso-grainages-view/:id"
+              element={<RegisteredSeedProducerNssoGrainagesView />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso"
+              element={<SaleAndDisposalOfEggsNSSO />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-list"
+              element={<SaleAndDisposalOfEggsNSSOList />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-view/:id"
+              element={<SaleAndDisposalOfEggsNSSOView />}
+            />
+
+            <Route
+              path="sale-and-disposal-of-eggs-nsso-edit/:id"
+              element={<SaleAndDisposalOfEggsNSSOEdit />}
             />
 
             {/* Seed & DFL Management */}
@@ -999,6 +1583,24 @@ function Router() {
             />
 
             {/* Inspection */}
+            <Route path="inspection-config" element={<InspectionConfig />} />
+
+            <Route
+              path="requestinspectionmapping"
+              element={<RequestInspectionMapping />}
+            />
+            <Route
+              path="requestinspectionmapping-edit/:id"
+              element={<RequestInspectionMappingEdit />}
+            />
+            <Route
+              path="requestinspectionmapping-list"
+              element={<RequestInspectionMappingList />}
+            />
+            <Route
+              path="requestinspectionmapping-view/:id"
+              element={<RequestInspectionMappingView />}
+            />
             <Route
               path="track-current-status"
               element={<TrackingCurrentStatus />}
@@ -1035,6 +1637,11 @@ function Router() {
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
             <Route path="help-desk" element={<HelpDesk />} />
+            <Route
+              path="escalate-dashboard"
+              element={<EscalationDashboard />}
+            />
+            <Route path="escalate-view/:id" element={<EscalationView />} />
             <Route path="help-desk-faq-view" element={<HelpDeskFaqView />} />
             <Route path="raise-ticket-view/:id" element={<RaiseTicketView />} />
             <Route path="user-ticket-view/:id" element={<UserTicketView />} />
@@ -1167,11 +1774,342 @@ function Router() {
             />
 
             {/* Master */}
+            <Route path="financial-year" element={<FinancialYear />} />
+            <Route
+              path="financial-year-edit/:id"
+              element={<FinancialYearEdit />}
+            />
+            <Route path="financial-year-list" element={<FinancialYearList />} />
+            <Route
+              path="financial-year-view/:id"
+              element={<FinancialYearView />}
+            />
             <Route path="head-of-account" element={<HeadOfAccount />} />
             <Route path="caste" element={<Caste />} />
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
+            <Route path="department" element={<Department />} />
+            <Route path="department-list" element={<DepartmentList />} />
+            <Route path="department-view/:id" element={<DepartmentView />} />
+            <Route path="department-edit/:id" element={<DepartmentEdit />} />
+            <Route path="activity" element={<Activity />} />
+            <Route path="Activity-list" element={<ActivityList />} />
+            <Route path="activity-view/:id" element={<ActivityView />} />
+            <Route path="activity-edit/:id" element={<ActivityEdit />} />
+            <Route path="budget-dashboard" element={<BudgetDashboard />} />
+
+            <Route path="budget" element={<Budget />} />
+            <Route path="budget-list" element={<BudgetList />} />
+            <Route path="budget-edit/:id/:types" element={<BudgetEdit />} />
+            <Route path="budget-view/:id/:types" element={<BudgetView />} />
+
+            <Route path="budgetextension" element={<BudgetExtension />} />
+            <Route
+              path="budgetextension-list"
+              element={<BudgetExtensionList />}
+            />
+            <Route
+              path="budgetextension-edit/:id/:types"
+              element={<BudgetExtensionEdit />}
+            />
+            <Route
+              path="budgetextension-view/:id/:types"
+              element={<BudgetExtensionView />}
+            />
+
+            <Route path="budgethoaextension" element={<BudgetHoaExtension />} />
+            <Route
+              path="budgethoaextension-list"
+              element={<BudgetHoaExtensionList />}
+            />
+            <Route
+              path="budgethoaextension-edit/:id/:types"
+              element={<BudgetHoaExtensionEdit />}
+            />
+            <Route
+              path="budgethoaextension-view/:id/:types"
+              element={<BudgetHoaExtensionView />}
+            />
+
+            <Route path="budget-hoa" element={<BudgetHoa />} />
+            <Route path="budget-hoa-list" element={<BudgetHoaList />} />
+            <Route
+              path="budget-hoa-edit/:id/:types"
+              element={<BudgetHoaEdit />}
+            />
+            <Route
+              path="budget-hoa-view/:id/:types"
+              element={<BudgetHoaView />}
+            />
+
+            <Route path="budget-district" element={<BudgetDistrict />} />
+            <Route
+              path="budget-district-view/:id/:types"
+              element={<BudgetDistrictView />}
+            />
+            <Route
+              path="budget-district-edit/:id/:types"
+              element={<BudgetDistrictEdit />}
+            />
+            <Route
+              path="budget-district-list"
+              element={<BudgetDistrictList />}
+            />
+
+            <Route
+              path="budgetdistrictextension"
+              element={<BudgetDistrictExtension />}
+            />
+            <Route
+              path="budgetdistrictextension-view/:id/:types"
+              element={<BudgetDistrictExtensionView />}
+            />
+            <Route
+              path="budgetdistrictextension-edit/:id/:types"
+              element={<BudgetDistrictExtensionEdit />}
+            />
+            <Route
+              path="budgetdistrictextension-list"
+              element={<BudgetDistrictExtensionList />}
+            />
+            <Route path="budget-taluk" element={<BudgetTaluk />} />
+            <Route path="budget-taluk-list" element={<BudgetTalukList />} />
+            <Route
+              path="budget-taluk-edit/:id/:types"
+              element={<BudgetTalukEdit />}
+            />
+            <Route
+              path="budget-taluk-view/:id/:types"
+              element={<BudgetTalukView />}
+            />
+
+            <Route
+              path="budgettalukextension"
+              element={<BudgetTalukExtension />}
+            />
+            <Route
+              path="budgettalukextension-list"
+              element={<BudgetTalukExtensionList />}
+            />
+            <Route
+              path="budgettalukextension-edit/:id/:types"
+              element={<BudgetTalukExtensionEdit />}
+            />
+            <Route
+              path="budgettalukextension-view/:id/:types"
+              element={<BudgetTalukExtensionView />}
+            />
+
+            <Route path="budget-tsc" element={<BudgetTsc />} />
+            <Route path="budget-tsc-list" element={<BudgetTscList />} />
+            <Route
+              path="budget-tsc-edit/:id/:types"
+              element={<BudgetTscEdit />}
+            />
+            <Route
+              path="budget-tsc-view/:id/:types"
+              element={<BudgetTscView />}
+            />
+
+            <Route
+              path="budgetinstitutionextension"
+              element={<BudgetInstitutionExtension />}
+            />
+            <Route
+              path="budgetinstitutionextension-list"
+              element={<BudgetInstitutionExtensionList />}
+            />
+            <Route
+              path="budgetinstitutionextension-edit/:id/:types"
+              element={<BudgetInstitutionExtensionEdit />}
+            />
+            <Route
+              path="budgetinstitutionextension-view/:id/:types"
+              element={<BudgetInstitutionExtensionView />}
+            />
+
+            <Route
+              path="financialtargetsettings"
+              element={<FinancialTargetSettings />}
+            />
+
+            <Route
+              path="financialtargetsettings-list"
+              element={<FinancialTargetSettingList />}
+            />
+            <Route
+              path="financialtargetsettings-edit/:id"
+              element={<FinancialTargetSettingEdit />}
+            />
+            <Route
+              path="financialtargetsettings-view/:id"
+              element={<FinancialTargetSettingView />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict"
+              element={<FinancialTargetSettingsDistrict />}
+            />
+
+            <Route
+              path="financialtargetsettingsdistrict-list"
+              element={<FinancialTargetSettingsDistrictList />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-edit/:id"
+              element={<FinancialTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-view/:id"
+              element={<FinancialTargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="financialtargetsettingstaluk"
+              element={<FinancialTargetSettingsTaluk />}
+            />
+
+            <Route
+              path="financialtargetsettingstaluk-list"
+              element={<FinancialTargetSettingsTalukList />}
+            />
+            <Route
+              path="financialtargetsettingstaluk-edit/:id"
+              element={<FinancialTargetSettingsTalukEdit />}
+            />
+            <Route
+              path="financialtargetsettingstaluk-view/:id"
+              element={<FinancialTargetSettingsTalukView />}
+            />
+
+            <Route
+              path="financialtargetsettingsinstitution"
+              element={<FinancialTargetSettingsInstitution />}
+            />
+
+            <Route
+              path="financialtargetsettingsinstitution-list"
+              element={<FinancialTargetSettingsInstitutionList />}
+            />
+            <Route
+              path="financialtargetsettingsinstitution-edit/:id"
+              element={<FinancialTargetSettingsInstitutionEdit />}
+            />
+            <Route
+              path="financialtargetsettingsinstitution-view/:id"
+              element={<FinancialTargetSettingsInstitutionView />}
+            />
+
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
+            />
+
+            <Route
+              path="physicaltargetsettingsdistrict"
+              element={<PhysicalTargetSettingsDistrict />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-list"
+              element={<PhysicalTargetSettingsDistrictList />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-edit/:id"
+              element={<PhysicalTargetSettingsDistrictEdit />}
+            />
+            <Route
+              path="physicaltargetsettingsdistrict-view/:id"
+              element={<PhysicaltargetSettingsDistrictView />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk"
+              element={<PhysicalTargetSettingsTaluk />}
+            />
+
+            <Route
+              path="physicaltargetsettingstaluk-list"
+              element={<PhysicalTargetSettingsTalukList />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-edit/:id"
+              element={<PhysicalTargetSettingsTalukEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstaluk-view/:id"
+              element={<PhysicalTargetSettingsTalukView />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc"
+              element={<PhysicalTargetSettingsTsc />}
+            />
+
+            <Route
+              path="physicaltargetsettingstsc-list"
+              element={<PhysicalTargetSettingsTscList />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-edit/:id"
+              element={<PhysicalTargetSettingsTscEdit />}
+            />
+            <Route
+              path="physicaltargetsettingstsc-view/:id"
+              element={<PhysicalTargetSettingsTscView />}
+            />
+
+            <Route
+              path="releasebudgetdistrict"
+              element={<ReleaseBudgetDistrict />}
+            />
+
+            <Route
+              path="releasebudgetdistrict-list"
+              element={<ReleaseBudgetDistrictList />}
+            />
+            <Route
+              path="releasebudgetdistrict-edit/:id"
+              element={<ReleaseBudgetDistrictEdit />}
+            />
+            <Route
+              path="releasebudgetdistrict-view/:id"
+              element={<ReleaseBudgetDistrictView />}
+            />
+
+            <Route path="releasebudgettaluk" element={<ReleaseBudgetTaluk />} />
+
+            <Route
+              path="releasebudgettaluk-list"
+              element={<ReleaseBudgetTalukList />}
+            />
+            <Route
+              path="releasebudgettaluk-edit/:id"
+              element={<ReleaseBudgetTalukEdit />}
+            />
+            <Route
+              path="releasebudgettaluk-view/:id"
+              element={<ReleaseBudgetTalukView />}
+            />
+
+            <Route
+              path="releasebudgetinstitution"
+              element={<ReleaseBudgetInstitution />}
+            />
+
+            <Route
+              path="releasebudgetinstitution-list"
+              element={<ReleaseBudgetInstitutionList />}
+            />
+            <Route
+              path="releasebudgetinstitution-edit/:id"
+              element={<ReleaseBudgetInstitutionEdit />}
+            />
+            <Route
+              path="releasebudgetinstitution-view/:id"
+              element={<ReleaseBudgetInstitutionView />}
+            />
+
             {/*<Route path="ChawkiManagementEdit/:id" element={<ChawkiManagementEdit />} />*/}
             <Route path="roles" element={<Roles />} />
             <Route path="roles-list" element={<RolesList />} />
@@ -1214,6 +2152,10 @@ function Router() {
             <Route path="village-list" element={<VillageList />} />
             <Route path="village-view/:id" element={<VillageView />} />
             <Route path="village-edit/:id" element={<VillageEdit />} />
+            <Route path="scheme-quota" element={<SchemeQuota />} />
+            <Route path="scheme-quota-list" element={<SchemeQuotaList />} />
+            <Route path="scheme-quota-view/:id" element={<SchemeQuotaView />} />
+            <Route path="scheme-quota-edit/:id" element={<SchemeQuotaEdit />} />
             <Route path="land-category" element={<LandCategory />} />
             <Route path="land-category-list" element={<LandCategoryList />} />
             <Route
@@ -1264,6 +2206,10 @@ function Router() {
             <Route path="soil-type-list" element={<SoilTypeList />} />
             <Route path="soil-type-view/:id" element={<SoilTypeView />} />
             <Route path="soil-type-edit/:id" element={<SoilTypeEdit />} />
+            <Route path="worm-stage" element={<WormStage />} />
+            <Route path="worm-stage-list" element={<WormStageList />} />
+            <Route path="worm-stage-view/:id" element={<WormStageView />} />
+            <Route path="worm-stage-edit/:id" element={<WormStageEdit />} />
             <Route
               path="rear-house-roof-type"
               element={<RearHouseRoofType />}
@@ -1389,6 +2335,151 @@ function Router() {
             <Route path="godawn-list" element={<GodawnList />} />
             <Route path="godawn-view/:id" element={<GodawnView />} />
             <Route path="godawn-edit/:id" element={<GodawnEdit />} />
+
+            <Route
+              path="sc-head-account-category"
+              element={<ScHeadAccountCategory />}
+            />
+            <Route
+              path="sc-head-account-category-list"
+              element={<ScHeadAccountCategoryList />}
+            />
+            <Route
+              path="sc-head-account-category-view/:id"
+              element={<ScHeadAccountCategoryView />}
+            />
+            <Route
+              path="sc-head-account-category-edit/:id"
+              element={<ScHeadAccountCategoryEdit />}
+            />
+
+            <Route
+              path="sc-approving-authority"
+              element={<ScApprovingAuthority />}
+            />
+            <Route
+              path="sc-approving-authority-list"
+              element={<ScApprovingAuthorityList />}
+            />
+            <Route
+              path="sc-approving-authority-view/:id"
+              element={<ScApprovingAuthorityView />}
+            />
+            <Route
+              path="sc-approving-authority-edit/:id"
+              element={<ScApprovingAuthorityEdit />}
+            />
+
+            <Route path="sc-vendor-bank" element={<ScVendorBank />} />
+            <Route path="sc-vendor-bank-list" element={<ScVendorBankList />} />
+            <Route
+              path="sc-vendor-bank-view/:id"
+              element={<ScVendorBankView />}
+            />
+            <Route
+              path="sc-vendor-bank-edit/:id"
+              element={<ScVendorBankEdit />}
+            />
+
+            <Route path="sc-vendor-contact" element={<ScVendorContact />} />
+            <Route
+              path="sc-vendor-contact-list"
+              element={<ScVendorContactList />}
+            />
+            <Route
+              path="sc-vendor-contact-view/:id"
+              element={<ScVendorContactView />}
+            />
+            <Route
+              path="sc-vendor-contact-edit/:id"
+              element={<ScVendorContactEdit />}
+            />
+
+            <Route path="sc-scheme-details" element={<ScSchemeDetails />} />
+            <Route
+              path="sc-scheme-details-list"
+              element={<ScSchemeDetailsList />}
+            />
+            <Route
+              path="sc-scheme-details-view/:id"
+              element={<ScSchemeDetailsView />}
+            />
+            <Route
+              path="sc-scheme-details-edit/:id"
+              element={<ScSchemeDetailsEdit />}
+            />
+
+            <Route path="division" element={<DivisionMaster />} />
+            <Route path="division-list" element={<DivisionMasterList />} />
+            <Route path="division-view/:id" element={<DivisionMasterView />} />
+            <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
+            <Route path="reject-reason-workflow" element={<RejectReasonWorkFlowMaster />} />
+            <Route path="reject-reason-workflow-list" element={<RejectReasonWorkFlowList />} />
+            <Route path="reject-reason-workflow-view/:id" element={<RejectReasonWorkFlowView />} />
+            <Route path="reject-reason-workflow-edit/:id" element={<RejectReasonWorkFlowEdit />} />
+            <Route
+              path="user-hierarchy-mapping"
+              element={<UserHierarchyMapping />}
+            />
+            <Route
+              path="sc-sub-scheme-details"
+              element={<ScSubSchemeDetails />}
+            />
+            <Route
+              path="sc-sub-scheme-details-list"
+              element={<ScSubSchemeDetailsList />}
+            />
+            <Route
+              path="sc-sub-scheme-details-view/:id"
+              element={<ScSubSchemeDetailsView />}
+            />
+            <Route
+              path="sc-sub-scheme-details-edit/:id"
+              element={<ScSubSchemeDetailsEdit />}
+            />
+
+            <Route
+              path="sc-sub-scheme-details"
+              element={<ScSubSchemeDetails />}
+            />
+            <Route
+              path="sc-sub-scheme-details-list"
+              element={<ScSubSchemeDetailsList />}
+            />
+            <Route
+              path="sc-sub-scheme-details-view/:id"
+              element={<ScSubSchemeDetailsView />}
+            />
+            <Route
+              path="sc-sub-scheme-details-edit/:id"
+              element={<ScSubSchemeDetailsEdit />}
+            />
+
+            <Route path="farm-type" element={<FarmType />} />
+            <Route path="farm-type-list" element={<FarmTypeList />} />
+            <Route path="farm-type-view/:id" element={<FarmTypeView />} />
+            <Route path="farm-type-edit/:id" element={<FarmTypeEdit />} />
+
+            <Route path="grainage-type" element={<GrainageType />} />
+            <Route path="grainage-type-list" element={<GrainageTypeList />} />
+            <Route
+              path="grainage-type-view/:id"
+              element={<GrainageTypeView />}
+            />
+            <Route
+              path="grainage-type-edit/:id"
+              element={<GrainageTypeEdit />}
+            />
+
+            <Route path="sc-vendor" element={<ScVendor />} />
+            <Route path="sc-vendor-list" element={<ScVendorList />} />
+            <Route path="sc-vendor-view/:id" element={<ScVendorView />} />
+            <Route path="sc-vendor-edit/:id" element={<ScVendorEdit />} />
+
+            <Route path="sc-unit-cost" element={<ScUnitCost />} />
+            <Route path="sc-unit-cost-list" element={<ScUnitCostList />} />
+            <Route path="sc-unit-cost-view/:id" element={<ScUnitCostView />} />
+            <Route path="sc-unit-cost-edit/:id" element={<ScUnitCostEdit />} />
             <Route path="bin" element={<Bin />} />
             <Route path="bin-list" element={<BinList />} />
             <Route path="bin-view/:id" element={<BinView />} />
@@ -1452,7 +2543,7 @@ function Router() {
             <Route path="source-list" element={<SourceList />} />
             <Route path="source-view/:id" element={<SourceView />} />
             <Route path="source-edit/:id" element={<SourceEdit />} />
-            <Route path="bank" element={<Bank/>} />
+            <Route path="bank" element={<Bank />} />
             <Route path="bank-list" element={<BankList />} />
             <Route path="bank-view/:id" element={<BankView />} />
             <Route path="bank-edit/:id" element={<BankEdit />} />
@@ -1517,6 +2608,7 @@ function Router() {
             <Route path="sc-component-list" element={<ScComponentList />} />
             <Route path="sc-component-view/:id" element={<ScComponentView />} />
             <Route path="sc-component-edit/:id" element={<ScComponentEdit />} />
+
             <Route path="sc-head-account" element={<ScHeadAccount />} />
             <Route
               path="sc-head-account-list"
@@ -1530,6 +2622,20 @@ function Router() {
               path="sc-head-account-edit/:id"
               element={<ScHeadAccountEdit />}
             />
+
+            <Route
+              path="sc-head-account-list"
+              element={<ScHeadAccountList />}
+            />
+            <Route
+              path="sc-head-account-view/:id"
+              element={<ScHeadAccountView />}
+            />
+            <Route
+              path="sc-head-account-edit/:id"
+              element={<ScHeadAccountEdit />}
+            />
+
             <Route path="empanelled-vendor" element={<EmpanelledVendor />} />
             <Route
               path="empanelled-vendor-list"
@@ -1574,6 +2680,8 @@ function Router() {
             <Route path="crate-edit/:id" element={<CrateEdit />} />
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
+            <Route path="map-component" element={<MapComponent />} />
+            <Route path="map-component-list" element={<MapComponentAndHoaList />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
@@ -1781,7 +2889,10 @@ function Router() {
             <Route path="bank-statement" element={<BankStatement />} />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />
-            <Route path="reeler-initial-amount" element={<ReelerInitialAmount />} />
+            <Route
+              path="reeler-initial-amount"
+              element={<ReelerInitialAmount />}
+            />
             <Route
               path="reject-farmer-auction"
               element={<RejectFarmerAuction />}
@@ -1790,6 +2901,7 @@ function Router() {
               path="generate-bidding-slip"
               element={<GenerateBiddingSlip />}
             />
+            <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route

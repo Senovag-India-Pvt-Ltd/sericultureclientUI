@@ -154,7 +154,7 @@ function DesignationList() {
 
   const DesignationDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -198,6 +198,13 @@ function DesignationList() {
       name: "Designation Name in Kannada",
       selector: (row) => row.designationNameInKannada,
       cell: (row) => <span>{row.designationNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Amount",
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
       sortable: true,
       hide: "md",
     },

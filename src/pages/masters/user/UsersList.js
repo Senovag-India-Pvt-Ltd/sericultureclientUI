@@ -214,6 +214,7 @@ function UsersList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "User Name",
@@ -254,6 +255,13 @@ function UsersList() {
       name: "Email",
       selector: (row) => row.emailID,
       cell: (row) => <span>{row.emailID}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DDO Code",
+      selector: (row) => row.ddoCode,
+      cell: (row) => <span>{row.ddoCode}</span>,
       sortable: true,
       hide: "md",
     },

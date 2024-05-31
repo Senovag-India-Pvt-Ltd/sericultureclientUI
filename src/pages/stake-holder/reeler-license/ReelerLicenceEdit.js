@@ -48,7 +48,15 @@ function ReelerLicenceEdit() {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () => {
+    setVbAccount({
+      virtualAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+    });
+    setShowModal(true);
+  };
   const handleCloseModal = () => setShowModal(false);
 
   const handleAdd = (event) => {
@@ -504,7 +512,7 @@ function ReelerLicenceEdit() {
     console.log(date);
     const expirationDate = new Date(date);
     expirationDate.setFullYear(expirationDate.getFullYear() + 3);
-    console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
+    // console.log(expirationDate.setFullYear(expirationDate.getFullYear() + 3));
 
     setData((prev) => ({
       ...prev,

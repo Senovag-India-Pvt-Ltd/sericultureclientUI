@@ -267,6 +267,20 @@ function VillageList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Lg Villag",
+      selector: (row) => row.lgVillage,
+      cell: (row) => <span>{row.lgVillage}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Village Code",
+      selector: (row) => row.villageCode,
+      cell: (row) => <span>{row.villageCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

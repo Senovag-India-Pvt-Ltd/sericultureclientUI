@@ -176,13 +176,7 @@ function ScCategoryList() {
       sortable: false,
       hide: "md",
     },
-    {
-      name: " Category Number",
-      selector: (row) => row.categoryNumber,
-      cell: (row) => <span>{row.categoryNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+
 
     {
         name: "Category Name",
@@ -195,6 +189,27 @@ function ScCategoryList() {
       name: " Category Name in Kannada",
       selector: (row) => row.categoryNameInKannada,
       cell: (row) => <span>{row.categoryNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Code Number",
+      selector: (row) => row.codeNumber,
+      cell: (row) => <span>{row.codeNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: " Description",
+      selector: (row) => row.description,
+      cell: (row) => <span>{row.description}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Dbt Code",
+      selector: (row) => row.dbtCode,
+      cell: (row) => <span>{row.dbtCode}</span>,
       sortable: true,
       hide: "md",
     },

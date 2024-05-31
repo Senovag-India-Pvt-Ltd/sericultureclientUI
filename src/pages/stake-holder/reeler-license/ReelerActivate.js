@@ -21,7 +21,7 @@ function ReelerActivate() {
     phoneNumber: "",
     emailId: "",
     roleId: "",
-    marketMasterId: "",
+    marketMasterId: localStorage.getItem("marketId"),
     designationId: "",
     deviceId: "",
     walletAMount: "",
@@ -40,7 +40,7 @@ function ReelerActivate() {
     phoneNumber: "",
     emailId: "",
     roleId: "",
-    marketMasterId: "",
+    marketMasterId: localStorage.getItem("marketId"),
     designationId: "",
     deviceId: "",
     walletAMount: "",
@@ -153,7 +153,7 @@ function ReelerActivate() {
               phoneNumber: "",
               emailId: "",
               roleId: "",
-              marketMasterId: "",
+              marketMasterId: localStorage.getItem("marketId"),
               designationId: "",
               deviceId: "",
               walletAMount: "",
@@ -212,7 +212,7 @@ function ReelerActivate() {
 
       if (select === "reelingLicenseNumber") {
         sendData = {
-          reelerNumber: text,
+          reelingLicenseNumber: text,
           marketId: localStorage.getItem("marketId"),
         };
       }
@@ -229,7 +229,11 @@ function ReelerActivate() {
           if (!response.data.content.error) {
             getReelerList(response.data.content.reelerId);
             setReelerName(response.data.content.reelerName);
-            setData(prev=>({...prev,username:response.data.content.reelerName}))
+            setData((prev) => ({
+              ...prev,
+              username: response.data.content.reelerName,
+              reelerId: response.data.content.reelerId,
+            }));
           } else {
             Swal.fire({
               icon: "warning",
@@ -288,7 +292,7 @@ function ReelerActivate() {
               phoneNumber: "",
               emailId: "",
               roleId: "",
-              marketMasterId: "",
+              marketMasterId: localStorage.getItem("marketId"),
               designationId: "",
               deviceId: "",
               walletAMount: "",
@@ -361,7 +365,7 @@ function ReelerActivate() {
       phoneNumber: "",
       emailId: "",
       roleId: "",
-      marketMasterId: "",
+      marketMasterId: localStorage.getItem("marketId"),
       designationId: "",
       deviceId: "",
       walletAMount: "",
@@ -377,7 +381,7 @@ function ReelerActivate() {
       phoneNumber: "",
       emailId: "",
       roleId: "",
-      marketMasterId: "",
+      marketMasterId: localStorage.getItem("marketId"),
       designationId: "",
       deviceId: "",
       walletAMount: "",
@@ -964,8 +968,6 @@ function ReelerActivate() {
                 />
               </Card>
             </Block>
-
-            
           </Row>
         </Form>
       </Block>

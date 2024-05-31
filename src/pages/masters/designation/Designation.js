@@ -15,6 +15,7 @@ function Designation() {
   const [data, setData] = useState({
     name: "",
     designationNameInKannada: "",
+    amount: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -60,6 +61,7 @@ function Designation() {
             setData({
               name: "",
               designationNameInKannada: "",
+              amount: "",
             });
             setValidated(false);
           }
@@ -77,6 +79,7 @@ function Designation() {
     setData({
       name: "",
       designationNameInKannada: "",
+      amount: "",
     });
   };
 
@@ -155,19 +158,7 @@ function Designation() {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="6">
-                    {/* <Form.Group className="form-group">
-                      <Form.Label htmlFor="state">Designation</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="name"
-                          name="name"
-                          value={data.name}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Designation"
-                        />
-                      </div>
-                    </Form.Group> */}
+                    
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="designation">
                         Designation<span className="text-danger">*</span>
@@ -211,6 +202,24 @@ function Designation() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="state">Amount</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="amount"
+                          name="amount"
+                          value={data.amount}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Amount"
+                        />
+                      </div>
+                    </Form.Group>
+                    </Col>
+
                 </Row>
               </Card.Body>
             </Card>

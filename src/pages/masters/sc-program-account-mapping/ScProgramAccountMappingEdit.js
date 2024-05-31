@@ -355,7 +355,7 @@ function ScProgramAccountMappingEdit() {
                                 key={list.scCategoryId}
                                 value={list.scCategoryId}
                               >
-                                {list.categoryName}
+                                {list.codeNumber}
                               </option>
                             ))}
                           </Form.Select>

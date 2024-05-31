@@ -10,152 +10,48 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import axios from "axios";
+import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLs() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-    },
-    actiongreentstyle: {
-      backgroundColor: "#03d300",
-      color: "#fff",
-    },
-    actionredtstyle: {
-      backgroundColor: "#ff0000",
-      color: "#fff",
-    },
-  };
 
-  // Virtual Bank Account
-  const [vbAccountList, setVbAccountList] = useState([]);
-  const [vbAccount, setVbAccount] = useState({
-    virtualAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    marketMasterId: "",
-  });
-
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAdd = () => {
-    setVbAccountList((prev) => [...prev, vbAccount]);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-    setShowModal(false);
-  };
-
-  const handleDelete = (i) => {
-    setVbAccountList((prev) => {
-      const newArray = prev.filter((item, place) => place !== i);
-      return newArray;
-    });
-  };
-
-  const [vbId, setVbId] = useState();
-  const handleGet = (i) => {
-    setVbAccount(vbAccountList[i]);
-    setShowModal2(true);
-    setVbId(i);
-  };
-
-  const handleUpdate = (i, changes) => {
-    setVbAccountList((prev) =>
-      prev.map((item, ix) => {
-        if (ix === i) {
-          return { ...item, ...changes };
-        }
-        return item;
-      })
-    );
-    setShowModal2(false);
-    setVbAccount({
-      virtualAccountNumber: "",
-      branchName: "",
-      ifscCode: "",
-      marketMasterId: "",
-    });
-  };
-
-  const handleVbInputs = (e) => {
-    const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
-  };
-
-  const handleShowModal2 = () => setShowModal2(true);
-  const handleCloseModal2 = () => setShowModal2(false);
+  const [validated, setValidated] = useState(false);
 
   const [data, setData] = useState({
-    name: "",
-    wardNumber: "",
-    passbookNumber: "",
-    fatherName: "",
-    educationId: "",
-    reelingUnitBoundary: "",
-    dob: "",
-    rationCard: "",
-    machineTypeId: "",
-    gender: "",
-    dateOfMachineInstallation: "",
-    electricityRrNumber: "",
-    casteId: "",
-    revenueDocument: "",
-    numberOfBasins: "",
-    mobileNumber: "",
-    recipientId: "",
-    mahajarDetails: "",
-    emailId: "",
-    representativeNameAddress: "",
-    loanDetails: "",
-    assignToInspectId: "",
-    gpsLat: "",
-    gpsLng: "",
-    inspectionDate: "",
-    arnNumber: "",
-    chakbandiLat: "",
-    chakbandiLng: "",
-    address: "",
-    pincode: "",
-    stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
-    licenseReceiptNumber: "",
-    licenseExpiryDate: "",
-    receiptDate: "",
-    functionOfUnit: "",
-    reelingLicenseNumber: "",
-    feeAmount: "",
-    memberLoanDetails: "",
-    mahajarEast: "",
-    mahajarWest: "",
-    mahajarNorth: "",
-    mahajarSouth: "",
-    mahajarNorthEast: "",
-    mahajarNorthWest: "",
-    mahajarSouthEast: "",
-    mahajarSouthWest: "",
-    bankName: "",
-    bankAccountNumber: "",
-    branchName: "",
-    ifscCode: "",
-    status: "",
-    licenseRenewalDate: "",
+    numberOfCocoonsCB: "",
+    dateOfMothEmergence: "",
+    laidOnDate: "",
+    eggSheetSerialNumber: "",
+    numberOfPairs: "",
+    numberOfRejection: "",
+    dflsObtained: "",
+    eggRecoveryPercentage: "",
+    testResults: "",
+    certification: "",
+    additionalRemarks: "",
   });
+
+  const clear = () => {
+    setData({
+      numberOfCocoonsCB: "",
+      dateOfMothEmergence: "",
+      laidOnDate: "",
+      eggSheetSerialNumber: "",
+      numberOfPairs: "",
+      numberOfRejection: "",
+      dflsObtained: "",
+      eggRecoveryPercentage: "",
+      testResults: "",
+      certification: "",
+      additionalRemarks: "",
+    });
+    setValidated(false);
+  };
 
   let name, value;
   const handleInputs = (e) => {
@@ -170,268 +66,102 @@ function PreparationofeggsDFLs() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (e) => {
-    axios
-      .post(baseURL + `reeler/add`, data, {
-        headers: _header,
-      })
-      .then((response) => {
-        if (vbAccountList.length > 0) {
-          const reelerId = response.data.content.reelerId;
-          vbAccountList.forEach((list) => {
-            const updatedVb = {
-              ...list,
-              reelerId: reelerId,
-            };
-            axios
-              .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb, {
-                headers: _header,
-              })
-              .then((response) => {
-                saveSuccess();
-              })
-              .catch((err) => {
-                setVbAccount({});
-                saveError();
-              });
-          });
-        } else {
-          saveSuccess();
-        }
-      })
-      .catch((err) => {
-        setData({});
-        saveError();
-      });
-  };
-
-  // to get Caste
-  const [casteListData, setCasteListData] = useState([]);
-
-  const getCasteList = () => {
-    axios
-      .get(baseURL2 + `caste/get-all`)
-      .then((response) => {
-        setCasteListData(response.data.content.caste);
-      })
-      .catch((err) => {
-        setCasteListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getCasteList();
-  }, []);
-
-  // to get Education
-  const [educationListData, setEducationListData] = useState([]);
-
-  const getEducationList = () => {
-    axios
-      .get(baseURL2 + `education/get-all`)
-      .then((response) => {
-        setEducationListData(response.data.content.education);
-      })
-      .catch((err) => {
-        setEducationListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getEducationList();
-  }, []);
-
-  // to get Machine Type
-  const [machineTypeListData, setMachineTypeListData] = useState([]);
-
-  const getMachineTypeList = () => {
-    axios
-      .get(baseURL2 + `machine-type-master/get-all`)
-      .then((response) => {
-        setMachineTypeListData(response.data.content.machineTypeMaster);
-      })
-      .catch((err) => {
-        setMachineTypeListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMachineTypeList();
-  }, []);
-
-  // to get Market
-  const [marketMasterListData, setMarketMasterListData] = useState([]);
-
-  const getMarketMasterList = () => {
-    axios
-      .get(baseURL2 + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketMasterListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketMasterListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getMarketMasterList();
-  }, []);
-
-  // to get State
-  const [stateListData, setStateListData] = useState([]);
-
-  const getList = () => {
-    axios
-      .get(baseURL2 + `state/get-all`)
-      .then((response) => {
-        setStateListData(response.data.content.state);
-      })
-      .catch((err) => {
-        setStateListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  // to get district
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = (_id) => {
-    axios
-      .get(baseURL2 + `district/get-by-state-id/${_id}`)
-      .then((response) => {
-        setDistrictListData(response.data.content.district);
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.stateId) {
-      getDistrictList(data.stateId);
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      api
+        .post(baseURLSeedDfl + `EggPreparation/add-info`, data)
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess2(response.data.message, response.data.lotNumber);
+            clear();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
     }
-  }, [data.stateId]);
+  };
 
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
+  // to get Line Name
+  const [lineNameListData, setLineNameListData] = useState([]);
 
-  const getTalukList = (_id) => {
-    axios
-      .get(baseURL2 + `taluk/get-by-district-id/${_id}`)
+  const getLineYearList = () => {
+    api
+      .get(baseURLMasterData + `lineNameMaster/get-all`)
       .then((response) => {
-        setTalukListData(response.data.content.taluk);
+        setLineNameListData(response.data.content.lineNameMaster);
       })
       .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
+        setLineNameListData([]);
       });
   };
 
   useEffect(() => {
-    if (data.districtId) {
-      getTalukList(data.districtId);
-    }
-  }, [data.districtId]);
+    getLineYearList();
+  }, []);
 
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    axios
-      .get(baseURL2 + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        setHobliListData(response.data.content.hobli);
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.talukId) {
-      getHobliList(data.talukId);
-    }
-  }, [data.talukId]);
-
-  // to get Village
-  const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    axios
-      .get(baseURL2 + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (data.hobliId) {
-      getVillageList(data.hobliId);
-    }
-  }, [data.hobliId]);
-
-  const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/reeler-license-list"));
+      text: message,
+    });
   };
-  const saveError = () => {
+
+  const saveSuccess2 = (message, lotNo) => {
+    Swal.fire({
+      icon: "success",
+      title: message,
+      text: `Generated Lot Number is ${lotNo}`,
+    });
+  };
+
+  const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: "Attempt was not successful",
+      html: errorMessage,
     });
   };
 
-  // Handle Options
-  // Market
-  const handleMarketOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName] = value.split("_");
-    setVbAccount({
-      ...vbAccount,
-      stateId: chooseId,
-      stateName: chooseName,
-    });
-  };
+ 
 
   return (
-    <Layout title="Preparati on of eggs (DFLs)">
+    <Layout title="Preparation of Eggs (DFLs)">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Preparati on of eggs (DFLs) </Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                {/* <li className="breadcrumb-item">
-                  <Link to="#">Renew License to Reeler List</Link>
-                </li> */}
-                <li className="breadcrumb-item active" aria-current="page">
-                  Preparati on of eggs (DFLs)
-                </li>
-              </ol>
-            </nav>
+            <Block.Title tag="h2">Preparation of Eggs (DFLs)</Block.Title>
+            
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Preparation-of-eggs-DFLs-List"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -440,7 +170,7 @@ function PreparationofeggsDFLs() {
               </li>
               <li>
                 <Link
-                  to="/seriui/sale-chawki-worms-list"
+                  to="/seriui/Preparation-of-eggs-DFLs-List"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -452,283 +182,312 @@ function PreparationofeggsDFLs() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-4">
-        <Form action="#">
+      <Block className="mt-n5">
+        <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
               <Row className="g-gs">
                 <Col lg="12">
                   <Block>
                     <Card>
-                      <Card.Header> Preparati on of eggs (DFLs) </Card.Header>
+                      <Card.Header> Preparation of Eggs (DFLs) </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Name of the Grainage and Address
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder=" Name of the Grainage and Address"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Lot number/Year
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Lot number/Year"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="numberOfCocoonsCB">
                                 Number of Cocoons (CB, Hybrid)
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="numberOfCocoonsCB"
+                                  name="numberOfCocoonsCB"
+                                  value={data.numberOfCocoonsCB}
+                                  onChange={handleInputs}
                                   type="text"
                                   placeholder="Number of Cocoons (CB, Hybrid)"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Number of Cocoons (CB, Hybrid) is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="dateOfMothEmergence">
                                 Date of moth emergence
+                                <span className="text-danger">*</span>
                               </Form.Label>
-                              <div className="Date of moth emergence">
-                                <DatePicker />
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.dateOfMothEmergence}
+                                  onChange={(date) =>
+                                    handleDateChange(
+                                      date,
+                                      "dateOfMothEmergence"
+                                    )
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // minDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Date of moth emergence is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="laidOnDate">
+                                Laid On Date
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.laidOnDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "laidOnDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Laid On Date is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggSheetSerialNumber">
                                 Egg sheet serial number
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="eggSheetSerialNumber"
+                                  name="eggSheetSerialNumber"
+                                  value={data.eggSheetSerialNumber}
+                                  onChange={handleInputs}
                                   type="text"
                                   placeholder="Egg sheet serial number"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Egg sheet serial number is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfPairs">
                                 Number of pairs
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="numberOfPairs"
+                                  name="numberOfPairs"
+                                  value={data.numberOfPairs}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Number of pairs"
+                                  placeholder="Number of pairs"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Number of pairs is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group ">
-                              <Form.Label> Number of Rejection</Form.Label>
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfRejection">
+                                Number of Rejection
+                                <span className="text-danger">*</span>
+                              </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="numberOfRejection"
+                                  name="numberOfRejection"
+                                  value={data.numberOfRejection}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder=" Number of Rejection"
+                                  placeholder="Number of Rejection"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Number of Rejection is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="dflsObtained">
                                 DFLs obtained
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="dflsObtained"
+                                  name="dflsObtained"
+                                  value={data.dflsObtained}
+                                  onChange={handleInputs}
                                   type="text"
-                                  placeholder="DFLs obtained "
+                                  placeholder="DFLs obtained"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  DFLs obtained is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggRecoveryPercentage">
                                 Egg Recovery %
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="eggRecoveryPercentage"
+                                  name="eggRecoveryPercentage"
+                                  value={data.eggRecoveryPercentage}
+                                  onChange={handleInputs}
                                   type="text"
                                   placeholder="Egg Recovery %"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Egg Recovery % is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
-                                Examination details (Date, etc)
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Examination details (Date, etc)"
-                                />
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="testResults">
                                 Test results
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="testResults"
+                                  name="testResults"
+                                  value={data.testResults}
+                                  onChange={handleInputs}
                                   type="text"
                                   placeholder="Test results"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Test results is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
                                 Certification (Yes/No)
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control
-                                  id="sordfl"
-                                  type="text"
-                                  placeholder="Certification (Yes/No)"
-                                />
+                                <Form.Select
+                                  name="certification"
+                                  value={data.certification}
+                                  onChange={handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.certification === undefined ||
+                                    data.certification === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Certification{" "}
+                                  </option>
+                                  <option value="1">Yes</option>
+                                  <option value="2">No</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                  Certification is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label htmlFor="sordfl">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="additionalRemarks">
                                 Additional remarks
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="sordfl"
+                                  id="additionalRemarks"
+                                  name="additionalRemarks"
+                                  value={data.additionalRemarks}
+                                  onChange={handleInputs}
                                   type="text"
                                   placeholder="Additional remarks"
+                                  required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  Additional remarks is required
+                                </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
-
-                          <Col lg="12" className="text-center">
-                            <Button type="button" variant="primary">
-                              {" "}
-                              Submit{" "}
-                            </Button>
                           </Col>
                         </Row>
                       </Card.Body>
                     </Card>
                   </Block>
-                </Col>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
-                      <Row className="g-gs">
-                        <Col lg="12">
-                          <div className="table-responsive">
-                            <table className="table small table-bordered">
-                              <thead>
-                                <tr>
-                                  <th style={styles.ctstyle}>Lot number</th>
-                                  <th style={styles.ctstyle}>
-                                    Race (MSC,CSR 2,FC1, FC2)
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Date of seed cocoon supply
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Name of the Government Seed Farm/Farmer
-                                  </th>
-                                  <th style={styles.ctstyle}>Spun On date</th>
-                                  <th style={styles.ctstyle}>Crop Number</th>
-                                  <th style={styles.ctstyle}>
-                                    Source (Line) of the Cocoon
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Bed number Number / Kgs of cocoons supplied{" "}
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Number of pupa examined
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Cocoon rejection details/ numbers
-                                  </th>
-                                  <th style={styles.ctstyle}>
-                                    Invoice No. and Date
-                                  </th>
-                                  <th style={styles.ctstyle}>Rate per Kg</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Lot number data </td>
-                                  <td>Race (MSC,CSR 2,FC1, FC2) data</td>
-                                  <td>Date of seed cocoon supply data</td>
-                                  <td>
-                                    Name of the Government Seed Farm/Farmer data
-                                  </td>
-                                  <td>12/20/2023</td>
-                                  <td>Crop Number data</td>
-                                  <td>Source (Line) of the Cocoon data </td>
-                                  <td>
-                                    Bed number Number / Kgs of cocoons supplied
-                                    data
-                                  </td>
-                                  <td>Number of pupa examined</td>
-                                  <td>Cocoon rejection details/ numbers</td>
-                                  <td>Invoice No. and Date</td>
-                                  <td>Rate per Kg data </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
+                  <div className="gap-col mt-2">
+                    <ul className="d-flex align-items-center justify-content-center gap g-3">
+                      <li>
+                        {/* <Button type="button" variant="primary" onClick={postData}> */}
+                        <Button type="submit" variant="primary">
+                          Save
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={clear}
+                        >
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </div>
                 </Col>
               </Row>
             </div>

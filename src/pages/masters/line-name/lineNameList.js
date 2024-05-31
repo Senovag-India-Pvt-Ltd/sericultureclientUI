@@ -184,9 +184,23 @@ function LineNameList() {
       hide: "md",
     },
     {
+      name: "Line Code",
+      selector: (row) => row.lineCode,
+      cell: (row) => <span>{row.lineCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Line Name in Kannada",
       selector: (row) => row.lineNameInKannada,
       cell: (row) => <span>{row.lineNameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Line Name Representation",
+      selector: (row) => row.lineNameRepresentation,
+      cell: (row) => <span>{row.lineNameRepresentation}</span>,
       sortable: true,
       hide: "md",
     },

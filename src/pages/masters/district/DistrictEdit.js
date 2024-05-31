@@ -46,13 +46,22 @@ function DistrictEdit() {
               stateId: "",
               districtName: "",
               districtNameInKannada: "",
+              lgDistrict: "",
+              districtCode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -64,6 +73,8 @@ function DistrictEdit() {
       stateId: "",
       districtName: "",
       districtNameInKannada: "",
+      lgDistrict: "",
+      districtCode: "",
     });
   };
 
@@ -253,6 +264,50 @@ function DistrictEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="district">
+                       Lg District<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lgDistrict"
+                          type="text"
+                          name="lgDistrict"
+                          value={data.lgDistrict}
+                          onChange={handleInputs}
+                          placeholder="Enter Lg District"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Lg District is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="district">
+                       District Code<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="districtCode"
+                          type="text"
+                          name="districtCode"
+                          value={data.districtCode}
+                          onChange={handleInputs}
+                          placeholder="Enter District Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        District Code is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

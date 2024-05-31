@@ -57,6 +57,7 @@ function UsersEdit() {
               designationId: "",
               phoneNumber: "",
               workingInstitutionId: "",
+              ddoCode: "",
             });
             setValidated(false);
           }
@@ -93,6 +94,7 @@ function UsersEdit() {
       designationId: "",
       phoneNumber: "",
       workingInstitutionId: "",
+      ddoCode: "",
     });
   };
 
@@ -721,6 +723,26 @@ function UsersEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="password">
+                        DDO Code
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="ddoCode"
+                          name="ddoCode"
+                          value={data.ddoCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter DDO Code"
+                          // required
+                        />
+                       
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  
                 </Row>
               </Card.Body>
             </Card>

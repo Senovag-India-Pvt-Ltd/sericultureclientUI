@@ -4,7 +4,7 @@ import { Card, Row, Col,Button } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-// import axios from "axios";
+import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -103,6 +103,12 @@ function StakeHolderViewPage() {
         setBank({});
         setLoadingBank(false);
       });
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd/MM/yyyy");
   };
 
   // To get Photo
@@ -247,7 +253,7 @@ function StakeHolderViewPage() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Farmer DOB:</td>
-                      <td>{StakeHolder.dob}</td>
+                      <td>{formatDate(StakeHolder.dob)}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Gender:</td>
@@ -274,7 +280,7 @@ function StakeHolderViewPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Passbook Number:</td>
+                      <td style={styles.ctstyle}>Seri Passbook Number:</td>
                       <td>{StakeHolder.passbookNumber}</td>
                     </tr>
                   </tbody>

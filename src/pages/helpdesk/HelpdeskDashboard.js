@@ -139,6 +139,27 @@ function HelpdeskDashboard() {
       });
   };
 
+  // const getTicketDataList = () => {
+  //   // setLoading(true);
+  //   api
+  //     .post(baseURL2 + `hdTicket/search`, {
+  //       searchText: "",
+  //       joinColumn: "hdTicket.ticketArn",
+  //       pageNumber: "0",
+  //       pageSize: "10",
+  //       // userId: localStorage.getItem("userMasterId"),
+  //     })
+  //     .then((response) => {
+  //       setHdTicketDataList(response.data.content.hdTicket);
+  //       setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // setListData({});
+  //       // setLoading(false);
+  //     });
+  // };
+
   useEffect(() => {
     getTicketDataList();
   }, [page]);
@@ -317,13 +338,13 @@ function HelpdeskDashboard() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Severity",
-      selector: (row) => row.hdSeverityName,
-      cell: (row) => <span>{row.hdSeverityName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Severity",
+    //   selector: (row) => row.hdSeverityName,
+    //   cell: (row) => <span>{row.hdSeverityName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Status",
     //   cell: (row) => (
@@ -578,6 +599,70 @@ function HelpdeskDashboard() {
                     size="sm"
                     variant="primary"
                     onClick={() => getOtherTicketDataList("Pending Tickets")}
+                  >
+                    View
+                  </Button>
+                </div>
+                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
+                          <Image src="/images/award/a.png" alt=""/>
+                      </div> */}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xxl="3">
+          <Card className="h-100">
+            <Card.Body style={{ ...styles }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="card-title">
+                    <h4 className="title mb-1">Escalated Tickets</h4>
+                    {/* <p className="small">Best seller of the month</p> */}
+                  </div>
+                  <div className="my-3">
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.escalatedTickets}
+                    </div>
+                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
+                  </div>
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Escalated Tickets")}
+                  >
+                    View
+                  </Button>
+                </div>
+                {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
+                          <Image src="/images/award/a.png" alt=""/>
+                      </div> */}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xxl="3">
+          <Card className="h-100">
+            <Card.Body style={{ ...styles }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="card-title">
+                    <h4 className="title mb-1">Resolved Tickets</h4>
+                    {/* <p className="small">Best seller of the month</p> */}
+                  </div>
+                  <div className="my-3">
+                    <div className="amount h2 fw-bold text-primary ">
+                      {hdTicketData.resolvedTickets}
+                    </div>
+                    {/* <div className="smaller">You have done 69.5% more sales today.</div> */}
+                  </div>
+                  <Button
+                    href="#"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => getOtherTicketDataList("Resolved Tickets")}
                   >
                     View
                   </Button>
