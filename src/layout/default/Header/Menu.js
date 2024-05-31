@@ -195,7 +195,6 @@ function Menu() {
 
     Services: false,
     Services_Service_Application: false,
-    Services_Service_Application: false,
     Services_Service_Dashboard: false,
     Services_Reject_List:false,
     Services_Success_List:false,

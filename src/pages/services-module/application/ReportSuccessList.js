@@ -27,6 +27,11 @@ function ReportSuccessList() {
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
+  const [addressDetails, setAddressDetails] = useState({
+    districtId: 0,
+    talukId: 0,
+  });
+
   // const [data, setData] = useState({
   //   userMasterId: "",
   // });
@@ -89,6 +94,90 @@ function ReportSuccessList() {
     periodFrom: new Date(),
     periodTo: new Date(),
   });
+
+  // To get District
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        } else {
+          setTalukListData([]);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (addressDetails.districtId) {
+      getTalukList(addressDetails.districtId);
+    }
+  }, [addressDetails.districtId]);
+
+  const handleInputsaddress = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setAddressDetails({ ...addressDetails, [name]: value });
+  };
+
+  const handleInputsSearch = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+   // Search
+   const search = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/getDbtStatusByList`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+            status: "ACKNOWLEDGEMENT SUCCESS",
+          },
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
 
   // console.log(searchData);
 
@@ -1096,6 +1185,91 @@ function ReportSuccessList() {
           </Card>
         </Form> */}
         <Card className="mt-1">
+        <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="type"
+                      value={searchData.type}
+                      onChange={handleInputsSearch}
+                    >
+                      <option value="0">All</option>
+                      <option value="1">Sanction No.</option>
+                      <option value="2">FruitsId</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={2} lg={2}>
+                  <Form.Control
+                    id="fruitsId"
+                    name="text"
+                    value={searchData.text}
+                    onChange={handleInputsSearch}
+                    type="text"
+                    placeholder="Search"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Field Value is Required
+                  </Form.Control.Feedback>
+                </Col>
+
+                <Form.Label column sm={1}>
+                  District
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="districtId"
+                      value={addressDetails.districtId}
+                      onChange={handleInputsaddress}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select District</option>
+                      {districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Form.Label column sm={1}>
+                  Taluk
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="talukId"
+                      value={addressDetails.talukId}
+                      onChange={handleInputsaddress}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Taluk</option>
+                      {talukListData.map((list) => (
+                        <option key={list.talukId} value={list.talukId}>
+                          {list.talukName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"

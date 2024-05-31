@@ -1338,7 +1338,7 @@ function DrawingOfficerList() {
                 <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
-                <Col sm={3}>
+                <Col sm={2}>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="type"
@@ -1409,7 +1409,7 @@ function DrawingOfficerList() {
                   </div>
                 </Col>
 
-                <Col sm={2}>
+                <Col sm={1}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
                   </Button>
