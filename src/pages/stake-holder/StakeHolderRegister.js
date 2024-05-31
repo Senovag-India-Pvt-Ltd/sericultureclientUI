@@ -798,6 +798,158 @@ function StakeHolderRegister() {
     useState(false);
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+  // Old Postdata Commented
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     }
+
+  //     if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+  //       return;
+  //     }
+  //     if (
+  //       bank.farmerBankIfscCode.length < 11 ||
+  //       bank.farmerBankIfscCode.length > 11
+  //     ) {
+  //       return;
+  //     }
+  //     api
+  //       .post(baseURL2 + `farmer/add`, data)
+  //       .then((response) => {
+  //         const farmerId = response.data.content.farmerId;
+  //         if (response.data.content.error) {
+  //           saveFarmerError(response.data.content.error_description);
+  //         }
+  //         // postDataBankAccount
+
+  //         if (farmerId) {
+  //           api
+  //             .post(
+  //               baseURL2 + `farmer-bank-account/add`,
+  //               { ...bank, farmerId }
+  //               // {
+  //               //   headers: _header,
+  //               // }
+  //             )
+  //             .then((response) => {
+  //               if (response.data.content.farmerBankAccountId) {
+  //                 const bankId = response.data.content.farmerBankAccountId;
+  //                 handleFileDocumentUpload(bankId);
+  //               }
+  //               if (response.data.content.error) {
+  //                 const bankError = response.data.content.error_description;
+  //                 saveFarmerError(bankError);
+  //               } else {
+  //                 saveSuccess();
+  //                 setBank({
+  //                   accountImagePath: "",
+  //                   farmerId: "",
+  //                   farmerBankName: "",
+  //                   farmerBankAccountNumber: "",
+  //                   farmerBankBranchName: "",
+  //                   farmerBankIfscCode: "",
+  //                 });
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               if (
+  //                 Object.keys(err.response.data.validationErrors).length > 0
+  //               ) {
+  //                 saveError(err.response.data.validationErrors);
+  //               }
+  //             });
+
+  //           if (familyMembersList.length > 0) {
+  //             familyMembersList.forEach((list) => {
+  //               const updatedFM = {
+  //                 ...list,
+  //                 farmerId: farmerId,
+  //               };
+  //               api
+  //                 .post(baseURL2 + `farmer-family/add`, updatedFM)
+  //                 .then((response) => {
+  //                   if (response.data.content.error) {
+  //                     saveFarmerError(response.data.content.error_description);
+  //                   } else {
+  //                     saveSuccess();
+  //                     setFamilyMembers([]);
+  //                   }
+  //                 })
+  //                 .catch((err) => {
+  //                   if (
+  //                     Object.keys(err.response.data.validationErrors).length > 0
+  //                   ) {
+  //                     saveError(err.response.data.validationErrors);
+  //                   }
+  //                 });
+  //             });
+  //           }
+
+  //           if (farmerLandList.length > 0) {
+  //             farmerLandList.forEach((list) => {
+  //               const updatedFL = {
+  //                 ...list,
+  //                 farmerId: farmerId,
+  //               };
+  //               api
+  //                 .post(baseURL2 + `farmer-land-details/add`, updatedFL)
+  //                 .then((response) => {
+  //                   saveSuccess();
+  //                   setFarmerLandList([]);
+  //                 })
+  //                 .catch((err) => {
+  //                   if (
+  //                     Object.keys(err.response.data.validationErrors).length > 0
+  //                   ) {
+  //                     saveError(err.response.data.validationErrors);
+  //                   }
+  //                 });
+  //             });
+  //           }
+
+  //           if (farmerAddressList.length > 0) {
+  //             farmerAddressList.forEach((list) => {
+  //               const updatedFarmerAddress = {
+  //                 ...list,
+  //                 farmerId: farmerId,
+  //               };
+  //               api
+  //                 .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress)
+  //                 .then((response) => {
+  //                   saveSuccess();
+  //                   setFarmerAddressList([]);
+  //                 })
+  //                 .catch((err) => {
+  //                   if (
+  //                     Object.keys(err.response.data.validationErrors).length > 0
+  //                   ) {
+  //                     saveError(err.response.data.validationErrors);
+  //                   }
+  //                 });
+  //             });
+  //           }
+
+  //           handleFileUpload(farmerId);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         // setData({});
+  //         if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //           saveError(err.response.data.validationErrors);
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+  // Old Postdata Commented Close
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -821,129 +973,34 @@ function StakeHolderRegister() {
       ) {
         return;
       }
+
+      const sendData = {
+        farmerRequest: data,
+        farmerBankAccountRequest: bank,
+        farmerFamilyRequestList: familyMembersList,
+        farmerLandDetailsRequests: farmerLandList,
+      };
       api
-        .post(baseURL2 + `farmer/add`, data)
+        .post(baseURL2 + `farmer/save-complete-farmer-details`, sendData)
         .then((response) => {
-          const farmerId = response.data.content.farmerId;
+          console.log(response.data)
+          // const farmerId = response.data.content.farmerId;
           if (response.data.content.error) {
             saveFarmerError(response.data.content.error_description);
           }
           // postDataBankAccount
-
-          if (farmerId) {
-            api
-              .post(
-                baseURL2 + `farmer-bank-account/add`,
-                { ...bank, farmerId }
-                // {
-                //   headers: _header,
-                // }
-              )
-              .then((response) => {
-                if (response.data.content.farmerBankAccountId) {
-                  const bankId = response.data.content.farmerBankAccountId;
-                  handleFileDocumentUpload(bankId);
-                }
-                if (response.data.content.error) {
-                  const bankError = response.data.content.error_description;
-                  saveFarmerError(bankError);
-                } else {
-                  saveSuccess();
-                  setBank({
-                    accountImagePath: "",
-                    farmerId: "",
-                    farmerBankName: "",
-                    farmerBankAccountNumber: "",
-                    farmerBankBranchName: "",
-                    farmerBankIfscCode: "",
-                  });
-                }
-              })
-              .catch((err) => {
-                if (
-                  Object.keys(err.response.data.validationErrors).length > 0
-                ) {
-                  saveError(err.response.data.validationErrors);
-                }
-              });
-
-            if (familyMembersList.length > 0) {
-              familyMembersList.forEach((list) => {
-                const updatedFM = {
-                  ...list,
-                  farmerId: farmerId,
-                };
-                api
-                  .post(baseURL2 + `farmer-family/add`, updatedFM)
-                  .then((response) => {
-                    if (response.data.content.error) {
-                      saveFarmerError(response.data.content.error_description);
-                    } else {
-                      saveSuccess();
-                      setFamilyMembers([]);
-                    }
-                  })
-                  .catch((err) => {
-                    if (
-                      Object.keys(err.response.data.validationErrors).length > 0
-                    ) {
-                      saveError(err.response.data.validationErrors);
-                    }
-                  });
-              });
-            }
-
-            if (farmerLandList.length > 0) {
-              farmerLandList.forEach((list) => {
-                const updatedFL = {
-                  ...list,
-                  farmerId: farmerId,
-                };
-                api
-                  .post(baseURL2 + `farmer-land-details/add`, updatedFL)
-                  .then((response) => {
-                    saveSuccess();
-                    setFarmerLandList([]);
-                  })
-                  .catch((err) => {
-                    if (
-                      Object.keys(err.response.data.validationErrors).length > 0
-                    ) {
-                      saveError(err.response.data.validationErrors);
-                    }
-                  });
-              });
-            }
-
-            if (farmerAddressList.length > 0) {
-              farmerAddressList.forEach((list) => {
-                const updatedFarmerAddress = {
-                  ...list,
-                  farmerId: farmerId,
-                };
-                api
-                  .post(baseURL2 + `farmer-address/add`, updatedFarmerAddress)
-                  .then((response) => {
-                    saveSuccess();
-                    setFarmerAddressList([]);
-                  })
-                  .catch((err) => {
-                    if (
-                      Object.keys(err.response.data.validationErrors).length > 0
-                    ) {
-                      saveError(err.response.data.validationErrors);
-                    }
-                  });
-              });
-            }
-
-            handleFileUpload(farmerId);
-          }
         })
         .catch((err) => {
           // setData({});
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
