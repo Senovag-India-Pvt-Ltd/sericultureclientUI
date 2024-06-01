@@ -36,7 +36,7 @@ function StateEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `state/edit`, data)
+        .post(baseURL + `state/edit`,{...data,stateId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -50,8 +50,15 @@ function StateEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);

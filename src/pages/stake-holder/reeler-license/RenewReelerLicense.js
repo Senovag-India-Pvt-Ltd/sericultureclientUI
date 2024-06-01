@@ -88,6 +88,15 @@ function RenewReelerLicense() {
       setValidated(true);
     }
   };
+const clear = () => {
+  setData({
+    reelerId: "",
+    status: 0,
+    feeAmount: "",
+    licenseRenewalDate: "",
+    licenseExpiryDate: "",
+  })
+}
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -278,9 +287,9 @@ function RenewReelerLicense() {
                         </Button>
                       </li>
                       <li>
-                        <Link to="#" className="btn btn-secondary border-0">
-                          Cancel
-                        </Link>
+                      <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                       </li>
                     </ul>
                   </div>

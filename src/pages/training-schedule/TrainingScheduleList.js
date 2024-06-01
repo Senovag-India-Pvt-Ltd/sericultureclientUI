@@ -277,6 +277,7 @@ function TrainingScheduleList() {
       ),
       sortable: false,
       hide: "md",
+      grow:2,
     },
     {
       name: "Training Schedule",
@@ -286,9 +287,17 @@ function TrainingScheduleList() {
       hide: "md",
     },
     {
-      name: "Date",
+      name: "Start Date",
       selector: (row) => row.trStartDate,
       cell: (row) => <span>{formatDate(row.trStartDate)}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Date Of Completion",
+      selector: (row) => row.trDateOfCompletion,
+      cell: (row) => <span>{formatDate(row.trDateOfCompletion)}</span>,
       sortable: true,
       hide: "md",
     },
@@ -310,6 +319,13 @@ function TrainingScheduleList() {
       name: "Training Program Name",
       selector: (row) => row.trProgramMasterName,
       cell: (row) => <span>{row.trProgramMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Training Course Name",
+      selector: (row) => row.trCourseMasterName,
+      cell: (row) => <span>{row.trCourseMasterName}</span>,
       sortable: true,
       hide: "md",
     },

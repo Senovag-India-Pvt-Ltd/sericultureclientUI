@@ -37,7 +37,7 @@ function CasteEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `caste/edit`, data)
+        .post(baseURL + `caste/edit`, {...data,id:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -52,8 +52,15 @@ function CasteEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);

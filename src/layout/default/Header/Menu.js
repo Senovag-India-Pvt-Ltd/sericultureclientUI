@@ -1873,7 +1873,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
+            {/* {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
                   text="Tracking status of Mulberry"
@@ -1896,7 +1896,7 @@ function Menu() {
                   to="/seriui/implementation-mgnrega"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
           </MenuSub>
         </MenuItem>
       ) : null}

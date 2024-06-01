@@ -58,7 +58,16 @@ function GrainageEdit() {
           }
         })
         .catch((err) => {
-          updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
         });
       setValidated(true);
     }
@@ -82,9 +91,9 @@ function GrainageEdit() {
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         setLoading(false);
       });
   };
@@ -122,19 +131,25 @@ function GrainageEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      html: Object.values(message).join("<br>"),
+      html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+  // const editError = (message) => {
+  //   Swal.fire({
+  //     icon: "error",
+  //     title: message,
+  //     text: "Something went wrong!",
+  //   }).then(() => navigate("#"));
+  // };
 
   return (
     <Layout title="Edit Grainage">
