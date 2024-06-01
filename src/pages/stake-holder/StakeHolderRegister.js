@@ -56,6 +56,8 @@ function StakeHolderRegister() {
     nameKan: "",
   });
 
+  console.log("checkData", data);
+
   //  console.log("data",data.photoPath);
   const [searchValidated, setSearchValidated] = useState(false);
 
@@ -376,7 +378,14 @@ function StakeHolderRegister() {
     acre: "",
     gunta: "",
     fgunta: "",
+    landCode: "",
+    districtCode: "",
+    talukCode: "",
+    hobliCode: "",
+    villageCode: "",
   });
+
+  // console.log("Farmer Land List", farmerLandList);
 
   const handleShowModal2 = () => {
     setFarmerLand({
@@ -418,6 +427,11 @@ function StakeHolderRegister() {
       acre: "",
       gunta: "",
       fgunta: "",
+      landCode: "",
+      districtCode: "",
+      talukCode: "",
+      hobliCode: "",
+      villageCode: "",
     });
     setShowModal2(true);
   };
@@ -471,6 +485,11 @@ function StakeHolderRegister() {
         acre: "",
         gunta: "",
         fgunta: "",
+        landCode: "",
+        districtCode: "",
+        talukCode: "",
+        hobliCode: "",
+        villageCode: "",
       });
       setShowModal2(false);
       setValidatedFarmerLand(false);
@@ -551,6 +570,11 @@ function StakeHolderRegister() {
         acre: "",
         gunta: "",
         fgunta: "",
+        landCode: "",
+        districtCode: "",
+        talukCode: "",
+        hobliCode: "",
+        villageCode: "",
       });
     }
   };
@@ -995,6 +1019,7 @@ function StakeHolderRegister() {
             if (bank.accountImagePath) {
               handleFileDocumentUpload(farmerBankAccountId);
             }
+            saveSuccess();
           }
           // postDataBankAccount
         })
