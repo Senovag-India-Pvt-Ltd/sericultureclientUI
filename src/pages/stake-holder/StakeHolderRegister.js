@@ -984,9 +984,17 @@ function StakeHolderRegister() {
         .post(baseURL2 + `farmer/save-complete-farmer-details`, sendData)
         .then((response) => {
           // console.log(response.data)
-          // const farmerId = response.data.content.farmerId;
+          const farmerId = response.data.content.farmerId;
+          const farmerBankAccountId = response.data.content.farmerBankAccountId;
           if (response.data.content.error) {
             saveFarmerError(response.data.content.error_description);
+          } else {
+            if (data.photoPath) {
+              handleFileUpload(farmerId);
+            }
+            if (bank.accountImagePath) {
+              handleFileDocumentUpload(farmerBankAccountId);
+            }
           }
           // postDataBankAccount
         })
