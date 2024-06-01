@@ -153,7 +153,7 @@ function EducationList() {
 
   const EducationDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">

@@ -143,7 +143,7 @@ function StateList() {
 
   const StateDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -224,7 +224,7 @@ function StateList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block>
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
