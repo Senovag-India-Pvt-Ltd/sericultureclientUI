@@ -674,6 +674,7 @@ function ServiceApplication() {
             schemeId: data.scSchemeDetailsId,
             subSchemeId: data.scSubSchemeDetailsId,
             categoryId: data.scCategoryId,
+            scComponentId: data.scComponentId
 
             // headOfAccountId: 53,
             // schemeId: 20,
@@ -810,6 +811,7 @@ function ServiceApplication() {
       scSubSchemeDetailsId: "",
       scHeadAccountId: "",
       scCategoryId: "",
+      scComponentId: "",
       scVendorId: "",
       farmerId: "",
       expectedAmount: "",
@@ -827,6 +829,10 @@ function ServiceApplication() {
       payToVendor: false,
     });
     setDocumentAttachments({});
+    setValidated(false);
+    setLandDetailsList([]);
+    setShowFarmerDetails(false);
+    // setDisabled(false);
   };
 
   const saveSuccess = () => {
@@ -997,9 +1003,14 @@ function ServiceApplication() {
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
-                hobli: response.data.content.farmerAddressDTOList[0].hobliName,
+                hobli:
+                  response.data.content.farmerAddressDTOList.length > 0
+                    ? response.data.content.farmerAddressDTOList[0].hobliName
+                    : "",
                 village:
-                  response.data.content.farmerAddressDTOList[0].villageName,
+                  response.data.content.farmerAddressDTOList.length > 0
+                    ? response.data.content.farmerAddressDTOList[0].villageName
+                    : "",
               }));
               setShowFarmerDetails(true);
             }
