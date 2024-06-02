@@ -96,28 +96,27 @@ function AcceptFarmerAuction() {
         })
 
         .then((response) => {
-          if(response.data.errorCode === 0){
+          if (response.data.errorCode === 0) {
             setFarmerAuction(response.data.content);
             setIsActive(true);
-          // console.log("hello",response.data.content.status.length);
-          // debugger;
-          if (response.data.content.status) {
-            setShowAccept(false);
-          } else {
-            setShowAccept(true);
-          }
-          setLoading(false);
-          }else if(response.data.errorCode === -1){
+            // console.log("hello",response.data.content.status.length);
+            // debugger;
+            if (response.data.content.status) {
+              setShowAccept(false);
+            } else {
+              setShowAccept(true);
+            }
+            setLoading(false);
+          } else if (response.data.errorCode === -1) {
             acceptError(response.data.errorMessages[0]);
             setIsActive(false);
           }
-          
         })
         .catch((err) => {
           // setFarmerAuction({});
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             acceptError(err.response.data.validationErrors);
-          } 
+          }
           setLoading(false);
         })
         .finally(() => {
@@ -347,7 +346,10 @@ function AcceptFarmerAuction() {
           <div className={isActive ? "" : "d-none"}>
             <Row className="g-gs pt-2">
               <Col lg="12">
-                <table className="table table-striped table-bordered">
+                <table
+                  className="table table-striped table-bordered"
+                  style={{ backgroundColor: "white" }}
+                >
                   <thead>
                     <tr>
                       <th

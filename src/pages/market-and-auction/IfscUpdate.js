@@ -72,7 +72,7 @@ function IfscUpdate() {
                     <Dropdown.Item href="#">Cheque No 3</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                {/* <table className="table table-striped table-bordered"> */}
+                {/* <table className="table table-striped table-bordered" style={{backgroundColor:"white"}}> */}
                 <thead>
                   <tr>
                     {/* <th></th> */}
