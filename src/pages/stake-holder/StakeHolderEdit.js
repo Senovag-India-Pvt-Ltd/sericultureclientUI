@@ -648,6 +648,7 @@ function StakeHolderEdit() {
         editFarmerRequest: data,
         editFarmerBankAccountRequest: bank,
         editFarmerFamilyRequests: familyMembersList,
+        editFarmerAddressRequests:farmerAddressList,
         editFarmerLandDetailsRequests: farmerLandList,
       };
 
@@ -656,6 +657,17 @@ function StakeHolderEdit() {
         .then((response) => {
           const farmerId = response.data.content.farmerId;
           const farmerBankAccountId = response.data.content.farmerBankAccountId;
+          if (response.data.content.error) {
+            updateFarmerError(response.data.content.error_description);
+          } else {
+            if (data.photoPath) {
+              handleFileUpload(farmerId);
+            }
+            if (bank.accountImagePath) {
+              handleFileDocumentUpload(farmerBankAccountId);
+            }
+            updateSuccess();
+          }
           // if (farmerId) {
           //   handleFileUpload(farmerId);
           // }
@@ -1451,6 +1463,15 @@ function StakeHolderEdit() {
       html: errorMessage,
     });
   };
+
+  const updateFarmerError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Update attempt was not successful",
+      text: message,
+    });
+  };
+
   const editError = (message) => {
     Swal.fire({
       icon: "error",

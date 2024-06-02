@@ -1001,6 +1001,7 @@ function StakeHolderRegister() {
       const sendData = {
         farmerRequest: data,
         farmerBankAccountRequest: bank,
+        farmerAddressRequests:farmerAddressList,
         farmerFamilyRequestList: familyMembersList,
         farmerLandDetailsRequests: farmerLandList,
       };
