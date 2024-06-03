@@ -202,6 +202,10 @@ function TransferReelerLicense() {
       transferReelerId: "",
       reelerNumber: "",
     })
+    setExistingReelerName("");
+    setLicenseTransfer({
+      reelingLicenseNumber: "",
+    });
   }
 
   const [isActive, setIsActive] = useState(false);
