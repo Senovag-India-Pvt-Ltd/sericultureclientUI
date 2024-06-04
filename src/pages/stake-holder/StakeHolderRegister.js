@@ -584,6 +584,19 @@ function StakeHolderRegister() {
     setFarmerLand({ ...farmerLand, [name]: value });
   };
 
+  useEffect(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const date = String(now.getDate()).padStart(2, "0");
+
+    const timeString = hours + minutes + seconds + date + month + year;
+    setData((prev) => ({ ...prev, farmerNumber: timeString }));
+  }, []);
+
   const [farmerAddressList, setFarmerAddressList] = useState([]);
   const [farmerAddress, setFarmerAddress] = useState({
     stateId: "",
@@ -1001,7 +1014,7 @@ function StakeHolderRegister() {
       const sendData = {
         farmerRequest: data,
         farmerBankAccountRequest: bank,
-        farmerAddressRequests:farmerAddressList,
+        farmerAddressRequests: farmerAddressList,
         farmerFamilyRequestList: familyMembersList,
         farmerLandDetailsRequests: farmerLandList,
       };

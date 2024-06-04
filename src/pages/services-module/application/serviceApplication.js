@@ -16,7 +16,8 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLFarmerServer =
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
@@ -41,7 +42,7 @@ function ServiceApplication() {
     sanctionNumber: "",
   });
 
-  console.log("nodu", data);
+  // console.log("nodu", data);
 
   const [applicationId, setApplicationId] = useState("");
 
@@ -260,9 +261,10 @@ function ServiceApplication() {
 
   const [landDetailsList, setLandDetailsList] = useState([]);
 
+  console.log("Just Checking",landDetailsList);
+
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
-
   const getList = () => {
     api
       .get(baseURLMasterData + `scSchemeDetails/get-all`)
@@ -674,7 +676,7 @@ function ServiceApplication() {
             schemeId: data.scSchemeDetailsId,
             subSchemeId: data.scSubSchemeDetailsId,
             categoryId: data.scCategoryId,
-            scComponentId: data.scComponentId
+            scComponentId: data.scComponentId,
 
             // headOfAccountId: 53,
             // schemeId: 20,
@@ -1004,22 +1006,47 @@ function ServiceApplication() {
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
                 hobli:
+                  response.data.content.farmerAddressDTOList &&
                   response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].hobliName
                     : "",
                 village:
+                  response.data.content.farmerAddressDTOList &&
                   response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].villageName
                     : "",
               }));
               setShowFarmerDetails(true);
             }
-            if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-              setLandDetailsList(
-                response.data.content.farmerLandDetailsDTOList
-              );
-            }
-            if (response.data.content.farmerAddressDTOList.length > 0) {
+            // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+            //   setLandDetailsList(
+            //     response.data.content.farmerLandDetailsDTOList
+            //   );
+            // }
+
+            api
+              .post(
+                baseURLFarmerServer +
+                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                {
+                  fruitsId: data.fruitsId,
+                }
+              )
+              .then((response) => {
+                if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+                  setLandDetailsList(
+                    response.data.content.farmerLandDetailsDTOList
+                  );
+                }
+              })
+              .catch((err) => {
+                setLandDetailsList([]);
+              });
+
+            if (
+              response.data.content.farmerAddressDTOList &&
+              response.data.content.farmerAddressDTOList.length > 0
+            ) {
               setLandData((prev) => ({
                 ...prev,
                 talukId:

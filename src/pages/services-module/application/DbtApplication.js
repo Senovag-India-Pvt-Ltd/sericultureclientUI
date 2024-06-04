@@ -37,8 +37,8 @@ function DbtApplication() {
     sanctionNumber: "",
     farmerId: "",
     financialYearMasterId: "",
-    periodFrom: new Date("2024-03-31"),
-    periodTo: new Date("2023-04-01"),
+    periodFrom: new Date("2023-04-01"),
+    periodTo: new Date("2024-03-31"),
     beneficiaryId: "",
   });
 
@@ -226,6 +226,8 @@ function DbtApplication() {
       .then((response) => {
         if (response.data.content.unitCost) {
           setScSubSchemeDetailsListData(response.data.content.unitCost);
+        } else {
+          setScSubSchemeDetailsListData([]);
         }
       })
       .catch((err) => {
@@ -415,7 +417,11 @@ function DbtApplication() {
     api
       .get(baseURLMasterData + `schemeQuota/get-by-sc-scheme-details-id/${_id}`)
       .then((response) => {
-        setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
+        if (response.data.content.schemeQuota) {
+          setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
+        } else {
+          setSchemeQuotaDetailsListData([]);
+        }
       })
       .catch((err) => {
         setSchemeQuotaDetailsListData([]);
@@ -871,15 +877,17 @@ function DbtApplication() {
                 ...prev,
                 farmerId: response.data.content.farmerResponse.farmerId,
               }));
-              // debugger
+              debugger;
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
                 hobli:
+                  response.data.content.farmerAddressDTOList &&
                   response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].hobliName
                     : "",
                 village:
+                  response.data.content.farmerAddressDTOList &&
                   response.data.content.farmerAddressDTOList.length > 0
                     ? response.data.content.farmerAddressDTOList[0].villageName
                     : "",
@@ -891,7 +899,10 @@ function DbtApplication() {
                 response.data.content.farmerLandDetailsDTOList
               );
             }
-            if (response.data.content.farmerAddressDTOList.length > 0) {
+            if (
+              response.data.content.farmerAddressDTOList &&
+              response.data.content.farmerAddressDTOList.length > 0
+            ) {
               setLandData((prev) => ({
                 ...prev,
                 talukId:
