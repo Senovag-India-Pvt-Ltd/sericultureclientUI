@@ -106,11 +106,11 @@ function ScCategory() {
   };
 
   return (
-    <Layout title="Program Category">
+    <Layout title="Sub Component">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Program Category</Block.Title>
+            <Block.Title tag="h2">Sub Component</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -149,7 +149,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Category Name
+                      Sub Component
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -163,7 +163,7 @@ function ScCategory() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name is required
+                        Sub Component is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -172,7 +172,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                       Category Name in Kannada
+                      Sub Component in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -182,11 +182,11 @@ function ScCategory() {
                           value={data.categoryNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          placeholder="Enter Sub Component Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name in Kannada is required.
+                        Sub Component in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

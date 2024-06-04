@@ -174,11 +174,11 @@ function ScSubSchemeDetailsEdit() {
     }).then(() => navigate("#"));
   };
   return (
-    <Layout title="Sub Scheme Details">
+    <Layout title="Edit Component Type">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sub Scheme Details</Block.Title>
+            <Block.Title tag="h2">Edit Component Type</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -295,7 +295,7 @@ function ScSubSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                      Sub Scheme Type<span className="text-danger">*</span>
+                      Scheme Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -308,14 +308,16 @@ function ScSubSchemeDetailsEdit() {
                             data.subSchemeType === undefined || data.subSchemeType === "0"
                           }
                         >
-                          <option value="">Select Sub Scheme Type</option>
+                          <option value="0">Select Scheme Type</option>
                           <option value="1">Subsidy</option>
                           <option value="2">Incentives</option>
+                          <option value="3">Bonus</option>
+                         
                         </Form.Select>
-                        {/* <Form.Control.Feedback type="invalid">
+                      </div>
+                      {/* <Form.Control.Feedback type="invalid">
                         Sub Scheme Type is required
                         </Form.Control.Feedback> */}
-                      </div>
                     </Form.Group>
                   </Col>
 
@@ -345,7 +347,7 @@ function ScSubSchemeDetailsEdit() {
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label htmlFor="subSchemeStartDate">
-                          Sub Scheme Start Date<span className="text-danger">*</span>
+                          Component Type Start Date<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                               {isDataFromSet && (
@@ -374,7 +376,7 @@ function ScSubSchemeDetailsEdit() {
                         <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Sub Scheme End Date<span className="text-danger">*</span>
+                              Component Type End Date<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                               {isDataToSet && (
