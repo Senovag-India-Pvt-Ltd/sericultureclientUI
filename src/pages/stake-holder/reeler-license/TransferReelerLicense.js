@@ -125,7 +125,12 @@ function TransferReelerLicense() {
         })
         .catch((err) => {
           // setData({});
-          if (err.response && err.response.data) {
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
             }
@@ -134,6 +139,74 @@ function TransferReelerLicense() {
       setValidated(true);
     }
   };
+
+  const clear = () => {
+    setData({
+      reelerName: "",
+      wardNumber: "",
+      passbookNumber: "",
+      fatherName: "",
+      educationId: "",
+      relationshipId: "",
+      reelingUnitBoundary: "",
+      dob: "",
+      rationCard: "",
+      machineTypeId: "",
+      gender: "",
+      dateOfMachineInstallation: "",
+      electricityRrNumber: "",
+      casteId: "",
+      revenueDocument: "",
+      numberOfBasins: "",
+      mobileNumber: "",
+      recipientId: "",
+      mahajarDetails: "",
+      emailId: "",
+      representativeNameAddress: "",
+      loanDetails: "",
+      assignToInspectId: "",
+      gpsLat: "",
+      gpsLng: "",
+      inspectionDate: "",
+      arnNumber: "",
+      chakbandiLat: "",
+      chakbandiLng: "",
+      address: "",
+      pincode: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageId: "",
+      licenseReceiptNumber: null,
+      licenseExpiryDate: null,
+      receiptDate: "",
+      functionOfUnit: "",
+      reelingLicenseNumber: "",
+      feeAmount: "",
+      memberLoanDetails: "",
+      mahajarEast: "",
+      mahajarWest: "",
+      mahajarNorth: "",
+      mahajarSouth: "",
+      mahajarNorthEast: "",
+      mahajarNorthWest: "",
+      mahajarSouthEast: "",
+      mahajarSouthWest: "",
+      bankName: "",
+      bankAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      status: "",
+      licenseRenewalDate: "",
+      transferReelerId: "",
+      reelerNumber: "",
+    })
+    setExistingReelerName("");
+    setLicenseTransfer({
+      reelingLicenseNumber: "",
+    });
+  }
 
   const [isActive, setIsActive] = useState(false);
   const display = () => {
@@ -1573,9 +1646,9 @@ function TransferReelerLicense() {
                   </Button>
                 </li>
                 <li>
-                  <Link to="#" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link>
+                <Button type="button" variant="secondary" onClick={clear}>
+                    Clear
+                  </Button>
                 </li>
               </ul>
             </div>

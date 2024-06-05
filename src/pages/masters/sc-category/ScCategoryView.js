@@ -44,11 +44,11 @@ function ScCategoryView() {
   }, [id]);
 
   return (
-    <Layout title="View Category Details">
+    <Layout title="View Sub Component Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">View Category Details</Block.Title>
+            <Block.Title tag="h2">View Sub Component Details</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -77,7 +77,7 @@ function ScCategoryView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Category Details</Card.Header>
+          <Card.Header>Sub Component Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -94,13 +94,13 @@ function ScCategoryView() {
                       </tr>
             
                       <tr>
-                        <td style={styles.ctstyle}>Category Name:</td>
+                        <td style={styles.ctstyle}>Sub Component:</td>
                         <td>{ScCategory.categoryName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Category Name In Kannada:
+                          Sub Component Name In Kannada:
                         </td>
                         <td>{ScCategory.categoryNameInKannada}</td>
                       </tr>

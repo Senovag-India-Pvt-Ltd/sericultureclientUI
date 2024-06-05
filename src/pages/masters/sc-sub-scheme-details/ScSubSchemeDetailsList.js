@@ -255,7 +255,7 @@ function ScSubSchemeDetailsList() {
     //     hide: "md",
     //   },
     {
-      name: "Sub Scheme Type",
+      name: "Scheme Type",
       selector: (row) => row.subSchemeType,
       cell: (row) => (
         <td>
@@ -263,6 +263,8 @@ function ScSubSchemeDetailsList() {
             ? "Subsidy"
             : row.subSchemeType === 2
             ? "Incentives"
+            : row.subSchemeType === 3
+            ? "Bonus"
             : "Other"}
         </td>
       ),
@@ -270,14 +272,14 @@ function ScSubSchemeDetailsList() {
       hide: "md",
     },
       {
-        name: "Sub Scheme Start Date",
+        name: "Component Type Start Date",
         selector: (row) => row.subSchemeStartDate,
         cell: (row) => <span>{formatDate(row.subSchemeStartDate)}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Sub Scheme End Date",
+        name: "Component Type End Date",
         selector: (row) => row.subSchemeEndDate,
         cell: (row) => <span>{formatDate(row.subSchemeEndDate)}</span>,
         sortable: true,
@@ -294,11 +296,11 @@ function ScSubSchemeDetailsList() {
   ];
 
   return (
-    <Layout title="Sub Scheme List">
+    <Layout title="List Of Component Type">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sub Scheme List</Block.Title>
+            <Block.Title tag="h2">List Of Component Type</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -352,7 +354,7 @@ function ScSubSchemeDetailsList() {
                       onChange={handleInputs}
                     >
                       {/* <option value="">Select</option> */}
-                      <option value="scSubSchemeDetails"> Sub Scheme Name</option>
+                      <option value="scSubSchemeDetails">Component Type</option>
                       <option value="scSchemeDetails">Scheme Name</option>
                     </Form.Select>
                   </div>

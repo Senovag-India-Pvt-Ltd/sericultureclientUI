@@ -131,11 +131,11 @@ function ScCategoryEdit() {
   };
 
   return (
-    <Layout title="Edit Program Category">
+    <Layout title="Edit Sub Component">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Edit Program Category</Block.Title>
+            <Block.Title tag="h2">Edit Sub Component</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -177,7 +177,7 @@ function ScCategoryEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Category Name
+                      Sub Component
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -187,11 +187,11 @@ function ScCategoryEdit() {
                           type="text"
                           value={data.categoryName}
                           onChange={handleInputs}
-                          placeholder="Enter  Category Name"
+                          placeholder="Enter  Sub Component"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name is required
+                        Sub Component is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -200,7 +200,7 @@ function ScCategoryEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                       Category Name in Kannada
+                      Sub Component Name in Kannada
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -210,11 +210,11 @@ function ScCategoryEdit() {
                           value={data.categoryNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Category Name in Kannada"
+                          placeholder="Enter Sub Component Name in Kannada"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                         Category Name in Kannada is required.
+                        Sub Component Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

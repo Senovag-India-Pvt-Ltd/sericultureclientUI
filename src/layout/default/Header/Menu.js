@@ -2372,7 +2372,7 @@ function Menu() {
                         {showMenu.Admin_Master_Service_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Category"
+                              text="Sub Component"
                               to="/seriui/sc-category"
                             />
                           </MenuItem>

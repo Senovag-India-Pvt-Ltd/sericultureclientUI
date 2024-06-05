@@ -158,11 +158,11 @@ function ScSubSchemeDetails() {
   };
 
   return (
-    <Layout title="Sub Scheme Details">
+    <Layout title="Component Type">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sub Scheme Details</Block.Title>
+            <Block.Title tag="h2">Component Type</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -298,7 +298,7 @@ function ScSubSchemeDetails() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                      Sub Scheme Type<span className="text-danger">*</span>
+                      Scheme Type<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -311,9 +311,10 @@ function ScSubSchemeDetails() {
                             data.subSchemeType === undefined || data.subSchemeType === "0"
                           }
                         >
-                          <option value="0">Select Sub Scheme Type</option>
+                          <option value="0">Select Scheme Type</option>
                           <option value="1">Subsidy</option>
                           <option value="2">Incentives</option>
+                          <option value="3">Bonus</option>
                          
                         </Form.Select>
                       </div>

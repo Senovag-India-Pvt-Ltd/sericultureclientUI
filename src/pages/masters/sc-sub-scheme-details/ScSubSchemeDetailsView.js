@@ -50,11 +50,11 @@ function ScSubSchemeDetailsView() {
   }, [id]);
 
   return (
-    <Layout title="Sub Scheme Details View">
+    <Layout title="View Component Type Details">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sub Scheme Details View</Block.Title>
+            <Block.Title tag="h2">View Component Type Details </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -83,7 +83,7 @@ function ScSubSchemeDetailsView() {
 
       <Block className="mt-n4">
         <Card>
-          <Card.Header>Sub Scheme Details</Card.Header>
+          <Card.Header> View Component Type Details</Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -118,12 +118,14 @@ function ScSubSchemeDetailsView() {
                         <td>{ScSubSchemeDetails.dbtCode}</td>
                       </tr>
                       <tr>
-                            <td style={styles.ctstyle}> Gender:</td>
+                            <td style={styles.ctstyle}> Scheme Type:</td>
                             <td>
                               {ScSubSchemeDetails.subSchemeType === 1
                                 ? "Subsidy"
                                 : ScSubSchemeDetails.subSchemeType === 2
                                 ? "Incentives"
+                                : ScSubSchemeDetails.subSchemeType === 3
+                                ? "Bonus"
                                 : "Other"}
                             </td>
                           </tr>

@@ -231,7 +231,7 @@ function FarmerWithoutFruits() {
       fatherName: "",
       nameKan: "",
     });
-    setDocument("");
+    // setDocument("");
     setBank({
       accountImagePath: "",
       farmerId: "",
@@ -240,7 +240,6 @@ function FarmerWithoutFruits() {
       farmerBankBranchName: "",
       farmerBankIfscCode: "",
     });
-    
     setFarmerAddress({
       stateId: "",
       districtId: "",
@@ -251,7 +250,7 @@ function FarmerWithoutFruits() {
       pincode: "",
       defaultAddress: true,
     });
-    document.getElementById("accountImagePath").value = "";
+    // document.getElementById("accountImagePath").value = "";
   };
 
   const handleBankInputs = (e) => {
@@ -319,57 +318,57 @@ function FarmerWithoutFruits() {
             );
             handleFileUpload(response.data.content.farmerId);
             handleFileDocumentUpload(response.data.content.farmerBankAccountId);
-            setData({
-              fruitsId: "",
-              firstName: "",
-              middleName: "",
-              lastName: "",
-              dob: "",
-              genderId: "",
-              casteId: "",
-              differentlyAbled: "",
-              email: "",
-              mobileNumber: "",
-              aadhaarNumber: "",
-              epicNumber: "",
-              rationCardNumber: "",
-              totalLandHolding: "",
-              passbookNumber: "",
-              landCategoryId: "",
-              educationId: "",
-              representativeId: "",
-              khazaneRecipientId: "",
-              photoPath: "",
-              farmerTypeId: "",
-              minority: "",
-              rdNumber: "",
-              casteStatus: "",
-              genderStatus: "",
-              fatherNameKan: "",
-              fatherName: "",
-              nameKan: "",
-            });
-            setDocument("");
-            setBank({
-              accountImagePath: "",
-              farmerId: "",
-              farmerBankName: "",
-              farmerBankAccountNumber: "",
-              farmerBankBranchName: "",
-              farmerBankIfscCode: "",
-            });
+            // setData({
+            //   fruitsId: "",
+            //   firstName: "",
+            //   middleName: "",
+            //   lastName: "",
+            //   dob: "",
+            //   genderId: "",
+            //   casteId: "",
+            //   differentlyAbled: "",
+            //   email: "",
+            //   mobileNumber: "",
+            //   aadhaarNumber: "",
+            //   epicNumber: "",
+            //   rationCardNumber: "",
+            //   totalLandHolding: "",
+            //   passbookNumber: "",
+            //   landCategoryId: "",
+            //   educationId: "",
+            //   representativeId: "",
+            //   khazaneRecipientId: "",
+            //   photoPath: "",
+            //   farmerTypeId: "",
+            //   minority: "",
+            //   rdNumber: "",
+            //   casteStatus: "",
+            //   genderStatus: "",
+            //   fatherNameKan: "",
+            //   fatherName: "",
+            //   nameKan: "",
+            // });
+            // setDocument("");
+            // setBank({
+            //   accountImagePath: "",
+            //   farmerId: "",
+            //   farmerBankName: "",
+            //   farmerBankAccountNumber: "",
+            //   farmerBankBranchName: "",
+            //   farmerBankIfscCode: "",
+            // });
             
-            setFarmerAddress({
-              stateId: "",
-              districtId: "",
-              talukId: "",
-              hobliId: "",
-              villageId: "",
-              addressText: "",
-              pincode: "",
-              defaultAddress: true,
-            });
-            document.getElementById("accountImagePath").value = "";
+            // setFarmerAddress({
+            //   stateId: "",
+            //   districtId: "",
+            //   talukId: "",
+            //   hobliId: "",
+            //   villageId: "",
+            //   addressText: "",
+            //   pincode: "",
+            //   defaultAddress: true,
+            // });
+            // document.getElementById("accountImagePath").value = "";
             setValidated(false);
           }
         })

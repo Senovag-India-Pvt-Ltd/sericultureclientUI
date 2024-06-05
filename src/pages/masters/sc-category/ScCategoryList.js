@@ -179,14 +179,14 @@ function ScCategoryList() {
 
 
     {
-        name: "Category Name",
+        name: "Sub Component",
         selector: (row) => row.categoryName,
         cell: (row) => <span>{row.categoryName}</span>,
         sortable: true,
         hide: "md",
       },
     {
-      name: " Category Name in Kannada",
+      name: " Sub Component Name in Kannada",
       selector: (row) => row.categoryNameInKannada,
       cell: (row) => <span>{row.categoryNameInKannada}</span>,
       sortable: true,
@@ -216,11 +216,11 @@ function ScCategoryList() {
   ];
 
   return (
-    <Layout title="Category List">
+    <Layout title="List of Sub Component">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Category List</Block.Title>
+            <Block.Title tag="h2">List Of Sub Component</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
