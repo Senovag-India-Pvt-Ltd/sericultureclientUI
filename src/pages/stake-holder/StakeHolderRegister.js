@@ -595,7 +595,7 @@ function StakeHolderRegister() {
 
     const timeString = hours + minutes + seconds + date + month + year;
     setData((prev) => ({ ...prev, farmerNumber: timeString }));
-  }, []);
+  }, [data.fruitsId]);
 
   const [farmerAddressList, setFarmerAddressList] = useState([]);
   const [farmerAddress, setFarmerAddress] = useState({

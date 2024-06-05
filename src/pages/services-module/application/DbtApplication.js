@@ -877,7 +877,6 @@ function DbtApplication() {
                 ...prev,
                 farmerId: response.data.content.farmerResponse.farmerId,
               }));
-              debugger;
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
