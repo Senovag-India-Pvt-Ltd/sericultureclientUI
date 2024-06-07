@@ -817,6 +817,7 @@ import ReportSuccessList from "../pages/services-module/application/ReportSucces
 import ReportRejectList from "../pages/services-module/application/ReportRejectList";
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
+import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
 // Admin and Reports
 
 function Router() {
@@ -1094,6 +1095,10 @@ function Router() {
             <Route
               path="service-application"
               element={<ServiceApplication />}
+            />
+            <Route
+              path="service-application-edit/:id"
+              element={<ServiceApplicationEdit />}
             />
             <Route
               path="application-selection"
