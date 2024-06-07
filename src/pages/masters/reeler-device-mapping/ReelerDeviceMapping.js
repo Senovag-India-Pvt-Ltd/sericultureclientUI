@@ -95,7 +95,10 @@ function ReelerDeviceMapping() {
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
-                <table className="table table-striped table-bordered">
+                <table
+                  className="table table-striped table-bordered"
+                  style={{ backgroundColor: "white" }}
+                >
                   <thead>
                     <tr>
                       {/* <th></th> */}

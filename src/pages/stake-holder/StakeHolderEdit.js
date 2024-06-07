@@ -521,6 +521,107 @@ function StakeHolderEdit() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     }
+
+  //     if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+  //       return;
+  //     }
+  //     if (
+  //       bank.farmerBankIfscCode.length < 11 ||
+  //       bank.farmerBankIfscCode.length > 11
+  //     ) {
+  //       return;
+  //     }
+  //     api
+  //       .post(baseURL2 + `farmer/edit`, data)
+  //       .then((response) => {
+  //         const farmerId = response.data.content.farmerId;
+  //         if (farmerId) {
+  //           handleFileUpload(farmerId);
+  //         }
+  //         if (bank.farmerBankAccountId) {
+  //           api
+  //             .post(
+  //               baseURL2 + `farmer-bank-account/edit`,
+  //               { ...bank, farmerId }
+  //               // {
+  //               //   headers: _header,
+  //               // }
+  //             )
+  //             .then((response) => {
+  //               // saveSuccess();
+  //               const bankId = response.data.content.farmerBankAccountId;
+  //               if (bankId) {
+  //                 handleFileDocumentUpload(bankId);
+  //               }
+  //               if (response.data.content.error) {
+  //                 const bankError = response.data.content.error_description;
+  //                 updateError(bankError);
+  //               } else {
+  //                 updateSuccess();
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               setBank({});
+  //               if (
+  //                 Object.keys(err.response.data.validationErrors).length > 0
+  //               ) {
+  //                 updateError(err.response.data.validationErrors);
+  //               }
+  //             });
+
+  //           updateSuccess();
+  //         } else {
+  //           api
+  //             .post(
+  //               baseURL2 + `farmer-bank-account/add`,
+  //               { ...bank, farmerId }
+  //               // {
+  //               //   headers: _header,
+  //               // }
+  //             )
+  //             .then((response) => {
+  //               if (response.data.content.error) {
+  //                 const bankError = response.data.content.error_description;
+  //                 updateError(bankError);
+  //               } else {
+  //                 updateSuccess();
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               setBank({});
+  //               if (
+  //                 Object.keys(err.response.data.validationErrors).length > 0
+  //               ) {
+  //                 updateError(err.response.data.validationErrors);
+  //               }
+  //             });
+
+  //           updateSuccess();
+  //         }
+
+  //         // postDataBankAccount
+  //       })
+  //       .catch((err) => {
+  //         setData({});
+  //         if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //           updateError(err.response.data.validationErrors);
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -542,80 +643,109 @@ function StakeHolderEdit() {
       ) {
         return;
       }
+
+      const sendData = {
+        editFarmerRequest: data,
+        editFarmerBankAccountRequest: bank,
+        editFarmerFamilyRequests: familyMembersList,
+        editFarmerAddressRequests:farmerAddressList,
+        editFarmerLandDetailsRequests: farmerLandList,
+      };
+
       api
-        .post(baseURL2 + `farmer/edit`, data)
+        .post(baseURL2 + `farmer/edit-complete-farmer-details`, sendData)
         .then((response) => {
           const farmerId = response.data.content.farmerId;
-          if (farmerId) {
-            handleFileUpload(farmerId);
-          }
-          if (bank.farmerBankAccountId) {
-            api
-              .post(
-                baseURL2 + `farmer-bank-account/edit`,
-                { ...bank, farmerId }
-                // {
-                //   headers: _header,
-                // }
-              )
-              .then((response) => {
-                // saveSuccess();
-                const bankId = response.data.content.farmerBankAccountId;
-                if (bankId) {
-                  handleFileDocumentUpload(bankId);
-                }
-                if (response.data.content.error) {
-                  const bankError = response.data.content.error_description;
-                  updateError(bankError);
-                } else {
-                  updateSuccess();
-                }
-              })
-              .catch((err) => {
-                setBank({});
-                if (
-                  Object.keys(err.response.data.validationErrors).length > 0
-                ) {
-                  updateError(err.response.data.validationErrors);
-                }
-              });
-
-            updateSuccess();
+          const farmerBankAccountId = response.data.content.farmerBankAccountId;
+          if (response.data.content.error) {
+            updateFarmerError(response.data.content.error_description);
           } else {
-            api
-              .post(
-                baseURL2 + `farmer-bank-account/add`,
-                { ...bank, farmerId }
-                // {
-                //   headers: _header,
-                // }
-              )
-              .then((response) => {
-                if (response.data.content.error) {
-                  const bankError = response.data.content.error_description;
-                  updateError(bankError);
-                } else {
-                  updateSuccess();
-                }
-              })
-              .catch((err) => {
-                setBank({});
-                if (
-                  Object.keys(err.response.data.validationErrors).length > 0
-                ) {
-                  updateError(err.response.data.validationErrors);
-                }
-              });
-
+            if (data.photoPath) {
+              handleFileUpload(farmerId);
+            }
+            if (bank.accountImagePath) {
+              handleFileDocumentUpload(farmerBankAccountId);
+            }
             updateSuccess();
           }
+          // if (farmerId) {
+          //   handleFileUpload(farmerId);
+          // }
+          // if (bank.farmerBankAccountId) {
+          //   api
+          //     .post(
+          //       baseURL2 + `farmer-bank-account/edit`,
+          //       { ...bank, farmerId }
+          //       // {
+          //       //   headers: _header,
+          //       // }
+          //     )
+          //     .then((response) => {
+          //       // saveSuccess();
+          //       const bankId = response.data.content.farmerBankAccountId;
+          //       if (bankId) {
+          //         handleFileDocumentUpload(bankId);
+          //       }
+          //       if (response.data.content.error) {
+          //         const bankError = response.data.content.error_description;
+          //         updateError(bankError);
+          //       } else {
+          //         updateSuccess();
+          //       }
+          //     })
+          //     .catch((err) => {
+          //       setBank({});
+          //       if (
+          //         Object.keys(err.response.data.validationErrors).length > 0
+          //       ) {
+          //         updateError(err.response.data.validationErrors);
+          //       }
+          //     });
+
+          //   updateSuccess();
+          // } else {
+          //   api
+          //     .post(
+          //       baseURL2 + `farmer-bank-account/add`,
+          //       { ...bank, farmerId }
+          //       // {
+          //       //   headers: _header,
+          //       // }
+          //     )
+          //     .then((response) => {
+          //       if (response.data.content.error) {
+          //         const bankError = response.data.content.error_description;
+          //         updateError(bankError);
+          //       } else {
+          //         updateSuccess();
+          //       }
+          //     })
+          //     .catch((err) => {
+          //       setBank({});
+          //       if (
+          //         Object.keys(err.response.data.validationErrors).length > 0
+          //       ) {
+          //         updateError(err.response.data.validationErrors);
+          //       }
+          //     });
+
+          //   updateSuccess();
+          // }
 
           // postDataBankAccount
         })
         .catch((err) => {
-          setData({});
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          // setData({});
+
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -635,9 +765,16 @@ function StakeHolderEdit() {
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
-        setBank({});
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          updateError(err.response.data.validationErrors);
+        // setBank({});
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            updateError(err.response.data.validationErrors);
+          }
         }
         // editError(message);
         // setLoading(false);
@@ -1326,6 +1463,15 @@ function StakeHolderEdit() {
       html: errorMessage,
     });
   };
+
+  const updateFarmerError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Update attempt was not successful",
+      text: message,
+    });
+  };
+
   const editError = (message) => {
     Swal.fire({
       icon: "error",

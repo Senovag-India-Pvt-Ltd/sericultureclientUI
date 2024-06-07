@@ -439,7 +439,10 @@ function DtrOnlineReport() {
                 </Row>
                 <Row className="g-gs pt-2">
                   <Col lg="12">
-                    <table className="table table-striped table-bordered">
+                    <table
+                      className="table table-striped table-bordered"
+                      style={{ backgroundColor: "white" }}
+                    >
                       <thead>
                         <tr>
                           <th
@@ -602,13 +605,19 @@ function DtrOnlineReport() {
                           <td>Wt: {listDetails.totalWeight}</td>
                           <td>Amt: {listDetails.totalBidAmount}</td>
                           <td></td>
-                          <td>F Amt: {listDetails.totalFarmerAmount.toFixed(2)}</td>
+                          <td>
+                            F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
+                          </td>
                           <td>
                             MF:{" "}
-                            {(listDetails.totalFarmerMarketFee +
-                              listDetails.totalReelerMarketFee).toFixed(2)}
+                            {(
+                              listDetails.totalFarmerMarketFee +
+                              listDetails.totalReelerMarketFee
+                            ).toFixed(2)}
                           </td>
-                          <td>R Amt: {listDetails.totalReelerAmount.toFixed(2)}</td>
+                          <td>
+                            R Amt: {listDetails.totalReelerAmount.toFixed(2)}
+                          </td>
                           <td></td>
                           <td></td>
                           <td></td>

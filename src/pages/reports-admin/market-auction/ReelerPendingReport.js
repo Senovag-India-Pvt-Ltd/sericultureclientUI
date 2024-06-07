@@ -381,7 +381,10 @@ function ReelerPendingReport() {
                     </Row>
                     <Row className="g-gs pt-2">
                       <Col lg="12">
-                        <table className="table table-striped table-bordered">
+                        <table
+                          className="table table-striped table-bordered"
+                          style={{ backgroundColor: "white" }}
+                        >
                           <thead>
                             <tr>
                               <th
