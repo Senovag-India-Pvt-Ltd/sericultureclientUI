@@ -38,13 +38,34 @@ function ApplicationSelection() {
   const [searchData, setSearchData] = useState({
     year1: "",
     year2: "",
-    type: 1,
+    type: 0,
     searchText: "",
   });
+
+  console.log("Search Data", searchData);
 
   const [data, setData] = useState({
     financialYearMasterId: "",
   });
+
+  // console.log("Nodo Batha antha", data);
+  // to get Financial Year
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  const getFinancialYearList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch((err) => {
+        setFinancialyearListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getFinancialYearList();
+  }, []);
 
   let name, value;
   const handleInputs = (e) => {
@@ -55,11 +76,62 @@ function ApplicationSelection() {
       const selectedYearObject = financialyearListData.find(
         (year) => year.financialYearMasterId === parseInt(e.target.value)
       );
-      const year = selectedYearObject.financialYear;
-      const [fromDate, toDate] = year.split("-");
-      setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+      // const year = selectedYearObject.financialYear;
+      // const [fromDate, toDate] = year.split("-");
+      // setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+
+      if (selectedYearObject && selectedYearObject.financialYear) {
+        const year = selectedYearObject.financialYear;
+        const [fromDate, toDate] = year.split("-");
+        setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+      }
     }
   };
+
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: response.data.content.financialYearMasterId,
+        }));
+      })
+      .catch((err) => {
+        setData((prev) => ({
+          ...prev,
+          financialYearMasterId: "",
+        }));
+      });
+  };
+
+  useEffect(() => {
+    getFinancialDefaultDetails();
+  }, []);
+
+  useEffect(() => {
+    // debugger
+    // const selectedYearObject = financialyearListData.find(
+    //   (year) => year.financialYearMasterId === data.financialYearMasterId
+    // );
+    // // console.log("Master Master",selectedYearObject);
+    // const year = selectedYearObject.financialYear;
+    // const [fromDate, toDate] = year.split("-");
+    // setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+
+    if (data.financialYearMasterId && financialyearListData.length > 0) {
+      // debugger
+      const selectedYearObject = financialyearListData.find(
+        (year) => year.financialYearMasterId === data.financialYearMasterId
+      );
+
+      if (selectedYearObject && selectedYearObject.financialYear) {
+        const year = selectedYearObject.financialYear;
+        const [fromDate, toDate] = year.split("-");
+        setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+      }
+    }
+  }, [data.financialYearMasterId, financialyearListData]);
 
   const handleSearchInputs = (e) => {
     let name = e.target.name;
@@ -230,7 +302,11 @@ function ApplicationSelection() {
   const getList = () => {
     setLoading(true);
     api
-      .post(baseURLDBT + `service/getSubmittedApplicationForm`)
+      .post(
+        baseURLDBT + `service/getSubmittedApplicationForm`,
+        {},
+        { params: searchData }
+      )
       .then((response) => {
         setListData(response.data.content);
         const scApplicationFormIds = response.data.content.map(
@@ -247,27 +323,9 @@ function ApplicationSelection() {
 
   useEffect(() => {
     getList();
-  }, [page]);
+  }, [page, searchData.year1]);
 
   console.log(allApplicationIds);
-
-  // to get Financial Year
-  const [financialyearListData, setFinancialyearListData] = useState([]);
-
-  const getFinancialYearList = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-all`)
-      .then((response) => {
-        setFinancialyearListData(response.data.content.financialYearMaster);
-      })
-      .catch((err) => {
-        setFinancialyearListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getFinancialYearList();
-  }, []);
 
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
@@ -597,7 +655,7 @@ function ApplicationSelection() {
                           value={data.financialYearMasterId}
                           onChange={handleInputs}
                           onBlur={() => handleInputs}
-                          required
+                          // required
                           isInvalid={
                             data.financialYearMasterId === undefined ||
                             data.financialYearMasterId === "0"
@@ -623,7 +681,7 @@ function ApplicationSelection() {
                           value={searchData.type}
                           onChange={handleSearchInputs}
                         >
-                          {/* <option value="">Select</option> */}
+                          <option value="0">All</option>
                           <option value="1">Application Id</option>
                           <option value="2">Sub Scheme</option>
                           <option value="3">Fruits Id</option>
@@ -639,7 +697,7 @@ function ApplicationSelection() {
                           onChange={handleSearchInputs}
                           onBlur={() => handleSearchInputs}
                           // multiple
-                          required
+                          // required
                           isInvalid={
                             searchData.searchText === undefined ||
                             searchData.searchText === "0"
@@ -668,7 +726,7 @@ function ApplicationSelection() {
                           onChange={handleSearchInputs}
                           type="text"
                           placeholder="Search"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Field Value is Required
