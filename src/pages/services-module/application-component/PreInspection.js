@@ -76,7 +76,7 @@ const PreInspection = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 114, stepId: 1 } }
+        { params: { userId: 27, stepId: 1 } }
         // { params: { userId: localStorage.getItem("userMasterId"), stepId: 1 } }
       )
       .then((response) => {

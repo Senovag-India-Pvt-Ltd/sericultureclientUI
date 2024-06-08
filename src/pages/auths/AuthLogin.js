@@ -319,7 +319,7 @@ const AuthLoginPage = () => {
       <Layout title="Login" centered>
         <div className="container p-2 p-sm-4">
           <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh">
-            <Row className="g-0 flex-lg-row-reverse">
+            <Row className="g-0 flex-column-reverse flex-lg-row-reverse">
               {!toggle ? (
                 <Col lg="5">
                   <Card.Body className="h-100 d-flex flex-column justify-content-center">

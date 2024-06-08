@@ -93,7 +93,7 @@ function ApplicationDashboard() {
         baseURLDBT + `service/getUserDashboardCount`,
         {},
         // { params: { id: localStorage.getItem("userMasterId") } }
-        { params: { id: 113 } }
+        { params: { id: 30 } }
       )
       .then((response) => {
         setDashboardList(response.data.content);
