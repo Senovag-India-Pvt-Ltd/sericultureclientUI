@@ -202,7 +202,7 @@ function DbtApplication() {
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
   const getFinancialList = () => {
-    const response = api
+    api
       .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
         setFinancialyearListData(response.data.content.financialYearMaster);

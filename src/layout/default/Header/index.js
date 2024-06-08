@@ -447,8 +447,8 @@ function Header({ show, ...props }) {
 
           <div style={{ marginLeft: auto }}>
             Helpdesk<em className="icon ni ni-caret-right-fill"></em>{" "}
-            <em className="icon ni ni-call"></em>{" "}
-            <span className="me-1">+91-8022253856</span>{" "}
+            {/* <em className="icon ni ni-call"></em>{" "}
+            <span className="me-1">+91-8022253856</span>{" "} */}
             <em className="icon ni ni-mail"></em> support@senovag.com
           </div>
         </div>

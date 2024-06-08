@@ -261,7 +261,7 @@ function ServiceApplication() {
 
   const [landDetailsList, setLandDetailsList] = useState([]);
 
-  console.log("Just Checking",landDetailsList);
+  console.log("Just Checking", landDetailsList);
 
   // to get sc-scheme-details
   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
@@ -843,6 +843,7 @@ function ServiceApplication() {
       title: "Saved successfully",
       // text: `Receipt Number ${message}`,
     });
+    clear();
   };
 
   const uploadFileConfirm = (post) => {
@@ -1026,8 +1027,7 @@ function ServiceApplication() {
 
             api
               .post(
-                baseURLFarmerServer +
-                  `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+                baseURLFarmerServer + `farmer/get-farmer-details-by-fruits-id`,
                 {
                   fruitsId: data.fruitsId,
                 }
