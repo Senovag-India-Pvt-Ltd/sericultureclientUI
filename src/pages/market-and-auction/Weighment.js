@@ -277,7 +277,36 @@ function Weighment() {
       title: "Weighment Completed",
       text: `Total amount Debited is ${amount} for Lot ${lot}`,
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.value) {
+        if (result.isConfirmed) {
+          setData({
+            allottedLotId: "",
+            noOfCrates: "0",
+          });
+          setWeigh({
+            date: new Date(),
+            bidAmount: "0",
+            reelerCurrentBalance: 0,
+            farmerFirstName: "",
+            farmerNumber: "",
+            reelerName: "",
+            reelerLicense: "",
+          });
+          setTableWeightData([]);
+          setTotalNetPrice(0);
+          setTotalWeight(0);
+          setTotalNetWeight(0);
+          setTareWeight(0);
+          setCounter(0);
+          setLastWeight("0");
+          // setLotNumber("");
+          if (isTriplet) {
+            printTriplet();
+          } else {
+            console.log("In Market Master Change setting");
+          }
+        }
+      } else {
         setData({
           allottedLotId: "",
           noOfCrates: "0",
