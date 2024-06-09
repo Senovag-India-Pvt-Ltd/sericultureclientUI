@@ -114,6 +114,7 @@ function ReadyForPayment() {
   //     getGodownList(payment.marketId);
   //   }
   // }, [payment.marketId]);
+  const [paymentMode, setPaymentMode] = useState("");
 
   const postData = (e) => {
     console.log("postData", payment.paymentDate);
@@ -132,6 +133,9 @@ function ReadyForPayment() {
       )
       .then((response) => {
         // debugger;
+        setPaymentMode(
+          response.data.content.farmerReadyForPaymentResponse.paymentMode
+        );
         console.log(response);
         if (response.data.content) {
           setTotalAmount(
@@ -230,7 +234,8 @@ function ReadyForPayment() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {row.ifscCode && row.reelerCurrentBalance > 0 && (
+          {((row.ifscCode && row.reelerCurrentBalance > 0) ||
+            paymentMode === "cash") && (
             <Button
               variant="primary"
               size="sm"
