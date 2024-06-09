@@ -54,6 +54,7 @@ function StakeHolderRegister() {
     fatherNameKan: "",
     fatherName: "",
     nameKan: "",
+    tscMasterId: "",
   });
 
   console.log("checkData", data);
@@ -92,6 +93,7 @@ function StakeHolderRegister() {
       fatherNameKan: "",
       fatherName: "",
       nameKan: "",
+      tscMasterId: "",
     });
 
     setFamilyMembersList([]);
@@ -1053,6 +1055,24 @@ function StakeHolderRegister() {
       setValidated(true);
     }
   };
+
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
+  }, []);
 
   // to get farmerType
   const [farmerTypeListData, setFarmerTypeListData] = useState([]);
@@ -2472,22 +2492,38 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("representative_agent")}</Form.Label>
+                      {/* <Col lg="4"> */}
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="representativeId"
-                            value={data.representativeId}
+                            name="tscMasterId"
+                            value={data.tscMasterId}
                             onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                            }
                           >
-                            <option value="">{t("select")}</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="">Select TSC</option>
+                            {tscListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
                           </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
+                    {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rid">

@@ -30,7 +30,7 @@ function TscView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tscMaster/get/${id}`)
+      .get(baseURL + `tscMaster/get-join/${id}`)
       .then((response) => {
         setTsc(response.data.content);
         setLoading(false);
@@ -102,10 +102,28 @@ function TscView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          {" "}
                           Tsc Name In Kannada:
                         </td>
                         <td>{Tsc.nameInKannada}</td>
+                      </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          District:
+                        </td>
+                        <td>{Tsc.districtName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          Taluk:
+                        </td>
+                        <td>{Tsc.talukName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          Address:
+                        </td>
+                        <td>{Tsc.address}</td>
                       </tr>
                     </tbody>
                   </table>

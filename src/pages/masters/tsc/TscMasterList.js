@@ -27,7 +27,7 @@ function TscList() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tscMaster/list`, _params)
+      .get(baseURL + `tscMaster/list-with-join`, _params)
       .then((response) => {
         setListData(response.data.content.tscMaster);
         setTotalRows(response.data.content.totalItems);
@@ -175,6 +175,7 @@ function TscList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Tsc",
@@ -187,6 +188,27 @@ function TscList() {
       name: "Tsc Name in Kannada",
       selector: (row) => row.nameInKannada,
       cell: (row) => <span>{row.nameInKannada}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Address",
+      selector: (row) => row.address,
+      cell: (row) => <span>{row.address}</span>,
       sortable: true,
       hide: "md",
     },

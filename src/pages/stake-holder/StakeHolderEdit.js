@@ -183,6 +183,7 @@ function StakeHolderEdit() {
     acre: "",
     gunta: "",
     fgunta: "",
+    tscMasterId: "",
   });
 
   const [farmerLandList, setFarmerLandList] = useState([]);
@@ -810,6 +811,24 @@ function StakeHolderEdit() {
   }, [id]);
 
   const isDataDobSet = !!data.dob;
+
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
+  }, []);
 
   // to get farmerType
   const [farmerTypeListData, setFarmerTypeListData] = useState([]);
@@ -2111,6 +2130,37 @@ function StakeHolderEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group> */}
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tscMasterId"
+                            value={data.tscMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {tscListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rid">

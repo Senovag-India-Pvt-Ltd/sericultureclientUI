@@ -130,6 +130,7 @@ function NewReelerLicense() {
     fruitsId: "",
     reelerName: "",
     wardNumber: "",
+    tscMasterId: "",
     passbookNumber: "",
     fatherName: "",
     educationId: "",
@@ -427,6 +428,24 @@ function NewReelerLicense() {
       setValidated(true);
     }
   };
+
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL2 + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
+  }, []);
 
   // to get Caste
   const [casteListData, setCasteListData] = useState([]);
@@ -997,23 +1016,23 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
                       
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>
                           TSC<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="assignToInspectId"
-                            value={data.assignToInspectId}
+                            name="tscMasterId"
+                            value={data.tscMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                              data.tscMasterId === undefined || data.tscMasterId === "0"
                             }
                           >
                             <option value="">Select TSC</option>
-                            {chawkiListData.map((list) => (
+                            {tscListData.map((list) => (
                               <option
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
@@ -1026,9 +1045,9 @@ function NewReelerLicense() {
                             TSC is required
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group> */}
-                    {/* </Col> */}
-                      <Form.Group className="form-group">
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="reelerNumber">
                           Reeler Number<span className="text-danger">*</span>
                         </Form.Label>
@@ -1203,7 +1222,7 @@ function NewReelerLicense() {
                           </Col>
                         </Row>
                       </Form.Group>
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>
                           Reeler Type<span className="text-danger">*</span>
                         </Form.Label>
@@ -1351,6 +1370,37 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tscMasterId"
+                            value={data.tscMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {tscListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group> */}
+
                       {/* <Col lg="4"> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="trUploadPath">
@@ -1379,7 +1429,7 @@ function NewReelerLicense() {
                       </Form.Group>
                       {/* </Col> */}
 
-                      <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="loanDetails">
                           Loan Details
                         </Form.Label>
@@ -1394,6 +1444,8 @@ function NewReelerLicense() {
                           />
                         </div>
                       </Form.Group>
+
+                      
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>Mahajar/Inspection Date</Form.Label>

@@ -229,6 +229,10 @@ function ReelerLicenseView() {
                       <td style={styles.ctstyle}> ARN Number:</td>
                       <td>{Reeler.arnNumber}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Tsc:</td>
+                      <td>{Reeler.tscName}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>
