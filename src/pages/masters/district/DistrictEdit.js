@@ -36,7 +36,7 @@ function DistrictEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `district/edit`, data)
+        .post(baseURL + `district/edit`, {...data,districtId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);

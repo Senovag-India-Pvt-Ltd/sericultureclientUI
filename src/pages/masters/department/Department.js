@@ -96,10 +96,16 @@ function Department() {
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: errorMessage,
     });
   };
   return (

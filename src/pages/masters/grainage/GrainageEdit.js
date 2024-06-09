@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
+  import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
