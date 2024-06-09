@@ -248,6 +248,10 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.nameKan}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> Tsc:</td>
+                      <td>{StakeHolder.tscName}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> Father's/Husband's Name:</td>
                       <td>{StakeHolder.fatherName}</td>
                     </tr>
@@ -701,6 +705,7 @@ function StakeHolderViewPage() {
                       <td style={styles.ctstyle}> IFSC Code:</td>
                       <td>{bank.farmerBankIfscCode}</td>
                     </tr>
+
 
                     <tr>
                       <td style={styles.ctstyle}> Bank Passbook:</td>
