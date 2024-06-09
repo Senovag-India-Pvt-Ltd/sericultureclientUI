@@ -31,6 +31,9 @@ function TscEdit() {
       tscMasterId: id,
       name: data.name,
       nameInKannada: data.nameInKannada,
+      districtId: data.districtId,
+      talukId:data.talukId,
+      address:data.address
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -49,13 +52,23 @@ function TscEdit() {
             setData({
               name: "",
               nameInKannada: "",
+              districtId: "",
+              talukId: "",
+              address: ""
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -66,6 +79,9 @@ function TscEdit() {
     setData({
         name: "",
         nameInKannada: "",
+        districtId: "",
+        talukId: "",
+        address: ""
     });
   };
 
@@ -73,7 +89,7 @@ function TscEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tscMaster/get/${id}`)
+      .get(baseURL + `tscMaster/get-join/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -91,6 +107,42 @@ function TscEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  // to get District
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        setDistrictListData(response.data.content.district);
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  // to get Taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = () => {
+    const response = api
+      .get(baseURL + `taluk/get-all`)
+      .then((response) => {
+        setTalukListData(response.data.content.taluk);
+      })
+      .catch((err) => {
+        setTalukListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTalukList();
+  }, []);
 
   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -209,6 +261,96 @@ function TscEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        District<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="districtId"
+                          value={data.districtId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            !data.districtId === undefined ||
+                            data.districtId === "0"
+                          }
+                        >
+                          <option value="">Select District</option>
+                          {districtListData && districtListData.length
+                            ? districtListData.map((list) => (
+                                <option
+                                  key={list.districtId}
+                                  value={list.districtId}
+                                >
+                                  {list.districtName}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          District Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Taluk<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="talukId"
+                          value={data.talukId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.talukId === undefined || data.talukId === "0"
+                          }
+                        >
+                          <option value="">Select Taluk</option>
+                          {talukListData && talukListData.length
+                            ? talukListData.map((list) => (
+                                <option key={list.talukId} value={list.talukId}>
+                                  {list.talukName}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Taluk Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="title">
+                        Address
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="address"
+                          name="address"
+                          value={data.address}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Address"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Address is required.
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>
