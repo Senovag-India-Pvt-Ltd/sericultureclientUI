@@ -235,7 +235,7 @@ function ReadyForPayment() {
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           {((row.ifscCode && row.reelerCurrentBalance > 0) ||
-            paymentMode === "cash") && (
+            (row.ifscCode && paymentMode === "cash")) && (
             <Button
               variant="primary"
               size="sm"
