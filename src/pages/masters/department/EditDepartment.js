@@ -35,7 +35,7 @@ function DepartmentEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `departmentMaster/edit`, data)
+        .post(baseURL + `departmentMaster/edit`,{...data,departmentId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError();
@@ -85,9 +85,9 @@ function DepartmentEdit() {
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         setLoading(false);
       });
   };
@@ -108,19 +108,19 @@ function DepartmentEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: message,
-      text: "Something went wrong!",
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+  
 
   return (
     <Layout title="Department">

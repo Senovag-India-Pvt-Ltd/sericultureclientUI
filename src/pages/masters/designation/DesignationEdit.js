@@ -35,7 +35,7 @@ function DesignationEdit() {
     } else {
       event.preventDefault();
       api
-        .post(baseURL + `designation/edit`, data)
+        .post(baseURL + `designation/edit`, {...data,designationId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -49,8 +49,15 @@ function DesignationEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);

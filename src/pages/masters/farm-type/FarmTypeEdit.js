@@ -36,7 +36,7 @@ function FarmTypeEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `farmType/edit`, data)
+        .post(baseURL + `farmType/edit`, {...data,farmId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -51,8 +51,15 @@ function FarmTypeEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);

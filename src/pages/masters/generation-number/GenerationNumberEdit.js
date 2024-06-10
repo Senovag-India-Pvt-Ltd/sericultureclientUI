@@ -36,7 +36,7 @@ function GenerationNumberEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `generationNumberMaster/edit`, data)
+        .post(baseURL + `generationNumberMaster/edit`, {...data,generationNumberId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);

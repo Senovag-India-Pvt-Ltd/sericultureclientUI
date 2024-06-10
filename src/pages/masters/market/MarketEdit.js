@@ -51,7 +51,7 @@ function MarketEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `marketMaster/edit`, data)
+        .post(baseURL + `marketMaster/edit`, {...data,marketMasterId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError(response.data.content.error_description);
@@ -93,13 +93,21 @@ function MarketEdit() {
               weighmentTripletGeneration: "",
               bidAmountFlag: "",
               divisionMasterId:"",
+              paymentMode: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -143,6 +151,7 @@ function MarketEdit() {
       weighmentTripletGeneration: "",
       bidAmountFlag: "",
       divisionMasterId:"",
+      paymentMode: "",
     });
   };
 
@@ -490,6 +499,33 @@ function MarketEdit() {
                         <Form.Control.Feedback type="invalid">
                           Reeler Minimum Balance is required
                         </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                     {/* <Col lg="6"> */}
+                     <Form.Group className="form-group">
+                      <Form.Label>
+                        Payment Mode
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="paymentMode"
+                          value={data.paymentMode}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                          isInvalid={
+                            data.paymentMode === undefined || data.paymentMode === "0"
+                          }
+                        >
+                          <option value="0">Select Payment Mode</option>
+                          <option value="cash">cash</option>
+                          <option value="online">online</option>
+                          
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Scheme Quota Type is required
+                        </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
 

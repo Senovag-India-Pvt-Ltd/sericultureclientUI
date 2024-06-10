@@ -59,7 +59,16 @@ function Crate() {
           }
         })
         .catch((err) => {
-          saveError();
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
         });
       setValidated(true);
     }
@@ -156,10 +165,16 @@ function Crate() {
     });
   };
   const saveError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
       title: "Save attempt was not successful",
-      text: message,
+      html: errorMessage,
     });
   };
   return (

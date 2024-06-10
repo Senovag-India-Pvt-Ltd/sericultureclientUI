@@ -35,7 +35,7 @@ function CrateEdit() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `crateMaster/edit`, data)
+        .post(baseURL + `crateMaster/edit`, {...data,crateMasterId:id})
         .then((response) => {
           if (response.data.content.error) {
             updateError();
@@ -51,8 +51,16 @@ function CrateEdit() {
           }
         })
         .catch((err) => {
-          // const message = err.response.data.errorMessages[0].message[0].message;
-          updateError();
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
         });
       setValidated(true);
     }
@@ -77,9 +85,9 @@ function CrateEdit() {
         setLoading(false);
       })
       .catch((err) => {
-        const message = err.response.data.errorMessages[0].message[0].message;
+        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        editError(message);
+        // editError(message);
         setLoading(false);
       });
   };
@@ -141,19 +149,25 @@ function CrateEdit() {
     }).then(() => navigate("#"));
   };
   const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
     Swal.fire({
       icon: "error",
-      title: message,
-      text: "Something went wrong!",
+      title: "Save attempt was not successful",
+      html: errorMessage,
     });
   };
-  const editError = (message) => {
-    Swal.fire({
-      icon: "error",
-      title: message,
-      text: "Something went wrong!",
-    }).then(() => navigate("#"));
-  };
+  // const editError = (message) => {
+  //   Swal.fire({
+  //     icon: "error",
+  //     title: message,
+  //     text: "Something went wrong!",
+  //   }).then(() => navigate("#"));
+  // };
 
   return (
     <Layout title="Edit Crate">

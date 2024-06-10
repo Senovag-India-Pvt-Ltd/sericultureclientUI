@@ -233,6 +233,11 @@ function MarketView() {
                       <td style={styles.ctstyle}> Client Code:</td>
                       <td>{MarketMaster.clientCode}</td>
                     </tr>
+
+                    <tr>
+                      <td style={styles.ctstyle}>Payment Mode:</td>
+                      <td>{MarketMaster.paymentMode}</td>
+                    </tr>
                   </tbody>
                 </table>
               </Col>
