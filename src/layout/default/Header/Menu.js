@@ -196,11 +196,11 @@ function Menu() {
     Services: false,
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
-    Services_Reject_List:false,
-    Services_Success_List:false,
-    Services_Dbt_Application:false,
-    Services_Drawing_Officer_List:false,
-    Services_Tsc_Officer_List:false,
+    Services_Reject_List: false,
+    Services_Success_List: false,
+    Services_Dbt_Application: false,
+    Services_Drawing_Officer_List: false,
+    Services_Tsc_Officer_List: false,
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
     // Services_Apply_Incentives: false,
@@ -767,6 +767,18 @@ function Menu() {
         Admin: true,
         Admin_Master: true,
         Admin_Master_Auction: true,
+      }));
+    }
+
+    const hasAdminMasterGeneral = data.some((item) =>
+      item.startsWith("Admin_Master_General_")
+    );
+    if (hasAdminMasterGeneral) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_General: true,
       }));
     }
 
@@ -2425,7 +2437,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null} */}
-                         {showMenu.Admin_Master_Service_Financial_Year ? (
+                        {showMenu.Admin_Master_Service_Financial_Year ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Financial Year"

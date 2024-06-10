@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button,Modal } from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -12,15 +12,14 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ScProgramApprovalMapping() {
-
   const [designationList, setDesignationList] = useState([]);
   const [designationDetails, setDesignationDetails] = useState({
     designationId: "",
-
   });
 
   const [validated, setValidated] = useState(false);
-  const [validatedDesignationDetails, setValidatedDesignationDetails] = useState(false);
+  const [validatedDesignationDetails, setValidatedDesignationDetails] =
+    useState(false);
   const [validatedDesignationDetailsEdit, setValidatedDesignationDetailsEdit] =
     useState(false);
 
@@ -95,17 +94,15 @@ function ScProgramApprovalMapping() {
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
   const [data, setData] = useState({
-    version:"",
+    version: "",
     status: "",
     subSchemeId: "",
     stepId: "",
     scApprovalStageId: "",
     // designationId: "",
     stepName: "",
-    subSchemeWorkFlowDetailsRequests: []
+    subSchemeWorkFlowDetailsRequests: [],
   });
-
-
 
   let name, value;
   const handleInputs = (e) => {
@@ -125,21 +122,21 @@ function ScProgramApprovalMapping() {
       event.preventDefault();
       const sendPost = {
         version: data.version,
-        status: data.status,
+        status: "Active",
         stepId: data.stepId,
         scApprovalStageId: data.scApprovalStageId,
-        subSchemeId:data.subSchemeId,
+        subSchemeId: data.subSchemeId,
         // landDetailId: landDetailsIds[0],
         // designationId: data.designationId,
         stepName: data.stepName,
-        subSchemeWorkFlowDetailsRequests: designationList, 
+        subSchemeWorkFlowDetailsRequests: designationList,
       };
       api
         .post(baseURLDBT + `master/cost/saveSubSchemeWorkFlowRequest`, sendPost)
         .then((response) => {
           saveSuccess();
-            clear();
-            setValidated(false);
+          clear();
+          setValidated(false);
         })
         .catch((err) => {
           if (
@@ -159,13 +156,13 @@ function ScProgramApprovalMapping() {
 
   const clear = () => {
     setData({
-      version:"",
-    status: "",
-    subSchemeId: "",
-    stepId: "",
-    scApprovalStageId: "",
-    // designationId: "",
-    stepName: "",
+      version: "",
+      status: "",
+      subSchemeId: "",
+      stepId: "",
+      scApprovalStageId: "",
+      // designationId: "",
+      stepName: "",
     });
     designationClear();
   };
@@ -174,10 +171,10 @@ function ScProgramApprovalMapping() {
     setDesignationDetails({
       designationId: "",
     });
-    setDesignationList([])
-  }
+    setDesignationList([]);
+  };
 
-   // Handle Options
+  // Handle Options
   // Designation
   const handleDesignationOption = (e) => {
     const value = e.target.value;
@@ -271,14 +268,15 @@ function ScProgramApprovalMapping() {
   //to get Approval Stage
   // const [approvalStageListData, setApprovalStageListData] = useState([]);
 
-
   const getApprovalStageList = (_id) => {
     api
       .get(baseURL + `scApprovalStage/get/${_id}`)
       .then((response) => {
-        setData(prev =>({...prev,stepName:response.data.content.stageName}));
+        setData((prev) => ({
+          ...prev,
+          stepName: response.data.content.stageName,
+        }));
         setLoading(false);
-        
       })
       .catch((err) => {
         // setApprovalListData([]);
@@ -287,11 +285,10 @@ function ScProgramApprovalMapping() {
   };
 
   useEffect(() => {
-    if(data.scApprovalStageId){
+    if (data.scApprovalStageId) {
       getApprovalStageList(data.scApprovalStageId);
     }
-    
-  },[data.scApprovalStageId]);
+  }, [data.scApprovalStageId]);
 
   // // to get Category
   // const [designationListData, setDesignationListData] = useState([]);
@@ -434,12 +431,15 @@ function ScProgramApprovalMapping() {
                           }
                         >
                           <option value="">Select Component Type</option>
-                          {scSubSchemeDetailsListData && 
-                          scSubSchemeDetailsListData.map((list) => (
-                            <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>
-                              {list.subSchemeName}
-                            </option>
-                          ))}
+                          {scSubSchemeDetailsListData &&
+                            scSubSchemeDetailsListData.map((list) => (
+                              <option
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
+                              >
+                                {list.subSchemeName}
+                              </option>
+                            ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Component Type is required
@@ -556,104 +556,104 @@ function ScProgramApprovalMapping() {
             </Card>
 
             <Block className="mt-3">
-            <Card>
-              <Card.Header>Add Designation</Card.Header>
-              <Card.Body>
-                {/* <h3>Virtual Bank account</h3> */}
-                <Row className="g-gs mb-1">
-                  <Col lg="6">
-                    <Form.Group className="form-group mt-1">
-                      <div className="form-control-wrap"></div>
-                    </Form.Group>
-                  </Col>
+              <Card>
+                <Card.Header>Add Designation</Card.Header>
+                <Card.Body>
+                  {/* <h3>Virtual Bank account</h3> */}
+                  <Row className="g-gs mb-1">
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-1">
+                        <div className="form-control-wrap"></div>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
-                      <div className="form-control-wrap">
-                        <ul className="">
-                          <li>
-                            <Button
-                              className="d-md-none"
-                              size="md"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              <Icon name="plus" />
-                              <span>Add</span>
-                            </Button>
-                          </li>
-                          <li>
-                            <Button
-                              className="d-none d-md-inline-flex"
-                              variant="primary"
-                              onClick={handleShowModal}
-                            >
-                              <Icon name="plus" />
-                              <span>Add</span>
-                            </Button>
-                          </li>
-                        </ul>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-                {designationList.length > 0 ? (
-                  <Row className="g-gs">
-                    <Block>
-                      <Card>
-                        <div
-                          className="table-responsive"
-                          // style={{ paddingBottom: "30px" }}
-                        >
-                          <table className="table small">
-                            <thead>
-                              <tr style={{ backgroundColor: "#f1f2f7" }}>
-                                {/* <th></th> */}
-                                <th>Action</th>
-                                <th>Designation</th>
-                                {/* <th>Head Of Account</th>
-                                <th>Share in %</th> */}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {designationList.map((item, i) => (
-                                <tr>
-                                  <td>
-                                    <div>
-                                      <Button
-                                        variant="primary"
-                                        size="sm"
-                                        onClick={() => handleGet(i)}
-                                      >
-                                        Edit
-                                      </Button>
-                                      <Button
-                                        variant="danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(i)}
-                                        className="ms-2"
-                                      >
-                                        Delete
-                                      </Button>
-                                    </div>
-                                  </td>
-                                  <td>{item.name}</td>
-                                  {/* <td>{item.scHeadAccountName}</td>
-                                  <td>{item.shareInPercentage}</td> */}
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                    <Col lg="6">
+                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
+                        <div className="form-control-wrap">
+                          <ul className="">
+                            <li>
+                              <Button
+                                className="d-md-none"
+                                size="md"
+                                variant="primary"
+                                onClick={handleShowModal}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button>
+                            </li>
+                            <li>
+                              <Button
+                                className="d-none d-md-inline-flex"
+                                variant="primary"
+                                onClick={handleShowModal}
+                              >
+                                <Icon name="plus" />
+                                <span>Add</span>
+                              </Button>
+                            </li>
+                          </ul>
                         </div>
-                      </Card>
-                    </Block>
+                      </Form.Group>
+                    </Col>
                   </Row>
-                ) : (
-                  ""
-                )}
-              </Card.Body>
-            </Card>
-          </Block>
+                  {designationList.length > 0 ? (
+                    <Row className="g-gs">
+                      <Block>
+                        <Card>
+                          <div
+                            className="table-responsive"
+                            // style={{ paddingBottom: "30px" }}
+                          >
+                            <table className="table small">
+                              <thead>
+                                <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                  {/* <th></th> */}
+                                  <th>Action</th>
+                                  <th>Designation</th>
+                                  {/* <th>Head Of Account</th>
+                                <th>Share in %</th> */}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {designationList.map((item, i) => (
+                                  <tr>
+                                    <td>
+                                      <div>
+                                        <Button
+                                          variant="primary"
+                                          size="sm"
+                                          onClick={() => handleGet(i)}
+                                        >
+                                          Edit
+                                        </Button>
+                                        <Button
+                                          variant="danger"
+                                          size="sm"
+                                          onClick={() => handleDelete(i)}
+                                          className="ms-2"
+                                        >
+                                          Delete
+                                        </Button>
+                                      </div>
+                                    </td>
+                                    <td>{item.name}</td>
+                                    {/* <td>{item.scHeadAccountName}</td>
+                                  <td>{item.shareInPercentage}</td> */}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </Card>
+                      </Block>
+                    </Row>
+                  ) : (
+                    ""
+                  )}
+                </Card.Body>
+              </Card>
+            </Block>
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -685,41 +685,38 @@ function ScProgramApprovalMapping() {
             onSubmit={handleAdd}
           >
             <Row className="g-5">
-            <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Designation
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="designationId"
-                        value={`${designationDetails.designationId}_${designationDetails.name}`}
-                        onChange={handleDesignationOption}
-                        onBlur={() => handleDesignationOption}
-                        required
-                        isInvalid={
-                          designationDetails.designationId === undefined ||
-                          designationDetails.designationId === "0"
-                        }
-                      >
-                        <option value="">Select Designation</option>
-                        {designationListData.map((list) => (
-                          <option
-                            key={list.designationId}
-                            value={`${list.designationId}_${list.name}`}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Designation is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">Designation</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="designationId"
+                      value={`${designationDetails.designationId}_${designationDetails.name}`}
+                      onChange={handleDesignationOption}
+                      onBlur={() => handleDesignationOption}
+                      required
+                      isInvalid={
+                        designationDetails.designationId === undefined ||
+                        designationDetails.designationId === "0"
+                      }
+                    >
+                      <option value="">Select Designation</option>
+                      {designationListData.map((list) => (
+                        <option
+                          key={list.designationId}
+                          value={`${list.designationId}_${list.name}`}
+                        >
+                          {list.name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Designation is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
-                
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
@@ -728,9 +725,8 @@ function ScProgramApprovalMapping() {
                       Add
                     </Button>
                   </div>
-                  
+
                   <div className="gap-col">
-                    
                     <Button
                       type="button"
                       variant="secondary"
@@ -755,52 +751,51 @@ function ScProgramApprovalMapping() {
           <Form
             noValidate
             validated={validatedDesignationDetailsEdit}
-            onSubmit={(e) => handleUpdate(e, designationDetailsId, designationDetails)}
+            onSubmit={(e) =>
+              handleUpdate(e, designationDetailsId, designationDetails)
+            }
           >
             <Row className="g-5">
-            <Col lg="6">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Designation
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="designationId"
-                        value={`${designationDetails.designationId}_${designationDetails.name}`}
-                        onChange={handleDesignationOption}
-                        onBlur={() => handleDesignationOption}
-                        required
-                        isInvalid={
-                          designationDetails.designationId === undefined ||
-                          designationDetails.designationId === "0"
-                        }
-                      >
-                        <option value="">Select Designation</option>
-                        {designationListData.map((list) => (
-                          <option
-                            key={list.designationId}
-                            value={`${list.designationId}_${list.name}`}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Designation is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label htmlFor="sordfl">Designation</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="designationId"
+                      value={`${designationDetails.designationId}_${designationDetails.name}`}
+                      onChange={handleDesignationOption}
+                      onBlur={() => handleDesignationOption}
+                      required
+                      isInvalid={
+                        designationDetails.designationId === undefined ||
+                        designationDetails.designationId === "0"
+                      }
+                    >
+                      <option value="">Select Designation</option>
+                      {designationListData.map((list) => (
+                        <option
+                          key={list.designationId}
+                          value={`${list.designationId}_${list.name}`}
+                        >
+                          {list.name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Designation is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
 
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    
                     <Button type="submit" variant="success">
                       Update
                     </Button>
                   </div>
-                  
+
                   <div className="gap-col">
                     <Button
                       type="button"
