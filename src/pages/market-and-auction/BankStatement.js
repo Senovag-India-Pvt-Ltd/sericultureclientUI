@@ -420,6 +420,56 @@ function BankStatement() {
     }
   };
 
+
+  const markCashPaymentLotListToSuccess = (e) => {
+    if (fileNameError === "") {
+      const { paymentDate, fileName } = data;
+      if (paymentDate === "") {
+        return Swal.fire({
+          icon: "warning",
+          title: "Date Not Selected",
+        });
+      }
+      const allotedlotList = bankStatementList.map(bankStatement=>bankStatement.allottedLotId);
+      // console.log(allotedlotList);
+      api
+        .post(baseURLMarket + `auction/fp/markCashPaymentLotListToSuccess`, {
+          marketId: localStorage.getItem("marketId"),
+          godownId: data.godownId,
+          paymentDate: paymentDate,
+          allottedLotList: allotedlotList,
+        })
+        .then((response) => {
+          console.log(response);
+          // TODO Show message "Please Generate Bank Statement Before Proceeding Later It Won't be possible"
+          
+          // if (response.data.errorCode === 0) {
+          //   Swal.fire({
+          //     icon: "success",
+          //     title: "Request has been sent to Bank",
+          //   });
+          // }
+          // if (response.data.errorCode === -1) {
+          //   Swal.fire({
+          //     icon: "warning",
+          //     title: response.data.errorMessages[0],
+          //   });
+          // }
+
+          // if (response.data.content) {
+          //   setBankStatementList(
+          //     response.data.content.farmerPaymentInfoResponseList
+          //   );
+          // }
+        })
+        .catch((err) => {
+          // setBankStatementList([]);
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
+  };
+
   // Generate CSV after process for payment  file
   const checkBankGeneratedStatement = (e) => {
     if (fileNameError === "") {
@@ -675,7 +725,7 @@ function BankStatement() {
                         type="button"
                         variant="primary"
                         onClick={() =>
-                          handleButtonClick(requestJobToProcessPayment)
+                          handleButtonClick(markCashPaymentLotListToSuccess)
                         }
                       >
                         Mark Payment Completed
