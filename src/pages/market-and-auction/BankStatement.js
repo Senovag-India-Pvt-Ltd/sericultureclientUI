@@ -273,6 +273,8 @@ function BankStatement() {
     getAuctionDateList();
   }, []);
 
+  const [paymentMode, setPaymentMode] = useState("");
+
   const [bankStatementList, setBankStatementList] = useState([]);
 
   const getBankStatement = (e) => {
@@ -293,11 +295,13 @@ function BankStatement() {
         paymentDate: formattedDate,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+
         if (response.data.content) {
           setBankStatementList(
             response.data.content.farmerPaymentInfoResponseList
           );
+          setPaymentMode(response.data.content.paymentMode);
         }
       })
       .catch((err) => {
@@ -374,7 +378,7 @@ function BankStatement() {
   const requestJobToProcessPayment = (e) => {
     if (fileNameError === "") {
       const { paymentDate, fileName } = data;
-      if(paymentDate===""){
+      if (paymentDate === "") {
         return Swal.fire({
           icon: "warning",
           title: "Date Not Selected",
@@ -664,29 +668,48 @@ function BankStatement() {
                     Generate CSV File
                   </Button>
                 </Col>
-                <Col sm={2}>
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={() =>
-                      handleButtonClick(requestJobToProcessPayment)
-                    }
-                  >
-                    Process For Payment
-                  </Button>
-                </Col>
+                {paymentMode === "cash" ? (
+                  <>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={() =>
+                          handleButtonClick(requestJobToProcessPayment)
+                        }
+                      >
+                        Mark Payment Completed
+                      </Button>
+                    </Col>
+                  </>
+                ) : (
+                  <>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={() =>
+                          handleButtonClick(requestJobToProcessPayment)
+                        }
+                      >
+                        Process For Payment
+                      </Button>
+                    </Col>
 
-                <Col sm={2}>
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={() =>
-                      handleButtonClick(checkBankGeneratedStatement)
-                    }
-                  >
-                    Check Bank Generated File
-                  </Button>
-                </Col>
+                    <Col sm={2}>
+                      <Button
+                        type="button"
+                        variant="primary"
+                        onClick={() =>
+                          handleButtonClick(checkBankGeneratedStatement)
+                        }
+                      >
+                        Check Bank Generated File
+                      </Button>
+                    </Col>
+                  </>
+                )}
+
                 {/* <Col sm={2}>
                   <Button type="button" variant="primary" onClick={reports}>
                     report
