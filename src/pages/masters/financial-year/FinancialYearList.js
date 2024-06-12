@@ -207,7 +207,7 @@ function FinancialYearList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/caste"
+                  to="/seriui/financial-year"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -216,7 +216,7 @@ function FinancialYearList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/caste"
+                  to="/seriui/financial-year"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

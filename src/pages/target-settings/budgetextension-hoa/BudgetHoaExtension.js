@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaExtension() {
@@ -247,23 +248,53 @@ function BudgetHoaExtension() {
     setBalanceAmount(0);
   };
 
-  // to get Head Of Account
-  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+  // // to get Head Of Account
+  // const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
-  const getHeadOfAccountList = () => {
+  // const getHeadOfAccountList = () => {
+  //   api
+  //     .get(baseURLMasterData + `scHeadAccount/get-all`)
+  //     .then((response) => {
+  //       setHeadOfAccountListData(response.data.content.scHeadAccount);
+  //     })
+  //     .catch((err) => {
+  //       setHeadOfAccountListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getHeadOfAccountList();
+  // }, []);
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
     api
-      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
       .then((response) => {
-        setHeadOfAccountListData(response.data.content.scHeadAccount);
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
       })
       .catch((err) => {
-        setHeadOfAccountListData([]);
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
   useEffect(() => {
-    getHeadOfAccountList();
-  }, []);
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      ); 
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -301,23 +332,50 @@ function BudgetHoaExtension() {
     getSchemeList();
   }, []);
 
-  // to get Sub Scheme
-  const [subSchemeListData, setSubSchemeListData] = useState([]);
+  // // to get Sub Scheme
+  // const [subSchemeListData, setSubSchemeListData] = useState([]);
 
-  const getSubSchemeList = () => {
-    const response = api
-      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
-      .then((response) => {
-        setSubSchemeListData(response.data.content.scSubSchemeDetails);
-      })
-      .catch((err) => {
-        setSubSchemeListData([]);
-      });
-  };
+  // const getSubSchemeList = () => {
+  //   const response = api
+  //     .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+  //     .then((response) => {
+  //       setSubSchemeListData(response.data.content.scSubSchemeDetails);
+  //     })
+  //     .catch((err) => {
+  //       setSubSchemeListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getSubSchemeList();
-  }, []);
+  // useEffect(() => {
+  //   getSubSchemeList();
+  // }, []);
+
+    // to get sc-sub-scheme-details by sc-scheme-details
+    const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+      []
+    );
+    const getSubSchemeList = (_id) => {
+      api
+        .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+        .then((response) => {
+          if (response.data.content.unitCost) {
+            setScSubSchemeDetailsListData(response.data.content.unitCost);
+          } else {
+            setScSubSchemeDetailsListData([]);
+          }
+        })
+        .catch((err) => {
+          setScSubSchemeDetailsListData([]);
+          // alert(err.response.data.errorMessages[0].message[0].message);
+        });
+    };
+  
+    useEffect(() => {
+      if (data.scSchemeDetailsId) {
+        getSubSchemeList(data.scSchemeDetailsId);
+        // getSchemeQuotaList(data.scSchemeDetailsId);
+      }
+    }, [data.scSchemeDetailsId]);
 
   // to get Category
   const [categoryListData, setCategoryListData] = useState([]);
@@ -490,40 +548,7 @@ function BudgetHoaExtension() {
                       </Row>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Head of Account<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
-                            }
-                          >
-                            <option value="">Select Head of Account</option>
-                            {headOfAccountListData &&
-                              headOfAccountListData.map((list) => (
-                                <option
-                                  key={list.scHeadAccountId}
-                                  value={list.scHeadAccountId}
-                                >
-                                  {list.scHeadAccountName}
-                                </option>
-                              ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Head of Account is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                   
 
                     {/* <Col lg="6">
                     <Form.Group className="form-group">
@@ -625,8 +650,8 @@ function BudgetHoaExtension() {
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {subSchemeListData &&
-                              subSchemeListData.map((list) => (
+                            {scSubSchemeDetailsListData &&
+                              scSubSchemeDetailsListData.map((list) => (
                                 <option
                                   key={list.scSubSchemeDetailsId}
                                   value={list.scSubSchemeDetailsId}
@@ -637,6 +662,41 @@ function BudgetHoaExtension() {
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Head of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scHeadAccountId === undefined ||
+                              data.scHeadAccountId === "0"
+                            }
+                          >
+                            <option value="">Select Head of Account</option>
+                            {scHeadAccountListData &&
+                              scHeadAccountListData.map((list) => (
+                                <option
+                                  key={list.scHeadAccountId}
+                                  value={list.scHeadAccountId}
+                                >
+                                  {list.scHeadAccountName}
+                                </option>
+                              ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head of Account is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -689,7 +749,7 @@ function BudgetHoaExtension() {
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
-                            maxDate={new Date()}
+                            // maxDate={new Date()}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             required

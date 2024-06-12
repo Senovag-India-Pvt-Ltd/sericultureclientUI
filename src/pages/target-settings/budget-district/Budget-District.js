@@ -20,7 +20,20 @@ function BudgetDistrict() {
     date: "",
     budgetAmount: "",
     districtId: "",
+    districtImplementingOfficerId: "",
+    userDisbure: "",
   });
+
+  const [designation, setDesignation] = useState({
+    designationId: "",
+  });
+
+ 
+  const handleDesignationInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setDesignation({ ...data, [name]: value });
+  };
 
   const [type, setType] = useState({
     budgetType: "allocate",
@@ -149,7 +162,26 @@ function BudgetDistrict() {
     getHeadOfAccountList();
   }, []);
 
-  // District
+   // to get designation
+   const [designationListData, setDesignationListData] = useState([]);
+
+   const getDesignationList = () => {
+     const response = api
+       .get(baseURLMasterData + `designation/get-all`)
+       .then((response) => {
+         if (response.data.content.designation) {
+           setDesignationListData(response.data.content.designation);
+         }
+       })
+       .catch((err) => {
+         setDesignationListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+    getDesignationList();
+   }, []);
 
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
@@ -171,6 +203,33 @@ function BudgetDistrict() {
   useEffect(() => {
     getDistrictList();
   }, []);
+
+  // to get Implementing Officer
+  const [implementingOfficerListData, setImplementingOfficerListData] = useState([]);
+
+  const getImplementingOfficerList = (designationId, districtId) => {
+    api
+      .post(baseURLMasterData + `userMaster/get-by-designationId-and-districtId`, {
+        designationId: designationId,
+        districtId: districtId,
+      })
+      .then((response) => {
+        setImplementingOfficerListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setImplementingOfficerListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (designation.designationId && data.districtId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getImplementingOfficerList(
+        designation.designationId,
+        data.districtId
+      );
+    }
+  }, [designation.designationId, data.districtId]);
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -513,7 +572,7 @@ function BudgetDistrict() {
                                 }
                               >
                                 <option value="">Select District</option>
-                                {districtListData.map((list) => (
+                                {districtListData && districtListData.map((list) => (
                                   <option
                                     key={list.districtId}
                                     value={list.districtId}
@@ -524,6 +583,76 @@ function BudgetDistrict() {
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 District is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Designation
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="designationId"
+                                value={designation.designationId}
+                                onChange={handleDesignationInputs}
+                                onBlur={() => handleDesignationInputs}
+                                required
+                                isInvalid={
+                                  designation.designationId === undefined ||
+                                  designation.designationId === "0"
+                                }
+                              >
+                                <option value="">Select Designation</option>
+                                {designationListData && designationListData.map((list) => (
+                                  <option
+                                    key={list.designationId}
+                                    value={list.designationId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                               Designation is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              District Implementing Officer
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="districtImplementingOfficerId"
+                                value={data.districtImplementingOfficerId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.districtImplementingOfficerId === undefined ||
+                                  data.districtImplementingOfficerId === "0"
+                                }
+                              >
+                                <option value="">Select Implementing Officer</option>
+                                {implementingOfficerListData &&implementingOfficerListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                              District Implementing Officer is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -551,6 +680,34 @@ function BudgetDistrict() {
                             </div>
                           </Form.Group>
                         </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Use/Disperse
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="userDisbure"
+                          value={data.userDisbure}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                          isInvalid={
+                            data.userDisbure === undefined || data.userDisbure === "0"
+                          }
+                        >
+                          <option value="0">Select Use/Disperse</option>
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                          
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Scheme Quota Type is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n4">

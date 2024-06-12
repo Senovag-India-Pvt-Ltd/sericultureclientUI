@@ -22,8 +22,16 @@ function BudgetTalukEdit() {
     budgetType: types,
   });
 
-  let name, value;
+  const [designation, setDesignation] = useState({
+    designationId: "",
+  });
 
+  let name, value;
+  const handleDesignationInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setDesignation({ ...data, [name]: value });
+  };
   // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
@@ -181,6 +189,9 @@ function BudgetTalukEdit() {
       talukId: "",
       date: "",
       budgetAmount: "",
+      districtImplementingOfficerId: "",
+      talukImplementingOfficerId:"",
+      userDisbure:"",
     });
     setType({
       budgetType: "allocate",
@@ -320,6 +331,83 @@ function BudgetTalukEdit() {
   useEffect(() => {
     getTalukList();
   }, []);
+
+  // to get designation
+  const [designationListData, setDesignationListData] = useState([]);
+
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURL + `designation/get-all`)
+      .then((response) => {
+        if (response.data.content.designation) {
+          setDesignationListData(response.data.content.designation);
+        }
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+   getDesignationList();
+  }, []);
+
+   // to get District Implementing Officer
+   const [districtImplementingOfficerListData, setDistrictImplementingOfficerListData] = useState([]);
+
+   const getDistrictImplementingOfficerList = (designationId, districtId) => {
+     api
+       .post(baseURL + `userMaster/get-by-designationId-and-districtId`, {
+         designationId: designationId,
+         districtId: districtId,
+       })
+       .then((response) => {
+         setDistrictImplementingOfficerListData(response.data.content.userMaster);
+       })
+       .catch((err) => {
+         setDistrictImplementingOfficerListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     if (designation.designationId && data.districtId) {
+       // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+       getDistrictImplementingOfficerList(
+         designation.designationId,
+         data.districtId
+       );
+     }
+   }, [designation.designationId, data.districtId]);
+ 
+  // to get Taluk Implementing Officer
+  const [talukImplementingOfficerListData, setTalukImplementingOfficerListData] = useState([]);
+
+  const getTalukImplementingOfficerList = (designationId,districtId, talukId) => {
+    api
+      .post(baseURL + `userMaster/get-by-designationId-and-districtId-and-talukId`, {
+        designationId: designationId,
+        districtId: districtId,
+        talukId: talukId,
+      })
+      .then((response) => {
+        setTalukImplementingOfficerListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setTalukImplementingOfficerListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (designation.designationId && data.districtId && data.talukId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getTalukImplementingOfficerList(
+        designation.designationId,
+        data.districtId ,
+        data.talukId
+      );
+    }
+  }, [designation.designationId,data.districtId, data.talukId]);
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
@@ -561,6 +649,41 @@ function BudgetTalukEdit() {
                           </Col>
 
                           <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Designation
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="designationId"
+                                value={designation.designationId}
+                                onChange={handleDesignationInputs}
+                                onBlur={() => handleDesignationInputs}
+                                required
+                                isInvalid={
+                                  designation.designationId === undefined ||
+                                  designation.designationId === "0"
+                                }
+                              >
+                                <option value="">Select Designation</option>
+                                {designationListData && designationListData.map((list) => (
+                                  <option
+                                    key={list.designationId}
+                                    value={list.designationId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                               Designation is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                          <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 Select District
@@ -594,6 +717,41 @@ function BudgetTalukEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              District Implementing Officer
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="districtImplementingOfficerId"
+                                value={data.districtImplementingOfficerId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.districtImplementingOfficerId === undefined ||
+                                  data.districtImplementingOfficerId === "0"
+                                }
+                              >
+                                <option value="">Select District Implementing Officer</option>
+                                {districtImplementingOfficerListData &&districtImplementingOfficerListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                              District Implementing Officer is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                           <Col lg="6">
                             <Form.Group className="form-group mt-n4">
@@ -631,6 +789,43 @@ function BudgetTalukEdit() {
                           </Col>
 
                           <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Taluk Implementing Officer
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukImplementingOfficerId"
+                                value={data.talukImplementingOfficerId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.talukImplementingOfficerId === undefined ||
+                                  data.talukImplementingOfficerId === "0"
+                                }
+                              >
+                                <option value="">Select Taluk Implementing Officer</option>
+                                {talukImplementingOfficerListData &&talukImplementingOfficerListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                              Taluk Implementing Officer is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                          
+
+                          <Col lg="6">
                             <Form.Group className="form-group mt-n4 ">
                               <Form.Label htmlFor="title">
                                 Budget Amount
@@ -652,6 +847,34 @@ function BudgetTalukEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Use/Disperse
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="userDisbure"
+                          value={data.userDisbure}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                          isInvalid={
+                            data.userDisbure === undefined || data.userDisbure === "0"
+                          }
+                        >
+                          <option value="0">Select Use/Disperse</option>
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                          
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
+                        Scheme Quota Type is required
+                        </Form.Control.Feedback> */}
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaExtensionEdit() {
@@ -332,23 +333,64 @@ useEffect(() => {
   getSchemeList();
 }, []);
 
-// to get Sub Scheme
-const [subSchemeListData, setSubSchemeListData] = useState([]);
 
-const getSubSchemeList = () => {
-  const response = api
-    .get(baseURL + `scSubSchemeDetails/get-all`)
+const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+  schemeId,
+  subSchemeId
+) => {
+  api
+    .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+      schemeId: schemeId,
+      subSchemeId: subSchemeId,
+    })
     .then((response) => {
-      setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      if (response.data.content.unitCost) {
+        setScHeadAccountListData(response.data.content.unitCost);
+      }
     })
     .catch((err) => {
-     setSubSchemeListData([]);
+      setScHeadAccountListData([]);
+      // alert(err.response.data.errorMessages[0].message[0].message);
     });
 };
 
 useEffect(() => {
-  getSubSchemeList();
-}, []);
+  if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+    // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+    getHeadAccountbyschemeIdAndSubSchemeIdList(
+      data.scSchemeDetailsId,
+      data.scSubSchemeDetailsId
+    );
+  }
+}, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
+
+ // to get sc-sub-scheme-details by sc-scheme-details
+ const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+  []
+);
+const getSubSchemeList = (_id) => {
+  api
+    .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+    .then((response) => {
+      if (response.data.content.unitCost) {
+        setScSubSchemeDetailsListData(response.data.content.unitCost);
+      } else {
+        setScSubSchemeDetailsListData([]);
+      }
+    })
+    .catch((err) => {
+      setScSubSchemeDetailsListData([]);
+      // alert(err.response.data.errorMessages[0].message[0].message);
+    });
+};
+
+useEffect(() => {
+  if (data.scSchemeDetailsId) {
+    getSubSchemeList(data.scSchemeDetailsId);
+    // getSchemeQuotaList(data.scSchemeDetailsId);
+  }
+}, [data.scSchemeDetailsId]);
 
 // to get Category
 const [categoryListData, setCategoryListData] = useState([]);
@@ -547,7 +589,7 @@ useEffect(() => {
                           </Row>
                         </Col>
 
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Head Of Account
@@ -580,7 +622,7 @@ useEffect(() => {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4 ">
@@ -656,7 +698,7 @@ useEffect(() => {
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {subSchemeListData && subSchemeListData.map((list) => (
+                            {scSubSchemeDetailsListData && scSubSchemeDetailsListData.map((list) => (
                               <option
                                 key={list.scSubSchemeDetailsId}
                                 value={list.scSubSchemeDetailsId}
@@ -667,6 +709,41 @@ useEffect(() => {
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Sub Scheme is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Head of Account<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="scHeadAccountId"
+                            value={data.scHeadAccountId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.scHeadAccountId === undefined ||
+                              data.scHeadAccountId === "0"
+                            }
+                          >
+                            <option value="">Select Head of Account</option>
+                            {scHeadAccountListData &&
+                              scHeadAccountListData.map((list) => (
+                                <option
+                                  key={list.scHeadAccountId}
+                                  value={list.scHeadAccountId}
+                                >
+                                  {list.scHeadAccountName}
+                                </option>
+                              ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Head of Account is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

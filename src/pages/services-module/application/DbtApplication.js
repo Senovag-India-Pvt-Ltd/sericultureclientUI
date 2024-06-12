@@ -1695,7 +1695,7 @@ function DbtApplication() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                required
+                                required 
                                 isInvalid={
                                   data.scHeadAccountId === undefined ||
                                   data.scHeadAccountId === "0"

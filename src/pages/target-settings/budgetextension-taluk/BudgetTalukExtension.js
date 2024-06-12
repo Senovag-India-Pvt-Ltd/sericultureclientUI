@@ -11,7 +11,8 @@ import api from "../../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { date } from "react-i18next/icu.macro";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetTalukExtension() {
@@ -28,11 +29,25 @@ function BudgetTalukExtension() {
       scCategoryId: "",
       institutionType: "",
       institutionId: "",
+      districtImplementingOfficerId: "",
+      talukImplementingOfficerId: "",
+      scComponentId: "",
+      scComponentTypeId: "",
   });
 
   const [type, setType] = useState({
     budgetType: "allocate",
   });
+
+  const [designation, setDesignation] = useState({
+    designationId: "",
+  });
+
+  const handleDesignationInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setDesignation({ ...data, [name]: value });
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -207,7 +222,7 @@ if (type.budgetType === "release") {
 
   const getFinancialDefaultDetails = () => {
     api
-      .get(baseURL + `financialYearMaster/get-is-default`)
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
       .then((response) => {
         setData((prev) => ({
           ...prev,
@@ -241,6 +256,10 @@ if (type.budgetType === "release") {
       scCategoryId: "",
       institutionType: "",
       institutionId: "",
+      districtImplementingOfficerId: "",
+      talukImplementingOfficerId: "",
+      scComponentId: "",
+      scComponentTypeId: "",
     });
     setType({
       budgetType: "allocate",
@@ -254,7 +273,7 @@ if (type.budgetType === "release") {
 
   const getFinancialYearList = () => {
     const response = api
-      .get(baseURL + `financialYearMaster/get-all`)
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
       .then((response) => {
         setFinancialYearListData(response.data.content.financialYearMaster);
       })
@@ -267,30 +286,30 @@ if (type.budgetType === "release") {
     getFinancialYearList();
   }, []);
 
-  // to get Head Of Account
-  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+  // // to get Head Of Account
+  // const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
-  const getHeadOfAccountList = () => {
-    const response = api
-      .get(baseURL + `scHeadAccount/get-all`)
-      .then((response) => {
-        setHeadOfAccountListData(response.data.content.scHeadAccount);
-      })
-      .catch((err) => {
-        setHeadOfAccountListData([]);
-      });
-  };
+  // const getHeadOfAccountList = () => {
+  //   const response = api
+  //     .get(baseURL + `scHeadAccount/get-all`)
+  //     .then((response) => {
+  //       setHeadOfAccountListData(response.data.content.scHeadAccount);
+  //     })
+  //     .catch((err) => {
+  //       setHeadOfAccountListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getHeadOfAccountList();
-  }, []);
+  // useEffect(() => {
+  //   getHeadOfAccountList();
+  // }, []);
 
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
   const getDistrictList = () => {
     const response = api
-      .get(baseURL + `district/get-all`)
+      .get(baseURLMasterData + `district/get-all`)
       .then((response) => {
         setDistrictListData(response.data.content.district);
       })
@@ -308,7 +327,7 @@ if (type.budgetType === "release") {
 
   const getTalukList = () => {
     const response = api
-      .get(baseURL + `taluk/get-all`)
+      .get(baseURLMasterData + `taluk/get-all`)
       .then((response) => {
         setTalukListData(response.data.content.taluk);
       })
@@ -321,59 +340,259 @@ if (type.budgetType === "release") {
     getTalukList();
   }, []);
 
-   // to get get Scheme
-   const [schemeListData, setSchemeListData] = useState([]);
+  // to get designation
+  const [designationListData, setDesignationListData] = useState([]);
 
-   const getSchemeList = () => {
-     const response = api
-       .get(baseURL + `scSchemeDetails/get-all`)
+  const getDesignationList = () => {
+    const response = api
+      .get(baseURLMasterData + `designation/get-all`)
+      .then((response) => {
+        if (response.data.content.designation) {
+          setDesignationListData(response.data.content.designation);
+        }
+      })
+      .catch((err) => {
+        setDesignationListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+   getDesignationList();
+  }, []);
+
+  // to get District Implementing Officer
+  const [districtImplementingOfficerListData, setDistrictImplementingOfficerListData] = useState([]);
+
+  const getDistrictImplementingOfficerList = (designationId, districtId) => {
+    api
+      .post(baseURLMasterData + `userMaster/get-by-designationId-and-districtId`, {
+        designationId: designationId,
+        districtId: districtId,
+      })
+      .then((response) => {
+        setDistrictImplementingOfficerListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setDistrictImplementingOfficerListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (designation.designationId && data.districtId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getDistrictImplementingOfficerList(
+        designation.designationId,
+        data.districtId
+      );
+    }
+  }, [designation.designationId, data.districtId]);
+
+  // to get Taluk Implementing Officer
+  const [talukImplementingOfficerListData, setTalukImplementingOfficerListData] = useState([]);
+
+  const getTalukImplementingOfficerList = (designationId,districtId, talukId) => {
+    api
+      .post(baseURLMasterData + `userMaster/get-by-designationId-and-districtId-and-talukId`, {
+        designationId: designationId,
+        districtId: districtId,
+        talukId: talukId,
+      })
+      .then((response) => {
+        setTalukImplementingOfficerListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setTalukImplementingOfficerListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (designation.designationId && data.districtId && data.talukId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getTalukImplementingOfficerList(
+        designation.designationId,
+        data.districtId ,
+        data.talukId
+      );
+    }
+  }, [designation.designationId,data.districtId, data.talukId]);
+
+   // to get sc-scheme-details
+   const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
+
+   const getList = () => {
+     api
+       .get(baseURLMasterData + `scSchemeDetails/get-all`)
        .then((response) => {
-         setSchemeListData(response.data.content.ScSchemeDetails);
+         setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
        })
        .catch((err) => {
-        setSchemeListData([]);
+         setScSchemeDetailsListData([]);
        });
    };
  
    useEffect(() => {
-     getSchemeList();
+     getList();
    }, []);
-
-   // to get Sub Scheme
-   const [subSchemeListData, setSubSchemeListData] = useState([]);
-
-   const getSubSchemeList = () => {
-     const response = api
-       .get(baseURL + `scSubSchemeDetails/get-all`)
+ 
+   // to get Financial Year
+   const [financialyearListData, setFinancialyearListData] = useState([]);
+ 
+   const getFinancialList = () => {
+     api
+       .get(baseURLMasterData + `financialYearMaster/get-all`)
        .then((response) => {
-         setSubSchemeListData(response.data.content.scSubSchemeDetails);
+         setFinancialyearListData(response.data.content.financialYearMaster);
        })
        .catch((err) => {
-        setSubSchemeListData([]);
+         setFinancialyearListData([]);
        });
    };
  
    useEffect(() => {
-     getSubSchemeList();
+     getFinancialList();
    }, []);
+ 
+   // to get sc-sub-scheme-details by sc-scheme-details
+   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+     []
+   );
+   const getSubSchemeList = (_id) => {
+     api
+       .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+       .then((response) => {
+         if (response.data.content.unitCost) {
+           setScSubSchemeDetailsListData(response.data.content.unitCost);
+         } else {
+           setScSubSchemeDetailsListData([]);
+         }
+       })
+       .catch((err) => {
+         setScSubSchemeDetailsListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+     if (data.scSchemeDetailsId) {
+       getSubSchemeList(data.scSchemeDetailsId);
+       getSchemeQuotaList(data.scSchemeDetailsId);
+     }
+   }, [data.scSchemeDetailsId]);
+ 
 
-   // to get Category
-   const [categoryListData, setCategoryListData] = useState([]);
-
+ 
+   // to get head of account by sc-scheme-details
+   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+   
+   const getHeadAccountList = () => {
+     api
+       .get(baseURLMasterData + `scHeadAccount/get-all`)
+       .then((response) => {
+         if (response.data.content.scHeadAccount) {
+           setScHeadAccountListData(response.data.content.scHeadAccount);
+         }
+       })
+       .catch((err) => {
+         setScHeadAccountListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+     getHeadAccountList();
+   }, []);
+ 
+   // to get category by head of account id
+   const [scCategoryListData, setScCategoryListData] = useState([]);
+   
    const getCategoryList = () => {
-     const response = api
-       .get(baseURL + `scCategory/get-all`)
+     api
+       .get(baseURLMasterData + `scCategory/get-all`)
        .then((response) => {
-         setCategoryListData(response.data.content.scCategory);
+         if (response.data.content.scCategory) {
+           setScCategoryListData(response.data.content.scCategory);
+         }
        })
        .catch((err) => {
-        setCategoryListData([]);
+         setScCategoryListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
        });
    };
  
    useEffect(() => {
      getCategoryList();
    }, []);
+ 
+   
+ 
+   // to get scheme-Quota-details
+   const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
+     []
+   );
+ 
+   const getSchemeQuotaList = (_id) => {
+     api
+       .get(baseURLMasterData + `schemeQuota/get-by-sc-scheme-details-id/${_id}`)
+       .then((response) => {
+         if (response.data.content.schemeQuota) {
+           setSchemeQuotaDetailsListData(response.data.content.schemeQuota);
+         } else {
+           setSchemeQuotaDetailsListData([]);
+         }
+       })
+       .catch((err) => {
+         setSchemeQuotaDetailsListData([]);
+       });
+   };
+ 
+   // to get component
+   const [scComponentListData, setScComponentListData] = useState([]);
+ 
+ 
+   const getComponentList = (schemeId, subSchemeId) => {
+     api
+       .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId`, {
+         schemeId: schemeId,
+         subSchemeId: subSchemeId,
+       })
+       .then((response) => {
+         setScComponentListData(response.data.content.unitCost);
+       })
+       .catch((err) => {
+         setScComponentListData([]);
+       });
+   };
+ 
+   const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+     schemeId,
+     subSchemeId
+   ) => {
+     api
+       .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+         schemeId: schemeId,
+         subSchemeId: subSchemeId,
+       })
+       .then((response) => {
+         if (response.data.content.unitCost) {
+           setScHeadAccountListData(response.data.content.unitCost);
+         }
+       })
+       .catch((err) => {
+         setScHeadAccountListData([]);
+         // alert(err.response.data.errorMessages[0].message[0].message);
+       });
+   };
+ 
+   useEffect(() => {
+     if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+       getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+       getHeadAccountbyschemeIdAndSubSchemeIdList(
+         data.scSchemeDetailsId,
+         data.scSubSchemeDetailsId
+       );
+     }
+   }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
 
   
@@ -535,38 +754,39 @@ if (type.budgetType === "release") {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Head Of Account<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
-                            }
-                          >
-                            <option value="">Select Head Of Account</option>
-                            {headOfAccountListData.map((list) => (
-                              <option
-                                key={list.scHeadAccountId}
-                                value={list.scHeadAccountId}
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Designation
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="designationId"
+                                value={designation.designationId}
+                                onChange={handleDesignationInputs}
+                                onBlur={() => handleDesignationInputs}
+                                required
+                                isInvalid={
+                                  designation.designationId === undefined ||
+                                  designation.designationId === "0"
+                                }
                               >
-                                {list.scHeadAccountName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Head Of Account is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                                <option value="">Select Designation</option>
+                                {designationListData && designationListData.map((list) => (
+                                  <option
+                                    key={list.designationId}
+                                    value={list.designationId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                               Designation is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
@@ -603,6 +823,41 @@ if (type.budgetType === "release") {
                     </Col>
 
                     <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              District Implementing Officer
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="districtImplementingOfficerId"
+                                value={data.districtImplementingOfficerId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.districtImplementingOfficerId === undefined ||
+                                  data.districtImplementingOfficerId === "0"
+                                }
+                              >
+                                <option value="">Select District Implementing Officer</option>
+                                {districtImplementingOfficerListData &&districtImplementingOfficerListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                              District Implementing Officer is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Select Taluk<span className="text-danger">*</span>
@@ -633,6 +888,41 @@ if (type.budgetType === "release") {
                     </Col>
 
                     <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              Taluk Implementing Officer
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="talukImplementingOfficerId"
+                                value={data.talukImplementingOfficerId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.talukImplementingOfficerId === undefined ||
+                                  data.talukImplementingOfficerId === "0"
+                                }
+                              >
+                                <option value="">Select Taluk Implementing Officer</option>
+                                {talukImplementingOfficerListData &&talukImplementingOfficerListData.map((list) => (
+                                  <option
+                                    key={list.userMasterId}
+                                    value={list.userMasterId}
+                                  >
+                                    {list.username}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                              Taluk Implementing Officer is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                    <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
                           Budget Amount<span className="text-danger">*</span>
@@ -655,103 +945,218 @@ if (type.budgetType === "release") {
                     </Col>
 
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Select Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSchemeDetailsId"
-                            value={data.scSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSchemeDetailsId === undefined ||
-                              data.scSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Scheme</option>
-                            {schemeListData && schemeListData.map((list) => (
-                              <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                                {list.schemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Select Sub Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSubSchemeDetailsId"
-                            value={data.scSubSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSubSchemeDetailsId === undefined ||
-                              data.scSubSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Sub Scheme</option>
-                            {subSchemeListData && subSchemeListData.map((list) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Scheme
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSchemeDetailsId"
+                                value={data.scSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSchemeDetailsId === undefined ||
+                                  data.scSchemeDetailsId === "0"
+                                }
                               >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Sub Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                                <option value="">Select Scheme Names</option>
+                                {scSchemeDetailsListData.map((list) => (
+                                  <option
+                                    key={list.scSchemeDetailsId}
+                                    value={list.scSchemeDetailsId}
+                                  >
+                                    {list.schemeName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Select Category
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scCategoryId"
-                            value={data.scCategoryId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scCategoryId === undefined ||
-                              data.scCategoryId === "0"
-                            }
-                          >
-                            <option value="">Select Category</option>
-                            {categoryListData && categoryListData.map((list) => (
-                              <option key={list.scCategoryId} value={list.scCategoryId}>
-                                {list.codeNumber}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Category is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Scheme Type
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scComponentTypeId"
+                                value={data.scComponentTypeId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scComponentTypeId === undefined ||
+                                  data.scComponentTypeId === "0"
+                                }
+                              >
+                                <option value="">Select Scheme Quota </option>
+                                {schemeQuotaDetailsListData.map((list) => (
+                                  <option
+                                    key={list.schemeQuotaId}
+                                    value={list.schemeQuotaId}
+                                  >
+                                    {list.schemeQuotaName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Sub Scheme is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label>
+                              Component Type
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scSubSchemeDetailsId"
+                                value={data.scSubSchemeDetailsId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required
+                                isInvalid={
+                                  data.scSubSchemeDetailsId === undefined ||
+                                  data.scSubSchemeDetailsId === "0"
+                                }
+                              >
+                                <option value="">Select Component Type</option>
+                                {scSubSchemeDetailsListData &&
+                                  scSubSchemeDetailsListData.map((list, i) => (
+                                    <option key={i} value={list.subSchemeId}>
+                                      {list.subSchemeName}
+                                    </option>
+                                  ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component Type is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scComponentId"
+                                value={data.scComponentId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scComponentId === undefined ||
+                                  data.scComponentId === "0"
+                                }
+                              >
+                                <option value="">Select Component</option>
+                                {scComponentListData.map((list) => (
+                                  <option
+                                    key={list.scComponentId}
+                                    value={list.scComponentId}
+                                  >
+                                    {list.scComponentName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Component is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Sub Component
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scCategoryId"
+                                value={data.scCategoryId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                // required
+                                isInvalid={
+                                  data.scCategoryId === undefined ||
+                                  data.scCategoryId === "0"
+                                }
+                              >
+                                <option value="">Select Sub Component</option>
+                                {scCategoryListData.map((list) => (
+                                  <option
+                                    key={list.scCategoryId}
+                                    value={list.scCategoryId}
+                                  >
+                                    {list.codeNumber}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Category is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              Head of Account
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="scHeadAccountId"
+                                value={data.scHeadAccountId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                // multiple
+                                required 
+                                isInvalid={
+                                  data.scHeadAccountId === undefined ||
+                                  data.scHeadAccountId === "0"
+                                }
+                              >
+                                <option value="">Select Head of Account</option>
+                                {scHeadAccountListData.map((list) => (
+                                  <option
+                                    key={list.headOfAccountId}
+                                    value={list.headOfAccountId}
+                                  >
+                                    {list.scHeadAccountName}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                Head of Account is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
