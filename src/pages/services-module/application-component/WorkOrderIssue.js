@@ -104,8 +104,8 @@ const WorkOrderIssue = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
-        { params: { userId: 30, stepId: 2 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
+        // { params: { userId: 30, stepId: 2 } }
       )
       .then((response) => {
         setListData(response.data.content);

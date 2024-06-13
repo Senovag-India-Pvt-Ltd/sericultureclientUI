@@ -213,8 +213,8 @@ const SanctionOrderGeneration = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
-        { params: { userId: 113, stepId: 5 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
+        // { params: { userId: 113, stepId: 5 } }
       )
       .then((response) => {
         setListData(response.data.content);

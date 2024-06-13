@@ -1830,6 +1830,7 @@ function DbtApplication() {
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
+                                readOnly
                                 required
                               />
                             </div>
@@ -1856,6 +1857,7 @@ function DbtApplication() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>

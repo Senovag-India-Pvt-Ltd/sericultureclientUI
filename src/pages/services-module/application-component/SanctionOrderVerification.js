@@ -104,8 +104,8 @@ const SanctionOrderVerification = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
-        { params: { userId: 113, stepId: 6 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 6 } }
+        // { params: { userId: 113, stepId: 6 } }
       )
       .then((response) => {
         setListData(response.data.content);

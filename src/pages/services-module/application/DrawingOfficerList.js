@@ -1513,6 +1513,10 @@ function DrawingOfficerList() {
                       <td style={styles.ctstyle}> Category Name:</td>
                       <td>{viewDetailsData.categoryName}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Component Name:</td>
+                      <td>{viewDetailsData.scComponentName}</td>
+                    </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}> State Name in Kannada:</td>
                       <td>{viewDetailsData.stateNameInKannada}</td>
