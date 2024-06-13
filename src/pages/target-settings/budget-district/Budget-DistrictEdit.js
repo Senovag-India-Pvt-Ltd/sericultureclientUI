@@ -198,11 +198,17 @@ function BudgetDistrictEdit() {
       date: "",
       budgetAmount: "",
       districtId: "",
+      districtImplementingOfficerId: "",
+    userDisbure: "",
     });
     setType({
       budgetType: "allocate",
     });
+    setDesignation({
+      designationId: "",
+    })
     setValidated(false);
+    setBalanceAmount(0);
   };
 
   // to get Implementing Officer
@@ -757,8 +763,8 @@ function BudgetDistrictEdit() {
                           }
                         >
                           <option value="0">Select Use/Disperse</option>
-                          <option value="true">True</option>
-                          <option value="false">False</option>
+                          <option value="true">true</option>
+                          <option value="false">false</option>
                           
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">

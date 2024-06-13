@@ -125,7 +125,7 @@ function BudgetHoaExtensionView() {
                     <tbody>
                       <tr>
                         <td style={styles.ctstyle}>Financial Year:</td>
-                        <td>{AcivityData.financialYear}</td>
+                        <td><span>{AcivityData.financialYear}</span></td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Head Of Account:</td>
@@ -140,11 +140,24 @@ function BudgetHoaExtensionView() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td style={styles.ctstyle}>Scheme Type:</td>
                         <td>
-                          <span>{AcivityData.subSchemeName}</span>
+                          <span>{AcivityData.schemeQuotaName}</span>
                         </td>
                       </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Component Type:</td>
+                      <td>
+                        <span>{AcivityData.subSchemeName}</span>
+                      </td>
+                      </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Component Type:</td>
+                      <td>
+                        <span>{AcivityData.subSchemeName}</span>
+                      </td>
+                      </tr>
+
                       <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
@@ -152,11 +165,7 @@ function BudgetHoaExtensionView() {
                         </td>
                       </tr>
 
-                      <td style={styles.ctstyle}>Category:</td>
-                      <td>
-                        <span>{AcivityData.codeNumber}</span>
-                      </td>
-
+                    
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>

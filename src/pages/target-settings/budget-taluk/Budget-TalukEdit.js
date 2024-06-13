@@ -196,6 +196,9 @@ function BudgetTalukEdit() {
     setType({
       budgetType: "allocate",
     });
+    setDesignation({
+      designationId: "",
+    })
     setValidated(false);
     setBalanceAmount(0);
   };

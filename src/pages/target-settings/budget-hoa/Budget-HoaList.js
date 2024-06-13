@@ -190,7 +190,7 @@ function BudgetHoaList() {
     });
   };
 
-  const deleteConfirm = (id) => {
+  const deleteConfirm = (id,type) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will delete permanently!",
@@ -349,8 +349,15 @@ const dateFormatter = (date) => {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetHoaId)}
             className="ms-2"
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                deleteConfirm(row.tsBudgetHoaId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                deleteConfirm(row.tsBudgetReleaseHoaId, "release");
+              }
+            }}
           >
             Delete
           </Button>

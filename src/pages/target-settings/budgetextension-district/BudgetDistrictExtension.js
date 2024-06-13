@@ -241,9 +241,9 @@ if (type.budgetType === "release") {
       institutionType: "",
       institutionId: "",
       districtImplementingOfficerId: "",
-    scComponentId: "",
-    scComponentTypeId: "",
-    userDisbure: "",
+      scComponentId: "",
+      scComponentTypeId: "",
+      userDisbure: "",
     });
     setType({
       budgetType: "allocate",

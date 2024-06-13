@@ -132,18 +132,7 @@ function BudgetTaluk() {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-                districtImplementingOfficerId: "",
-                talukImplementingOfficerId:"",
-                userDisbure:"",
-              });
-              setValidated(false);
+              clear();
             }
           })
           .catch((err) => {
@@ -167,18 +156,7 @@ function BudgetTaluk() {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-                districtImplementingOfficerId: "",
-                talukImplementingOfficerId:"",
-                userDisbure:"",
-              });
-              setValidated(false);
+              clear();
             }
           })
           .catch((err) => {
@@ -236,6 +214,9 @@ function BudgetTaluk() {
     setType({
       budgetType: "allocate",
     });
+    setDesignation({
+      designationId:"",
+    })
     setValidated(false);
     setBalanceAmount(0);
   };

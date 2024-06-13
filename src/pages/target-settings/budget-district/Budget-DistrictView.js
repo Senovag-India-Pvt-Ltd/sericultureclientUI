@@ -95,7 +95,7 @@ function BudgetDistrictView() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budget-district"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -104,7 +104,7 @@ function BudgetDistrictView() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Budget-list"
+                  to="/seriui/budget-district"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -151,6 +151,19 @@ function BudgetDistrictView() {
                           <span>{dateFormatter(budgetDistrictData.date)}</span>
                         </td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District Implementing Officer:</td>
+                        <td>
+                          <span>{budgetDistrictData.username}</span>
+                        </td>
+                        
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Use/disbure:</td>
+                        <td>
+                          <span>{budgetDistrictData.userDisbure}</span>
+                        </td>
+                        </tr>
                     </tbody>
                   </table>
                 </Col>
