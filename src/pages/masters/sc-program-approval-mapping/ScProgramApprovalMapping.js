@@ -16,6 +16,7 @@ function ScProgramApprovalMapping() {
   const [designationList, setDesignationList] = useState([]);
   const [designationDetails, setDesignationDetails] = useState({
     designationId: "",
+    amount: "",
 
   });
 
@@ -41,6 +42,7 @@ function ScProgramApprovalMapping() {
       setDesignationList((prev) => [...prev, designationDetails]);
       setDesignationDetails({
         designationId: "",
+        amount: "",
       });
       setShowModal(false);
       setValidatedDesignationDetails(false);
@@ -83,6 +85,7 @@ function ScProgramApprovalMapping() {
       setValidatedDesignationDetailsEdit(false);
       setDesignationDetails({
         designationId: "",
+        amount: "",
       });
     }
   };
@@ -173,6 +176,7 @@ function ScProgramApprovalMapping() {
   const designationClear = () => {
     setDesignationDetails({
       designationId: "",
+      amount: "",
     });
     setDesignationList([])
   }
@@ -611,8 +615,8 @@ function ScProgramApprovalMapping() {
                                 {/* <th></th> */}
                                 <th>Action</th>
                                 <th>Designation</th>
-                                {/* <th>Head Of Account</th>
-                                <th>Share in %</th> */}
+                                <th>Amount</th>
+                                {/* <th>Share in %</th> */}
                               </tr>
                             </thead>
                             <tbody>
@@ -718,6 +722,22 @@ function ScProgramApprovalMapping() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="program">Amount</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="amount"
+                          name="amount"
+                          type="number"
+                          value={data.amount}
+                          onChange={handleMapInputs}
+                          placeholder="Enter Amount"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 
               <Col lg="12">
