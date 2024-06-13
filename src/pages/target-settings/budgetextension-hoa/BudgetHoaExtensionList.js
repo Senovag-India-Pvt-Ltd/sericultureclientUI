@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetHoaExtensionList() {
@@ -159,23 +160,54 @@ useEffect(() => {
     getFinancialYearList();
   }, []);
 
-  // to get Head Of Account
-  const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
+  // // to get Head Of Account
+  // const [headOfAccountListData, setHeadOfAccountListData] = useState([]);
 
-  const getHeadOfAccountList = () => {
+  // const getHeadOfAccountList = () => {
+  //   api
+  //     .get(baseURLMasterData + `scHeadAccount/get-all`)
+  //     .then((response) => {
+  //       setHeadOfAccountListData(response.data.content.scHeadAccount);
+  //     })
+  //     .catch((err) => {
+  //       setHeadOfAccountListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getHeadOfAccountList();
+  // }, []);
+
+  const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+  const getHeadAccountbyschemeIdAndSubSchemeIdList = (
+    schemeId,
+    subSchemeId
+  ) => {
     api
-      .get(baseURLMasterData + `scHeadAccount/get-all`)
+      .post(baseURLDBT + `master/cost/get-hoa-by-schemeId-and-subSchemeId`, {
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+      })
       .then((response) => {
-        setHeadOfAccountListData(response.data.content.scHeadAccount);
+        if (response.data.content.unitCost) {
+          setScHeadAccountListData(response.data.content.unitCost);
+        }
       })
       .catch((err) => {
-        setHeadOfAccountListData([]);
+        setScHeadAccountListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
       });
   };
 
   useEffect(() => {
-    getHeadOfAccountList();
-  }, []);
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getHeadAccountbyschemeIdAndSubSchemeIdList(
+        data.scSchemeDetailsId,
+        data.scSubSchemeDetailsId
+      ); 
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   // to get get Scheme
 const [schemeListData, setSchemeListData] = useState([]);
@@ -195,23 +227,49 @@ useEffect(() => {
   getSchemeList();
 }, []);
 
-// to get Sub Scheme
-const [subSchemeListData, setSubSchemeListData] = useState([]);
+// // to get Sub Scheme
+// const [subSchemeListData, setSubSchemeListData] = useState([]);
 
-const getSubSchemeList = () => {
-  const response = api
-    .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+// const getSubSchemeList = () => {
+//   const response = api
+//     .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
+//     .then((response) => {
+//       setSubSchemeListData(response.data.content.scSubSchemeDetails);
+//     })
+//     .catch((err) => {
+//      setSubSchemeListData([]);
+//     });
+// };
+
+// useEffect(() => {
+//   getSubSchemeList();
+// }, []);
+
+const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+  []
+);
+const getSubSchemeList = (_id) => {
+  api
+    .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
     .then((response) => {
-      setSubSchemeListData(response.data.content.scSubSchemeDetails);
+      if (response.data.content.unitCost) {
+        setScSubSchemeDetailsListData(response.data.content.unitCost);
+      } else {
+        setScSubSchemeDetailsListData([]);
+      }
     })
     .catch((err) => {
-     setSubSchemeListData([]);
+      setScSubSchemeDetailsListData([]);
+      // alert(err.response.data.errorMessages[0].message[0].message);
     });
 };
 
 useEffect(() => {
-  getSubSchemeList();
-}, []);
+  if (data.scSchemeDetailsId) {
+    getSubSchemeList(data.scSchemeDetailsId);
+    // getSchemeQuotaList(data.scSchemeDetailsId);
+  }
+}, [data.scSchemeDetailsId]);
 
 // to get Category
 const [categoryListData, setCategoryListData] = useState([]);
@@ -614,7 +672,7 @@ useEffect(() => {
                         }
                       >
                         <option value="">Select Head Of Account</option>
-                        {headOfAccountListData.map((list) => (
+                        {scHeadAccountListData.map((list) => (
                           <option
                             key={list.scHeadAccountId}
                             value={list.scHeadAccountId}
@@ -681,7 +739,7 @@ useEffect(() => {
                             }
                           >
                             <option value="">Select Sub Scheme</option>
-                            {subSchemeListData && subSchemeListData.map((list) => (
+                            {scSubSchemeDetailsListData && scSubSchemeDetailsListData.map((list) => (
                               <option
                                 key={list.scSubSchemeDetailsId}
                                 value={list.scSubSchemeDetailsId}
