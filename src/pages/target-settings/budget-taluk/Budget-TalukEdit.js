@@ -828,7 +828,7 @@ function BudgetTalukEdit() {
 
                           
 
-                          <Col lg="6">
+                          {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4 ">
                               <Form.Label htmlFor="title">
                                 Budget Amount
@@ -872,12 +872,10 @@ function BudgetTalukEdit() {
                           <option value="false">False</option>
                           
                         </Form.Select>
-                        {/* <Form.Control.Feedback type="invalid">
-                        Scheme Quota Type is required
-                        </Form.Control.Feedback> */}
+                       
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">

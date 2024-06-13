@@ -475,14 +475,14 @@ function BudgetTalukList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.tsBudgetTalukId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -691,7 +691,7 @@ function BudgetTalukList() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Designation
@@ -724,7 +724,7 @@ function BudgetTalukList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
@@ -760,7 +760,7 @@ function BudgetTalukList() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               District Implementing Officer
@@ -793,7 +793,7 @@ function BudgetTalukList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
@@ -825,7 +825,7 @@ function BudgetTalukList() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Taluk Implementing Officer
@@ -858,7 +858,7 @@ function BudgetTalukList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
               </Row>
             </Card.Body>
           </Card>
