@@ -335,7 +335,9 @@ function DrawingOfficerList() {
     }
   };
 
+  const [showDisable, setShowDisable] = useState(false);
   const handlePush = (id) => {
+    setShowDisable(true);
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
@@ -349,6 +351,7 @@ function DrawingOfficerList() {
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
+          setShowDisable(false);
         } else {
           saveSuccess();
           getList();
@@ -356,6 +359,7 @@ function DrawingOfficerList() {
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
+        setShowDisable(false);
       });
     setValidated(true);
   };
@@ -985,6 +989,7 @@ function DrawingOfficerList() {
             size="sm"
             onClick={() => handlePush(row.scApplicationFormId)}
             className="ms-1"
+            disabled={showDisable}
           >
             Push
           </Button>
