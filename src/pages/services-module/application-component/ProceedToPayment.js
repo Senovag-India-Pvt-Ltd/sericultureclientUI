@@ -153,7 +153,7 @@ const ProceedToPayment = () => {
           .post(
             baseURLDBT + `service/updateApplicationFormProcessCompleted`,
             {},
-            { params: { docId : applicationDocumentId } }
+            { params: { docId : applicationDocumentId, loggedInUserId:localStorage.getItem("userMasterId") } }
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
