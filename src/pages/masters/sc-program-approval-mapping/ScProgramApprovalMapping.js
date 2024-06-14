@@ -174,6 +174,7 @@ function ScProgramApprovalMapping() {
   const designationClear = () => {
     setDesignationDetails({
       designationId: "",
+      amount: "",
     });
     setDesignationList([]);
   };
