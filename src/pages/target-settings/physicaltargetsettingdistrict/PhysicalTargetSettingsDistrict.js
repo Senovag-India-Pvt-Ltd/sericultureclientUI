@@ -18,13 +18,16 @@ function PhysicalTargetSettingsDistrict() {
     financialYearMasterId: "",
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
-    scCategoryId: "",
     districtId: "",
     date: "",
     reportingOfficerId: "",
     implementingOfficerId: "",
     tsActivityMasterId: "",
-    unitMeasurementId: "",
+    unitMeasurementId: "9",
+    scCategoryId: "",
+    amount: "",
+    tsMeasurementUnitId: "",
+    schemeOrActivity: "",
   });
 
   const [months, setMonths] = useState({
@@ -129,15 +132,19 @@ function PhysicalTargetSettingsDistrict() {
 
   const clear = () => {
     setData({
-      financialYearMasterId: "",
-      scSchemeDetailsId: "",
-      scSubSchemeDetailsId: "",
-      districtId: "",
-      date: "",
-      reportingOfficerId: "",
-      implementingOfficerId: "",
-      tsActivityMasterId: "",
-      unitMeasurementId: "",
+    financialYearMasterId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    districtId: "",
+    date: "",
+    reportingOfficerId: "",
+    implementingOfficerId: "",
+    tsActivityMasterId: "",
+    unitMeasurementId: "9",
+    scCategoryId: "",
+    amount: "",
+    tsMeasurementUnitId: "",
+    schemeOrActivity: "",
     });
     setMonths({
       jan: "",
@@ -673,41 +680,58 @@ function PhysicalTargetSettingsDistrict() {
                 </Col>
 
                 <Col lg="6">
+                      <Form.Group className="form-group mt-n4 ">
+                        <Form.Label htmlFor="title">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Activity
+                      Scheme Or Activity
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="tsActivityMasterId"
-                        value={data.tsActivityMasterId}
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.tsActivityMasterId === undefined ||
-                          data.tsActivityMasterId === "0"
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
                         }
                       >
-                        <option value="">Select Activity</option>
-                        {activityListData.map((list) => (
-                          <option
-                            key={list.tsActivityMasterId}
-                            value={list.tsActivityMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">true</option>
+                        <option value="2">false</option>
+                        
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Activity is required.
+                      Scheme Or Activity is required.
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Unit Of Measurement
@@ -737,7 +761,7 @@ function PhysicalTargetSettingsDistrict() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <Col lg="2">
                   <Form.Group className="form-group mt-n4">

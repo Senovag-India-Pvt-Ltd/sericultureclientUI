@@ -156,15 +156,15 @@ function PhysicalTargetSettingsTalukView() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Activity:</td>
+                        <td style={styles.ctstyle}>Scheme Or Activity:</td>
                         <td>
-                          <span>{AcivityData.name}</span>
+                          <span>{AcivityData.schemeOrActivity}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Unit Of Measurement:</td>
+                        <td style={styles.ctstyle}>Amount:</td>
                         <td>
-                          <span>{AcivityData.unitMeasurementId}</span>
+                          <span>{AcivityData.amount}</span>
                         </td>
                       </tr>
                     </tbody>

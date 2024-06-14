@@ -247,19 +247,27 @@ function PhysicalTargetSettingsTalukList() {
       hide: "md",
     },
     {
-      name: "Activity",
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
+      name: "Scheme Or Activity",
+      selector: (row) => row.schemeOrActivity,
+      cell: (row) => <span>{row.schemeOrActivity}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Unit Of Measurement",
-      selector: (row) => row.unitMeasurementId,
-      cell: (row) => <span>{row.unitMeasurementId}</span>,
+      name: "Amount",
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
       sortable: false,
       hide: "md",
     },
+
+    // {
+    //   name: "Unit Of Measurement",
+    //   selector: (row) => row.unitMeasurementId,
+    //   cell: (row) => <span>{row.unitMeasurementId}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
   ];
 
   return (

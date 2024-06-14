@@ -28,6 +28,10 @@ function PhysicalTargetSettingsTsc() {
     implementingOfficerId:"",
     tsActivityMasterId:"",
     unitMeasurementId: "",
+    amount: "",
+    tsMeasurementUnitId: "",
+    schemeOrActivity: "",
+
   });
 
   const [months, setMonths] = useState({
@@ -145,6 +149,10 @@ function PhysicalTargetSettingsTsc() {
       implementingOfficerId:"",
       tsActivityMasterId:"",
       unitMeasurementId: "",
+amount: "",
+    tsMeasurementUnitId: "",
+    schemeOrActivity: "",
+
     });
     setMonths({
       jan: "",
@@ -744,71 +752,89 @@ useEffect(() => {
                           </Col>
 
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Activity
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="tsActivityMasterId"
-                                value={data.tsActivityMasterId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.tsActivityMasterId === undefined ||
-                                  data.tsActivityMasterId === "0"
-                                }
-                              >
-                                <option value="">Select  Activity</option>
-                                {activityListData.map((list) => (
-                                  <option
-                                    key={list.tsActivityMasterId}
-                                    value={list.tsActivityMasterId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Activity is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                      <Form.Group className="form-group mt-n4 ">
+                        <Form.Label htmlFor="title">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
-                          <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
-                              <Form.Label>
-                                Unit Of Measurement
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="unitMeasurementId"
-                                value={data.unitMeasurementId}
-                                onChange={handleInputs}
-                                onBlur={() => handleInputs}
-                                // required
-                                isInvalid={
-                                  data.unitMeasurementId === undefined ||
-                                  data.unitMeasurementId === "0"
-                                }
-                              >
-                                <option value="">Select  Unit Of Measurement</option>
-                                {unitTypeList.map((list) => (
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Scheme Or Activity
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
+                        }
+                      >
+                        <option value="">Select Scheme Or Activity</option>
+                        <option value="1">true</option>
+                        <option value="2">false</option>
+                        
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Scheme Or Activity is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                {/* <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Unit Of Measurement
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="unitMeasurementId"
+                        value={data.unitMeasurementId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // required
+                        isInvalid={
+                          data.unitMeasurementId === undefined ||
+                          data.unitMeasurementId === "0"
+                        }
+                      >
+                        <option value="">Select Unit Of Measurement</option>
+                        {unitTypeList.map((list) => (
                           <option key={list.id} value={list.id}>
                             {list.measurementUnit}
                           </option>
                         ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  Unit Of Measurement is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Unit Of Measurement is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col> */}
+
 
                           <Col lg="2">
                       <Form.Group className="form-group mt-n4">
