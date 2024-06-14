@@ -1536,6 +1536,10 @@ function DrawingOfficerList() {
                       <td style={styles.ctstyle}> Component Name:</td>
                       <td>{viewDetailsData.scComponentName}</td>
                     </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Remarks:</td>
+                      <td>{viewDetailsData.remarks}</td>
+                    </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}> State Name in Kannada:</td>
                       <td>{viewDetailsData.stateNameInKannada}</td>

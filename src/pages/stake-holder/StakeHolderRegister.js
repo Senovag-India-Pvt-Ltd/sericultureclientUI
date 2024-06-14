@@ -1013,6 +1013,24 @@ function StakeHolderRegister() {
         return;
       }
 
+      if(farmerAddressList && farmerAddressList.length>0 ){
+        if(!farmerAddressList[0].stateId && !farmerAddressList[0].districtId && !farmerAddressList[0].talukId && !farmerAddressList[0].hobliId && !farmerAddressList[0].villageId ){
+          Swal.fire({
+            icon: "warning",
+            title: "Edit or Add Farmer First Record!!!",
+          })
+          return;
+        }
+      }
+
+      if(farmerLandList && farmerLandList.length <= 0){
+        Swal.fire({
+          icon: "warning",
+          title: "Land Details is Mandatory!!!",
+        })
+        return;
+      }
+
       const sendData = {
         farmerRequest: data,
         farmerBankAccountRequest: bank,
