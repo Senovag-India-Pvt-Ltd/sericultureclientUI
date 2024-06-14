@@ -1085,8 +1085,8 @@ if (type.budgetType === "release") {
                           }
                         >
                           <option value="0">Select Use/Disperse</option>
-                          <option value="true">True</option>
-                          <option value="false">False</option>
+                          <option value="true">true</option>
+                          <option value="false">false</option>
                           
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">

@@ -695,12 +695,12 @@ const postData = (event) => {
     });
   };
   return (
-    <Layout title="Taluk  Budget mapping scheme and programs">
+    <Layout title="Institution  Budget mapping scheme and programs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Taluk Budget mapping scheme and programs
+            Institution Budget mapping scheme and programs
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>

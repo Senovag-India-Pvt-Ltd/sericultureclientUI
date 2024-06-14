@@ -152,9 +152,15 @@ function BudgetHoaExtensionView() {
                       </td>
                       </tr>
                       <tr>
-                      <td style={styles.ctstyle}>Component Type:</td>
+                      <td style={styles.ctstyle}>Component:</td>
                       <td>
-                        <span>{AcivityData.subSchemeName}</span>
+                        <span>{AcivityData.scComponentName}</span>
+                      </td>
+                      </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Sub Component:</td>
+                      <td>
+                        <span>{AcivityData.categoryName}</span>
                       </td>
                       </tr>
 

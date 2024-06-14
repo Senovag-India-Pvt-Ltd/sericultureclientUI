@@ -28,20 +28,20 @@ function BudgetInstitutionExtensionList() {
 
   const [data, setData] = useState({
     financialYearMasterId: "",
-    tsBudgetInstitutionId: "",
+    // tsBudgetInstitutionId: "",
     scHeadAccountId: "",
     districtId: "",
     talukId: "",
-    date: "",
-    budgetAmount: "",
+    // date: "",
+    // budgetAmount: "",
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scCategoryId: "",
     institutionType: "1",
     institutionId: "",
-    districtImplementingOfficerId: "",
-    talukImplementingOfficerId: "",
-    institutionImplementingOfficerId: "",
+    // districtImplementingOfficerId: "",
+    // talukImplementingOfficerId: "",
+    // institutionImplementingOfficerId: "",
     scComponentId: "",
     scComponentTypeId: "",
   });
@@ -49,6 +49,8 @@ function BudgetInstitutionExtensionList() {
   const [designation, setDesignation] = useState({
     designationId: "",
   });
+
+  
 
   const handleDesignationInputs = (e) => {
     name = e.target.name;
@@ -68,7 +70,7 @@ function BudgetInstitutionExtensionList() {
 
   const getList = () => {
     // setLoading(true);
-
+    if (type.budgetType === "allocate") {
     api
       .post(baseURLTargetSetting + `tsBudgetInstitutionExt/get-details`, data)
       .then((response) => {
@@ -95,6 +97,35 @@ function BudgetInstitutionExtensionList() {
         }
       });
   };
+
+  if (type.budgetType === "release") {
+    api
+      .post(baseURLTargetSetting + `tsReleaseBudgetInstitutionExt/get-details`, data)
+      .then((response) => {
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          setShow(false);
+        } else {
+          setListData(response.data.content.tsReleaseBudgetInstitutionExt);
+          setShow(true);
+          // saveSuccess();
+          // clear();
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
+          if (Object.keys(err.response.data.validationErrors).length > 0) {
+            // saveError(err.response.data.validationErrors);
+          }
+        }
+      });
+  }
+};
 
   // to get farm
   const [farmListData, setFarmListData] = useState([]);
@@ -552,12 +583,12 @@ function BudgetInstitutionExtensionList() {
   };
 
   const navigate = useNavigate();
-  const handleView = (id) => {
-    navigate(`/seriui/budgetinstitutionextension-view/${id}`);
+  const handleView = (id,type) => {
+    navigate(`/seriui/budgetinstitutionextension-view/${id}/${type}`);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/seriui/budgetinstitutionextension-edit/${id}`);
+  const handleEdit = (id,type) => {
+    navigate(`/seriui/budgetinstitutionextension-edit/${id}/${type}`);
   };
 
   const deleteError = () => {
@@ -669,7 +700,14 @@ function BudgetInstitutionExtensionList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleView(row.tsBudgetInstitutionExtId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleView(row.tsReleaseBudgetInstitutionExtId, "release");
+              }
+              }}
           >
             View
           </Button>
@@ -677,22 +715,30 @@ function BudgetInstitutionExtensionList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => {
+              if (type.budgetType === "allocate") {
+                handleEdit(row.tsBudgetInstitutionExtId, "allocate");
+              }
+              if (type.budgetType === "release") {
+                handleEdit(row.tsReleaseBudgetInstitutionExtId, "release");
+              }
+            }}
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
+      grow: 2
     },
     {
       name: "Financial Year",
@@ -716,13 +762,13 @@ function BudgetInstitutionExtensionList() {
       sortable: false,
       hide: "md",
     },
-    {
-      name: "Institution Name",
-      selector: (row) => row.institutionName,
-      cell: (row) => <span>{row.institutionName}</span>,
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Institution Name",
+    //   selector: (row) => row.institutionName,
+    //   cell: (row) => <span>{row.institutionName}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
     {
       name: "Budget Amount",
       selector: (row) => row.budgetAmount,
@@ -732,41 +778,55 @@ function BudgetInstitutionExtensionList() {
     },
     {
       name: "Head Of Account",
-      selector: (row) => row.scHeadAccountId,
-      cell: (row) => <span>{row.scHeadAccountId}</span>,
+      selector: (row) => row.scHeadAccountName,
+      cell: (row) => <span>{row.scHeadAccountName}</span>,
       sortable: false,
       hide: "md",
     },
     {
       name: "Scheme",
-      selector: (row) => row.scheme,
-      cell: (row) => <span>{row.scheme}</span>,
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Sub Scheme",
-      selector: (row) => row.subscheme,
-      cell: (row) => <span>{row.subscheme}</span>,
+      name: "Scheme Type",
+      selector: (row) => row.schemeQuotaName,
+      cell: (row) => <span>{row.schemeQuotaName}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Category",
-      selector: (row) => row.category,
-      cell: (row) => <span>{row.category}</span>,
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Component",
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: false,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Edit Institution Budget mapping scheme and programs List">
+    <Layout title="Institution Budget mapping scheme and programs List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Edit Institution Budget mapping scheme and programs List
+              Institution Budget mapping scheme and programs List
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
@@ -894,7 +954,7 @@ function BudgetInstitutionExtensionList() {
                       </Row>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Designation
@@ -927,7 +987,7 @@ function BudgetInstitutionExtensionList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
@@ -963,7 +1023,7 @@ function BudgetInstitutionExtensionList() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               District Implementing Officer
@@ -996,7 +1056,7 @@ function BudgetInstitutionExtensionList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
@@ -1028,7 +1088,7 @@ function BudgetInstitutionExtensionList() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Taluk Implementing Officer
@@ -1061,7 +1121,7 @@ function BudgetInstitutionExtensionList() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
 
                     <Col lg="6">
@@ -1459,7 +1519,7 @@ function BudgetInstitutionExtensionList() {
                       ""
                     )}
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                          Institution Implementing Officer
@@ -1491,7 +1551,7 @@ function BudgetInstitutionExtensionList() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </Card.Body>
               </Card>

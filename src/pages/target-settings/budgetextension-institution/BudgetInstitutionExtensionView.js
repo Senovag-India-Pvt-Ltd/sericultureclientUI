@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetInstitutionExtensionView() {
   const styles = {
@@ -19,7 +19,7 @@ function BudgetInstitutionExtensionView() {
     },
   };
 
-  const { id } = useParams();
+  const { id,types } = useParams();
   // const [data] = useState(CasteDatas);
   const [budgetDistrictData, setBudgetDistrictData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -30,10 +30,15 @@ function BudgetInstitutionExtensionView() {
   // setCaste(findUser);
   // }, [id, data]);
 
+  const [type, setType] = useState({
+    budgetType: types,
+  });
+
   const getIdList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+    if (type.budgetType === "allocate") {
+   api
+      .get(baseURLTargetSetting + `tsBudgetInstitutionExt/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -42,7 +47,20 @@ function BudgetInstitutionExtensionView() {
         setBudgetDistrictData({});
         setLoading(false);
       });
-  };
+  }
+  if (type.budgetType === "release") {
+    api
+      .get(baseURLTargetSetting + `tsReleaseBudgetInstitutionExt/get-join/${id}`)
+      .then((response) => {
+        setBudgetDistrictData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setBudgetDistrictData({});
+        setLoading(false);
+      });
+  }
+};
 
   // Date Formate
   const dateFormatter = (date) => {
@@ -143,20 +161,32 @@ function BudgetInstitutionExtensionView() {
                       <tr>
                         <td style={styles.ctstyle}>Scheme:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetScheme}</span>
+                          <span>{budgetDistrictData.schemeName}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Sub Scheme:</td>
+                        <td style={styles.ctstyle}>Scheme Type:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetSubScheme}</span>
+                          <span>{budgetDistrictData.schemeQuotaName}</span>
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Category:</td>
-                        <td>
-                          <span>{budgetDistrictData.budgetCategory}</span>
-                        </td>
+                      <td style={styles.ctstyle}>Component Type:</td>
+                      <td>
+                        <span>{budgetDistrictData.subSchemeName}</span>
+                      </td>
+                      </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Component:</td>
+                      <td>
+                        <span>{budgetDistrictData.scComponentName}</span>
+                      </td>
+                      </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Sub Component:</td>
+                      <td>
+                        <span>{budgetDistrictData.categoryName}</span>
+                      </td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date:</td>

@@ -929,7 +929,7 @@ const getComponentList = (schemeId, subSchemeId) => {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                </Col>
               </Row>
             </Card.Body>
           </Card>
