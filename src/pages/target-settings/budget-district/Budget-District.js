@@ -272,14 +272,7 @@ function BudgetDistrict() {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                date: "",
-                budgetAmount: "",
-                districtId: "",
-              });
-              setValidated(false);
+              clear();
             }
           })
           .catch((err) => {
@@ -355,10 +348,15 @@ function BudgetDistrict() {
       date: "",
       budgetAmount: "",
       districtId: "",
+      districtImplementingOfficerId: "",
+    userDisbure: "",
     });
     setType({
       budgetType: "allocate",
     });
+    setDesignation({
+      designationId: "",
+    })
     setValidated(false);
     setBalanceAmount(0);
   };
@@ -698,8 +696,8 @@ function BudgetDistrict() {
                           }
                         >
                           <option value="0">Select Use/Disperse</option>
-                          <option value="true">True</option>
-                          <option value="false">False</option>
+                          <option value="true">true</option>
+                          <option value="false">false</option>
                           
                         </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">

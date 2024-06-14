@@ -15,10 +15,13 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function BudgetInstitutionExtensionEdit() {
   // Fetching id from URL params
-  const { id } = useParams();
+  const { id,types} = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [type, setType] = useState({
+    budgetType: types,
+  });
 
   let name, value;
 
@@ -45,9 +48,9 @@ function BudgetInstitutionExtensionEdit() {
     setDesignation({ ...data, [name]: value });
   };
 
-  const [type, setType] = useState({
-    budgetType: "allocate",
-  });
+  // const [type, setType] = useState({
+  //   budgetType: "allocate",
+  // });
 
   const [balanceAmount, setBalanceAmount] = useState(0);
   if (type.budgetType === "allocate") {
@@ -218,9 +221,68 @@ if (type.budgetType === "release") {
       scComponentId: "",
       scComponentTypeId: "",
     });
-    setDesignation("");
+    setDesignation({
+      designationId: ""
+    });
     setValidated(false);
+    setType({
+      budgetType: "allocate",
+    });
+    setBalanceAmount(0);
   };
+
+  const getIdList = () => {
+    setLoading(true);
+    if (type.budgetType === "allocate") {
+      api
+        .get(baseURLTargetSetting + `tsBudgetInstitutionExt/get-join/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+    if (type.budgetType === "release") {
+      api
+        .get(baseURLTargetSetting + `tsReleaseBudgetInstitutionExt/get-join/${id}`)
+        .then((response) => {
+          setData(response.data.content);
+          setLoading(false);
+        })
+        .catch((err) => {
+          let message = "An error occurred while fetching data.";
+          if (err.response && err.response.data) {
+            if (
+              Array.isArray(err.response.data.errorMessages) &&
+              err.response.data.errorMessages.length > 0
+            ) {
+              message = err.response.data.errorMessages[0].message[0].message;
+            }
+          }
+          editError(message);
+          setData({});
+          setLoading(false);
+        });
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    getIdList();
+  }, [id]);
 
    // to get farm
    const [farmListData, setFarmListData] = useState([]);
@@ -650,40 +712,8 @@ if (type.budgetType === "release") {
 
   const isData = !!data.date;
 
-  const getIdList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURLTargetSetting + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
+  
 
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
-          }
-        }
-
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
-  };
-
-  // Fetch data on component mount
-  useEffect(() => {
-    getIdList();
-  }, [id]);
 
   // Navigation hook
   const navigate = useNavigate();

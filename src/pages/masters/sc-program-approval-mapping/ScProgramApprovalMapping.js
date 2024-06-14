@@ -15,6 +15,8 @@ function ScProgramApprovalMapping() {
   const [designationList, setDesignationList] = useState([]);
   const [designationDetails, setDesignationDetails] = useState({
     designationId: "",
+    amount: "",
+
   });
 
   const [validated, setValidated] = useState(false);
@@ -40,6 +42,7 @@ function ScProgramApprovalMapping() {
       setDesignationList((prev) => [...prev, designationDetails]);
       setDesignationDetails({
         designationId: "",
+        amount: "",
       });
       setShowModal(false);
       setValidatedDesignationDetails(false);
@@ -82,6 +85,7 @@ function ScProgramApprovalMapping() {
       setValidatedDesignationDetailsEdit(false);
       setDesignationDetails({
         designationId: "",
+        amount: "",
       });
     }
   };
@@ -567,78 +571,78 @@ function ScProgramApprovalMapping() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
-                        <div className="form-control-wrap">
-                          <ul className="">
-                            <li>
-                              <Button
-                                className="d-md-none"
-                                size="md"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button>
-                            </li>
-                            <li>
-                              <Button
-                                className="d-none d-md-inline-flex"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button>
-                            </li>
-                          </ul>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {designationList.length > 0 ? (
-                    <Row className="g-gs">
-                      <Block>
-                        <Card>
-                          <div
-                            className="table-responsive"
-                            // style={{ paddingBottom: "30px" }}
-                          >
-                            <table className="table small">
-                              <thead>
-                                <tr style={{ backgroundColor: "#f1f2f7" }}>
-                                  {/* <th></th> */}
-                                  <th>Action</th>
-                                  <th>Designation</th>
-                                  {/* <th>Head Of Account</th>
-                                <th>Share in %</th> */}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {designationList.map((item, i) => (
-                                  <tr>
-                                    <td>
-                                      <div>
-                                        <Button
-                                          variant="primary"
-                                          size="sm"
-                                          onClick={() => handleGet(i)}
-                                        >
-                                          Edit
-                                        </Button>
-                                        <Button
-                                          variant="danger"
-                                          size="sm"
-                                          onClick={() => handleDelete(i)}
-                                          className="ms-2"
-                                        >
-                                          Delete
-                                        </Button>
-                                      </div>
-                                    </td>
-                                    <td>{item.name}</td>
-                                    {/* <td>{item.scHeadAccountName}</td>
+                  <Col lg="6">
+                    <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-5">
+                      <div className="form-control-wrap">
+                        <ul className="">
+                          <li>
+                            <Button
+                              className="d-md-none"
+                              size="md"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              className="d-none d-md-inline-flex"
+                              variant="primary"
+                              onClick={handleShowModal}
+                            >
+                              <Icon name="plus" />
+                              <span>Add</span>
+                            </Button>
+                          </li>
+                        </ul>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                {designationList.length > 0 ? (
+                  <Row className="g-gs">
+                    <Block>
+                      <Card>
+                        <div
+                          className="table-responsive"
+                          // style={{ paddingBottom: "30px" }}
+                        >
+                          <table className="table small">
+                            <thead>
+                              <tr style={{ backgroundColor: "#f1f2f7" }}>
+                                {/* <th></th> */}
+                                <th>Action</th>
+                                <th>Designation</th>
+                                <th>Amount</th>
+                                {/* <th>Share in %</th> */}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {designationList.map((item, i) => (
+                                <tr>
+                                  <td>
+                                    <div>
+                                      <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() => handleGet(i)}
+                                      >
+                                        Edit
+                                      </Button>
+                                      <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() => handleDelete(i)}
+                                        className="ms-2"
+                                      >
+                                        Delete
+                                      </Button>
+                                    </div>
+                                  </td>
+                                  <td>{item.name}</td>
+                                  {/* <td>{item.scHeadAccountName}</td>
                                   <td>{item.shareInPercentage}</td> */}
                                   </tr>
                                 ))}

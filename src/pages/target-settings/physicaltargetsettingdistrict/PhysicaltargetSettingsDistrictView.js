@@ -151,9 +151,15 @@ function PhysicaltargetSettingsDistrictView() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Activity:</td>
+                        <td style={styles.ctstyle}>Scheme Or Activity:</td>
                         <td>
-                          <span>{AcivityData.name}</span>
+                          <span>{AcivityData.schemeOrActivity}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Amount:</td>
+                        <td>
+                          <span>{AcivityData.amount}</span>
                         </td>
                       </tr>
                       <tr>

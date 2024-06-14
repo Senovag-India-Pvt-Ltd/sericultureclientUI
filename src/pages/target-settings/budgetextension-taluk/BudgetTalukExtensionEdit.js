@@ -687,7 +687,7 @@ if (type.budgetType === "release") {
                       ) : (
                         <Row className="g-gs">
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 Financial Year
                                 <span className="text-danger">*</span>
@@ -945,31 +945,9 @@ if (type.budgetType === "release") {
                           </Form.Group>
                         </Col>
 
+                          
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
-                              <Form.Label htmlFor="budgetAmount">
-                                Budget Amount
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  id="budgetAmount"
-                                  name="budgetAmount"
-                                  value={data.budgetAmount}
-                                  onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Enter Budget Amount"
-                                  required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Budget Amount is required.
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
                               Scheme
                               <span className="text-danger">*</span>
@@ -1005,7 +983,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Scheme Type
                               <span className="text-danger">*</span>
@@ -1041,7 +1019,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label>
                               Component Type
                               <span className="text-danger">*</span>
@@ -1075,7 +1053,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
                               Component
                               <span className="text-danger">*</span>
@@ -1111,7 +1089,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
                               Sub Component
                               <span className="text-danger">*</span>
@@ -1147,7 +1125,7 @@ if (type.budgetType === "release") {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="sordfl">
                               Head of Account
                               <span className="text-danger">*</span>
@@ -1181,6 +1159,28 @@ if (type.budgetType === "release") {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        <Col lg="6">
+                      <Form.Group className="form-group mt-n4 ">
+                        <Form.Label htmlFor="title">
+                          Budget Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            value={data.budgetAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Budget Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Budget Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">

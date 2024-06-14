@@ -132,18 +132,7 @@ function BudgetTaluk() {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-                districtImplementingOfficerId: "",
-                talukImplementingOfficerId:"",
-                userDisbure:"",
-              });
-              setValidated(false);
+              clear();
             }
           })
           .catch((err) => {
@@ -167,18 +156,7 @@ function BudgetTaluk() {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
-              setData({
-                financialYearMasterId: "",
-                scHeadAccountId: "",
-                districtId: "",
-                talukId: "",
-                date: "",
-                budgetAmount: "",
-                districtImplementingOfficerId: "",
-                talukImplementingOfficerId:"",
-                userDisbure:"",
-              });
-              setValidated(false);
+              clear();
             }
           })
           .catch((err) => {
@@ -236,6 +214,9 @@ function BudgetTaluk() {
     setType({
       budgetType: "allocate",
     });
+    setDesignation({
+      designationId:"",
+    })
     setValidated(false);
     setBalanceAmount(0);
   };
@@ -798,7 +779,7 @@ function BudgetTaluk() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
                         Use/Disperse
@@ -815,16 +796,14 @@ function BudgetTaluk() {
                           }
                         >
                           <option value="0">Select Use/Disperse</option>
-                          <option value="true">True</option>
-                          <option value="false">False</option>
+                          <option value="true">true</option>
+                          <option value="false">false</option>
                           
                         </Form.Select>
-                        {/* <Form.Control.Feedback type="invalid">
-                        Scheme Quota Type is required
-                        </Form.Control.Feedback> */}
+                       
                       </div>
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">

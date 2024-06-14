@@ -22,6 +22,27 @@ function PhysicalTargetSettingsDistrictEdit() {
 
   let name, value;
 
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
+  };
+
   // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
@@ -49,13 +70,16 @@ function PhysicalTargetSettingsDistrictEdit() {
               financialYearMasterId: "",
               scSchemeDetailsId: "",
               scSubSchemeDetailsId: "",
-              scCategoryId: "",
               districtId: "",
               date: "",
               reportingOfficerId: "",
-              implementingOfficerId:"",
-              tsActivityMasterId:"",
+              implementingOfficerId: "",
+              tsActivityMasterId: "",
               unitMeasurementId: "9",
+              scCategoryId: "",
+              amount: "",
+              tsMeasurementUnitId: "",
+              schemeOrActivity: "",
             });
             setValidated(false);
           }
@@ -72,16 +96,19 @@ function PhysicalTargetSettingsDistrictEdit() {
   // Function to clear form data
   const clear = () => {
     setData({
-      financialYearMasterId: "",
-      scSchemeDetailsId: "",
-      scSubSchemeDetailsId: "",
-      scCategoryId: "",
-      districtId: "",
-      date: "",
-      reportingOfficerId: "",
-      implementingOfficerId:"",
-      tsActivityMasterId:"",
-      unitMeasurementId: "9",
+ financialYearMasterId: "",
+    scSchemeDetailsId: "",
+    scSubSchemeDetailsId: "",
+    districtId: "",
+    date: "",
+    reportingOfficerId: "",
+    implementingOfficerId: "",
+    tsActivityMasterId: "",
+    unitMeasurementId: "9",
+    scCategoryId: "",
+    amount: "",
+    tsMeasurementUnitId: "",
+    schemeOrActivity: "",
     });
   };
 
@@ -617,41 +644,57 @@ useEffect(() => {
                           </Col>
 
                           <Col lg="6">
+                      <Form.Group className="form-group mt-n4 ">
+                        <Form.Label htmlFor="title">
+                         Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                          <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                Activity
+                              Scheme Or Activity
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select
-                                  name="tsActivityMasterId"
-                                value={data.tsActivityMasterId}
+                                  name="schemeOrActivity"
+                                value={data.schemeOrActivity}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
                                 isInvalid={
-                                  data.tsActivityMasterId === undefined ||
-                                  data.tsActivityMasterId === "0"
+                                  data.schemeOrActivity === undefined ||
+                                  data.schemeOrActivity === "0"
                                 }
                               >
-                                <option value="">Select  Activity</option>
-                                {activityListData.map((list) => (
-                                  <option
-                                    key={list.tsActivityMasterId}
-                                    value={list.tsActivityMasterId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
+                                <option value="">Select Scheme Or Activity</option>
+                                <option value="1">true</option>
+                        <option value="2">false</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
-                                  Activity is required.
+                                Scheme Or Activity is required.
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
                           </Col>
 
-                          <Col lg="6">
+                          {/* <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 Unit Of Measurement
@@ -681,7 +724,7 @@ useEffect(() => {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="2">
                       <Form.Group className="form-group mt-n4">

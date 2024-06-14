@@ -163,7 +163,7 @@ function BudgetTalukExtensionView() {
                       <tr>
                         <td style={styles.ctstyle}>Category:</td>
                         <td>
-                          <span>{budgetDistrictData.codeNumber}</span>
+                          <span>{budgetDistrictData.categoryName}</span>
                         </td>
                       </tr>
                       <tr>
