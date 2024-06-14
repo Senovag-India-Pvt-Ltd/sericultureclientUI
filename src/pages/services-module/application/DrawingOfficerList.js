@@ -335,9 +335,16 @@ function DrawingOfficerList() {
     }
   };
 
-  const [showDisable, setShowDisable] = useState(false);
+  const [disabledIds, setDisabledIds] = useState([]);
+  // const [showDisable, setShowDisable] = useState(false);
   const handlePush = (id) => {
-    setShowDisable(true);
+    if (listData && listData.length > 0) {
+      listData.forEach((list) => {
+        if (list.scApplicationFormId === id) {
+          setDisabledIds((prevState) => [...prevState, id]);
+        }
+      });
+    }
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
@@ -351,7 +358,11 @@ function DrawingOfficerList() {
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
-          setShowDisable(false);
+          setDisabledIds((prevDisabledIds) =>
+            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+          );
+          // disabledIds.filter((item)=>item !== id);
+          // setShowDisable(false);
         } else {
           saveSuccess();
           getList();
@@ -359,7 +370,10 @@ function DrawingOfficerList() {
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
-        setShowDisable(false);
+        setDisabledIds((prevDisabledIds) =>
+          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+        );
+        // setShowDisable(false);
       });
     setValidated(true);
   };
@@ -989,7 +1003,7 @@ function DrawingOfficerList() {
             size="sm"
             onClick={() => handlePush(row.scApplicationFormId)}
             className="ms-1"
-            disabled={showDisable}
+            disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push
           </Button>

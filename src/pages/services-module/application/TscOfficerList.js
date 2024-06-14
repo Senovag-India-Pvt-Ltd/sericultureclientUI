@@ -339,7 +339,15 @@ function TscOfficerList() {
     }
   };
 
+  const [disabledIds, setDisabledIds] = useState([]);
   const handlePush = (id) => {
+    if (listData && listData.length > 0) {
+      listData.forEach((list) => {
+        if (list.scApplicationFormId === id) {
+          setDisabledIds((prevState) => [...prevState, id]);
+        }
+      });
+    }
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
@@ -353,6 +361,9 @@ function TscOfficerList() {
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
+          setDisabledIds((prevDisabledIds) =>
+            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+          );
         } else {
           saveSuccess();
           getList();
@@ -360,6 +371,9 @@ function TscOfficerList() {
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
+        setDisabledIds((prevDisabledIds) =>
+          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+        );
       });
     setValidated(true);
   };
@@ -946,13 +960,6 @@ function TscOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-          >
-            Push
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
             onClick={() => viewDetails(row.scApplicationFormId)}
             className="ms-1"
           >
@@ -965,6 +972,15 @@ function TscOfficerList() {
             className="ms-1"
           >
             Reject
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-1"
+            onClick={() => handlePush(row.scApplicationFormId)}
+            disabled={disabledIds.includes(row.scApplicationFormId)}
+          >
+            Push
           </Button>
         </>
       ),
