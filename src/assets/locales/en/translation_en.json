@@ -50,7 +50,7 @@
     "representative_agent": "Representatives / Agent",
     "recipient_id": "Recipient ID(Khazane II)",
     "enter_recipient_id": "Enter Recipient ID(Khazane II)",
-    "farmer_photo": "Farmer Photo",
+    "farmer_photo": "Farmer Photo(Max:2mb) (PDF/jpg/png)",
     "add": "Add",
     "save": "Save",
     "cancel": "Cancel",

@@ -1090,6 +1090,24 @@ function OtherStateFarmer() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                        <Form.Label>Caste</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="casteId"
+                            value={data.casteId}
+                            onChange={handleInputs}
+                          >
+                            <option value="0">Select Caste</option>
+                            {casteListData.map((list) => (
+                              <option key={list.id} value={list.id}>
+                                {list.title}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
@@ -1126,23 +1144,7 @@ function OtherStateFarmer() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>Caste</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="casteId"
-                            value={data.casteId}
-                            onChange={handleInputs}
-                          >
-                            <option value="0">Select Caste</option>
-                            {casteListData.map((list) => (
-                              <option key={list.id} value={list.id}>
-                                {list.title}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
+                      
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("differently_abled")}</Form.Label>
@@ -1266,7 +1268,7 @@ function OtherStateFarmer() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="passbookNumber">
                           {t("passbook_number")}
                           <span className="text-danger">*</span>
@@ -1285,7 +1287,7 @@ function OtherStateFarmer() {
                             Passbook Number is required.
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label> Holding CategoLandry</Form.Label>
@@ -2037,7 +2039,7 @@ function OtherStateFarmer() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbook
+                          Upload Bank Passbook(Max:2mb) (PDF/jpg/png)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
