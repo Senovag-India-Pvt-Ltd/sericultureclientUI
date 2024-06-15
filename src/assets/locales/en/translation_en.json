@@ -6,7 +6,7 @@
     "service": "Services",
     "dbt": "DBT",
     "market_and_auction": "Market & Auction",
-    "seed_and_dfl": "Seed & DFL",
+    "seed_and_dfl": "Seed & DFL Management",
     "garden_management": "Garden Management",
     "chawki_management": "Chawki Management",
     "target_setting": "Target Setting",
