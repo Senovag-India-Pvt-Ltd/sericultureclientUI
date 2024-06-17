@@ -1070,6 +1070,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Services_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme Drawing Officer List"
+                  to="/seriui/all-scheme-drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Services_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink

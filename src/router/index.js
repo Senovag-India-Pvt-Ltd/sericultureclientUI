@@ -818,6 +818,7 @@ import ReportRejectList from "../pages/services-module/application/ReportRejectL
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
+import DrawingOfficerSchemeList from "../pages/services-module/application/DrawingOfficerSchemeList";
 // Admin and Reports
 
 function Router() {
@@ -1108,18 +1109,9 @@ function Router() {
               path="application-dashboard"
               element={<ApplicationDashboard />}
             />
-             <Route
-              path="dbt-application"
-              element={<DbtApplication />}
-            />
-            <Route
-              path="report-success-list"
-              element={<ReportSuccessList />}
-            />
-            <Route
-              path="report-reject-list"
-              element={<ReportRejectList />}
-            />
+            <Route path="dbt-application" element={<DbtApplication />} />
+            <Route path="report-success-list" element={<ReportSuccessList />} />
+            <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route
               path="application-form-list"
               element={<ApplicationFormList />}
@@ -1132,10 +1124,7 @@ function Router() {
               path="drawing-officer-list"
               element={<DrawingOfficerList />}
             />
-            <Route
-              path="tsc-officer-list"
-              element={<TscOfficerList />}
-            />
+            <Route path="tsc-officer-list" element={<TscOfficerList />} />
             <Route
               path="application-dashboard-list/:id"
               element={<DashboardList />}
@@ -2418,10 +2407,22 @@ function Router() {
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
-            <Route path="reject-reason-workflow" element={<RejectReasonWorkFlowMaster />} />
-            <Route path="reject-reason-workflow-list" element={<RejectReasonWorkFlowList />} />
-            <Route path="reject-reason-workflow-view/:id" element={<RejectReasonWorkFlowView />} />
-            <Route path="reject-reason-workflow-edit/:id" element={<RejectReasonWorkFlowEdit />} />
+            <Route
+              path="reject-reason-workflow"
+              element={<RejectReasonWorkFlowMaster />}
+            />
+            <Route
+              path="reject-reason-workflow-list"
+              element={<RejectReasonWorkFlowList />}
+            />
+            <Route
+              path="reject-reason-workflow-view/:id"
+              element={<RejectReasonWorkFlowView />}
+            />
+            <Route
+              path="reject-reason-workflow-edit/:id"
+              element={<RejectReasonWorkFlowEdit />}
+            />
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
@@ -2686,7 +2687,10 @@ function Router() {
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route path="map-component" element={<MapComponent />} />
-            <Route path="map-component-list" element={<MapComponentAndHoaList />} />
+            <Route
+              path="map-component-list"
+              element={<MapComponentAndHoaList />}
+            />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
@@ -2956,6 +2960,10 @@ function Router() {
             <Route
               path="reeler-pending-report"
               element={<ReelerPendingReport />}
+            />
+            <Route
+              path="all-scheme-drawing-officer-list"
+              element={<DrawingOfficerSchemeList />}
             />
 
             <Route path="bidding-report" element={<BiddingReport />} />
