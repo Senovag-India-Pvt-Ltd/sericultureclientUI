@@ -22,6 +22,8 @@ function PhysicalTargetSettingsDistrictEdit() {
 
   let name, value;
 
+  const [districtMontlyId,setDistrictMontlyId] = useState("")
+
   const [months, setMonths] = useState({
     jan: "",
     feb: "",
@@ -37,6 +39,21 @@ function PhysicalTargetSettingsDistrictEdit() {
     dec: "",
   });
 
+  const monthNames = {
+    1: "jan",
+  2: "feb",
+  3: "mar",
+  4: "apr",
+  5: "may",
+  6: "jun",
+  7: "jul",
+  8: "aug",
+  9: "sep",
+  10: "oct",
+  11: "nov",
+  12: "dec",
+  }
+
   const handleMonthsInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -50,8 +67,7 @@ function PhysicalTargetSettingsDistrictEdit() {
     setData({ ...data, [name]: value });
   };
 
-  // Function to submit form data
-  const postData = (event) => {
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -59,44 +75,63 @@ function PhysicalTargetSettingsDistrictEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      api
-        .post(baseURLTargetSetting + `tsPhysicalTargetSettingDistrict/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scSchemeDetailsId: "",
-              scSubSchemeDetailsId: "",
-              districtId: "",
-              date: "",
-              reportingOfficerId: "",
-              implementingOfficerId: "",
-              tsActivityMasterId: "",
-              unitMeasurementId: "9",
-              scCategoryId: "",
-              amount: "",
-              tsMeasurementUnitId: "",
-              schemeOrActivity: "",
-            });
-            setValidated(false);
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        monthlyList.push({
+          tsPhysicalDistrictMonthlyId:districtMontlyId,
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
+      console.log("Monthly",monthlyList);
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsPhysicalDistrict/edit-primary-monthly`,
+          {
+            editTsPhysicalDistrictRequest: data,
+            editTsPhysicalDistrictMonthlyRequests: {monthlyList},
           }
-        })
-        .catch((err) => {
+        );
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          updateSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-        });
-      setValidated(true);
+        }
+      }
+      // setValidated(true);
     }
   };
 
-  // Function to clear form data
   const clear = () => {
     setData({
- financialYearMasterId: "",
+    financialYearMasterId: "",
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     districtId: "",
@@ -110,7 +145,68 @@ function PhysicalTargetSettingsDistrictEdit() {
     tsMeasurementUnitId: "",
     schemeOrActivity: "",
     });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
+    });
+    setValidated(false);
   };
+
+  // Function to submit form data
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     api
+  //       .post(baseURLTargetSetting + `tsPhysicalTargetSettingDistrict/edit`, data)
+  //       .then((response) => {
+  //         if (response.data.content.error) {
+  //           updateError(response.data.content.error_description);
+  //         } else {
+  //           updateSuccess();
+  //           setData({
+  //             financialYearMasterId: "",
+  //             scSchemeDetailsId: "",
+  //             scSubSchemeDetailsId: "",
+  //             districtId: "",
+  //             date: "",
+  //             reportingOfficerId: "",
+  //             implementingOfficerId: "",
+  //             tsActivityMasterId: "",
+  //             unitMeasurementId: "9",
+  //             scCategoryId: "",
+  //             amount: "",
+  //             tsMeasurementUnitId: "",
+  //             schemeOrActivity: "",
+  //           });
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //           updateError(err.response.data.validationErrors);
+  //         }
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
+
+ 
 
   const isDataDateSet = !!data.date;
 
@@ -138,10 +234,144 @@ function PhysicalTargetSettingsDistrictEdit() {
       });
   };
 
-  // Fetch data on component mount
+  const getIdMonthlyList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLTargetSetting + `tsPhysicalDistrictMonthly/getByTsPhysicalDistrictId/${id}`)
+      .then((response) => {
+
+        // setData(response.data.content.tsPhysicalDistrictMonthly);
+        if(response.data.content.error){
+          updateError(response.data.content.error_description);
+        }else{
+          const lists  = response.data.content.tsPhysicalDistrictMonthly
+          setDistrictMontlyId(response.data.content.tsPhysicalDistrictMonthly.tsPhysicalDistrictMonthlyId);
+          const newMonths = {...months}
+          if(lists.length>0){
+            lists.forEach(list =>{
+              const monthName = monthNames[list.month];
+              if(monthName){
+                newMonths[monthName] = list.value;
+              }
+            } )
+          }
+          setMonths(newMonths);
+          // setMonths(prev =>({
+          //   ...prev,
+          //   jan:
+          // }))
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+        if (err.response && err.response.data) {
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+        // editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  
+  // const getIdMonthlyList = () => {
+  //   setLoading(true);
+  //   api
+  //     .get(baseURLTargetSetting + `tsPhysicalDistrictMonthly/getByTsPhysicalDistrictId/${id}`)
+  //     .then((response) => {
+  //       const monthlyData = response.data.content.tsPhysicalDistrictMonthly.reduce(
+  //         (acc, item) => {
+  //           const monthNames = [
+  //             "jan",
+  //             "feb",
+  //             "mar",
+  //             "apr",
+  //             "may",
+  //             "jun",
+  //             "jul",
+  //             "aug",
+  //             "sep",
+  //             "oct",
+  //             "nov",
+  //             "dec",
+  //           ];
+  //           acc[monthNames[item.month - 1]] = item.value;
+  //           return acc;
+  //         },
+  //         {}
+  //       );
+  //       setMonths(monthlyData);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       let message = "An error occurred while fetching data.";
+  //       if (err.response && err.response.data) {
+  //         if (
+  //           Array.isArray(err.response.data.errorMessages) &&
+  //           err.response.data.errorMessages.length > 0
+  //         ) {
+  //           message = err.response.data.errorMessages[0].message[0].message;
+  //         }
+  //       }
+  //       setMonths({
+  //         jan: "",
+  //         feb: "",
+  //         mar: "",
+  //         apr: "",
+  //         may: "",
+  //         jun: "",
+  //         jul: "",
+  //         aug: "",
+  //         sep: "",
+  //         oct: "",
+  //         nov: "",
+  //         dec: "",
+  //       });
+  //       setLoading(false);
+  //     });
+  // };
+
   useEffect(() => {
     getIdList();
+    getIdMonthlyList();
   }, [id]);
+
+
+  // const getIdMonthlyList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLTargetSetting + `tsPhysicalDistrictMonthly/getByTsPhysicalDistrictId/${id}`)
+  //     .then((response) => {
+  //       setData(response.data.content.tsPhysicalDistrictMonthly);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       let message = "An error occurred while fetching data.";
+  //       if (err.response && err.response.data) {
+  //         if (
+  //           Array.isArray(err.response.data.errorMessages) &&
+  //           err.response.data.errorMessages.length > 0
+  //         ) {
+  //           message = err.response.data.errorMessages[0].message[0].message;
+  //         }
+  //       }
+  //       // editError(message);
+  //       setData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  // // Fetch data on component mount
+  // useEffect(() => {
+  //   getIdList();
+  //   getIdMonthlyList();
+  // }, [id]);
 
   // to get Financial Year
 const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -386,9 +616,9 @@ useEffect(() => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
                 Physical Target Setting District
@@ -683,9 +913,9 @@ useEffect(() => {
                                   data.schemeOrActivity === "0"
                                 }
                               >
-                                <option value="">Select Scheme Or Activity</option>
-                                <option value="1">true</option>
-                        <option value="2">false</option>
+                            <option value="0">Select Scheme Or Activity</option>
+                            <option value="1">Scheme</option>
+                            <option value="2">Activity</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                 Scheme Or Activity is required.
@@ -759,7 +989,7 @@ useEffect(() => {
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
-                  <Col lg="6">
+                <Col lg="6">
                     <Form.Group as={Row} className="form-group mt-1" id="dfl">
                       <Form.Label column sm={2}>
                         April<span className="text-danger">*</span>
@@ -767,12 +997,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="apr"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.apr}
+                          onChange={handleMonthsInputs}
                           placeholder="April Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -787,12 +1017,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="may"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.may}
+                          onChange={handleMonthsInputs}
                           placeholder="May Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -807,12 +1037,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jun"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jun}
+                          onChange={handleMonthsInputs}
                           placeholder="June Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -827,12 +1057,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jul"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jul}
+                          onChange={handleMonthsInputs}
                           placeholder="July Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -847,12 +1077,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="aug"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.aug}
+                          onChange={handleMonthsInputs}
                           placeholder="August Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -867,12 +1097,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="sep"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.sep}
+                          onChange={handleMonthsInputs}
                           placeholder="September Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -888,12 +1118,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="oct"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.oct}
+                          onChange={handleMonthsInputs}
                           placeholder="October Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -908,12 +1138,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="nov"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.nov}
+                          onChange={handleMonthsInputs}
                           placeholder="November Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -928,12 +1158,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="dec"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.dec}
+                          onChange={handleMonthsInputs}
                           placeholder="December Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -948,12 +1178,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jan"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jan}
+                          onChange={handleMonthsInputs}
                           placeholder="January Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -968,12 +1198,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="feb"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.feb}
+                          onChange={handleMonthsInputs}
                           placeholder="February Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -988,12 +1218,12 @@ useEffect(() => {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="mar"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.mar}
+                          onChange={handleMonthsInputs}
                           placeholder="March Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -1019,7 +1249,7 @@ useEffect(() => {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

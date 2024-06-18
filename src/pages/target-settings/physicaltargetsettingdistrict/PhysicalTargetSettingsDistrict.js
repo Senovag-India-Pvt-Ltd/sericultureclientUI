@@ -47,8 +47,6 @@ function PhysicalTargetSettingsDistrict() {
 
   const [postMonths, setPostMonths] = useState([]);
 
-  console.log(months);
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -720,8 +718,8 @@ function PhysicalTargetSettingsDistrict() {
                         }
                       >
                         <option value="0">Select Scheme Or Activity</option>
-                        <option value="1">true</option>
-                        <option value="2">false</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
                         
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
