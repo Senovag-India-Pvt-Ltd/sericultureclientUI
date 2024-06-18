@@ -453,10 +453,10 @@ function PhysicalTargetSettingsTaluk() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
               <Card.Header>Physical Target Setting Taluk</Card.Header>
               <Card.Body>
@@ -819,8 +819,8 @@ function PhysicalTargetSettingsTaluk() {
                         }
                       >
                         <option value="">Select Scheme Or Activity</option>
-                        <option value="1">true</option>
-                        <option value="2">false</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
                         
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
@@ -1155,7 +1155,7 @@ function PhysicalTargetSettingsTaluk() {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

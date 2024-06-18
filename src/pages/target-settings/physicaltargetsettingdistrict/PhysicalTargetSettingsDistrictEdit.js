@@ -103,15 +103,15 @@ function PhysicalTargetSettingsDistrictEdit() {
         });
       }
 
-      console.log("Monthly", monthlyList);
-      console.log("data", data);
+      // console.log("Monthly", monthlyList);
+      // console.log("data", data);
 
       try {
         const response = await api.post(
           baseURLTargetSetting + `tsPhysicalDistrict/edit-primary-monthly`,
           {
             editTsPhysicalDistrictRequest: data,
-            editTsPhysicalDistrictMonthlyRequests: { monthlyList },
+            editTsPhysicalDistrictMonthlyRequests: monthlyList,
           }
         );
         if (response.data.content.error) {
@@ -168,48 +168,7 @@ function PhysicalTargetSettingsDistrictEdit() {
     setValidated(false);
   };
 
-  // Function to submit form data
-  // const postData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     api
-  //       .post(baseURLTargetSetting + `tsPhysicalTargetSettingDistrict/edit`, data)
-  //       .then((response) => {
-  //         if (response.data.content.error) {
-  //           updateError(response.data.content.error_description);
-  //         } else {
-  //           updateSuccess();
-  //           setData({
-  //             financialYearMasterId: "",
-  //             scSchemeDetailsId: "",
-  //             scSubSchemeDetailsId: "",
-  //             districtId: "",
-  //             date: "",
-  //             reportingOfficerId: "",
-  //             implementingOfficerId: "",
-  //             tsActivityMasterId: "",
-  //             unitMeasurementId: "9",
-  //             scCategoryId: "",
-  //             amount: "",
-  //             tsMeasurementUnitId: "",
-  //             schemeOrActivity: "",
-  //           });
-  //           setValidated(false);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //           updateError(err.response.data.validationErrors);
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
+  
 
   const isDataDateSet = !!data.date;
 
@@ -291,100 +250,16 @@ function PhysicalTargetSettingsDistrictEdit() {
       });
   };
 
-  console.log(receivedPhyDistData);
+  // console.log(receivedPhyDistData);
 
-  // const getIdMonthlyList = () => {
-  //   setLoading(true);
-  //   api
-  //     .get(baseURLTargetSetting + `tsPhysicalDistrictMonthly/getByTsPhysicalDistrictId/${id}`)
-  //     .then((response) => {
-  //       const monthlyData = response.data.content.tsPhysicalDistrictMonthly.reduce(
-  //         (acc, item) => {
-  //           const monthNames = [
-  //             "jan",
-  //             "feb",
-  //             "mar",
-  //             "apr",
-  //             "may",
-  //             "jun",
-  //             "jul",
-  //             "aug",
-  //             "sep",
-  //             "oct",
-  //             "nov",
-  //             "dec",
-  //           ];
-  //           acc[monthNames[item.month - 1]] = item.value;
-  //           return acc;
-  //         },
-  //         {}
-  //       );
-  //       setMonths(monthlyData);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       let message = "An error occurred while fetching data.";
-  //       if (err.response && err.response.data) {
-  //         if (
-  //           Array.isArray(err.response.data.errorMessages) &&
-  //           err.response.data.errorMessages.length > 0
-  //         ) {
-  //           message = err.response.data.errorMessages[0].message[0].message;
-  //         }
-  //       }
-  //       setMonths({
-  //         jan: "",
-  //         feb: "",
-  //         mar: "",
-  //         apr: "",
-  //         may: "",
-  //         jun: "",
-  //         jul: "",
-  //         aug: "",
-  //         sep: "",
-  //         oct: "",
-  //         nov: "",
-  //         dec: "",
-  //       });
-  //       setLoading(false);
-  //     });
-  // };
+  
 
   useEffect(() => {
     getIdList();
     getIdMonthlyList();
   }, [id]);
 
-  // const getIdMonthlyList = () => {
-  //   setLoading(true);
-  //   const response = api
-  //     .get(baseURLTargetSetting + `tsPhysicalDistrictMonthly/getByTsPhysicalDistrictId/${id}`)
-  //     .then((response) => {
-  //       setData(response.data.content.tsPhysicalDistrictMonthly);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       let message = "An error occurred while fetching data.";
-  //       if (err.response && err.response.data) {
-  //         if (
-  //           Array.isArray(err.response.data.errorMessages) &&
-  //           err.response.data.errorMessages.length > 0
-  //         ) {
-  //           message = err.response.data.errorMessages[0].message[0].message;
-  //         }
-  //       }
-  //       // editError(message);
-  //       setData({});
-  //       setLoading(false);
-  //     });
-  // };
-
-  // // Fetch data on component mount
-  // useEffect(() => {
-  //   getIdList();
-  //   getIdMonthlyList();
-  // }, [id]);
-
+  
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -978,7 +853,7 @@ function PhysicalTargetSettingsDistrictEdit() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="6">
+                          {/* <Col lg="6">
                       <Form.Group className="form-group mt-n4 ">
                         <Form.Label htmlFor="title">
                          Amount<span className="text-danger">*</span>
@@ -998,7 +873,7 @@ function PhysicalTargetSettingsDistrictEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="6">
                     <Form.Group className="form-group mt-n4">
