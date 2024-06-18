@@ -363,6 +363,7 @@ function Menu() {
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
     Admin_Master_Service_Financial_Year: false,
+    Admin_Master_Service_Activity: false,
 
     Admin_Master_Training: false,
     Admin_Master_Training_Program: false,
@@ -2430,6 +2431,14 @@ function Menu() {
                             <MenuItemLink
                               text="Financial Year"
                               to="/seriui/financial-year"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Activity? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Activity"
+                              to="/seriui/activity"
                             />
                           </MenuItem>
                         ) : null}
