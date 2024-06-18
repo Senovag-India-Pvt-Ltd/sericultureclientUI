@@ -22,6 +22,47 @@ function FinancialTargetSettingsDistrictEdit() {
 
   let name, value;
 
+  const [districtMontlyId, setDistrictMontlyId] = useState("");
+
+  const [receivedPhyDistData, setReceivedPhyDistData] = useState([]);
+
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const monthNames = {
+    1: "jan",
+    2: "feb",
+    3: "mar",
+    4: "apr",
+    5: "may",
+    6: "jun",
+    7: "jul",
+    8: "aug",
+    9: "sep",
+    10: "oct",
+    11: "nov",
+    12: "dec",
+  };
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
+  };
+
+
   // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
@@ -35,7 +76,7 @@ function FinancialTargetSettingsDistrictEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   // Function to submit form data
-  const postData = (event) => {
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -43,22 +84,61 @@ function FinancialTargetSettingsDistrictEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      api
-        .post(baseURLMasterData + `tsBudgetDistrict/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            clear();
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        const result = receivedPhyDistData.find(
+          (item) => item.month === monthNumbers[month]
+        );
+        monthlyList.push({
+          tsFinancialDistrictMonthlyId: result.tsFinancialDistrictMonthlyId,
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
+      // console.log("Monthly", monthlyList);
+      // console.log("data", data);
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsFinancialDistrict/edit-primary-monthly`,
+          {
+            editTsFinancialDistrictRequest: data,
+            editTsFinancialDistrictMonthlyRequest: monthlyList,
           }
-        })
-        .catch((err) => {
+        );
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          updateSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-        });
-      setValidated(true);
+        }
+      }
+      // setValidated(true);
     }
   };
 
@@ -73,12 +153,122 @@ function FinancialTargetSettingsDistrictEdit() {
     date: "",
     reportingOfficerId: "",
     implementingOfficerId: "",
-    tsActivityMasterId: "",
+    tsActivityMasterId: "0",
     amount: "",
-    useDisburse: "",
+    useDisburse: "true",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
+    });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
     });
     setValidated(false);
   };
+
+
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLTargetSetting + `tsFinancialDistrict/get/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+
+        // Check if err.response is defined and not null
+        if (err.response && err.response.data) {
+          // Check if err.response.data.errorMessages is an array and has length > 0
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            // Access the first error message from the array
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+
+        // Display error message
+        editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  const getIdMonthlyList = () => {
+    setLoading(true);
+    const response = api
+      .get(
+        baseURLTargetSetting +
+          `tsFinancialDistrictMonthly/getByTsFinancialDistrictId/${id}`
+      )
+      .then((response) => {
+        // setData(response.data.content.tsFinancialDistrictMonthly);
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          const lists = response.data.content.tsFinancialDistrictMonthly;
+          setReceivedPhyDistData(
+            response.data.content.tsFinancialDistrictMonthly
+          );
+          setDistrictMontlyId(
+            response.data.content.tsFinancialDistrictMonthly
+              .tsFinancialDistrictMonthlyId
+          );
+          const newMonths = { ...months };
+          if (lists.length > 0) {
+            lists.forEach((list) => {
+              console.log("listData", list);
+              const monthName = monthNames[list.month];
+              if (monthName) {
+                newMonths[monthName] = list.value;
+              }
+            });
+          }
+          setMonths(newMonths);
+          // setMonths(prev =>({
+          //   ...prev,
+          //   jan:
+          // }))
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+        if (err.response && err.response.data) {
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+        // editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  // console.log(receivedPhyDistData);
+
+  
+
+  useEffect(() => {
+    getIdList();
+    getIdMonthlyList();
+  }, [id]);
 
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -269,40 +459,7 @@ function FinancialTargetSettingsDistrictEdit() {
 
   const isData = !!data.date;
 
-  const getIdList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURLMasterData + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
-          }
-        }
-
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
-  };
-
-  // Fetch data on component mount
-  useEffect(() => {
-    getIdList();
-  }, [id]);
+  
 
   // Navigation hook
   const navigate = useNavigate();
@@ -635,61 +792,92 @@ function FinancialTargetSettingsDistrictEdit() {
                 </Col>
 
                 <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Activity
+                      Scheme Or Activity
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="tsActivityMasterId"
-                        value={data.tsActivityMasterId}
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.tsActivityMasterId === undefined ||
-                          data.tsActivityMasterId === "0"
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
                         }
                       >
-                        <option value="">Select Activity</option>
-                        {activityListData.map((list) => (
-                          <option
-                            key={list.tsActivityMasterId}
-                            value={list.tsActivityMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Activity is required.
+                      Scheme Or Activity is required.
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="budgetAmount">
-                            Budget Amount<span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="budgetAmount"
-                              name="budgetAmount"
-                              value={data.budgetAmount}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Budget Amount"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Budget Amount is required.
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
+
+                <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                       <Col lg="2">
                         <Form.Group className="form-group mt-n4">
@@ -728,7 +916,7 @@ function FinancialTargetSettingsDistrictEdit() {
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
-                  <Col lg="6">
+                <Col lg="6">
                     <Form.Group as={Row} className="form-group mt-1" id="dfl">
                       <Form.Label column sm={2}>
                         April<span className="text-danger">*</span>
@@ -736,12 +924,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="apr"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.apr}
+                          onChange={handleMonthsInputs}
                           placeholder="April Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -756,12 +944,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="may"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.may}
+                          onChange={handleMonthsInputs}
                           placeholder="May Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -776,12 +964,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jun"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jun}
+                          onChange={handleMonthsInputs}
                           placeholder="June Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -796,12 +984,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jul"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jul}
+                          onChange={handleMonthsInputs}
                           placeholder="July Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -816,12 +1004,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="aug"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.aug}
+                          onChange={handleMonthsInputs}
                           placeholder="August Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -836,12 +1024,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="sep"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.sep}
+                          onChange={handleMonthsInputs}
                           placeholder="September Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -857,12 +1045,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="oct"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.oct}
+                          onChange={handleMonthsInputs}
                           placeholder="October Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -877,12 +1065,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="nov"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.nov}
+                          onChange={handleMonthsInputs}
                           placeholder="November Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -897,12 +1085,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="dec"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.dec}
+                          onChange={handleMonthsInputs}
                           placeholder="December Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -917,12 +1105,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="jan"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.jan}
+                          onChange={handleMonthsInputs}
                           placeholder="January Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -937,12 +1125,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="feb"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.feb}
+                          onChange={handleMonthsInputs}
                           placeholder="February Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required
@@ -957,12 +1145,12 @@ function FinancialTargetSettingsDistrictEdit() {
                       <Col sm={8}>
                         <Form.Control
                           type="text"
-                          name="dflCount"
+                          name="mar"
                           // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
+                          value={months.mar}
+                          onChange={handleMonthsInputs}
                           placeholder="March Target"
-                          required
+                          // required
                         />
                         <Form.Control.Feedback type="invalid">
                           Required

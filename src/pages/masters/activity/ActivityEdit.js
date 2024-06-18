@@ -54,7 +54,7 @@ function ActivityEdit() {
           } else {
             updateSuccess();
             setData({
-              title: "",
+              name: "",
               code: "",
               nameInKannada: "",
             });
@@ -62,8 +62,15 @@ function ActivityEdit() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -194,7 +201,7 @@ function ActivityEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
+                        <Form.Label htmlFor="name">
                           Activity Name
                           <span className="text-danger">*</span>
                         </Form.Label>
@@ -217,7 +224,7 @@ function ActivityEdit() {
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
+                        <Form.Label htmlFor="name">
                           Activity Name in Kannada
                           <span className="text-danger">*</span>
                         </Form.Label>
@@ -240,7 +247,7 @@ function ActivityEdit() {
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="title">
+                        <Form.Label htmlFor="name">
                           Code
                           <span className="text-danger">*</span>
                         </Form.Label>

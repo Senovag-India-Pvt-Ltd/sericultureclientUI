@@ -21,6 +21,46 @@ function PhysicalTargetSettingsTalukEdit() {
 
   let name, value;
 
+  const [talukMontlyId, setTalukMontlyId] = useState("");
+
+  const [receivedPhyTalukData, setReceivedPhTalukData] = useState([]);
+
+  const [months, setMonths] = useState({
+    jan: "",
+    feb: "",
+    mar: "",
+    apr: "",
+    may: "",
+    jun: "",
+    jul: "",
+    aug: "",
+    sep: "",
+    oct: "",
+    nov: "",
+    dec: "",
+  });
+
+  const monthNames = {
+    1: "jan",
+    2: "feb",
+    3: "mar",
+    4: "apr",
+    5: "may",
+    6: "jun",
+    7: "jul",
+    8: "aug",
+    9: "sep",
+    10: "oct",
+    11: "nov",
+    12: "dec",
+  };
+
+  const handleMonthsInputs = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setMonths({ ...months, [name]: value });
+  };
+
   // Function to handle input changes
   const handleInputs = (e) => {
     name = e.target.name;
@@ -29,7 +69,7 @@ function PhysicalTargetSettingsTalukEdit() {
   };
 
   // Function to submit form data
-  const postData = (event) => {
+  const postData = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -37,39 +77,61 @@ function PhysicalTargetSettingsTalukEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      api
-        .post(baseURLTargetSetting + `tsPhysicalTaluk/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            setData({
-              financialYearMasterId: "",
-              scSchemeDetailsId: "",
-              scSubSchemeDetailsId: "",
-              scCategoryId: "",
-              districtId: "",
-              talukId: "",
-              date: "",
-              reportingOfficerId: "",
-              implementingOfficerId:"",
-              tsActivityMasterId:"",
-              unitMeasurementId: "",
-              amount: "",
-              tsMeasurementUnitId: "",
-              schemeOrActivity: "",
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        const result = receivedPhyTalukData.find(
+          (item) => item.month === monthNumbers[month]
+        );
+        monthlyList.push({
+          tsPhysicalTalukMonthlyId: result.tsPhysicalTalukMonthlyId,
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
 
-            });
-            setValidated(false);
+      // console.log("Monthly", monthlyList);
+      // console.log("data", data);
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsPhysicalTaluk/edit-primary-monthly`,
+          {
+            editTsPhysicalTalukRequest: data,
+            editTsPhysicalTalukMonthlyRequest: monthlyList,
           }
-        })
-        .catch((err) => {
+        );
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          updateSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-        });
-      setValidated(true);
+        }
+      }
+      // setValidated(true);
     }
   };
 
@@ -90,8 +152,22 @@ function PhysicalTargetSettingsTalukEdit() {
       amount: "",
       tsMeasurementUnitId: "",
       schemeOrActivity: "",
-
     });
+    setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
+    });
+    setValidated(false);
   };
 
 
@@ -123,9 +199,67 @@ function PhysicalTargetSettingsTalukEdit() {
       });
   };
 
-  // Fetch data on component mount
+  const getIdMonthlyList = () => {
+    setLoading(true);
+    const response = api
+      .get(
+        baseURLTargetSetting +
+          `tsPhysicalTalukMonthly/getByTsPhysicalTalukId/${id}`
+      )
+      .then((response) => {
+        // setData(response.data.content.tsPhysicalDistrictMonthly);
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          const lists = response.data.content.tsPhysicalTalukMonthly;
+          setReceivedPhTalukData(
+            response.data.content.tsPhysicalTalukMonthly
+          );
+          setTalukMontlyId(
+            response.data.content.tsPhysicalTalukMonthly
+              .tsPhysicalTalukMonthlyId
+          );
+          const newMonths = { ...months };
+          if (lists.length > 0) {
+            lists.forEach((list) => {
+              console.log("listData", list);
+              const monthName = monthNames[list.month];
+              if (monthName) {
+                newMonths[monthName] = list.value;
+              }
+            });
+          }
+          setMonths(newMonths);
+          // setMonths(prev =>({
+          //   ...prev,
+          //   jan:
+          // }))
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+        if (err.response && err.response.data) {
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+        // editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  // console.log(receivedPhyDistData);
+
+  
+
   useEffect(() => {
     getIdList();
+    getIdMonthlyList();
   }, [id]);
 
   // to get Financial Year
@@ -393,9 +527,9 @@ useEffect(() => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
+          {/* <Row className="g-3 "> */}
             <Card>
               <Card.Header style={{ fontWeight: "bold" }}>
                 Taluk Physical Target Settings
@@ -707,6 +841,41 @@ useEffect(() => {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -726,8 +895,8 @@ useEffect(() => {
                         }
                       >
                         <option value="">Select Scheme Or Activity</option>
-                        <option value="1">true</option>
-                        <option value="2">false</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
                         
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
@@ -804,248 +973,248 @@ useEffect(() => {
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        April<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="April Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                <Col lg="6">
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          April<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="apr"
+                            // min={0}
+                            value={months.apr}
+                            onChange={handleMonthsInputs}
+                            placeholder="April Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        May<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="May Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          May<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="may"
+                            // min={0}
+                            value={months.may}
+                            onChange={handleMonthsInputs}
+                            placeholder="May Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        June<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="June Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          June<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="jun"
+                            // min={0}
+                            value={months.jun}
+                            onChange={handleMonthsInputs}
+                            placeholder="June Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        July<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="July Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          July<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="jul"
+                            // min={0}
+                            value={months.jul}
+                            onChange={handleMonthsInputs}
+                            placeholder="July Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        August<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="August Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          August<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="aug"
+                            // min={0}
+                            value={months.aug}
+                            onChange={handleMonthsInputs}
+                            placeholder="August Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        September<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="September Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
-                  </Col>
-                  <Col lg="6">
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        October<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="October Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          September<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="sep"
+                            // min={0}
+                            value={months.sep}
+                            onChange={handleMonthsInputs}
+                            placeholder="September Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          October<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="oct"
+                            // min={0}
+                            value={months.oct}
+                            onChange={handleMonthsInputs}
+                            placeholder="October Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        November<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="November Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          November<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="nov"
+                            // min={0}
+                            value={months.nov}
+                            onChange={handleMonthsInputs}
+                            placeholder="November Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        December<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="December Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          December<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="dec"
+                            // min={0}
+                            value={months.dec}
+                            onChange={handleMonthsInputs}
+                            placeholder="December Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        January<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="January Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          January<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="jan"
+                            // min={0}
+                            value={months.jan}
+                            onChange={handleMonthsInputs}
+                            placeholder="January Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        February<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="February Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          February<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="feb"
+                            // min={0}
+                            value={months.feb}
+                            onChange={handleMonthsInputs}
+                            placeholder="February Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
 
-                    <Form.Group as={Row} className="form-group mt-1" id="dfl">
-                      <Form.Label column sm={2}>
-                        March<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={8}>
-                        <Form.Control
-                          type="text"
-                          name="dflCount"
-                          // min={0}
-                          value={data.dflCount}
-                          onChange={handleInputs}
-                          placeholder="March Target"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Required
-                        </Form.Control.Feedback>
-                      </Col>
-                    </Form.Group>
-                  </Col>
+                      <Form.Group as={Row} className="form-group mt-1" id="dfl">
+                        <Form.Label column sm={2}>
+                          March<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col sm={8}>
+                          <Form.Control
+                            type="text"
+                            name="mar"
+                            // min={0}
+                            value={months.mar}
+                            onChange={handleMonthsInputs}
+                            placeholder="March Target"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Required
+                          </Form.Control.Feedback>
+                        </Col>
+                      </Form.Group>
+                    </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -1065,7 +1234,7 @@ useEffect(() => {
                 </li>
               </ul>
             </div>
-          </Row>
+          {/* </Row> */}
         </Form>
       </Block>
     </Layout>

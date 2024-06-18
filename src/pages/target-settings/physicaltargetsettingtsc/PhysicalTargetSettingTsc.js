@@ -111,7 +111,7 @@ function PhysicalTargetSettingsTsc() {
           baseURLTargetSetting + `tsPhysicalInstitution/add-primary-monthly`,
           {
             physicalInstitutionRequest:data,
-            physicalInstitutionMonthlyRequest: monthlyList,
+            physicalInstitutionMonthlyRequests: monthlyList,
           }
         );
         if (response.data.content.error) {
@@ -131,7 +131,7 @@ function PhysicalTargetSettingsTsc() {
           }
         }
       }
-      setValidated(true);
+      // setValidated(true);
     }
   };
 
@@ -140,6 +140,7 @@ function PhysicalTargetSettingsTsc() {
       financialYearMasterId: "",
       scSchemeDetailsId: "",
       scSubSchemeDetailsId: "",
+      scCategoryId: "",
       districtId: "",
       talukId: "",
       institutionType: "",
@@ -149,9 +150,9 @@ function PhysicalTargetSettingsTsc() {
       implementingOfficerId:"",
       tsActivityMasterId:"",
       unitMeasurementId: "",
-amount: "",
-    tsMeasurementUnitId: "",
-    schemeOrActivity: "",
+      amount: "",
+      tsMeasurementUnitId: "",
+      schemeOrActivity: "",
 
     });
     setMonths({
@@ -432,10 +433,9 @@ useEffect(() => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-3 ">
             <Card>
               <Card.Header>Physical Target Setting Tsc</Card.Header>
               <Card.Body>
@@ -773,6 +773,41 @@ useEffect(() => {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>  
+
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -792,8 +827,8 @@ useEffect(() => {
                         }
                       >
                         <option value="">Select Scheme Or Activity</option>
-                        <option value="1">true</option>
-                        <option value="2">false</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
                         
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
@@ -1128,7 +1163,6 @@ useEffect(() => {
                 </li>
               </ul>
             </div>
-          </Row>
         </Form>
       </Block>
     </Layout>

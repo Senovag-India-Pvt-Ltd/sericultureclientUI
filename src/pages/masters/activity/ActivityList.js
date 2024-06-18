@@ -187,6 +187,13 @@ function ActivityList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Code",
+      selector: (row) => row.code,
+      cell: (row) => <span>{row.code}</span>,
+      sortable: false,
+      hide: "md",
+    },
   ];
 
   return (

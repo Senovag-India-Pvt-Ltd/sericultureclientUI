@@ -47,8 +47,6 @@ function PhysicalTargetSettingsDistrict() {
 
   const [postMonths, setPostMonths] = useState([]);
 
-  console.log(months);
-
   const [validated, setValidated] = useState(false);
 
   let name, value;
@@ -701,6 +699,41 @@ function PhysicalTargetSettingsDistrict() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -720,8 +753,8 @@ function PhysicalTargetSettingsDistrict() {
                         }
                       >
                         <option value="0">Select Scheme Or Activity</option>
-                        <option value="1">true</option>
-                        <option value="2">false</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
                         
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
