@@ -82,8 +82,8 @@ function ServiceApplication() {
   const [developedArea, setDevelopedArea] = useState([]);
 
   const transformedData = Object.keys(developedArea).map((id) => ({
-    landDeveloped: developedLand.landDeveloped,
-    landDetailId: parseInt(id),
+    // landDeveloped: developedLand.landDeveloped,
+    // landDetailId: parseInt(id),
     ...developedArea[id],
   }));
 
@@ -91,9 +91,9 @@ function ServiceApplication() {
 
   // const
 
-  const handleInlineDevelopedLandChange = (e, row) => {
+  const handleInlineDevelopedLandChange = (e, i) => {
     const { name, value } = e.target;
-    const farmerLandDetailsId = row.farmerLandDetailsId;
+    const farmerLandDetailsId = i;
 
     setDevelopedArea((prevData) => ({
       ...prevData,
@@ -104,7 +104,7 @@ function ServiceApplication() {
     }));
   };
 
-  console.log(developedArea);
+  console.log("new dev data",developedArea);
 
   // Display Image
   const [documentAttachments, setDocumentAttachments] = useState({});
@@ -126,7 +126,7 @@ function ServiceApplication() {
     // setPhotoFile(file);
   };
 
-  console.log("showdev", developedArea);
+  console.log("showdevplease", developedArea);
 
   const handleRemoveImage = (documentId) => {
     const updatedDocument = { ...documentAttachments };
@@ -181,25 +181,27 @@ function ServiceApplication() {
   //   });
   // };
 
-  const handleCheckboxChange = (farmerLandDetailsId) => {
+  const handleCheckboxChange = (landId,row) => {
+    console.log("hello row",row);
     setLandDetailsIds((prevIds) => {
-      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      const isAlreadySelected = prevIds.includes(landId);
       const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== farmerLandDetailsId)
-        : [...prevIds, farmerLandDetailsId];
+        ? prevIds.filter((id) => id !== landId)
+        : [...prevIds, landId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
-          const { [farmerLandDetailsId]: _, ...rest } = prevData;
+          const { [landId]: _, ...rest } = prevData;
           return rest;
         } else {
           // If selected, add to developedArea
           return {
             ...prevData,
-            [farmerLandDetailsId]: {
-              acre: prevData[farmerLandDetailsId]?.acre || "0",
-              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+            [landId]: {
+              devAcre: prevData[landId]?.devAcre || "0",
+              devGunta: prevData[landId]?.devGunta || "0",
+              devFGunta: prevData[landId]?.devFGunta || "0",
+              ...row
             },
           };
         }
@@ -598,8 +600,8 @@ function ServiceApplication() {
 
   const postData = (event) => {
     const transformedData = Object.keys(developedArea).map((id) => ({
-      landDeveloped: developedLand.landDeveloped,
-      landDetailId: parseInt(id),
+      // landDeveloped: developedLand.landDeveloped,
+      // landDetailId: parseInt(id),
       ...developedArea[id],
     }));
     const form = event.currentTarget;
@@ -636,7 +638,7 @@ function ServiceApplication() {
         //     landDeveloped: developedLand.landDeveloped,
         //   },
         // ];
-        sendPost.applicationFormLandDetailRequestList = transformedData;
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
@@ -1027,12 +1029,13 @@ function ServiceApplication() {
 
             api
               .post(
-                baseURLFarmerServer + `farmer/get-farmer-details-by-fruits-id`,
+                baseURLFarmerServer + `farmer/get-details-by-fruits-id`,
                 {
                   fruitsId: data.fruitsId,
                 }
               )
               .then((response) => {
+                console.log("landdetails",response.data.content.farmerLandDetailsDTOList);
                 if (response.data.content.farmerLandDetailsDTOList.length > 0) {
                   setLandDetailsList(
                     response.data.content.farmerLandDetailsDTOList
@@ -1209,13 +1212,13 @@ function ServiceApplication() {
     {
       name: "Select",
       selector: "select",
-      cell: (row) => (
+      cell: (row,i) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.farmerLandDetailsId}
-          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
-          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+          value={i}
+          checked={landDetailsIds.includes(i)}
+          onChange={() => handleCheckboxChange(i,row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1319,30 +1322,31 @@ function ServiceApplication() {
 
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
-      // selector: (row) => row.acre,
-      cell: (row) => (
+      // selector: (row,id) => console.log("rowDetails",id),
+      cell: (row,i) => (
         <>
+        {/* {console.log("dada marre",i)} */}
           <Form.Control
-            name="acre"
+            name="devAcre"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devAcre || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Acre"
             className="m-1"
           />
           <Form.Control
-            name="gunta"
+            name="devGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Gunta"
             className="m-1"
           />
           <Form.Control
-            name="fgunta"
+            name="devFGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devFGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="FGunta"
             className="m-1"
           />
