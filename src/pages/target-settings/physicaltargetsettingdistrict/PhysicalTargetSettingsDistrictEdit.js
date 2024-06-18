@@ -24,8 +24,7 @@ function PhysicalTargetSettingsDistrictEdit() {
 
   const [districtMontlyId, setDistrictMontlyId] = useState("");
 
-
-  const [receivedPhyDistData,setReceivedPhyDistData] =useState([]);
+  const [receivedPhyDistData, setReceivedPhyDistData] = useState([]);
 
   const [months, setMonths] = useState({
     jan: "",
@@ -94,7 +93,9 @@ function PhysicalTargetSettingsDistrictEdit() {
         dec: 12,
       };
       for (const month in months) {
-        const result = receivedPhyDistData.find(item => item.month === monthNumbers[month])
+        const result = receivedPhyDistData.find(
+          (item) => item.month === monthNumbers[month]
+        );
         monthlyList.push({
           tsPhysicalDistrictMonthlyId: result.tsPhysicalDistrictMonthlyId,
           month: monthNumbers[month],
@@ -249,7 +250,9 @@ function PhysicalTargetSettingsDistrictEdit() {
           updateError(response.data.content.error_description);
         } else {
           const lists = response.data.content.tsPhysicalDistrictMonthly;
-          setReceivedPhyDistData(response.data.content.tsPhysicalDistrictMonthly);
+          setReceivedPhyDistData(
+            response.data.content.tsPhysicalDistrictMonthly
+          );
           setDistrictMontlyId(
             response.data.content.tsPhysicalDistrictMonthly
               .tsPhysicalDistrictMonthlyId
