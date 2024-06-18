@@ -13,7 +13,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function Activity() {
   const [data, setData] = useState({
-    title: "",
+    name: "",
     code: "",
     nameInKannada: "",
   });
@@ -58,14 +58,14 @@ function Activity() {
       event.preventDefault();
       // event.stopPropagation();
       api
-        .post(baseURL + `Activity/add`, data)
+        .post(baseURL + `tsActivityMaster/add`, data)
         .then((response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setData({
-              title: "",
+              name: "",
               code: "",
               nameInKannada: "",
             });
@@ -73,8 +73,15 @@ function Activity() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -83,7 +90,7 @@ function Activity() {
 
   const clear = () => {
     setData({
-      title: "",
+      name: "",
       code: "",
       nameInKannada: "",
     });
@@ -157,12 +164,12 @@ function Activity() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
+                          id="name"
+                          name="name"
+                          value={data.name}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Title"
+                          placeholder="Enter Name"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -189,7 +196,7 @@ function Activity() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Activity Name is required.
+                          Activity Name in Kannada is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -202,12 +209,12 @@ function Activity() {
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
-                          id="title"
-                          name="title"
-                          value={data.title}
+                          id="code"
+                          name="code"
+                          value={data.code}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Title"
+                          placeholder="Enter Code"
                           required
                         />
                         <Form.Control.Feedback type="invalid">
