@@ -943,7 +943,6 @@ function PhysicalTargetSettingsDistrictEdit() {
                     </Form.Group>
                   </Col>
 
-<<<<<<< HEAD
                           <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
@@ -1066,9 +1065,7 @@ function PhysicalTargetSettingsDistrictEdit() {
                           </Col>
 
                           {/* <Col lg="6">
-=======
                   {/* <Col lg="6">
->>>>>>> 6fee5f3a96a193c77bb1f963bb528786412b4301
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
                                 Unit Of Measurement
