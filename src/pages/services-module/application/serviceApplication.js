@@ -40,6 +40,8 @@ function ServiceApplication() {
     scComponentId: "",
     schemeAmount: "",
     sanctionNumber: "",
+    periodFrom: new Date("2023-04-01"),
+    periodTo: new Date("2024-03-31"),
   });
 
   // console.log("nodu", data);
@@ -104,7 +106,7 @@ function ServiceApplication() {
     }));
   };
 
-  console.log("new dev data",developedArea);
+  console.log("new dev data", developedArea);
 
   // Display Image
   const [documentAttachments, setDocumentAttachments] = useState({});
@@ -181,8 +183,8 @@ function ServiceApplication() {
   //   });
   // };
 
-  const handleCheckboxChange = (landId,row) => {
-    console.log("hello row",row);
+  const handleCheckboxChange = (landId, row) => {
+    console.log("hello row", row);
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(landId);
       const newIds = isAlreadySelected
@@ -201,7 +203,7 @@ function ServiceApplication() {
               devAcre: prevData[landId]?.devAcre || "0",
               devGunta: prevData[landId]?.devGunta || "0",
               devFGunta: prevData[landId]?.devFGunta || "0",
-              ...row
+              ...row,
             },
           };
         }
@@ -586,6 +588,10 @@ function ServiceApplication() {
     }
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const handleDevelopedLandInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -629,6 +635,8 @@ function ServiceApplication() {
         schemeAmount: data.schemeAmount,
         sanctionNumber: data.sanctionNumber,
         initialAmount: data.expectedAmount,
+        periodFrom: data.periodFrom,
+        periodTo: data.periodTo,
       };
 
       if (data.equordev === "land") {
@@ -820,6 +828,8 @@ function ServiceApplication() {
       farmerId: "",
       expectedAmount: "",
       financialYearMasterId: "",
+      periodFrom: new Date("2023-04-01"),
+      periodTo: new Date("2024-03-31"),
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -1028,14 +1038,14 @@ function ServiceApplication() {
             // }
 
             api
-              .post(
-                baseURLFarmerServer + `farmer/get-details-by-fruits-id`,
-                {
-                  fruitsId: data.fruitsId,
-                }
-              )
+              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+                fruitsId: data.fruitsId,
+              })
               .then((response) => {
-                console.log("landdetails",response.data.content.farmerLandDetailsDTOList);
+                console.log(
+                  "landdetails",
+                  response.data.content.farmerLandDetailsDTOList
+                );
                 if (response.data.content.farmerLandDetailsDTOList.length > 0) {
                   setLandDetailsList(
                     response.data.content.farmerLandDetailsDTOList
@@ -1212,13 +1222,13 @@ function ServiceApplication() {
     {
       name: "Select",
       selector: "select",
-      cell: (row,i) => (
+      cell: (row, i) => (
         <input
           type="checkbox"
           name="selectedLand"
           value={i}
           checked={landDetailsIds.includes(i)}
-          onChange={() => handleCheckboxChange(i,row)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1323,9 +1333,9 @@ function ServiceApplication() {
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
       // selector: (row,id) => console.log("rowDetails",id),
-      cell: (row,i) => (
+      cell: (row, i) => (
         <>
-        {/* {console.log("dada marre",i)} */}
+          {/* {console.log("dada marre",i)} */}
           <Form.Control
             name="devAcre"
             type="text"
@@ -1855,6 +1865,59 @@ function ServiceApplication() {
                               <Form.Control.Feedback type="invalid">
                                 Head of Account is required
                               </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              From Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodFrom}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodFrom")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                readOnly
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              To Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodTo}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodTo")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                required
+                                readOnly
+                              />
                             </div>
                           </Form.Group>
                         </Col>

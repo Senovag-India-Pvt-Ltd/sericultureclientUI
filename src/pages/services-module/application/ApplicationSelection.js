@@ -490,41 +490,6 @@ function ApplicationSelection() {
 
   const ApplicationDataColumns = [
     {
-      name: "Action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {/* <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.marketMasterId)}
-          >
-            View
-          </Button> */}
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.id)}
-          >
-            Edit
-          </Button>
-          {/* <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.marketMasterId)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    //   grow: 2,
-    },
-    {
       name: "Select",
       selector: "select",
       cell: (row) => (
@@ -603,6 +568,42 @@ function ApplicationSelection() {
       cell: (row) => <span>{row.maxQty}</span>,
       sortable: true,
       hide: "md",
+    },
+
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          {/* <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.marketMasterId)}
+          >
+            View
+          </Button> */}
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleEdit(row.id)}
+          >
+            Edit
+          </Button>
+          {/* <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.marketMasterId)}
+            className="ms-2"
+          >
+            Delete
+          </Button> */}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    //   grow: 2,
     },
   ];
 
