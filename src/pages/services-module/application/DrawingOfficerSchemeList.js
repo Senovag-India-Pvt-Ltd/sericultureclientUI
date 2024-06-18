@@ -470,7 +470,7 @@ function DrawingOfficerSchemeList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getTscListForDBTPush`,
+        baseURLDBT + `service/getApplicationForTscForDbtPush`,
         {},
         {
           params: {
