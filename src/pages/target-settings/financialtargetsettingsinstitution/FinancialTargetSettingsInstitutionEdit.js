@@ -22,14 +22,9 @@ function FinancialTargetSettingsInstitutionEdit() {
 
   let name, value;
 
-  // Function to handle input changes
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
+  const [tscMontlyId, setTscMontlyId] = useState("");
 
-  const [districtMontlyId,setDistrictMontlyId] = useState("")
+  const [receivedTscDistData, setReceivedTscDistData] = useState([]);
 
   const [months, setMonths] = useState({
     jan: "",
@@ -48,23 +43,30 @@ function FinancialTargetSettingsInstitutionEdit() {
 
   const monthNames = {
     1: "jan",
-  2: "feb",
-  3: "mar",
-  4: "apr",
-  5: "may",
-  6: "jun",
-  7: "jul",
-  8: "aug",
-  9: "sep",
-  10: "oct",
-  11: "nov",
-  12: "dec",
-  }
+    2: "feb",
+    3: "mar",
+    4: "apr",
+    5: "may",
+    6: "jun",
+    7: "jul",
+    8: "aug",
+    9: "sep",
+    10: "oct",
+    11: "nov",
+    12: "dec",
+  };
 
   const handleMonthsInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     setMonths({ ...months, [name]: value });
+  };
+
+  // Function to handle input changes
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setData({ ...data, [name]: value });
   };
 
 
@@ -80,7 +82,7 @@ function FinancialTargetSettingsInstitutionEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   // Function to submit form data
-  const postData = (event) => {
+  const postData = async(event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -88,22 +90,61 @@ function FinancialTargetSettingsInstitutionEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      api
-        .post(baseURLTargetSetting + `tsBudgetInstitution/edit`, data)
-        .then((response) => {
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            clear();
+      const monthlyList = [];
+      const monthNumbers = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12,
+      };
+      for (const month in months) {
+        const result = receivedTscDistData.find(
+          (item) => item.month === monthNumbers[month]
+        );
+        monthlyList.push({
+          tsFinancialInstitutionMonthlyId: result.tsFinancialInstitutionMonthlyId,
+          month: monthNumbers[month],
+          value: months[month],
+        });
+      }
+
+      // console.log("Monthly", monthlyList);
+      // console.log("data", data);
+
+      try {
+        const response = await api.post(
+          baseURLTargetSetting + `tsFinancialInstitution/edit-primary-monthly`,
+          {
+            editTsFinancialInstitutionRequest: data,
+            editTsFinancialInstitutionMonthlyRequests: monthlyList,
           }
-        })
-        .catch((err) => {
+        );
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          updateSuccess();
+          clear();
+        }
+      } catch (err) {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors
+        ) {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
             updateError(err.response.data.validationErrors);
           }
-        });
-      setValidated(true);
+        }
+      }
+      // setValidated(true);
     }
   };
 
@@ -126,10 +167,113 @@ function FinancialTargetSettingsInstitutionEdit() {
     useDisburse: "true",
     tsMeasurementUnitId: "1",
     schemeOrActivity: "",
+  });
+
+  setMonths({
+      jan: "",
+      feb: "",
+      mar: "",
+      apr: "",
+      may: "",
+      jun: "",
+      jul: "",
+      aug: "",
+      sep: "",
+      oct: "",
+      nov: "",
+      dec: "",
     });
     setValidated(false);
   };
 
+  const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLTargetSetting + `tsFinancialInstitution/get/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+
+        // Check if err.response is defined and not null
+        if (err.response && err.response.data) {
+          // Check if err.response.data.errorMessages is an array and has length > 0
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            // Access the first error message from the array
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+
+        // Display error message
+        editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  const getIdMonthlyList = () => {
+    setLoading(true);
+    const response = api
+      .get(
+        baseURLTargetSetting +
+          `tsFinancialInstitutionMonthly/getByTsFinancialInstitutionId/${id}`
+      )
+      .then((response) => {
+        // setData(response.data.content.tsFinancialDistrictMonthly);
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+        } else {
+          const lists = response.data.content.tsFinancialInstitutionMonthly;
+          setReceivedTscDistData(
+            response.data.content.tsFinancialInstitutionMonthly
+          );
+          setTscMontlyId(
+            response.data.content.tsFinancialInstitutionMonthly
+              .tsFinancialInstitutionMonthlyId
+          );
+          const newMonths = { ...months };
+          if (lists.length > 0) {
+            lists.forEach((list) => {
+              console.log("listData", list);
+              const monthName = monthNames[list.month];
+              if (monthName) {
+                newMonths[monthName] = list.value;
+              }
+            });
+          }
+          setMonths(newMonths);
+          // setMonths(prev =>({
+          //   ...prev,
+          //   jan:
+          // }))
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        let message = "An error occurred while fetching data.";
+        if (err.response && err.response.data) {
+          if (
+            Array.isArray(err.response.data.errorMessages) &&
+            err.response.data.errorMessages.length > 0
+          ) {
+            message = err.response.data.errorMessages[0].message[0].message;
+          }
+        }
+        // editError(message);
+        setData({});
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getIdList();
+    getIdMonthlyList();
+  }, [id]);
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -319,40 +463,7 @@ function FinancialTargetSettingsInstitutionEdit() {
 
   const isData = !!data.date;
 
-  const getIdList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURLMasterData + `tsBudgetDistrict/get/${id}`)
-      .then((response) => {
-        setData(response.data.content);
-        setLoading(false);
-      })
-      .catch((err) => {
-        let message = "An error occurred while fetching data.";
-
-        // Check if err.response is defined and not null
-        if (err.response && err.response.data) {
-          // Check if err.response.data.errorMessages is an array and has length > 0
-          if (
-            Array.isArray(err.response.data.errorMessages) &&
-            err.response.data.errorMessages.length > 0
-          ) {
-            // Access the first error message from the array
-            message = err.response.data.errorMessages[0].message[0].message;
-          }
-        }
-
-        // Display error message
-        editError(message);
-        setData({});
-        setLoading(false);
-      });
-  };
-
-  // Fetch data on component mount
-  useEffect(() => {
-    getIdList();
-  }, [id]);
+  
 
   // Navigation hook
   const navigate = useNavigate();
