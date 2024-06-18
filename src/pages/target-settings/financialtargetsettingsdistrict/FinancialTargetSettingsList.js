@@ -13,7 +13,7 @@ import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FinancialTargetSettingsDistrictList() {
   const [listData, setListData] = useState({});
@@ -27,9 +27,9 @@ function FinancialTargetSettingsDistrictList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetDistrict/list`, _params)
+      .get(baseURLTargetSetting + `tsFinancialDistrict/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetDistrict);
+        setListData(response.data.content.tsFinancialDistrict);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function FinancialTargetSettingsDistrictList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-district-view/${id}`);
+    navigate(`/seriui/financialtargetsettingsdistrict-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-district-edit/${id}`);
+    navigate(`/seriui/financialtargetsettingsdistrict-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function FinancialTargetSettingsDistrictList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetDistrict/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsFinancialDistrict/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function FinancialTargetSettingsDistrictList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => handleView(row.tsFinancialDistrictId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function FinancialTargetSettingsDistrictList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => handleEdit(row.tsFinancialDistrictId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
+            onClick={() => deleteConfirm(row.tsFinancialDistrictId)}
             className="ms-2"
           >
             Delete
@@ -171,11 +171,26 @@ function FinancialTargetSettingsDistrictList() {
       ),
       sortable: false,
       hide: "md",
+      grow: 2,
     },
     {
       name: "Financial Year",
       selector: (row) => row.financialYear,
       cell: (row) => <span>{row.financialYear}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Scheme Details",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme Details",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: false,
       hide: "md",
     },
@@ -189,18 +204,18 @@ function FinancialTargetSettingsDistrictList() {
     },
     {
       name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
       sortable: false,
       hide: "md",
     },
-    {
-      name: "Head Of Account",
-      selector: (row) => row.hoaId,
-      cell: (row) => <span>{row.hoaId}</span>,
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Head Of Account",
+    //   selector: (row) => row.scHeadAccountName,
+    //   cell: (row) => <span>{row.scHeadAccountName}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
   ];
 
   return (
@@ -216,7 +231,7 @@ function FinancialTargetSettingsDistrictList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsdistrict"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -225,7 +240,7 @@ function FinancialTargetSettingsDistrictList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettingsdistrict-list"
+                  to="/seriui/financialtargetsettingsdistrict"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

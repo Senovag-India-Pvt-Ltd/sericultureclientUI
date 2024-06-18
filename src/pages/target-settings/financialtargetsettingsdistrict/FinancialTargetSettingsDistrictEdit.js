@@ -73,9 +73,11 @@ function FinancialTargetSettingsDistrictEdit() {
     date: "",
     reportingOfficerId: "",
     implementingOfficerId: "",
-    tsActivityMasterId: "",
+    tsActivityMasterId: "0",
     amount: "",
-    useDisburse: "",
+    useDisburse: "true",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
     });
     setValidated(false);
   };
@@ -635,61 +637,92 @@ function FinancialTargetSettingsDistrictEdit() {
                 </Col>
 
                 <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Activity
+                      Scheme Or Activity
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="tsActivityMasterId"
-                        value={data.tsActivityMasterId}
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.tsActivityMasterId === undefined ||
-                          data.tsActivityMasterId === "0"
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
                         }
                       >
-                        <option value="">Select Activity</option>
-                        {activityListData.map((list) => (
-                          <option
-                            key={list.tsActivityMasterId}
-                            value={list.tsActivityMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Activity is required.
+                      Scheme Or Activity is required.
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                      <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                          <Form.Label htmlFor="budgetAmount">
-                            Budget Amount<span className="text-danger">*</span>
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id="budgetAmount"
-                              name="budgetAmount"
-                              value={data.budgetAmount}
-                              onChange={handleInputs}
-                              type="text"
-                              placeholder="Enter Budget Amount"
-                              required
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              Budget Amount is required.
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
-                      </Col>
+
+                <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
+                          Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                       <Col lg="2">
                         <Form.Group className="form-group mt-n4">

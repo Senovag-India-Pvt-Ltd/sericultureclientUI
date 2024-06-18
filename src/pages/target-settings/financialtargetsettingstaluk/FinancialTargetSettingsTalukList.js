@@ -13,7 +13,7 @@ import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FinancialTargetSettingsTalukList() {
   const [listData, setListData] = useState({});
@@ -27,9 +27,9 @@ function FinancialTargetSettingsTalukList() {
     setLoading(true);
 
     const response = api
-      .get(baseURL + `tsBudgetDistrict/list`, _params)
+      .get(baseURLTargetSetting + `tsFinancialTaluk/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetDistrict);
+        setListData(response.data.content.tsFinancialTaluk);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -45,11 +45,11 @@ function FinancialTargetSettingsTalukList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-taluk-view/${id}`);
+    navigate(`/seriui/financialtargetsettingstaluk-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-taluk-edit/${id}`);
+    navigate(`/seriui/financialtargetsettingstaluk-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -70,7 +70,7 @@ function FinancialTargetSettingsTalukList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURL + `tsBudgetTaluk/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsFinancialTaluk/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -147,7 +147,7 @@ function FinancialTargetSettingsTalukList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetDistrictId)}
+            onClick={() => handleView(row.tsFinancialTalukId)}
           >
             View
           </Button>
@@ -155,14 +155,14 @@ function FinancialTargetSettingsTalukList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetDistrictId)}
+            onClick={() => handleEdit(row.tsFinancialTalukId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetDistrictId)}
+            onClick={() => deleteConfirm(row.tsFinancialTalukId)}
             className="ms-2"
           >
             Delete
@@ -196,15 +196,22 @@ function FinancialTargetSettingsTalukList() {
     },
     {
       name: "Budget Amount",
-      selector: (row) => row.budgetAmount,
-      cell: (row) => <span>{row.budgetAmount}</span>,
+      selector: (row) => row.amount,
+      cell: (row) => <span>{row.amount}</span>,
       sortable: false,
       hide: "md",
     },
     {
-      name: "Head Of Account",
-      selector: (row) => row.scHeadAccountName,
-      cell: (row) => <span>{row.scHeadAccountName}</span>,
+      name: "Scheme Name",
+      selector: (row) => row.schemeName,
+      cell: (row) => <span>{row.schemeName}</span>,
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Sub Scheme Name",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: false,
       hide: "md",
     },

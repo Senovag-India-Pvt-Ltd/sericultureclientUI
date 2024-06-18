@@ -26,7 +26,9 @@ function FinancialTargetSettingsDistrict() {
     implementingOfficerId: "",
     tsActivityMasterId: "",
     amount: "",
-    useDisburse: "",
+    useDisburse: "true",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
   });
 
   const [months, setMonths] = useState({
@@ -186,7 +188,9 @@ function FinancialTargetSettingsDistrict() {
       implementingOfficerId: "",
       tsActivityMasterId: "",
       amount: "",
-      useDisburse: "",
+      useDisburse: "true",
+      tsMeasurementUnitId: "1",
+      schemeOrActivity: "",
     });
     setMonths({
       jan: "",
@@ -704,8 +708,8 @@ function FinancialTargetSettingsDistrict() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Activity
                           <span className="text-danger">*</span>
@@ -739,8 +743,39 @@ function FinancialTargetSettingsDistrict() {
                       </Form.Group>
                     </Col>
 
+
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Scheme Or Activity
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
+                        }
+                      >
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Scheme Or Activity is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="amount">
                           Amount<span className="text-danger">*</span>
                         </Form.Label>
@@ -761,7 +796,7 @@ function FinancialTargetSettingsDistrict() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="useDisburse">
                           Use / Disburse<span className="text-danger">*</span>
@@ -781,7 +816,7 @@ function FinancialTargetSettingsDistrict() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">

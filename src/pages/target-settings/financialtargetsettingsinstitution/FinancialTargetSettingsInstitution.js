@@ -29,7 +29,9 @@ function FinancialTargetSettingsInstitution() {
     implementingOfficerId: "",
     tsActivityMasterId: "",
     amount: "",
-    useDisburse: "",
+    useDisburse: "true",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
   });
 
   const [months, setMonths] = useState({
@@ -112,8 +114,8 @@ function FinancialTargetSettingsInstitution() {
         const response = await api.post(
           baseURLTargetSetting + `tsFinancialInstitution/add-primary-monthly`,
           {
-            financialInstitutionRequest: data,
-            financialInstitutionMonthlyRequest: monthlyList,
+            tsFinancialInstitutionRequest: data,
+            tsFinancialInstitutionMonthlyRequests: monthlyList,
           }
         );
         if (response.data.content.error) {
@@ -133,7 +135,7 @@ function FinancialTargetSettingsInstitution() {
           }
         }
       }
-      setValidated(true);
+      // setValidated(true);
     }
   };
 
@@ -152,7 +154,9 @@ function FinancialTargetSettingsInstitution() {
     implementingOfficerId: "",
     tsActivityMasterId: "",
     amount: "",
-    useDisburse: "",
+    useDisburse: "1",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
     });
     setMonths({
       jan: "",
@@ -418,7 +422,7 @@ function FinancialTargetSettingsInstitution() {
                   {/* <h3>Farmers Details</h3> */}
                   <Row className="g-gs">
                   <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Financial Year<span className="text-danger">*</span>
                         </Form.Label>
@@ -664,50 +668,81 @@ function FinancialTargetSettingsInstitution() {
                 </Col>
 
                 <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Activity
+                      Scheme Or Activity
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="tsActivityMasterId"
-                        value={data.tsActivityMasterId}
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.tsActivityMasterId === undefined ||
-                          data.tsActivityMasterId === "0"
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
                         }
                       >
-                        <option value="">Select Activity</option>
-                        {activityListData.map((list) => (
-                          <option
-                            key={list.tsActivityMasterId}
-                            value={list.tsActivityMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Activity is required.
+                      Scheme Or Activity is required.
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
 
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="budgetAmount">
+
+                <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
                           Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="budgetAmount"
-                            name="budgetAmount"
-                            value={data.budgetAmount}
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Amount"
@@ -720,7 +755,7 @@ function FinancialTargetSettingsInstitution() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                    {/* <Col lg="6">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="budgetAmount">
                           Use / Disburse<span className="text-danger">*</span>
@@ -740,7 +775,7 @@ function FinancialTargetSettingsInstitution() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">

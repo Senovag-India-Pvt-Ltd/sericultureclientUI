@@ -26,9 +26,9 @@ function FinancialTargetSettingsInstitutionList() {
     setLoading(true);
 
     const response = api
-      .get(baseURLTargetSetting + `tsBudgetDistrict/list`, _params)
+      .get(baseURLTargetSetting + `tsFinancialInstitution/list-with-join`, _params)
       .then((response) => {
-        setListData(response.data.content.tsBudgetDistrict);
+        setListData(response.data.content.tsFinancialInstitution);
         setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
@@ -44,11 +44,11 @@ function FinancialTargetSettingsInstitutionList() {
 
   const navigate = useNavigate();
   const handleView = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-institution-view/${id}`);
+    navigate(`/seriui/financialtargetsettingsinstitution-view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/seriui/FinancialTargetSettings-institution-edit/${id}`);
+    navigate(`/seriui/financialtargetsettingsinstitution-edit/${id}`);
   };
 
   const deleteError = () => {
@@ -69,7 +69,7 @@ function FinancialTargetSettingsInstitutionList() {
     }).then((result) => {
       if (result.value) {
         const response = api
-          .delete(baseURLTargetSetting + `tsBudgetInstitution/delete/${id}`)
+          .delete(baseURLTargetSetting + `tsFinancialInstitution/delete/${id}`)
           .then((response) => {
             getList();
             Swal.fire(
@@ -146,7 +146,7 @@ function FinancialTargetSettingsInstitutionList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.tsBudgetInstitutionId)}
+            onClick={() => handleView(row.tsFinancialInstitutionId)}
           >
             View
           </Button>
@@ -154,14 +154,14 @@ function FinancialTargetSettingsInstitutionList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.tsBudgetInstitutionId)}
+            onClick={() => handleEdit(row.tsFinancialInstitutionId)}
           >
             Edit
           </Button>
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.tsBudgetInstitutionId)}
+            onClick={() => deleteConfirm(row.tsFinancialInstitutionId)}
             className="ms-2"
           >
             Delete
@@ -195,18 +195,18 @@ function FinancialTargetSettingsInstitutionList() {
     },
     {
       name: "Category",
-      selector: (row) => row.codeNumber,
-      cell: (row) => <span>{row.codeNumber}</span>,
+      selector: (row) => row.categoryName,
+      cell: (row) => <span>{row.categoryName}</span>,
       sortable: false,
       hide: "md",
     },
-    {
-      name: "Institution Name",
-      selector: (row) => row.institutionName,
-      cell: (row) => <span>{row.institutionName}</span>,
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Institution Name",
+    //   selector: (row) => row.institutionName,
+    //   cell: (row) => <span>{row.institutionName}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
     {
       name: "Budget Amount",
       selector: (row) => row.amount,
@@ -214,13 +214,13 @@ function FinancialTargetSettingsInstitutionList() {
       sortable: false,
       hide: "md",
     },
-    {
-      name: "Use/Disburse",
-      selector: (row) => row.hoaId,
-      cell: (row) => <span>{row.hoaId}</span>,
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "Use/Disburse",
+    //   selector: (row) => row.hoaId,
+    //   cell: (row) => <span>{row.hoaId}</span>,
+    //   sortable: false,
+    //   hide: "md",
+    // },
   ];
 
   return (
@@ -236,7 +236,7 @@ function FinancialTargetSettingsInstitutionList() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/financialtargetsettings-institution-list"
+                  to="/seriui/financialtargetsettingsinstitution"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -245,7 +245,7 @@ function FinancialTargetSettingsInstitutionList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/financialtargetsettings-institution-list"
+                  to="/seriui/financialtargetsettingsinstitution"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />

@@ -707,6 +707,41 @@ useEffect(() => {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Activity
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tsActivityMasterId"
+                            value={data.tsActivityMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tsActivityMasterId === undefined ||
+                              data.tsActivityMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Activity</option>
+                            {activityListData.map((list) => (
+                              <option
+                                key={list.tsActivityMasterId}
+                                value={list.tsActivityMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Activity is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>

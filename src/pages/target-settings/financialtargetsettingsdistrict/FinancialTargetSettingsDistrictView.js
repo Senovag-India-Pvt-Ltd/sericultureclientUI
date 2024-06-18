@@ -8,7 +8,7 @@ import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FinancialTargetSettingsDistrictView() {
   const styles = {
@@ -33,7 +33,7 @@ function FinancialTargetSettingsDistrictView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `tsBudgetDistrict/get/${id}`)
+      .get(baseURLTargetSetting + `tsFinancialDistrict/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -121,9 +121,21 @@ function FinancialTargetSettingsDistrictView() {
                         <td>{budgetDistrictData.districtName}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td>{budgetDistrictData.schemeName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                        <td>{budgetDistrictData.subSchemeName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Category:</td>
+                        <td>{budgetDistrictData.categoryName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>
-                          <span>{budgetDistrictData.budgetAmount}</span>
+                          <span>{budgetDistrictData.amount}</span>
                         </td>
                       </tr>
                       <tr>

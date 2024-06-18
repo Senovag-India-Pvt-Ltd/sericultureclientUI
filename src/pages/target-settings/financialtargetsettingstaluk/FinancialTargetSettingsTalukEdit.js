@@ -232,6 +232,27 @@ function FinancialTargetSettingsTalukEdit() {
     getCategoryList();
   }, []);
  
+    // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = () => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getTalukList();
+  }, []);
+  
   // get unit of measurement
   const [unitTypeList, setUnitTypeList] = useState([]);
   useEffect(() => {
@@ -558,6 +579,38 @@ function FinancialTargetSettingsTalukEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
+                      Select Taluk
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="talukId"
+                        value={data.talukId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.talukId === undefined ||
+                          data.talukId === "0"
+                        }
+                      >
+                        <option value="">Select Taluk</option>
+                        {talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Taluk is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
                       Reporting Officer DDO
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -630,37 +683,33 @@ function FinancialTargetSettingsTalukEdit() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Activity
+                      Scheme Or Activity
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
-                        name="tsActivityMasterId"
-                        value={data.tsActivityMasterId}
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
                         onChange={handleInputs}
                         onBlur={() => handleInputs}
                         required
                         isInvalid={
-                          data.tsActivityMasterId === undefined ||
-                          data.tsActivityMasterId === "0"
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
                         }
                       >
-                        <option value="">Select Activity</option>
-                        {activityListData.map((list) => (
-                          <option
-                            key={list.tsActivityMasterId}
-                            value={list.tsActivityMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))}
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Activity is required.
+                      Scheme Or Activity is required.
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
                 </Col>
+
 
                       <Col lg="6">
                         <Form.Group className="form-group mt-n3">

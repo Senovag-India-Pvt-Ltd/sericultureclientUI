@@ -25,7 +25,7 @@ function FinancialTargetSettingsInstitutionView() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLTargetSetting + `tsBudgetTaluk/get/${id}`)
+      .get(baseURLTargetSetting + `tsFinancialInstitution/get-join/${id}`)
       .then((response) => {
         setBudgetDistrictData(response.data.content);
         setLoading(false);
@@ -114,11 +114,22 @@ function FinancialTargetSettingsInstitutionView() {
                         <td style={styles.ctstyle}> District Name:</td>
                         <td>{budgetDistrictData.districtName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}> Taluk Name:</td>
                         <td>{budgetDistrictData.talukName}</td>
+                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}> Scheme Name:</td>
+                        <td>{budgetDistrictData.schemeName}</td>
                       </tr>
-                      
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                        <td>{budgetDistrictData.subSchemeName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Category:</td>
+                        <td>{budgetDistrictData.categoryName}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>Budget Amount:</td>
                         <td>

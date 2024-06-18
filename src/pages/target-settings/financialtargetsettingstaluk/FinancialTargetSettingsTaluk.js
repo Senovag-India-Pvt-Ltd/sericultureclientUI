@@ -27,7 +27,9 @@ function FinancialTargetSettingsTaluk() {
     implementingOfficerId: "",
     tsActivityMasterId: "",
     amount: "",
-    useDisburse: "",
+    useDisburse: "true",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
   });
 
   const [months, setMonths] = useState({
@@ -110,8 +112,8 @@ function FinancialTargetSettingsTaluk() {
         const response = await api.post(
           baseURLTargetSetting + `tsFinancialTaluk/add-primary-monthly`,
           {
-            financialTalukRequest: data,
-            financialTalukMonthlyRequest: monthlyList,
+            tsFinancialTalukRequest: data,
+            tsFinancialTalukMonthlyRequests: monthlyList,
           }
         );
         if (response.data.content.error) {
@@ -131,7 +133,7 @@ function FinancialTargetSettingsTaluk() {
           }
         }
       }
-      setValidated(true);
+      // setValidated(true);
     }
   };
 
@@ -148,7 +150,9 @@ function FinancialTargetSettingsTaluk() {
       implementingOfficerId: "",
       tsActivityMasterId: "",
       amount: "",
-      useDisburse: "",
+      useDisburse: "1",
+    tsMeasurementUnitId: "1",
+    schemeOrActivity: "",
     });
     setMonths({
       jan: "",
@@ -186,9 +190,30 @@ function FinancialTargetSettingsTaluk() {
     getList();
   }, []);
 
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = () => {
+    const response = api
+      .get(baseURLMasterData + `taluk/get-all`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getTalukList();
+  }, []);
+
   // to get district
   const [districtListData, setDistrictListData] = useState([]);
-
+ 
   const getDistrictList = () => {
     const response = api
       .get(baseURLMasterData + `district/get-all`)
@@ -593,6 +618,38 @@ function FinancialTargetSettingsTaluk() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
+                      Select Taluk
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="talukId"
+                        value={data.talukId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.talukId === undefined ||
+                          data.talukId === "0"
+                        }
+                      >
+                        <option value="">Select Taluk</option>
+                        {talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Taluk is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
                       Reporting Officer DDO
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -696,16 +753,47 @@ function FinancialTargetSettingsTaluk() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                  <Col lg="6">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Scheme Or Activity
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="schemeOrActivity"
+                        value={data.schemeOrActivity}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        required
+                        isInvalid={
+                          data.schemeOrActivity === undefined ||
+                          data.schemeOrActivity === "0"
+                        }
+                      >
+                        <option value="0">Select Scheme Or Activity</option>
+                        <option value="1">Scheme</option>
+                        <option value="2">Activity</option>
+                        
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                      Scheme Or Activity is required.
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
                     <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="budgetAmount">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="amount">
                           Amount<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="budgetAmount"
-                            name="budgetAmount"
-                            value={data.budgetAmount}
+                            id="amount"
+                            name="amount"
+                            value={data.amount}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Amount"
@@ -713,28 +801,6 @@ function FinancialTargetSettingsTaluk() {
                           />
                           <Form.Control.Feedback type="invalid">
                             Amount is required.
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="budgetAmount">
-                          Use / Disburse<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="budgetAmount"
-                            name="budgetAmount"
-                            value={data.budgetAmount}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Amount"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Use / Disburse is required.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
