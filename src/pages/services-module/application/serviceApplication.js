@@ -761,7 +761,8 @@ function ServiceApplication() {
 
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        // baseURLReport + `getBlankSample`,
+        `http://localhost:8006/reports/marketreport/getBlankSample`,
         {
           applicationFormId: applicationId,
         },
