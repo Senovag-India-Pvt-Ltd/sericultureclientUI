@@ -16,6 +16,7 @@ function Designation() {
     name: "",
     designationNameInKannada: "",
     amount: "",
+    level: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -62,6 +63,7 @@ function Designation() {
               name: "",
               designationNameInKannada: "",
               amount: "",
+              level: "",
             });
             setValidated(false);
           }
@@ -87,6 +89,7 @@ function Designation() {
       name: "",
       designationNameInKannada: "",
       amount: "",
+      level: "",
     });
   };
 
@@ -226,6 +229,36 @@ function Designation() {
                       </div>
                     </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Level<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="level"
+                          value={data.level}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.level === undefined || data.level === "0"
+                          }
+                        >
+                          <option value="">Select Level</option>
+                          <option value="State">State</option>
+                          <option value="Region">Region</option>
+                          <option value="District">District</option>
+                          <option value="Taluk">Taluk</option>
+                          
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Level is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 </Row>
               </Card.Body>

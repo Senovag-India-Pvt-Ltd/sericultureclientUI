@@ -18,6 +18,7 @@ function District() {
     districtNameInKannada: "",
     lgDistrict: "",
     districtCode: "",
+    divisionMasterId: ""
   });
 
   const [validated, setValidated] = useState(false);
@@ -53,6 +54,7 @@ function District() {
               districtNameInKannada: "",
               lgDistrict: "",
               districtCode: "",
+              divisionMasterId: ""
             });
             setValidated(false);
           }
@@ -80,6 +82,7 @@ function District() {
       districtNameInKannada: "",
       lgDistrict: "",
       districtCode: "",
+      divisionMasterId: ""
     });
   };
 
@@ -99,6 +102,24 @@ function District() {
 
   useEffect(() => {
     getList();
+  }, []);
+
+  // to get Division
+  const [divisionListData, setDivisionListData] = useState([]);
+
+  const getDivisionList = () => {
+    const response = api
+      .get(baseURL + `divisionMaster/get-all`)
+      .then((response) => {
+        setDivisionListData(response.data.content.DivisionMaster);
+      })
+      .catch((err) => {
+        setDivisionListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDivisionList();
   }, []);
 
   const navigate = useNavigate();
@@ -279,6 +300,36 @@ function District() {
                         />
                         <Form.Control.Feedback type="invalid">
                         District Code is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Division<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="divisionMasterId"
+                          value={data.divisionMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.divisionMasterId === undefined || data.divisionMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Division</option>
+                          {divisionListData && divisionListData.map((list) => (
+                            <option key={list.divisionMasterId} value={list.divisionMasterId}>
+                              {list.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Division is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

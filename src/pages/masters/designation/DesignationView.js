@@ -110,6 +110,10 @@ function DesignationView() {
                         <td style={styles.ctstyle}> Amount:</td>
                         <td>{designation.amount}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Level:</td>
+                        <td>{designation.level}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

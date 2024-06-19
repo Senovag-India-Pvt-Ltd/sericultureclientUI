@@ -208,6 +208,13 @@ function DesignationList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Level",
+      selector: (row) => row.level,
+      cell: (row) => <span>{row.level}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
