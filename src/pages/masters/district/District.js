@@ -111,7 +111,7 @@ function District() {
     const response = api
       .get(baseURL + `divisionMaster/get-all`)
       .then((response) => {
-        setDivisionListData(response.data.content.divisionMaster);
+        setDivisionListData(response.data.content.DivisionMaster);
       })
       .catch((err) => {
         setDivisionListData([]);
@@ -322,7 +322,7 @@ function District() {
                           }
                         >
                           <option value="">Select Division</option>
-                          {divisionListData.map((list) => (
+                          {divisionListData && divisionListData.map((list) => (
                             <option key={list.divisionMasterId} value={list.divisionMasterId}>
                               {list.name}
                             </option>
