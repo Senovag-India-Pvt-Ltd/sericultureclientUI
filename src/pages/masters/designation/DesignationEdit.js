@@ -44,7 +44,6 @@ function DesignationEdit() {
             setData({
               name: "",
               designationNameInKannada: "",
-              amount: "",
               level: "",
             });
             setValidated(false);
@@ -70,7 +69,6 @@ function DesignationEdit() {
     setData({
       name: "",
       designationNameInKannada: "",
-      amount: "",
       level: "",
     });
   };
@@ -215,22 +213,7 @@ function DesignationEdit() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
-
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="state">Amount</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="amount"
-                          name="amount"
-                          value={data.amount}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Amount"
-                        />
-                      </div>
-                    </Form.Group>
-                    </Col>
+                    
 
                     <Col lg="6">
                     <Form.Group className="form-group">
