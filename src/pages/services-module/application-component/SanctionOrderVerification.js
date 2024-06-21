@@ -14,6 +14,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 const SanctionOrderVerification = () => {
   const [helpDeskFaq, setHelpDeskFaq] = useState({
@@ -98,6 +99,37 @@ const SanctionOrderVerification = () => {
   //     getFaq();
   //   }, []);
 
+  const sanctionOrderReport = async (applicationId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        {
+          applicationFormId: applicationId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // const printWindow = window.open(fileURL);
+      // if (printWindow) {
+      //   printWindow.onload = () => {
+      //     printWindow.print();
+      //   };
+      // } else {
+      //   console.error("Failed to open the print window.");
+      // }
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
   const getList = () => {
     setLoading(true);
     api
@@ -164,6 +196,7 @@ const SanctionOrderVerification = () => {
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
+            sanctionOrderReport(response.data.content);
             getList();
           })
           .catch((err) => {

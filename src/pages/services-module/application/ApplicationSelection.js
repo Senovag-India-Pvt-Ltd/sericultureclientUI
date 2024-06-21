@@ -421,7 +421,7 @@ function ApplicationSelection() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Selected Application list will be proceeded for preinspection",
       text: message,
     });
   };

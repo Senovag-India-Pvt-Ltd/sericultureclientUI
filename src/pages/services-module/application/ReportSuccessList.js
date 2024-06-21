@@ -787,6 +787,13 @@ function ReportSuccessList() {
     //   button: true,
     // },
     {
+      name: "Sl.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Application Id",
       selector: (row) => row.scApplicationFormId,
       cell: (row) => <span>{row.scApplicationFormId}</span>,

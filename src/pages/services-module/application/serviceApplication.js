@@ -2061,7 +2061,7 @@ function ServiceApplication() {
                         />
                       </Col>
                       <Form.Label column sm={9} className="mt-n2" id="land">
-                        Developed Area
+                        Constructed Area
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -2269,7 +2269,7 @@ function ServiceApplication() {
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
-                          Developed Area
+                          Constructed Area
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
@@ -2308,7 +2308,7 @@ function ServiceApplication() {
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="landDeveloped">
-                                  Unit Quantity
+                                  Unit
                                   <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
@@ -2318,7 +2318,7 @@ function ServiceApplication() {
                                     name="landDeveloped"
                                     value={developedLand.landDeveloped}
                                     onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Unit Quantity"
+                                    placeholder="Enter Unit"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">
