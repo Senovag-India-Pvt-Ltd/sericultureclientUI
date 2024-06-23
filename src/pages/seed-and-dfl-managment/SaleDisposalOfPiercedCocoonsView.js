@@ -126,7 +126,7 @@ function SaleDisposalOfPiercedCocoonsView() {
                         <td>{piercedCocoons.numberOfCocoons}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Quantity in kgs:</td>
+                        <td style={styles.ctstyle}>Cocoons Quantity in kgs:</td>
                         <td>{piercedCocoons.quantityInKgs}</td>
                       </tr>
                       <tr>

@@ -263,7 +263,7 @@ function ColdStorageScheduleBVEdit() {
                   </Form.Group>
                 </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
                           Schedule Type<span className="text-danger">*</span>
@@ -283,7 +283,38 @@ function ColdStorageScheduleBVEdit() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
+
+                    <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                              Schedule Type
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="scheduleType"
+                                  value={data.scheduleType}
+                                  onChange={handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.scheduleType === undefined ||
+                                    data.scheduleType === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Schedule Type
+                                  </option>
+                                  <option value="4-Months">4-Months</option>
+                                  <option value="6-Months">6-Months</option>\
+                                  <option value="10-Months">10-Months</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                Schedule Type is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                           
                           <Col lg="2">

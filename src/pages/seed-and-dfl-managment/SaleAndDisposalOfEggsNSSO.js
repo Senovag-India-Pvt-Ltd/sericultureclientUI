@@ -9,7 +9,6 @@ import Block from "../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";

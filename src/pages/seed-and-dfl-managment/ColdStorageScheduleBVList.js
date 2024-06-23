@@ -18,6 +18,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 function ColdStorageScheduleBVList() {
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
+  const [listCalendarData, setCalendarData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -25,7 +26,11 @@ function ColdStorageScheduleBVList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  
+  const [data, setData] = useState({
+   laidOnDate: "",
+   lotNumber: "",
+  });
+
 
   const getList = () => {
     setLoading(true);
@@ -48,6 +53,56 @@ function ColdStorageScheduleBVList() {
     getList();
   }, []);
 
+  const [showModal, setShowModal] = useState(true);
+  
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const [showModal1, setShowModal1] = useState(false);
+  
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal1 = () => setShowModal1(false);
+
+  const getAlertList = () => {
+    setLoading(true);
+    api.get(baseURLSeedDfl + `Cold-Storage/get-alert-data`)
+      .then((response) => {
+        setListLogsData(response.data);
+        setLoading(false);
+        if (response.data.length > 0) {
+          setShowModal(true);
+        } else {
+          setShowModal(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getAlertList();
+  }, []);
+
+
+  const getCalendarList = (lotNumber,laidOnDate) => {
+    setLoading(false);
+    
+    api.post(baseURLSeedDfl + `Cold-Storage/get-calendar-table-data`,{ lotNumber, laidOnDate })
+      .then((response) => {
+        setCalendarData(response.data);
+        setLoading(false);
+        setShowModal1(true);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  // useEffect(() => {
+  //   getCalendarList();
+  // }, []);
+
   
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -68,6 +123,8 @@ function ColdStorageScheduleBVList() {
       text: "Something went wrong!",
     });
   };
+
+  
 
   const deleteConfirm = (_id) => {
     Swal.fire({
@@ -97,6 +154,64 @@ function ColdStorageScheduleBVList() {
       } else {
         console.log(result.value);
         Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const acceptError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: message,
+      text: message,
+    });
+  };
+
+  const saveSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: message,
+      text: message,
+    });
+  };
+
+  const acceptConfirm = (_cssId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Accept!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Accept it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .delete(baseURLSeedDfl + `Cold-Storage/change-alert-status/${_cssId}`)
+          .then((response) => {
+            if (response.data.error) {
+              acceptError(response.data.message);
+            } else {
+              saveSuccess(response.data.message);
+              // clear();
+            }
+            getList();
+            // Swal.fire(
+            //   "Accepted",
+            //   "You successfully Accepted this record",
+            //   "success"
+            // );
+            Swal.fire({
+              icon: "success",
+              title: response.data.message,
+              text: response.data.message,
+            });
+          })
+          .catch((err) => {
+            acceptError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not accepted", "info");
       }
     });
   };
@@ -149,6 +264,89 @@ function ColdStorageScheduleBVList() {
       },
     },
   };
+
+  const ColdStorageAlertDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => acceptConfirm(row.cssId)}
+          >
+            Accept
+          </Button>
+         
+          {/* <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id)}
+            className="ms-2"
+          >
+            Reject
+          </Button> */}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      // grow: 3,
+    },
+
+    {
+      name: "Grainage Details",
+      selector: (row) => row.grainageDetails,
+      cell: (row) => <span>{row.grainageDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Laid On Date",
+      selector: (row) => row.laidOnDate,
+      cell: (row) => <span>{row.laidOnDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Date of Deposit",
+      selector: (row) => row.dateOfDeposit,
+      cell: (row) => <span>{row.dateOfDeposit}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Remaining Duration",
+      selector: (row) => row.remainingDuration,
+      cell: (row) => <span>{row.remainingDuration}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Is Changed",
+      selector: (row) => row.isChanged,
+      cell: (row) => (
+        <span>
+          {row.isChanged === 0
+            ? "Pending"
+            : row.isChanged === 1
+            ? "Accepted"
+            : "Unknown"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+  ];
 
   const ColdStorageScheduleBVDataColumns = [
     {
@@ -231,31 +429,101 @@ function ColdStorageScheduleBVList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Storage Temperature",
+    //   selector: (row) => row.storageTemperature,
+    //   cell: (row) => <span>{row.storageTemperature}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Storage Duration",
+    //   selector: (row) => row.storageDuration,
+    //   cell: (row) => <span>{row.storageDuration}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Remaining Duration",
+    //   selector: (row) => row.remainingDuration,
+    //   cell: (row) => <span>{row.remainingDuration}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    
     {
-      name: "Storage Temperature",
-      selector: (row) => row.storageTemperature,
-      cell: (row) => <span>{row.storageTemperature}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Storage Duration",
-      selector: (row) => row.storageDuration,
-      cell: (row) => <span>{row.storageDuration}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Remaining Duration",
-      selector: (row) => row.remainingDuration,
-      cell: (row) => <span>{row.remainingDuration}</span>,
-      sortable: true,
-      hide: "md",
-    },
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => getCalendarList(row.lotNumber,row.laidOnDate)}
+          >
+           Schedule Table
+          </Button>
+          </div>
+          ),
+          sortable: false,
+          hide: "md",
+          },
+      ]
+
+    const ColdStorageCalendarBVDataColumns = [
+     
+      {
+        name: "Lot Number",
+        selector: (row) => row.lotNumber,
+        cell: (row) => <span>{row.lotNumber}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      // {
+      //   name: "Lot Number",
+      //   selector: (row) => row.lotNumber,
+      //   cell: (row) => <span>{row.lotNumber}</span>,
+      //   sortable: true,
+      //   hide: "md",
+      // },
+      {
+        name: "Laid On Date",
+        selector: (row) => row.laidOnDate,
+        cell: (row) => <span>{row.laidOnDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Storage Temp ",
+        selector: (row) => row.storageTemp,
+        cell: (row) => <span>{row.storageTemp}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "From Date",
+        selector: (row) => row.fromDate,
+        cell: (row) => <span>{row.fromDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "To Date",
+        selector: (row) => row.toDate,
+        cell: (row) => <span>{row.toDate}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Storage Duration",
+        selector: (row) => row.storageDuration,
+        cell: (row) => <span>{row.storageDuration}</span>,
+        sortable: true,
+        hide: "md",
+      },  
    
   ];
-
- 
 
   return (
     <Layout title="Cold-Storage-Schedule BV List">
@@ -311,6 +579,66 @@ function ColdStorageScheduleBVList() {
           />
         </Card>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Alerts Window</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={ColdStorageAlertDataColumns}
+                data={listLogsData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Schedule Table</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={ColdStorageCalendarBVDataColumns}
+                data={listCalendarData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }

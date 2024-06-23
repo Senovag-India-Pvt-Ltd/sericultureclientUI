@@ -2,12 +2,10 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-// import DatePicker from "../../../components/Form/DatePicker";
 import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-// import axios from "axios";
 import { createTheme } from "react-data-table-component";
 import { Icon } from "../../components";
 import DataTable from "react-data-table-component";
@@ -18,7 +16,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmAlert() {
   const { id } = useParams();
-  const [listData, setListData] = useState({});
+  const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -34,8 +32,14 @@ function MaintenanceofMulberryfarmAlert() {
     brushingStatus: "0",
   });
 
-  const [validatedPruningDateEdit, setValidatedPruningDateEdit] =
-    useState(false);
+  // const [dates, setDates] = useState({
+  //   brushingDate: null,
+  //   fertilizerApplicationDate: null,
+  //   fymApplicationDate: null,
+  //   irrigationDate: null,
+  // });
+
+  const [validatedPruningDateEdit, setValidatedPruningDateEdit] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -45,16 +49,13 @@ function MaintenanceofMulberryfarmAlert() {
   const getList = () => {
     setLoading(true);
 
-    const response = api
+    api
       .get(baseURLSeedDfl + `MulberryFarm/get-alerts-list`)
       .then((response) => {
-        // console.log(response.data)
         setListData(response.data);
-        // setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
       .catch((err) => {
-        // setListData({});
         setLoading(false);
       });
   };
@@ -75,14 +76,15 @@ function MaintenanceofMulberryfarmAlert() {
         .post(baseURLSeedDfl + `MulberryFarm/update-task-status`, pruningDate)
         .then((response) => {
           updateSuccess(response.data.message);
-          // getVbDetailsList();
+          getList();
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
+          if (err.response.data.validationErrors) {
             updateError(err.response.data.validationErrors);
           }
         });
       setValidatedPruningDateEdit(true);
+      handleCloseModal();
     }
   };
 
@@ -114,10 +116,6 @@ function MaintenanceofMulberryfarmAlert() {
     });
   };
 
-  const handleDateChange = (date, type) => {
-    setPruningDate({ ...pruningDate, [type]: date });
-  };
-
   const clear = () => {
     setPruningDate({
       fertilizerApplicationStatus: "",
@@ -127,18 +125,50 @@ function MaintenanceofMulberryfarmAlert() {
     });
   };
 
+  // const pruningDate = new Date(row.pruningDate);
+  const currentDate = new Date();
+
   const handleEdit = (row) => {
     setShowModal(true);
-    setPruningDate((prev) => ({
-      ...prev,
+    setPruningDate({
       id: row.id,
       fertilizerApplicationStatus: row.fertilizerApplicationStatus,
       fymApplicationStatus: row.fymApplicationStatus,
       irrigationStatus: row.irrigationStatus,
       brushingStatus: row.brushingStatus,
-    }));
+    });
+  
+    // // Calculate enabled dates based on pruning date
+    // const pruningDate = new Date(row.pruningDate);
+    // const fertilizerApplicationDate = new Date(pruningDate);
+    // fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15); // Assuming 15 days after pruning for fertilizer application
+    // const fymApplicationDate = new Date(pruningDate);
+    // fymApplicationDate.setDate(fymApplicationDate.getDate() + 5); // Assuming 5 days after pruning for fym application
+    // const irrigationDate = new Date(pruningDate);
+    // irrigationDate.setDate(irrigationDate.getDate() + 10); // Assuming 10 days after pruning for irrigation
+    // const brushingDate = new Date(pruningDate);
+    // brushingDate.setDate(brushingDate.getDate() + 45); // Assuming 45 days after pruning for brushing
+  
+    // setDates({
+    //   fertilizerApplicationDate: fertilizerApplicationDate,
+    //   fymApplicationDate: fymApplicationDate,
+    //   irrigationDate: irrigationDate,
+    //   brushingDate: brushingDate,
+    // });
+  };
 
-    // navigate("/seriui/training Schedule");
+  const isDatePassed = (date) => {
+    const currentDate = new Date();
+    return new Date(date) < currentDate;
+  };
+
+  const isTodayOrFutureDate = (date) => {
+    if (!date) return false;
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const targetDate = new Date(date);
+    targetDate.setHours(0, 0, 0, 0);
+    return targetDate >= currentDate;
   };
 
   createTheme(
@@ -170,7 +200,7 @@ function MaintenanceofMulberryfarmAlert() {
   const customStyles = {
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "45px",
       },
     },
     headCells: {
@@ -178,13 +208,13 @@ function MaintenanceofMulberryfarmAlert() {
         backgroundColor: "#1e67a8",
         color: "#fff",
         fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
+        paddingLeft: "8px",
         paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
+        paddingLeft: "8px",
         paddingRight: "8px",
       },
     },
@@ -194,7 +224,6 @@ function MaintenanceofMulberryfarmAlert() {
     {
       name: "Action",
       cell: (row) => (
-        //   Button style
         <div className="text-start w-100">
           <Button
             variant="primary"
@@ -204,14 +233,6 @@ function MaintenanceofMulberryfarmAlert() {
           >
             Edit
           </Button>
-          {/* <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.id)}
-            className="ms-2"
-          >
-            Delete
-          </Button> */}
         </div>
       ),
       sortable: false,
@@ -231,45 +252,6 @@ function MaintenanceofMulberryfarmAlert() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Fertilizer Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Gender",
-    //   selector: (row) => row.genderId,
-    //   cell: (row) => <span>{row.genderId  === 1
-    //     ? 'Male'
-    //     : row.gender === 2
-    //     ? 'Female'
-    //     : 'Other'}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Fertilizer Application Status",
       selector: (row) => row.fertilizerApplicationStatus,
@@ -385,10 +367,11 @@ function MaintenanceofMulberryfarmAlert() {
           />
         </Card>
       </Block>
+       
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Update Status </Modal.Title>
+          <Modal.Title>Update Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -406,6 +389,7 @@ function MaintenanceofMulberryfarmAlert() {
                       name="fertilizerApplicationStatus"
                       value={pruningDate.fertilizerApplicationStatus}
                       onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
                     >
                       <option value="">
                         Select Fertilizer Application Status
@@ -426,6 +410,7 @@ function MaintenanceofMulberryfarmAlert() {
                       name="fymApplicationStatus"
                       value={pruningDate.fymApplicationStatus}
                       onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
                     >
                       <option value="">Select FYM Status</option>
                       <option value="0">Pending</option>
@@ -444,6 +429,8 @@ function MaintenanceofMulberryfarmAlert() {
                       name="irrigationStatus"
                       value={pruningDate.irrigationStatus}
                       onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.irrigationDate)}
+                      
                     >
                       <option value="">Select Irrigation Status</option>
                       <option value="0">Pending</option>
@@ -462,6 +449,7 @@ function MaintenanceofMulberryfarmAlert() {
                       name="brushingStatus"
                       value={pruningDate.brushingStatus}
                       onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.brushingDate)}
                     >
                       <option value="">Select Brushing Status</option>
                       <option value="0">Pending</option>
@@ -496,3 +484,4 @@ function MaintenanceofMulberryfarmAlert() {
 }
 
 export default MaintenanceofMulberryfarmAlert;
+ 

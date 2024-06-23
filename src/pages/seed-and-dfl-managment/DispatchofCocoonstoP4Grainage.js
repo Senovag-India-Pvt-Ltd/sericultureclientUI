@@ -18,7 +18,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function DispatchofCocoonstoP4Grainage() {
   const [data, setData] = useState({
-    grainageMasterId: "",
+    grainageUserMasterId: "",
     lineYear: "",
     sourceMasterId: "",
     screeningBatchNo: "",
@@ -62,7 +62,7 @@ function DispatchofCocoonstoP4Grainage() {
           } else {
             saveSuccess(response.data.invoice_no);
             setData({
-              grainageMasterId: "",
+              grainageUserMasterId: "",
               lineYear: "",
               sourceMasterId: "",
               screeningBatchNo: "",
@@ -88,7 +88,7 @@ function DispatchofCocoonstoP4Grainage() {
 
   const clear = () => {
     setData({
-      grainageMasterId: "",
+      grainageUserMasterId: "",
       lineYear: "",
       sourceMasterId: "",
       screeningBatchNo: "",
@@ -287,8 +287,8 @@ function DispatchofCocoonstoP4Grainage() {
                         <Col>
                           <div className="form-control-wrap">
                             <Form.Select
-                              name="grainageMasterId"
-                              value={data.grainageMasterId}
+                              name="grainageUserMasterId"
+                              value={data.grainageUserMasterId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               required
@@ -296,8 +296,8 @@ function DispatchofCocoonstoP4Grainage() {
                               <option value="">Select Grainage</option>
                               {grainageListData && grainageListData.length?(grainageListData.map((list) => (
                                 <option
-                                  key={list.grainageMasterId}
-                                  value={list.grainageMasterId}
+                                  key={list.userMasterId}
+                                  value={list.userMasterId}
                                 >
                                   {list.grainageMasterName}
                                 </option>

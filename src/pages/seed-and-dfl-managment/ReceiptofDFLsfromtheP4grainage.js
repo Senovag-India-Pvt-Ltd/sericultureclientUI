@@ -65,6 +65,11 @@ function ReceiptofDFLsfromtheP4grainage() {
         setListData(response.data);
         // setTotalRows(response.data.content.totalItems);
         setLoading(false);
+        if (response.data.length > 0) {
+          setShowModal(true);
+        } else {
+          setShowModal(false);
+        }
       })
       .catch((err) => {
         // setListData({});
@@ -321,7 +326,7 @@ function ReceiptofDFLsfromtheP4grainage() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.sodId, 0)}
+            onClick={() => deleteConfirm(row.sodId, 2)}
             className="ms-2"
           >
             Reject
@@ -371,7 +376,17 @@ function ReceiptofDFLsfromtheP4grainage() {
     {
       name: "Accepted or not",
       selector: (row) => row.isAccepted,
-      cell: (row) => <span>{row.isAccepted}</span>,
+      cell: (row) => (
+        <span>
+          {row.isAccepted === 0
+            ? "Pending"
+            : row.isAccepted === 1
+            ? "Accepted"
+            : row.isAccepted === 2
+            ? "Rejected"
+            : "Unknown"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -392,7 +407,7 @@ function ReceiptofDFLsfromtheP4grainage() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link
+                {/* <Link
                   to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
@@ -407,7 +422,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                 >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </Block.HeadContent>

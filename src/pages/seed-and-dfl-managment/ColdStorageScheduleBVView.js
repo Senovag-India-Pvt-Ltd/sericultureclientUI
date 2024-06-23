@@ -134,7 +134,7 @@ function ColdStorageScheduleBVView() {
                         </td>
                         <td>{scheduleBV.dateOfRelease}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>
                         Storage Temperature:
                         </td>
@@ -151,7 +151,7 @@ function ColdStorageScheduleBVView() {
                         Remaining Duration:
                         </td>
                         <td>{scheduleBV.remainingDuration}</td>
-                      </tr>
+                      </tr> */}
                      
                     </tbody>
                   </table>

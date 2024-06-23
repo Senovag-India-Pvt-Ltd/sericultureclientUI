@@ -103,9 +103,23 @@ function PreparationofeggsDFLsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Number of Cocoons (CB, Hybrid):
+                        Number of Cocoons in Kg:
                         </td>
                         <td>{prepareEggs.numberOfCocoonsCB}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Mulberry Variety:</td>
+                        <td>{prepareEggs.varietyName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Generation Number:</td>
+                        <td>{prepareEggs.generationNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Line Name:
+                        </td>
+                        <td>{prepareEggs.lineName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Date of moth emergence:</td>
@@ -139,12 +153,12 @@ function PreparationofeggsDFLsView() {
                         <td style={styles.ctstyle}>Test results:</td>
                         <td>{prepareEggs.testResults}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Certification (Yes/No):</td>
                         <td>
                           {prepareEggs.certification === "1" ? "Yes" : "No"}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td style={styles.ctstyle}>Additional remarks:</td>
                         <td>{prepareEggs.additionalRemarks}</td>

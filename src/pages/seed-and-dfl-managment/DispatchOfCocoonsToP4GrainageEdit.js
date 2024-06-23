@@ -54,7 +54,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
           } else {
             updateSuccess();
             setData({
-                grainageMasterId: "",
+                grainageUserMasterId: "",
                 lineYear: "",
                 sourceMasterId: "",
                 screeningBatchNo: "",
@@ -80,7 +80,7 @@ function DispatchofCocoonstoP4GrainageEdit() {
 
   const clear = () => {
     setData({
-        grainageMasterId: "",
+        grainageUserMasterId: "",
         lineYear: "",
         sourceMasterId: "",
         screeningBatchNo: "",
@@ -308,8 +308,8 @@ function DispatchofCocoonstoP4GrainageEdit() {
                         <Col>
                           <div className="form-control-wrap">
                             <Form.Select
-                              name="grainageMasterId"
-                              value={data.grainageMasterId}
+                              name="grainageUserMasterId"
+                              value={data.grainageUserMasterId}
                               onChange={handleInputs}
                               onBlur={() => handleInputs}
                               required
@@ -317,8 +317,8 @@ function DispatchofCocoonstoP4GrainageEdit() {
                               <option value="">Select Grainage</option>
                               {grainageListData && grainageListData.length?(grainageListData.map((list) => (
                                 <option
-                                  key={list.grainageMasterId}
-                                  value={list.grainageMasterId}
+                                  key={list.userMasterId}
+                                  value={list.userMasterId}
                                 >
                                   {list.grainageMasterName}
                                 </option>
