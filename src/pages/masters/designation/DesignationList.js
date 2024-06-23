@@ -201,13 +201,7 @@ function DesignationList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Amount",
-      selector: (row) => row.amount,
-      cell: (row) => <span>{row.amount}</span>,
-      sortable: true,
-      hide: "md",
-    },
+  
     {
       name: "Level",
       selector: (row) => row.level,
