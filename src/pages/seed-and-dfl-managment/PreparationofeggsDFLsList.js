@@ -335,14 +335,14 @@ function PreparationofeggsDFLsList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             className="ms-2"
             onClick={() => deleteConfirm(row.id)}
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -350,13 +350,13 @@ function PreparationofeggsDFLsList() {
       grow: 2,
     },
 
-    {
-      name: "Name of the Grainage and Address",
-      selector: (row) => row.cocoonsProducedAtEachGeneration,
-      cell: (row) => <span>{row.cocoonsProducedAtEachGeneration}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Name of the Grainage and Address",
+    //   selector: (row) => row.cocoonsProducedAtEachGeneration,
+    //   cell: (row) => <span>{row.cocoonsProducedAtEachGeneration}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Lot number",
       selector: (row) => row.lotNumber,
@@ -365,7 +365,7 @@ function PreparationofeggsDFLsList() {
       hide: "md",
     },
     {
-      name: "Number of Cocoons (CB, Hybrid)",
+      name: " Number of Cocoons in Kg",
       selector: (row) => row.numberOfCocoonsCB,
       cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,
@@ -375,6 +375,27 @@ function PreparationofeggsDFLsList() {
       name: "Date of moth emergence",
       selector: (row) => row.dateOfMothEmergence,
       cell: (row) => <span>{row.dateOfMothEmergence}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Mulberry Variety",
+      selector: (row) => row.varietyName,
+      cell: (row) => <span>{row.varietyName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Generation Number",
+      selector: (row) => row.generationNumber,
+      cell: (row) => <span>{row.generationNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Line Name",
+      selector: (row) => row.lineName,
+      cell: (row) => <span>{row.lineName  }</span>,
       sortable: true,
       hide: "md",
     },
@@ -422,13 +443,13 @@ function PreparationofeggsDFLsList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Selected Bed as per the Mean Performance",
-      selector: (row) => row.selectedBedAsPerTheMeanPerformance,
-      cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Selected Bed as per the Mean Performance",
+    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
+    //   cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Egg Recovery %",
     //   selector: (row) => row.screeningBatchResults,
@@ -452,13 +473,13 @@ function PreparationofeggsDFLsList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Certification (Yes/No)",
-      selector: (row) => row.certification,
-      cell: (row) => <span>{row.certification === "1" ? "Yes" : "No"}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Certification (Yes/No)",
+    //   selector: (row) => row.certification,
+    //   cell: (row) => <span>{row.certification === "1" ? "Yes" : "No"}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Additional remarks",
       selector: (row) => row.additionalRemarks,

@@ -167,6 +167,12 @@ function PhysicalTargetSettingsTalukView() {
                           <span>{AcivityData.amount}</span>
                         </td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Achieved Amount:</td>
+                        <td>
+                          <span>{AcivityData.achievedAmount}</span>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

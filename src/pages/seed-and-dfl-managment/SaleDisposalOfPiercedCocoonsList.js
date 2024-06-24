@@ -215,7 +215,7 @@ function SaleDisposalOfPiercedCocoonsList() {
       hide: "md",
     },
     {
-      name: "Quantity in kgs",
+      name: "Cocoons Quantity in kgs",
       selector: (row) => row.quantityInKgs,
       cell: (row) => <span>{row.quantityInKgs}</span>,
       sortable: true,

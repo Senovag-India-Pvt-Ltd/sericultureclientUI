@@ -24,10 +24,21 @@ function RearingofDFLsforthe8LinesList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+  };
+
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
+  const handleShowModal1 = () => setShowModal1(true);
   const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal1 = () => setShowModal1(false);
 
   const [validated, setValidated] = useState(false);
 
@@ -54,13 +65,13 @@ function RearingofDFLsforthe8LinesList() {
 
   const [cocoonAssesmentDetails, setCocoonAssesmentDetails] = useState({
     id: "",
-    weightCacoons: "",
-    weightPupa: "",
-    weightShells: "",
-    shellPercentage: "",
-    err: "",
-    cacoonsFormed: "",
-    wormsBrushed: "",
+    weightCacoons: 0,
+    weightPupa: 0,
+    weightShells: 0,
+    shellPercentage: 0,
+    err: 0,
+    cacoonsFormed: 0,
+    wormsBrushed: 0,
   });
 
   const clear = () => {
@@ -120,6 +131,23 @@ function RearingofDFLsforthe8LinesList() {
       setValidated(true);
     }
   };
+
+  const [viewDetailsData, setViewDetailsData] = useState({});
+  const viewDetails = (_id) => {
+    handleShowModal1();
+    api
+      .get(baseURLSeedDfl + `8linesController/get-cacoon-assesment-data-by-id/${_id}`)
+      .then((response) => {
+        setViewDetailsData(response.data);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        setViewDetailsData({});
+        setLoading(false);
+      });
+  };
+
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -394,6 +422,13 @@ function RearingofDFLsforthe8LinesList() {
       hide: "md",
     },
     {
+      name: "Crop Failure Details",
+      selector: (row) => row.cropFailureDetails,
+      cell: (row) => <span>{row.cropFailureDetails}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Cocoon Assesment Details",
       cell: (row) => (
         <Button
@@ -409,9 +444,17 @@ function RearingofDFLsforthe8LinesList() {
       hide: "md",
     },
     {
-      name: "Crop Failure Details",
-      selector: (row) => row.cropFailureDetails,
-      cell: (row) => <span>{row.cropFailureDetails}</span>,
+      name: "View Cocoon Assesment Details",
+      cell: (row) => (
+        <Button
+          className="d-flex justify-content-center"
+          variant="primary"
+          size="sm"
+          onClick={() => viewDetails(row.id)}
+        >
+          View
+        </Button>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -680,6 +723,72 @@ function RearingofDFLsforthe8LinesList() {
               </Row>
             </Form>
           </Block>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>View</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+              Loading...
+            </h1>
+          ) : (
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td>{viewDetailsData.weightCacoons}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td>{viewDetailsData.weightPupa}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td>{viewDetailsData.weightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td>{viewDetailsData.shellPercentage}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ERR</td>
+                      <td>{viewDetailsData.err}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td>{viewDetailsData.wormsBrushed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td>{viewDetailsData.cacoonsFormed}</td>
+                    </tr>
+                    {/* <tr>
+                      <td style={styles.ctstyle}> Financial Year:</td>
+                      <td>{viewDetailsData.financialYear}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Category Name:</td>
+                      <td>{viewDetailsData.categoryName}</td>
+                    </tr> */}
+                    {/* <tr>
+                      <td style={styles.ctstyle}> State Name in Kannada:</td>
+                      <td>{viewDetailsData.stateNameInKannada}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Initial Amount:</td>
+                      <td>{viewDetailsData.stateNameInKannada}</td>
+                    </tr> */}
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+          )}
         </Modal.Body>
       </Modal>
     </Layout>

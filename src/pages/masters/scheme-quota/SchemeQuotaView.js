@@ -121,6 +121,10 @@ function SchemeQuotaView() {
                         <td style={styles.ctstyle}>DBT Code:</td>
                         <td>{ScUnitCost.dbtCode}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>DDO Code:</td>
+                        <td>{ScUnitCost.ddoCode}</td>
+                      </tr>
                     
                     </tbody>
                   </table>

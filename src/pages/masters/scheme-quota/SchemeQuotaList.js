@@ -262,7 +262,13 @@ function SchemeQuotaList() {
       sortable: true,
       hide: "md",
     },
-
+    {
+      name: "DDO Code",
+      selector: (row) => row.ddoCode,
+      cell: (row) => <span>{row.ddoCode}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

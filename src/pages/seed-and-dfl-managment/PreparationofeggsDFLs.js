@@ -32,27 +32,13 @@ function PreparationofeggsDFLs() {
     dflsObtained: "",
     eggRecoveryPercentage: "",
     testResults: "",
-    certification: "",
     additionalRemarks: "",
+    varietyId: "",
+    generationNumberId: "",
+    lineNameId: "",
   });
 
-  const clear = () => {
-    setData({
-      numberOfCocoonsCB: "",
-      dateOfMothEmergence: "",
-      laidOnDate: "",
-      eggSheetSerialNumber: "",
-      numberOfPairs: "",
-      numberOfRejection: "",
-      dflsObtained: "",
-      eggRecoveryPercentage: "",
-      testResults: "",
-      certification: "",
-      additionalRemarks: "",
-    });
-    setValidated(false);
-  };
-
+  
   let name, value;
   const handleInputs = (e) => {
     name = e.target.name;
@@ -99,23 +85,81 @@ function PreparationofeggsDFLs() {
     }
   };
 
-  // to get Line Name
-  const [lineNameListData, setLineNameListData] = useState([]);
+  const clear = () => {
+    setData({
+      numberOfCocoonsCB: "",
+      dateOfMothEmergence: "",
+      laidOnDate: "",
+      eggSheetSerialNumber: "",
+      numberOfPairs: "",
+      numberOfRejection: "",
+      dflsObtained: "",
+      eggRecoveryPercentage: "",
+      testResults: "",
+      certification: "",
+      additionalRemarks: "",
+      varietyId: "",
+      generationNumberId: "",
+      lineNameId: "",
+    });
+    setValidated(false);
+  };
 
-  const getLineYearList = () => {
-    api
-      .get(baseURLMasterData + `lineNameMaster/get-all`)
+
+  // to get Mulberry Variety
+  const [varietyListData, setVarietyListData] = useState([]);
+
+  const getVarietyList = () => {
+    const response = api
+      .get(baseURLMasterData + `mulberry-variety/get-all`)
       .then((response) => {
-        setLineNameListData(response.data.content.lineNameMaster);
+        setVarietyListData(response.data.content.mulberryVariety);
       })
       .catch((err) => {
-        setLineNameListData([]);
+        setVarietyListData([]);
       });
   };
 
   useEffect(() => {
-    getLineYearList();
+    getVarietyList();
   }, []);
+
+
+   // to get Generation Number
+   const [generationListData, setGenerationListData] = useState([]);
+
+   const getGenerationList = () => {
+     const response = api
+       .get(baseURLMasterData + `generationNumberMaster/get-all`)
+       .then((response) => {
+         setGenerationListData(response.data.content.generationNumberMaster);
+       })
+       .catch((err) => {
+        setGenerationListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getGenerationList();
+   }, []);
+
+   // to get Line Year
+   const [lineYearListData, setLineYearListData] = useState([]);
+
+   const getLineYearList = () => {
+     const response = api
+       .get(baseURLMasterData + `lineNameMaster/get-all`)
+       .then((response) => {
+         setLineYearListData(response.data.content.lineNameMaster);
+       })
+       .catch((err) => {
+        setLineYearListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLineYearList();
+   }, []);
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -193,10 +237,109 @@ function PreparationofeggsDFLs() {
                       <Card.Header> Preparation of Eggs (DFLs) </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
+                        <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Mulberry Variety<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="varietyId"
+                        value={data.varietyId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        required
+                        isInvalid={
+                          data.varietyId === undefined || data.varietyId === "0"
+                        }
+                      >
+                        <option value="">Select Mulberry Variety</option>
+                        {varietyListData.map((list) => (
+                          <option
+                            key={list.mulberryVarietyId}
+                            value={list.mulberryVarietyId}
+                          >
+                            {list.mulberryVarietyName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Mulberry Variety is required
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+                        <Col lg="4">
+
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Line Details/year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lineNameId"
+                              value={data.lineNameId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Line Details</option>
+                              {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
+                                <option
+                                  key={list.lineNameId}
+                                  value={list.lineNameId}
+                                >
+                                  {list.lineName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Line Details is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
+                    
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Generation Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="generationNumberId"
+                              value={data.generationNumberId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Generation Number</option>
+                              {generationListData && generationListData.length?(generationListData.map((list) => (
+                                <option
+                                  key={list.generationNumberId}
+                                  value={list.generationNumberId}
+                                >
+                                  {list.generationNumber}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Generation Number is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                                Number of Cocoons (CB, Hybrid)
+                              Number of Cocoons in Kg
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -205,12 +348,12 @@ function PreparationofeggsDFLs() {
                                   name="numberOfCocoonsCB"
                                   value={data.numberOfCocoonsCB}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Number of Cocoons (CB, Hybrid)"
+                                  type="number"
+                                  placeholder="Enter Number of Cocoons in Kg"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Number of Cocoons (CB, Hybrid) is required
+                                Number of Cocoons in Kg is required
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -287,7 +430,7 @@ function PreparationofeggsDFLs() {
                                   name="eggSheetSerialNumber"
                                   value={data.eggSheetSerialNumber}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Egg sheet serial number"
                                   required
                                 />
@@ -310,7 +453,7 @@ function PreparationofeggsDFLs() {
                                   name="numberOfPairs"
                                   value={data.numberOfPairs}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Number of pairs"
                                   required
                                 />
@@ -333,7 +476,7 @@ function PreparationofeggsDFLs() {
                                   name="numberOfRejection"
                                   value={data.numberOfRejection}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Number of Rejection"
                                   required
                                 />
@@ -356,7 +499,7 @@ function PreparationofeggsDFLs() {
                                   name="dflsObtained"
                                   value={data.dflsObtained}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="DFLs obtained"
                                   required
                                 />
@@ -379,7 +522,7 @@ function PreparationofeggsDFLs() {
                                   name="eggRecoveryPercentage"
                                   value={data.eggRecoveryPercentage}
                                   onChange={handleInputs}
-                                  type="text"
+                                  type="number"
                                   placeholder="Egg Recovery %"
                                   required
                                 />
@@ -390,7 +533,7 @@ function PreparationofeggsDFLs() {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
                                 Test results
@@ -411,9 +554,39 @@ function PreparationofeggsDFLs() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              Test results
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="testResults"
+                                  value={data.testResults}
+                                  onChange={handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.testResults === undefined ||
+                                    data.testResults === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Test Results
+                                  </option>
+                                  <option value="Diseased">Diseased</option>
+                                  <option value="Disease-Free">Disease-Free</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                Test Results is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 Certification (Yes/No)
@@ -441,7 +614,7 @@ function PreparationofeggsDFLs() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">

@@ -260,33 +260,23 @@ useEffect(() => {
                 <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                    Lot Number<span className="text-danger">*</span>
+                    <Form.Label htmlFor="invoiceDetails">
+                   Lot Number<span className="text-danger">*</span>
                     </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="lotNumber"
-                          value={data.lotNumber}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Lot Number</option>
-                          {lotListData && lotListData.length?(lotListData.map((list) => (
-                            <option
-                              key={list.id}
-                              value={list.lotNumber}
-                            >
-                              {list.lotNumber}
-                            </option>
-                          ))):""}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="lotNumber"
+                        name="lotNumber"
+                        value={data.lotNumber}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder="Enter Lot Number"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                      Lot Number is required
+                      </Form.Control.Feedback>
+                    </div>
                   </Form.Group>
                 </Col>
                 

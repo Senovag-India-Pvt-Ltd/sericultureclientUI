@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import api from "../../../src/services/auth/api";
+import { format } from 'date-fns';
 
 // const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
@@ -25,7 +26,10 @@ function PreservationofseedcocoonforprocessingList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  
+  const [showModal, setShowModal] = useState(true);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const getList = () => {
     setLoading(true);
@@ -48,6 +52,50 @@ function PreservationofseedcocoonforprocessingList() {
     getList();
   }, []);
 
+  // const getAlertList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLSeedDfl + `PreservationOfSeed/get-alert-data`)
+  //     .then((response) => {
+  //       // console.log(response.data)
+  //       setListLogsData(response.data);
+  //       // setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  const getAlertList = () => {
+    setLoading(true);
+    api.get(baseURLSeedDfl + `PreservationOfSeed/get-alert-data`)
+      .then((response) => {
+        setListLogsData(response.data);
+        setLoading(false);
+        if (response.data.length > 0) {
+          setShowModal(true);
+        } else {
+          setShowModal(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+  
+
+  useEffect(() => {
+    getAlertList();
+  }, []);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; 
+    const date = new Date(dateString); 
+    return format(date, 'dd/MM/yyyy'); 
+  };
+
   
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -60,32 +108,32 @@ function PreservationofseedcocoonforprocessingList() {
 
 
 
-  const deleteError = () => {
+  const deleteError = (message) => {
     Swal.fire({
       icon: "error",
       title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      text: message,
     });
   };
 
-  const deleteConfirm = (_id) => {
+  const deleteConfirm = (_id,status) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: "It will Reject permanently!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, Reject it!",
     }).then((result) => {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `PreservationOfSeed/delete-info/${_id}`)
+          .delete(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              "Rejected",
+              "You successfully rejected this record",
               "success"
             );
           })
@@ -99,6 +147,47 @@ function PreservationofseedcocoonforprocessingList() {
       }
     });
   };
+
+  const acceptError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Accept attempt was not successful",
+      text: message,
+    });
+  };
+
+  const acceptConfirm = (_id, status) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Accept!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Accept it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Accepted",
+              "You successfully Accepted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            acceptError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not accepted", "info");
+      }
+    });
+  };
+
 
   createTheme(
     "solarized",
@@ -148,6 +237,107 @@ function PreservationofseedcocoonforprocessingList() {
       },
     },
   };
+
+  const ReceiptofDFLsfromtheP4grainageGardenDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => acceptConfirm(row.id, 1)}
+          >
+            Accept
+          </Button>
+         
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id, 2)}
+            className="ms-2"
+          >
+            Reject
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      // grow: 3,
+    },
+
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Name Of Supplier",
+      selector: (row) => row.nameOfSupplier,
+      cell: (row) => <span>{row.nameOfSupplier}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Spun On Date",
+      selector: (row) => row.spunOnDate,
+      cell: (row) => <span>{row.spunOnDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Date of supply",
+      selector: (row) => row.dateOfSupply,
+      cell: (row) => <span>{row.dateOfSupply}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "No Of Cocoons Dispatched",
+      selector: (row) => row.numberOfCocoonsDispatched,
+      cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice No",
+      selector: (row) => row.invoiceNo,
+      cell: (row) => <span>{row.invoiceNo}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    // {
+    //   name: "Accepted or not",
+    //   selector: (row) => row.isAccepted,
+    //   cell: (row) => <span>{row.isAccepted}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name: "Accepted or not",
+      selector: (row) => row.isAccepted,
+      cell: (row) => (
+        <span>
+          {row.isAccepted === 0
+            ? "Pending"
+            : row.isAccepted === 1
+            ? "Accepted"
+            : row.isAccepted === 2
+            ? "Rejected"
+            : "Unknown"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+
+
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
     {
@@ -218,7 +408,7 @@ function PreservationofseedcocoonforprocessingList() {
     {
       name: "Spun On Date",
       selector: (row) => row.spunOnDate,
-      cell: (row) => <span>{row.spunOnDate}</span>,
+      cell: (row) => <span>{formatDate(row.spunOnDate)}</span>,
       sortable: true,
       hide: "md",
     },
@@ -261,7 +451,7 @@ function PreservationofseedcocoonforprocessingList() {
     {
       name: "Invoice Date",
       selector: (row) => row.invoiceDate,
-      cell: (row) => <span>{row.invoiceDate}</span>,
+      cell: (row) => <span>{formatDate(row.invoiceDate)}</span>,
       sortable: true,
       hide: "md",
     },
@@ -331,6 +521,36 @@ function PreservationofseedcocoonforprocessingList() {
           />
         </Card>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Alerts Window</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={ReceiptofDFLsfromtheP4grainageGardenDataColumns}
+                data={listLogsData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }

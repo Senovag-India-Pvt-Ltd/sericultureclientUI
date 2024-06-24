@@ -19,6 +19,7 @@ function SchemeQuota() {
     schemeQuotaCode:"",
     schemeQuotaPaymentType:"",
     dbtCode: "",
+    ddoCode: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -55,6 +56,7 @@ function SchemeQuota() {
                 schemeQuotaCode:"",
                 schemeQuotaPaymentType:"",
                 dbtCode: "",
+                ddoCode: "",
             });
             setValidated(false);
           }
@@ -83,6 +85,7 @@ function SchemeQuota() {
         schemeQuotaCode:"",
         schemeQuotaPaymentType:"",
         dbtCode: "",
+        ddoCode: "",
     });
   };
 
@@ -314,6 +317,29 @@ function SchemeQuota() {
                         />
                         <Form.Control.Feedback type="invalid">
                         DBT Code is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="title">
+                       Ddo Code
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="ddoCode"
+                          name="ddoCode"
+                          value={data.ddoCode}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Ddo Code"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                         Ddo Code is required.
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

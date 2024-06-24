@@ -29,6 +29,8 @@ function PhysicalTargetSettingsTaluk() {
     amount: "",
     tsMeasurementUnitId: "",
     schemeOrActivity: "",
+    achievedAmount:"",
+
 
   });
 
@@ -173,6 +175,8 @@ function PhysicalTargetSettingsTaluk() {
       amount: "",
     tsMeasurementUnitId: "",
     schemeOrActivity: "",
+    achievedAmount:"",
+
 
     });
     setMonths({
@@ -829,6 +833,28 @@ function PhysicalTargetSettingsTaluk() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="achievedAmount">
+                           Acheived Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="achievedAmount"
+                            name="achievedAmount"
+                            value={data.achievedAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Achieved Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                 {/* <Col lg="6">
                   <Form.Group className="form-group mt-n4">

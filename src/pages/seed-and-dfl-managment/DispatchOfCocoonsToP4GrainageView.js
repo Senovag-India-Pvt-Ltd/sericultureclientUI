@@ -106,10 +106,10 @@ function DispatchofCocoonstoP4GrainageView() {
                         </td>
                         <td>{dispatchCocoon.grainageMasterName}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>Line Year:</td>
                         <td>{dispatchCocoon.lineName}</td>
-                      </tr>
+                      </tr> */}
                       {/* <tr>
                         <td style={styles.ctstyle}>
                         Source:

@@ -344,7 +344,7 @@ function SaleDisposalOfPiercedCocoons() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      Quantity in kgs
+                    Cocoons Quantity in kgs
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
