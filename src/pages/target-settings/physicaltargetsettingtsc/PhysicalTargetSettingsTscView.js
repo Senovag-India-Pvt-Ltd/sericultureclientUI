@@ -153,6 +153,12 @@ function PhysicalTargetSettingsTscView() {
                           <span>{AcivityData.amount}</span>
                         </td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}> Achieved Amount:</td>
+                        <td>
+                          <span>{AcivityData.achievedAmount}</span>
+                        </td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>Unit Of Measurement:</td>
                         <td>
