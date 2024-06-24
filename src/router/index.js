@@ -819,6 +819,7 @@ import ApplicationFormEdit from "../pages/services-module/application/Applicatio
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
 import DrawingOfficerSchemeList from "../pages/services-module/application/DrawingOfficerSchemeList";
+import TscOfficerSchemeList from "../pages/services-module/application/TscOfficerSchemeList";
 // Admin and Reports
 
 function Router() {
@@ -2964,6 +2965,11 @@ function Router() {
             <Route
               path="all-scheme-drawing-officer-list"
               element={<DrawingOfficerSchemeList />}
+            />
+
+            <Route
+              path="all-scheme-tsc-officer-list"
+              element={<TscOfficerSchemeList />}
             />
 
             <Route path="bidding-report" element={<BiddingReport />} />

@@ -1087,6 +1087,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Services_Tsc_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme TSC Officer List"
+                  to="/seriui/all-scheme-tsc-officer-list"
+                />
+              </MenuItem>
+            ) : null}
             {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink

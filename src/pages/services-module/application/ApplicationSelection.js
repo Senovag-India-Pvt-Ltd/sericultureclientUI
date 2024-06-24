@@ -279,7 +279,10 @@ function ApplicationSelection() {
         .then((response) => {
           if (response.data.content.errorCode) {
             saveError(response.data.content.error_description);
-          } else {
+          }else if(response.data.content.error === true){
+            saveError(response.data.content.error_description);
+          }
+           else {
             saveSuccess();
             getList();
           }

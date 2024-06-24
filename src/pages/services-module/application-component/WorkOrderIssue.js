@@ -208,7 +208,6 @@ const WorkOrderIssue = () => {
     }
   };
 
-
   const assign = (workFlowId, applicationDocumentId) => {
     setSelectedDocumentFile([]);
     setWorkOrderId(workFlowId);
@@ -260,7 +259,12 @@ const WorkOrderIssue = () => {
             .then((response) => {
               if (response.data.content.documentResponses.length > 0) {
                 //TODO  Need to Change here after response
+                const documents = response.data.content.documentResponses;
+                documents.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
               } else {
+                //TODO  Need to comment below code after test
                 const resData = {
                   content: {
                     documentResponses: [

@@ -125,7 +125,7 @@ function ScProgramApprovalMapping() {
       event.preventDefault();
       const sendPost = {
         version: data.version,
-        status: data.status,
+        status: "Active",
         stepId: data.stepId,
         scApprovalStageId: data.scApprovalStageId,
         subSchemeId: data.subSchemeId,

@@ -19,10 +19,10 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerSchemeList() {
+function TscOfficerSchemeList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 25;
+  const countPerPage = 500;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -44,83 +44,6 @@ function DrawingOfficerSchemeList() {
     districtId: 0,
     talukId: 0,
   });
-
-  const [searchData, setSearchData] = useState({
-    text: "",
-    type: 0,
-  });
-
-  // Search
-  const search = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/getApplicationForTscForDbtPush`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            displayAllRecords: true,
-            pageNumber:page,
-            pageSize:countPerPage
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-      })
-      .catch((err) => {
-        setListData([]);
-      });
-  };
-
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        } else {
-          setTalukListData([]);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (addressDetails.districtId) {
-      getTalukList(addressDetails.districtId);
-    }
-  }, [addressDetails.districtId]);
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -161,10 +84,89 @@ function DrawingOfficerSchemeList() {
   //         // saveError();
   //       });
   //   };
+
+  // Search
+  const search = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/getTscListForDBTPush`,
+        {},
+        {
+          params: {
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            // userMasterId: 113,
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: false,
+          },
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
   const [landData, setLandData] = useState({
     landId: "",
     talukId: "",
   });
+
+  const handleInputsaddress = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setAddressDetails({ ...addressDetails, [name]: value });
+  };
+
+  const handleInputsSearch = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+  const [districtId, setDistrictId] = useState(0);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (districtId) {
+      getTalukList(districtId);
+    }
+  }, [districtId]);
+
+  useEffect(() => {
+    api
+      .get(
+        baseURLMasterData +
+          `userMaster/get/${localStorage.getItem("userMasterId")}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setDistrictId(response.data.content.districtId);
+        }
+      })
+      .catch((err) => {
+        setDistrictId(0);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  }, []);
 
   const [data, setData] = useState({
     financialYearMasterId: "",
@@ -266,10 +268,10 @@ function DrawingOfficerSchemeList() {
         )
         .then((response) => {
           setListData(response.data.content);
-          const applicationWorkFlowIds = response.data.content.map(
-            (item) => item.applicationWorkFlowId
+          const scApplicationFormIds = response.data.content.map(
+            (item) => item.scApplicationFormId
           );
-          setAllApplicationIds(applicationWorkFlowIds);
+          setAllApplicationIds(scApplicationFormIds);
           setLoading(false);
         })
         .catch((err) => {
@@ -338,11 +340,10 @@ function DrawingOfficerSchemeList() {
   };
 
   const [disabledIds, setDisabledIds] = useState([]);
-  // const [showDisable, setShowDisable] = useState(false);
   const handlePush = (id) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
-        if (list.applicationWorkFlowId === id) {
+        if (list.scApplicationFormId === id) {
           setDisabledIds((prevState) => [...prevState, id]);
         }
       });
@@ -354,7 +355,7 @@ function DrawingOfficerSchemeList() {
     };
     api
       .post(
-        baseURLDBT + `applicationTransaction/pushToFruits`,
+        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
         pushdata
       )
       .then((response) => {
@@ -363,8 +364,6 @@ function DrawingOfficerSchemeList() {
           setDisabledIds((prevDisabledIds) =>
             prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
           );
-          // disabledIds.filter((item)=>item !== id);
-          // setShowDisable(false);
         } else {
           saveSuccess();
           getList();
@@ -375,7 +374,6 @@ function DrawingOfficerSchemeList() {
         setDisabledIds((prevDisabledIds) =>
           prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
         );
-        // setShowDisable(false);
       });
     setValidated(true);
   };
@@ -416,7 +414,7 @@ function DrawingOfficerSchemeList() {
       event.preventDefault();
       api
         .post(
-          baseURLDBT + `applicationTransaction/pushToFruits`,
+          baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
           post
         )
         .then((response) => {
@@ -472,23 +470,24 @@ function DrawingOfficerSchemeList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getApplicationForTscForDbtPush`,
+        baseURLDBT + `service/getTscListForDBTPush`,
         {},
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
-            pageNumber:page,
-            pageSize:countPerPage   
+            // userMasterId: 113,
+            displayAllRecords: false,
+            // talukId: 17,
+            // districtId: 38,
           },
         }
       )
       .then((response) => {
         setListData(response.data.content);
-        const applicationWorkFlowIds = response.data.content.map(
-          (item) => item.applicationWorkFlowId
+        const scApplicationFormIds = response.data.content.map(
+          (item) => item.scApplicationFormId
         );
-        setAllApplicationIds(applicationWorkFlowIds);
+        setAllApplicationIds(scApplicationFormIds);
         setLoading(false);
       })
       .catch((err) => {
@@ -669,12 +668,10 @@ function DrawingOfficerSchemeList() {
     });
   };
 
-  // const [searchData, setSearchData] = useState({
-  //   year1: "",
-  //   year2: "",
-  //   type: 1,
-  //   searchText: "",
-  // });
+  const [searchData, setSearchData] = useState({
+    text: "",
+    type: 0,
+  });
 
   console.log(searchData);
 
@@ -691,18 +688,6 @@ function DrawingOfficerSchemeList() {
       const [fromDate, toDate] = year.split("-");
       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
     }
-  };
-
-  const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
-
-  const handleInputsSearch = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setSearchData({ ...searchData, [name]: value });
   };
 
   const handleSearchInputs = (e) => {
@@ -903,9 +888,9 @@ function DrawingOfficerSchemeList() {
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.applicationWorkFlowId}
-          checked={applicationIds.includes(row.applicationWorkFlowId)}
-          onChange={() => handleCheckboxChange(row.applicationWorkFlowId)}
+          value={row.scApplicationFormId}
+          checked={applicationIds.includes(row.scApplicationFormId)}
+          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
         />
       ),
       // ignoreRowClick: true,
@@ -933,24 +918,10 @@ function DrawingOfficerSchemeList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    // {
-    //   name: "Application Status",
-    //   selector: (row) => row.applicationStatus,
-    //   cell: (row) => <span>{row.applicationStatus}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-      name: "Sanction Number",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Actual Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
@@ -989,7 +960,7 @@ function DrawingOfficerSchemeList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => viewDetails(row.applicationWorkFlowId)}
+            onClick={() => viewDetails(row.scApplicationFormId)}
             className="ms-1"
           >
             view
@@ -997,7 +968,7 @@ function DrawingOfficerSchemeList() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => rejectDetails(row.applicationWorkFlowId)}
+            onClick={() => rejectDetails(row.scApplicationFormId)}
             className="ms-1"
           >
             Reject
@@ -1005,9 +976,9 @@ function DrawingOfficerSchemeList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.pushToFruits)}
             className="ms-1"
-            disabled={disabledIds.includes(row.pushToFruits)}
+            onClick={() => handlePush(row.scApplicationFormId)}
+            disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push
           </Button>
@@ -1019,11 +990,11 @@ function DrawingOfficerSchemeList() {
   ];
 
   return (
-    <Layout title="All Scheme Drawing Officer List">
+    <Layout title="All Scheme TSC Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">All Scheme Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">All Scheme TSC Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1361,7 +1332,7 @@ function DrawingOfficerSchemeList() {
                 <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
-                <Col sm={2}>
+                <Col sm={3}>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="type"
@@ -1390,7 +1361,7 @@ function DrawingOfficerSchemeList() {
                   </Form.Control.Feedback>
                 </Col>
 
-                <Form.Label column sm={1}>
+                {/* <Form.Label column sm={1}>
                   District
                 </Form.Label>
                 <Col sm={2}>
@@ -1409,7 +1380,7 @@ function DrawingOfficerSchemeList() {
                       ))}
                     </Form.Select>
                   </div>
-                </Col>
+                </Col> */}
 
                 <Form.Label column sm={1}>
                   Taluk
@@ -1432,7 +1403,7 @@ function DrawingOfficerSchemeList() {
                   </div>
                 </Col>
 
-                <Col sm={1}>
+                <Col sm={2}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
                   </Button>
@@ -1446,14 +1417,14 @@ function DrawingOfficerSchemeList() {
             columns={ApplicationDataColumns}
             data={listData}
             highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
+            // pagination
+            // paginationServer
+            // paginationTotalRows={totalRows}
+            // paginationPerPage={countPerPage}
+            // paginationComponentOptions={{
+            //   noRowsPerPage: true,
+            // }}
+            // onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
@@ -1525,8 +1496,8 @@ function DrawingOfficerSchemeList() {
                       <td>{viewDetailsData.initialAmount}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Beneficiary Id:</td>
-                      <td>{viewDetailsData.beneficiaryId}</td>
+                      <td style={styles.ctstyle}> ARN Number:</td>
+                      <td>{viewDetailsData.arn}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Financial Year:</td>
@@ -1535,14 +1506,6 @@ function DrawingOfficerSchemeList() {
                     <tr>
                       <td style={styles.ctstyle}> Category Name:</td>
                       <td>{viewDetailsData.categoryName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Component Name:</td>
-                      <td>{viewDetailsData.scComponentName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Remarks:</td>
-                      <td>{viewDetailsData.remarks}</td>
                     </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}> State Name in Kannada:</td>
@@ -1623,4 +1586,4 @@ function DrawingOfficerSchemeList() {
   );
 }
 
-export default DrawingOfficerSchemeList;
+export default TscOfficerSchemeList;
