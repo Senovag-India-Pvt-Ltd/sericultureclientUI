@@ -165,7 +165,7 @@ const WorkOrderIssue = () => {
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
-            workOrderSlip(response.data.content);
+            // workOrderSlip(response.data.content);
             getList();
           })
           .catch((err) => {

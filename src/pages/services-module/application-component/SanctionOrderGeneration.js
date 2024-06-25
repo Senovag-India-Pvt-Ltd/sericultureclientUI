@@ -106,7 +106,7 @@ const SanctionOrderGeneration = () => {
     // letDocIds((prev) => [...prev, { [name]: value }]);
 
     setDocIds((prev) => {
-      const existingIndex = prev.findIndex(item => item[name] !== undefined);
+      const existingIndex = prev.findIndex((item) => item[name] !== undefined);
       if (existingIndex !== -1) {
         // Update the existing entry
         const updatedDocIds = [...prev];
@@ -172,10 +172,12 @@ const SanctionOrderGeneration = () => {
   };
 
   // Upload Image to S3 Bucket
-  const handleAttachFileUpload = async (applicationId,docTypeId) => {
+  const handleAttachFileUpload = async (applicationId, position, workId) => {
     // const parameters = `hdTicketId=${hdTicketid}`;
-    // console.log("Checking",applicationId,docTypeId);
-
+    // console.log("Checking", applicationId, position);
+    const docTypeId = docIds.find((docId) => docId.hasOwnProperty(position))[
+      position
+    ];
     const param = {
       applicationFormId: applicationId,
       // TODO need to get documentId from API
@@ -197,7 +199,7 @@ const SanctionOrderGeneration = () => {
       );
       console.log("File upload response:", response.data);
       if (response.status === 200) {
-        generateWorkOrder();
+        generateWorkOrder(workId);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -494,12 +496,12 @@ const SanctionOrderGeneration = () => {
     // setAllApplicationIds([]);
   };
 
-  const generateWorkOrder = () => {
+  const generateWorkOrder = (wid) => {
     api
       .post(
         baseURLDBT + `service/updateCompletionStatusFromWeb`,
         {},
-        { params: { id: workOrderId } }
+        { params: { id: wid } }
       )
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
@@ -508,7 +510,7 @@ const SanctionOrderGeneration = () => {
           .post(
             baseURLDBT + `service/triggerWorkFlowNextStep`,
             {},
-            { params: { id: workOrderId } }
+            { params: { id: wid } }
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
@@ -704,13 +706,19 @@ const SanctionOrderGeneration = () => {
     },
     {
       name: "action",
-      cell: (row,i) => (
+      cell: (row, i) => (
         //   Button style
         <div className="text-start w-100">
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleAttachFileUpload(row.applicationDocumentId,docIds[i][i])}
+            onClick={() =>
+              handleAttachFileUpload(
+                row.applicationDocumentId,
+                i,
+                row.workFlowId
+              )
+            }
             // disabled={data.userMasterId ? false : true}
           >
             Upload

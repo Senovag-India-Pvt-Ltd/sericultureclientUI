@@ -35,7 +35,7 @@ function ServiceApplication() {
     scSubSchemeType: "",
     scVendorId: "",
     farmerId: "",
-    expectedAmount: "",
+    expectedAmount: "18000",
     financialYearMasterId: "",
     scComponentId: "",
     schemeAmount: "",
@@ -627,6 +627,7 @@ function ServiceApplication() {
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
+        componentId:data.scComponentId,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
@@ -920,7 +921,7 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
-              generateBiddingSlip(response.data.content.applicationDocumentId);
+              // generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
 
               // setData({

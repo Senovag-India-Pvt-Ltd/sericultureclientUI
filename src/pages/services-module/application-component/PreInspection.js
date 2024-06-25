@@ -134,6 +134,10 @@ const PreInspection = () => {
       .post(baseURLDBT + `service/assignInspection`, postData)
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
+        Swal.fire({
+          icon: "success",
+          title: "Task Assigned for Inspection",
+        });
         getList();
       })
       .catch((err) => {

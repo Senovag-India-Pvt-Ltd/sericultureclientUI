@@ -238,7 +238,7 @@ const SanctionOrderVerification = () => {
     api
       .post(baseURLDBT + `service/checkInspectionStatus`, {
         applicationFormId: applicationDocumentId,
-        stepId: 1,
+        stepId: 6,
       })
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
@@ -246,19 +246,22 @@ const SanctionOrderVerification = () => {
           handleShowModal();
           api
             .post(
-              baseURLDBT +
-                `service/getInspectedDocumentsListAndGpsByApplicationDocId`,
+              baseURLDBT + `service/getSanctionOrderByApplicationDocId`,
               {},
               {
                 params: {
-                  docId: applicationDocumentId,
-                  type: "SUBSIDY_PRE_INSPECTION",
+                  appId: applicationDocumentId,
+                  docMasterId: 22,
                 },
               }
             )
             .then((response) => {
               if (response.data.content.documentResponses.length > 0) {
                 //TODO  Need to Change here after response
+                const documents = response.data.content.documentResponses;
+                documents.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
               } else {
                 const resData = {
                   content: {
