@@ -215,6 +215,14 @@ function FinancialTargetSettingsTalukList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Achieved Amount",
+      selector: (row) => row.achievedAmount,
+      cell: (row) => <span>{row.achievedAmount}</span>,
+      sortable: false,
+      hide: "md",
+    },
+
   ];
 
   return (

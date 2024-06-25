@@ -137,6 +137,12 @@ function FinancialTargetSettingsInstitutionView() {
                         </td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Achieved Amount:</td>
+                        <td>
+                          <span>{budgetDistrictData.achievedAmount}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Date:</td>
                         <td>
                           <span>{dateFormatter(budgetDistrictData.date)}</span>

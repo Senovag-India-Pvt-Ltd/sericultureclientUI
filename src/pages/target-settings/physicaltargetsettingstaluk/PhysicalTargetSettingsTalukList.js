@@ -225,6 +225,7 @@ function PhysicalTargetSettingsTalukList() {
       sortable: false,
       hide: "md",
     },
+    
     {
       name: "Date",
       selector: (row) => row.date,
@@ -232,6 +233,8 @@ function PhysicalTargetSettingsTalukList() {
       sortable: false,
       hide: "md",
     },
+    
+
     // {
     //   name: "Reporting Officer",
     //   selector: (row) => row.username,
@@ -257,6 +260,14 @@ function PhysicalTargetSettingsTalukList() {
       name: "Amount",
       selector: (row) => row.amount,
       cell: (row) => <span>{row.amount}</span>,
+      sortable: false,
+      hide: "md",
+    },
+
+    {
+      name: "Achieved Amount",
+      selector: (row) => row.achievedAmount,
+      cell: (row) => <span>{row.achievedAmount}</span>,
       sortable: false,
       hide: "md",
     },

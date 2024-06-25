@@ -30,6 +30,8 @@ function FinancialTargetSettingsTaluk() {
     useDisburse: "true",
     tsMeasurementUnitId: "1",
     schemeOrActivity: "",
+    achievedAmount:"",
+
   });
 
   const [months, setMonths] = useState({
@@ -153,6 +155,8 @@ function FinancialTargetSettingsTaluk() {
       useDisburse: "1",
     tsMeasurementUnitId: "1",
     schemeOrActivity: "",
+    achievedAmount:"",
+
     });
     setMonths({
       jan: "",
@@ -805,6 +809,29 @@ function FinancialTargetSettingsTaluk() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="achievedAmount">
+                           Acheived Amount<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="achievedAmount"
+                            name="achievedAmount"
+                            value={data.achievedAmount}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Amount"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Achieved Amount is required.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">

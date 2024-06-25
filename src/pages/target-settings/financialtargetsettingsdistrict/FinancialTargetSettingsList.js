@@ -209,6 +209,13 @@ function FinancialTargetSettingsDistrictList() {
       sortable: false,
       hide: "md",
     },
+    {
+      name: "Achieved Amount",
+      selector: (row) => row.achievedAmount,
+      cell: (row) => <span>{row.achievedAmount}</span>,
+      sortable: false,
+      hide: "md",
+    },
     // {
     //   name: "Head Of Account",
     //   selector: (row) => row.scHeadAccountName,

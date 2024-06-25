@@ -213,7 +213,15 @@ function FinancialTargetSettingsInstitutionList() {
       cell: (row) => <span>{row.amount}</span>,
       sortable: false,
       hide: "md",
-    },
+    }, 
+    {
+      name: "Achieved Amount",
+      selector: (row) => row.achievedAmount,
+      cell: (row) => <span>{row.achievedAmount}</span>,
+      sortable: false,
+      hide: "md",
+    },     
+
     // {
     //   name: "Use/Disburse",
     //   selector: (row) => row.hoaId,
