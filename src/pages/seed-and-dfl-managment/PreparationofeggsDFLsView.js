@@ -108,8 +108,8 @@ function PreparationofeggsDFLsView() {
                         <td>{prepareEggs.numberOfCocoonsCB}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Mulberry Variety:</td>
-                        <td>{prepareEggs.varietyName}</td>
+                        <td style={styles.ctstyle}>Race:</td>
+                        <td>{prepareEggs.raceName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>Generation Number:</td>

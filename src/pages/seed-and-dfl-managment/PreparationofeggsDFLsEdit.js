@@ -28,9 +28,10 @@ function PreparationofeggsDFLsEdit() {
     testResults: "",
     certification: "",
     additionalRemarks: "",
-    varietyId: "",
+    // varietyId: "",
     generationNumberId: "",
     lineNameId: "",
+    raceId: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -97,6 +98,7 @@ function PreparationofeggsDFLsEdit() {
       varietyId: "",
       generationNumberId: "",
       lineNameId: "",
+      raceId: "",
     });
     setValidated(false);
     getIdList();
@@ -139,6 +141,24 @@ function PreparationofeggsDFLsEdit() {
 
    useEffect(() => {
     getVarietyList();
+  }, []);
+
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+  
+  const getRaceList = () => {
+    const response = api
+      .get(baseURLMasterData + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
   }, []);
  
     // to get Generation Number
@@ -259,7 +279,7 @@ function PreparationofeggsDFLsEdit() {
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
-                        <Col lg="4">
+                        {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Mulberry Variety<span className="text-danger">*</span>
@@ -291,7 +311,39 @@ function PreparationofeggsDFLsEdit() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
+                <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Race<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="raceId"
+                              value={data.raceId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Race</option>
+                              {raceListData.map((list) => (
+                                <option
+                                  key={list.raceMasterId}
+                                  value={list.raceMasterId}
+                                >
+                                  {list.raceMasterName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Race is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+                    
                         <Col lg="4">
 
                       <Form.Group className="form-group mt-n4">

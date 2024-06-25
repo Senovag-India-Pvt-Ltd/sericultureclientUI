@@ -379,9 +379,9 @@ function PreparationofeggsDFLsList() {
       hide: "md",
     },
     {
-      name: "Mulberry Variety",
-      selector: (row) => row.varietyName,
-      cell: (row) => <span>{row.varietyName}</span>,
+      name: "Race",
+      selector: (row) => row.raceName,
+      cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
