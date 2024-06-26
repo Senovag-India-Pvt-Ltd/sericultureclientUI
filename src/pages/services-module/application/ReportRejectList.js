@@ -838,7 +838,7 @@ function ReportRejectList() {
     },
     {
       name: "SL.No.",
-      selector: (row) => row.scApplicationFormId,
+      // selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
       hide: "md",
@@ -871,13 +871,13 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "Market Address",
     //   selector: (row) => row.marketMasterAddress,
