@@ -818,6 +818,7 @@ import ReportRejectList from "../pages/services-module/application/ReportRejectL
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
+import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
 // Admin and Reports
 
 function Router() {
@@ -1960,6 +1961,10 @@ function Router() {
             <Route
               path="financialtargetsettingsdistrict-list"
               element={<FinancialTargetSettingsDistrictList />}
+            />
+            <Route
+              path="financialtargetsettingsdistrict-userlist"
+              element={<FinancialTargetSettingsDistrictUserList />}
             />
             <Route
               path="financialtargetsettingsdistrict-edit/:id"
