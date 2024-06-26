@@ -821,6 +821,14 @@ function ReportSuccessList() {
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "Market Name in Kannada",
     //   selector: (row) => row.marketNameInKannada,
