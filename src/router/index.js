@@ -818,6 +818,9 @@ import ReportRejectList from "../pages/services-module/application/ReportRejectL
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
+import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeedMarket";
+import LotGroupage from "../pages/market-and-auction/LotGroupage";
+import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
 // Admin and Reports
 
 function Router() {
@@ -2908,6 +2911,9 @@ function Router() {
             />
             <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
+            <Route path="weighment-for-seed-market" element={<WeighmentForSeedMarket />} />
+            <Route path="lot-groupage" element={<LotGroupage />} />
+            <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route
               path="accept-former-auction"
