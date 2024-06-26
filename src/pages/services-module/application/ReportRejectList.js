@@ -836,13 +836,20 @@ function ReportRejectList() {
       // allowOverflow: true,
       button: true,
     },
-    // {
-    //   name: "Application Id",
-    //   selector: (row) => row.scApplicationFormId,
-    //   cell: (row) => <span>{row.scApplicationFormId}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "SL.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Application Id",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row) => <span>{row.scApplicationFormId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,

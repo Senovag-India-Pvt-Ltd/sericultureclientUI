@@ -196,7 +196,7 @@ const SanctionOrderVerification = () => {
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
-            sanctionOrderReport(response.data.content);
+            // sanctionOrderReport(response.data.content);
             getList();
           })
           .catch((err) => {
