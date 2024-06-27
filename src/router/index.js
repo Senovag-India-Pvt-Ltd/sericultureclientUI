@@ -824,6 +824,7 @@ import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeed
 import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
+import DistrictWiseFarmerCountList from "../pages/services-module/application/DistrictWiseFarmerCountList";
 // Admin and Reports
 
 function Router() {
@@ -1125,6 +1126,10 @@ function Router() {
             <Route
               path="report-reject-list"
               element={<ReportRejectList />}
+            />
+            <Route
+              path="district-wise-farmer-count-list"
+              element={<DistrictWiseFarmerCountList />}
             />
             <Route
               path="application-form-list"
