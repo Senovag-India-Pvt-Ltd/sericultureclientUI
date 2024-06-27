@@ -337,7 +337,7 @@ function DrawingOfficerList() {
 
   const [disabledIds, setDisabledIds] = useState([]);
   // const [showDisable, setShowDisable] = useState(false);
-  const handlePush = (id) => {
+  const handlePush = (id,bid,fid) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
         if (list.scApplicationFormId === id) {
@@ -364,7 +364,7 @@ function DrawingOfficerList() {
           // disabledIds.filter((item)=>item !== id);
           // setShowDisable(false);
         } else {
-          saveSuccess();
+          pushedSuccess(bid,fid);
           getList();
         }
       })
@@ -745,6 +745,14 @@ function DrawingOfficerList() {
       text: message,
     });
   };
+
+  const pushedSuccess = (b,f) => {
+    Swal.fire({
+      icon: "success",
+      title: "Pushed successfully",
+      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    });
+  };
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -1001,7 +1009,7 @@ function DrawingOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
+            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
             className="ms-1"
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >

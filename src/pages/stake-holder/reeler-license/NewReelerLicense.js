@@ -126,6 +126,75 @@ function NewReelerLicense() {
     })
   }
 
+  const clear = (event) => {
+    setDisable(false);
+    setData({
+      fruitsId: "",
+      reelerName: "",
+      wardNumber: "",
+      tscMasterId: "",
+      passbookNumber: "",
+      fatherName: "",
+      educationId: "",
+      reelingUnitBoundary: "",
+      dob: "",
+      rationCard: "",
+      machineTypeId: "",
+      gender: "",
+      dateOfMachineInstallation: "",
+      electricityRrNumber: "",
+      casteId: "",
+      revenueDocument: "",
+      numberOfBasins: "",
+      mobileNumber: "",
+      recipientId: "",
+      mahajarDetails: "",
+      emailId: "",
+      representativeNameAddress: "",
+      loanDetails: "",
+      assignToInspectId: "",
+      gpsLat: "",
+      gpsLng: "",
+      inspectionDate: "",
+      arnNumber: "",
+      chakbandiLat: "",
+      chakbandiLng: "",
+      address: "",
+      pincode: "",
+      stateId: "",
+      districtId: "",
+      talukId: "",
+      hobliId: "",
+      villageId: "",
+      licenseReceiptNumber: "",
+      licenseExpiryDate: "",
+      receiptDate: "",
+      functionOfUnit: "",
+      reelingLicenseNumber: "",
+      feeAmount: "",
+      memberLoanDetails: "",
+      mahajarEast: "",
+      mahajarWest: "",
+      mahajarNorth: "",
+      mahajarSouth: "",
+      mahajarNorthEast: "",
+      mahajarNorthWest: "",
+      mahajarSouthEast: "",
+      mahajarSouthWest: "",
+      bankName: "",
+      bankAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      status: "",
+      licenseRenewalDate: "",
+      reelerNumber: "",
+      reelerTypeMasterId: "",
+      transferReelerId: "0",
+    });
+    setSearchValidated(false);
+  };
+
+
   const [data, setData] = useState({
     fruitsId: "",
     reelerName: "",
@@ -191,6 +260,7 @@ function NewReelerLicense() {
   });
 
   const [searchValidated, setSearchValidated] = useState(false);
+  const [disable, setDisable] = useState(false);
   const search = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -201,6 +271,8 @@ function NewReelerLicense() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
+      }else{
+        setDisable(true);
       }
       api
         .post(
@@ -823,6 +895,7 @@ function NewReelerLicense() {
                         onChange={handleInputs}
                         placeholder="Enter FRUITS ID"
                         maxLength="16"
+                        readOnly={disable}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -832,6 +905,11 @@ function NewReelerLicense() {
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
                         Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
                       </Button>
                     </Col>
                     <Col sm={2}>

@@ -45,7 +45,6 @@ function User() {
     setData({ ...data, [name]: value });
   };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
-
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -83,8 +82,15 @@ function User() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveUserError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveUserError(err.response.data.validationErrors);
+            }
           }
         });
       setValidated(true);
@@ -712,9 +718,7 @@ function User() {
 
                   <Col lg="6">
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="password">
-                        DDO Code
-                      </Form.Label>
+                      <Form.Label htmlFor="password">DDO Code</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="ddoCode"
@@ -725,11 +729,9 @@ function User() {
                           placeholder="Enter DDO Code"
                           // required
                         />
-                       
                       </div>
                     </Form.Group>
                   </Col>
-
                 </Row>
               </Card.Body>
             </Card>

@@ -340,7 +340,7 @@ function TscOfficerList() {
   };
 
   const [disabledIds, setDisabledIds] = useState([]);
-  const handlePush = (id) => {
+  const handlePush = (id,bid,fid) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
         if (list.scApplicationFormId === id) {
@@ -365,7 +365,7 @@ function TscOfficerList() {
             prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
           );
         } else {
-          saveSuccess();
+          pushedSuccess(bid,fid);
           getList();
         }
       })
@@ -734,6 +734,15 @@ function TscOfficerList() {
       text: message,
     });
   };
+
+  const pushedSuccess = (b,f) => {
+    Swal.fire({
+      icon: "success",
+      title: "Pushed successfully",
+      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    });
+  };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -977,7 +986,7 @@ function TscOfficerList() {
             variant="primary"
             size="sm"
             className="ms-1"
-            onClick={() => handlePush(row.scApplicationFormId)}
+            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push

@@ -58,13 +58,63 @@ function StakeHolderRegister() {
   });
 
   console.log("checkData", data);
+  
+  const [searchValidated, setSearchValidated] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const clear = (event) => {
+    setDisable(false);
+    setData({
+      farmerNumber: "",
+      fruitsId: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      dob: null,
+      genderId: "",
+      casteId: "",
+      differentlyAbled: "",
+      email: "",
+      mobileNumber: "",
+      aadhaarNumber: "",
+      epicNumber: "",
+      rationCardNumber: "",
+      totalLandHolding: "",
+      passbookNumber: "",
+      landCategoryId: "",
+      educationId: "",
+      representativeId: "",
+      khazaneRecipientId: "",
+      photoPath: "",
+      farmerTypeId: "",
+      minority: "",
+      rdNumber: "",
+      casteStatus: "",
+      genderStatus: "",
+      fatherNameKan: "",
+      fatherName: "",
+      nameKan: "",
+      tscMasterId: "",
+    });
+
+    setFamilyMembersList([]);
+    setFarmerLandList([]);
+    setFarmerAddressList([]);
+    setBank({
+      accountImagePath: "",
+      farmerId: "",
+      farmerBankName: "",
+      farmerBankAccountNumber: "",
+      farmerBankBranchName: "",
+      farmerBankIfscCode: "",
+    });
+    setSearchValidated(false);
+  };
 
   //  console.log("data",data.photoPath);
   // const [disable, setDisable] = useState(false);
-  const [searchValidated, setSearchValidated] = useState(false);
+  
 
   const search = (event) => {
-    // setDisable(true);
     setData({
       farmerNumber: "",
       fruitsId: "",
@@ -118,6 +168,8 @@ function StakeHolderRegister() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
+      } else {
+        setDisable(true);
       }
       api
         .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
@@ -2070,6 +2122,7 @@ function StakeHolderRegister() {
                         type="text"
                         maxLength="16"
                         placeholder={t("Enter FRUITS ID")}
+                        readOnly={disable}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -2079,6 +2132,11 @@ function StakeHolderRegister() {
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
                         {t("search")}
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
                       </Button>
                     </Col>
                     <Col sm={2}>

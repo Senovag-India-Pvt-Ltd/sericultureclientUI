@@ -162,19 +162,27 @@ const handleDateChange = (date) => {
                 const lotGroupageId = response.data.content[0].lotGroupageId;
         
                 if (lotGroupageId) {
-                  navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
+                  // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
+                  setData((prev) => ({
+                    ...prev,
+                    farmerFirstName: response.data.content[0].farmerFirstName,
+                    farmerMiddleName: response.data.content[0].farmerMiddleName,
+                    farmerFruitsId: response.data.content[0].farmerFruitsId
+                  }));
+                  setDataLotList(response.data.content);
+                  setShowFarmerDetails(true);
                 } else {
-                 const farmerDetails = response.data.content;
+                //  const farmerDetails = response.data.content;
                 setData((prev) => ({
                   ...prev,
-                  farmerFirstName: farmerDetails.farmerFirstName,
-                  farmerMiddleName: farmerDetails.farmerMiddleName,
-                  farmerFruitsId: farmerDetails.farmerFruitsId
+                  farmerFirstName: response.data.content[0].farmerFirstName,
+                  farmerMiddleName: response.data.content[0].farmerMiddleName,
+                  farmerFruitsId: response.data.content[0].farmerFruitsId
                 }));
                 setShowFarmerDetails(true);
                  }
                  
-                  // console.log(modified);FF
+                  // console.log(modified);
 
                  
               })
