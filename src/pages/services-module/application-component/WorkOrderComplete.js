@@ -76,8 +76,8 @@ const WorkOrderComplete = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 3 } }
-        { params: { userId: 113, stepId: 3 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 3 } }
+        // { params: { userId: 113, stepId: 3 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -151,7 +151,7 @@ const WorkOrderComplete = () => {
         // getList();
         api
           .post(
-            baseURLDBT + `service/triggerWorkFlowNextStep`,
+            baseURLDBT + `service/triggerPostInspection`,
             {},
             { params: { id: workFlowId } }
           )

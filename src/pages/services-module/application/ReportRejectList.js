@@ -275,12 +275,19 @@ function ReportRejectList() {
       setApplicationIds((prev) => [...prev, _id]);
     }
   };
-
+  const [disabledIds, setDisabledIds] = useState([]);
   const handlePush = (id) => {
+    if (listData && listData.length > 0) {
+      listData.forEach((list) => {
+        if (list.scApplicationFormId === id) {
+          setDisabledIds((prevState) => [...prevState, id]);
+        }
+      });
+    }
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: "R",
+      paymentMode: "P",
     };
     api
       .post(
@@ -290,6 +297,9 @@ function ReportRejectList() {
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
+          setDisabledIds((prevDisabledIds) =>
+            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+          );
         } else {
           saveSuccess();
           getList();
@@ -297,6 +307,9 @@ function ReportRejectList() {
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
+        setDisabledIds((prevDisabledIds) =>
+          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+        );
       });
     setValidated(true);
   };
@@ -325,7 +338,7 @@ function ReportRejectList() {
   const postData = (event) => {
     const post = {
       applicationList: applicationIds,
-      paymentMode: "R",
+      paymentMode: "P",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -823,13 +836,20 @@ function ReportRejectList() {
       // allowOverflow: true,
       button: true,
     },
-    // {
-    //   name: "Application Id",
-    //   selector: (row) => row.scApplicationFormId,
-    //   cell: (row) => <span>{row.scApplicationFormId}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "SL.No.",
+      // selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Application Id",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row) => <span>{row.scApplicationFormId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -851,13 +871,13 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     // {
     //   name: "Market Address",
     //   selector: (row) => row.marketMasterAddress,
@@ -932,6 +952,7 @@ function ReportRejectList() {
             variant="primary"
             size="sm"
             onClick={() => handlePush(row.scApplicationFormId)}
+            disabled={disabledIds.includes(row.scApplicationFormId)}
             className="ms-1"
           >
             Re-Push
@@ -1467,6 +1488,14 @@ function ReportRejectList() {
                     <tr>
                       <td style={styles.ctstyle}> Category Name:</td>
                       <td>{viewDetailsData.categoryName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Component Name:</td>
+                      <td>{viewDetailsData.scComponentName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Remarks:</td>
+                      <td>{viewDetailsData.remarks}</td>
                     </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}> State Name in Kannada:</td>

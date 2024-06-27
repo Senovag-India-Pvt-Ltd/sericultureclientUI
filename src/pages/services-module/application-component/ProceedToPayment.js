@@ -76,8 +76,8 @@ const ProceedToPayment = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 3 } }
-        { params: { userId: 113, stepId: 7 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 7 } }
+        // { params: { userId: 113, stepId: 7 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -153,7 +153,7 @@ const ProceedToPayment = () => {
           .post(
             baseURLDBT + `service/updateApplicationFormProcessCompleted`,
             {},
-            { params: { docId : applicationDocumentId } }
+            { params: { docId : applicationDocumentId, loggedInUserId:localStorage.getItem("userMasterId") } }
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);

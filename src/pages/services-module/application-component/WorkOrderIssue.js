@@ -14,6 +14,7 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 const WorkOrderIssue = () => {
   const [helpDeskFaq, setHelpDeskFaq] = useState({
@@ -104,8 +105,8 @@ const WorkOrderIssue = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
-        { params: { userId: 113, stepId: 2 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 2 } }
+        // { params: { userId: 30, stepId: 2 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -144,19 +145,18 @@ const WorkOrderIssue = () => {
   }, []);
 
   // handleShowModal();
-  const [workOrderId,setWorkOrderId] = useState("")
+  const [workOrderId, setWorkOrderId] = useState("");
 
   const generateWorkOrder = () => {
     api
       .post(
-        baseURLDBT +
-          `service/updateCompletionStatusFromWeb`,
+        baseURLDBT + `service/updateCompletionStatusFromWeb`,
         {},
         { params: { id: workOrderId } }
       )
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
-        handleCloseModal()
+        handleCloseModal();
         api
           .post(
             baseURLDBT + `service/triggerWorkFlowNextStep`,
@@ -165,6 +165,7 @@ const WorkOrderIssue = () => {
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
+            // workOrderSlip(response.data.content);
             getList();
           })
           .catch((err) => {
@@ -174,6 +175,37 @@ const WorkOrderIssue = () => {
       .catch((err) => {
         // setUserListData([]);
       });
+  };
+
+  const workOrderSlip = async (applicationId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getAuthorisationLetterFromFarmer`,
+        {
+          applicationFormId: applicationId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      // const fileURL = URL.createObjectURL(file);
+      // const printWindow = window.open(fileURL);
+      // if (printWindow) {
+      //   printWindow.onload = () => {
+      //     printWindow.print();
+      //   };
+      // } else {
+      //   console.error("Failed to open the print window.");
+      // }
+    } catch (error) {
+      // console.log("error", error);
+    }
   };
 
   const assign = (workFlowId, applicationDocumentId) => {
@@ -206,7 +238,7 @@ const WorkOrderIssue = () => {
     api
       .post(baseURLDBT + `service/checkInspectionStatus`, {
         applicationFormId: applicationDocumentId,
-        stepId:1
+        stepId: 1,
       })
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
@@ -227,7 +259,12 @@ const WorkOrderIssue = () => {
             .then((response) => {
               if (response.data.content.documentResponses.length > 0) {
                 //TODO  Need to Change here after response
+                const documents = response.data.content.documentResponses;
+                documents.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
               } else {
+                //TODO  Need to comment below code after test
                 const resData = {
                   content: {
                     documentResponses: [
@@ -592,7 +629,11 @@ const WorkOrderIssue = () => {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="button" variant="primary" onClick={generateWorkOrder}>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={generateWorkOrder}
+                >
                   Generate Work Order
                 </Button>
               </li>

@@ -19,10 +19,10 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerList() {
+function DrawingOfficerSchemeList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 500;
+  const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -54,7 +54,7 @@ function DrawingOfficerList() {
   const search = (e) => {
     api
       .post(
-        baseURLDBT + `service/getTscListForDBTPush`,
+        baseURLDBT + `service/getApplicationForTscForDbtPush`,
         {},
         {
           params: {
@@ -64,6 +64,8 @@ function DrawingOfficerList() {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
+            pageNumber:page,
+            pageSize:countPerPage
           },
         }
       )
@@ -264,10 +266,10 @@ function DrawingOfficerList() {
         )
         .then((response) => {
           setListData(response.data.content);
-          const scApplicationFormIds = response.data.content.map(
-            (item) => item.scApplicationFormId
+          const applicationWorkFlowIds = response.data.content.map(
+            (item) => item.applicationWorkFlowId
           );
-          setAllApplicationIds(scApplicationFormIds);
+          setAllApplicationIds(applicationWorkFlowIds);
           setLoading(false);
         })
         .catch((err) => {
@@ -337,10 +339,10 @@ function DrawingOfficerList() {
 
   const [disabledIds, setDisabledIds] = useState([]);
   // const [showDisable, setShowDisable] = useState(false);
-  const handlePush = (id,bid,fid) => {
+  const handlePush = (id) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
-        if (list.scApplicationFormId === id) {
+        if (list.applicationWorkFlowId === id) {
           setDisabledIds((prevState) => [...prevState, id]);
         }
       });
@@ -352,7 +354,7 @@ function DrawingOfficerList() {
     };
     api
       .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+        baseURLDBT + `applicationTransaction/pushToFruits`,
         pushdata
       )
       .then((response) => {
@@ -364,7 +366,7 @@ function DrawingOfficerList() {
           // disabledIds.filter((item)=>item !== id);
           // setShowDisable(false);
         } else {
-          pushedSuccess(bid,fid);
+          saveSuccess();
           getList();
         }
       })
@@ -414,7 +416,7 @@ function DrawingOfficerList() {
       event.preventDefault();
       api
         .post(
-          baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
+          baseURLDBT + `applicationTransaction/pushToFruits`,
           post
         )
         .then((response) => {
@@ -470,21 +472,23 @@ function DrawingOfficerList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getTscListForDBTPush`,
+        baseURLDBT + `service/getApplicationForTscForDbtPush`,
         {},
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
+            pageNumber:page,
+            pageSize:countPerPage   
           },
         }
       )
       .then((response) => {
         setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
+        const applicationWorkFlowIds = response.data.content.map(
+          (item) => item.applicationWorkFlowId
         );
-        setAllApplicationIds(scApplicationFormIds);
+        setAllApplicationIds(applicationWorkFlowIds);
         setLoading(false);
       })
       .catch((err) => {
@@ -745,14 +749,6 @@ function DrawingOfficerList() {
       text: message,
     });
   };
-
-  const pushedSuccess = (b,f) => {
-    Swal.fire({
-      icon: "success",
-      title: "Pushed successfully",
-      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
-    });
-  };
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -907,9 +903,9 @@ function DrawingOfficerList() {
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.scApplicationFormId}
-          checked={applicationIds.includes(row.scApplicationFormId)}
-          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+          value={row.applicationWorkFlowId}
+          checked={applicationIds.includes(row.applicationWorkFlowId)}
+          onChange={() => handleCheckboxChange(row.applicationWorkFlowId)}
         />
       ),
       // ignoreRowClick: true,
@@ -993,7 +989,7 @@ function DrawingOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => viewDetails(row.scApplicationFormId)}
+            onClick={() => viewDetails(row.applicationWorkFlowId)}
             className="ms-1"
           >
             view
@@ -1001,7 +997,7 @@ function DrawingOfficerList() {
           <Button
             variant="danger"
             size="sm"
-            onClick={() => rejectDetails(row.scApplicationFormId)}
+            onClick={() => rejectDetails(row.applicationWorkFlowId)}
             className="ms-1"
           >
             Reject
@@ -1009,9 +1005,9 @@ function DrawingOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
+            onClick={() => handlePush(row.pushToFruits)}
             className="ms-1"
-            disabled={disabledIds.includes(row.scApplicationFormId)}
+            disabled={disabledIds.includes(row.pushToFruits)}
           >
             Push
           </Button>
@@ -1023,11 +1019,11 @@ function DrawingOfficerList() {
   ];
 
   return (
-    <Layout title="Drawing Officer List">
+    <Layout title="All Scheme Drawing Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">All Scheme Drawing Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1450,14 +1446,14 @@ function DrawingOfficerList() {
             columns={ApplicationDataColumns}
             data={listData}
             highlightOnHover
-            // pagination
-            // paginationServer
-            // paginationTotalRows={totalRows}
-            // paginationPerPage={countPerPage}
-            // paginationComponentOptions={{
-            //   noRowsPerPage: true,
-            // }}
-            // onChangePage={(page) => setPage(page - 1)}
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
@@ -1627,4 +1623,4 @@ function DrawingOfficerList() {
   );
 }
 
-export default DrawingOfficerList;
+export default DrawingOfficerSchemeList;

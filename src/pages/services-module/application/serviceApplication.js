@@ -35,11 +35,13 @@ function ServiceApplication() {
     scSubSchemeType: "",
     scVendorId: "",
     farmerId: "",
-    expectedAmount: "",
+    expectedAmount: "18000",
     financialYearMasterId: "",
     scComponentId: "",
     schemeAmount: "",
     sanctionNumber: "",
+    periodFrom: new Date("2023-04-01"),
+    periodTo: new Date("2024-03-31"),
   });
 
   // console.log("nodu", data);
@@ -82,8 +84,8 @@ function ServiceApplication() {
   const [developedArea, setDevelopedArea] = useState([]);
 
   const transformedData = Object.keys(developedArea).map((id) => ({
-    landDeveloped: developedLand.landDeveloped,
-    landDetailId: parseInt(id),
+    // landDeveloped: developedLand.landDeveloped,
+    // landDetailId: parseInt(id),
     ...developedArea[id],
   }));
 
@@ -91,9 +93,9 @@ function ServiceApplication() {
 
   // const
 
-  const handleInlineDevelopedLandChange = (e, row) => {
+  const handleInlineDevelopedLandChange = (e, i) => {
     const { name, value } = e.target;
-    const farmerLandDetailsId = row.farmerLandDetailsId;
+    const farmerLandDetailsId = i;
 
     setDevelopedArea((prevData) => ({
       ...prevData,
@@ -104,7 +106,7 @@ function ServiceApplication() {
     }));
   };
 
-  console.log(developedArea);
+  console.log("new dev data", developedArea);
 
   // Display Image
   const [documentAttachments, setDocumentAttachments] = useState({});
@@ -126,7 +128,7 @@ function ServiceApplication() {
     // setPhotoFile(file);
   };
 
-  console.log("showdev", developedArea);
+  console.log("showdevplease", developedArea);
 
   const handleRemoveImage = (documentId) => {
     const updatedDocument = { ...documentAttachments };
@@ -181,25 +183,27 @@ function ServiceApplication() {
   //   });
   // };
 
-  const handleCheckboxChange = (farmerLandDetailsId) => {
+  const handleCheckboxChange = (landId, row) => {
+    console.log("hello row", row);
     setLandDetailsIds((prevIds) => {
-      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      const isAlreadySelected = prevIds.includes(landId);
       const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== farmerLandDetailsId)
-        : [...prevIds, farmerLandDetailsId];
+        ? prevIds.filter((id) => id !== landId)
+        : [...prevIds, landId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
-          const { [farmerLandDetailsId]: _, ...rest } = prevData;
+          const { [landId]: _, ...rest } = prevData;
           return rest;
         } else {
           // If selected, add to developedArea
           return {
             ...prevData,
-            [farmerLandDetailsId]: {
-              acre: prevData[farmerLandDetailsId]?.acre || "0",
-              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+            [landId]: {
+              devAcre: prevData[landId]?.devAcre || "0",
+              devGunta: prevData[landId]?.devGunta || "0",
+              devFGunta: prevData[landId]?.devFGunta || "0",
+              ...row,
             },
           };
         }
@@ -584,6 +588,10 @@ function ServiceApplication() {
     }
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const handleDevelopedLandInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -598,8 +606,8 @@ function ServiceApplication() {
 
   const postData = (event) => {
     const transformedData = Object.keys(developedArea).map((id) => ({
-      landDeveloped: developedLand.landDeveloped,
-      landDetailId: parseInt(id),
+      // landDeveloped: developedLand.landDeveloped,
+      // landDetailId: parseInt(id),
       ...developedArea[id],
     }));
     const form = event.currentTarget;
@@ -619,6 +627,7 @@ function ServiceApplication() {
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
+        componentId:data.scComponentId,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
@@ -627,6 +636,8 @@ function ServiceApplication() {
         schemeAmount: data.schemeAmount,
         sanctionNumber: data.sanctionNumber,
         initialAmount: data.expectedAmount,
+        periodFrom: data.periodFrom,
+        periodTo: data.periodTo,
       };
 
       if (data.equordev === "land") {
@@ -636,7 +647,7 @@ function ServiceApplication() {
         //     landDeveloped: developedLand.landDeveloped,
         //   },
         // ];
-        sendPost.applicationFormLandDetailRequestList = transformedData;
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
@@ -751,7 +762,8 @@ function ServiceApplication() {
 
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        // baseURLReport + `getBlankSample`,
+        `http://localhost:8006/reports/marketreport/getBlankSample`,
         {
           applicationFormId: applicationId,
         },
@@ -818,6 +830,8 @@ function ServiceApplication() {
       farmerId: "",
       expectedAmount: "",
       financialYearMasterId: "",
+      periodFrom: new Date("2023-04-01"),
+      periodTo: new Date("2024-03-31"),
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -907,7 +921,7 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
-              generateBiddingSlip(response.data.content.applicationDocumentId);
+              // generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
 
               // setData({
@@ -1026,13 +1040,14 @@ function ServiceApplication() {
             // }
 
             api
-              .post(
-                baseURLFarmerServer + `farmer/get-farmer-details-by-fruits-id`,
-                {
-                  fruitsId: data.fruitsId,
-                }
-              )
+              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+                fruitsId: data.fruitsId,
+              })
               .then((response) => {
+                console.log(
+                  "landdetails",
+                  response.data.content.farmerLandDetailsDTOList
+                );
                 if (response.data.content.farmerLandDetailsDTOList.length > 0) {
                   setLandDetailsList(
                     response.data.content.farmerLandDetailsDTOList
@@ -1209,13 +1224,13 @@ function ServiceApplication() {
     {
       name: "Select",
       selector: "select",
-      cell: (row) => (
+      cell: (row, i) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.farmerLandDetailsId}
-          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
-          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+          value={i}
+          checked={landDetailsIds.includes(i)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1319,30 +1334,31 @@ function ServiceApplication() {
 
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
-      // selector: (row) => row.acre,
-      cell: (row) => (
+      // selector: (row,id) => console.log("rowDetails",id),
+      cell: (row, i) => (
         <>
+          {/* {console.log("dada marre",i)} */}
           <Form.Control
-            name="acre"
+            name="devAcre"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devAcre || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Acre"
             className="m-1"
           />
           <Form.Control
-            name="gunta"
+            name="devGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Gunta"
             className="m-1"
           />
           <Form.Control
-            name="fgunta"
+            name="devFGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devFGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="FGunta"
             className="m-1"
           />
@@ -1855,6 +1871,59 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              From Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodFrom}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodFrom")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                readOnly
+                                required
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                        <Col lg="2">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              To Date
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.periodTo}
+                                onChange={(date) =>
+                                  handleDateChange(date, "periodTo")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                required
+                                readOnly
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
@@ -1993,7 +2062,7 @@ function ServiceApplication() {
                         />
                       </Col>
                       <Form.Label column sm={9} className="mt-n2" id="land">
-                        Developed Area
+                        Constructed Area
                       </Form.Label>
                     </Form.Group>
                   </Col>
@@ -2201,7 +2270,7 @@ function ServiceApplication() {
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
-                          Developed Area
+                          Constructed Area
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
@@ -2240,7 +2309,7 @@ function ServiceApplication() {
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="landDeveloped">
-                                  Unit Quantity
+                                  Unit
                                   <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
@@ -2250,7 +2319,7 @@ function ServiceApplication() {
                                     name="landDeveloped"
                                     value={developedLand.landDeveloped}
                                     onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Unit Quantity"
+                                    placeholder="Enter Unit"
                                     required
                                   />
                                   <Form.Control.Feedback type="invalid">

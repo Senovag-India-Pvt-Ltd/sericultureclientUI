@@ -196,11 +196,11 @@ function Menu() {
     Services: false,
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
-    Services_Reject_List:false,
-    Services_Success_List:false,
-    Services_Dbt_Application:false,
-    Services_Drawing_Officer_List:false,
-    Services_Tsc_Officer_List:false,
+    Services_Reject_List: false,
+    Services_Success_List: false,
+    Services_Dbt_Application: false,
+    Services_Drawing_Officer_List: false,
+    Services_Tsc_Officer_List: false,
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
     // Services_Apply_Incentives: false,
@@ -771,6 +771,18 @@ function Menu() {
       }));
     }
 
+    const hasAdminMasterGeneral = data.some((item) =>
+      item.startsWith("Admin_Master_General_")
+    );
+    if (hasAdminMasterGeneral) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_General: true,
+      }));
+    }
+
     const hasAdminReport = data.some((item) =>
       item.startsWith("Admin_Report_")
     );
@@ -1059,11 +1071,27 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Services_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme Drawing Officer List"
+                  to="/seriui/all-scheme-drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Services_Tsc_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
                   text="TSC Officer List"
                   to="/seriui/tsc-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Tsc_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme TSC Officer List"
+                  to="/seriui/all-scheme-tsc-officer-list"
                 />
               </MenuItem>
             ) : null}
@@ -2250,35 +2278,29 @@ function Menu() {
                         sub
                       />
                       <MenuSub>
-                        {showMenu.Admin_Master_Service_Department ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Department"
-                              to="/seriui/department"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Reject Reason"
-                              to="/seriui/reject-reason-workflow"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Program ? (
+                        
+                        
+                        {/* {showMenu.Admin_Master_Service_Program ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Program"
                               to="/seriui/sc-program"
                             />
                           </MenuItem>
-                        ) : null}
+                        ) : null} */}
                         {showMenu.Admin_Master_Service_Scheme_Details ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Scheme Details"
                               to="/seriui/sc-scheme-details"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Scheme_Quota ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Scheme Quota"
+                              to="/seriui/scheme-quota"
                             />
                           </MenuItem>
                         ) : null}
@@ -2298,19 +2320,11 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Scheme_Quota ? (
+                        {showMenu.Admin_Master_Service_Category ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Scheme Quota"
-                              to="/seriui/scheme-quota"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Map Component And Head Of Account"
-                              to="/seriui/map-component"
+                              text="Sub Component"
+                              to="/seriui/sc-category"
                             />
                           </MenuItem>
                         ) : null}
@@ -2322,14 +2336,23 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Head_of_Account_Category ? (
+                        {showMenu.Admin_Master_Service_Map_Component_And_Head_Of_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Map Component And Head Of Account"
+                              to="/seriui/map-component"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        
+                        {/* {showMenu.Admin_Master_Service_Head_of_Account_Category ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Head of Account Category"
                               to="/seriui/sc-head-account-category"
                             />
                           </MenuItem>
-                        ) : null}
+                        ) : null} */}
                         {showMenu.Admin_Master_Service_Unit_Cost ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2346,7 +2369,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Vendor_Contact ? (
+                        {/* {showMenu.Admin_Master_Service_Vendor_Contact ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Vendor Contact"
@@ -2361,20 +2384,12 @@ function Menu() {
                               to="/seriui/sc-vendor-bank"
                             />
                           </MenuItem>
-                        ) : null}
+                        ) : null} */}
                         {showMenu.Admin_Master_Service_Approving_Authority ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Approving Authority"
                               to="/seriui/sc-approving-authority"
-                            />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Service_Category ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Sub Component"
-                              to="/seriui/sc-category"
                             />
                           </MenuItem>
                         ) : null}
@@ -2394,30 +2409,31 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Program_Account_Mapping ? (
+                        {/* {showMenu.Admin_Master_Service_Program_Account_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
                               text="Program Account mapping"
                               to="/seriui/sc-program-account-mapping"
                             />
                           </MenuItem>
-                        ) : null}
+                        ) : null} */}
                         {showMenu.Admin_Master_Service_Program_Approval_Mapping ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Program Approval Stage mapping"
+                              text="Approval Stage mapping"
                               to="/seriui/sc-program-approval-mapping"
                             />
                           </MenuItem>
                         ) : null}
-                        {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
+                        {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
                           <MenuItem>
                             <MenuItemLink
-                              text="Reason for lot Cancellation"
-                              to="/seriui/reason-lot-cancellation"
+                              text="Reject Reason"
+                              to="/seriui/reject-reason-workflow"
                             />
                           </MenuItem>
                         ) : null}
+                        
                         {/* {showMenu.Admin_Master_Service_Reason_for_Bid_Rejection ? (
                           <MenuItem>
                             <MenuItemLink
@@ -2426,14 +2442,7 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null} */}
-                         {showMenu.Admin_Master_Service_Financial_Year ? (
-                          <MenuItem>
-                            <MenuItemLink
-                              text="Financial Year"
-                              to="/seriui/financial-year"
-                            />
-                          </MenuItem>
-                        ) : null}
+                        
                         {showMenu.Admin_Master_Service_Activity? (
                           <MenuItem>
                             <MenuItemLink
@@ -2774,6 +2783,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Reason for lot Cancellation"
+                              to="/seriui/reason-lot-cancellation"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {/* {showMenu.Admin_Master_Auction_Accept_Bid ? (
                         <MenuItem>
                           <MenuItemLink text="Accept Bid" to="/seriui/accept-bid" />
@@ -2814,6 +2831,22 @@ function Menu() {
                             <MenuItemLink
                               text="Activate External Unit user"
                               to="/seriui/activate-external-unit"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Department ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Department"
+                              to="/seriui/department"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Service_Financial_Year ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="Financial Year"
+                              to="/seriui/financial-year"
                             />
                           </MenuItem>
                         ) : null}

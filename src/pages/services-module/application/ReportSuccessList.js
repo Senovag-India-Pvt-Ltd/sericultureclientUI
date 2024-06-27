@@ -787,6 +787,13 @@ function ReportSuccessList() {
     //   button: true,
     // },
     {
+      name: "Sl.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Application Id",
       selector: (row) => row.scApplicationFormId,
       cell: (row) => <span>{row.scApplicationFormId}</span>,
@@ -811,6 +818,14 @@ function ReportSuccessList() {
       name: "Actual Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
       sortable: true,
       hide: "md",
     },

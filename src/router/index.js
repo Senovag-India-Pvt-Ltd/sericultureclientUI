@@ -818,6 +818,11 @@ import ReportRejectList from "../pages/services-module/application/ReportRejectL
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/services-module/application/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
+import DrawingOfficerSchemeList from "../pages/services-module/application/DrawingOfficerSchemeList";
+import TscOfficerSchemeList from "../pages/services-module/application/TscOfficerSchemeList";
+import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeedMarket";
+import LotGroupage from "../pages/market-and-auction/LotGroupage";
+import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
 // Admin and Reports
 
@@ -1961,10 +1966,6 @@ function Router() {
             <Route
               path="financialtargetsettingsdistrict-list"
               element={<FinancialTargetSettingsDistrictList />}
-            />
-            <Route
-              path="financialtargetsettingsdistrict-userlist"
-              element={<FinancialTargetSettingsDistrictUserList />}
             />
             <Route
               path="financialtargetsettingsdistrict-edit/:id"

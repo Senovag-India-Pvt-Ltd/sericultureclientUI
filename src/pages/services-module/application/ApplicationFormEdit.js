@@ -106,8 +106,10 @@ function ApplicationFormEdit() {
           schemeAmount: datas.schemeAmount,
           sanctionNumber: datas.sanctionNo,
           scSubSchemeType: datas.componentType,
-          periodFrom: datas.periodFrom,
-          periodTo: datas.periodTo,
+          periodFrom: new Date("2023-04-01"),
+          periodTo: new Date("2024-03-31"),
+          // periodFrom: datas.periodFrom,
+          // periodTo: datas.periodTo,
           // scSubSchemeType:datas.  Need to get from api
         }));
 
@@ -1846,6 +1848,7 @@ function ApplicationFormEdit() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>
@@ -1869,6 +1872,7 @@ function ApplicationFormEdit() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>

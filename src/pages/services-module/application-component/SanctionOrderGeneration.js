@@ -59,6 +59,34 @@ const SanctionOrderGeneration = () => {
     }
   };
 
+  // const handleListInput = (e, i) => {
+  //   // debugger;
+  //   let { name, value } = e.target;
+  //   const updatedRow = { ...row, [name]: value };
+  //   const updatedDataList = hdTicketDataList.map((rowData) =>
+  //     rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
+  //   );
+  //   setHdTicketDataList(updatedDataList);
+  // };
+
+  // to get Document List
+  const [documentListData, setDocumentListData] = useState([]);
+
+  const getDocumentList = () => {
+    const response = api
+      .get(baseURLMasterData + `documentMaster/get-all`)
+      .then((response) => {
+        setDocumentListData(response.data.content.documentMaster);
+      })
+      .catch((err) => {
+        setDocumentListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getDocumentList();
+  }, []);
+
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -71,15 +99,27 @@ const SanctionOrderGeneration = () => {
     setHelpDeskFaq({ ...helpDeskFaq, [name]: value });
   };
 
-  const handleListInput = (e, row) => {
+  const [docIds, setDocIds] = useState([]);
+  const handleListInput = (e, i) => {
     // debugger;
     let { name, value } = e.target;
-    // const updatedRow = { ...row, [name]: value };
-    // const updatedDataList = hdTicketDataList.map((rowData) =>
-    //   rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
-    // );
-    // setHdTicketDataList(updatedDataList);
+    // letDocIds((prev) => [...prev, { [name]: value }]);
+
+    setDocIds((prev) => {
+      const existingIndex = prev.findIndex((item) => item[name] !== undefined);
+      if (existingIndex !== -1) {
+        // Update the existing entry
+        const updatedDocIds = [...prev];
+        updatedDocIds[existingIndex] = { [name]: value };
+        return updatedDocIds;
+      } else {
+        // Add a new entry
+        return [...prev, { [name]: value }];
+      }
+    });
   };
+
+  console.log("Oh man!!!", docIds);
 
   const handleInputs = (e) => {
     let { name, value } = e.target;
@@ -132,12 +172,16 @@ const SanctionOrderGeneration = () => {
   };
 
   // Upload Image to S3 Bucket
-  const handleAttachFileUpload = async (applicationId) => {
+  const handleAttachFileUpload = async (applicationId, position, workId) => {
     // const parameters = `hdTicketId=${hdTicketid}`;
+    // console.log("Checking", applicationId, position);
+    const docTypeId = docIds.find((docId) => docId.hasOwnProperty(position))[
+      position
+    ];
     const param = {
       applicationFormId: applicationId,
       // TODO need to get documentId from API
-      documentTypeId: 60,
+      documentTypeId: docTypeId,
     };
     try {
       const formData = new FormData();
@@ -154,8 +198,8 @@ const SanctionOrderGeneration = () => {
         }
       );
       console.log("File upload response:", response.data);
-      if(response.status === 200){
-        generateWorkOrder();
+      if (response.status === 200) {
+        generateWorkOrder(workId);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -213,8 +257,8 @@ const SanctionOrderGeneration = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
-        { params: { userId: 113, stepId: 5 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 5 } }
+        // { params: { userId: 113, stepId: 5 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -303,7 +347,12 @@ const SanctionOrderGeneration = () => {
             .then((response) => {
               if (response.data.content.documentResponses.length > 0) {
                 //TODO  Need to Change here after response
+                const documents = response.data.content.documentResponses;
+                documents.forEach((data) => {
+                  getDocumentFile(data.uploadPath, data.documentMasterName);
+                });
               } else {
+                //TODO  Need to comment below code after test
                 const resData = {
                   content: {
                     documentResponses: [
@@ -447,12 +496,12 @@ const SanctionOrderGeneration = () => {
     // setAllApplicationIds([]);
   };
 
-  const generateWorkOrder = () => {
+  const generateWorkOrder = (wid) => {
     api
       .post(
         baseURLDBT + `service/updateCompletionStatusFromWeb`,
         {},
-        { params: { id: workOrderId } }
+        { params: { id: wid } }
       )
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
@@ -461,7 +510,7 @@ const SanctionOrderGeneration = () => {
           .post(
             baseURLDBT + `service/triggerWorkFlowNextStep`,
             {},
-            { params: { id: workOrderId } }
+            { params: { id: wid } }
           )
           .then((response) => {
             // setUserListData(response.data.content.userMaster);
@@ -584,6 +633,38 @@ const SanctionOrderGeneration = () => {
     },
 
     {
+      name: "Select Document Type",
+      cell: (row, i) => (
+        //   Button style
+        <div className="text-start w-100">
+          <Form.Group className="form-group">
+            <div className="form-control-wrap">
+              <Form.Select
+                name={i}
+                value={row.hdStatusId}
+                onChange={(e) => handleListInput(e, i)}
+                // onBlur={() => handleInputs}
+              >
+                <option value="">Select Status</option>
+                {documentListData.map((list) => (
+                  <option
+                    key={list.documentMasterId}
+                    value={list.documentMasterId}
+                  >
+                    {list.documentMasterName}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+          </Form.Group>
+        </div>
+        // <span>This step to be done through mobile app</span>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+
+    {
       name: "Upload Signed Copy",
       cell: (row) => (
         //   Button style
@@ -625,13 +706,19 @@ const SanctionOrderGeneration = () => {
     },
     {
       name: "action",
-      cell: (row) => (
+      cell: (row, i) => (
         //   Button style
         <div className="text-start w-100">
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleAttachFileUpload(row.applicationDocumentId)}
+            onClick={() =>
+              handleAttachFileUpload(
+                row.applicationDocumentId,
+                i,
+                row.workFlowId
+              )
+            }
             // disabled={data.userMasterId ? false : true}
           >
             Upload

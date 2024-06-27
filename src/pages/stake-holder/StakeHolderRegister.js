@@ -58,9 +58,61 @@ function StakeHolderRegister() {
   });
 
   console.log("checkData", data);
+  
+  const [searchValidated, setSearchValidated] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const clear = (event) => {
+    setDisable(false);
+    setData({
+      farmerNumber: "",
+      fruitsId: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      dob: null,
+      genderId: "",
+      casteId: "",
+      differentlyAbled: "",
+      email: "",
+      mobileNumber: "",
+      aadhaarNumber: "",
+      epicNumber: "",
+      rationCardNumber: "",
+      totalLandHolding: "",
+      passbookNumber: "",
+      landCategoryId: "",
+      educationId: "",
+      representativeId: "",
+      khazaneRecipientId: "",
+      photoPath: "",
+      farmerTypeId: "",
+      minority: "",
+      rdNumber: "",
+      casteStatus: "",
+      genderStatus: "",
+      fatherNameKan: "",
+      fatherName: "",
+      nameKan: "",
+      tscMasterId: "",
+    });
+
+    setFamilyMembersList([]);
+    setFarmerLandList([]);
+    setFarmerAddressList([]);
+    setBank({
+      accountImagePath: "",
+      farmerId: "",
+      farmerBankName: "",
+      farmerBankAccountNumber: "",
+      farmerBankBranchName: "",
+      farmerBankIfscCode: "",
+    });
+    setSearchValidated(false);
+  };
 
   //  console.log("data",data.photoPath);
-  const [searchValidated, setSearchValidated] = useState(false);
+  // const [disable, setDisable] = useState(false);
+  
 
   const search = (event) => {
     setData({
@@ -116,6 +168,8 @@ function StakeHolderRegister() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
+      } else {
+        setDisable(true);
       }
       api
         .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
@@ -1010,6 +1064,30 @@ function StakeHolderRegister() {
         bank.farmerBankIfscCode.length < 11 ||
         bank.farmerBankIfscCode.length > 11
       ) {
+        return;
+      }
+
+      if (farmerAddressList && farmerAddressList.length > 0) {
+        if (
+          !farmerAddressList[0].stateId &&
+          !farmerAddressList[0].districtId &&
+          !farmerAddressList[0].talukId &&
+          !farmerAddressList[0].hobliId &&
+          !farmerAddressList[0].villageId
+        ) {
+          Swal.fire({
+            icon: "warning",
+            title: "Edit or Add Farmer First Record!!!",
+          });
+          return;
+        }
+      }
+
+      if (farmerLandList && farmerLandList.length <= 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Land Details is Mandatory!!!",
+        });
         return;
       }
 
@@ -2044,6 +2122,7 @@ function StakeHolderRegister() {
                         type="text"
                         maxLength="16"
                         placeholder={t("Enter FRUITS ID")}
+                        readOnly={disable}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
@@ -2053,6 +2132,11 @@ function StakeHolderRegister() {
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
                         {t("search")}
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
                       </Button>
                     </Col>
                     <Col sm={2}>
@@ -2505,7 +2589,8 @@ function StakeHolderRegister() {
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                              data.tscMasterId === undefined ||
+                              data.tscMasterId === "0"
                             }
                           >
                             <option value="">Select TSC</option>
@@ -2523,7 +2608,7 @@ function StakeHolderRegister() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    {/* </Col> */}
+                      {/* </Col> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rid">

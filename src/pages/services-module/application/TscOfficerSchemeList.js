@@ -19,7 +19,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function DrawingOfficerList() {
+function TscOfficerSchemeList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -44,81 +44,6 @@ function DrawingOfficerList() {
     districtId: 0,
     talukId: 0,
   });
-
-  const [searchData, setSearchData] = useState({
-    text: "",
-    type: 0,
-  });
-
-  // Search
-  const search = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/getTscListForDBTPush`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            displayAllRecords: true,
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-      })
-      .catch((err) => {
-        setListData([]);
-      });
-  };
-
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        } else {
-          setTalukListData([]);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (addressDetails.districtId) {
-      getTalukList(addressDetails.districtId);
-    }
-  }, [addressDetails.districtId]);
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -159,10 +84,89 @@ function DrawingOfficerList() {
   //         // saveError();
   //       });
   //   };
+
+  // Search
+  const search = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/getTscListForDBTPush`,
+        {},
+        {
+          params: {
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            // userMasterId: 113,
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: false,
+          },
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
   const [landData, setLandData] = useState({
     landId: "",
     talukId: "",
   });
+
+  const handleInputsaddress = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setAddressDetails({ ...addressDetails, [name]: value });
+  };
+
+  const handleInputsSearch = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
+  };
+
+  const [districtId, setDistrictId] = useState(0);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (districtId) {
+      getTalukList(districtId);
+    }
+  }, [districtId]);
+
+  useEffect(() => {
+    api
+      .get(
+        baseURLMasterData +
+          `userMaster/get/${localStorage.getItem("userMasterId")}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setDistrictId(response.data.content.districtId);
+        }
+      })
+      .catch((err) => {
+        setDistrictId(0);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  }, []);
 
   const [data, setData] = useState({
     financialYearMasterId: "",
@@ -336,8 +340,7 @@ function DrawingOfficerList() {
   };
 
   const [disabledIds, setDisabledIds] = useState([]);
-  // const [showDisable, setShowDisable] = useState(false);
-  const handlePush = (id,bid,fid) => {
+  const handlePush = (id) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
         if (list.scApplicationFormId === id) {
@@ -361,10 +364,8 @@ function DrawingOfficerList() {
           setDisabledIds((prevDisabledIds) =>
             prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
           );
-          // disabledIds.filter((item)=>item !== id);
-          // setShowDisable(false);
         } else {
-          pushedSuccess(bid,fid);
+          saveSuccess();
           getList();
         }
       })
@@ -373,7 +374,6 @@ function DrawingOfficerList() {
         setDisabledIds((prevDisabledIds) =>
           prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
         );
-        // setShowDisable(false);
       });
     setValidated(true);
   };
@@ -475,7 +475,10 @@ function DrawingOfficerList() {
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
+            // userMasterId: 113,
+            displayAllRecords: false,
+            // talukId: 17,
+            // districtId: 38,
           },
         }
       )
@@ -665,12 +668,10 @@ function DrawingOfficerList() {
     });
   };
 
-  // const [searchData, setSearchData] = useState({
-  //   year1: "",
-  //   year2: "",
-  //   type: 1,
-  //   searchText: "",
-  // });
+  const [searchData, setSearchData] = useState({
+    text: "",
+    type: 0,
+  });
 
   console.log(searchData);
 
@@ -687,18 +688,6 @@ function DrawingOfficerList() {
       const [fromDate, toDate] = year.split("-");
       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
     }
-  };
-
-  const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
-
-  const handleInputsSearch = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setSearchData({ ...searchData, [name]: value });
   };
 
   const handleSearchInputs = (e) => {
@@ -743,14 +732,6 @@ function DrawingOfficerList() {
       icon: "success",
       title: "Pushed successfully",
       text: message,
-    });
-  };
-
-  const pushedSuccess = (b,f) => {
-    Swal.fire({
-      icon: "success",
-      title: "Pushed successfully",
-      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
     });
   };
   const saveError = (message) => {
@@ -937,24 +918,10 @@ function DrawingOfficerList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    // {
-    //   name: "Application Status",
-    //   selector: (row) => row.applicationStatus,
-    //   cell: (row) => <span>{row.applicationStatus}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-      name: "Sanction Number",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Actual Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => <span>{row.applicationStatus}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1009,8 +976,8 @@ function DrawingOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
             className="ms-1"
+            onClick={() => handlePush(row.scApplicationFormId)}
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push
@@ -1023,11 +990,11 @@ function DrawingOfficerList() {
   ];
 
   return (
-    <Layout title="Drawing Officer List">
+    <Layout title="All Scheme TSC Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Drawing Officer List</Block.Title>
+            <Block.Title tag="h2">All Scheme TSC Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1365,7 +1332,7 @@ function DrawingOfficerList() {
                 <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
-                <Col sm={2}>
+                <Col sm={3}>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="type"
@@ -1394,7 +1361,7 @@ function DrawingOfficerList() {
                   </Form.Control.Feedback>
                 </Col>
 
-                <Form.Label column sm={1}>
+                {/* <Form.Label column sm={1}>
                   District
                 </Form.Label>
                 <Col sm={2}>
@@ -1413,7 +1380,7 @@ function DrawingOfficerList() {
                       ))}
                     </Form.Select>
                   </div>
-                </Col>
+                </Col> */}
 
                 <Form.Label column sm={1}>
                   Taluk
@@ -1436,7 +1403,7 @@ function DrawingOfficerList() {
                   </div>
                 </Col>
 
-                <Col sm={1}>
+                <Col sm={2}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
                   </Button>
@@ -1529,8 +1496,8 @@ function DrawingOfficerList() {
                       <td>{viewDetailsData.initialAmount}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Beneficiary Id:</td>
-                      <td>{viewDetailsData.beneficiaryId}</td>
+                      <td style={styles.ctstyle}> ARN Number:</td>
+                      <td>{viewDetailsData.arn}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Financial Year:</td>
@@ -1539,14 +1506,6 @@ function DrawingOfficerList() {
                     <tr>
                       <td style={styles.ctstyle}> Category Name:</td>
                       <td>{viewDetailsData.categoryName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Component Name:</td>
-                      <td>{viewDetailsData.scComponentName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Remarks:</td>
-                      <td>{viewDetailsData.remarks}</td>
                     </tr>
                     {/* <tr>
                       <td style={styles.ctstyle}> State Name in Kannada:</td>
@@ -1627,4 +1586,4 @@ function DrawingOfficerList() {
   );
 }
 
-export default DrawingOfficerList;
+export default TscOfficerSchemeList;

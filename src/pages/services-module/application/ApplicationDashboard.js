@@ -92,8 +92,8 @@ function ApplicationDashboard() {
       .post(
         baseURLDBT + `service/getUserDashboardCount`,
         {},
-        // { params: { id: localStorage.getItem("userMasterId") } }
-        { params: { id: 113 } }
+        { params: { id: localStorage.getItem("userMasterId") } }
+        // { params: { id: 30 } }
       )
       .then((response) => {
         setDashboardList(response.data.content);
@@ -233,17 +233,17 @@ function ApplicationDashboard() {
   //   ];
 
   const goto = (name) => {
-    if (name === "pre-inspection") {
+    if (name === "Pre Inspection") {
       navigate(`/seriui/application-dashboard-list/1`);
-    } else if (name === "work-order-issue") {
+    } else if (name === "Work Order Issue") {
       navigate(`/seriui/application-dashboard-list/2`);
-    } else if (name === "work-order-complete") {
+    } else if (name === "Work Order Complete") {
       navigate(`/seriui/application-dashboard-list/3`);
-    } else if (name === "inspection") {
+    } else if (name === "Inspection") {
       navigate(`/seriui/application-dashboard-list/4`);
-    } else if (name === "sanction_order_generation") {
+    } else if (name === "Sanction Order Generation") {
       navigate(`/seriui/application-dashboard-list/5`);
-    } else if (name === "sanction-order-verification") {
+    } else if (name === "Sanction Order Verification") {
       navigate(`/seriui/application-dashboard-list/6`);
     } else {
       navigate(`/seriui/application-dashboard-list/7`);

@@ -683,6 +683,9 @@ function DbtApplication() {
       farmerId: "",
       financialYearMasterId: "",
       fruitsId: "",
+      periodFrom: new Date("2023-04-01"),
+      periodTo: new Date("2024-03-31"),
+      beneficiaryId: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -1695,7 +1698,7 @@ function DbtApplication() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                required 
+                                required
                                 isInvalid={
                                   data.scHeadAccountId === undefined ||
                                   data.scHeadAccountId === "0"
@@ -1830,6 +1833,7 @@ function DbtApplication() {
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
+                                readOnly
                                 required
                               />
                             </div>
@@ -1856,6 +1860,7 @@ function DbtApplication() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>

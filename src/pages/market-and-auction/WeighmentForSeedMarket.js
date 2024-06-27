@@ -19,7 +19,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function Weighment() {
+function WeighmentForSeedMarket() {
   const [weighStream, setWeighStream] = useState("");
   const [lastWeight, setLastWeight] = useState("0");
   const [totalWeight, setTotalWeight] = useState(0);
@@ -53,9 +53,17 @@ function Weighment() {
     }
   };
 
+  const handleDateChange = (date) => {
+    setData((prev) => ({ ...prev, auctionDate: date }));
+  };
+  useEffect(() => {
+    handleDateChange(new Date());
+  }, []);
+
   const [data, setData] = useState({
     allottedLotId: "",
     noOfCrates: "0",
+    auctionDate: "",
   });
 
   console.log("Initial Counter:", counter);
@@ -64,11 +72,11 @@ function Weighment() {
   const [weigh, setWeigh] = useState({
     date: new Date(),
     bidAmount: "0",
-    reelerCurrentBalance: 0,
+    // reelerCurrentBalance: 0,
     farmerFirstName: "",
     farmerNumber: "",
-    reelerName: "",
-    reelerLicense: "",
+    // reelerName: "",
+    // reelerLicense: "",
   });
 
   let name, value;
@@ -147,17 +155,17 @@ function Weighment() {
       allottedLotId: allottedLotId,
     };
     api
-      .post(baseURL1 + `auction/weigment/getUpdateWeighmentByLotId`, sendData)
+      .post(baseURL1 + `auction/weigment/getUpdateWeighmentByLotIdForSeedMarket`, sendData)
       .then((response) => {
         // debugger;
         console.log(response.data.content);
         setWeigh((prev) => {
           return { ...prev, ...response.data.content };
         });
-        setPricePerKg(response.data.content.bidAmount);
+        // setPricePerKg(response.data.content.bidAmount);
         setTareWeight(response.data.content.tareWeight);
 
-        console.log(response);
+        console.log(response); 
       })
       .catch((err) => {
         if (
@@ -185,7 +193,7 @@ function Weighment() {
       noOfCrates: noOfCrates,
     };
     api
-      .post(baseURL1 + `auction/weigment/canContinuetoWeighment`, sendData)
+      .post(baseURL1 + `auction/weigment/canContinuetoWeighmentForSeedMarket`, sendData)
       .then((response) => {
         // debugger;
         if (response.data.errorCode === 0 && response.data.content === null) {
@@ -224,11 +232,11 @@ function Weighment() {
         setWeigh({
           date: new Date(),
           bidAmount: "0",
-          reelerCurrentBalance: 0,
+          // reelerCurrentBalance: 0,
           farmerFirstName: "",
           farmerNumber: "",
-          reelerName: "",
-          reelerLicense: "",
+          // reelerName: "",
+          // reelerLicense: "",
         });
         setTableWeightData([]);
         setTotalNetPrice(0);
@@ -254,11 +262,11 @@ function Weighment() {
         setWeigh({
           date: new Date(),
           bidAmount: "0",
-          reelerCurrentBalance: 0,
+          // reelerCurrentBalance: 0,
           farmerFirstName: "",
           farmerNumber: "",
-          reelerName: "",
-          reelerLicense: "",
+          // reelerName: "",
+          // reelerLicense: "",
         });
         setTableWeightData([]);
         setTotalNetPrice(0);
@@ -275,50 +283,21 @@ function Weighment() {
     Swal.fire({
       icon: "warning",
       title: "Weighment Completed",
-      text: `Total amount Debited is ${amount} for Lot ${lot}`,
+      // text: `Total amount Debited is ${amount} for Lot ${lot}`,
     }).then((result) => {
-      if (result.value) {
-        if (result.isConfirmed) {
-          setData({
-            allottedLotId: "",
-            noOfCrates: "0",
-          });
-          setWeigh({
-            date: new Date(),
-            bidAmount: "0",
-            reelerCurrentBalance: 0,
-            farmerFirstName: "",
-            farmerNumber: "",
-            reelerName: "",
-            reelerLicense: "",
-          });
-          setTableWeightData([]);
-          setTotalNetPrice(0);
-          setTotalWeight(0);
-          setTotalNetWeight(0);
-          setTareWeight(0);
-          setCounter(0);
-          setLastWeight("0");
-          // setLotNumber("");
-          if (isTriplet) {
-            printTriplet();
-          } else {
-            console.log("In Market Master Change setting");
-          }
-        }
-      } else {
+      if (result.isConfirmed) {
         setData({
           allottedLotId: "",
           noOfCrates: "0",
         });
         setWeigh({
           date: new Date(),
-          bidAmount: "0",
-          reelerCurrentBalance: 0,
+          // bidAmount: "0",
+          // reelerCurrentBalance: 0,
           farmerFirstName: "",
           farmerNumber: "",
-          reelerName: "",
-          reelerLicense: "",
+          // reelerName: "",
+          // reelerLicense: "",
         });
         setTableWeightData([]);
         setTotalNetPrice(0);
@@ -389,15 +368,16 @@ function Weighment() {
       allottedLotId: data.allottedLotId,
       weighmentList: tableWeightData,
       userName: localStorage.getItem("username"),
+      auctionDate:data.auctionDate,
     };
     api
-      .post(baseURL1 + `auction/weigment/completeWeighmentForLot`, submitData)
+      .post(baseURL1 + `auction/weigment/completeWeighmentForLotSeedMarket`, submitData)
       .then((response) => {
         // debugger;
         console.log(response.data.content);
         if (response.data.content) {
           submitSuccess(
-            response.data.content.totalAmountDebited,
+            // response.data.content.totalAmountDebited,
             response.data.content.allottedLotId
           );
           speak({ text: `Weighment Completed Successfully` });
@@ -889,26 +869,26 @@ function Weighment() {
   };
 
   const deleteRow = (indexToDelete) => {
-    let weightAmount;
+    // let weightAmount;
     let weightNet;
     let weightGross;
     speak({ text: `Crate number ${indexToDelete + 1}  is deleted` });
     const updatedData = tableWeightData.filter((data, index) => {
       if (index === indexToDelete) {
-        weightAmount = data.netWeight * weigh.bidAmount;
+        // weightAmount = data.netWeight * weigh.bidAmount;
         weightNet = data.netWeight;
         weightGross = data.grossWeight;
       }
       return index !== indexToDelete;
     });
 
-    console.log("wa", weightAmount);
+    // console.log("wa", weightAmount);
     console.log("wn", weightNet);
     console.log("wg", weightGross);
     // debugger;
     setCounter((prev) => prev - 1);
     setTableWeightData(updatedData);
-    setTotalNetPrice((prev) => prev - weightAmount);
+    // setTotalNetPrice((prev) => prev - weightAmount);
     setTotalNetWeight((prev) => prev - weightNet);
     setTotalWeight((prev) => prev - weightGross);
   };
@@ -980,8 +960,6 @@ function Weighment() {
       title: "Saved successfully",
 
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/seriui/caste-list");
     });
   };
   const saveError = () => {
@@ -1049,7 +1027,7 @@ function Weighment() {
                             <tr>
                               <th style={styles.top}>No of Crate(s)</th>
                               <th style={styles.top}>Lot No</th>
-                              <th style={styles.top}>Bid Price / Kg</th>
+                              {/* <th style={styles.top}>Bid Price / Kg</th> */}
                             </tr>
                           </thead>
                           <tbody>
@@ -1089,26 +1067,36 @@ function Weighment() {
                                 />
                               </td>
 
-                              <td style={styles.bottom}>
+                              {/* <td style={styles.bottom}>
                                 {" "}
                                 &#8377; {weigh.bidAmount}
-                              </td>
+                              </td> */}
 
                               {/* <td style={styles.bottom}>2</td> */}
                             </tr>
                           </tbody>
                         </table>
+
+                        <Form.Label column sm={1}> 
+                        Date
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            selected={data.auctionDate}
+                            onChange={handleDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
+                          />
+                        </div>
+                      </Col>
                       </Col>
 
-                      <Col lg="3" style={{ padding: 0 }}>
+                      {/* <Col lg="3" style={{ padding: 0 }}>
                         <table className="table small table-bordered marginbottom0">
-                          {/* <thead>
-                          <tr>
-                            <th style={styles.top}>No of Box(es)</th>
-                            <th style={styles.top}>Lot No</th>
-                            <th style={styles.top}>Price</th>
-                          </tr>
-                        </thead> */}
+                         
                           <tbody>
                             <tr>
                               <td
@@ -1120,7 +1108,6 @@ function Weighment() {
                                   textAlign: "center",
                                 }}
                               >
-                                {/* {weigh.date.toDateString()} */}
                                 {weigh.date
                                   .getDate()
                                   .toString()
@@ -1151,7 +1138,6 @@ function Weighment() {
                                 }}
                               >
                                 {" "}
-                                {/* &#8377; {totalNetPrice } */}
                                 Balance: &#8377;{" "}
                                 {Math.round(
                                   weigh.reelerCurrentBalance -
@@ -1171,7 +1157,6 @@ function Weighment() {
                                 }}
                               >
                                 {" "}
-                                {/* &#8377; {totalNetPrice } */}
                                 &#8377;{" "}
                                 {Number.isInteger(Number(totalNetPrice))
                                   ? Number(totalNetPrice).toFixed(0)
@@ -1180,7 +1165,7 @@ function Weighment() {
                             </tr>
                           </tbody>
                         </table>
-                      </Col>
+                      </Col> */}
                       <Col lg="3" style={{ padding: "0 8px 0 0" }}>
                         <table className="table small table-bordered marginbottom0">
                           <tbody>
@@ -1210,13 +1195,12 @@ function Weighment() {
                                 {/* RMG3333-RAM (SAK 3333) */}
                               </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                               <td style={styles.smallwhiteback}>
                                 Reeler Details:{weigh.reelerName}{" "}
                                 {weigh.reelerLicense}
-                                {/* 353535-MARUTI */}
                               </td>
-                            </tr>
+                            </tr> */}
                             <tr>
                               <td
                                 style={{
@@ -1235,12 +1219,12 @@ function Weighment() {
                                 )}
                               </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                               <td style={styles.xxsmallcolor}>
                                 Reeler Wallet Amount: &#8377;{" "}
                                 {Math.round(weigh.reelerCurrentBalance)}
                               </td>
-                            </tr>
+                            </tr> */}
                             <tr>
                               <td>
                                 <Button
@@ -1386,6 +1370,21 @@ function Weighment() {
                 <Card>
                   <Card.Body>
                     <Row className="g-3 ">
+                    {/* <Form.Label>
+                        Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            selected={weigh.date}
+                            onChange={handleDateChange}
+                            maxDate={new Date()}
+                            className="form-control"
+                          />
+                        </div>
+                      </Col> */}
                       <Col lg="8">
                         <table className="table smallwhiteback table-bordered">
                           <tbody>
@@ -1464,4 +1463,4 @@ function Weighment() {
   );
 }
 
-export default Weighment;
+export default WeighmentForSeedMarket;

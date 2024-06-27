@@ -339,7 +339,15 @@ function TscOfficerList() {
     }
   };
 
-  const handlePush = (id) => {
+  const [disabledIds, setDisabledIds] = useState([]);
+  const handlePush = (id,bid,fid) => {
+    if (listData && listData.length > 0) {
+      listData.forEach((list) => {
+        if (list.scApplicationFormId === id) {
+          setDisabledIds((prevState) => [...prevState, id]);
+        }
+      });
+    }
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
@@ -353,13 +361,19 @@ function TscOfficerList() {
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
+          setDisabledIds((prevDisabledIds) =>
+            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+          );
         } else {
-          saveSuccess();
+          pushedSuccess(bid,fid);
           getList();
         }
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
+        setDisabledIds((prevDisabledIds) =>
+          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+        );
       });
     setValidated(true);
   };
@@ -720,6 +734,15 @@ function TscOfficerList() {
       text: message,
     });
   };
+
+  const pushedSuccess = (b,f) => {
+    Swal.fire({
+      icon: "success",
+      title: "Pushed successfully",
+      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    });
+  };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -946,13 +969,6 @@ function TscOfficerList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-          >
-            Push
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
             onClick={() => viewDetails(row.scApplicationFormId)}
             className="ms-1"
           >
@@ -965,6 +981,15 @@ function TscOfficerList() {
             className="ms-1"
           >
             Reject
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-1"
+            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
+            disabled={disabledIds.includes(row.scApplicationFormId)}
+          >
+            Push
           </Button>
         </>
       ),

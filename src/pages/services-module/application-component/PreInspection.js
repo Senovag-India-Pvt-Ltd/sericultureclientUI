@@ -76,8 +76,8 @@ const PreInspection = () => {
       .post(
         baseURLDBT + `service/getInProgressTaskListByUserIdAndStepId`,
         {},
-        { params: { userId: 114, stepId: 1 } }
-        // { params: { userId: localStorage.getItem("userMasterId"), stepId: 1 } }
+        // { params: { userId: 27, stepId: 1 } }
+        { params: { userId: localStorage.getItem("userMasterId"), stepId: 1 } }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -134,6 +134,10 @@ const PreInspection = () => {
       .post(baseURLDBT + `service/assignInspection`, postData)
       .then((response) => {
         // setUserListData(response.data.content.userMaster);
+        Swal.fire({
+          icon: "success",
+          title: "Task Assigned for Inspection",
+        });
         getList();
       })
       .catch((err) => {
