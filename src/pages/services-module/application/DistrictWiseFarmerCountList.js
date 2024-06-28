@@ -15,6 +15,8 @@ import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+
 
 function DistrictWiseFarmerCountList() {
   const [listData, setListData] = useState({});
@@ -25,19 +27,42 @@ function DistrictWiseFarmerCountList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
 
+  const [isActive, setIsActive] = useState(false);
+
+  // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
-  const getDistrictList = () => {
-    api
-      .get(baseURLFarmer + `farmer/districtWiseFarmerCount`)
+  const getList = () => {
+    const response = api
+      .get(baseURL + `district/get-all`)
       .then((response) => {
-        if (response.data.content.districtName) {
-          setDistrictListData(response.data.content.districtName);
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
         }
       })
       .catch((err) => {
         setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+
+  // to get District
+  const [districtFarmerListData, setDistrictFarmerListData] = useState([]);
+
+  const getDistrictList = () => {
+    const response = api
+      .post(baseURLFarmer + `farmer/districtWiseFarmerCount`)
+      .then((response) => {
+        if (response.data.content) {
+          setDistrictFarmerListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setDistrictFarmerListData([]);
       });
   };
 
@@ -45,57 +70,31 @@ function DistrictWiseFarmerCountList() {
     getDistrictList();
   }, []);
 
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
 
   const getTalukList = (districtId) => {
+    setLoading(true);
     api
-      .post(baseURLFarmer + `farmer/talukWise`,{districtId})
+      .post(baseURLFarmer + `farmer/talukWise`, {districtId })
       .then((response) => {
         if (response.data.content) {
-          setTalukListData(response.data.content);
+          setListData(response.data.content);
+          // setTotalRows(response.data.totalCount); // Assuming total count is returned
         } else {
-          setTalukListData([]);
+          setListData([]);
+          setTotalRows(0);
         }
+        setIsActive(true); // Show DataTable when data is fetched successfully
       })
       .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
+        setListData([]);
+        setIsActive(false); // Hide DataTable on error
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
-  // useEffect(() => {
-  //   if (addressDetails.districtId) {
-  //     getTalukList(addressDetails.districtId);
-  //   }
-  // }, [addressDetails.districtId]);
-
-  // const [landData, setLandData] = useState({
-  //   landId: "",
-  //   talukId: "",
-  // });
-
-  // Search
-  const [isActive, setIsActive] = useState(false);
-  const display = () => {
-    const districtId = data.districtId;
-    const response = api
-      .get(baseURLFarmer + `farmer/get-by-district-id/${districtId}`)
-      .then((response) => {
-        setMarket(response.data.content);
-        setListData(response.data.content.farmer);
-        setLoading(false);
-        // setIsActive(true);
-      })
-      .catch((err) => {
-        setMarket({});
-        setLoading(false);
-      });
-    setIsActive((current) => !current);
-    // setIsActive(false);
-    // });
-  };
-
+  
   const [data, setData] = useState({
     districtId: "",
   });
@@ -106,24 +105,25 @@ function DistrictWiseFarmerCountList() {
     setData({ ...data, [name]: value });
   };
 
-  const getList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURL + `farmer/list-with-join`, _params)
-      .then((response) => {
-        setListData(response.data.content.farmer);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setListData({});
-        setLoading(false);
-      });
-  };
+  // const getList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURL + `farmer/list-with-join`, _params)
+  
+  //     .then((response) => {
+  //       setListData(response.data.content.farmer);
+  //       setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setListData({});
+  //       setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    getList();
-  }, [page]);
+  // useEffect(() => {
+  //   getList();
+  // }, [page]);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -156,7 +156,7 @@ function DistrictWiseFarmerCountList() {
           .delete(baseURL + `farmer/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
-            getList();
+            // getList();
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
@@ -223,36 +223,42 @@ function DistrictWiseFarmerCountList() {
     },
   };
 
-  const RaceDataColumns = [
+  const DistrictDataColumns = [
+    // {
+    //   name: "action",
+    //   cell: (row) => (
+    //       // Button style
+    //     <div className="text-start w-100">
+         
+    //     </div>
+    //    ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
+    
+    {
+      name: "Farmer Count",
+      selector: (row) => row.farmerCount,
+      cell: (row) => <span>{row.farmerCount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District Name",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+  const TalukDataColumns = [
     {
       name: "action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.farmerId)}
-          >
-            View
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.farmerId)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.farmerId)}
-            className="ms-2"
-          >
-            Delete
-          </Button>
+         
         </div>
       ),
       sortable: false,
@@ -281,23 +287,23 @@ function DistrictWiseFarmerCountList() {
     },
   ];
 
-  // to get Market
-  const [marketListData, setMarketListData] = useState([]);
+  // // to get Market
+  // const [marketListData, setMarketListData] = useState([]);
 
-  const getMarketList = () => {
-    const response = api
-      .get(baseURL + `marketMaster/get-all`)
-      .then((response) => {
-        setMarketListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketListData([]);
-      });
-  };
+  // const getMarketList = () => {
+  //   const response = api
+  //     .get(baseURL + `marketMaster/get-all`)
+  //     .then((response) => {
+  //       setMarketListData(response.data.content.marketMaster);
+  //     })
+  //     .catch((err) => {
+  //       setMarketListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getMarketList();
-  }, []);
+  // useEffect(() => {
+  //   getMarketList();
+  // }, []);
 
   return (
     <Layout title="District Wise Farmer Count List">
@@ -337,7 +343,7 @@ function DistrictWiseFarmerCountList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Market
+                  District
                 </Form.Label>
                 <Col sm={3}>
                   {/* <Form.Label>Market</Form.Label> */}
@@ -353,7 +359,7 @@ function DistrictWiseFarmerCountList() {
                         data.districtId === "0"
                       }
                     >
-                      <option value="">Select Market</option>
+                      <option value="">Select District</option>
                       {districtListData.map((list) => (
                         <option
                           key={list.districtId}
@@ -366,19 +372,77 @@ function DistrictWiseFarmerCountList() {
                   </div>
                 </Col>
 
+                {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Taluk<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="taluk"
+                            value={data.taluk}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.taluk === undefined || data.taluk === "0"
+                            }
+                          >
+                            <option value="">Select Taluk</option>
+                            {talukListData && talukListData.length
+                              ? talukListData.map((list) => (
+                                  <option
+                                    key={list.talukId}
+                                    value={list.talukId}
+                                  >
+                                    {list.talukName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Taluk Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col> */}
+
                 <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={display}>
-                    Search
-                  </Button>
-                </Col>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => getTalukList(data.districtId)}
+                >
+                  Search
+                </Button>
+              </Col>
               </Form.Group>
             </Col>
           </Row>
 
+          
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={DistrictDataColumns}
+              data={districtFarmerListData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+
           <div className={isActive ? "" : "d-none"}>
             <DataTable
               tableClassName="data-table-head-light table-responsive"
-              columns={RaceDataColumns}
+              columns={TalukDataColumns}
               data={listData}
               highlightOnHover
               pagination

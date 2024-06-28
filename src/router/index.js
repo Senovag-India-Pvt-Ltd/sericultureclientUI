@@ -2919,6 +2919,10 @@ function Router() {
             />
             <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
+            <Route path="weighment-for-seed-market" element={<WeighmentForSeedMarket />} />
+            <Route path="lot-groupage" element={<LotGroupage />} />
+            <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
+
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route
               path="accept-former-auction"
