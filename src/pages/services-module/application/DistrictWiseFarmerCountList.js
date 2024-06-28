@@ -231,7 +231,7 @@ function DistrictWiseFarmerCountList() {
     //   hide: "md",
     // },
 
-    
+
     {
       name: "District Name",
       selector: (row) => row.districtName,
@@ -265,7 +265,7 @@ function DistrictWiseFarmerCountList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    
+
     {
       name: "Taluk Name",
       selector: (row) => row.talukName,
@@ -411,7 +411,7 @@ function DistrictWiseFarmerCountList() {
             </Col>
           </Row>
 
-          
+
         </Card>
         {isActive ? (
             <Row lg={12} className="d-flex justify-content-center">
@@ -435,7 +435,7 @@ function DistrictWiseFarmerCountList() {
             />
               </Col>
             </Row>
-            
+
           ) : (
             <Row lg={12} className="d-flex justify-content-center">
             <Col lg={8} className="mt-2">
