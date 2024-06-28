@@ -17,7 +17,6 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-
 function DistrictWiseFarmerCountList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
@@ -25,7 +24,6 @@ function DistrictWiseFarmerCountList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-
 
   const [isActive, setIsActive] = useState(false);
 
@@ -49,7 +47,6 @@ function DistrictWiseFarmerCountList() {
     getList();
   }, []);
 
-
   // to get District
   const [districtFarmerListData, setDistrictFarmerListData] = useState([]);
 
@@ -70,11 +67,10 @@ function DistrictWiseFarmerCountList() {
     getDistrictList();
   }, []);
 
-
   const getTalukList = (districtId) => {
     setLoading(true);
     api
-      .post(baseURLFarmer + `farmer/talukWise`, {districtId })
+      .post(baseURLFarmer + `farmer/talukWise`, { districtId })
       .then((response) => {
         if (response.data.content) {
           setListData(response.data.content);
@@ -94,7 +90,6 @@ function DistrictWiseFarmerCountList() {
       });
   };
 
-  
   const [data, setData] = useState({
     districtId: "",
   });
@@ -109,7 +104,7 @@ function DistrictWiseFarmerCountList() {
   //   setLoading(true);
   //   const response = api
   //     .get(baseURL + `farmer/list-with-join`, _params)
-  
+
   //     .then((response) => {
   //       setListData(response.data.content.farmer);
   //       setTotalRows(response.data.content.totalItems);
@@ -229,13 +224,13 @@ function DistrictWiseFarmerCountList() {
     //   cell: (row) => (
     //       // Button style
     //     <div className="text-start w-100">
-         
+
     //     </div>
     //    ),
     //   sortable: false,
     //   hide: "md",
     // },
-    
+
     {
       name: "Farmer Count",
       selector: (row) => row.farmerCount,
@@ -257,9 +252,7 @@ function DistrictWiseFarmerCountList() {
       name: "action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
-         
-        </div>
+        <div className="text-start w-100"></div>
       ),
       sortable: false,
       hide: "md",
@@ -355,16 +348,12 @@ function DistrictWiseFarmerCountList() {
                       onBlur={() => handleInputs}
                       required
                       isInvalid={
-                        data.districtId === undefined ||
-                        data.districtId === "0"
+                        data.districtId === undefined || data.districtId === "0"
                       }
                     >
                       <option value="">Select District</option>
                       {districtListData.map((list) => (
-                        <option
-                          key={list.districtId}
-                          value={list.districtId}
-                        >
+                        <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
                         </option>
                       ))}
@@ -408,38 +397,19 @@ function DistrictWiseFarmerCountList() {
                     </Col> */}
 
                 <Col sm={3}>
-                <Button
-                  type="button"
-                  variant="primary"
-                  onClick={() => getTalukList(data.districtId)}
-                >
-                  Search
-                </Button>
-              </Col>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={() => getTalukList(data.districtId)}
+                  >
+                    Search
+                  </Button>
+                </Col>
               </Form.Group>
             </Col>
           </Row>
 
-          
-            <DataTable
-              tableClassName="data-table-head-light table-responsive"
-              columns={DistrictDataColumns}
-              data={districtFarmerListData}
-              highlightOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
-              progressPending={loading}
-              theme="solarized"
-              customStyles={customStyles}
-            />
-
-          <div className={isActive ? "" : "d-none"}>
+          {isActive ? (
             <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={TalukDataColumns}
@@ -457,7 +427,25 @@ function DistrictWiseFarmerCountList() {
               theme="solarized"
               customStyles={customStyles}
             />
-          </div>
+          ) : (
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={DistrictDataColumns}
+              data={districtFarmerListData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          )}
         </Card>
       </Block>
     </Layout>
