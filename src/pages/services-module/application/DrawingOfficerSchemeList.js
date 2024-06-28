@@ -64,8 +64,8 @@ function DrawingOfficerSchemeList() {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            pageNumber:page,
-            pageSize:countPerPage
+            pageNumber: page,
+            pageSize: countPerPage,
           },
         }
       )
@@ -351,12 +351,10 @@ function DrawingOfficerSchemeList() {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",
+      pushType: "P",
     };
     api
-      .post(
-        baseURLDBT + `applicationTransaction/pushToFruits`,
-        pushdata
-      )
+      .post(baseURLDBT + `applicationTransaction/pushToFruits`, pushdata)
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
@@ -405,6 +403,7 @@ function DrawingOfficerSchemeList() {
     const post = {
       applicationList: applicationIds,
       paymentMode: "P",
+      pushType: "P",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -415,10 +414,7 @@ function DrawingOfficerSchemeList() {
     } else {
       event.preventDefault();
       api
-        .post(
-          baseURLDBT + `applicationTransaction/pushToFruits`,
-          post
-        )
+        .post(baseURLDBT + `applicationTransaction/pushToFruits`, post)
         .then((response) => {
           if (response.data.content.errorCode) {
             saveError(response.data.content.error_description);
@@ -478,8 +474,8 @@ function DrawingOfficerSchemeList() {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            pageNumber:page,
-            pageSize:countPerPage   
+            pageNumber: page,
+            pageSize: countPerPage,
           },
         }
       )

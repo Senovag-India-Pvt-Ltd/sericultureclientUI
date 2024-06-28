@@ -288,6 +288,7 @@ function ReportRejectList() {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",
+      pushType:"R"
     };
     api
       .post(
@@ -339,6 +340,7 @@ function ReportRejectList() {
     const post = {
       applicationList: applicationIds,
       paymentMode: "P",
+      pushType:"R",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;

@@ -11,6 +11,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import ViewAllApplication from "./ViewAllApplication";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -827,21 +828,29 @@ const SanctionOrderGeneration = () => {
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedDocumentFile.length > 0 &&
-            selectedDocumentFile.map((file, i) => (
-              <div key={i}>
-                <div className="d-flex justify-content-center">
-                  <img
-                    style={{ height: "300px", width: "300px" }}
-                    src={file}
-                    alt="Selected File"
-                    onClick={(e) => click(selectedDocumentOriginalFileName[i])}
-                  />
+          <ViewAllApplication />
+          <div className="d-flex">
+            {selectedDocumentFile.length > 0 &&
+              selectedDocumentFile.map((file, i) => (
+                <div key={i}>
+                  <div className="d-flex justify-content-center">
+                    <img
+                      style={{ height: "300px", width: "300px" }}
+                      src={file}
+                      alt="Selected File"
+                      onClick={(e) =>
+                        click(selectedDocumentOriginalFileName[i])
+                      }
+                    />
+                  </div>
+                  {/* <div className="text-center">{file.documentMasterName}</div> */}
+                  <div className="text-center">
+                    {selectedDocumentFileName[i]}
+                  </div>
                 </div>
-                {/* <div className="text-center">{file.documentMasterName}</div> */}
-                <div className="text-center">{selectedDocumentFileName[i]}</div>
-              </div>
-            ))}
+              ))}
+          </div>
+
           {/* <div className="gap-col">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>

@@ -352,6 +352,7 @@ function TscOfficerList() {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",
+      pushType:"P"
     };
     api
       .post(
@@ -403,6 +404,7 @@ function TscOfficerList() {
     const post = {
       applicationList: applicationIds,
       paymentMode: "P",
+      pushType:"P",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
