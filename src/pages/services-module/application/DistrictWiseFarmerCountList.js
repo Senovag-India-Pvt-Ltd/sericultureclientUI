@@ -248,15 +248,15 @@ function DistrictWiseFarmerCountList() {
   ];
 
   const TalukDataColumns = [
-    {
-      name: "action",
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100"></div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+    // {
+    //   name: "action",
+    //   cell: (row) => (
+    //     //   Button style
+    //     <div className="text-start w-100"></div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    // },
     // {
     //   name: "Market",
     //   selector: (row) => row.marketMasterName,
