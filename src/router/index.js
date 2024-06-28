@@ -823,6 +823,7 @@ import TscOfficerSchemeList from "../pages/services-module/application/TscOffice
 import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeedMarket";
 import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
+import AllApplicationList from "../pages/services-module/application/AllApplicationList";
 // Admin and Reports
 
 function Router() {
@@ -1114,6 +1115,10 @@ function Router() {
               element={<ApplicationDashboard />}
             />
             <Route path="dbt-application" element={<DbtApplication />} />
+            <Route
+              path="all-application-list"
+              element={<AllApplicationList />}
+            />
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route
@@ -2916,7 +2921,10 @@ function Router() {
             />
             <Route path="print-farmer-copy" element={<PrintFarmerCopy />} />
             <Route path="weighment" element={<Weighment />} />
-            <Route path="weighment-for-seed-market" element={<WeighmentForSeedMarket />} />
+            <Route
+              path="weighment-for-seed-market"
+              element={<WeighmentForSeedMarket />}
+            />
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
