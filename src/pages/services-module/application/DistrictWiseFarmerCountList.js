@@ -231,17 +231,18 @@ function DistrictWiseFarmerCountList() {
     //   hide: "md",
     // },
 
-    {
-      name: "Farmer Count",
-      selector: (row) => row.farmerCount,
-      cell: (row) => <span>{row.farmerCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "District Name",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farmer Count",
+      selector: (row) => row.farmerCount,
+      cell: (row) => <span>{row.farmerCount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -264,17 +265,18 @@ function DistrictWiseFarmerCountList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    {
-      name: "Farmer Count",
-      selector: (row) => row.farmerCount,
-      cell: (row) => <span>{row.farmerCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Taluk Name",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farmer Count",
+      selector: (row) => row.farmerCount,
+      cell: (row) => <span>{row.farmerCount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -306,7 +308,7 @@ function DistrictWiseFarmerCountList() {
             <Block.Title tag="h2">Farmer Count List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/districtWiseFarmerCount"
@@ -325,7 +327,7 @@ function DistrictWiseFarmerCountList() {
                   <span>Create</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -409,8 +411,12 @@ function DistrictWiseFarmerCountList() {
             </Col>
           </Row>
 
-          {isActive ? (
-            <DataTable
+          
+        </Card>
+        {isActive ? (
+            <Row lg={12} className="d-flex justify-content-center">
+              <Col lg={8} className="mt-2">
+              <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={TalukDataColumns}
               data={listData}
@@ -427,7 +433,12 @@ function DistrictWiseFarmerCountList() {
               theme="solarized"
               customStyles={customStyles}
             />
+              </Col>
+            </Row>
+            
           ) : (
+            <Row lg={12} className="d-flex justify-content-center">
+            <Col lg={8} className="mt-2">
             <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={DistrictDataColumns}
@@ -445,8 +456,9 @@ function DistrictWiseFarmerCountList() {
               theme="solarized"
               customStyles={customStyles}
             />
+             </Col>
+             </Row>
           )}
-        </Card>
       </Block>
     </Layout>
   );
