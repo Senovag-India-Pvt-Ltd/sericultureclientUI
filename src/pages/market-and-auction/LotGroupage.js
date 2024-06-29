@@ -18,24 +18,36 @@ function LotGroupage() {
 
 const [dataLotList, setDataLotList] = useState([]); 
   const [data, setData] = useState({
+    marketId: localStorage.getItem("marketId"),
+    godownId: localStorage.getItem("godownId"),
     buyerType: "Reeler",
     buyerId: "",
     lotWeight: "",
     amount: "",
     soldAmount: "",
-    allottedLotId: "",
-    auctionDate: "",
-    
   });
 
+  const [auctionDate,setAuctionDate] = useState(new Date());
+  const [allottedLotId,setAllottedLotId] = useState("");
   console.log(dataLotList);
 
-
+ const clean = ()=>{
+  setData({
+    marketId: localStorage.getItem("marketId"),
+    godownId: localStorage.getItem("godownId"),
+    buyerType: "Reeler",
+    buyerId: "",
+    lotWeight: "",
+    amount: "",
+    soldAmount: "",
+  })
+ }
 
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
 const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+    // setData((prev) => ({ ...prev, auctionDate: date }));
+    setAuctionDate(date);
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -66,7 +78,8 @@ const handleDateChange = (date) => {
       setData(true);
     } else {
       e.preventDefault();
-      setDataLotList((prev) => [...prev, data]);
+      const buyerName = data.buyerType === "Reeler" ? data.reelerName : data.name;
+      setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // setData({
       //   buyerType: "Reeler",
       //   buyerId: "",
@@ -77,11 +90,18 @@ const handleDateChange = (date) => {
       //   allottedLotId: "",
       //   auctionDate: ""
       // });
+      clean();
       setShowModal(false);
       setValidatedLot(false);
     }
     // e.preventDefault();
   };
+
+  const [farmerdetails,setFarmerDetails] = useState({
+    farmerFirstName:"",
+    farmerMiddleName:"",
+    farmerFruitsId:""
+  })
 
   const handleDeleteLotDetails = (i) => {
     setDataLotList((prev) => {
@@ -131,7 +151,12 @@ const handleDateChange = (date) => {
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    // setData({ ...data, [name]: value });
+    if(name ==='allottedLotId'){
+      setAllottedLotId(value);
+    }else{
+      setData({ ...data, [name]: value });
+    }
   };
 
 
@@ -152,7 +177,7 @@ const handleDateChange = (date) => {
               .post(
                 baseURLMarket +
                   `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
-                { allottedLotId: data.allottedLotId,auctionDate: data.auctionDate, marketId: localStorage.getItem("marketId"),
+                { allottedLotId:allottedLotId,auctionDate: auctionDate, marketId: localStorage.getItem("marketId"),
                  godownId: localStorage.getItem("godownId"),}
                 // {
                 //   headers: _header,
@@ -163,7 +188,7 @@ const handleDateChange = (date) => {
         
                 if (lotGroupageId) {
                   // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
-                  setData((prev) => ({
+                  setFarmerDetails((prev) => ({
                     ...prev,
                     farmerFirstName: response.data.content[0].farmerFirstName,
                     farmerMiddleName: response.data.content[0].farmerMiddleName,
@@ -173,7 +198,7 @@ const handleDateChange = (date) => {
                   setShowFarmerDetails(true);
                 } else {
                 //  const farmerDetails = response.data.content;
-                setData((prev) => ({
+                setFarmerDetails((prev) => ({
                   ...prev,
                   farmerFirstName: response.data.content[0].farmerFirstName,
                   farmerMiddleName: response.data.content[0].farmerMiddleName,
@@ -186,67 +211,29 @@ const handleDateChange = (date) => {
 
                  
               })
-              .catch((error) => {});
+              .catch((err) => {
+                console.error("Error fetching farmer details:", err);
+                if (
+                  err.response &&
+                  err.response.data &&
+                  err.response.data.validationErrors
+                ) {
+                  if (Object.keys(err.response.data.validationErrors).length > 0) {
+                    searchError(err.response.data.validationErrors);
+                  }
+                } else {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Details not Found",
+                  });
+                }
+                setFarmerDetails({});
+                setLoading(false);
+              });
           }
-       //  })
-       //  .catch((error) => {});
-   //  }
   };
  
-  //  const [isActive, setIsActive] = useState(false);
-  //  const getLotDetails = (event) => {
-  //    const form = event.currentTarget;
-  //    if (form.checkValidity() === false) {
-  //        event.preventDefault();
-  //        event.stopPropagation();
-  //        setValidatedDisplay(true);
-  //      } else {
-  //        event.preventDefault();
-  //    const sendData = {
-  //      marketId: localStorage.getItem("marketId"),
-  //      godownId: localStorage.getItem("godownId"),
-  //      allottedLotId: data.allottedLotId,
-  //      auctionDate: data.auctionDate,
-  //    };
-  //    api
-  //      .post(baseURLMarket + `auction/weigment/getUpdateWeighmentByLotIdForSeedMarket`, sendData)
-  //      .then((response) => {
-  //        // debugger;
-  //        console.log(response.data.content);
-  //        setData((prev) => {
-  //          return { ...prev, ...response.data.content };
-  //        });
-        
-  //      })
-  //      .catch((err) => {
-  //        if (
-  //          err.response.data &&
-  //          err.response.data.errorMessages[0] &&
-  //          err.response.data.errorMessages[0].message[0]
-  //        ) {
-  //            if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //                searchError(err.response.data.validationErrors);
-  //              }
-  //            } else {
-  //              Swal.fire({
-  //                icon: "warning",
-  //                title: "Details not Found",
-  //              });
-  //            }
-  //            setFarmerDetails({});
-  //            setValidatedDisplay(false);
-  //            setLoading(false);
-         
-  //          });
-  //          setIsActive((current) => !current);
-  //      }
-  //      };
- 
-      //  const handleLotInputs = (e) => {
-      //    name = e.target.name;
-      //    value = e.target.value;
-      //    setFarmerDetails({ ...farmerDetails, [name]: value });
-      //  };
+  
      
  
    const searchError = (message = "Something went wrong!") => {
@@ -266,6 +253,7 @@ const handleDateChange = (date) => {
  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+ 
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -274,44 +262,121 @@ const handleDateChange = (date) => {
       setValidated(true);
     } else {
       event.preventDefault();
-      const sendPost = {
-        lotGroupageRequests: dataLotList, 
-      };
-      api
-        .post(baseURLMarket + `lotGroupage/saveLotGroupage`, sendPost)
-        .then((response) => {
-          if (response.data.content.error) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            setData({
-            buyerType: "",
-            buyerId: "",
-            lotWeight: "",
-            amount: "",
-            marketFee: "",
-            soldAmount: "",
-            allottedLotId: "",
-            auctionDate: ""
+  
+      // Check if there is any lotGroupageId in the dataLotList
+      const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
+  
+      if (hasLotGroupageId) {
+        // If lotGroupageId is present, prepare the update request
+        const requestData = {
+          marketId: localStorage.getItem("marketId"),
+          godownId: localStorage.getItem("godownId"),
+          lotGroupageRequestEditList: dataLotList.map(item => ({
+            lotGroupageId: item.lotGroupageId,
+            buyerType: item.buyerType,
+            buyerId: item.buyerId,
+            lotWeight: item.lotWeight,
+            amount: item.amount,
+            soldAmount: item.soldAmount,
+            allottedLotId: allottedLotId,
+            auctionDate: auctionDate
+          }))
+        };
+  
+        api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
+          .then(response => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Updated successfully'
             });
+            // Call clear() after successful update
             clear();
             setValidated(false);
-          }
         })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
+          .catch(error => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Update failed',
+              text: 'There was an error updating the lot groupage details.'
+            });
+          });
+      } else {
+        // If no lotGroupageId is present, prepare the save request
+        const sendPost = {
+          lotGroupageRequests: dataLotList,
+        };
+  
+        api
+          .post(baseURLMarket + 'lotGroupage/saveLotGroupage', sendPost)
+          .then((response) => {
+            if (response.data.content.error) {
+              saveError(response.data.content.error_description);
+            } else {
+              saveSuccess();
+              setData({
+                buyerType: "",
+                buyerId: "",
+                lotWeight: "",
+                amount: "",
+                marketFee: "",
+                soldAmount: "",
+                allottedLotId: "",
+                auctionDate: ""
+              });
+              clear();
+              setValidated(false);
             }
-          }
-        });
+          })
+          .catch((err) => {
+            if (
+              err.response &&
+              err.response.data &&
+              err.response.data.validationErrors
+            ) {
+              if (Object.keys(err.response.data.validationErrors).length > 0) {
+                saveError(err.response.data.validationErrors);
+              }
+            }
+          });
+      }
+  
       setValidated(true);
     }
+  };
+  
+
+  const updateLotGroupage = () => {
+    const requestData = {
+      marketId: localStorage.getItem("marketId"),
+      godownId: localStorage.getItem("godownId"),
+      lotGroupageRequestEditList: dataLotList.map(item => ({
+        marketId: localStorage.getItem("marketId"),
+        godownId: localStorage.getItem("godownId"),
+        lotGroupageId: item.lotGroupageId,
+        buyerType: item.buyerType,
+        buyerId: item.buyerId,
+        lotWeight: item.lotWeight,
+        amount: item.amount,
+        soldAmount: item.soldAmount,
+        allottedLotId: item.allottedLotId,
+        auctionDate: item.auctionDate
+      }))
+    };
+
+    api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
+      .then(response => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated successfully'
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Update failed',
+          text: 'There was an error updating the lot groupage details.'
+        });
+      });
   };
 
   const handleReelerOption = (e) => {
@@ -321,6 +386,7 @@ const handleDateChange = (date) => {
       ...data,
       buyerId: chooseId,
       reelerName: chooseName,
+      buyerName: chooseName,
     });
   };
 
@@ -332,6 +398,7 @@ const handleDateChange = (date) => {
       ...data,
       buyerId: chooseId,
       name: chooseName,
+      buyerName: chooseName,
     });
   };
 
@@ -347,12 +414,13 @@ const handleDateChange = (date) => {
         allottedLotId: "",
         auctionDate: ""
     });
-  //   setFarmerDetails({
-  //   marketId: localStorage.getItem("marketId"),
-  //   godownId: 0,
-  //   allottedLotId: "",
-  //   auctionDate: "",
-  // });
+  setFarmerDetails({
+    farmerFirstName:"",
+    farmerMiddleName:"",
+    farmerFruitsId:""
+  });
+  setAuctionDate("");
+setAllottedLotId("");
     setDataLotList([]);
   };
 
@@ -498,7 +566,7 @@ const handleDateChange = (date) => {
                         <Form.Control
                           id="allotedLotId"
                           name="allottedLotId"
-                          value={data.allottedLotId}
+                          value={allottedLotId}
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Lot Number"
@@ -516,7 +584,7 @@ const handleDateChange = (date) => {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
+                            selected={auctionDate}
                             onChange={handleDateChange}
                             maxDate={new Date()}
                             className="form-control"
@@ -547,11 +615,11 @@ const handleDateChange = (date) => {
                             <tbody>
                               <tr>
                               <td style={styles.ctstyle}> Farmer Name:</td>
-                              <td>{data.farmerFirstName}</td>
+                              <td>{farmerdetails.farmerFirstName}</td>
                               <td style={styles.ctstyle}> Farmer Middle Name:</td>
-                              <td>{data.farmerMiddleName}</td>
+                              <td>{farmerdetails.farmerMiddleName}</td>
                               <td style={styles.ctstyle}> Fruits Id :</td>
-                              <td>{data.farmerFruitsId}</td>
+                              <td>{farmerdetails.farmerFruitsId}</td>
                              </tr>
                             </tbody>
                           </table>
@@ -662,7 +730,16 @@ const handleDateChange = (date) => {
                                       </div>
                                     </td>
                                     <td>{item.buyerType}</td>
-                                    <td>{item.buyerId}</td>
+                                     {/* <td>
+                                    {item.buyerType === 'Reeler' ? (
+                                      item.reelerName
+                                    ) : item.buyerType === 'ExternalStakeHolders' ? (
+                                      item.name
+                                    ) : (
+                                      item.buyerId
+                                    )}
+                                  </td> */}
+                                  <td>{item.buyerName}</td>
                                     <td>{item.lotWeight}</td>
                                     <td>{item.amount}</td>
                                     {/* <td>{item.marketFee}</td> */}

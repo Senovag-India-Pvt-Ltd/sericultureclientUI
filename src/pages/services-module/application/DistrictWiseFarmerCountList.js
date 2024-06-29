@@ -4,7 +4,6 @@ import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -219,18 +218,7 @@ function DistrictWiseFarmerCountList() {
   };
 
   const DistrictDataColumns = [
-    // {
-    //   name: "action",
-    //   cell: (row) => (
-    //       // Button style
-    //     <div className="text-start w-100">
-
-    //     </div>
-    //    ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-
+    
 
     {
       name: "District Name",
@@ -249,23 +237,7 @@ function DistrictWiseFarmerCountList() {
   ];
 
   const TalukDataColumns = [
-    // {
-    //   name: "action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100"></div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market",
-    //   selector: (row) => row.marketMasterName,
-    //   cell: (row) => <span>{row.marketMasterName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-
+    
     {
       name: "Taluk Name",
       selector: (row) => row.talukName,
@@ -300,6 +272,8 @@ function DistrictWiseFarmerCountList() {
   //   getMarketList();
   // }, []);
 
+  
+
   return (
     <Layout title="District Wise Farmer Count List">
       <Block.Head>
@@ -332,16 +306,15 @@ function DistrictWiseFarmerCountList() {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
+      {/* <Block className="mt-n4">
         <Card>
           <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
+                <Form.Label>
                   District
                 </Form.Label>
                 <Col sm={3}>
-                  {/* <Form.Label>Market</Form.Label> */}
                   <div className="form-control-wrap">
                     <Form.Select
                       name="districtId"
@@ -363,42 +336,9 @@ function DistrictWiseFarmerCountList() {
                   </div>
                 </Col>
 
-                {/* <Col lg="4">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          Taluk<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="taluk"
-                            value={data.taluk}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.taluk === undefined || data.taluk === "0"
-                            }
-                          >
-                            <option value="">Select Taluk</option>
-                            {talukListData && talukListData.length
-                              ? talukListData.map((list) => (
-                                  <option
-                                    key={list.talukId}
-                                    value={list.talukId}
-                                  >
-                                    {list.talukName}
-                                  </option>
-                                ))
-                              : ""}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col> */}
+                
 
-                <Col sm={3}>
+                <Col sm={2}>
                   <Button
                     type="button"
                     variant="primary"
@@ -409,26 +349,63 @@ function DistrictWiseFarmerCountList() {
                 </Col>
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
+    <Block className="mt-n4">
+      <Card style={{width:"48rem"}}>
+        <Row className="m-2 align-items-center">
+      <Col sm={1}>
+        <Form.Label>District</Form.Label>
+      </Col>
+      <Col sm={4}>
+        <div className="form-control-wrap">
+          <Form.Select
+            name="districtId"
+            value={data.districtId}
+            onChange={handleInputs}
+            onBlur={() => handleInputs}
+            required
+            isInvalid={
+              data.districtId === undefined || data.districtId === "0"
+            }
+          >
+            <option value="">Select District</option>
+            {districtListData.map((list) => (
+              <option key={list.districtId} value={list.districtId}>
+                {list.districtName}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
+      </Col>
+      <Col sm={2}>
+        <Button
+          type="button"
+          variant="primary"
+          onClick={() => getTalukList(data.districtId)}
+        >
+          Search
+        </Button>
+      </Col>
+    </Row>
+  </Card>
 
-        </Card>
         {isActive ? (
-            <Row lg={12} className="d-flex justify-content-center">
-              <Col lg={8} className="mt-2">
+            <Row lg={10} className="d-flex">
+              <Col lg={5} className="mt-2">
               <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={TalukDataColumns}
               data={listData}
               highlightOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
+              // pagination
+              // paginationServer
+              // paginationTotalRows={totalRows}
+              // paginationPerPage={countPerPage}
+              // paginationComponentOptions={{
+              //   noRowsPerPage: true,
+              // }}
+              // onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
               theme="solarized"
               customStyles={customStyles}
@@ -437,21 +414,21 @@ function DistrictWiseFarmerCountList() {
             </Row>
 
           ) : (
-            <Row lg={12} className="d-flex justify-content-center">
-            <Col lg={8} className="mt-2">
+            <Row lg={10} className="d-flex">
+            <Col lg={5} className="mt-2">
             <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={DistrictDataColumns}
               data={districtFarmerListData}
               highlightOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
+              // pagination
+              // paginationServer
+              // paginationTotalRows={totalRows}
+              // paginationPerPage={countPerPage}
+              // paginationComponentOptions={{
+              //   noRowsPerPage: true,
+              // }}
+              // onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
               theme="solarized"
               customStyles={customStyles}

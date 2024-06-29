@@ -153,6 +153,7 @@ function WeighmentForSeedMarket() {
       marketId: localStorage.getItem("marketId"),
       godownId: localStorage.getItem("godownId"),
       allottedLotId: allottedLotId,
+      auctionDate: data.auctionDate,
     };
     api
       .post(baseURL1 + `auction/weigment/getUpdateWeighmentByLotIdForSeedMarket`, sendData)
@@ -212,7 +213,7 @@ function WeighmentForSeedMarket() {
         }
       })
       .catch((err) => {
-        // debugger;
+        // debugger; 
         // setData({});
         // saveError();
       });
