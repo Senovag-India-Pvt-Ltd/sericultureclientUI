@@ -1325,14 +1325,7 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                    {showMenu.Market_Payment_Bank_Statement ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text="Bank Statement"
-                          to="/seriui/bank-statement"
-                        />
-                      </MenuItem>
-                    ) : null}
+                   
                     {/* {showMenu.Market_Payment_IFSC_Update ? (
                     <MenuItem>
                       <MenuItemLink
