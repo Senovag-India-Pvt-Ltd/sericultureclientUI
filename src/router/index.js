@@ -824,6 +824,8 @@ import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeed
 import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
 import AllApplicationList from "../pages/services-module/application/AllApplicationList";
+import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
+import DistrictWiseFarmerCountList from "../pages/services-module/application/DistrictWiseFarmerCountList";
 // Admin and Reports
 
 function Router() {
@@ -1121,6 +1123,22 @@ function Router() {
             />
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
+             <Route
+              path="dbt-application"
+              element={<DbtApplication />}
+            />
+            <Route
+              path="report-success-list"
+              element={<ReportSuccessList />}
+            />
+            <Route
+              path="report-reject-list"
+              element={<ReportRejectList />}
+            />
+            <Route
+              path="district-wise-farmer-count-list"
+              element={<DistrictWiseFarmerCountList />}
+            />
             <Route
               path="application-form-list"
               element={<ApplicationFormList />}
@@ -1133,7 +1151,10 @@ function Router() {
               path="drawing-officer-list"
               element={<DrawingOfficerList />}
             />
-            <Route path="tsc-officer-list" element={<TscOfficerList />} />
+            <Route
+              path="tsc-officer-list"
+              element={<TscOfficerList />}
+            />
             <Route
               path="application-dashboard-list/:id"
               element={<DashboardList />}
@@ -2416,22 +2437,10 @@ function Router() {
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
-            <Route
-              path="reject-reason-workflow"
-              element={<RejectReasonWorkFlowMaster />}
-            />
-            <Route
-              path="reject-reason-workflow-list"
-              element={<RejectReasonWorkFlowList />}
-            />
-            <Route
-              path="reject-reason-workflow-view/:id"
-              element={<RejectReasonWorkFlowView />}
-            />
-            <Route
-              path="reject-reason-workflow-edit/:id"
-              element={<RejectReasonWorkFlowEdit />}
-            />
+            <Route path="reject-reason-workflow" element={<RejectReasonWorkFlowMaster />} />
+            <Route path="reject-reason-workflow-list" element={<RejectReasonWorkFlowList />} />
+            <Route path="reject-reason-workflow-view/:id" element={<RejectReasonWorkFlowView />} />
+            <Route path="reject-reason-workflow-edit/:id" element={<RejectReasonWorkFlowEdit />} />
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
@@ -2696,10 +2705,7 @@ function Router() {
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route path="map-component" element={<MapComponent />} />
-            <Route
-              path="map-component-list"
-              element={<MapComponentAndHoaList />}
-            />
+            <Route path="map-component-list" element={<MapComponentAndHoaList />} />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
@@ -2927,6 +2933,7 @@ function Router() {
             />
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
+
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
             <Route
               path="accept-former-auction"
@@ -2975,15 +2982,6 @@ function Router() {
             <Route
               path="reeler-pending-report"
               element={<ReelerPendingReport />}
-            />
-            <Route
-              path="all-scheme-drawing-officer-list"
-              element={<DrawingOfficerSchemeList />}
-            />
-
-            <Route
-              path="all-scheme-tsc-officer-list"
-              element={<TscOfficerSchemeList />}
             />
 
             <Route path="bidding-report" element={<BiddingReport />} />
