@@ -43,7 +43,6 @@ function AllApplicationList() {
   });
 
   // console.log("Search Data", searchData);
-  console.log("yenle",listData.length)
 
   const [data, setData] = useState({
     financialYearMasterId: "",
@@ -153,7 +152,7 @@ function AllApplicationList() {
 
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
-  const display = (event) => {
+  const display = (event) => { 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -161,6 +160,15 @@ function AllApplicationList() {
       setValidatedDisplay(true);
     } else {
       event.preventDefault();
+      const sendData = {
+        financialYearId: data.financialYearMasterId,
+        schemeId: scheme.scheme,
+        subSchemeId: scheme.subScheme,
+        type: searchData.type,
+        searchText: searchData.searchText,
+        pageNumber: page,
+        pageSize: countPerPage,
+      };
       // const { text, select } = farmer;
       // let sendData;
 
@@ -186,9 +194,9 @@ function AllApplicationList() {
 
       api
         .post(
-          baseURLDBT + `service/getSubmittedApplicationForm`,
+          baseURLDBT + `service/getAllApplicationsListForDbt`,
           {},
-          { params: searchData }
+          { params: sendData }
         )
         .then((response) => {
           setListData(response.data.content);
@@ -327,10 +335,11 @@ function AllApplicationList() {
       )
       .then((response) => {
         setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
-        );
-        setAllApplicationIds(scApplicationFormIds);
+        // const scApplicationFormIds = response.data.content.map(
+        //   (item) => item.scApplicationFormId
+        // );
+        // setAllApplicationIds(scApplicationFormIds);
+        setTotalRows(response.data.totalRecords)
         setLoading(false);
       })
       .catch((err) => {
@@ -951,7 +960,7 @@ function AllApplicationList() {
             highlightOnHover
             pagination
             paginationServer
-            paginationTotalRows={100}
+            paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
             paginationComponentOptions={{
               noRowsPerPage: true,
