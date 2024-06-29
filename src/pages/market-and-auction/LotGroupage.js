@@ -224,7 +224,7 @@ const handleDateChange = (date) => {
                 } else {
                   Swal.fire({
                     icon: "warning",
-                    title: "Details not Found",
+                    title: "Details Not Found for This Lot and Auction Date",
                   });
                 }
                 setFarmerDetails({});
