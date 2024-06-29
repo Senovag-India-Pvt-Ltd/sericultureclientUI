@@ -228,12 +228,9 @@ function Menu() {
     Market_Payment_Ready_for_Payment: false,
     Market_Payment_Bulk_Send_To_Bank: false,
     Market_Payment_Bank_Statement: false,
-    // Market_Payment_IFSC_Update: false,
-
-    // Market_Permit: false,
-    // Market_Reject_Farmer_Auction: false,
-    // Market_Generate_Bidding_Slip: false,
-    // Market_Update_Lot_Weight: false,
+    Market_SeedMarket: false,
+    Market_SeedMarket_Weighment: false,
+    Market_SeedMarket_Lot_Distribution: false,
 
     SeedDFL: false,
     SeedDFL_BSF: false,
@@ -1302,6 +1299,47 @@ function Menu() {
                 </MenuItem>
               ) : null}
             </MenuItem>
+            <MenuItem>
+              {showMenu.Market_SeedMarket ? (
+                <MenuItem sub>
+                  <MenuItemLink
+                    text="Seed Market"
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    {showMenu.Market_SeedMarket_Weighment ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Weighment"
+                          to="/seriui/weighment-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedMarket_Lot_Distribution ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text="Lot Distribution "
+                          to="/seriui/lot-groupage"
+                        />
+                      </MenuItem>
+                    ) : null}
+                   
+                    {/* {showMenu.Market_Payment_IFSC_Update ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="IFSC Update"
+                        to="/seriui/ifsc-update"
+                      />
+                    </MenuItem>
+                  ) : null} */}
+                  </MenuSub>
+                </MenuItem>
+              ) : null}
+            </MenuItem>
+
+            
             {showMenu.Market_Reject ? (
               <MenuItem>
                 <MenuItemLink text="Reject Lot" to="/seriui/reject-lot" />
