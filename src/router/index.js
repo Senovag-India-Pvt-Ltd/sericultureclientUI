@@ -825,6 +825,7 @@ import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
 import DistrictWiseFarmerCountList from "../pages/services-module/application/DistrictWiseFarmerCountList";
+import ReadyForPaymentForSeedMarket from "../pages/market-and-auction/ReadyForPaymentForSeedMarket";
 // Admin and Reports
 
 function Router() {
@@ -2902,6 +2903,7 @@ function Router() {
             <Route path="reject-bid" element={<RejectBid />} />
             <Route path="payment" element={<Payment />} />
             <Route path="ready-for-payment" element={<ReadyForPayment />} />
+            <Route path="ready-for-payment-for-seed-market" element={<ReadyForPaymentForSeedMarket />} />
             <Route path="bank-statement" element={<BankStatement />} />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />

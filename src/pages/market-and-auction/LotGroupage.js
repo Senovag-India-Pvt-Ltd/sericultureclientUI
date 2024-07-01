@@ -525,7 +525,7 @@ setAllottedLotId("");
             <Block.Title tag="h2">Lot Distribution</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <ul className="d-flex">
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/crate-list"
@@ -544,7 +544,7 @@ setAllottedLotId("");
                   <span>Go to List</span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
