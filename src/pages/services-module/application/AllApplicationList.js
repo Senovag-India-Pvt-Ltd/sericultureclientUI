@@ -564,21 +564,28 @@ function AllApplicationList() {
   };
 
   const ApplicationDataColumns = [
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={row.scApplicationFormId}
+    //       checked={applicationIds.includes(row.scApplicationFormId)}
+    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
     {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="checkbox"
-          name="selectedLand"
-          value={row.scApplicationFormId}
-          checked={applicationIds.includes(row.scApplicationFormId)}
-          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
+      name: "Sl.No",
+      // selector: (row,i) => row.farmerFirstName,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
     },
     {
       name: "Farmer Name",
