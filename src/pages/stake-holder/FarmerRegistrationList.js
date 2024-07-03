@@ -63,6 +63,43 @@ function FarmerRegistrationList() {
       });
   };
 
+  const exportCsv = (e) => {
+    api
+      .post(
+        baseURLFarmer + `farmer/farmer-report`,
+        {},
+        {
+          params: {
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            villageId: data.villageId || 0,
+            tscMasterId: data.tscMasterId || 0,
+          },
+          responseType: 'blob',
+          headers: {
+            accept: "text/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `farmer_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+};
+
   const getFarmerList = (e) => {
     api
       .post(
@@ -563,6 +600,11 @@ function FarmerRegistrationList() {
             <Col sm={1}>
               <Button type="button" variant="primary" onClick={search}>
                 Search
+              </Button>
+            </Col>
+            <Col sm={1}>
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                Export
               </Button>
             </Col>
           </Row>
