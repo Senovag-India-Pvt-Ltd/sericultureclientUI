@@ -425,6 +425,7 @@ function Menu() {
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_District_Wise_Farmer_Count: false,
     Admin_Report_Farmer_Wise: false,
+    Admin_Report_Direct_From_Fruits: false,
     Admin_Report_Reeler_Transaction_Report: false,
     Admin_Report_GeneratedTriplet: false,
     Admin_Report_GeneratedFarmerCopy: false,
@@ -2988,6 +2989,14 @@ function Menu() {
                       <MenuItemLink
                         text="Farmer Wise Report"
                         to="/seriui/farmer-wise-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Direct_From_Fruits ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Farmer Details Direct From Fruits"
+                        to="/seriui/direct-fruits-details"
                       />
                     </MenuItem>
                   ) : null}
