@@ -19,7 +19,7 @@ function FarmerRegistrationList() {
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 20;
+  const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -36,7 +36,6 @@ function FarmerRegistrationList() {
   const [hobliData, setHobliData] = useState({
     hobliId: "",
   });
-
 
   // Search
   const search = (e) => {
@@ -57,13 +56,41 @@ function FarmerRegistrationList() {
       )
       .then((response) => {
         setListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
       })
       .catch((err) => {
         setListData([]);
       });
   };
 
+  const getFarmerList = (e) => {
+    api
+      .post(
+        baseURLFarmer + `farmer/primaryFarmerDetails`,
+        {},
+        {
+          params: {
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            villageId: data.villageId || 0,
+            tscMasterId: data.tscMasterId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getFarmerList();
+  }, [page]);
 
   const handleInputs = (e) => {
     // debugger;
@@ -76,8 +103,6 @@ function FarmerRegistrationList() {
     let { name, value } = e.target;
     setHobliData({ ...hobliData, [name]: value });
   };
-
-
 
   // to get State
   const [districtListData, setDistrictListData] = useState([]);
@@ -98,8 +123,6 @@ function FarmerRegistrationList() {
   useEffect(() => {
     getList();
   }, []);
-
-  
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -169,33 +192,28 @@ function FarmerRegistrationList() {
   }, [hobliData.hobliId]);
 
   // to get District Implementing Officer
- const [tscListData, setTscListData] = useState([]);
+  const [tscListData, setTscListData] = useState([]);
 
- const getTscList = (districtId,talukId) => {
-   api
-     .post(baseURL + `tscMaster/get-by-districtId-and-talukId`, {
-       districtId: districtId,
-       talukId: talukId,
-     })
-     .then((response) => {
-       setTscListData(response.data.content.tscMaster);
-     })
-     .catch((err) => {
-       setTscListData([]);
-     });
- };
+  const getTscList = (districtId, talukId) => {
+    api
+      .post(baseURL + `tscMaster/get-by-districtId-and-talukId`, {
+        districtId: districtId,
+        talukId: talukId,
+      })
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
 
- useEffect(() => {
-   if (data.districtId && data.talukId) {
-     // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
-     getTscList(
-      data.districtId,
-       data.talukId
-     );
-   }
- }, [data.districtId, data.talukId]);
-
-
+  useEffect(() => {
+    if (data.districtId && data.talukId) {
+      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
+      getTscList(data.districtId, data.talukId);
+    }
+  }, [data.districtId, data.talukId]);
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -314,7 +332,7 @@ function FarmerRegistrationList() {
       sortable: true,
       hide: "md",
     },
-    
+
     {
       name: "First Name",
       selector: (row) => row.firstName,
@@ -378,10 +396,7 @@ function FarmerRegistrationList() {
       sortable: true,
       hide: "md",
     },
-    
   ];
-
- 
 
   return (
     <Layout title="Farmer Wise Report">
@@ -390,191 +405,166 @@ function FarmerRegistrationList() {
           <Block.HeadContent>
             <Block.Title tag="h2">Farmer Wise Report</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
-           
-          </Block.HeadContent>
+          <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
-     
-    <Block className="mt-n4">
-      <Card className="mt-1">
-        <Row className="m-4">
-      <Col sm={2}>
-          <Form.Group className="form-group mt-n4">
-            <Form.Label>
-              District
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="districtId"
-                value={data.districtId}
-                onChange={handleInputs}
-                onBlur={() => handleInputs}
-                isInvalid={
-                  data.districtId === undefined ||
-                  data.districtId === "0"
-                }
-              >
-                <option value="">Select District</option>
-                {districtListData && districtListData.length
-                  ? districtListData.map((list) => (
-                      <option
-                        key={list.districtId}
-                        value={list.districtId}
-                      >
-                        {list.districtName}
-                      </option>
-                    ))
-                  : ""}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                District Name is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
+      <Block className="mt-n4">
+        <Card className="mt-1">
+          <Row className="m-4">
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>District</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="districtId"
+                    value={data.districtId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.districtId === undefined || data.districtId === "0"
+                    }
+                  >
+                    <option value="">Select District</option>
+                    {districtListData && districtListData.length
+                      ? districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    District Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-        <Col sm={2}>
-          <Form.Group className="form-group mt-n4">
-            <Form.Label>
-              Taluk
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="talukId"
-                value={data.talukId}
-                onChange={handleInputs}
-                onBlur={() => handleInputs}
-                isInvalid={
-                  data.talukId === undefined || data.talukId === "0"
-                }
-              >
-                <option value="">Select Taluk</option>
-                {talukListData && talukListData.length
-                  ? talukListData.map((list) => (
-                      <option
-                        key={list.talukId}
-                        value={list.talukId}
-                      >
-                        {list.talukName}
-                      </option>
-                    ))
-                  : ""}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Taluk Name is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Taluk</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="talukId"
+                    value={data.talukId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.talukId === undefined || data.talukId === "0"
+                    }
+                  >
+                    <option value="">Select Taluk</option>
+                    {talukListData && talukListData.length
+                      ? talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Taluk Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-        <Col sm={2}>
-          <Form.Group className="form-group mt-n4">
-            <Form.Label>
-              Hobli
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="hobliId"
-                value={hobliData.hobliId}
-                onChange={handleHobliInputs}
-                onBlur={() => handleHobliInputs}
-                isInvalid={
-                  hobliData.hobliId === undefined || hobliData.hobliId === "0"
-                }
-              >
-                <option value="">Select Hobli</option>
-                {hobliListData && hobliListData.length
-                  ? hobliListData.map((list) => (
-                      <option
-                        key={list.hobliId}
-                        value={list.hobliId}
-                      >
-                        {list.hobliName}
-                      </option>
-                    ))
-                  : ""}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Hobli Name is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Hobli</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="hobliId"
+                    value={hobliData.hobliId}
+                    onChange={handleHobliInputs}
+                    onBlur={() => handleHobliInputs}
+                    isInvalid={
+                      hobliData.hobliId === undefined ||
+                      hobliData.hobliId === "0"
+                    }
+                  >
+                    <option value="">Select Hobli</option>
+                    {hobliListData && hobliListData.length
+                      ? hobliListData.map((list) => (
+                          <option key={list.hobliId} value={list.hobliId}>
+                            {list.hobliName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Hobli Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-        <Col sm={2}>
-          <Form.Group className="form-group mt-n4">
-            <Form.Label>
-              Village
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="villageId"
-                value={data.villageId}
-                onChange={handleInputs}
-                onBlur={() => handleInputs}
-                isInvalid={
-                  data.villageId === undefined || data.villageId === "0"
-                }
-              >
-                <option value="">Select Village</option>
-                {villageListData && villageListData.length
-                  ? villageListData.map((list) => (
-                      <option
-                        key={list.villageId}
-                        value={list.villageId}
-                      >
-                        {list.villageName}
-                      </option>
-                    ))
-                  : ""}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Village Name is required
-              </Form.Control.Feedback>
-            </div>
-          </Form.Group>
-        </Col>
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Village</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="villageId"
+                    value={data.villageId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.villageId === undefined || data.villageId === "0"
+                    }
+                  >
+                    <option value="">Select Village</option>
+                    {villageListData && villageListData.length
+                      ? villageListData.map((list) => (
+                          <option key={list.villageId} value={list.villageId}>
+                            {list.villageName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Village Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
 
-                  <Col sm={2}>
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          TSC
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="tscMasterId"
-                            value={data.tscMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            isInvalid={
-                              data.tscMasterId === undefined || data.tscMasterId === "0"
-                            }
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>TSC</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="tscMasterId"
+                    value={data.tscMasterId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.tscMasterId === undefined || data.tscMasterId === "0"
+                    }
+                  >
+                    <option value="">Select TSC</option>
+                    {tscListData && tscListData.length
+                      ? tscListData.map((list) => (
+                          <option
+                            key={list.tscMasterId}
+                            value={list.tscMasterId}
                           >
-                            <option value="">Select TSC</option>
-                            {tscListData && tscListData.length
-                              ? tscListData.map((list) => (
-                              <option
-                                key={list.tscMasterId}
-                                value={list.tscMasterId}
-                              >
-                                {list.name}
-                              </option>
-                            ))
-                            : ""}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            TSC is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                    <Col sm={1}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
+                            {list.name}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    TSC is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+            <Col sm={1}>
+              <Button type="button" variant="primary" onClick={search}>
+                Search
+              </Button>
+            </Col>
           </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
@@ -593,7 +583,7 @@ function FarmerRegistrationList() {
             theme="solarized"
             customStyles={customStyles}
           />
-  </Card>
+        </Card>
       </Block>
     </Layout>
   );
