@@ -14,8 +14,7 @@ import axios from "axios";
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
-const baseURLDirectFarmer =
-  process.env.REACT_APP_API_BASE_URL_REGISTRATION_DIRECT_FRUITS;
+const baseURLDirectFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_DIRECT_FRUITS;
 
 function DirectFruitsDetails() {
   const [data, setData] = useState({
@@ -53,13 +52,6 @@ function DirectFruitsDetails() {
     }
   };
 
-  const _header = {
-    Accept: "*/*",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MzcsInBob25lTnVtYmVyIjoiNjM2NjEyNTg2OSIsInJvbGVJZCI6MSwidXNlclR5cGUiOjAsInVzZXJNYXN0ZXJJZCI6MTQ4LCJ1c2VybmFtZSI6Ik9wc21hbiIsIm1hcmtldElkIjozNCwic3ViIjoiT3BzbWFuIiwiaWF0IjoxNzE5ODIzOTkwLCJleHAiOjE3MjA0MjM5OTB9.gJIeZzUMAajzLc4IXbG5F73ri2eo7XHEICb9BSPP0mI`,
-  };
-
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -72,7 +64,7 @@ function DirectFruitsDetails() {
         return;
       }
       axios
-        .post(baseURL + `fuits-api/get-farmer-by-fid`, data, _header)
+        .post(baseURL + `fuits-api/get-farmer-by-fid`, data)
         .then((response) => {
           // debugger;
           if (response.data.error) {
@@ -120,7 +112,7 @@ function DirectFruitsDetails() {
 
       api
         .post(
-          baseURLFarmer +
+          baseURLDirectFarmer +
             `fuits-api/get-farmer-by-fid`,
           { farmerId: data.farmerId }
         )
