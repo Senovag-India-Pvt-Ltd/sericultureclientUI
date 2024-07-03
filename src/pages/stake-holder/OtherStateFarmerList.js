@@ -99,7 +99,7 @@ function OtherStateFarmerList() {
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/stake-holder-edit/${_id}`);
+    navigate(`/seriui/other-state-farmer-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
