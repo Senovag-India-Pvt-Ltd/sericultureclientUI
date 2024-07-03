@@ -14,8 +14,8 @@ import axios from "axios";
 const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
-const baseURLDirectFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_DIRECT_FRUITS;
-
+const baseURLDirectFarmer =
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_DIRECT_FRUITS;
 
 function DirectFruitsDetails() {
   const [data, setData] = useState({
@@ -24,6 +24,8 @@ function DirectFruitsDetails() {
     fruitsId: "",
     farmerId: "",
   });
+
+  const [responseData,setResponseData] = useState({})
 
   const styles = {
     ctstyle: {
@@ -52,10 +54,10 @@ function DirectFruitsDetails() {
   };
 
   const _header = {
+    Accept: "*/*",
     "Content-Type": "application/json",
-    'Access-Control-Allow-Origin': '*',
-    "Accept": "*/*",
-    "Authorization": `Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MzcsInBob25lTnVtYmVyIjoiNjM2NjEyNTg2OSIsInJvbGVJZCI6MSwidXNlclR5cGUiOjAsInVzZXJNYXN0ZXJJZCI6MTQ4LCJ1c2VybmFtZSI6Ik9wc21hbiIsIm1hcmtldElkIjozNCwic3ViIjoiT3BzbWFuIiwiaWF0IjoxNzE5ODIzOTkwLCJleHAiOjE3MjA0MjM5OTB9.gJIeZzUMAajzLc4IXbG5F73ri2eo7XHEICb9BSPP0mI`
+    "Access-Control-Allow-Origin": "*",
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJnb2Rvd25JZCI6MzcsInBob25lTnVtYmVyIjoiNjM2NjEyNTg2OSIsInJvbGVJZCI6MSwidXNlclR5cGUiOjAsInVzZXJNYXN0ZXJJZCI6MTQ4LCJ1c2VybmFtZSI6Ik9wc21hbiIsIm1hcmtldElkIjozNCwic3ViIjoiT3BzbWFuIiwiaWF0IjoxNzE5ODIzOTkwLCJleHAiOjE3MjA0MjM5OTB9.gJIeZzUMAajzLc4IXbG5F73ri2eo7XHEICb9BSPP0mI`,
   };
 
   const postData = (event) => {
@@ -70,7 +72,7 @@ function DirectFruitsDetails() {
         return;
       }
       axios
-        .post(baseURL + `fuits-api/get-farmer-by-fid`, data,_header)
+        .post(baseURL + `fuits-api/get-farmer-by-fid`, data, _header)
         .then((response) => {
           // debugger;
           if (response.data.error) {
@@ -116,32 +118,19 @@ function DirectFruitsDetails() {
         return;
       }
 
-      axios
-        // .post(
-        //   baseURLFarmer +
-        //     `fuits-api/get-farmer-by-fid`,
-        //   { farmerId: data.farmerId }
-        // )
+      api
         .post(
-          `https://e-reshme.karnataka.gov.in/fuits-api/get-farmer-by-fid`,
-          { farmerId: data.farmerId },{headers:_header}
+          baseURLFarmer +
+            `fuits-api/get-farmer-by-fid`,
+          { farmerId: data.farmerId }
         )
+        // .post(
+        //   `https://e-reshme.karnataka.gov.in/farmer-registration/fuits-api/get-farmer-by-fid`,
+        //   { farmerId: data.farmerId },
+        //   { headers: _header }
+        // )
         .then((response) => {
-          console.log(response);
-          if (!response.data.content.error) {
-            if (response.data.content.farmerResponse) {
-              const firstName = response.data.content.farmerResponse.firstName;
-              const fatherName =
-                response.data.content.farmerResponse.fatherName;
-              setData((prev) => ({
-                ...prev,
-                farmerName: firstName,
-                fatherName: fatherName,
-              }));
-            }
-          } else {
-            saveError(response.data.content.error_description);
-          }
+          setResponseData(response.data)
         })
         .catch((err) => {
           if (Object.keys(err.response.data.validationErrors).length > 0) {
@@ -388,45 +377,26 @@ function DirectFruitsDetails() {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Farmer Details</Card.Header>
+                <Card.Header>Fruits Response</Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="sordfl">
-                          Farmer’s name<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="farmerName"
-                            name="farmerName"
-                            value={data.farmerName}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Farmer’s name"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Farmer Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="sordfl">
-                          Father’s Name<span className="text-danger">*</span>
-                        </Form.Label>
+                        {/* <Form.Label htmlFor="sordfl">
+                          Father’s Name
+                          <span className="text-danger">*</span>
+                        </Form.Label> */}
                         <div className="form-control-wrap">
                           <Form.Control
                             id="fatherName"
                             name="fatherName"
-                            value={data.fatherName}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Father Name"
-                            required
+                            value={JSON.stringify(responseData, null, 2)}
+                            // onChange={handleInputs}
+                            as="textarea"
+                            rows={20}
+                            placeholder="Data will be fetched from FRUITS"
+                            readOnly
+                            // required
                           />
                           <Form.Control.Feedback type="invalid">
                             Father Name is required
