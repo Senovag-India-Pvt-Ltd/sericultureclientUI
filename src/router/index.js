@@ -827,6 +827,8 @@ import AllApplicationList from "../pages/services-module/application/AllApplicat
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
 import DistrictWiseFarmerCountList from "../pages/services-module/application/DistrictWiseFarmerCountList";
 import ReadyForPaymentForSeedMarket from "../pages/market-and-auction/ReadyForPaymentForSeedMarket";
+import FarmerRegistrationList from "../pages/stake-holder/FarmerRegistrationList";
+import DirectFruitsDetails from "../pages/stake-holder/DirectFruitsDetails";
 // Admin and Reports
 
 function Router() {
@@ -1098,6 +1100,14 @@ function Router() {
             <Route
               path="training-deputation-tracker-edit/:id"
               element={<TrainingDeputationTrackerEdit />}
+            />
+            <Route
+              path="farmer-wise-report"
+              element={<FarmerRegistrationList />}
+            />
+             <Route
+              path="direct-fruits-details"
+              element={<DirectFruitsDetails />}
             />
 
             {/* Services */}
