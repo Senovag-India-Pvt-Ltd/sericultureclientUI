@@ -829,6 +829,7 @@ import DistrictWiseFarmerCountList from "../pages/services-module/application/Di
 import ReadyForPaymentForSeedMarket from "../pages/market-and-auction/ReadyForPaymentForSeedMarket";
 import FarmerRegistrationList from "../pages/stake-holder/FarmerRegistrationList";
 import DirectFruitsDetails from "../pages/stake-holder/DirectFruitsDetails";
+import OtherStateFarmerEdit from "../pages/stake-holder/OtherStateFarmerEdit";
 // Admin and Reports
 
 function Router() {
@@ -987,6 +988,7 @@ function Router() {
               element={<StakeHolderRegister />}
             />
             <Route path="other-state-farmer" element={<OtherStateFarmer />} />
+            <Route path="other-state-farmer-edit/:id" element={<OtherStateFarmerEdit />} />
             <Route
               path="other-state-farmer-list"
               element={<OtherStateFarmerList />}
