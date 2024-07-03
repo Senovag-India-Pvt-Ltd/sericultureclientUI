@@ -19,7 +19,7 @@ function FarmerRegistrationList() {
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 20;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
@@ -46,10 +46,12 @@ function FarmerRegistrationList() {
         {},
         {
           params: {
-            districtId: data.districtId,
-            talukId: data.talukId,
-            villageId: data.villageId,
-            tscMasterId: data.tscMasterId,
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            villageId: data.villageId || 0,
+            tscMasterId: data.tscMasterId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
           },
         }
       )
@@ -305,6 +307,13 @@ function FarmerRegistrationList() {
   };
 
   const FarmerDataColumns = [
+    {
+      name: "Sl.No",
+      selector: (row) => row.serialNumber,
+      cell: (row) => <span>{row.serialNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
     
     {
       name: "First Name",
@@ -394,7 +403,7 @@ function FarmerRegistrationList() {
       <Col sm={2}>
           <Form.Group className="form-group mt-n4">
             <Form.Label>
-              District<span className="text-danger">*</span>
+              District
             </Form.Label>
             <div className="form-control-wrap">
               <Form.Select
@@ -544,14 +553,16 @@ function FarmerRegistrationList() {
                             }
                           >
                             <option value="">Select TSC</option>
-                            {tscListData.map((list) => (
+                            {tscListData && tscListData.length
+                              ? tscListData.map((list) => (
                               <option
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
                                 {list.name}
                               </option>
-                            ))}
+                            ))
+                            : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             TSC is required

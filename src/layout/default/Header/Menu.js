@@ -424,6 +424,7 @@ function Menu() {
     Admin_Report_Bidding_Reeler_Report: false,
     Admin_Report_Farmer_Transaction_Report: false,
     Admin_Report_District_Wise_Farmer_Count: false,
+    Admin_Report_Farmer_Wise: false,
     Admin_Report_Reeler_Transaction_Report: false,
     Admin_Report_GeneratedTriplet: false,
     Admin_Report_GeneratedFarmerCopy: false,
@@ -2979,6 +2980,14 @@ function Menu() {
                       <MenuItemLink
                         text="District Wise Farmer Count"
                         to="/seriui/district-wise-farmer-count-list"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Farmer_Wise ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Farmer Wise Report"
+                        to="/seriui/farmer-wise-report"
                       />
                     </MenuItem>
                   ) : null}
