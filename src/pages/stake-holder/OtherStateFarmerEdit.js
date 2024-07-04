@@ -1,6 +1,6 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
@@ -18,11 +18,9 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function OtherStateFarmerEdit() {
-
-const { id } = useParams();
+  const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-
 
   let name, value;
   const handleInputs = (e) => {
@@ -35,18 +33,15 @@ const { id } = useParams();
     setData({ ...data, [type]: date });
   };
 
-
   const isDataDobSet = !!data.dob;
- 
 
   const [isOtherState, setIsOtherState] = useState(true);
 
- 
   const getFarmerAddressDetailsList = () => {
     api
       .get(baseURL2 + `farmer-address/get-by-farmer-id-join/${id}`)
       .then((response) => {
-        setFarmerAddress(response.data.content.farmerAddress);
+        setFarmerAddress(response.data.content.farmerAddress[0]);
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -85,7 +80,6 @@ const { id } = useParams();
     setIsOtherState(value);
   };
 
-  
   const clear = () => {
     setData({
       fruitsId: "",
@@ -156,8 +150,6 @@ const { id } = useParams();
     setBank({ ...bank, [name]: value });
   };
 
-
-
   const [selected, setSelected] = useState("no");
   const handleChange = (event) => {
     setSelected(event.target.value);
@@ -172,7 +164,6 @@ const { id } = useParams();
   const [validatedFarmerAddress, setValidatedFarmerAddress] = useState(false);
   const [validatedFarmerAddressEdit, setValidatedFarmerAddressEdit] =
     useState(false);
-
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -217,10 +208,8 @@ const { id } = useParams();
       .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${id}`)
       .then((response) => {
         setBank(response.data.content);
-        
       })
       .catch((err) => {
-        
         if (
           err.response &&
           err.response &&
@@ -236,20 +225,15 @@ const { id } = useParams();
       });
   };
 
-  
-
   const getIdList = () => {
     // setLoading(true);
     api
       .get(baseURL2 + `farmer/get/${id}`)
       .then((response) => {
         setData(response.data.content);
-
       })
       .catch((err) => {
-        
         setData({});
-        
       });
   };
 
@@ -259,7 +243,7 @@ const { id } = useParams();
     getBankDetails();
   }, [id]);
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -315,8 +299,6 @@ const { id } = useParams();
   useEffect(() => {
     getCasteList();
   }, []);
-
-  
 
   const [addressStateListData, setAddressStateListData] = useState([]);
   const getAddressList = () => {
@@ -487,7 +469,6 @@ const { id } = useParams();
     });
   };
 
- 
   // State
   const handleStateOption = (e) => {
     const value = e.target.value;
@@ -629,11 +610,11 @@ const { id } = useParams();
   const { t } = useTranslation();
 
   return (
-    <Layout title="Other State Registration">
+    <Layout title="Edit Other State Registration">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Other State Registration</Block.Title>
+            <Block.Title tag="h2">Edit Other State Registration</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -664,8 +645,6 @@ const { id } = useParams();
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
-           
-
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -795,13 +774,9 @@ const { id } = useParams();
                           )}
                         </div>
                       </Form.Group>
-
-                      
-                      
                     </Col>
 
                     <Col lg="6">
-                     
                       <Form.Group className="form-group ">
                         <Form.Label htmlFor="mobileNumber">
                           {t("mobile_number")}
@@ -823,8 +798,6 @@ const { id } = useParams();
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-
-                     
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="epicNumber">
@@ -904,7 +877,6 @@ const { id } = useParams();
               </Card>
             </Block>
 
-
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>
@@ -915,7 +887,8 @@ const { id } = useParams();
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                          State
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -923,11 +896,11 @@ const { id } = useParams();
                             value={`${farmerAddress.stateId}_${farmerAddress.stateName}`}
                             onChange={handleStateOption}
                             onBlur={() => handleStateOption}
-                            required
-                            isInvalid={
-                              farmerAddress.stateId === undefined ||
-                              farmerAddress.stateId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.stateId === undefined ||
+                            //   farmerAddress.stateId === "0"
+                            // }
                           >
                             <option value="">Select State</option>
                             {addressStateListData.map((list) => (
@@ -939,16 +912,17 @@ const { id } = useParams();
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             State Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                          District
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -956,11 +930,11 @@ const { id } = useParams();
                             value={`${farmerAddress.districtId}_${farmerAddress.districtName}`}
                             onChange={handleDistrictOption}
                             onBlur={() => handleDistrictOption}
-                            required
-                            isInvalid={
-                              farmerAddress.districtId === undefined ||
-                              farmerAddress.districtId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.districtId === undefined ||
+                            //   farmerAddress.districtId === "0"
+                            // }
                           >
                             <option value="">Select District</option>
                             {addressdistrictListData &&
@@ -975,16 +949,17 @@ const { id } = useParams();
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             District Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                          Taluk
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -992,11 +967,11 @@ const { id } = useParams();
                             value={`${farmerAddress.talukId}_${farmerAddress.talukName}`}
                             onChange={handleTalukOption}
                             onBlur={() => handleTalukOption}
-                            required
-                            isInvalid={
-                              farmerAddress.talukId === undefined ||
-                              farmerAddress.talukId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.talukId === undefined ||
+                            //   farmerAddress.talukId === "0"
+                            // }
                           >
                             <option value="">Select Taluk</option>
                             {addressTalukListData && addressTalukListData.length
@@ -1010,16 +985,17 @@ const { id } = useParams();
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Taluk Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Hobli<span className="text-danger">*</span>
+                          Hobli
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1027,11 +1003,11 @@ const { id } = useParams();
                             value={`${farmerAddress.hobliId}_${farmerAddress.hobliName}`}
                             onChange={handleHobliOption}
                             onBlur={() => handleHobliOption}
-                            required
-                            isInvalid={
-                              farmerAddress.hobliId === undefined ||
-                              farmerAddress.hobliId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.hobliId === undefined ||
+                            //   farmerAddress.hobliId === "0"
+                            // }
                           >
                             <option value="">Select Hobli</option>
                             {addressHobliListData && addressHobliListData.length
@@ -1045,16 +1021,17 @@ const { id } = useParams();
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Hobli Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
-                          Village<span className="text-danger">*</span>
+                          Village
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1062,11 +1039,11 @@ const { id } = useParams();
                             value={`${farmerAddress.villageId}_${farmerAddress.villageName}`}
                             onChange={handleVillageOption}
                             onBlur={() => handleVillageOption}
-                            required
-                            isInvalid={
-                              farmerAddress.villageId === undefined ||
-                              farmerAddress.villageId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.villageId === undefined ||
+                            //   farmerAddress.villageId === "0"
+                            // }
                           >
                             <option value="">Select Village</option>
                             {addressVillageListData &&
@@ -1081,16 +1058,16 @@ const { id } = useParams();
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Village Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-2">
                         <Form.Label htmlFor="address">
                           {t("address")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1102,11 +1079,11 @@ const { id } = useParams();
                             type="text"
                             placeholder={t("enter_address")}
                             rows="2"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Address is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1115,7 +1092,7 @@ const { id } = useParams();
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="pincode">
                           {t("pin_code")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1127,12 +1104,11 @@ const { id } = useParams();
                             placeholder={t("enter_pin_code")}
                             required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Pincode is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
-                    
                     </Col>
                   </Row>
                 </Card.Body>
@@ -1274,7 +1250,6 @@ const { id } = useParams();
                   </Button>
                 </li>
                 <li>
-                  
                   <Button variant="secondary" onClick={clear}>
                     {t("cancel")}
                   </Button>

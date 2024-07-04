@@ -48,6 +48,7 @@ function OtherStateFarmer() {
     fatherNameKan: "",
     fatherName: "",
     nameKan: "",
+    farmerNumber: "",
   });
 
   const [isOtherState, setIsOtherState] = useState(true);
@@ -184,6 +185,19 @@ function OtherStateFarmer() {
   // const [farmerId, setFarmerId] = useState({
   //   farmerId: "",
   // });
+
+  useEffect(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const date = String(now.getDate()).padStart(2, "0");
+
+    const timeString = hours + minutes + seconds + date + month + year;
+    setData((prev) => ({ ...prev, farmerNumber: timeString }));
+  }, [data.fruitsId]);
 
   let name, value;
   const handleInputs = (e) => {
@@ -1144,8 +1158,6 @@ function OtherStateFarmer() {
                         </div>
                       </Form.Group> */}
 
-                      
-
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("differently_abled")}</Form.Label>
                         <div className="form-control-wrap">
@@ -1228,6 +1240,28 @@ function OtherStateFarmer() {
                             type="text"
                             placeholder={t("enter_epic_number")}
                           />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="rid">
+                          {t("farmer_number")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerNumber"
+                            name="farmerNumber"
+                            value={data.farmerNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            // placeholder={t("enter_farmer_number")}
+                            placeholder="eg: TTH00001"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Number is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
 
@@ -1690,7 +1724,8 @@ function OtherStateFarmer() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                          State
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1698,11 +1733,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.stateId}_${farmerAddress.stateName}`}
                             onChange={handleStateOption}
                             onBlur={() => handleStateOption}
-                            required
-                            isInvalid={
-                              farmerAddress.stateId === undefined ||
-                              farmerAddress.stateId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.stateId === undefined ||
+                            //   farmerAddress.stateId === "0"
+                            // }
                           >
                             <option value="">Select State</option>
                             {addressStateListData.map((list) => (
@@ -1714,16 +1749,17 @@ function OtherStateFarmer() {
                               </option>
                             ))}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             State Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                          District
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1731,11 +1767,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.districtId}_${farmerAddress.districtName}`}
                             onChange={handleDistrictOption}
                             onBlur={() => handleDistrictOption}
-                            required
-                            isInvalid={
-                              farmerAddress.districtId === undefined ||
-                              farmerAddress.districtId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.districtId === undefined ||
+                            //   farmerAddress.districtId === "0"
+                            // }
                           >
                             <option value="">Select District</option>
                             {addressdistrictListData &&
@@ -1759,7 +1795,8 @@ function OtherStateFarmer() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                          Taluk
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1767,11 +1804,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.talukId}_${farmerAddress.talukName}`}
                             onChange={handleTalukOption}
                             onBlur={() => handleTalukOption}
-                            required
-                            isInvalid={
-                              farmerAddress.talukId === undefined ||
-                              farmerAddress.talukId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.talukId === undefined ||
+                            //   farmerAddress.talukId === "0"
+                            // }
                           >
                             <option value="">Select Taluk</option>
                             {addressTalukListData && addressTalukListData.length
@@ -1785,16 +1822,17 @@ function OtherStateFarmer() {
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Taluk Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Hobli<span className="text-danger">*</span>
+                          Hobli
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1802,11 +1840,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.hobliId}_${farmerAddress.hobliName}`}
                             onChange={handleHobliOption}
                             onBlur={() => handleHobliOption}
-                            required
-                            isInvalid={
-                              farmerAddress.hobliId === undefined ||
-                              farmerAddress.hobliId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.hobliId === undefined ||
+                            //   farmerAddress.hobliId === "0"
+                            // }
                           >
                             <option value="">Select Hobli</option>
                             {addressHobliListData && addressHobliListData.length
@@ -1820,16 +1858,17 @@ function OtherStateFarmer() {
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Hobli Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
-                          Village<span className="text-danger">*</span>
+                          Village
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1837,11 +1876,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.villageId}_${farmerAddress.villageName}`}
                             onChange={handleVillageOption}
                             onBlur={() => handleVillageOption}
-                            required
-                            isInvalid={
-                              farmerAddress.villageId === undefined ||
-                              farmerAddress.villageId === "0"
-                            }
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.villageId === undefined ||
+                            //   farmerAddress.villageId === "0"
+                            // }
                           >
                             <option value="">Select Village</option>
                             {addressVillageListData &&
@@ -1856,16 +1895,16 @@ function OtherStateFarmer() {
                                 ))
                               : ""}
                           </Form.Select>
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Village Name is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
 
                       <Form.Group className="form-group mt-2">
                         <Form.Label htmlFor="address">
                           {t("address")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1877,11 +1916,11 @@ function OtherStateFarmer() {
                             type="text"
                             placeholder={t("enter_address")}
                             rows="2"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Address is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1890,7 +1929,7 @@ function OtherStateFarmer() {
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="pincode">
                           {t("pin_code")}
-                          <span className="text-danger">*</span>
+                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1900,11 +1939,11 @@ function OtherStateFarmer() {
                             onChange={handleFarmerAddressInputs}
                             type="text"
                             placeholder={t("enter_pin_code")}
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Pincode is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                       {/* <Form.Group className="form-group">
