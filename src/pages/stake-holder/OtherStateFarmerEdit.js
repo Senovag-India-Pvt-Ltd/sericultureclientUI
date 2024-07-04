@@ -816,6 +816,28 @@ function OtherStateFarmerEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                        <Form.Label htmlFor="rid">
+                          {t("farmer_number")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerNumber"
+                            name="farmerNumber"
+                            value={data.farmerNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            // placeholder={t("enter_farmer_number")}
+                            placeholder="eg: TTH00001"
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>
                           Farmer Type<span className="text-danger">*</span>
                         </Form.Label>
