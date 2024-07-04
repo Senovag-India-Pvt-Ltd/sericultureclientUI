@@ -156,14 +156,7 @@ function OtherStateFarmerEdit() {
   };
 
   const [validated, setValidated] = useState(false);
-  const [validatedFamilyMembers, setValidatedFamilyMembers] = useState(false);
-  const [validatedFamilyMembersEdit, setValidatedFamilyMembersEdit] =
-    useState(false);
-  const [validatedFarmerLand, setValidatedFarmerLand] = useState(false);
-  const [validatedFarmerLandEdit, setValidatedFarmerLandEdit] = useState(false);
-  const [validatedFarmerAddress, setValidatedFarmerAddress] = useState(false);
-  const [validatedFarmerAddressEdit, setValidatedFarmerAddressEdit] =
-    useState(false);
+  
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -175,28 +168,56 @@ function OtherStateFarmerEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+        return;
+      }
+
+      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        return;
+      }
+      if (
+        bank.farmerBankIfscCode.length < 11 ||
+        bank.farmerBankIfscCode.length > 11
+      ) {
+        return;
+      }
+
+      const sendData = {
+        editFarmerBankAccountRequest: bank,
+        editFarmerAddressRequestList:farmerAddress,
+      };
+
       api
-        .post(baseURL2 + `farmer/edit-non-karnataka-farmer`, {
-          ...data,
-          farmerAddressList: [{ ...farmerAddress }],
-          farmerBankAccount: { ...bank },
-        })
+        .post(baseURL2 + `farmer/edit-non-karnataka-farmer`, sendData)
+         
         .then((response) => {
+          const farmerId = response.data.content.farmerId;
+          const farmerBankAccountId = response.data.content.farmerBankAccountId;
           if (response.data.content.error) {
-            saveError(response.data.content.error_description);
+            updateError(response.data.content.error_description);
           } else {
-            saveSuccess(
-              `Generated Farmer Number ${response.data.content.farmerNumber}`
-            );
-            handleFileUpload(response.data.content.farmerId);
-            handleFileDocumentUpload(response.data.content.farmerBankAccountId);
-            setValidated(false);
+            if (data.photoPath) {
+              handleFileUpload(farmerId);
+            }
+            if (bank.accountImagePath) {
+              handleFileDocumentUpload(farmerBankAccountId);
+            }
+            updateSuccess();
           }
+          
         })
         .catch((err) => {
-          //   if (Object.keys(err.response.data.validationErrors).length > 0) {
-          //     saveError(err.response.data.validationErrors);
-          //   }
+
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              updateError(err.response.data.validationErrors);
+            }
+          }
         });
       setValidated(true);
     }
@@ -208,6 +229,10 @@ function OtherStateFarmerEdit() {
       .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${id}`)
       .then((response) => {
         setBank(response.data.content);
+        // setLoading(false);
+        if (response.data.content.accountImagePath) {
+          getDocumentFile(response.data.content.accountImagePath);
+        }
       })
       .catch((err) => {
         if (
@@ -231,6 +256,11 @@ function OtherStateFarmerEdit() {
       .get(baseURL2 + `farmer/get/${id}`)
       .then((response) => {
         setData(response.data.content);
+        
+        // setLoading(false);
+        if (response.data.content.photoPath) {
+          getFile(response.data.content.photoPath);
+        }
       })
       .catch((err) => {
         setData({});
@@ -242,6 +272,7 @@ function OtherStateFarmerEdit() {
     getFarmerAddressDetailsList();
     getBankDetails();
   }, [id]);
+  
 
   //   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -524,87 +555,109 @@ function OtherStateFarmerEdit() {
     });
   };
 
-  // Program
-  // const handleProgramOption = (e) => {
-  //   const value = e.target.value;
-  //   const [chooseId, chooseName] = value.split("_");
-  //   setFarmerLand({
-  //     ...farmerLand,
-  //     scProgramId: chooseId,
-  //     scProgramName: chooseName,
-  //   });
-  // };
+  
 
-  // roofType
+//Display Document
+const [document, setDocument] = useState("");
 
-  // State
+const handleDocumentChange = (e) => {
+  const file = e.target.files[0];
+  setDocument(file);
+  setBank((prev) => ({ ...prev, accountImagePath: file.name }));
+  // setPhotoFile(file);
+};
+// Upload Image to S3 Bucket
+const handleFileDocumentUpload = async (farmerBankAccountid) => {
+  const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
+  try {
+    const formData = new FormData();
+    formData.append("multipartFile", document);
 
-  // console.log(stateNameLD);
+    const response = await api.post(
+      baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("File upload response:", response.data);
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
 
-  //Display Document
-  const [document, setDocument] = useState("");
+// To get Photo from S3 Bucket
+const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
 
-  const handleDocumentChange = (e) => {
-    const file = e.target.files[0];
-    setDocument(file);
-    setBank((prev) => ({ ...prev, accountImagePath: file.name }));
-    // setPhotoFile(file);
-  };
+const getDocumentFile = async (file) => {
+  const parameters = `fileName=${file}`;
+  try {
+    const response = await api.get(
+      baseURL2 + `api/s3/download?${parameters}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+    const blob = new Blob([response.data]);
+    const url = URL.createObjectURL(blob);
+    setSelectedDocumentFile(url);
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+};
 
-  // Upload Image to S3 Bucket
-  const handleFileDocumentUpload = async (farmerBankAccountid) => {
-    const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
+// Display Image
+const [image, setImage] = useState("");
+
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  setImage(file);
+  setData((prev) => ({ ...prev, photoPath: file.name }));
+};
+
+// Upload Image to S3 Bucket
+const handleFileUpload = async (fid) => {
+  const parameters = `farmerId=${fid}`;
+  try {
+    const formData = new FormData();
+    formData.append("multipartFile", image);
+
+    const response = await api.post(
+      baseURL2 + `farmer/upload-photo?${parameters}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("File upload response:", response.data);
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
+  // To get Photo from S3 Bucket
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const getFile = async (file) => {
+    const parameters = `fileName=${file}`;
     try {
-      const formData = new FormData();
-      formData.append("multipartFile", document);
-
-      const response = await api.post(
-        baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
-        formData,
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          responseType: "arraybuffer",
         }
       );
-      console.log("File upload response:", response.data);
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedFile(url);
     } catch (error) {
-      console.error("Error uploading file:", error);
+      console.error("Error fetching file:", error);
     }
   };
 
-  // Display Image
-  const [image, setImage] = useState("");
-  // const [photoFile,setPhotoFile] = useState("")
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setData((prev) => ({ ...prev, photoPath: file.name }));
-    // setPhotoFile(file);
-  };
-
-  // Upload Image to S3 Bucket
-  const handleFileUpload = async (fid) => {
-    const parameters = `farmerId=${fid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", image);
-
-      const response = await api.post(
-        baseURL2 + `farmer/upload-photo?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
 
   // Translation
   const { t } = useTranslation();
@@ -870,14 +923,13 @@ function OtherStateFarmerEdit() {
                       </Form.Group>
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")}
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             type="file"
                             id="photoPath"
                             name="photoPath"
-                            // value={data.photoPath}
                             onChange={handleImageChange}
                           />
                         </div>
@@ -890,7 +942,13 @@ function OtherStateFarmerEdit() {
                             src={URL.createObjectURL(image)}
                           />
                         ) : (
-                          ""
+                          selectedFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedFile}
+                              alt="Selected File"
+                            />
+                          )
                         )}
                       </Form.Group>
                     </Col>
@@ -1061,11 +1119,7 @@ function OtherStateFarmerEdit() {
                             value={`${farmerAddress.villageId}_${farmerAddress.villageName}`}
                             onChange={handleVillageOption}
                             onBlur={() => handleVillageOption}
-                            // required
-                            // isInvalid={
-                            //   farmerAddress.villageId === undefined ||
-                            //   farmerAddress.villageId === "0"
-                            // }
+                           
                           >
                             <option value="">Select Village</option>
                             {addressVillageListData &&
@@ -1234,7 +1288,7 @@ function OtherStateFarmerEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                          Upload Bank Passbook(Max:2mb) (PDF/jpg/png)
+                          Upload Bank Passbok
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1254,7 +1308,13 @@ function OtherStateFarmerEdit() {
                             src={URL.createObjectURL(document)}
                           />
                         ) : (
-                          ""
+                          selectedDocumentFile && (
+                            <img
+                              style={{ height: "100px", width: "100px" }}
+                              src={selectedDocumentFile}
+                              alt="Selected File"
+                            />
+                          )
                         )}
                       </Form.Group>
                     </Col>

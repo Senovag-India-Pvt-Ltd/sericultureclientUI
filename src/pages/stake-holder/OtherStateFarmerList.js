@@ -279,13 +279,13 @@ function OtherStateFarmerList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Passbook Number",
-      selector: (row) => row.passbookNumber,
-      cell: (row) => <span>{row.passbookNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Passbook Number",
+    //   selector: (row) => row.passbookNumber,
+    //   cell: (row) => <span>{row.passbookNumber}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "Gender",
     //   selector: (row) => row.genderId,
