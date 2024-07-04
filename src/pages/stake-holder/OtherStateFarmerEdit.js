@@ -161,7 +161,7 @@ function OtherStateFarmerEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
-    debugger
+    // debugger
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -182,10 +182,10 @@ function OtherStateFarmerEdit() {
       ) {
         return;
       }
-
+      console.log("Nagarajanna",bank);
       const sendData = {
         editFarmerBankAccountRequest: bank,
-        editFarmerAddressRequestList:farmerAddress,
+        editFarmerAddressRequest:farmerAddress,
       };
 
       api
