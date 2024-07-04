@@ -156,7 +156,6 @@ function OtherStateFarmerEdit() {
   };
 
   const [validated, setValidated] = useState(false);
-  
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -182,15 +181,16 @@ function OtherStateFarmerEdit() {
       ) {
         return;
       }
-      console.log("Nagarajanna",bank);
+      // console.log("Nagarajanna",bank);
       const sendData = {
+        ...data,
         editFarmerBankAccountRequest: bank,
-        editFarmerAddressRequest:farmerAddress,
+        editFarmerAddressRequest: farmerAddress,
       };
 
       api
         .post(baseURL2 + `farmer/edit-non-karnataka-farmer`, sendData)
-         
+
         .then((response) => {
           const farmerId = response.data.content.farmerId;
           const farmerBankAccountId = response.data.content.farmerBankAccountId;
@@ -205,10 +205,8 @@ function OtherStateFarmerEdit() {
             }
             updateSuccess();
           }
-          
         })
         .catch((err) => {
-
           if (
             err.response &&
             err.response &&
@@ -257,7 +255,7 @@ function OtherStateFarmerEdit() {
       .get(baseURL2 + `farmer/get/${id}`)
       .then((response) => {
         setData(response.data.content);
-        
+
         // setLoading(false);
         if (response.data.content.photoPath) {
           getFile(response.data.content.photoPath);
@@ -273,7 +271,6 @@ function OtherStateFarmerEdit() {
     getFarmerAddressDetailsList();
     getBankDetails();
   }, [id]);
-  
 
   //   const navigate = useNavigate();
   const updateSuccess = () => {
@@ -556,89 +553,87 @@ function OtherStateFarmerEdit() {
     });
   };
 
-  
+  //Display Document
+  const [document, setDocument] = useState("");
 
-//Display Document
-const [document, setDocument] = useState("");
+  const handleDocumentChange = (e) => {
+    const file = e.target.files[0];
+    setDocument(file);
+    setBank((prev) => ({ ...prev, accountImagePath: file.name }));
+    // setPhotoFile(file);
+  };
+  // Upload Image to S3 Bucket
+  const handleFileDocumentUpload = async (farmerBankAccountid) => {
+    const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", document);
 
-const handleDocumentChange = (e) => {
-  const file = e.target.files[0];
-  setDocument(file);
-  setBank((prev) => ({ ...prev, accountImagePath: file.name }));
-  // setPhotoFile(file);
-};
-// Upload Image to S3 Bucket
-const handleFileDocumentUpload = async (farmerBankAccountid) => {
-  const parameters = `farmerBankAccountId=${farmerBankAccountid}`;
-  try {
-    const formData = new FormData();
-    formData.append("multipartFile", document);
+      const response = await api.post(
+        baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
-    const response = await api.post(
-      baseURL2 + `farmer-bank-account/upload-photo?${parameters}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log("File upload response:", response.data);
-  } catch (error) {
-    console.error("Error uploading file:", error);
-  }
-};
+  // To get Photo from S3 Bucket
+  const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
 
-// To get Photo from S3 Bucket
-const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+  const getDocumentFile = async (file) => {
+    const parameters = `fileName=${file}`;
+    try {
+      const response = await api.get(
+        baseURL2 + `api/s3/download?${parameters}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      setSelectedDocumentFile(url);
+    } catch (error) {
+      console.error("Error fetching file:", error);
+    }
+  };
 
-const getDocumentFile = async (file) => {
-  const parameters = `fileName=${file}`;
-  try {
-    const response = await api.get(
-      baseURL2 + `api/s3/download?${parameters}`,
-      {
-        responseType: "arraybuffer",
-      }
-    );
-    const blob = new Blob([response.data]);
-    const url = URL.createObjectURL(blob);
-    setSelectedDocumentFile(url);
-  } catch (error) {
-    console.error("Error fetching file:", error);
-  }
-};
+  // Display Image
+  const [image, setImage] = useState("");
 
-// Display Image
-const [image, setImage] = useState("");
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setData((prev) => ({ ...prev, photoPath: file.name }));
+  };
 
-const handleImageChange = (e) => {
-  const file = e.target.files[0];
-  setImage(file);
-  setData((prev) => ({ ...prev, photoPath: file.name }));
-};
+  // Upload Image to S3 Bucket
+  const handleFileUpload = async (fid) => {
+    const parameters = `farmerId=${fid}`;
+    try {
+      const formData = new FormData();
+      formData.append("multipartFile", image);
 
-// Upload Image to S3 Bucket
-const handleFileUpload = async (fid) => {
-  const parameters = `farmerId=${fid}`;
-  try {
-    const formData = new FormData();
-    formData.append("multipartFile", image);
-
-    const response = await api.post(
-      baseURL2 + `farmer/upload-photo?${parameters}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log("File upload response:", response.data);
-  } catch (error) {
-    console.error("Error uploading file:", error);
-  }
-};
+      const response = await api.post(
+        baseURL2 + `farmer/upload-photo?${parameters}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File upload response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
   // To get Photo from S3 Bucket
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -658,7 +653,6 @@ const handleFileUpload = async (fid) => {
       console.error("Error fetching file:", error);
     }
   };
-
 
   // Translation
   const { t } = useTranslation();
@@ -1120,7 +1114,6 @@ const handleFileUpload = async (fid) => {
                             value={`${farmerAddress.villageId}_${farmerAddress.villageName}`}
                             onChange={handleVillageOption}
                             onBlur={() => handleVillageOption}
-                           
                           >
                             <option value="">Select Village</option>
                             {addressVillageListData &&
