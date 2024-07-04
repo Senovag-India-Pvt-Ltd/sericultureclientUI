@@ -161,6 +161,7 @@ function OtherStateFarmerEdit() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
+    debugger
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -168,9 +169,9 @@ function OtherStateFarmerEdit() {
       setValidated(true);
     } else {
       event.preventDefault();
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
+      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+      //   return;
+      // }
 
       if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
         return;
