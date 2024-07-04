@@ -181,7 +181,7 @@ function OtherStateFarmerEdit() {
       ) {
         return;
       }
-      // console.log("Nagarajanna",bank);
+      
       const sendData = {
         ...data,
         editFarmerBankAccountRequest: bank,
