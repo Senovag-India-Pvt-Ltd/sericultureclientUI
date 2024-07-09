@@ -23,7 +23,7 @@ function DisplayAllLot() {
       color: "#000",
       //   width: "50%",
       fontWeight: "bold",
-      fontSize: "25px",
+      fontSize: "45px",
       textAlign: "center",
     },
     bottom: {
