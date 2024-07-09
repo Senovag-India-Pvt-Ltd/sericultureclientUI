@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import ViewAllApplication from "../application-component/ViewAllApplication";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -24,6 +25,7 @@ function AllApplicationList() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+  const [applicationDetails, setApplicationDetails] = useState([]);
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -34,6 +36,11 @@ function AllApplicationList() {
   //   let { name, value } = e.target;
   //   setData({ ...data, [name]: value });
   // };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const [searchData, setSearchData] = useState({
     year1: "",
@@ -152,7 +159,7 @@ function AllApplicationList() {
 
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
-  const display = (event) => { 
+  const display = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -339,7 +346,7 @@ function AllApplicationList() {
         //   (item) => item.scApplicationFormId
         // );
         // setAllApplicationIds(scApplicationFormIds);
-        setTotalRows(response.data.totalRecords)
+        setTotalRows(response.data.totalRecords);
         setLoading(false);
       })
       .catch((err) => {
@@ -446,7 +453,23 @@ function AllApplicationList() {
 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/market-view/${_id}`);
+    api
+      .post(baseURLDBT + `service/viewApplicationDetails`, {
+        applicationFormId: _id,
+      })
+      .then((response) => {
+        if (response.data.content[0].applicationDetailsResponses.length <= 0) {
+          saveError("No Details Found!!!");
+        } else {
+          handleShowModal();
+          setApplicationDetails(response.data.content)
+          // saveSuccess();
+          // getList();
+        }
+      })
+      .catch((err) => {
+        // saveError(err.response.data.validationErrors);
+      });
   };
 
   const handleEdit = (_id) => {
@@ -509,7 +532,7 @@ function AllApplicationList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -583,7 +606,7 @@ function AllApplicationList() {
     {
       name: "Sl.No",
       // selector: (row,i) => row.farmerFirstName,
-      cell: (row,i) => <span>{i+1}</span>,
+      cell: (row, i) => <span>{i + 1}</span>,
       sortable: true,
       hide: "md",
     },
@@ -658,13 +681,13 @@ function AllApplicationList() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {/* <Button
+          <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.marketMasterId)}
+            onClick={() => handleView(row.scApplicationFormId)}
           >
             View
-          </Button> */}
+          </Button>
           <Button
             variant="primary"
             size="sm"
@@ -994,6 +1017,15 @@ function AllApplicationList() {
           </li>
         </ul>
       </div>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>View</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ViewAllApplication details={applicationDetails} />
+        </Modal.Body>
+      </Modal>
       {/* <Block className="">
         <Row className="g-3 ">
           <Form noValidate validated={validated} onSubmit={postData}>

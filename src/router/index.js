@@ -3020,7 +3020,7 @@ function Router() {
             <Route path="dashboard-report" element={<DashboardReport />} />
 
             {/* Display All Lot */}
-            <Route path="display-all-lot" element={<DisplayAllLot />} />
+            <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} />
 
             {/* Market Exception Time */}
             <Route

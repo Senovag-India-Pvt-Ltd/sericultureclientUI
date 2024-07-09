@@ -1,5 +1,5 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
@@ -16,6 +16,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function DisplayAllLot() {
+  const { marketId } = useParams();
   const styles = {
     top: {
       backgroundColor: "rgb(248 248 249)",
@@ -26,7 +27,7 @@ function DisplayAllLot() {
       textAlign: "center",
     },
     bottom: {
-      backgroundColor: "#fff",
+      backgroundColor: "#d0cdcd",
       color: "#b50606",
       fontWeight: "bold",
       fontSize: "80px",
@@ -99,13 +100,44 @@ function DisplayAllLot() {
     });
   }
 
+  // const getList = () => {
+  //   api
+  //     .post(
+  //       baseURLMarket +
+  //         `auction/report/getAllHighestBidsByMarketIdAndOptionalGodownId`,
+  //       { marketId: localStorage.getItem("marketId") }
+  //     )
+  //     .then((response) => {
+  //       console.log(response);
+  //       setLots(response.data.content);
+  //       setLotsLength(response.data.content.length);
+  //     })
+  //     .catch((err) => {});
+  // };
+
+  // Date Formate
+  const dateFormatter = (date) => {
+    if (date) {
+      return (
+        new Date(date).getFullYear() +
+        "-" +
+        (new Date(date).getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        new Date(date).getDate().toString().padStart(2, "0")
+      );
+    } else {
+      return "";
+    }
+  };
+
   const getList = () => {
+    console.log(marketId);
+    const today = dateFormatter(new Date());
     api
-      .post(
-        baseURLMarket +
-          `auction/report/getAllHighestBidsByMarketIdAndOptionalGodownId`,
-        { marketId: localStorage.getItem("marketId") }
-      )
+      .post(baseURLMarket + `auction/report/getLotAndAmount`, {
+        marketId: marketId,
+        auctionDate: today,
+      })
       .then((response) => {
         console.log(response);
         setLots(response.data.content);
@@ -141,81 +173,88 @@ function DisplayAllLot() {
   };
   return (
     // <Layout title="e-Weighment">
-    <div>
+    <div style={{ backgroundColor: "white" }}>
       <Block>
         <Form action="#">
-          <Row className="g-3">
-            <Col lg="12">
-              <Card>
-                <Card.Body>
-                  <Row className="g-3 d-flex justify-content-center">
-                    <Col lg="8" style={{ padding: "0px 0px 0px 8px" }}>
-                      <div className="table">
-                        <div className={getClassName()}>
-                          <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
-                            <thead>
+          <Row
+            className="g-3"
+            style={{ transform: "rotate(90deg)", maxHeight: "1300px" }}
+          >
+            <Col lg="8">
+              {/* <Card>
+                <Card.Body> */}
+              <Row className="g-3 d-flex justify-content-center">
+                <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
+                  <div className="table">
+                    <div className={getClassName()}>
+                      <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
+                        <thead>
+                          <tr>
+                            <th style={styles.top}>Lot No</th>
+                            <th style={styles.top}>Bid Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lots.map((lot) => (
+                            <>
                               <tr>
-                                <th style={styles.top}>Lot No</th>
-                                <th style={styles.top}>Bid Amount</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {lots.map((lot) => (
-                                <>
-                                  <tr>
-                                    <td
-                                      style={{ ...styles.bottom, width: "50%" }}
-                                    >
-                                      {lot.allottedLotId}
-                                    </td>
+                                <td style={{ ...styles.bottom, width: "50%" }}>
+                                  {lot.allottedLotId}
+                                </td>
 
-                                    <td
-                                      style={{ ...styles.bottom, width: "50%" }}
-                                    >
-                                      {" "}
-                                      &#8377; {lot.highestBid}
-                                    </td>
-                                  </tr>
-                                </>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className={getClassNameHide()}>
-                          <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
-                            <thead>
+                                <td
+                                  style={{
+                                    ...styles.bottom,
+                                    width: "50%",
+                                    color: "green",
+                                  }}
+                                >
+                                  {" "}
+                                  &#8377; {lot.highestBid}
+                                </td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className={getClassNameHide()}>
+                      <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
+                        <thead>
+                          <tr>
+                            <th style={styles.top}>Lot No</th>
+                            <th style={styles.top}>Bid Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lots.map((lot) => (
+                            <>
                               <tr>
-                                <th style={styles.top}>Lot No</th>
-                                <th style={styles.top}>Bid Amount</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {lots.map((lot) => (
-                                <>
-                                  <tr>
-                                    <td
-                                      style={{ ...styles.bottom, width: "50%" }}
-                                    >
-                                      {lot.allottedLotId}
-                                    </td>
+                                <td style={{ ...styles.bottom, width: "50%" }}>
+                                  {lot.allottedLotId}
+                                </td>
 
-                                    <td
-                                      style={{ ...styles.bottom, width: "50%" }}
-                                    >
-                                      {" "}
-                                      &#8377; {lot.highestBid}
-                                    </td>
-                                  </tr>
-                                </>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
+                                <td
+                                  style={{
+                                    ...styles.bottom,
+                                    width: "50%",
+                                    color: "green",
+                                  }}
+                                >
+                                  {" "}
+                                  &#8377; {lot.highestBid}
+                                </td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+              {/* </Card.Body>
+              </Card> */}
             </Col>
           </Row>
         </Form>
