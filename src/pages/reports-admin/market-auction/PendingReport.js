@@ -439,6 +439,15 @@ function PendingReport() {
                             }}
                             // colSpan="2"
                           >
+                            Reeler Name
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
                             Reeler Ph
                           </th>
                           <th
@@ -465,6 +474,7 @@ function PendingReport() {
                             <td>{list.farmerMobileNumber}</td>
                             <td>{list.acceptedBy ? list.acceptedBy : "---"}</td>
                             <td>{list.reelerLicense}</td>
+                            <td>{list.reelerName}</td>
                             <td>{list.reelerMobileNumber}</td>
                             <td>{list.reelerCurrentBalance}</td>
                           </tr>

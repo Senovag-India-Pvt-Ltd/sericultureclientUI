@@ -830,6 +830,8 @@ import ReadyForPaymentForSeedMarket from "../pages/market-and-auction/ReadyForPa
 import FarmerRegistrationList from "../pages/stake-holder/FarmerRegistrationList";
 import DirectFruitsDetails from "../pages/stake-holder/DirectFruitsDetails";
 import OtherStateFarmerEdit from "../pages/stake-holder/OtherStateFarmerEdit";
+import PaymentStatementForSeedMarket from "../pages/market-and-auction/PaymentStatementForSeedMarket";
+import BulkSendToPaymentForSeedMarket from "../pages/market-and-auction/BulkSendToPaymentForSeedMarket";
 // Admin and Reports
 
 function Router() {
@@ -2931,7 +2933,9 @@ function Router() {
             <Route path="ready-for-payment" element={<ReadyForPayment />} />
             <Route path="ready-for-payment-for-seed-market" element={<ReadyForPaymentForSeedMarket />} />
             <Route path="bank-statement" element={<BankStatement />} />
+            <Route path="payment-statement-for-seed-market" element={<PaymentStatementForSeedMarket />} />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
+            <Route path="bulk-send-to-payment-for-seed-market" element={<BulkSendToPaymentForSeedMarket />} />
             <Route path="ifsc-update" element={<IfscUpdate />} />
             <Route
               path="reeler-initial-amount"

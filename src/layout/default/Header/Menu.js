@@ -228,9 +228,15 @@ function Menu() {
     Market_Payment_Ready_for_Payment: false,
     Market_Payment_Bulk_Send_To_Bank: false,
     Market_Payment_Bank_Statement: false,
+
     Market_SeedMarket: false,
     Market_SeedMarket_Weighment: false,
     Market_SeedMarket_Lot_Distribution: false,
+
+    Market_SeedMarket_Payment: false,
+    Market_SeedMarket_Ready_For_Payment: false,
+    Market_SeedMarket_Bulk_Send_To_Payment: false,
+    Market_SeedMarket_Payment_Statement: false,
 
     SeedDFL: false,
     SeedDFL_BSF: false,
@@ -1289,19 +1295,12 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                    {/* {showMenu.Market_Payment_IFSC_Update ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="IFSC Update"
-                        to="/seriui/ifsc-update"
-                      />
-                    </MenuItem>
-                  ) : null} */}
+                   
                   </MenuSub>
                 </MenuItem>
               ) : null}
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
               {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
@@ -1327,19 +1326,80 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                   
-                    {/* {showMenu.Market_Payment_IFSC_Update ? (
-                    <MenuItem>
-                      <MenuItemLink
-                        text="IFSC Update"
-                        to="/seriui/ifsc-update"
-                      />
-                    </MenuItem>
-                  ) : null} */}
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
+            </MenuItem> */}
+  <MenuItem>
+  {showMenu.Market_SeedMarket ? (
+    <MenuItem sub>
+      <MenuItemLink
+        text="Seed Market"
+        onClick={menuToggle}
+        onMouseEnter={menuHover}
+        sub
+      />
+      <MenuSub>
+        {showMenu.Market_SeedMarket_Weighment ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Weighment"
+              to="/seriui/weighment-for-seed-market"
+            />
+          </MenuItem>
+        ) : null}
+        {showMenu.Market_SeedMarket_Lot_Distribution ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Lot Distribution "
+              to="/seriui/lot-groupage"
+            />
+          </MenuItem>
+        ) : null}
+      </MenuSub>
+    </MenuItem>
+  ) : null}
+</MenuItem>
+
+<MenuItem>
+  {showMenu.Market_SeedMarket_Payment ? (
+    <MenuItem sub>
+      <MenuItemLink
+        text="e-Payment For Seed Market"
+        onClick={menuToggle}
+        onMouseEnter={menuHover}
+        sub
+      />
+      <MenuSub>
+        {showMenu.Market_SeedMarket_Ready_For_Payment ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Ready for Payment"
+              to="/seriui/ready-for-payment-for-seed-market"
+            />
+          </MenuItem>
+        ) : null}
+        {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Bulk Send to Payment"
+              to="/seriui/bulk-send-to-payment-for-seed-market"
+            />
+          </MenuItem>
+        ) : null}
+        {showMenu.Market_SeedMarket_Payment_Statement ? (
+          <MenuItem>
+            <MenuItemLink
+              text="Payment Statement"
+              to="/seriui/payment-statement-for-seed-market"
+            />
+          </MenuItem>
+        ) : null}
+      </MenuSub>
+    </MenuItem>
+  ) : null}
+</MenuItem>
+
 
             
             {showMenu.Market_Reject ? (
