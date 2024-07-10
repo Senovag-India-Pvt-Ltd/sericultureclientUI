@@ -36,7 +36,7 @@ const SanctionOrderGeneration = () => {
   const [selectedDocumentFileName, setSelectedDocumentFileName] = useState([]);
   const [
     selectedDocumentOriginalFileName,
-    setSelectedDocumentOriginalFileName,
+  setSelectedDocumentOriginalFileName,
   ] = useState([]);
   const [workOrderId, setWorkOrderId] = useState("");
 

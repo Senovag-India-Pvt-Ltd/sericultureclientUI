@@ -1431,20 +1431,20 @@ function ServiceApplication() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/all-application-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Old Applications</span>
+                  <span>Applications List</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/all-application-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>Old Applications</span>
+                  <span>Applications List</span>
                 </Link>
               </li>
             </ul>

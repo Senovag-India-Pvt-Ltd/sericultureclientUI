@@ -3647,7 +3647,7 @@ function StakeHolderRegister() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="rhd">
                     {t("Rearing House (In Sq ft)")}
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -3657,18 +3657,18 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_rearing_house_dimensions")}
-                      required
+                      // required
                     />
-                    <Form.Control.Feedback type="invalid">
+                    {/* <Form.Control.Feedback type="invalid">
                       Rearing House (In Sq ft) is required
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     Rearing House Roof Type
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3676,11 +3676,11 @@ function StakeHolderRegister() {
                       value={`${farmerLand.roofTypeId}_${farmerLand.roofTypeName}`}
                       onChange={handleRoofTypeOption}
                       onBlur={() => handleRoofTypeOption}
-                      required
-                      isInvalid={
-                        farmerLand.roofTypeId === undefined ||
-                        farmerLand.roofTypeId === "0"
-                      }
+                      // required
+                      // isInvalid={
+                      //   farmerLand.roofTypeId === undefined ||
+                      //   farmerLand.roofTypeId === "0"
+                      // }
                     >
                       <option value="">Select Rearing House Roof Type</option>
                       {roofTypeListData.map((list) => (
@@ -3700,7 +3700,8 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety<span className="text-danger">*</span>
+                    Silk Worm Variety
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3708,11 +3709,11 @@ function StakeHolderRegister() {
                       value={`${farmerLand.silkWormVarietyId}_${farmerLand.silkWormVarietyName}`}
                       onChange={handleSilkWormVarietyOption}
                       onBlur={() => handleSilkWormVarietyOption}
-                      required
-                      isInvalid={
-                        farmerLand.silkWormVarietyId === undefined ||
-                        farmerLand.silkWormVarietyId === "0"
-                      }
+                      // required
+                      // isInvalid={
+                      //   farmerLand.silkWormVarietyId === undefined ||
+                      //   farmerLand.silkWormVarietyId === "0"
+                      // }
                     >
                       <option value="">Select Silk Worm Variety</option>
                       {silkWormVarietyListData.map((list) => (
@@ -4556,7 +4557,7 @@ function StakeHolderRegister() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="rhd">
                     {t("Rearing House (In Sq ft)")}
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -4566,18 +4567,18 @@ function StakeHolderRegister() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_rearing_house_dimensions")}
-                      required
+                      // required
                     />
-                    <Form.Control.Feedback type="invalid">
+                    {/* <Form.Control.Feedback type="invalid">
                       Rearing House (In Sq ft) is required
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     Rearing House Roof Type
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4585,11 +4586,11 @@ function StakeHolderRegister() {
                       value={`${farmerLand.roofTypeId}_${farmerLand.roofTypeName}`}
                       onChange={handleRoofTypeOption}
                       onBlur={() => handleRoofTypeOption}
-                      required
-                      isInvalid={
-                        farmerLand.roofTypeId === undefined ||
-                        farmerLand.roofTypeId === "0"
-                      }
+                      // required
+                      // isInvalid={
+                      //   farmerLand.roofTypeId === undefined ||
+                      //   farmerLand.roofTypeId === "0"
+                      // }
                     >
                       <option value="">Select Rearing House Roof Type</option>
                       {roofTypeListData.map((list) => (
@@ -4601,15 +4602,16 @@ function StakeHolderRegister() {
                         </option>
                       ))}
                     </Form.Select>
-                    <Form.Control.Feedback type="invalid">
+                    {/* <Form.Control.Feedback type="invalid">
                       Roof Type is required
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety<span className="text-danger">*</span>
+                    Silk Worm Variety
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4617,11 +4619,11 @@ function StakeHolderRegister() {
                       value={`${farmerLand.silkWormVarietyId}_${farmerLand.silkWormVarietyName}`}
                       onChange={handleSilkWormVarietyOption}
                       onBlur={() => handleSilkWormVarietyOption}
-                      required
-                      isInvalid={
-                        farmerLand.silkWormVarietyId === undefined ||
-                        farmerLand.silkWormVarietyId === "0"
-                      }
+                      // required
+                      // isInvalid={
+                      //   farmerLand.silkWormVarietyId === undefined ||
+                      //   farmerLand.silkWormVarietyId === "0"
+                      // }
                     >
                       <option value="">Select Silk Worm Variety</option>
                       {silkWormVarietyListData.map((list) => (
@@ -4633,9 +4635,9 @@ function StakeHolderRegister() {
                         </option>
                       ))}
                     </Form.Select>
-                    <Form.Control.Feedback type="invalid">
+                    {/* <Form.Control.Feedback type="invalid">
                       Silk Worm Variety is required
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                   </div>
                 </Form.Group>
 

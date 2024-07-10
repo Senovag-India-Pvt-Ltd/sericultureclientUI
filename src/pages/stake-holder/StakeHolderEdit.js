@@ -649,7 +649,7 @@ function StakeHolderEdit() {
         editFarmerRequest: data,
         editFarmerBankAccountRequest: bank,
         editFarmerFamilyRequests: familyMembersList,
-        editFarmerAddressRequests:farmerAddressList,
+        editFarmerAddressRequests: farmerAddressList,
         editFarmerLandDetailsRequests: farmerLandList,
       };
 
@@ -2143,7 +2143,8 @@ function StakeHolderEdit() {
                             onBlur={() => handleInputs}
                             required
                             isInvalid={
-                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                              data.tscMasterId === undefined ||
+                              data.tscMasterId === "0"
                             }
                           >
                             <option value="">Select TSC</option>
@@ -3226,7 +3227,7 @@ function StakeHolderEdit() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="rhd">
                     {t("Rearing House (In Sq ft)")}
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -3236,7 +3237,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_rearing_house_dimensions")}
-                      required
+                      // required
                     />
                     <Form.Control.Feedback type="invalid">
                       Rearing House (In Sq ft) is required
@@ -3247,7 +3248,7 @@ function StakeHolderEdit() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     Rearing House Roof Type
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3255,7 +3256,7 @@ function StakeHolderEdit() {
                       value={farmerLand.roofTypeId}
                       onChange={handleFLInputs}
                       onBlur={() => handleFLInputs}
-                      required
+                      // required
                       isInvalid={
                         farmerLand.roofTypeId === undefined ||
                         farmerLand.roofTypeId === "0"
@@ -3276,7 +3277,8 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety<span className="text-danger">*</span>
+                    Silk Worm Variety
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3284,7 +3286,7 @@ function StakeHolderEdit() {
                       value={farmerLand.silkWormVarietyId}
                       onChange={handleFLInputs}
                       onBlur={() => handleFLInputs}
-                      required
+                      // required
                       isInvalid={
                         farmerLand.silkWormVarietyId === undefined ||
                         farmerLand.silkWormVarietyId === "0"
@@ -4089,7 +4091,7 @@ function StakeHolderEdit() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="rhd">
                     {t("Rearing House (In Sq ft)")}
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -4099,7 +4101,7 @@ function StakeHolderEdit() {
                       onChange={handleFLInputs}
                       type="text"
                       placeholder={t("enter_rearing_house_dimensions")}
-                      required
+                      // required
                     />
                     <Form.Control.Feedback type="invalid">
                       Rearing House (In Sq ft) is required
@@ -4110,7 +4112,7 @@ function StakeHolderEdit() {
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
                     Rearing House Roof Type
-                    <span className="text-danger">*</span>
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4118,7 +4120,7 @@ function StakeHolderEdit() {
                       value={farmerLand.roofTypeId}
                       onChange={handleFLInputs}
                       onBlur={() => handleFLInputs}
-                      required
+                      // required
                       isInvalid={
                         farmerLand.roofTypeId === undefined ||
                         farmerLand.roofTypeId === "0"
@@ -4139,7 +4141,8 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                    Silk Worm Variety<span className="text-danger">*</span>
+                    Silk Worm Variety
+                    {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4147,7 +4150,7 @@ function StakeHolderEdit() {
                       value={farmerLand.silkWormVarietyId}
                       onChange={handleFLInputs}
                       onBlur={() => handleFLInputs}
-                      required
+                      // required
                       isInvalid={
                         farmerLand.silkWormVarietyId === undefined ||
                         farmerLand.silkWormVarietyId === "0"

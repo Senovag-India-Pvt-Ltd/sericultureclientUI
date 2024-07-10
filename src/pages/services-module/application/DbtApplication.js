@@ -1838,11 +1838,11 @@ function DbtApplication() {
                                 id="schemeAmount"
                                 type="text"
                                 name="schemeAmount"
-                                // value={data.schemeAmount}
-                                value={amountValue.unitPrice}
+                                value={data.schemeAmount}
+                                // value={amountValue.unitPrice}
                                 onChange={handleInputs}
                                 placeholder="Enter Scheme Amount"
-                                readOnly
+                                // readOnly
                                 required
                               />
                               <Form.Control.Feedback type="invalid">

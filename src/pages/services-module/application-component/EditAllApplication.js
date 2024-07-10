@@ -15,7 +15,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-const ViewAllApplication = ({ details }) => {
+const EditAllApplication = ({ details }) => {
   const [helpDeskFaq, setHelpDeskFaq] = useState({
     text: "",
     searchBy: "hdQuestionName",
@@ -720,4 +720,4 @@ const ViewAllApplication = ({ details }) => {
   );
 };
 
-export default ViewAllApplication;
+export default EditAllApplication;
