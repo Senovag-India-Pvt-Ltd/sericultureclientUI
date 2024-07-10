@@ -849,6 +849,8 @@ function Router() {
         {/* <Route path="/blank" element={<Blank />} /> */}
         <Route path="/seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
+         {/* Display All Lot */}
+         <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
@@ -3020,7 +3022,7 @@ function Router() {
             <Route path="dashboard-report" element={<DashboardReport />} />
 
             {/* Display All Lot */}
-            <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} />
+            {/* <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} /> */}
 
             {/* Market Exception Time */}
             <Route
