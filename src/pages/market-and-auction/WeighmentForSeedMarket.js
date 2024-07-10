@@ -71,7 +71,7 @@ function WeighmentForSeedMarket() {
 
   const [weigh, setWeigh] = useState({
     date: new Date(),
-    bidAmount: "0",
+    // bidAmount: "0",
     // reelerCurrentBalance: 0,
     farmerFirstName: "",
     farmerNumber: "",
@@ -135,12 +135,7 @@ function WeighmentForSeedMarket() {
         getCrateDetails(data.noOfCrates, value);
       }
     }
-    // if(!data.noOfCrates){
-    //   getLotDetails(value);
-    //   getCrateDetails(data.noOfCrates, value);
-    // }else{
-    //   alert("Please Enter No of Crates");
-    // }
+    
   };
 
   const continueWeighment = () => {
@@ -178,9 +173,7 @@ function WeighmentForSeedMarket() {
           submitWarning(message);
         }
 
-        // debugger;
-        // setData({});
-        // saveError();
+       
       });
   };
 
@@ -232,7 +225,7 @@ function WeighmentForSeedMarket() {
         });
         setWeigh({
           date: new Date(),
-          bidAmount: "0",
+          // bidAmount: "0",
           // reelerCurrentBalance: 0,
           farmerFirstName: "",
           farmerNumber: "",
@@ -262,7 +255,7 @@ function WeighmentForSeedMarket() {
         });
         setWeigh({
           date: new Date(),
-          bidAmount: "0",
+          // bidAmount: "0",
           // reelerCurrentBalance: 0,
           farmerFirstName: "",
           farmerNumber: "",
@@ -339,13 +332,7 @@ function WeighmentForSeedMarket() {
         }
       )
       .then((response) => {
-        //console.log("hello world", response.data);
-        // //Create a Blob from the PDF Stream
-        // const file = new Blob([response.data], { type: "application/pdf" });
-        // //Build a URL from the file
-        // const fileURL = URL.createObjectURL(file);
-        // //Open the URL on new Window
-        // window.open(fileURL);
+        
         const file = new Blob([response.data], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
         const printWindow = window.open(fileURL);
@@ -385,23 +372,16 @@ function WeighmentForSeedMarket() {
         } else {
           submitError(response.data.errorMessages);
         }
-        // setWeigh((prev) => {
-        //   return { ...prev, ...response.data.content };
-        // });
-
-        // console.log(response);
+        
       })
       .catch((err) => {
-        // debugger;
-        // setData({});
-        // saveError();
+        
       });
   };
 
   console.log("tableWeightData", tableWeightData);
 
   const submitConfirm = async () => {
-    // debugger
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -412,7 +392,6 @@ function WeighmentForSeedMarket() {
       });
 
       if (result.isConfirmed) {
-        // debugger
       } else {
         setData((prev) => ({ ...prev, allottedLotId: "" }));
       }
@@ -421,98 +400,12 @@ function WeighmentForSeedMarket() {
       Swal.fire("Error", "An error occurred", "error");
     }
 
-    // Swal.fire({
-    //   title: "Are you sure?",
-    //   text: "Do you Want to Complete Weighment?",
-    //   icon: "success",
-    //   showCancelButton: true,
-    //   confirmButtonText: "Yes, Complete it!",
-    // }).then((result) => {
-    //   if (result.value) {
-    //     const submitData = {
-    //       marketId: localStorage.getItem("marketId"),
-    //       godownId: "2",
-    //       allottedLotId: data.allottedLotId,
-    //       weighmentList: tableWeightData,
-    //       userName: localStorage.getItem("username"),
-    //     };
-    //     api
-    //       .post(baseURL1 + `auction/weigment/completeWeighmentForLot`, submitData)
-    //       .then((response) => {
-    //         // debugger;
-    //         console.log(response.data.content);
-    //         if (response.data.content) {
-    //           setTableWeightData([]);
-    //           setTotalWeight(0);
-    //           setTotalNetWeight(0);
-    //           setLotNumber("");
-    //           printTriplet();
-    //         }
-    //         // setWeigh((prev) => {
-    //         //   return { ...prev, ...response.data.content };
-    //         // });
-    //         alert(
-    //           `Total amount Debited is ${response.data.content.totalAmountDebited} for Lot ${response.data.content.totalAmountDebited}`
-    //         );
-    //         // console.log(response);
-    //       })
-    //       .catch((err) => {
-    //         // debugger;
-    //         // setData({});
-    //         // saveError();
-    //       });
-    //     // Swal.fire("Deleted", "You successfully deleted this record", "success");
-    //   } else {
-    //     console.log(result.value);
-    //     Swal.fire("Cancelled", "Weighment not submitted", "info");
-    //   }
-    // });
   };
 
-  // const lastSubmitConfirm = async () => {
-  //   // return window.confirm("Are you sure?");
-  //   debugger
-  //   try {
-  //     const result = await Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "Insufficient balance, Do you want to continue with the Weighment?",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonText: "Yes, Continue!",
-  //     });
-  //     debugger;
-  //     if (result.isConfirmed) {
-  //       debugger;
-  //       onSubmitting();
-  //     } else {
-  //       console.log("Confirmation canceled");
-  //       // setData((prev) => ({ ...prev, allottedLotId: "" }));
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during submitConfirm:", error);
-  //     Swal.fire("Error", "An error occurred", "error");
-  //   }
-  // };
-
+ 
   const lastSubmitConfirm = async () => {
-    // return window.confirm("Are you sure?");
-    // debugger;
     try {
-      // return Swal.fire({
-      //   title: "Are you sure?",
-      //   text: "Insufficient balance, Do you want to continue with the Weighment?",
-      //   icon: "warning",
-      //   showCancelButton: true,
-      //   confirmButtonText: "Yes, Continue!",
-      // }).then((result)=>{
-      //   if (result.isConfirmed) {
-      //     debugger;
-      //     onSubmitting();
-      //   } else {
-      //     console.log("Confirmation canceled");
-      //     // setData((prev) => ({ ...prev, allottedLotId: "" }));
-      //   }
-      // })
+    
       const isConfirmed = window.confirm(
         "Insufficient Balance,Do you want to continue with the Weighment?"
       );
@@ -528,135 +421,13 @@ function WeighmentForSeedMarket() {
     }
   };
 
-  // useEffect(() => {
-
-  //   console.log( lastWeight  );
-  //   // Code to be executed after waiting for one second
-  //   console.log('One second has passed!');
-
-  //   const lastWeightFloat  = parseFloat(lastWeight.trim()) || 0;
-  //   const totalWeightFloat = lastWeightFloat + totalWeight;
-  //   setTotalWeight(totalWeightFloat);
-
-  //   setWeighStream('');
-
-  //   // If you want to clean up the effect, you can return a cleanup function
-  //   return () => {
-  //     // Cleanup code here (optional)
-  //   };
-  // }, [lastWeight]); // myState is specified as a dependency
-
-  // useEffect(() => {
-  //   const handleKeyDown = async (event) => {
-  //     if (event.key === "Enter") {
-  //       // Handle the Enter key press here
-  //       //{data.noOfCrates} - {counter}
-  //       // If condition to continue with weighing
-  //       if (data.allottedLotId == "") {
-  //         alert("Please Enter Lot No");
-  //         setCanContinue(false);
-  //       }
-  //       if (data.noOfCrates <= 0) {
-  //         alert("Please Enter No of Crates");
-  //         setCanContinue(false);
-  //       }
-  //       // debugger;
-  //       if (counter >= parseInt(data.noOfCrates)-1) {
-  //         setCanContinue(false);
-  //         // alert("You already completed the weighment with crates");
-  //         // document.removeEventListener("keydown", handleKeyDown);
-  //         // await submitConfirm();
-
-  //         onSubmitting();
-  //         // printTriplet();
-  //       }
-
-  //       // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
-  //       if (
-  //         data.noOfCrates <= 0 ||
-  //         data.allottedLotId == "" ||
-  //         counter >= parseInt(data.noOfCrates)-1
-  //       ) {
-  //         setCanContinue(false);
-  //         console.log("cannot continue with weighment");
-  //       } else {
-  //         setCanContinue(true);
-  //       }
-
-  //       if (canContinue) {
-  //         let prabhu = weighStream.toString();
-
-  //         const lastWeightString = prabhu.substring(
-  //           prabhu.lastIndexOf("kg") - 8,
-  //           prabhu.lastIndexOf("kg") - 1
-  //         );
-
-  //         setLastWeight(lastWeightString);
-
-  //         const lastWeightFloat = parseFloat(lastWeightString.trim()) || 0;
-  //         const totalWeightFloat = lastWeightFloat + totalWeight;
-
-  //         setTotalWeight(totalWeightFloat);
-
-  //         // calculate set total net weight
-  //         // const totalNetWeightFloat =
-  //         //   lastWeightFloat - tareWeight + totalNetWeight;
-
-  //         const totalNetWeightFloat =
-  //           lastWeightFloat - tareWeight + totalNetWeight < 0
-  //             ? 0
-  //             : lastWeightFloat - tareWeight + totalNetWeight;
-
-  //         setTotalNetWeight(totalNetWeightFloat);
-
-  //         const weightObj = {
-  //           grossWeight: lastWeightFloat,
-  //           netWeight:
-  //             lastWeightFloat >= tareWeight ? lastWeightFloat - tareWeight : 0,
-  //           crateNumber: data.noOfCrates,
-  //         };
-  //         setTableWeightData((prevState) => [...prevState, weightObj]);
-
-  //         const formattedTotalPrice = totalWeightFloat * pricePerKg;
-  //         console.log(pricePerKg);
-  //         console.log(formattedTotalPrice);
-
-  //         setTotalPrice(formattedTotalPrice);
-
-  //         // calculate total net cocoon net weight total price
-  //         const formattedTotalNetPrice = totalNetWeightFloat * pricePerKg;
-  //         // setTotalNetPrice(formattedTotalNetPrice);
-  //         setTotalNetPrice(10);
-
-  //         if (counter <= parseInt(data.noOfCrates)-1) {
-  //           setCounter(counter + 1);
-  //         }
-
-  //         setWeighStream("");
-  //       }
-  //     }
-  //   };
-
-  //   // console.log(tableWeightData);
-
-  //   // Attach the event listener when the component mounts
-  //   document.addEventListener("keydown", handleKeyDown);
-
-  //   // Detach the event listener when the component unmounts
-  //   return () => {
-  //     document.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // });
 
   useEffect(() => {
     if (weighTest) {
       let canContinue1 = false;
       const handleKeyDown = async (event) => {
         if (event.key === "Enter") {
-          // debugger;
-          // Handle the Enter key press here
-          //{data.noOfCrates} - {counter}
-          // If condition to continue with weighing
+         
           if (data.allottedLotId == "" || data.noOfCrates <= 0) {
             // debugger;
             if (data.allottedLotId == "") {
@@ -670,17 +441,6 @@ function WeighmentForSeedMarket() {
               canContinue1 = false;
             }
           }
-
-          // debugger;
-          // if (counter >= parseInt(data.noOfCrates)-1) {
-          //   setCanContinue(false);
-          //   // alert("You already completed the weighment with crates");
-          //   // document.removeEventListener("keydown", handleKeyDown);
-          //   // await submitConfirm();
-
-          //   onSubmitting();
-          //   // printTriplet();
-          // }
           console.log("counter", counter);
           console.log("noOfCrate", parseInt(data.noOfCrates));
           if (
@@ -712,21 +472,6 @@ function WeighmentForSeedMarket() {
             canContinue1 = true;
           }
 
-          // if(data.noOfCrates <= 0 || data.allottedLotId == "" || counter >= data.noOfCrates){
-          // if (
-          //   data.noOfCrates <= 0 ||
-          //   data.allottedLotId == "" ||
-          //   counter >= parseInt(data.noOfCrates) - 1
-          // ) {
-          //   debugger;
-          //   setCanContinue(false);
-          //   canContinue1 = false;
-          //   console.log("cannot continue with weighment");
-          // } else {
-          //   setCanContinue(true);
-          //   canContinue1 = true;
-          // }
-
           if (canContinue1) {
             let prabhu = weighStream.toString();
 
@@ -742,10 +487,7 @@ function WeighmentForSeedMarket() {
 
             setTotalWeight(totalWeightFloat);
 
-            // calculate set total net weight
-            // const totalNetWeightFloat =
-            //   lastWeightFloat - tareWeight + totalNetWeight;
-
+        
             const totalNetWeightFloat =
               lastWeightFloat - tareWeight + totalNetWeight < 0
                 ? 0
@@ -815,32 +557,10 @@ function WeighmentForSeedMarket() {
     }
   });
 
-  // if (counter == parseInt(data.noOfCrates)) {
-  //   if (totalNetPrice > weigh.reelerCurrentBalance) {
-  //     // console.log("Reeler don't have enough money");
-  //     // getCrateDetails();
-  //     lastSubmitConfirm();
-  //   } else {
-  //     console.log("hello Weight");
-  //   }
-  // }
-
+  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `caste/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
+  
   const testSerialPort = async (e) => {
     // https://fidisys.com/blog/serial-port-devices/
     if ("serial" in navigator) {
@@ -971,48 +691,7 @@ function WeighmentForSeedMarket() {
     });
   };
   return (
-    // <Layout title="e-Weighment">
     <div>
-      {/* <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">e-Weighment</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  e-Weighment
-                </li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head> */}
-
       {weighTest ? (
         <Block>
           <Form action="#">
@@ -1127,8 +806,7 @@ function WeighmentForSeedMarket() {
                                   ...styles.small,
                                   backgroundColor:
                                     Math.round(
-                                      weigh.reelerCurrentBalance -
-                                        weight * weigh.bidAmount
+                                      weigh.weight
                                     ) >= 0
                                       ? "green"
                                       : "red",
@@ -1141,8 +819,7 @@ function WeighmentForSeedMarket() {
                                 {" "}
                                 Balance: &#8377;{" "}
                                 {Math.round(
-                                  weigh.reelerCurrentBalance -
-                                    weight * weigh.bidAmount
+                                  weigh.weight
                                 )}
                               </td>
                             </tr>
@@ -1269,8 +946,7 @@ function WeighmentForSeedMarket() {
                                   color: "rgb(181, 6, 6)",
                                 }}
                               >
-                                {/* Total Gross Wt: {totalWeight} */}
-                                {/* Total Gross Wt: {Number(totalWeight).toFixed(2)} */}
+                              
                                 Total Gross Wt:{" "}
                                 {Number.isInteger(Number(totalWeight))
                                   ? Number(totalWeight).toFixed(0)
@@ -1285,8 +961,7 @@ function WeighmentForSeedMarket() {
                                   color: "rgb(181, 6, 6)",
                                 }}
                               >
-                                {/* Total Net Wt: {totalNetWeight} */}
-                                {/* Total Net Wt: {Number(totalNetWeight).toFixed(2)} */}
+                                
                                 Total Net Wt:{" "}
                                 {Number.isInteger(Number(totalNetWeight))
                                   ? Number(totalNetWeight).toFixed(0)
@@ -1295,29 +970,7 @@ function WeighmentForSeedMarket() {
                             </tr>
                           </tbody>
                         </table>
-                        {/* <table className="table small table-bordered totalweight">
-                        <tbody>
-                          {tableWeightData.map((row, index) => (
-                            <tr key={index}>
-                              <td style={styles.xxsmall}>
-                                {" "}
-                                {index + 1} -{" "}
-                                {Number.isInteger(Number(row.netWeight))
-                                  ? Number(row.netWeight).toFixed(0)
-                                  : Number(row.netWeight).toFixed(2)}
-                                <span className="ms-2">
-                                  <Button
-                                    size="sm"
-                                    onClick={() => deleteRow(index)}
-                                  >
-                                    Delete
-                                  </Button>
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table> */}
+                        
                         <table className="table small table-bordered totalweight">
                           <tbody>
                             {tableWeightData.map(
@@ -1350,21 +1003,12 @@ function WeighmentForSeedMarket() {
                 </Card>
               </Col>
 
-              {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="button" variant="primary" onClick={postData}>
-                    Generate
-                  </Button>
-                </li>
-              </ul>
-            </div> */}
+            
             </Row>
           </Form>
         </Block>
       ) : (
         <Block>
-          {/* <h1>Hello</h1> */}
           <Form action="#">
             <Row className="g-3">
               <Col lg="12">
@@ -1406,16 +1050,7 @@ function WeighmentForSeedMarket() {
                               </td>
                             </tr>
 
-                            {/* <tr>
-                            <td
-                              style={{
-                                backgroundColor: "green",
-                                padding: "3%",
-                              }}
-                            >
-                              {" "}
-                            </td>
-                          </tr> */}
+                          
                             <tr>
                               <td style={styles.large}>{lastWeight}</td>
                             </tr>
@@ -1460,7 +1095,6 @@ function WeighmentForSeedMarket() {
         </Block>
       )}
     </div>
-    // </Layout>
   );
 }
 

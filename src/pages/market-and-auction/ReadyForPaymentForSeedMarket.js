@@ -14,6 +14,7 @@ import {
 } from "../../components";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
+import Swal from "sweetalert2";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -31,7 +32,6 @@ function ReadyForPaymentForSeedMarket() {
 
   const [payment, setPayment] = useState({
     marketId: localStorage.getItem("marketId"),
-    
   });
 
   const [totalAmount, setTotalAmount] = useState(0);
@@ -49,8 +49,15 @@ function ReadyForPaymentForSeedMarket() {
   const handleAddToBank = (marketId, date, lot) => {
     // alert("Added To Bank");
     // debugger;
+    if(!date){
+      Swal.fire({
+        icon: 'warning',
+        title: 'This Lot is not distributed'
+      });
+      return;
+    }
     api
-      .post(baseURLMarket + `auction/fp/addSelectedLotlistToReadyForPayment`, {
+      .post(baseURLMarket + `auction/fp/addSeedMarketSelectedLotlistToReadyForPayment`, {
         marketId: marketId,
         paymentDate: date,
         allottedLotList: [lot],
@@ -175,27 +182,23 @@ function ReadyForPaymentForSeedMarket() {
 
   const PaymentDataColumns = [
     {
-      name: "action",
+      name: "Action",
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {((row.ifscCode && row.reelerCurrentBalance > 0) ||
-            (row.ifscCode && paymentMode === "cash")) && (
-            <Button
-              variant="primary"
-              size="sm"
-              // onClick={() => handleView(row.id)}
-              onClick={() =>
-                handleAddToBank(
-                  localStorage.getItem("marketId"),
-                  // payment.godownId,
-                  row.lotTransactionDate,
-                  row.allottedLotId
-                )
-              }
-            >
-              Add to Bank
+        {paymentMode === "cash" && (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() =>
+              handleAddToBank(
+                localStorage.getItem("marketId"),
+                row.auctionDate,
+                row.allottedLotId
+              )
+            }
+          >
+              Add to Payment
             </Button>
           )}
 
@@ -298,10 +301,7 @@ function ReadyForPaymentForSeedMarket() {
          
         </Block.HeadBetween>
       </Block.Head>
-
-
-
-      <Block className="mt-4">
+      <Block className="mt-n4">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
@@ -323,7 +323,7 @@ function ReadyForPaymentForSeedMarket() {
         </Card>
       </Block>
 
-      <Card className="mt-3">
+      {/* <Card className="mt-3">
         <Card.Body>
           <Row className="g-gs">
             <Col lg="12">
@@ -339,9 +339,7 @@ function ReadyForPaymentForSeedMarket() {
             </Col>
           </Row>
         </Card.Body>
-      </Card>
-
-    
+      </Card> */}
     </Layout>
   );
 }
