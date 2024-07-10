@@ -838,7 +838,11 @@ function Router() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    const pathname = window.location.pathname ;
+    const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
+    console.log(pathname);
+    console.log(displayAllLotPathPattern.test(pathname));
+    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname)) {
       navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
@@ -850,7 +854,7 @@ function Router() {
         <Route path="/seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
          {/* Display All Lot */}
-         <Route path="display-all-lot/:marketId" element={<DisplayAllLot />} />
+         <Route path="/seriui/display-all-lot/:marketId" element={<DisplayAllLot />} />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
