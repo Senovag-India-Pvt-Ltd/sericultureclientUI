@@ -832,6 +832,13 @@ import DirectFruitsDetails from "../pages/stake-holder/DirectFruitsDetails";
 import OtherStateFarmerEdit from "../pages/stake-holder/OtherStateFarmerEdit";
 import PaymentStatementForSeedMarket from "../pages/market-and-auction/PaymentStatementForSeedMarket";
 import BulkSendToPaymentForSeedMarket from "../pages/market-and-auction/BulkSendToPaymentForSeedMarket";
+import AverageReport from "../pages/reports-admin/AverageReport";
+import AudioVisualReport from "../pages/reports-admin/AudioVisualReport";
+import BReport from "../pages/reports-admin/BReport";
+import MonthlyReport from "../pages/reports-admin/MonthlyReport";
+import MarketReport from "../pages/reports-admin/MarketReport";
+import DistrictReport from "../pages/reports-admin/DistrictReport";
+import AverageCocoonReport from "../pages/reports-admin/AverageCocoonReport";
 // Admin and Reports
 
 function Router() {
@@ -2967,6 +2974,13 @@ function Router() {
 
             {/* Admin and Reports */}
             <Route path="report-admin" element={<ReportsAdmin />} />
+            <Route path="average-report" element={<AverageReport />} />
+            <Route path="audio-visual-report" element={<AudioVisualReport />} />
+            <Route path="27-b-report" element={<BReport />} />
+            <Route path="monthly-report" element={<MonthlyReport />} />
+            <Route path="market-report" element={<MarketReport />} />
+            <Route path="district-report" element={<DistrictReport />} />
+            <Route path="average-cocoon-report" element={<AverageCocoonReport />} />
             <Route
               path="reeler-transaction-report"
               element={<ReelerTransactionReport />}

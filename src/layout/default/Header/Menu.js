@@ -436,6 +436,13 @@ function Menu() {
     Admin_Report_GeneratedTriplet: false,
     Admin_Report_GeneratedFarmerCopy: false,
     Admin_Report_ReelerPendingReport: false,
+    Admin_Report_Average_Report: false,
+    Admin_Report_Audio_Visual_Report: false,
+    Admin_Report_B_Report: false,
+    Admin_Report_Monthly_Report: false,
+    Admin_Report_Market_Report: false,
+    Admin_Report_District_Report: false,
+    Admin_Report_Average_Cocoon_Report: false,
   });
 
   // Old show menu using mapcode
@@ -3089,6 +3096,62 @@ function Menu() {
                       <MenuItemLink
                         text="Reeler Pending Report"
                         to="/seriui/reeler-pending-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Average_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Average Report"
+                        to="/seriui/average-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Audio_Visual_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Audio Visual Report"
+                        to="/seriui/audio-visual-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_B_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="27 B Report"
+                        to="/seriui/27-b-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Monthly_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Monthly Report"
+                        to="/seriui/monthly-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Market_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Market Report"
+                        to="/seriui/market-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_District_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Report"
+                        to="/seriui/district-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Average_Cocoon_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Average Cocoon Report"
+                        to="/seriui/average-cocoon-report"
                       />
                     </MenuItem>
                   ) : null}
