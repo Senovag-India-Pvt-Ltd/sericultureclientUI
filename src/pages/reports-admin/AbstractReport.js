@@ -2,25 +2,21 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
-import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import api from "../../../services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function BiddingReportReeler() {
+function AbstractReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    godownId: 0,
-    reportFromDate: new Date(),
-    reelerNumber: "",
+    auctionDate: new Date(),
   });
-  console.log("printBid", data);
 
   const [validated, setValidated] = useState(false);
 
@@ -32,7 +28,7 @@ function BiddingReportReeler() {
   };
 
   const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, reportFromDate: date }));
+    setData((prev) => ({ ...prev, auctionDate: date }));
   };
   useEffect(() => {
     handleDateChange(new Date());
@@ -60,8 +56,8 @@ function BiddingReportReeler() {
   // };
 
   const postData = (event) => {
-    const { marketId, godownId, reportFromDate, reelerNumber } = data;
-    const newDate = new Date(reportFromDate);
+    const { marketId, auctionDate } = data;
+    const newDate = new Date(auctionDate);
     const formattedDate =
       newDate.getFullYear() +
       "-" +
@@ -79,12 +75,10 @@ function BiddingReportReeler() {
       // event.stopPropagation();
       api
         .post(
-          baseURLReport + `get-reeler-bidding-report`,
+          baseURLReport + `get-form-13-report`,
           {
             marketId: marketId,
-            godownId: godownId,
-            reportFromDate: formattedDate,
-            reelerNumber: reelerNumber,
+            auctionDate: formattedDate,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
@@ -128,11 +122,11 @@ function BiddingReportReeler() {
     });
   };
   return (
-    <Layout title="Bidding Report Reeler">
+    <Layout title="Abstract Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Report Reeler</Block.Title>
+            <Block.Title tag="h2">Abstract Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -169,7 +163,7 @@ function BiddingReportReeler() {
                 <Row className="g-gs">
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
+                      {/* <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
                         Reeler Number
                       </Form.Label>
                       <Col sm={3}>
@@ -182,10 +176,8 @@ function BiddingReportReeler() {
                           placeholder="Enter Reeler Number"
                           // required
                         />
-                        {/* <Form.Control.Feedback type="invalid">
-                          Reeler Number is required.
-                        </Form.Control.Feedback> */}
-                      </Col>
+                       
+                      </Col> */}
                       <Form.Label column sm={1}>
                         Date
                         <span className="text-danger">*</span>
@@ -194,7 +186,7 @@ function BiddingReportReeler() {
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.reportFromDate}
+                            selected={data.auctionDate}
                             onChange={handleDateChange}
                             className="form-control"
                             maxDate={new Date()}
@@ -254,4 +246,4 @@ function BiddingReportReeler() {
   );
 }
 
-export default BiddingReportReeler;
+export default AbstractReport;

@@ -839,6 +839,7 @@ import MonthlyReport from "../pages/reports-admin/MonthlyReport";
 import MarketReport from "../pages/reports-admin/MarketReport";
 import DistrictReport from "../pages/reports-admin/DistrictReport";
 import AverageCocoonReport from "../pages/reports-admin/AverageCocoonReport";
+import AbstractReport from "../pages/reports-admin/AbstractReport";
 // Admin and Reports
 
 function Router() {
@@ -2980,6 +2981,7 @@ function Router() {
             <Route path="monthly-report" element={<MonthlyReport />} />
             <Route path="market-report" element={<MarketReport />} />
             <Route path="district-report" element={<DistrictReport />} />
+            <Route path="abstract-report" element={<AbstractReport />} />
             <Route path="average-cocoon-report" element={<AverageCocoonReport />} />
             <Route
               path="reeler-transaction-report"

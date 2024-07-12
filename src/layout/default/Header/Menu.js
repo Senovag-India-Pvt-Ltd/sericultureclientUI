@@ -423,6 +423,7 @@ function Menu() {
     Admin_Report_Admin: false,
     Admin_Report_Transaction: false,
     Admin_Report_Dashboard: false,
+    Admin_Report_Abstract: false,
     Admin_Report_DTR: false,
     Admin_Report_Unit: false,
     Admin_Report_Pending: false,
@@ -2995,6 +2996,14 @@ function Menu() {
                       <MenuItemLink
                         text="Dashboard"
                         to="/seriui/dashboard-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_Abstract ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Abstract Report"
+                        to="/seriui/abstract-report"
                       />
                     </MenuItem>
                   ) : null}
