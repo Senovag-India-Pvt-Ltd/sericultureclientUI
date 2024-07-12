@@ -58,65 +58,59 @@ function DtrOnlineReport() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `caste/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
-  // const postData = (event) => {
-  //   const { marketId, godownId, allottedLotId, auctionDate } = data;
-  //   const newDate = new Date(auctionDate);
-  //   const formattedDate =
-  //     newDate.getFullYear() +
-  //     "-" +
-  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
-  //     "-" +
-  //     newDate.getDate().toString().padStart(2, "0");
-
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     // event.stopPropagation();
-  //     axios
-  //       .post(
-  //         `https://api.senovagseri.com/reports/gettripletpdf`,
-  //         {
-  //           marketId: marketId,
-  //           godownId: godownId,
-  //           allottedLotId: allottedLotId,
-  //           auctionDate: formattedDate,
-  //         },
-  //         {
-  //           responseType: "blob", //Force to receive data in a Blob Format
-  //         }
-  //       )
-  //       .then((response) => {
-  //         //console.log("hello world", response.data);
-  //         //Create a Blob from the PDF Stream
-  //         const file = new Blob([response.data], { type: "application/pdf" });
-  //         //Build a URL from the file
-  //         const fileURL = URL.createObjectURL(file);
-  //         //Open the URL on new Window
-  //         window.open(fileURL);
-  //       })
-  //       .catch((error) => {
-  //         // console.log("error", error);
-  //       });
-  //   }
-  // };
+  const exportCsv = (e) => {
+    const { marketId, godownId,reelerId,fromDate,toDate } = data;
+    const formattedFromDate =
+      fromDate.getFullYear() +
+      "-" +
+      (fromDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      fromDate.getDate().toString().padStart(2, "0");
+    const formattedToDate =
+      toDate.getFullYear() +
+      "-" +
+      (toDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      toDate.getDate().toString().padStart(2, "0");
+    api
+      .post(
+        baseURLReport + `excel-report/dtr-report`,
+        {
+            // marketId: data.marketId,
+            // startYear: data.startYear,
+            // endYear: data.endYear,
+            marketId: marketId,
+            godownId: godownId,
+            reelerId: reelerId,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
+          },
+          {
+          responseType: 'blob',
+          headers: {
+            accept: "application/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `dtr_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+};
+ 
   const [listData, setListData] = useState([]);
   const [listDetails, setListDetails] = useState([]);
 
@@ -399,6 +393,11 @@ function DtrOnlineReport() {
                   Generate Report
                 </Button>
               </Col>
+              <Col sm={2}>   
+                        <Button type="button" variant="primary" onClick={exportCsv}>
+                        Export Excel
+                    </Button>
+                    </Col>
             </Row>
 
             {/* <div className="gap-col">
