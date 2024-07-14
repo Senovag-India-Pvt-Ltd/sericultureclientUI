@@ -1528,7 +1528,7 @@ function DrawingOfficerList() {
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Initial Amount:</td>
-                      <td>{viewDetailsData.initialAmount}</td>
+                      <td>{viewDetailsData.schemeAmount}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Beneficiary Id:</td>
