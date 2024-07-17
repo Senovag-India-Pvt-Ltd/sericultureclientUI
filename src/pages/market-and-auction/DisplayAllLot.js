@@ -100,6 +100,19 @@ function DisplayAllLot() {
     });
   }
 
+  function setScreen() {
+    return classNames({
+      "ml-70": lotsLength === 0,
+      "ml-62": lotsLength === 1,
+      "ml-52": lotsLength === 2,
+      "ml-44": lotsLength === 3,
+      "ml-35": lotsLength === 4,
+      "ml-26": lotsLength === 5,
+      "ml-18": lotsLength === 6,
+      "ml-10": lotsLength === 7,
+    });
+  }
+
   // const getList = () => {
   //   api
   //     .post(
@@ -173,7 +186,7 @@ function DisplayAllLot() {
   };
   return (
     // <Layout title="e-Weighment">
-    <div style={{ backgroundColor: "white" }}>
+    <div style={{ backgroundColor: "white", height: "100vh", width: "100vw" }}>
       {/* <Block> */}
       <Form action="#">
         <Row
@@ -197,14 +210,14 @@ function DisplayAllLot() {
                   }}
                 >
                   {/* <div>{lots&& lots.length>0&&lots.map(lot=>lot.currentTime)}</div> */}
-                  <div>{console.log("hello", lots)}</div>
+                  {/* <div>{console.log("hello", lots)}</div> */}
                   <div>{lots && lots.length > 0 && lots[0].currentTime}</div>
                 </div>
               </Col>
             </Row>
             <Row className="g-3 d-flex justify-content-center">
               <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
-                <div className="table">
+                <div className={`table ${setScreen()}`}>
                   <div className={getClassName()}>
                     <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
                       <thead>
