@@ -345,6 +345,13 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
+      name: "Beneficiary ID",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Actual Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
