@@ -281,7 +281,18 @@ function OtherStateFarmer() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if(name === "farmerBankIfscCode"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else if(name === "farmerBankBranchName"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else if(name === "farmerBankName"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else{
     setBank({ ...bank, [name]: value });
+    }
   };
 
   const handleDateChange = (date, type) => {

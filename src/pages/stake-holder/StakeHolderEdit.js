@@ -466,7 +466,18 @@ function StakeHolderEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-    setBank({ ...bank, [name]: value });
+    if(name === "farmerBankIfscCode"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else if(name === "farmerBankBranchName"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else if(name === "farmerBankName"){
+      setBank({ ...bank, [name]: value.toUpperCase() });
+    }
+    else{
+      setBank({ ...bank, [name]: value });
+    } 
   };
 
   const handleCheckBox = (e) => {
@@ -2637,7 +2648,7 @@ function StakeHolderEdit() {
                             name="farmerBankAccountNumber"
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
-                            type="text"
+                            type="number"
                             placeholder={t("enter_bank_account_number")}
                             required
                           />
