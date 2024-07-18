@@ -93,6 +93,19 @@ function TransferReelerLicense() {
     // debugger;
     name = e.target.name;
     value = e.target.value;
+    // setData({ ...data, [name]: value });
+
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+    if (["bankName", "branchName", "ifscCode"].includes(name)) {
+      value = value.toUpperCase();
+    }
+  
     setData({ ...data, [name]: value });
   };
 
@@ -106,7 +119,9 @@ function TransferReelerLicense() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
+      if (data.ifscCode.length < 11 || data.ifscCode.length > 11) {
+        return;
+      }
       api
         .post(baseURL2 + `reeler/transfer-reeler-license`, {
           ...data,
@@ -1602,7 +1617,7 @@ function TransferReelerLicense() {
                             name="bankAccountNumber"
                             value={data.bankAccountNumber}
                             onChange={handleInputs}
-                            type="text"
+                            type="number"
                             placeholder="Enter Bank Account Number"
                             required
                           />
@@ -1622,6 +1637,7 @@ function TransferReelerLicense() {
                             name="ifscCode"
                             value={data.ifscCode}
                             onChange={handleInputs}
+                            maxLength="11"
                             type="text"
                             placeholder="Enter IFSC Code"
                             required

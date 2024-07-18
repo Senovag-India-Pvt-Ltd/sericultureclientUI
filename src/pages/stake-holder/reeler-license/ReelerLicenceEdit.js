@@ -170,7 +170,7 @@ function ReelerLicenceEdit() {
 
   const handleVbInputs = (e) => {
     const { name, value } = e.target;
-    setVbAccount({ ...vbAccount, [name]: value });
+    // setVbAccount({ ...vbAccount, [name]: value });
 
     if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
       e.target.classList.add("is-invalid");
@@ -179,6 +179,15 @@ function ReelerLicenceEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if(name === "branchName"){
+      setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+    }
+    else if(name === "ifscCode"){
+      setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+    }
+    else{
+      setVbAccount({ ...vbAccount, [name]: value });
+    } 
   };
 
   const handleShowModal2 = () => setShowModal2(true);
@@ -196,7 +205,7 @@ function ReelerLicenceEdit() {
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    // setData({ ...data, [name]: value });
 
     if (name === "mobileNumber" && (value.length < 10 || value.length > 10)) {
       e.target.classList.add("is-invalid");
@@ -221,6 +230,11 @@ function ReelerLicenceEdit() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
+    if (["bankName", "branchName", "ifscCode"].includes(name)) {
+      value = value.toUpperCase();
+    }
+  
+    setData({ ...data, [name]: value });
   };
 
   const handleDateChange = (date, type) => {
@@ -964,7 +978,7 @@ function ReelerLicenceEdit() {
                     <Col lg="4">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="reelerNumber">
-                          Reeler Number<span className="text-danger">*</span>
+                          Reeler Number
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -974,11 +988,11 @@ function ReelerLicenceEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Reeler Number"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Reeler Number is required.
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
 
@@ -1592,22 +1606,22 @@ function ReelerLicenceEdit() {
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="recipientId">
-                          Receipt number<span className="text-danger">*</span>
+                        <Form.Label htmlFor="licenseReceiptNumber">
+                          Receipt number
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
-                            id="recipientId"
-                            name="recipientId"
-                            value={data.recipientId}
+                            id="licenseReceiptNumber"
+                            name="licenseReceiptNumber"
+                            value={data.licenseReceiptNumber7}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Receipt number"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             Receipt number is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1748,7 +1762,7 @@ function ReelerLicenceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarEast">
-                          East<span className="text-danger">*</span>
+                          East
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1758,11 +1772,11 @@ function ReelerLicenceEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="East"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             This Field is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1770,7 +1784,7 @@ function ReelerLicenceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarWest">
-                          West<span className="text-danger">*</span>
+                          West
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1780,11 +1794,11 @@ function ReelerLicenceEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="West"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             This Field is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1792,7 +1806,7 @@ function ReelerLicenceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarNorth">
-                          North<span className="text-danger">*</span>
+                          North
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1802,11 +1816,11 @@ function ReelerLicenceEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="North"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             This Field is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -1814,7 +1828,7 @@ function ReelerLicenceEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="mahajarSouth">
-                          South<span className="text-danger">*</span>
+                          South
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1824,11 +1838,11 @@ function ReelerLicenceEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder="South"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                             This Field is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>
