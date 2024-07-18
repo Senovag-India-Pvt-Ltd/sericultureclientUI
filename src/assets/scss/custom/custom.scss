@@ -103,34 +103,62 @@
   display: none;
 }
 
-.ml-70{
+.ml-70 {
   margin-left: 70vh;
 }
 
-.ml-62{
+.ml-62 {
   margin-left: 62vh;
 }
 
-.ml-52{
+.ml-52 {
   margin-left: 52vh;
 }
 
-.ml-44{
+.ml-44 {
   margin-left: 44vh;
 }
 
-.ml-35{
+.ml-35 {
   margin-left: 35vh;
 }
 
-.ml-26{
+.ml-26 {
   margin-left: 26vh;
 }
 
-.ml-18{
+.ml-18 {
   margin-left: 18vh;
 }
 
-.ml-10{
+.ml-10 {
   margin-left: 10vh;
+}
+
+.t-60 {
+  transform: translate(60%, -90%);
+}
+
+.t-40 {
+  transform: translate(40%, -90%);
+}
+
+.t-25 {
+  transform: translate(25%, -90%);
+}
+
+.t-8 {
+  transform: translate(8%, -90%);
+}
+
+.t-n10 {
+  transform: translate(-10%, -90%);
+}
+
+.t-n25 {
+  transform: translate(-25%, -90%);
+}
+
+.t-n50 {
+  transform: translate(-50%, -90%);
 }

@@ -113,6 +113,18 @@ function DisplayAllLot() {
     });
   }
 
+  function setTimeScreen() {
+    return classNames({
+      "t-60": lotsLength === 1 || lotsLength === 2,
+      "t-40": lotsLength === 3,
+      "t-25": lotsLength === 4,
+      "t-8": lotsLength === 5,
+      "t-n10": lotsLength === 6,
+      "t-n25": lotsLength === 7,
+      "t-n50": lotsLength >= 8,
+    });
+  }
+
   // const getList = () => {
   //   api
   //     .post(
@@ -202,12 +214,12 @@ function DisplayAllLot() {
                   style={{
                     position: "absolute",
                     left: "33%",
-                    transform: "translate(-50%, -90%)",
                     zIndex: 1000,
                     color: "red",
                     fontSize: "6rem",
                     fontWeight: "bold",
                   }}
+                  className={setTimeScreen()}
                 >
                   {/* <div>{lots&& lots.length>0&&lots.map(lot=>lot.currentTime)}</div> */}
                   {/* <div>{console.log("hello", lots)}</div> */}
@@ -222,8 +234,8 @@ function DisplayAllLot() {
                     <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
                       <thead>
                         <tr>
-                          <th style={styles.top}>Lot No</th>
-                          <th style={styles.top}>Bid Amount</th>
+                          <th style={styles.top}>ಲಾಟ್ ನಂ</th>
+                          <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -256,8 +268,8 @@ function DisplayAllLot() {
                     <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
                       <thead>
                         <tr>
-                          <th style={styles.top}>Lot No</th>
-                          <th style={styles.top}>Bid Amount</th>
+                          <th style={styles.top}>ಲಾಟ್ ನಂ</th>
+                          <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
                         </tr>
                       </thead>
                       <tbody>
