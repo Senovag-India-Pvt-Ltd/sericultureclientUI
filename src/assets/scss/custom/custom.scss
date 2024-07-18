@@ -71,34 +71,94 @@
 
 .table-slide {
   white-space: nowrap;
-  animation: 15s slide infinite linear;
+  animation: 25s slide infinite linear;
 }
 
 .table-slide-50 {
   white-space: nowrap;
-  animation: 35s slide infinite linear;
+  animation: 45s slide infinite linear;
 }
 
 .table-slide-100 {
   white-space: nowrap;
-  animation: 50s slide infinite linear;
+  animation: 75s slide infinite linear;
 }
 
 .table-slide-150 {
   white-space: nowrap;
-  animation: 65s slide infinite linear;
+  animation: 85s slide infinite linear;
 }
 
 .table-slide-200 {
   white-space: nowrap;
-  animation: 75s slide infinite linear;
+  animation: 95s slide infinite linear;
 }
 
 .table-slide-500 {
   white-space: nowrap;
-  animation: 100s slide infinite linear;
+  animation: 110s slide infinite linear;
 }
 
 .hide {
   display: none;
+}
+
+.ml-70 {
+  margin-left: 70vh;
+}
+
+.ml-62 {
+  margin-left: 62vh;
+}
+
+.ml-52 {
+  margin-left: 52vh;
+}
+
+.ml-44 {
+  margin-left: 44vh;
+}
+
+.ml-35 {
+  margin-left: 35vh;
+}
+
+.ml-26 {
+  margin-left: 26vh;
+}
+
+.ml-18 {
+  margin-left: 18vh;
+}
+
+.ml-10 {
+  margin-left: 10vh;
+}
+
+.t-60 {
+  transform: translate(60%, -90%);
+}
+
+.t-40 {
+  transform: translate(40%, -90%);
+}
+
+.t-25 {
+  transform: translate(25%, -90%);
+}
+
+.t-8 {
+  transform: translate(8%, -90%);
+}
+
+.t-n10 {
+  transform: translate(-10%, -90%);
+}
+
+.t-n25 {
+  transform: translate(-25%, -90%);
+}
+
+.t-n50 {
+  transform: translate(-50%, -90%);
 }

@@ -100,6 +100,31 @@ function DisplayAllLot() {
     });
   }
 
+  function setScreen() {
+    return classNames({
+      "ml-70": lotsLength === 0,
+      "ml-62": lotsLength === 1,
+      "ml-52": lotsLength === 2,
+      "ml-44": lotsLength === 3,
+      "ml-35": lotsLength === 4,
+      "ml-26": lotsLength === 5,
+      "ml-18": lotsLength === 6,
+      "ml-10": lotsLength === 7,
+    });
+  }
+
+  function setTimeScreen() {
+    return classNames({
+      "t-60": lotsLength === 1 || lotsLength === 2,
+      "t-40": lotsLength === 3,
+      "t-25": lotsLength === 4,
+      "t-8": lotsLength === 5,
+      "t-n10": lotsLength === 6,
+      "t-n25": lotsLength === 7,
+      "t-n50": lotsLength >= 8,
+    });
+  }
+
   // const getList = () => {
   //   api
   //     .post(
@@ -149,7 +174,7 @@ function DisplayAllLot() {
   // console.log(lotsLength);
 
   useEffect(() => {
-    const interval = setInterval(getList, 3000);
+    const interval = setInterval(getList, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -173,29 +198,50 @@ function DisplayAllLot() {
   };
   return (
     // <Layout title="e-Weighment">
-    <div style={{ backgroundColor: "white" }}>
-      <Block>
-        <Form action="#">
-          <Row
-            className="g-3"
-            style={{ transform: "rotate(90deg)", maxHeight: "1300px" }}
-          >
-            <Col lg="8">
-              {/* <Card>
+    <div style={{ backgroundColor: "white", height: "100vh", width: "100vw" }}>
+      {/* <Block> */}
+      <Form action="#">
+        <Row
+          // className="g-3"
+          style={{ transform: "rotate(90deg)", maxHeight: "1300px" }}
+        >
+          <Col lg="8">
+            {/* <Card>
                 <Card.Body> */}
-              <Row className="g-3 d-flex justify-content-center">
-                <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
-                  <div className="table">
-                    <div className={getClassName()}>
-                      <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
-                        <thead>
-                          <tr>
-                            <th style={styles.top}>Lot No</th>
-                            <th style={styles.top}>Bid Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {lots.map((lot) => (
+            <Row className="g-3 d-flex justify-content-center">
+              <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "33%",
+                    zIndex: 1000,
+                    color: "red",
+                    fontSize: "6rem",
+                    fontWeight: "bold",
+                  }}
+                  className={setTimeScreen()}
+                >
+                  {/* <div>{lots&& lots.length>0&&lots.map(lot=>lot.currentTime)}</div> */}
+                  {/* <div>{console.log("hello", lots)}</div> */}
+                  <div>{lots && lots.length > 0 && lots[0].currentTime}</div>
+                </div>
+              </Col>
+            </Row>
+            <Row className="g-3 d-flex justify-content-center">
+              <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
+                <div className={`table ${setScreen()}`}>
+                  <div className={getClassName()}>
+                    <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
+                      <thead>
+                        <tr>
+                          <th style={styles.top}>ಲಾಟ್ ನಂ</th>
+                          <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {lots &&
+                          lots.length > 0 &&
+                          lots.map((lot) => (
                             <>
                               <tr>
                                 <td style={{ ...styles.bottom, width: "50%" }}>
@@ -215,50 +261,50 @@ function DisplayAllLot() {
                               </tr>
                             </>
                           ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className={getClassNameHide()}>
-                      <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
-                        <thead>
-                          <tr>
-                            <th style={styles.top}>Lot No</th>
-                            <th style={styles.top}>Bid Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {lots.map((lot) => (
-                            <>
-                              <tr>
-                                <td style={{ ...styles.bottom, width: "50%" }}>
-                                  {lot.allottedLotId}
-                                </td>
-
-                                <td
-                                  style={{
-                                    ...styles.bottom,
-                                    width: "50%",
-                                    color: "green",
-                                  }}
-                                >
-                                  {" "}
-                                  &#8377; {lot.highestBid}
-                                </td>
-                              </tr>
-                            </>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
-                </Col>
-              </Row>
-              {/* </Card.Body>
+                  <div className={getClassNameHide()}>
+                    <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
+                      <thead>
+                        <tr>
+                          <th style={styles.top}>ಲಾಟ್ ನಂ</th>
+                          <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {lots.map((lot) => (
+                          <>
+                            <tr>
+                              <td style={{ ...styles.bottom, width: "50%" }}>
+                                {lot.allottedLotId}
+                              </td>
+
+                              <td
+                                style={{
+                                  ...styles.bottom,
+                                  width: "50%",
+                                  color: "green",
+                                }}
+                              >
+                                {" "}
+                                &#8377; {lot.highestBid}
+                              </td>
+                            </tr>
+                          </>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+            {/* </Card.Body>
               </Card> */}
-            </Col>
-          </Row>
-        </Form>
-      </Block>
+          </Col>
+        </Row>
+      </Form>
+      {/* </Block> */}
     </div>
     // </Layout>
   );
