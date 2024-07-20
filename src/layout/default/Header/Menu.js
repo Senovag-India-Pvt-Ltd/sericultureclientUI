@@ -424,6 +424,8 @@ function Menu() {
     Admin_Report_Transaction: false,
     Admin_Report_Dashboard: false,
     Admin_Report_Abstract: false,
+    Admin_Report_District_Abstract: false,
+    Admin_Report_DTR_Blank_Report: false,
     Admin_Report_DTR: false,
     Admin_Report_Unit: false,
     Admin_Report_Pending: false,
@@ -3004,6 +3006,22 @@ function Menu() {
                       <MenuItemLink
                         text="Abstract Report"
                         to="/seriui/abstract-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_District_Abstract ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Abstract Report"
+                        to="/seriui/form-13-report-by-dist"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_Report_DTR_Blank_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="Blank DTR Report"
+                        to="/seriui/blank-dtr-online"
                       />
                     </MenuItem>
                   ) : null}
