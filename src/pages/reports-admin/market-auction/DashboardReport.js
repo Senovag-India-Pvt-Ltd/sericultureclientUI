@@ -18,7 +18,7 @@ function DashboardReport() {
   const styles = {
     ctstyle: {
       fontWeight: "bold",
-      backgroundColor: "#f8f8f9",
+      backgroundColor: "#a9a9d6",
     },
     red: {
       color: "red",
@@ -29,6 +29,9 @@ function DashboardReport() {
     boldFont: {
       fontWeight: "bold",
     },
+    color:{
+      backgroundColor:"#d1cfcf"
+    }
   };
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
@@ -361,15 +364,18 @@ function DashboardReport() {
           <Col sm={12} lg={6}>
             {dashboardList && dashboardList.length ? (
               <Card className="mt-2">
-                <Card.Header>
+                <Card.Header style={{fontSize:"1.3rem"}}>
                   Dashboard - {status.marketName} : {formattedDateTime}
                 </Card.Header>
-                <Card.Body>
+                <Card.Body style={styles.color} >
                   <Row className="g-gs d-flex justify-content-center">
                     <Col lg="12">
                       <div className="d-flex mt-n2">
-                        <h4 className="text-centre">Bidding Status: </h4>
-                        <h4 style={{ fontWeight: "bold" }}>
+                        <h4 className="text-centre" style={{fontSize:"1.3rem"}}>Bidding Status: </h4>
+                        <h4 
+                        // style={{ fontWeight: "bold" }}
+                        style={{fontSize:"1.3rem"}}
+                        >
                           {" "}
                           {status.auctionStarted ? (
                             <span style={styles.green}> Start </span>
@@ -379,8 +385,11 @@ function DashboardReport() {
                         </h4>
                       </div>
                       <div className="d-flex">
-                        <h4 className="text-centre">Acceptance Status:</h4>
-                        <h4 style={styles.boldFont}>
+                        <h4 className="text-centre" style={{fontSize:"1.3rem"}}>Acceptance Status:</h4>
+                        <h4 
+                        // style={styles.boldFont}
+                        style={{fontSize:"1.3rem"}}
+                        >
                           {" "}
                           {status.acceptanceStarted ? (
                             <span style={styles.green}> Start </span>
@@ -416,7 +425,7 @@ function DashboardReport() {
                           <td>CB-48</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>
+                                <td style={styles.ctstyle}>
                                   {dashboard.raceName}-{dashboard.totalLots}
                                 </td>
                               </>
@@ -428,7 +437,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.totalLotsBid}</td>
+                                <td style={styles.ctstyle}>{dashboard.totalLotsBid}</td>
                               </>
                             ))}
                           </tr>
@@ -438,7 +447,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.totalLotsNotBid}</td>
+                                <td style={styles.ctstyle}>{dashboard.totalLotsNotBid}</td>
                               </>
                             ))}
                           </tr>
@@ -448,7 +457,7 @@ function DashboardReport() {
                           <td>36</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.totalBids}</td>
+                                <td style={styles.ctstyle}>{dashboard.totalBids}</td>
                               </>
                             ))}
                           </tr>
@@ -458,7 +467,7 @@ function DashboardReport() {
                           <td>253(Paid)</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.totalReelers}</td>
+                                <td style={styles.ctstyle}>{dashboard.totalReelers}</td>
                               </>
                             ))}
                           </tr>
@@ -471,7 +480,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.currentAuctionMaxBid}</td>
+                                <td style={styles.ctstyle}>{dashboard.currentAuctionMaxBid}</td>
                               </>
                             ))}
                           </tr>
@@ -481,7 +490,7 @@ function DashboardReport() {
                           <td>12:32:47</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.accecptedLots}</td>
+                                <td style={styles.ctstyle}>{dashboard.accecptedLots}</td>
                               </>
                             ))}
                           </tr>
@@ -503,7 +512,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.accecptedLotsMaxBid}</td>
+                                <td style={styles.ctstyle}>{dashboard.accecptedLotsMaxBid}</td>
                               </>
                             ))}
                           </tr>
@@ -516,7 +525,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.accectedLotsMinBid}</td>
+                                <td style={styles.ctstyle}>{dashboard.accectedLotsMinBid}</td>
                               </>
                             ))}
                           </tr>
@@ -526,7 +535,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.averagRate}</td>
+                                <td style={styles.ctstyle}>{dashboard.averagRate}</td>
                               </>
                             ))}
                           </tr>
@@ -536,7 +545,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.weighedLots}</td>
+                                <td style={styles.ctstyle}>{dashboard.weighedLots}</td>
                               </>
                             ))}
                           </tr>
@@ -549,7 +558,7 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td>{dashboard.totalSoldOutAmount}</td>
+                                <td style={styles.ctstyle}>{dashboard.totalSoldOutAmount}</td>
                               </>
                             ))}
                           </tr>
