@@ -1133,6 +1133,23 @@ function OtherStateFarmer() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                        <Form.Label>{t("gender")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="genderId"
+                            value={data.genderId}
+                            onChange={handleInputs}
+                            
+                          >
+                            <option value="">{t("select_gender")}</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Third Gender</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
@@ -1151,23 +1168,6 @@ function OtherStateFarmer() {
                           />
                         </div>
                       </Form.Group>
-
-                      {/* <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("gender")}</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="genderId"
-                            value={data.genderId}
-                            onChange={handleInputs}
-                            
-                          >
-                            <option value="">{t("select_gender")}</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Third Gender</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group> */}
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("differently_abled")}</Form.Label>
@@ -1212,6 +1212,7 @@ function OtherStateFarmer() {
                             value={data.mobileNumber}
                             onChange={handleInputs}
                             type="text"
+                            maxLength={10}
                             placeholder={t("enter_mobile_number")}
                             required
                           />
@@ -2055,6 +2056,7 @@ function OtherStateFarmer() {
                             value={bank.farmerBankIfscCode}
                             onChange={handleBankInputs}
                             type="text"
+                            maxLength={11}
                             placeholder={t("enter_ifsc_code")}
                             required
                           />

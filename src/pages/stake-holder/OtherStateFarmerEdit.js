@@ -129,6 +129,7 @@ function OtherStateFarmerEdit() {
       pincode: "",
       defaultAddress: true,
     });
+    setValidated(false);
   };
 
   const handleBankInputs = (e) => {
@@ -215,6 +216,7 @@ function OtherStateFarmerEdit() {
               handleFileDocumentUpload(farmerBankAccountId);
             }
             updateSuccess();
+            clear();
           }
         })
         .catch((err) => {
@@ -289,7 +291,8 @@ function OtherStateFarmerEdit() {
       icon: "success",
       title: "Updated successfully",
       // text: "You clicked the button!",
-    }).then(() => navigate("/seriui/stake-holder-list"));
+    })
+    // .then(() => navigate("/seriui/stake-holder-list"));
   };
   const updateError = (message) => {
     let errorMessage;
@@ -817,6 +820,23 @@ function OtherStateFarmerEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
+                        <Form.Label>{t("gender")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="genderId"
+                            value={data.genderId}
+                            onChange={handleInputs}
+                            // disabled
+                          >
+                            <option value="">{t("select_gender")}</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Third Gender</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
                           {isDataDobSet && (
@@ -829,6 +849,7 @@ function OtherStateFarmerEdit() {
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
                               maxDate={new Date()}
+                              className="form-control"
                             />
                           )}
                         </div>
@@ -849,6 +870,7 @@ function OtherStateFarmerEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("enter_mobile_number")}
+                            maxLength={10}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
