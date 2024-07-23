@@ -325,7 +325,7 @@ const AuthLoginPage = () => {
                   <Card.Body className="h-100 d-flex flex-column justify-content-center">
                     <div className="nk-block-head text-center">
                       <div className="nk-block-head-content">
-                        <h3 className="nk-block-title mb-1">Login</h3>
+                        <h3 className="nk-block-title mb-1" style={{color:"#000"}}>Login</h3>
                         <p className="small">Please sign-in to your account.</p>
                       </div>
                     </div>
