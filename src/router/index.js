@@ -840,6 +840,8 @@ import MarketReport from "../pages/reports-admin/MarketReport";
 import DistrictReport from "../pages/reports-admin/DistrictReport";
 import AverageCocoonReport from "../pages/reports-admin/AverageCocoonReport";
 import AbstractReport from "../pages/reports-admin/AbstractReport";
+import BlankDtrReport from "../pages/reports-admin/market-auction/BlankDtrReport";
+import FormReportByDist from "../pages/reports-admin/market-auction/FormReportByDist";
 // Admin and Reports
 
 function Router() {
@@ -3030,6 +3032,8 @@ function Router() {
               element={<BiddingReportReeler />}
             />
             <Route path="dtr-online" element={<DtrOnlineReport />} />
+            <Route path="blank-dtr-online" element={<BlankDtrReport />} />
+            <Route path="form-13-report-by-dist" element={<FormReportByDist />} />
             <Route path="dtr-all" element={<DtrAll />} />
             <Route path="form-13-dtr" element={<Form13Dtr />} />
             <Route path="form-13-dtr-bv" element={<Form13DtrBv />} />
