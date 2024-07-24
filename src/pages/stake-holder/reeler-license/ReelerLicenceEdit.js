@@ -90,6 +90,19 @@ function ReelerLicenceEdit() {
     }
   };
 
+  useEffect(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const date = String(now.getDate()).padStart(2, "0");
+
+    const timeString = hours + minutes + seconds + date + month + year;
+    setData((prev) => ({ ...prev, reelerNumber: timeString }));
+  }, [data.fruitsId]);
+
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
@@ -1613,7 +1626,7 @@ function ReelerLicenceEdit() {
                           <Form.Control
                             id="licenseReceiptNumber"
                             name="licenseReceiptNumber"
-                            value={data.licenseReceiptNumber7}
+                            value={data.licenseReceiptNumber}
                             onChange={handleInputs}
                             type="text"
                             placeholder="Enter Receipt number"
