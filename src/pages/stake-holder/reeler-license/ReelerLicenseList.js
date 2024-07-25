@@ -255,6 +255,13 @@ function ReelerLicenseList() {
       hide: "md",
     },
     {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Father's/Husband's Name",
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
@@ -265,6 +272,13 @@ function ReelerLicenseList() {
       name: "License Number",
       selector: (row) => row.reelingLicenseNumber,
       cell: (row) => <span>{row.reelingLicenseNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Reeler Number",
+      selector: (row) => row.reelerNumber,
+      cell: (row) => <span>{row.reelerNumber}</span>,
       sortable: true,
       hide: "md",
     },

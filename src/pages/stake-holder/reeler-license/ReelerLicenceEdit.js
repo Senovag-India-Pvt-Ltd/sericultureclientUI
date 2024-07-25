@@ -629,7 +629,7 @@ function ReelerLicenceEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/reeler-license-list"));
   };
