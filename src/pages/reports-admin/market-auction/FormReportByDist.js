@@ -14,11 +14,13 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function FormReportByDist() {
   const [data, setData] = useState({
+    districtId: localStorage.getItem("districtId"),
     marketId: localStorage.getItem("marketId"),
     auctionDate: new Date(),
   });
 
   const [validated, setValidated] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
@@ -76,7 +78,7 @@ function FormReportByDist() {
   // };
 
   const postData = (event) => {
-    const { marketId, auctionDate } = data;
+    const {districtId, marketId, auctionDate } = data;
     const newDate = new Date(auctionDate);
     const formattedDate =
       newDate.getFullYear() +
@@ -97,6 +99,7 @@ function FormReportByDist() {
         .post(
           baseURLReport + `get-form-13-report-by-dist`,
           {
+            districtId: districtId,
             marketId: marketId,
             auctionDate: formattedDate,
           },
