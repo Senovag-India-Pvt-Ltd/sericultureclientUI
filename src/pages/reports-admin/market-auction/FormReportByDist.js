@@ -63,22 +63,60 @@ function FormReportByDist() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + caste/add, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
+
+
+  // const postData = (event) => {
+  //   const {districtId, marketId, auctionDate } = data;
+  //   const newDate = new Date(auctionDate);
+  //   const formattedDate =
+  //     newDate.getFullYear() +
+  //     "-" +
+  //     (newDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     newDate.getDate().toString().padStart(2, "0");
+
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     // event.stopPropagation();
+  //     api
+  //       .post(
+  //         baseURLReport + `get-form-13-report-by-dist`,
+  //         {
+  //           districtId: districtId,
+  //           marketId: marketId,
+  //           auctionDate: formattedDate,
+  //         },
+  //         {
+  //           responseType: "blob", //Force to receive data in a Blob Format
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log(response.data.size);
+  //         if (response.data.size > 800) {
+  //           const file = new Blob([response.data], { type: "application/pdf" });
+  //           const fileURL = URL.createObjectURL(file);
+  //           window.open(fileURL);
+  //         } else {
+  //           Swal.fire({
+  //             icon: "warning",
+  //             title: "No Record Found",
+  //           });
+  //         }
+  //         //console.log("hello world", response.data);
+  //       })
+  //       .catch((error) => {
+  //         // console.log("error", error);
+  //       });
+  //   }
   // };
 
   const postData = (event) => {
-    const {districtId, marketId, auctionDate } = data;
+    const { districtId, marketId, auctionDate } = data;
     const newDate = new Date(auctionDate);
     const formattedDate =
       newDate.getFullYear() +
@@ -86,7 +124,7 @@ function FormReportByDist() {
       (newDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       newDate.getDate().toString().padStart(2, "0");
-
+  
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -94,7 +132,6 @@ function FormReportByDist() {
       setValidated(true);
     } else {
       event.preventDefault();
-      // event.stopPropagation();
       api
         .post(
           baseURLReport + `get-form-13-report-by-dist`,
@@ -104,11 +141,10 @@ function FormReportByDist() {
             auctionDate: formattedDate,
           },
           {
-            responseType: "blob", //Force to receive data in a Blob Format
+            responseType: "blob", // Force to receive data in a Blob format
           }
         )
         .then((response) => {
-          console.log(response.data.size);
           if (response.data.size > 800) {
             const file = new Blob([response.data], { type: "application/pdf" });
             const fileURL = URL.createObjectURL(file);
@@ -117,15 +153,19 @@ function FormReportByDist() {
             Swal.fire({
               icon: "warning",
               title: "No Record Found",
+              text: "No records were found for the selected district and date.",
             });
           }
-          //console.log("hello world", response.data);
         })
-        .catch((error) => {
-          // console.log("error", error);
+        .catch((err) => {
+          Swal.fire({
+            icon: "warning",
+            title: "No record found!!!",
+          });
         });
     }
   };
+  
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -145,33 +185,14 @@ function FormReportByDist() {
     });
   };
   return (
-    <Layout title="Form Report By District">
+    <Layout title="District Wise Abstract District">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Form Report By District</Block.Title>
+            <Block.Title tag="h2">District Wise Abstract District</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul> */}
+            
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -186,8 +207,9 @@ function FormReportByDist() {
                 <Row className="g-gs">
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
-                     
-
+                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                        District
+                      </Form.Label>
                       <Col sm={4}>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -206,6 +228,7 @@ function FormReportByDist() {
                             </Form.Select>
                             </div>
                             </Col>
+
                       <Form.Label column sm={1}>
                         Date
                         <span className="text-danger">*</span>
@@ -228,14 +251,10 @@ function FormReportByDist() {
                         </Button>
                       </Col>
                     </Form.Group>
-                  </Col>
-
-                  
+                  </Col>  
                 </Row>
               </Card.Body>
-            </Card>
-
-           
+            </Card>  
           </Row>
         </Form>
       </Block>

@@ -41,20 +41,6 @@ function AbstractReport() {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURL + `caste/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
   const postData = (event) => {
     const { marketId, auctionDate } = data;
     const newDate = new Date(auctionDate);
@@ -98,8 +84,11 @@ function AbstractReport() {
           }
           //console.log("hello world", response.data);
         })
-        .catch((error) => {
-          // console.log("error", error);
+        .catch((err) => {
+          Swal.fire({
+            icon: "warning",
+            title: "No record found!!!",
+          });
         });
     }
   };
@@ -110,9 +99,7 @@ function AbstractReport() {
       icon: "success",
       title: "Saved successfully",
       // text: "You clicked the button!",
-    }).then(() => {
-      navigate("/seriui/caste-list");
-    });
+    })
   };
   const saveError = () => {
     Swal.fire({
@@ -129,26 +116,7 @@ function AbstractReport() {
             <Block.Title tag="h2">Abstract Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul> */}
+           
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -163,21 +131,7 @@ function AbstractReport() {
                 <Row className="g-gs">
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
-                      {/* <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Reeler Number
-                      </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control
-                          id="reelerNumber"
-                          name="reelerNumber"
-                          value={data.reelerNumber}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Reeler Number"
-                          // required
-                        />
-                       
-                      </Col> */}
+                     
                       <Form.Label column sm={1}>
                         Date
                         <span className="text-danger">*</span>
@@ -194,51 +148,16 @@ function AbstractReport() {
                         </div>
                       </Col>
                       <Col sm={2}>
-                        {/* <Button
-                          type="button"
-                          variant="primary"
-                          onClick={display}
-                        > */}
+                       
                         <Button type="submit" variant="primary">
                           Generate Report
                         </Button>
                       </Col>
                     </Form.Group>
-                  </Col>
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                  </Col> 
                 </Row>
               </Card.Body>
             </Card>
-
-            {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
           </Row>
         </Form>
       </Block>
