@@ -834,6 +834,10 @@ import PaymentStatementForSeedMarket from "../pages/market-and-auction/PaymentSt
 import BulkSendToPaymentForSeedMarket from "../pages/market-and-auction/BulkSendToPaymentForSeedMarket";
 import BlankDtrReport from "../pages/reports-admin/market-auction/BlankDtrReport";
 import FormReportByDist from "../pages/reports-admin/market-auction/FormReportByDist";
+import InspectionType from "../pages/masters/inspection-type/InspectionType";
+import InspectionTypeList from "../pages/masters/inspection-type/InspectionTypeList";
+import InspectionTypeView from "../pages/masters/inspection-type/InspectionTypeView";
+import InspectionTypeEdit from "../pages/masters/inspection-type/InspectionTypeEdit";
 // Admin and Reports
 
 function Router() {
@@ -1836,6 +1840,10 @@ function Router() {
             <Route path="caste-list" element={<CasteList />} />
             <Route path="caste-view/:id" element={<CasteView />} />
             <Route path="caste-edit/:id" element={<CasteEdit />} />
+            <Route path="inspection-type" element={<InspectionType />} />
+            <Route path="inspection-type-list" element={<InspectionTypeList />} />
+            <Route path="inspection-type-view/:id" element={<InspectionTypeView/>} />
+            <Route path="inspection-type-edit/:id" element={<InspectionTypeEdit />} />
             <Route path="department" element={<Department />} />
             <Route path="department-list" element={<DepartmentList />} />
             <Route path="department-view/:id" element={<DepartmentView />} />
