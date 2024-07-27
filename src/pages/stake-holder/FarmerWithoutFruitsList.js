@@ -99,7 +99,7 @@ function FarmerWithoutFruitsList() {
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/stake-holder-edit/${_id}`);
+    navigate(`/seriui/farmer-without-fruits-edit/${_id}`);
     // navigate("/seriui/state");
   };
 
