@@ -238,7 +238,7 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                            Lot Number
+                          Total Lots
                           </th>
                           <th
                             style={{
@@ -265,7 +265,7 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                            Name
+                          Reeler  Name
                           </th>
                           <th
                             style={{
@@ -274,7 +274,16 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                            Bid Amt
+                            {/* Bid Amt
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          > */}
+                            Weight
                           </th>
                           <th
                             style={{
@@ -283,16 +292,7 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                            Kgs
-                          </th>
-                          <th
-                            style={{
-                              backgroundColor: "#0f6cbe",
-                              color: "#fff",
-                            }}
-                            // colSpan="2"
-                          >
-                            Amt
+                            Amount
                           </th>
                           <th
                             style={{
@@ -321,7 +321,7 @@ function UnitCounterReport() {
                             <td>{list.lotTransactionDate}</td>
                             <td>{list.reelerLicense}</td>
                             <td>{list.reelerName}</td>
-                            <td>{list.bidAmount}</td>
+                            {/* <td>{list.bidAmount}</td> */}
                             <td>{list.weight}</td>
                             <td>{list.lotSoldOutAmount}</td>
                             <td>

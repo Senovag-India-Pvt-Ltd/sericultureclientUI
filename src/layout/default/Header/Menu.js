@@ -3049,7 +3049,7 @@ function Menu() {
                   {showMenu.Admin_Report_Bidding_Report ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Bidding Report"
+                        text="Lot Wise Bidding Report"
                         to="/seriui/bidding-report"
                       />
                     </MenuItem>

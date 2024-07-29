@@ -132,7 +132,7 @@ function BiddingReport() {
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Report</Block.Title>
+            <Block.Title tag="h2">Lot Wise Bidding Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -170,7 +170,7 @@ function BiddingReport() {
                   <Col lg="12">
                     <Form.Group as={Row} className="form-group">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        Lot Number<span className="text-danger">*</span>
+                        Lot Number
                       </Form.Label>
                       <Col sm={3}>
                         <Form.Control
@@ -180,11 +180,11 @@ function BiddingReport() {
                           onChange={handleInputs}
                           type="text"
                           placeholder="Enter Lot Number"
-                          required
+                          // required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                           Lot Number is required.
-                        </Form.Control.Feedback>
+                        </Form.Control.Feedback> */}
                       </Col>
                       <Form.Label column sm={1}>
                         Date

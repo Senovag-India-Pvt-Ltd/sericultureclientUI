@@ -602,8 +602,9 @@ function DtrOnlineReport() {
                           <td></td>
                           <td></td>
                           <td>Wt: {listDetails.totalWeight}</td>
-                          <td>Amt: {listDetails.totalBidAmount}</td>
                           <td></td>
+                          <td>Amt: {listDetails.totallotSoldOutAmount}</td>
+                          {/* <td></td> */}
                           <td>
                             F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
                           </td>
@@ -639,6 +640,24 @@ function DtrOnlineReport() {
                                 </span>
                               </div>
                               <div>
+                                Total Lots Transacted:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.paymentSuccessLots}
+                                </span>
+                              </div>
+                              <div>
+                                Total Lots Not Transacted:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.notTransactedLots}
+                                </span>
+                              </div>
+                              <div>
+                                Total Amount:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totallotSoldOutAmount}
+                                </span>
+                              </div>
+                              <div>
                                 Farmers Cheque Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
@@ -663,6 +682,24 @@ function DtrOnlineReport() {
                                   {parseFloat(
                                     listDetails.totalReelerAmount.toFixed(2)
                                   )}
+                                </span>
+                              </div>
+                              <div>
+                                Max Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.maxAmount}
+                                </span>
+                              </div>
+                              <div>
+                                Min Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.minAmount}
+                                </span>
+                              </div>
+                              <div>
+                                Average Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.avgAmount}
                                 </span>
                               </div>
                             </td>

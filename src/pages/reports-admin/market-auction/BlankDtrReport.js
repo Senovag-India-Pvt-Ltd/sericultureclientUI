@@ -120,8 +120,44 @@ function BlankDtrReport() {
   const [listData, setListData] = useState([]);
   const [listDetails, setListDetails] = useState([]);
 
-  const generateDtrReport = async () => {
-    const { fromDate, toDate } = data;
+  // const generateDtrReport = async () => {
+  //   const { fromDate, toDate } = data;
+  //   const formattedFromDate =
+  //     fromDate.getFullYear() +
+  //     "-" +
+  //     (fromDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     fromDate.getDate().toString().padStart(2, "0");
+  //   const formattedToDate =
+  //     toDate.getFullYear() +
+  //     "-" +
+  //     (toDate.getMonth() + 1).toString().padStart(2, "0") +
+  //     "-" +
+  //     toDate.getDate().toString().padStart(2, "0");
+
+  //   try {
+  //     const response = await api.post(
+  //       baseURLReport + `blank-dtr-report`,
+  //       {
+  //         marketId: data.marketId,
+  //         reelerId: realReelerId,
+  //         fromDate: formattedFromDate,
+  //         toDate: formattedToDate,
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+  const exportCsv = (e) => {
+    const { marketId, godownId,reelerId,fromDate,toDate } = data;
     const formattedFromDate =
       fromDate.getFullYear() +
       "-" +
@@ -134,28 +170,44 @@ function BlankDtrReport() {
       (toDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       toDate.getDate().toString().padStart(2, "0");
-
-    try {
-      const response = await api.post(
-        baseURLReport + `blank-dtr-report`,
+    api
+      .post(
+        baseURLReport + `excel-report/blank-dtr-report`,
         {
-          marketId: data.marketId,
-          reelerId: realReelerId,
-          fromDate: formattedFromDate,
-          toDate: formattedToDate,
-        },
-        {
-          responseType: "blob", //Force to receive data in a Blob Format
+            // marketId: data.marketId,
+            // startYear: data.startYear,
+            // endYear: data.endYear,
+            marketId: marketId,
+            godownId: godownId,
+            reelerId: reelerId,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
+          },
+          {
+          responseType: 'blob',
+          headers: {
+            accept: "application/csv",
+            "Content-Type": "application/json",
+          },
         }
-      );
-
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    } catch (error) {
-      // console.log("error", error);
-    }
-  };
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `blank_dtr_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+};
 
   const postData = (event) => {
     const { marketId, godownId, reelerId, fromDate, toDate } = data;
@@ -431,7 +483,7 @@ function BlankDtrReport() {
                       type="submit"
                       variant="primary"
                       size="sm"
-                      onClick={generateDtrReport}
+                      onClick={exportCsv}
                     >
                       Print
                     </Button>
@@ -603,8 +655,9 @@ function BlankDtrReport() {
                           <td></td>
                           <td></td>
                           <td>Wt: {listDetails.totalWeight}</td>
-                          <td>Amt: {listDetails.totalBidAmount}</td>
                           <td></td>
+                          <td>Amt: {listDetails.totallotSoldOutAmount}</td>
+                          {/* <td></td> */}
                           <td>
                             F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
                           </td>
@@ -640,6 +693,12 @@ function BlankDtrReport() {
                                 </span>
                               </div>
                               <div>
+                                Total Amount:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totallotSoldOutAmount}
+                                </span>
+                              </div>
+                              <div>
                                 Farmers Cheque Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {parseFloat(
@@ -664,6 +723,24 @@ function BlankDtrReport() {
                                   {parseFloat(
                                     listDetails.totalReelerAmount.toFixed(2)
                                   )}
+                                </span>
+                              </div>
+                              <div>
+                                Max Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.maxAmount}
+                                </span>
+                              </div>
+                              <div>
+                                Min Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.minAmount}
+                                </span>
+                              </div>
+                              <div>
+                                Average Bid:Rs{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.avgAmount}
                                 </span>
                               </div>
                             </td>

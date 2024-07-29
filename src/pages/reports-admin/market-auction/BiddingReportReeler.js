@@ -128,33 +128,14 @@ function BiddingReportReeler() {
     });
   };
   return (
-    <Layout title="Bidding Report Reeler">
+    <Layout title="Reeler Bidding Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Bidding Report Reeler</Block.Title>
+            <Block.Title tag="h2">Reeler Bidding Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/caste-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul> */}
+            
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -213,40 +194,11 @@ function BiddingReportReeler() {
                       </Col>
                     </Form.Group>
                   </Col>
-
-                  {/* <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="code">Code</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="code"
-                          name="code"
-                          value={data.code}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Code"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>
 
-            {/* <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Link to="/seriui/caste-list" className="btn btn-secondary border-0">
-                    Cancel
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
+           
           </Row>
         </Form>
       </Block>

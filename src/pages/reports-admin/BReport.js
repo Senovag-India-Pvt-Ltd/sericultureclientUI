@@ -102,11 +102,11 @@ function BReport() {
   };
  
   return (
-    <Layout title="27 b Report">
+    <Layout title="27 B Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">27 b Report</Block.Title>
+            <Block.Title tag="h2">27 B Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
            
