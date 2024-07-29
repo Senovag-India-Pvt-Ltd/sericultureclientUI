@@ -842,6 +842,7 @@ import AverageCocoonReport from "../pages/reports-admin/AverageCocoonReport";
 import AbstractReport from "../pages/reports-admin/AbstractReport";
 import BlankDtrReport from "../pages/reports-admin/market-auction/BlankDtrReport";
 import FormReportByDist from "../pages/reports-admin/market-auction/FormReportByDist";
+import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEdit";
 // Admin and Reports
 
 function Router() {
@@ -850,7 +851,7 @@ function Router() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const pathname = window.location.pathname ;
+    const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
@@ -865,8 +866,11 @@ function Router() {
         {/* <Route path="/blank" element={<Blank />} /> */}
         <Route path="/seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
-         {/* Display All Lot */}
-         <Route path="/seriui/display-all-lot/:marketId" element={<DisplayAllLot />} />
+        {/* Display All Lot */}
+        <Route
+          path="/seriui/display-all-lot/:marketId"
+          element={<DisplayAllLot />}
+        />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
@@ -1006,7 +1010,10 @@ function Router() {
               element={<StakeHolderRegister />}
             />
             <Route path="other-state-farmer" element={<OtherStateFarmer />} />
-            <Route path="other-state-farmer-edit/:id" element={<OtherStateFarmerEdit />} />
+            <Route
+              path="other-state-farmer-edit/:id"
+              element={<OtherStateFarmerEdit />}
+            />
             <Route
               path="other-state-farmer-list"
               element={<OtherStateFarmerList />}
@@ -1014,6 +1021,10 @@ function Router() {
             <Route
               path="farmer-without-fruits"
               element={<FarmerWithoutFruits />}
+            />
+            <Route
+              path="farmer-without-fruits-edit/:id"
+              element={<FarmerWithoutFruitsEdit />}
             />
             <Route
               path="farmer-without-fruits-list"
@@ -1125,7 +1136,7 @@ function Router() {
               path="farmer-wise-report"
               element={<FarmerRegistrationList />}
             />
-             <Route
+            <Route
               path="direct-fruits-details"
               element={<DirectFruitsDetails />}
             />
@@ -1154,18 +1165,9 @@ function Router() {
             />
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
-             <Route
-              path="dbt-application"
-              element={<DbtApplication />}
-            />
-            <Route
-              path="report-success-list"
-              element={<ReportSuccessList />}
-            />
-            <Route
-              path="report-reject-list"
-              element={<ReportRejectList />}
-            />
+            <Route path="dbt-application" element={<DbtApplication />} />
+            <Route path="report-success-list" element={<ReportSuccessList />} />
+            <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route
               path="district-wise-farmer-count-list"
               element={<DistrictWiseFarmerCountList />}
@@ -1182,10 +1184,7 @@ function Router() {
               path="drawing-officer-list"
               element={<DrawingOfficerList />}
             />
-            <Route
-              path="tsc-officer-list"
-              element={<TscOfficerList />}
-            />
+            <Route path="tsc-officer-list" element={<TscOfficerList />} />
             <Route
               path="application-dashboard-list/:id"
               element={<DashboardList />}
@@ -2468,10 +2467,22 @@ function Router() {
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
-            <Route path="reject-reason-workflow" element={<RejectReasonWorkFlowMaster />} />
-            <Route path="reject-reason-workflow-list" element={<RejectReasonWorkFlowList />} />
-            <Route path="reject-reason-workflow-view/:id" element={<RejectReasonWorkFlowView />} />
-            <Route path="reject-reason-workflow-edit/:id" element={<RejectReasonWorkFlowEdit />} />
+            <Route
+              path="reject-reason-workflow"
+              element={<RejectReasonWorkFlowMaster />}
+            />
+            <Route
+              path="reject-reason-workflow-list"
+              element={<RejectReasonWorkFlowList />}
+            />
+            <Route
+              path="reject-reason-workflow-view/:id"
+              element={<RejectReasonWorkFlowView />}
+            />
+            <Route
+              path="reject-reason-workflow-edit/:id"
+              element={<RejectReasonWorkFlowEdit />}
+            />
             <Route
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
@@ -2736,7 +2747,10 @@ function Router() {
             <Route path="updateBinStatus" element={<UpdateBin />} />
             <Route path="config-farmer-count" element={<ConfigFarmerAllow />} />
             <Route path="map-component" element={<MapComponent />} />
-            <Route path="map-component-list" element={<MapComponentAndHoaList />} />
+            <Route
+              path="map-component-list"
+              element={<MapComponentAndHoaList />}
+            />
             <Route
               path="working-institution"
               element={<WorkingInstitution />}
@@ -2941,11 +2955,20 @@ function Router() {
             <Route path="reject-bid" element={<RejectBid />} />
             <Route path="payment" element={<Payment />} />
             <Route path="ready-for-payment" element={<ReadyForPayment />} />
-            <Route path="ready-for-payment-for-seed-market" element={<ReadyForPaymentForSeedMarket />} />
+            <Route
+              path="ready-for-payment-for-seed-market"
+              element={<ReadyForPaymentForSeedMarket />}
+            />
             <Route path="bank-statement" element={<BankStatement />} />
-            <Route path="payment-statement-for-seed-market" element={<PaymentStatementForSeedMarket />} />
+            <Route
+              path="payment-statement-for-seed-market"
+              element={<PaymentStatementForSeedMarket />}
+            />
             <Route path="bulk-send-to-bank" element={<BulkSendToBank />} />
-            <Route path="bulk-send-to-payment-for-seed-market" element={<BulkSendToPaymentForSeedMarket />} />
+            <Route
+              path="bulk-send-to-payment-for-seed-market"
+              element={<BulkSendToPaymentForSeedMarket />}
+            />
             <Route path="ifsc-update" element={<IfscUpdate />} />
             <Route
               path="reeler-initial-amount"
@@ -2984,7 +3007,10 @@ function Router() {
             <Route path="market-report" element={<MarketReport />} />
             <Route path="district-report" element={<DistrictReport />} />
             <Route path="abstract-report" element={<AbstractReport />} />
-            <Route path="average-cocoon-report" element={<AverageCocoonReport />} />
+            <Route
+              path="average-cocoon-report"
+              element={<AverageCocoonReport />}
+            />
             <Route
               path="reeler-transaction-report"
               element={<ReelerTransactionReport />}
@@ -3033,7 +3059,10 @@ function Router() {
             />
             <Route path="dtr-online" element={<DtrOnlineReport />} />
             <Route path="blank-dtr-online" element={<BlankDtrReport />} />
-            <Route path="form-13-report-by-dist" element={<FormReportByDist />} />
+            <Route
+              path="form-13-report-by-dist"
+              element={<FormReportByDist />}
+            />
             <Route path="dtr-all" element={<DtrAll />} />
             <Route path="form-13-dtr" element={<Form13Dtr />} />
             <Route path="form-13-dtr-bv" element={<Form13DtrBv />} />
