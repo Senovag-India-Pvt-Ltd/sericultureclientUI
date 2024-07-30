@@ -330,11 +330,11 @@ function BlankDtrReport() {
     });
   };
   return (
-    <Layout title=" Blank DTR Report">
+    <Layout title="Real Time DTR Report">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> Blank DTR Report</Block.Title>
+            <Block.Title tag="h2">Real Time DTR Report</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">

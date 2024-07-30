@@ -3020,7 +3020,7 @@ function Menu() {
                   {showMenu.Admin_Report_DTR_Blank_Report ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Blank DTR Report"
+                        text="Real Time DTR Report"
                         to="/seriui/blank-dtr-online"
                       />
                     </MenuItem>
