@@ -262,10 +262,12 @@ function StakeHolderViewPage() {
                     <tr>
                       <td style={styles.ctstyle}> Gender:</td>
                       <td>
-                        {StakeHolder.gender === 1
+                        {StakeHolder.genderId === 1
                           ? "Male"
-                          : StakeHolder.gender === 2
+                          : StakeHolder.genderId === 2
                           ? "Female"
+                          : StakeHolder.genderId === 3
+                          ? "Third Gender"
                           : "Other"}
                       </td>
                     </tr>
