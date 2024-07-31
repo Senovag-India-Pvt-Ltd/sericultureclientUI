@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function UnitCounterReport() {
@@ -97,6 +97,51 @@ function UnitCounterReport() {
         });
     }
   };
+
+  const exportCsv = (e) => {
+    const { marketId,godownId,reportFromDate  } = data;
+    const newDate = new Date();
+    const formattedDate =
+    reportFromDate.getFullYear() +
+      "-" +
+      (reportFromDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      reportFromDate.getDate().toString().padStart(2, "0");
+     
+    api
+      .post(
+        baseURLReport + `excel-report/unit-counter-report`,
+        {
+            // startDate: data.startDate,
+            godownId: godownId,
+            reportFromDate: formattedDate,
+            marketId: marketId,
+          },
+          {
+          responseType: 'blob',
+          headers: {
+            accept: "application/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `unit_counter_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+};
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -197,6 +242,11 @@ function UnitCounterReport() {
                           Generate Report
                         </Button>
                       </Col>
+                      <Col sm={2}>   
+                        <Button type="button" variant="primary" onClick={exportCsv}>
+                        Export
+                    </Button>
+                      </Col>
                     </Form.Group>
                   </Col>
 
@@ -265,7 +315,7 @@ function UnitCounterReport() {
                             }}
                             // colSpan="2"
                           >
-                          Reeler  Name
+                          Reeler Name
                           </th>
                           <th
                             style={{
