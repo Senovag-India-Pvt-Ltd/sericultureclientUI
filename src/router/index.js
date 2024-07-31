@@ -843,6 +843,7 @@ import AbstractReport from "../pages/reports-admin/AbstractReport";
 import BlankDtrReport from "../pages/reports-admin/market-auction/BlankDtrReport";
 import FormReportByDist from "../pages/reports-admin/market-auction/FormReportByDist";
 import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEdit";
+import DistrictAndTalukWiseMonthlyReport from "../pages/reports-admin/DistrictAndTalukWiseMonthlyReport";
 // Admin and Reports
 
 function Router() {
@@ -3000,6 +3001,7 @@ function Router() {
 
             {/* Admin and Reports */}
             <Route path="report-admin" element={<ReportsAdmin />} />
+            <Route path="district-monthly-report" element={<DistrictAndTalukWiseMonthlyReport />} />
             <Route path="average-report" element={<AverageReport />} />
             <Route path="audio-visual-report" element={<AudioVisualReport />} />
             <Route path="27-b-report" element={<BReport />} />
