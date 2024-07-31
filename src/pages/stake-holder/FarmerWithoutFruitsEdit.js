@@ -839,9 +839,9 @@ function FarmerWithoutFruitsEdit() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
-                          {isDataDobSet && (
+                          {/* {isDataDobSet && ( */}
                             <DatePicker
-                              selected={new Date(data.dob)}
+                              selected={data.dob ? new Date(data.dob) : null}
                               onChange={(date) => handleDateChange(date, "dob")}
                               peekNextMonth
                               showMonthDropdown
@@ -851,7 +851,7 @@ function FarmerWithoutFruitsEdit() {
                               maxDate={new Date()}
                               className="form-control"
                             />
-                          )}
+                          {/* )} */}
                         </div>
                       </Form.Group>
                     </Col>

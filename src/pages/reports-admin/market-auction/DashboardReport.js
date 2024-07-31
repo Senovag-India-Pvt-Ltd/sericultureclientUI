@@ -18,7 +18,9 @@ function DashboardReport() {
   const styles = {
     ctstyle: {
       fontWeight: "bold",
-      backgroundColor: "#a9a9d6",
+      // backgroundColor: "#dae992",
+      backgroundColor: "none",
+      color:"black"
     },
     red: {
       color: "red",
@@ -29,9 +31,12 @@ function DashboardReport() {
     boldFont: {
       fontWeight: "bold",
     },
-    color:{
-      backgroundColor:"#d1cfcf"
-    }
+    color: {
+      backgroundColor: "#d1cfcf",
+    },
+    lh: {
+      lineHeight: "0.6rem",
+    },
   };
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
@@ -191,7 +196,8 @@ function DashboardReport() {
         dashboardReportDate: formattedPendingDate,
       })
       .then((response) => {
-        if (response.data.errorCode === 0) {
+        if (response.data.content && response.data.errorCode === 0) {
+          // debugger
           setDashboardList(response.data.content.dashboardReportInfoList);
           setStatus({
             auctionStarted: response.data.content.auctionStarted,
@@ -361,20 +367,32 @@ function DashboardReport() {
           </Row>
         </Form> */}
         <Row className="d-flex justify-content-center">
-          <Col sm={12} lg={6}>
+          <Col sm={12} lg={6} style={styles.lh}>
             {dashboardList && dashboardList.length ? (
               <Card className="mt-2">
-                <Card.Header style={{fontSize:"1.3rem"}}>
+                <Card.Header style={{ fontSize: "1.3rem" }}>
                   Dashboard - {status.marketName} : {formattedDateTime}
                 </Card.Header>
-                <Card.Body style={styles.color} >
+                <Card.Body 
+                style={styles.color} 
+                // style={{
+                //           background:
+                //             "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
+                //             // "linear-gradient(to bottom, #edf601,#ff3c3c)",
+                //         }}
+                        >
                   <Row className="g-gs d-flex justify-content-center">
                     <Col lg="12">
                       <div className="d-flex mt-n2">
-                        <h4 className="text-centre" style={{fontSize:"1.3rem"}}>Bidding Status: </h4>
-                        <h4 
-                        // style={{ fontWeight: "bold" }}
-                        style={{fontSize:"1.3rem"}}
+                        <h4
+                          className="text-centre"
+                          style={{ fontSize: "1.3rem",color:"black" }}
+                        >
+                          Bidding Status:{" "}
+                        </h4>
+                        <h4
+                          // style={{ fontWeight: "bold" }}
+                          style={{ fontSize: "1.3rem" }}
                         >
                           {" "}
                           {status.auctionStarted ? (
@@ -385,10 +403,15 @@ function DashboardReport() {
                         </h4>
                       </div>
                       <div className="d-flex">
-                        <h4 className="text-centre" style={{fontSize:"1.3rem"}}>Acceptance Status:</h4>
-                        <h4 
-                        // style={styles.boldFont}
-                        style={{fontSize:"1.3rem"}}
+                        <h4
+                          className="text-centre"
+                          style={{ fontSize: "1.3rem",color:"black" }}
+                        >
+                          Acceptance Status:
+                        </h4>
+                        <h4
+                          // style={styles.boldFont}
+                          style={{ fontSize: "1.3rem" }}
                         >
                           {" "}
                           {status.acceptanceStarted ? (
@@ -398,7 +421,13 @@ function DashboardReport() {
                           )}
                         </h4>
                       </div>
-                      <table className="table small table-bordered border border-dark">
+                      <table
+                        className="table small table-bordered border border-dark"
+                        style={{
+                          background:
+                            "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
+                        }}
+                      >
                         {/* <tr>
                         <th>Heading 1</th>
                       </tr>
@@ -437,7 +466,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.totalLotsBid}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.totalLotsBid}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -447,7 +478,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.totalLotsNotBid}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.totalLotsNotBid}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -457,7 +490,10 @@ function DashboardReport() {
                           <td>36</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.totalBids}</td>
+                                {/* <td style={styles.ctstyle}>{dashboard.totalBids}</td> */}
+                                <td style={styles.ctstyle}>
+                                  {dashboard.auctionCount}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -467,7 +503,9 @@ function DashboardReport() {
                           <td>253(Paid)</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.totalReelers}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.totalReelers}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -480,7 +518,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.currentAuctionMaxBid}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.currentAuctionMaxBid}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -490,7 +530,9 @@ function DashboardReport() {
                           <td>12:32:47</td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.accecptedLots}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.accecptedLots}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -512,7 +554,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.accecptedLotsMaxBid}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.accecptedLotsMaxBid}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -525,7 +569,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.accectedLotsMinBid}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.accectedLotsMinBid}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -535,7 +581,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.averagRate}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.averagRate}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -545,7 +593,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.weighedLots}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.weighedLots}
+                                </td>
                               </>
                             ))}
                           </tr>
@@ -558,7 +608,9 @@ function DashboardReport() {
                           <td></td> */}
                             {dashboardList.map((dashboard) => (
                               <>
-                                <td style={styles.ctstyle}>{dashboard.totalSoldOutAmount}</td>
+                                <td style={styles.ctstyle}>
+                                  {dashboard.totalSoldOutAmount}
+                                </td>
                               </>
                             ))}
                           </tr>
