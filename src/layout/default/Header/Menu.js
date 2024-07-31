@@ -428,6 +428,7 @@ function Menu() {
     Admin_Report_DTR_Blank_Report: false,
     Admin_Report_DTR: false,
     Admin_Report_Unit: false,
+    Admin_District_Wise_Monthly_Report: false,
     Admin_Report_Pending: false,
     Admin_Report_Bidding_Report: false,
     Admin_Report_Bidding_Reeler_Report: false,
@@ -3020,7 +3021,7 @@ function Menu() {
                   {showMenu.Admin_Report_DTR_Blank_Report ? (
                     <MenuItem>
                       <MenuItemLink
-                        text="Blank DTR Report"
+                        text="Real Time DTR Report"
                         to="/seriui/blank-dtr-online"
                       />
                     </MenuItem>
@@ -3035,6 +3036,14 @@ function Menu() {
                       <MenuItemLink
                         text="Unit Counter Report"
                         to="/seriui/unit-counter-report"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Admin_District_Wise_Monthly_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text="District Wise Monthly Report"
+                        to="/seriui/district-monthly-report"
                       />
                     </MenuItem>
                   ) : null}
