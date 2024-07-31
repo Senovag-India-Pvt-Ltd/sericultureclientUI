@@ -281,17 +281,14 @@ function OtherStateFarmer() {
       e.target.classList.remove("is-invalid");
       e.target.classList.add("is-valid");
     }
-    if(name === "farmerBankIfscCode"){
+    if (name === "farmerBankIfscCode") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else if(name === "farmerBankBranchName"){
+    } else if (name === "farmerBankBranchName") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else if(name === "farmerBankName"){
+    } else if (name === "farmerBankName") {
       setBank({ ...bank, [name]: value.toUpperCase() });
-    }
-    else{
-    setBank({ ...bank, [name]: value });
+    } else {
+      setBank({ ...bank, [name]: value });
     }
   };
 
@@ -348,6 +345,9 @@ function OtherStateFarmer() {
           //   if (Object.keys(err.response.data.validationErrors).length > 0) {
           //     saveError(err.response.data.validationErrors);
           //   }
+          if (err.response.data.errorMessages.length > 0) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
+          }
         });
       setValidated(true);
     }
@@ -1139,7 +1139,6 @@ function OtherStateFarmer() {
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
-                            
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>

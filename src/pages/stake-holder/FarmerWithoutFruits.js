@@ -387,6 +387,9 @@ function FarmerWithoutFruits() {
           //   if (Object.keys(err.response.data.validationErrors).length > 0) {
           //     saveError(err.response.data.validationErrors);
           //   }
+          if (err.response.data.errorMessages.length > 0) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
+          }
         });
       setValidated(true);
     }
@@ -1252,6 +1255,7 @@ function FarmerWithoutFruits() {
                             type="text"
                             placeholder={t("enter_mobile_number")}
                             required
+                            maxLength="10"
                           />
                           <Form.Control.Feedback type="invalid">
                             Mobile Number is required or Number is greater than
@@ -2068,6 +2072,7 @@ function FarmerWithoutFruits() {
                             type="text"
                             placeholder={t("enter_ifsc_code")}
                             required
+                            maxLength="11"
                           />
                           <Form.Control.Feedback type="invalid">
                             IFSC Code is required and equals to 11 digit

@@ -2412,7 +2412,7 @@ function StakeHolderEdit() {
                                         >
                                           {t("edit")}
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() =>
@@ -2423,7 +2423,7 @@ function StakeHolderEdit() {
                                           className="ms-2"
                                         >
                                           {t("delete")}
-                                        </Button>
+                                        </Button> */}
                                       </div>
                                     </td>
                                     <td>{item.addressText}</td>
@@ -2529,7 +2529,7 @@ function StakeHolderEdit() {
                                         >
                                           {t("edit")}
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() =>
@@ -2540,7 +2540,7 @@ function StakeHolderEdit() {
                                           className="ms-2"
                                         >
                                           {t("delete")}
-                                        </Button>
+                                        </Button> */}
                                       </div>
                                     </td>
                                     <td>{item.landOwnershipName}</td>
