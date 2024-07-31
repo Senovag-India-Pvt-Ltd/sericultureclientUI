@@ -693,6 +693,18 @@ function BlankDtrReport() {
                                 </span>
                               </div>
                               <div>
+                                Total Lots Transacted:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.paymentSuccessLots}
+                                </span>
+                              </div>
+                              <div>
+                                Total Lots Not Transacted:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.notTransactedLots}
+                                </span>
+                              </div>
+                              <div>
                                 Total Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.totallotSoldOutAmount}
