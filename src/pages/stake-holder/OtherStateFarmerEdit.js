@@ -839,9 +839,9 @@ function OtherStateFarmerEdit() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
-                          {isDataDobSet && (
+                          {/* {isDataDobSet && ( */}
                             <DatePicker
-                              selected={new Date(data.dob)}
+                              selected={data.dob ? new Date(data.dob) : null}
                               onChange={(date) => handleDateChange(date, "dob")}
                               peekNextMonth
                               showMonthDropdown
@@ -851,7 +851,7 @@ function OtherStateFarmerEdit() {
                               maxDate={new Date()}
                               className="form-control"
                             />
-                          )}
+                          {/* )} */}
                         </div>
                       </Form.Group>
                     </Col>
@@ -996,7 +996,7 @@ function OtherStateFarmerEdit() {
                       <Form.Group className="form-group">
                         <Form.Label>
                           State
-                          {/* <span className="text-danger">*</span> */}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1004,11 +1004,11 @@ function OtherStateFarmerEdit() {
                             value={`${farmerAddress.stateId}_${farmerAddress.stateName}`}
                             onChange={handleStateOption}
                             onBlur={() => handleStateOption}
-                            // required
-                            // isInvalid={
-                            //   farmerAddress.stateId === undefined ||
-                            //   farmerAddress.stateId === "0"
-                            // }
+                            required
+                            isInvalid={
+                              farmerAddress.stateId === undefined ||
+                              farmerAddress.stateId === "0"
+                            }
                           >
                             <option value="">Select State</option>
                             {addressStateListData.map((list) => (
@@ -1205,7 +1205,7 @@ function OtherStateFarmerEdit() {
                             onChange={handleFarmerAddressInputs}
                             type="text"
                             placeholder={t("enter_pin_code")}
-                            required
+                            // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
                             Pincode is required

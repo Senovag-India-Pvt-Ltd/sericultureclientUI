@@ -1736,7 +1736,7 @@ function OtherStateFarmer() {
                       <Form.Group className="form-group">
                         <Form.Label>
                           State
-                          {/* <span className="text-danger">*</span> */}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1744,11 +1744,11 @@ function OtherStateFarmer() {
                             value={`${farmerAddress.stateId}_${farmerAddress.stateName}`}
                             onChange={handleStateOption}
                             onBlur={() => handleStateOption}
-                            // required
-                            // isInvalid={
-                            //   farmerAddress.stateId === undefined ||
-                            //   farmerAddress.stateId === "0"
-                            // }
+                            required
+                            isInvalid={
+                              farmerAddress.stateId === undefined ||
+                              farmerAddress.stateId === "0"
+                            }
                           >
                             <option value="">Select State</option>
                             {addressStateListData.map((list) => (
