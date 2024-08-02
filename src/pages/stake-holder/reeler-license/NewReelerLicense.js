@@ -2101,7 +2101,7 @@ function NewReelerLicense() {
                             name="bankAccountNumber"
                             value={data.bankAccountNumber}
                             onChange={handleInputs}
-                            type="number"
+                            type="text"
                             placeholder="Enter Bank Account Number"
                             required
                           />
@@ -2280,7 +2280,7 @@ function NewReelerLicense() {
                       name="virtualAccountNumber"
                       value={vbAccount.virtualAccountNumber}
                       onChange={handleVbInputs}
-                      type="number"
+                      type="text"
                       placeholder="Enter Virtual Account Number"
                       required
                     />

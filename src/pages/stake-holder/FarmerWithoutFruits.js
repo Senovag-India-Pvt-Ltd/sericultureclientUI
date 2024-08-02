@@ -2093,7 +2093,7 @@ function FarmerWithoutFruits() {
                             name="farmerBankAccountNumber"
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
-                            type="number"
+                            type="text"
                             placeholder={t("enter_bank_account_number")}
                             required
                           />

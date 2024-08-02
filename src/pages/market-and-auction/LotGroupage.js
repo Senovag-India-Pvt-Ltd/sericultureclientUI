@@ -80,16 +80,7 @@ const handleDateChange = (date) => {
       e.preventDefault();
       const buyerName = data.buyerType === "Reeler" ? data.reelerName : data.name;
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
-      // setData({
-      //   buyerType: "Reeler",
-      //   buyerId: "",
-      //   lotWeight: "",
-      //   amount: "",
-      //   marketFee: "",
-      //   soldAmount: "",
-      //   allottedLotId: "",
-      //   auctionDate: ""
-      // });
+     
       clean();
       setShowModal(false);
       setValidatedLot(false);
@@ -163,7 +154,88 @@ const handleDateChange = (date) => {
    //  console.log("data",data.photoPath);
    const [searchValidated, setSearchValidated] = useState(false);
 
-   const search = (event) => {
+  //  const search = (event) => {
+  //   setDataLotList([]);
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setSearchValidated(true);
+  //   } else {
+  //     event.preventDefault();
+     
+  //           api
+  //             .post(
+  //               baseURLMarket +
+  //                 `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
+  //               { allottedLotId:allottedLotId,auctionDate: auctionDate, marketId: localStorage.getItem("marketId"),
+  //                godownId: localStorage.getItem("godownId"),}
+  //               // {
+  //               //   headers: _header,
+  //               // }
+  //             )
+  //             .then((response) => {
+  //               const lotGroupageId = response.data.content[0].lotGroupageId;
+        
+  //               if (lotGroupageId) {
+  //                 // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
+  //                 setFarmerDetails((prev) => ({
+  //                   ...prev,
+  //                   farmerFirstName: response.data.content[0].farmerFirstName,
+  //                   farmerMiddleName: response.data.content[0].farmerMiddleName,
+  //                   farmerFruitsId: response.data.content[0].farmerFruitsId
+  //                 }));
+  //                 setDataLotList(response.data.content);
+  //                 setShowFarmerDetails(true);
+  //               } else {
+  //               //  const farmerDetails = response.data.content;
+  //               setFarmerDetails((prev) => ({
+  //                 ...prev,
+  //                 farmerFirstName: response.data.content[0].farmerFirstName,
+  //                 farmerMiddleName: response.data.content[0].farmerMiddleName,
+  //                 farmerFruitsId: response.data.content[0].farmerFruitsId
+  //               }));
+  //               setShowFarmerDetails(true);
+  //                }
+                 
+  //                 // console.log(modified);
+
+                 
+  //             })
+  //             .catch((err) => {
+  //               console.error("Error fetching farmer details:", err);
+  //               if (
+  //                 err.response &&
+  //                 err.response.data &&
+  //                 err.response.data.validationErrors
+  //               ) {
+  //                 if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //                   searchError(err.response.data.validationErrors);
+  //                 }
+  //               } else {
+  //                 Swal.fire({
+  //                   icon: "warning",
+  //                   title: "Details Not Found for This Lot and Auction Date",
+  //                 });
+  //               }
+  //               setFarmerDetails({});
+  //               setLoading(false);
+  //             });
+  //         }
+  // };
+
+  const formatAuctionDate = (auctionDate) => {
+    const distributionDate = new Date(auctionDate);
+    return (
+      distributionDate.getFullYear() +
+      "-" +
+      (distributionDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      distributionDate.getDate().toString().padStart(2, "0")
+    );
+  };
+  
+  const search = (event) => {
     setDataLotList([]);
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -172,69 +244,64 @@ const handleDateChange = (date) => {
       setSearchValidated(true);
     } else {
       event.preventDefault();
-     
-            api
-              .post(
-                baseURLMarket +
-                  `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
-                { allottedLotId:allottedLotId,auctionDate: auctionDate, marketId: localStorage.getItem("marketId"),
-                 godownId: localStorage.getItem("godownId"),}
-                // {
-                //   headers: _header,
-                // }
-              )
-              .then((response) => {
-                const lotGroupageId = response.data.content[0].lotGroupageId;
-        
-                if (lotGroupageId) {
-                  // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
-                  setFarmerDetails((prev) => ({
-                    ...prev,
-                    farmerFirstName: response.data.content[0].farmerFirstName,
-                    farmerMiddleName: response.data.content[0].farmerMiddleName,
-                    farmerFruitsId: response.data.content[0].farmerFruitsId
-                  }));
-                  setDataLotList(response.data.content);
-                  setShowFarmerDetails(true);
-                } else {
-                //  const farmerDetails = response.data.content;
-                setFarmerDetails((prev) => ({
-                  ...prev,
-                  farmerFirstName: response.data.content[0].farmerFirstName,
-                  farmerMiddleName: response.data.content[0].farmerMiddleName,
-                  farmerFruitsId: response.data.content[0].farmerFruitsId
-                }));
-                setShowFarmerDetails(true);
-                 }
-                 
-                  // console.log(modified);
-
-                 
-              })
-              .catch((err) => {
-                console.error("Error fetching farmer details:", err);
-                if (
-                  err.response &&
-                  err.response.data &&
-                  err.response.data.validationErrors
-                ) {
-                  if (Object.keys(err.response.data.validationErrors).length > 0) {
-                    searchError(err.response.data.validationErrors);
-                  }
-                } else {
-                  Swal.fire({
-                    icon: "warning",
-                    title: "Details Not Found for This Lot and Auction Date",
-                  });
-                }
-                setFarmerDetails({});
-                setLoading(false);
-              });
+      const formattedAuctionDate = formatAuctionDate(auctionDate);
+      api
+        .post(
+          baseURLMarket +
+            `lotGroupage/getUpdateLotDistributeByLotIdForSeedMarket`,
+          {
+            allottedLotId: allottedLotId,
+            auctionDate: formattedAuctionDate,
+            marketId: localStorage.getItem("marketId"),
+            godownId: localStorage.getItem("godownId"),
           }
-  };
- 
+        )
+        .then((response) => {
+          const lotGroupageId = response.data.content[0].lotGroupageId;
   
-     
+          if (lotGroupageId) {
+            // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
+            setFarmerDetails((prev) => ({
+              ...prev,
+              farmerFirstName: response.data.content[0].farmerFirstName,
+              farmerMiddleName: response.data.content[0].farmerMiddleName,
+              farmerFruitsId: response.data.content[0].farmerFruitsId,
+            }));
+            setDataLotList(response.data.content);
+            setShowFarmerDetails(true);
+          } else {
+            setFarmerDetails((prev) => ({
+              ...prev,
+              farmerFirstName: response.data.content[0].farmerFirstName,
+              farmerMiddleName: response.data.content[0].farmerMiddleName,
+              farmerFruitsId: response.data.content[0].farmerFruitsId,
+            }));
+            setShowFarmerDetails(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching farmer details:", err);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              searchError(err.response.data.validationErrors);
+            }
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "Details Not Found for This Lot and Auction Date",
+            });
+          }
+          setFarmerDetails({});
+          setLoading(false);
+        });
+    }
+  };
+  
+   
  
    const searchError = (message = "Something went wrong!") => {
      let errorMessage;
