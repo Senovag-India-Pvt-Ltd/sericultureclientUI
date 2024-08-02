@@ -149,6 +149,25 @@ const handleDateChange = (date) => {
       setData({ ...data, [name]: value });
     }
   };
+//   const handleInputs = (e) => {
+//   const { name, value } = e.target;
+
+//   if (name === 'allottedLotId') {
+//     setAllottedLotId(value);
+//   } else {
+//     const updatedData = { ...data, [name]: value };
+
+//     // If lotWeight or amount is updated, calculate soldAmount
+//     if (name === 'lotWeight' || name === 'amount') {
+//       const lotWeight = parseFloat(updatedData.lotWeight) || 0;
+//       const amount = parseFloat(updatedData.amount) || 0;
+//       updatedData.soldAmount = (lotWeight * amount).toFixed(3);
+//     }
+
+//     setData(updatedData);
+//   }
+// };
+
 
 
    //  console.log("data",data.photoPath);
