@@ -1175,14 +1175,14 @@ function FarmerWithoutFruits() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group mt-3">
                         <Form.Label>{t("gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="genderId"
                             value={data.genderId}
                             onChange={handleInputs}
-                            
+                            // disabled
                           >
                             <option value="">{t("select_gender")}</option>
                             <option value="1">Male</option>
@@ -1190,7 +1190,7 @@ function FarmerWithoutFruits() {
                             <option value="3">Third Gender</option>
                           </Form.Select>
                         </div>
-                      </Form.Group> */}
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>Caste</Form.Label>
