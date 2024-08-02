@@ -20,7 +20,7 @@ function DashboardReport() {
       fontWeight: "bold",
       // backgroundColor: "#dae992",
       backgroundColor: "none",
-      color:"black"
+      color: "black",
     },
     red: {
       color: "red",
@@ -373,20 +373,20 @@ function DashboardReport() {
                 <Card.Header style={{ fontSize: "1.3rem" }}>
                   Dashboard - {status.marketName} : {formattedDateTime}
                 </Card.Header>
-                <Card.Body 
-                style={styles.color} 
-                // style={{
-                //           background:
-                //             "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
-                //             // "linear-gradient(to bottom, #edf601,#ff3c3c)",
-                //         }}
-                        >
+                <Card.Body
+                  style={styles.color}
+                  // style={{
+                  //           background:
+                  //             "linear-gradient(to bottom, #f68901,#fbf9f7, #12e612)",
+                  //             // "linear-gradient(to bottom, #edf601,#ff3c3c)",
+                  //         }}
+                >
                   <Row className="g-gs d-flex justify-content-center">
                     <Col lg="12">
                       <div className="d-flex mt-n2">
                         <h4
                           className="text-centre"
-                          style={{ fontSize: "1.3rem",color:"black" }}
+                          style={{ fontSize: "1.3rem", color: "black" }}
                         >
                           Bidding Status:{" "}
                         </h4>
@@ -405,7 +405,7 @@ function DashboardReport() {
                       <div className="d-flex">
                         <h4
                           className="text-centre"
-                          style={{ fontSize: "1.3rem",color:"black" }}
+                          style={{ fontSize: "1.3rem", color: "black" }}
                         >
                           Acceptance Status:
                         </h4>
