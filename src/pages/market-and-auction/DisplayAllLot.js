@@ -83,7 +83,7 @@ function DisplayAllLot() {
 
   function getClassName() {
     return classNames({
-      "table-slide": lotsLength > 10,
+      "table-slide": lotsLength > 9,
       "table-slide-100": lotsLength > 100,
       "table-slide-150": lotsLength > 150,
       "table-slide-200": lotsLength > 200,
@@ -92,8 +92,8 @@ function DisplayAllLot() {
 
   function getClassNameHide() {
     return classNames({
-      hide: lotsLength < 10,
-      "table-slide": lotsLength > 10,
+      hide: lotsLength <= 9,
+      "table-slide": lotsLength > 9,
       "table-slide-100": lotsLength > 100,
       "table-slide-150": lotsLength > 150,
       "table-slide-200": lotsLength > 200,
@@ -102,26 +102,30 @@ function DisplayAllLot() {
 
   function setScreen() {
     return classNames({
-      "ml-70": lotsLength === 0,
-      "ml-62": lotsLength === 1,
-      "ml-52": lotsLength === 2,
-      "ml-44": lotsLength === 3,
-      "ml-35": lotsLength === 4,
-      "ml-26": lotsLength === 5,
-      "ml-18": lotsLength === 6,
-      "ml-10": lotsLength === 7,
+      "ml-74": lotsLength === 0,
+      "ml-65": lotsLength === 1,
+      "ml-57": lotsLength === 2,
+      "ml-48": lotsLength === 3,
+      "ml-39": lotsLength === 4,
+      "ml-30": lotsLength === 5,
+      "ml-22": lotsLength === 6,
+      "ml-13": lotsLength === 7,
+      "ml-5": lotsLength === 8,
     });
   }
 
   function setTimeScreen() {
     return classNames({
-      "t-60": lotsLength === 1 || lotsLength === 2,
-      "t-40": lotsLength === 3,
-      "t-25": lotsLength === 4,
-      "t-8": lotsLength === 5,
-      "t-n10": lotsLength === 6,
-      "t-n25": lotsLength === 7,
-      "t-n50": lotsLength >= 8,
+      "t-55": lotsLength === 0,
+      "t-45": lotsLength === 1,
+      "t-35": lotsLength === 2,
+      "t-25": lotsLength === 3,
+      "t-10": lotsLength === 4,
+      "t-0": lotsLength === 5,
+      "t-n12": lotsLength === 6,
+      "t-n27": lotsLength === 7,
+      "t-n40": lotsLength >= 8,
+      "t-n45": lotsLength >= 9,
     });
   }
 
@@ -178,6 +182,29 @@ function DisplayAllLot() {
     return () => clearInterval(interval);
   }, []);
 
+  // to get market data from api
+
+  const [data, setData] = useState({});
+  const getIdList = () => {
+    // setLoading(true);
+    api
+      .get(baseURL + `marketMaster/get/${localStorage.getItem("marketId")}`)
+      .then((response) => {
+        setData(response.data.content);
+        // setLoading(false);
+      })
+      .catch((err) => {
+        // const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+      });
+  };
+
+  useEffect(() => {
+    getIdList();
+  }, []);
+
+  console.log("hello", data);
+
   const navigate = useNavigate();
   const saveSuccess = () => {
     Swal.fire({
@@ -223,21 +250,66 @@ function DisplayAllLot() {
                 >
                   {/* <div>{lots&& lots.length>0&&lots.map(lot=>lot.currentTime)}</div> */}
                   {/* <div>{console.log("hello", lots)}</div> */}
-                  <div>{lots && lots.length > 0 && lots[0].currentTime}</div>
+                  <div className="d-flex flex-column lh-1 justify-content-center align-items-center">
+                    <span>
+                      {lots && lots.length > 0 && lots[0].currentTime}
+                    </span>
+                    <span
+                      className="mb-4"
+                      style={{ fontSize: "2rem", color: "#b1b117" }}
+                    >
+                      ಕರ್ನಾಟಕ ಸರ್ಕಾರ ರೇಷ್ಮೆ ಇಲಾಖೆ{" "}
+                      <span style={{ color: "red" }}>
+                        {" "}
+                        {data.marketNameInKannada}
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </Col>
             </Row>
-            <Row className="g-3 d-flex justify-content-center">
-              <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
-                <div className={`table ${setScreen()}`}>
-                  <div className={getClassName()}>
+            {/* <Row className="g-3 d-flex justify-content-center">
+              <Col lg="12" style={{ padding: "0px 0px 0px 0px" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    // left: "33%",
+                    zIndex: 1000,
+                    // color: "red",
+                    fontSize: "6rem",
+                    fontWeight: "bold",
+                  }}
+                  className={setTimeScreen()}
+                >
+                  <div>
                     <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
                       <thead>
                         <tr>
-                          <th style={styles.top}>ಲಾಟ್ ನಂ</th>
-                          <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
+                          <th style={{...styles.top,padding:'0rem 5.6rem 0rem 5.6rem'}}>ಲಾಟ್ ನಂ</th>
+                          <th style={{...styles.top,padding:'0rem 5.6rem 0rem 5.8rem'}}>ಬಿಡ್ ಮೊತ್ತ</th>
                         </tr>
                       </thead>
+                    </table>
+                  </div>
+                </div>
+              </Col>
+            </Row> */}
+            <Row className="g-3 d-flex justify-content-center">
+              <Col lg="8" style={{ padding: "0px 0px 0px 0px" }}>
+                <div className={`table ${setScreen()}`}>
+                  <table
+                    className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0"
+                    style={{ marginTop: "-4rem" }}
+                  >
+                    <thead style={{ position: "sticky", top: 0, zIndex: 1000 }}>
+                      <tr>
+                        <th style={styles.top}>ಲಾಟ್ ನಂ</th>
+                        <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <div className={getClassName()}>
+                    <table className="table small table-bordered border border-dark border-5 border-bottom-0 weightmenttable marginbottom0">
                       <tbody>
                         {lots &&
                           lots.length > 0 &&
@@ -266,12 +338,12 @@ function DisplayAllLot() {
                   </div>
                   <div className={getClassNameHide()}>
                     <table className="table small table-bordered border border-dark border-5 border-top-0 weightmenttable marginbottom0">
-                      <thead>
+                      {/* <thead>
                         <tr>
                           <th style={styles.top}>ಲಾಟ್ ನಂ</th>
                           <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
                         </tr>
-                      </thead>
+                      </thead> */}
                       <tbody>
                         {lots.map((lot) => (
                           <>
