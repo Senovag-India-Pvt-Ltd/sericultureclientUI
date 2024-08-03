@@ -53,7 +53,31 @@ function WeighmentForSeedMarket() {
     }
   };
 
+  // const formatDate = (date) => {
+  //   return date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
+  // };
+  const formatAuctionDate = (auctionDate) => {
+    if (!(auctionDate instanceof Date) || isNaN(auctionDate.getTime())) {
+      // Handle invalid date
+      console.error('Invalid date:', auctionDate);
+      return ''; // or return a default date string
+  }
+    const distributionDate = new Date(auctionDate);
+    return (
+      distributionDate.getFullYear() +
+      "-" +
+      (distributionDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      distributionDate.getDate().toString().padStart(2, "0")
+    );
+  };
+  
+
   const handleDateChange = (date) => {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      console.error('Invalid date provided:', date);
+      return; // Handle invalid date
+  }
     setData((prev) => ({ ...prev, auctionDate: date }));
   };
   useEffect(() => {
@@ -63,7 +87,7 @@ function WeighmentForSeedMarket() {
   const [data, setData] = useState({
     allottedLotId: "",
     noOfCrates: "0",
-    auctionDate: "",
+    auctionDate: new Date(),
   });
 
   console.log("Initial Counter:", counter);
@@ -144,11 +168,13 @@ function WeighmentForSeedMarket() {
   };
 
   const getLotDetails = (allottedLotId) => {
+    const formattedAuctionDate = formatAuctionDate(data.auctionDate);
     const sendData = {
       marketId: localStorage.getItem("marketId"),
       godownId: localStorage.getItem("godownId"),
       allottedLotId: allottedLotId,
-      auctionDate: data.auctionDate,
+      // auctionDate: data.auctionDate,
+      auctionDate: formattedAuctionDate
     };
     api
       .post(baseURL1 + `auction/weigment/getUpdateWeighmentByLotIdForSeedMarket`, sendData)
@@ -180,10 +206,13 @@ function WeighmentForSeedMarket() {
   const [weight, setWeight] = useState(0);
 
   const getCrateDetails = (noOfCrates, allottedLotId) => {
+    const formattedAuctionDate = formatAuctionDate(data.auctionDate);
     const sendData = {
       marketId: localStorage.getItem("marketId"),
       godownId: localStorage.getItem("godownId"),
       allottedLotId: allottedLotId,
+      // auctionDate: data.auctionDate,
+      auctionDate: formattedAuctionDate,
       noOfCrates: noOfCrates,
     };
     api
@@ -215,7 +244,7 @@ function WeighmentForSeedMarket() {
   const submitError = (message = "Something went wrong!") => {
     Swal.fire({
       icon: "error",
-      title: "Not Saved",
+      // title: "Not Saved",
       text: message,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -350,13 +379,15 @@ function WeighmentForSeedMarket() {
   };
 
   const onSubmitting = (e) => {
+    const formattedAuctionDate = formatAuctionDate(data.auctionDate);
     const submitData = {
       marketId: localStorage.getItem("marketId"),
       godownId: localStorage.getItem("godownId"),
       allottedLotId: data.allottedLotId,
       weighmentList: tableWeightData,
       userName: localStorage.getItem("username"),
-      auctionDate:data.auctionDate,
+      // auctionDate:data.auctionDate,
+      auctionDate: formattedAuctionDate,
     };
     api
       .post(baseURL1 + `auction/weigment/completeWeighmentForLotSeedMarket`, submitData)
