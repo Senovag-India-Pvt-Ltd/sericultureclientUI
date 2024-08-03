@@ -338,6 +338,7 @@ function OtherStateFarmer() {
             );
             handleFileUpload(response.data.content.farmerId);
             handleFileDocumentUpload(response.data.content.farmerBankAccountId);
+            clear();
             setValidated(false);
           }
         })

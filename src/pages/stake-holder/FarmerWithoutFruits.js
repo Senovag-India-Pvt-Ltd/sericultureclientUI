@@ -329,6 +329,7 @@ function FarmerWithoutFruits() {
             );
             handleFileUpload(response.data.content.farmerId);
             handleFileDocumentUpload(response.data.content.farmerBankAccountId);
+            clear();
             // setData({
             //   fruitsId: "",
             //   firstName: "",
