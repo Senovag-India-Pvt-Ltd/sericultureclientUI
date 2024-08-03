@@ -201,7 +201,7 @@ function DisplayAllLot() {
 
   useEffect(() => {
     getIdList();
-  }, []);
+  }, [marketId]);
 
   console.log("hello", data);
 
@@ -250,15 +250,14 @@ function DisplayAllLot() {
                 >
                   {/* <div>{lots&& lots.length>0&&lots.map(lot=>lot.currentTime)}</div> */}
                   {/* <div>{console.log("hello", lots)}</div> */}
-                  <div className="d-flex flex-column lh-1 justify-content-center align-items-center">
-                    <span>
+                  <div className="d-flex flex-column-reverse lh-1 justify-content-center align-items-center">
+                    <span className="mb-4">
                       {lots && lots.length > 0 && lots[0].currentTime}
                     </span>
                     <span
-                      className="mb-4"
                       style={{ fontSize: "2rem", color: "#b1b117" }}
                     >
-                      ಕರ್ನಾಟಕ ಸರ್ಕಾರ ರೇಷ್ಮೆ ಇಲಾಖೆ{" "}
+                      ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆ{" "}
                       <span style={{ color: "red" }}>
                         {" "}
                         {data.marketNameInKannada}
@@ -303,8 +302,8 @@ function DisplayAllLot() {
                   >
                     <thead style={{ position: "sticky", top: 0, zIndex: 1000 }}>
                       <tr>
-                        <th style={styles.top}>ಲಾಟ್ ನಂ</th>
-                        <th style={styles.top}>ಬಿಡ್ ಮೊತ್ತ</th>
+                        <th style={styles.top}>ತಂಡದ ಸಂಖ್ಯೆ</th>
+                        <th style={styles.top}>ಬಿಡ್ ದರ</th>
                       </tr>
                     </thead>
                   </table>
