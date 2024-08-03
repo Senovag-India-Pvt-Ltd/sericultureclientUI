@@ -354,7 +354,11 @@ function OtherStateFarmer() {
           ) {
             if (Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
+              return
             }
+          }
+          if (err.response.data.errorMessages.length > 0) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
           }
         });
       setValidated(true);
