@@ -188,7 +188,7 @@ function DisplayAllLot() {
   const getIdList = () => {
     // setLoading(true);
     api
-      .get(baseURL + `marketMaster/get/${localStorage.getItem("marketId")}`)
+      .get(baseURL + `marketMaster/get/${marketId}`)
       .then((response) => {
         setData(response.data.content);
         // setLoading(false);
