@@ -99,7 +99,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total number of cocoons produced at each generation:
+                          Total number of cocoons produced:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachGeneration}
@@ -135,7 +135,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total No of Cocoons Produced at each Screening:
+                          Total No of Cocoons Produced Screening:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachScreening}

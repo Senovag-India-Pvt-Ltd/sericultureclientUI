@@ -17,79 +17,169 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function VillageList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 5;
+  const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [data, setData] = useState({
-    searchBy: "village",
-    text: "",
+    districtId: "",
+    talukId: "",
+    hobliId: "",
+    // villageId: "",
+    villageName: "",
+    
   });
-
   const handleInputs = (e) => {
     // debugger;
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-  // Search
-  const search = (e) => {
-    let joinColumn;
-    if (data.searchBy === "state") {
-      joinColumn = "state.stateName";
-    }
-    if (data.searchBy === "district") {
-      joinColumn = "district.districtName";
-    }
-    if (data.searchBy === "taluk") {
-      joinColumn = "taluk.talukName";
-    }
-    if (data.searchBy === "hobli") {
-      joinColumn = "hobli.hobliName";
-    }
-    if (data.searchBy === "village") {
-      joinColumn = "village.villageName";
-    }
-    // console.log(joinColumn);
+   // Search
+   const search = (e) => {
     api
-      .post(baseURL + `village/search`, {
-        searchText: data.text,
-        joinColumn: joinColumn,
-      })
+      .post(
+        baseURL + `village/searchVillageDetails`,
+        {},
+        {
+          params: {
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            hobliId: data.hobliId || 0,
+            villageName: data.villageName || "",
+            // villageId: data.villageId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
       .then((response) => {
-        setListData(response.data.content.village);
-
-        // if (response.data.content.error) {
-        //   // saveError();
-        // } else {
-        //   console.log(response);
-        //   // saveSuccess();
-        // }
+        setListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
       })
       .catch((err) => {
-        // saveError();
+        setListData([]);
       });
   };
 
-  const getList = () => {
-    setLoading(true);
-    const response = api
-      .get(baseURL + `village/list-with-join`, _params)
+  const getVillageList = (e) => {
+    api
+      .post(
+        baseURL + `village/searchVillageDetails`,
+        {},
+        {
+          params: {
+            districtId: data.districtId || 0,
+            talukId: data.talukId || 0,
+            hobliId: data.hobliId || 0,
+            villageName: data.villageName || "",
+            // villageId: data.villageId || 0,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
       .then((response) => {
-        setListData(response.data.content.village);
-        setTotalRows(response.data.content.totalItems);
-        setLoading(false);
+        setListData(response.data.content);
+        setTotalRows(response.data.totalRecords);
       })
       .catch((err) => {
-        setListData({});
-        setLoading(false);
+        setListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getVillageList();
+  }, [page]);
+
+  // to get State
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getList = () => {
+    const response = api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
       });
   };
 
   useEffect(() => {
     getList();
-  }, [page]);
+  }, []);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    const response = api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTalukList(data.districtId);
+    }
+  }, [data.districtId]);
+
+  // to get hobli
+  const [hobliListData, setHobliListData] = useState([]);
+
+  const getHobliList = (_id) => {
+    const response = api
+      .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.hobli) {
+          setHobliListData(response.data.content.hobli);
+        }
+      })
+      .catch((err) => {
+        setHobliListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.talukId) {
+      getHobliList(data.talukId);
+    }
+  }, [data.talukId]);
+
+  // to get Village
+  const [villageListData, setVillageListData] = useState([]);
+
+  const getVillageDetailsList = (_id) => {
+    api
+      .get(baseURL + `village/get-by-hobli-id/${_id}`)
+      .then((response) => {
+        setVillageListData(response.data.content.village);
+      })
+      .catch((err) => {
+        setVillageListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.hobliId) {
+      getVillageDetailsList(data.hobliId);
+    }
+  }, [data.hobliId]);
+
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -226,6 +316,20 @@ function VillageList() {
       grow: 2,
     },
     {
+      name: "Serial Number",
+      selector: (row) => row.serialNumber,
+      cell: (row) => <span>{row.serialNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Village Id",
+      selector: (row) => row.villageId,
+      cell: (row) => <span>{row.villageId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "State",
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
@@ -316,48 +420,150 @@ function VillageList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card>
-          <Row className="m-2">
-            <Col>
-              <Form.Group as={Row} className="form-group" id="fid">
-                <Form.Label column sm={1}>
-                  Search By
-                </Form.Label>
-                <Col sm={3}>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="searchBy"
-                      value={data.searchBy}
-                      onChange={handleInputs}
-                    >
-                      {/* <option value="">Select</option> */}
-                      <option value="village">Village</option>
-                      <option value="hobli">Hobli</option>
-                      <option value="taluk">Taluk</option>
-                      <option value="district">District</option>
-                      <option value="state">State</option>
-                    </Form.Select>
-                  </div>
-                </Col>
-
-                <Col sm={3}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={data.text}
+      <Card className="mt-1">
+          <Row className="m-4">
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>District</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="districtId"
+                    value={data.districtId}
                     onChange={handleInputs}
-                    type="text"
-                    placeholder="Search"
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
-                    Search
-                  </Button>
-                </Col>
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.districtId === undefined || data.districtId === "0"
+                    }
+                  >
+                    <option value="">Select District</option>
+                    {districtListData && districtListData.length
+                      ? districtListData.map((list) => (
+                          <option key={list.districtId} value={list.districtId}>
+                            {list.districtName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    District Name is required
+                  </Form.Control.Feedback>
+                </div>
               </Form.Group>
             </Col>
-          </Row>
+
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Taluk</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="talukId"
+                    value={data.talukId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.talukId === undefined || data.talukId === "0"
+                    }
+                  >
+                    <option value="">Select Taluk</option>
+                    {talukListData && talukListData.length
+                      ? talukListData.map((list) => (
+                          <option key={list.talukId} value={list.talukId}>
+                            {list.talukName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Taluk Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Hobli</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="hobliId"
+                    value={data.hobliId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.hobliId === undefined ||
+                      data.hobliId === "0"
+                    }
+                  >
+                    <option value="">Select Hobli</option>
+                    {hobliListData && hobliListData.length
+                      ? hobliListData.map((list) => (
+                          <option key={list.hobliId} value={list.hobliId}>
+                            {list.hobliName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Hobli Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+            <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label htmlFor="Village">
+                  Village<span className="text-danger">*</span>
+                </Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Control
+                    id="Village"
+                    name="villageName"
+                    value={data.villageName}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Enter Village"
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Village Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col>
+            {/* <Col sm={2}>
+              <Form.Group className="form-group mt-n4">
+                <Form.Label>Village</Form.Label>
+                <div className="form-control-wrap">
+                  <Form.Select
+                    name="villageId"
+                    value={data.villageId}
+                    onChange={handleInputs}
+                    onBlur={() => handleInputs}
+                    isInvalid={
+                      data.villageId === undefined || data.villageId === "0"
+                    }
+                  >
+                    <option value="">Select Village</option>
+                    {villageListData && villageListData.length
+                      ? villageListData.map((list) => (
+                          <option key={list.villageId} value={list.villageId}>
+                            {list.villageName}
+                          </option>
+                        ))
+                      : ""}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Village Name is required
+                  </Form.Control.Feedback>
+                </div>
+              </Form.Group>
+            </Col> */}
+            <Col sm={2}>
+              <Button type="button" variant="primary" onClick={search}>
+                Search
+              </Button>
+            </Col>
+            </Row>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={VillageDataColumns}

@@ -231,8 +231,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cocoonsProducedAtEachGeneration">
-                                Total number of cocoons produced at each
-                                generation
+                                Total number of cocoons produced
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -242,12 +241,11 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cocoonsProducedAtEachGeneration}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Total number of cocoons produced at each generation"
+                                  placeholder="Total number of cocoons produced"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Total number of cocoons produced at each
-                                  generation is required
+                                  Total number of cocoons produced is required
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -380,7 +378,7 @@ function MaintenanceofScreeningBatchRecords() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cocoonsProducedAtEachScreening">
-                                Total Number of Cocoons Produced at each
+                                Total Number of Cocoons Produced
                                 Screening
                                 <span className="text-danger">*</span>
                               </Form.Label>
@@ -391,12 +389,12 @@ function MaintenanceofScreeningBatchRecords() {
                                   value={data.cocoonsProducedAtEachScreening}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Total Number of Cocoons Produced at each
+                                  placeholder="Enter Total Number of Cocoons Produced
                                   Screening"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Total Number of Cocoons Produced at each
+                                  Total Number of Cocoons Produced
                                   Screening is required
                                 </Form.Control.Feedback>
                               </div>
