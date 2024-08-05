@@ -844,6 +844,8 @@ import BlankDtrReport from "../pages/reports-admin/market-auction/BlankDtrReport
 import FormReportByDist from "../pages/reports-admin/market-auction/FormReportByDist";
 import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEdit";
 import DistrictAndTalukWiseMonthlyReport from "../pages/reports-admin/DistrictAndTalukWiseMonthlyReport";
+import DistrictWiseReelerCountList from "../pages/reports-admin/DistrictWiseReelerCountList";
+import ReelerCountList from "../pages/reports-admin/ReelerCountList";
 // Admin and Reports
 
 function Router() {
@@ -1138,6 +1140,10 @@ function Router() {
               element={<FarmerRegistrationList />}
             />
             <Route
+              path="reeler-wise-report"
+              element={<ReelerCountList />}
+            />
+            <Route
               path="direct-fruits-details"
               element={<DirectFruitsDetails />}
             />
@@ -1172,6 +1178,10 @@ function Router() {
             <Route
               path="district-wise-farmer-count-list"
               element={<DistrictWiseFarmerCountList />}
+            />
+             <Route
+              path="district-wise-reeler-count-list"
+              element={<DistrictWiseReelerCountList />}
             />
             <Route
               path="application-form-list"
