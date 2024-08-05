@@ -304,11 +304,11 @@ function DistrictWiseReelerCountList() {
 
 
   return (
-    <Layout title="District Wise Farmer Count">
+    <Layout title="District Wise Reeler Count">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">District Wise Farmer Count</Block.Title>
+            <Block.Title tag="h2">District Wise Reeler Count</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">

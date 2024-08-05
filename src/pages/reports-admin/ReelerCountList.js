@@ -100,7 +100,7 @@ function ReelerCountList() {
       });
 };
 
-  const getFarmerList = (e) => {
+  const getReelerList = (e) => {
     api
       .post(
         baseURLFarmer + `reeler/primaryReelerDetails`,
@@ -126,7 +126,7 @@ function ReelerCountList() {
   };
 
   useEffect(() => {
-    getFarmerList();
+    getReelerList();
   }, [page]);
 
   const handleInputs = (e) => {
@@ -329,7 +329,13 @@ function ReelerCountList() {
       sortable: true,
       hide: "md",
     },
-    
+    {
+      name: "Father Name",
+      selector: (row) => row.fatherName,
+      cell: (row) => <span>{row.fatherName}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
@@ -352,12 +358,13 @@ function ReelerCountList() {
       hide: "md",
     },
     {
-      name: "Father Name",
-      selector: (row) => row.fatherName,
-      cell: (row) => <span>{row.fatherName}</span>,
+      name: "Mobile Number",
+      selector: (row) => row.reelerMobileNumber,
+      cell: (row) => <span>{row.reelerMobileNumber}</span>,
       sortable: true,
       hide: "md",
     },
+    
     {
       name: "Passbook Number",
       selector: (row) => row.passbookNumber,
