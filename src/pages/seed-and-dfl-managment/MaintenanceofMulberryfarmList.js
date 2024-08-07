@@ -175,17 +175,17 @@ function MaintenanceofMulberryfarmList() {
     });
   };
 
-  const handleStatusEdit = (row) => {
-    setShowModal2(true);
-    setPruningDate({
-      id: row.id,
-      fertilizerApplicationStatus: row.fertilizerApplicationStatus,
-      fymApplicationStatus: row.fymApplicationStatus,
-      irrigationStatus: row.irrigationStatus,
-      brushingStatus: row.brushingStatus,
-    });
+  // const handleStatusEdit = (row) => {
+  //   setShowModal2(true);
+  //   setPruningDate({
+  //     id: row.id,
+  //     fertilizerApplicationStatus: row.fertilizerApplicationStatus,
+  //     fymApplicationStatus: row.fymApplicationStatus,
+  //     irrigationStatus: row.irrigationStatus,
+  //     brushingStatus: row.brushingStatus,
+  //   });
   
-    // // Calculate enabled dates based on pruning date
+    // Calculate enabled dates based on pruning date
     // const pruningDate = new Date(row.pruningDate);
     // const fertilizerApplicationDate = new Date(pruningDate);
     // fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15); // Assuming 15 days after pruning for fertilizer application
@@ -202,9 +202,63 @@ function MaintenanceofMulberryfarmList() {
     //   irrigationDate: irrigationDate,
     //   brushingDate: brushingDate,
     // });
-  };
+  // };
 
-  
+  // const isTodayOrFutureDate = (date) => {
+  //   const today = new Date();
+  //   return date <= today;
+  // };
+  const isTodayOrFutureDate = (date) => {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    return date <= yesterday;
+  };
+ 
+  const [dates, setDates] = useState({
+    fertilizerApplicationDate: null,
+    fymApplicationDate: null,
+    irrigationDate: null,
+    brushingDate: null,
+  });
+
+  const handleStatusEdit = (row) => {
+    setShowModal2(true);
+    setPruningDate({
+      id: row.id,
+      fertilizerApplicationStatus: row.fertilizerApplicationStatus,
+      fymApplicationStatus: row.fymApplicationStatus,
+      irrigationStatus: row.irrigationStatus,
+      brushingStatus: row.brushingStatus,
+    }); 
+
+    const pruningDate = new Date(row.pruningDate);
+    const fertilizerApplicationDate = new Date(pruningDate);
+    fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15);
+    const fymApplicationDate = new Date(pruningDate);
+    fymApplicationDate.setDate(fymApplicationDate.getDate() + 5);
+    const irrigationDate = new Date(pruningDate);
+    irrigationDate.setDate(irrigationDate.getDate() + 10);
+    const brushingDate = new Date(pruningDate);
+    brushingDate.setDate(brushingDate.getDate() + 45);
+
+    setDates({
+      fertilizerApplicationDate: fertilizerApplicationDate,
+      fymApplicationDate: fymApplicationDate,
+      irrigationDate: irrigationDate,
+      brushingDate: brushingDate,
+    });
+  };
+//   const validDates = {
+//     fertilizerApplicationDate: isTodayOrFutureDate(fertilizerApplicationDate) ? fertilizerApplicationDate : null,
+//     fymApplicationDate: isTodayOrFutureDate(fymApplicationDate) ? fymApplicationDate : null,
+//     irrigationDate: isTodayOrFutureDate(irrigationDate) ? irrigationDate : null,
+//     brushingDate: isTodayOrFutureDate(brushingDate) ? brushingDate : null,
+//   };
+
+//   setDates(validDates);
+// };
+
 
   const handleView = (_id) => {
     navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-view/${_id}`);
@@ -219,14 +273,7 @@ function MaintenanceofMulberryfarmList() {
     navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-update/${_id}`);
   };
 
-  const handleAlert = (_id) => {
-    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-alert`);
-  };
-
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
-
+  
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -366,7 +413,7 @@ function MaintenanceofMulberryfarmList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 3,
+      grow: 2,
     },
 
     {
@@ -382,7 +429,7 @@ function MaintenanceofMulberryfarmList() {
       cell: (row) => <span>{row.variety}</span>,
       sortable: true,
       hide: "md",
-      grow: 2,
+      // grow: 2,
     },
     {
       name: "Soil Type",
@@ -409,6 +456,13 @@ function MaintenanceofMulberryfarmList() {
       name: "Pruning Date",
       selector: (row) => row.pruningDate,
       cell: (row) => <span>{row.pruningDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Plantation Date",
+      selector: (row) => row.plantationDate,
+      cell: (row) => <span>{row.plantationDate}</span>,
       sortable: true,
       hide: "md",
     },
@@ -824,7 +878,7 @@ function MaintenanceofMulberryfarmList() {
                       name="fertilizerApplicationStatus"
                       value={pruningDate.fertilizerApplicationStatus}
                       onChange={handlePruningInputs}
-                      // disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
+                      disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
                     >
                       <option value="">
                         Select Fertilizer Application Status
@@ -845,7 +899,7 @@ function MaintenanceofMulberryfarmList() {
                       name="fymApplicationStatus"
                       value={pruningDate.fymApplicationStatus}
                       onChange={handlePruningInputs}
-                      // disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
+                      disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
                     >
                       <option value="">Select FYM Status</option>
                       <option value="0">Pending</option>
@@ -864,7 +918,7 @@ function MaintenanceofMulberryfarmList() {
                       name="irrigationStatus"
                       value={pruningDate.irrigationStatus}
                       onChange={handlePruningInputs}
-                      // disabled={!isTodayOrFutureDate(dates.irrigationDate)}
+                      disabled={!isTodayOrFutureDate(dates.irrigationDate)}
                       
                     >
                       <option value="">Select Irrigation Status</option>
@@ -884,7 +938,7 @@ function MaintenanceofMulberryfarmList() {
                       name="brushingStatus"
                       value={pruningDate.brushingStatus}
                       onChange={handlePruningInputs}
-                      // disabled={!isTodayOrFutureDate(dates.brushingDate)}
+                      disabled={!isTodayOrFutureDate(dates.brushingDate)}
                     >
                       <option value="">Select Brushing Status</option>
                       <option value="0">Pending</option>
