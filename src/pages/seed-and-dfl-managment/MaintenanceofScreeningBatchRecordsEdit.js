@@ -301,7 +301,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n3">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -321,9 +321,9 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
-                          {/* <Col lg="4">
+                          <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>Lot Number</Form.Label>
                               <Col>
@@ -353,7 +353,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </div>
                               </Col>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">

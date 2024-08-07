@@ -37,6 +37,7 @@ function PreparationofeggsDFLs() {
     generationNumberId: "",
     lineNameId: "",
     raceId: "",
+    parentLotNumber: "",
   });
 
   
@@ -104,9 +105,28 @@ function PreparationofeggsDFLs() {
       generationNumberId: "",
       lineNameId: "",
       raceId: "",
+      parentLotNumber: "",
     });
     setValidated(false);
   };
+
+   // to get Lot
+   const [lotListData, setLotListData] = useState([]);
+
+   const getLotList = () => {
+     const response = api
+       .get(baseURLSeedDfl + `PreservationOfSeed/get-all-parent-lot-number-list`)
+       .then((response) => {
+         setLotListData(response.data);
+       })
+       .catch((err) => {
+         setLotListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLotList();
+   }, []);
 
 
   // to get Mulberry Variety
@@ -292,6 +312,35 @@ function PreparationofeggsDFLs() {
                     </div>
                   </Form.Group>
                 </Col> */}
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="parentLotNumber"
+                          value={data.parentLotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.parentLotNumber}>
+                              {list.parentLotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>

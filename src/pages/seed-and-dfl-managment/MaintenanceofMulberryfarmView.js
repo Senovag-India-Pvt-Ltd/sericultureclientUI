@@ -114,6 +114,10 @@ function MaintenanceofMulberryfarmView() {
                         <td>{maintenanceGarden.pruningDate}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Plantation Date:</td>
+                        <td>{maintenanceGarden.plantationDate}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>
                           Fertilizer Application Date:
                         </td>

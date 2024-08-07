@@ -96,7 +96,7 @@ function MaintenanceOfEggsAtCold() {
 
   const getLotList = () => {
     const response = api
-      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .get(baseURLSeedDfl + `EggPreparationRsso/get-all-lot-number-list`)
       .then((response) => {
         setLotListData(response.data);
       })
@@ -179,7 +179,7 @@ function MaintenanceOfEggsAtCold() {
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
-                        {/* <Col lg="4">
+                        <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -209,8 +209,8 @@ function MaintenanceOfEggsAtCold() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
-                <Col lg="4">
+                </Col>
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -230,7 +230,7 @@ function MaintenanceOfEggsAtCold() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                 {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">

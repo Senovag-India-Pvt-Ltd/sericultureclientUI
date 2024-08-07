@@ -201,7 +201,7 @@ function SaleAndDisposalOfEggsNSSOEdit() {
 
   const getLotList = () => {
     api
-      .get(baseURLSeedDfl + `EggPreparation/get-all-lot-number-list`)
+      .get(baseURLSeedDfl + `EggPreparationRsso/get-all-lot-number-list`)
       .then((response) => {
         setLotListData(response.data);
       })
