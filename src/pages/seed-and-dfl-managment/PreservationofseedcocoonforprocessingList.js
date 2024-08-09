@@ -310,6 +310,7 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
+   
     // {
     //   name: "Accepted or not",
     //   selector: (row) => row.isAccepted,
@@ -335,8 +336,6 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
   ];
-
-
 
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
@@ -387,6 +386,20 @@ function PreservationofseedcocoonforprocessingList() {
       name: "Race ",
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Market",
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farm",
+      selector: (row) => row.farmName,
+      cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },

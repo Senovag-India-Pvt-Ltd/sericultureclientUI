@@ -68,6 +68,8 @@ function PreservationOfSeedCocoonForProcessingEdit() {
                 invoiceNo: "",
                 invoiceDate: "",
                 ratePerKg: "",
+                farmId: "",
+                marketMasterId: "",
             });
             setValidated(false);
           }
@@ -97,6 +99,8 @@ function PreservationOfSeedCocoonForProcessingEdit() {
         invoiceNo: "",
         invoiceDate: "",
         ratePerKg: "",
+        farmId: "",
+        marketMasterId: "",
     });
   };
 
@@ -123,6 +127,47 @@ function PreservationOfSeedCocoonForProcessingEdit() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  
+    // to get Market
+    const [marketListData, setMarketListData] = useState([]);
+
+    const getMarketList = () => {
+      const response = api
+        .get(baseURL + `marketMaster/get-all`)
+        .then((response) => {
+          setMarketListData(response.data.content.marketMaster);
+        })
+        .catch((err) => {
+          setMarketListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getMarketList();
+    }, []);
+  
+  
+  
+      // to get farm
+    const [farmListData, setFarmListData] = useState([]);
+  
+    const getFarmList = () => {
+      api
+        .get(baseURL + `farmMaster/get-all`)
+        .then((response) => {
+          setFarmListData(response.data.content.farmMaster);
+        })
+        .catch((err) => {
+          setFarmListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getFarmList();
+    }, []);
+    
+  
 
  // to get Lot
 const [lineNameListData, setLineNameListData] = useState([]);
@@ -178,6 +223,8 @@ useEffect(() => {
    useEffect(() => {
      getRaceList();
    }, []);
+
+   
   
 
    
@@ -279,6 +326,78 @@ useEffect(() => {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="marketMasterId"
+                            value={data.marketMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.marketMasterId === undefined ||
+                              data.marketMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            Farm<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="farmId"
+                              value={data.farmId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              // multiple
+                              required
+                              isInvalid={
+                                data.farmId === undefined ||
+                                data.farmId === "0"
+                              }
+                            >
+                              <option value="">Select Farm</option>
+                              {farmListData.map((list) => (
+                                <option
+                                  key={list.farmId}
+                                  value={list.userMasterId}
+                                >
+                                  {list.farmName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Farm is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
                 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -310,9 +429,7 @@ useEffect(() => {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
-
-                     
+                </Col>             
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">

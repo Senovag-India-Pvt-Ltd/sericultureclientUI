@@ -113,6 +113,63 @@ function MaintenanceofMulberryfarmList() {
   useEffect(() => {
     getAlertList();
   }, []);
+//   const getAlertList = () => {
+//     setLoading(true);
+
+//     api.get(baseURLSeedDfl + `MulberryFarm/get-alerts-list`)
+//         .then((response) => {
+//             const today = new Date();
+//             today.setHours(0, 0, 0, 0); // Ensure today's date is set to midnight
+
+//             const alertsToShow = response.data.filter((alert) => {
+//                 const pruningDate = new Date(alert.pruningDate);
+
+//                 // Calculate the relevant dates based on pruning date
+//                 const fertilizerApplicationDate = new Date(pruningDate);
+//                 fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15);
+//                 fertilizerApplicationDate.setHours(0, 0, 0, 0); // Set time to midnight
+                
+//                 const fymApplicationDate = new Date(pruningDate);
+//                 fymApplicationDate.setDate(fymApplicationDate.getDate() + 5);
+//                 fymApplicationDate.setHours(0, 0, 0, 0); // Set time to midnight
+
+//                 const irrigationDate = new Date(pruningDate);
+//                 irrigationDate.setDate(irrigationDate.getDate() + 12);
+//                 irrigationDate.setHours(0, 0, 0, 0); // Set time to midnight
+
+//                 const brushingDate = new Date(pruningDate);
+//                 brushingDate.setDate(brushingDate.getDate() + 45);
+//                 brushingDate.setHours(0, 0, 0, 0); // Set time to midnight
+
+//                 // Check if any application date is today and status is pending
+//                 return (
+//                     (alert.fertilizerApplicationStatus === "0" && fertilizerApplicationDate.getTime() === today.getTime()) ||
+//                     (alert.fymApplicationStatus === "0" && fymApplicationDate.getTime() === today.getTime()) ||
+//                     (alert.irrigationStatus === "0" && irrigationDate.getTime() === today.getTime()) ||
+//                     (alert.brushingStatus === "0" && brushingDate.getTime() === today.getTime())
+//                 );
+//             });
+
+//             setListAlertData(alertsToShow);
+//             setLoading(false);
+
+//             // Show the alert modal if there are any relevant alerts
+//             if (alertsToShow.length > 0) {
+//                 setShowModal1(true);
+//             } else {
+//                 setShowModal1(false);
+//             }
+//         })
+//         .catch((err) => {
+//             setLoading(false);
+//         });
+// };
+
+// useEffect(() => {
+//     getAlertList();
+// }, []);
+
+
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -206,15 +263,25 @@ function MaintenanceofMulberryfarmList() {
 
   // const isTodayOrFutureDate = (date) => {
   //   const today = new Date();
-  //   return date <= today;
+  //   return date >= today;
+  // };
+  // const isTodayOrFutureDate = (date) => {
+  //   const today = new Date();
+  //   const yesterday = new Date();
+  //   yesterday.setDate(today.getDate() - 1);
+  //   return date <= yesterday;
   // };
   const isTodayOrFutureDate = (date) => {
+    if (!date) {
+        return false; // Return false if date is null or undefined
+    }
     const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-    return date <= yesterday;
-  };
- 
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    return date <= today;
+};
+
+
   const [dates, setDates] = useState({
     fertilizerApplicationDate: null,
     fymApplicationDate: null,
@@ -238,7 +305,7 @@ function MaintenanceofMulberryfarmList() {
     const fymApplicationDate = new Date(pruningDate);
     fymApplicationDate.setDate(fymApplicationDate.getDate() + 5);
     const irrigationDate = new Date(pruningDate);
-    irrigationDate.setDate(irrigationDate.getDate() + 10);
+    irrigationDate.setDate(irrigationDate.getDate() + 12);
     const brushingDate = new Date(pruningDate);
     brushingDate.setDate(brushingDate.getDate() + 45);
 
@@ -830,7 +897,7 @@ function MaintenanceofMulberryfarmList() {
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
+          <Modal.Title>Update Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">
