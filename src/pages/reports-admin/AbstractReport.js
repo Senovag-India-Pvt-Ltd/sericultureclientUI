@@ -15,7 +15,8 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 function AbstractReport() {
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
-    auctionDate: new Date(),
+    fromDate: new Date(),
+    toDate: new Date(),
   });
 
   const [validated, setValidated] = useState(false);
@@ -27,11 +28,17 @@ function AbstractReport() {
     setData({ ...data, [name]: value });
   };
 
-  const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+  const handleFromDateChange = (date) => {
+    setData((prev) => ({ ...prev, fromDate: date }));
   };
+
+  const handleToDateChange = (date) => {
+    setData((prev) => ({ ...prev, toDate: date }));
+  };
+
   useEffect(() => {
-    handleDateChange(new Date());
+    handleFromDateChange(new Date());
+    handleToDateChange(new Date());
   }, []);
   // const _header = { "Content-Type": "application/json", accept: "*/*" };
   // const _header = { "Content-Type": "application/json", accept: "*/*",  'Authorization': `Bearer ${localStorage.getItem("jwtToken")}`, "Access-Control-Allow-Origin": "*"};
@@ -42,15 +49,22 @@ function AbstractReport() {
   };
 
   const postData = (event) => {
-    const { marketId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
+    const { marketId,fromDate,toDate  } = data;
+    const fDate = new Date(fromDate);
+    const tDate = new Date(toDate);
+    const formattedFromDate =
+      fDate.getFullYear() +
       "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      (fDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      newDate.getDate().toString().padStart(2, "0");
+      fDate.getDate().toString().padStart(2, "0");
 
+    const formattedToDate =
+      tDate.getFullYear() +
+      "-" +
+      (tDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      tDate.getDate().toString().padStart(2, "0");
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -64,7 +78,8 @@ function AbstractReport() {
           baseURLReport + `get-form-13-report`,
           {
             marketId: marketId,
-            auctionDate: formattedDate,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
           },
           {
             responseType: "blob", //Force to receive data in a Blob Format
@@ -130,18 +145,32 @@ function AbstractReport() {
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
                   <Col lg="12">
-                    <Form.Group as={Row} className="form-group">
-                     
+                    <Form.Group as={Row} className="form-group">                    
                       <Form.Label column sm={1}>
-                        Date
+                        From Date
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.fromDate}
+                            onChange={handleFromDateChange}
+                            className="form-control"
+                            maxDate={new Date()}
+                          />
+                        </div>
+                      </Col>
+                      <Form.Label column sm={1}>
+                        To Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            selected={data.toDate}
+                            onChange={handleToDateChange}
                             className="form-control"
                             maxDate={new Date()}
                           />

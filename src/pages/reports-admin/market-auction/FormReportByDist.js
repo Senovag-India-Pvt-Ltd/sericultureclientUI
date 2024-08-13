@@ -16,7 +16,8 @@ function FormReportByDist() {
   const [data, setData] = useState({
     districtId: localStorage.getItem("districtId"),
     marketId: localStorage.getItem("marketId"),
-    auctionDate: new Date(),
+    fromDate: new Date(),
+    toDate: new Date(),
   });
 
   const [validated, setValidated] = useState(false);
@@ -49,11 +50,17 @@ function FormReportByDist() {
     setData({ ...data, [name]: value });
   };
 
-  const handleDateChange = (date) => {
-    setData((prev) => ({ ...prev, auctionDate: date }));
+  const handleFromDateChange = (date) => {
+    setData((prev) => ({ ...prev, fromDate: date }));
   };
+
+  const handleToDateChange = (date) => {
+    setData((prev) => ({ ...prev, toDate: date }));
+  };
+
   useEffect(() => {
-    handleDateChange(new Date());
+    handleFromDateChange(new Date());
+    handleToDateChange(new Date());
   }, []);
   // const _header = { "Content-Type": "application/json", accept: "/" };
   // const _header = { "Content-Type": "application/json", accept: "/",  'Authorization': Bearer ${localStorage.getItem("jwtToken")}, "Access-Control-Allow-Origin": "*"};
@@ -116,15 +123,21 @@ function FormReportByDist() {
   // };
 
   const postData = (event) => {
-    const { districtId, marketId, auctionDate } = data;
-    const newDate = new Date(auctionDate);
-    const formattedDate =
-      newDate.getFullYear() +
+    const { districtId, marketId, fromDate,toDate } = data;
+    const fDate = new Date(fromDate);
+    const tDate = new Date(toDate);
+    const formattedFromDate =
+      fDate.getFullYear() +
       "-" +
-      (newDate.getMonth() + 1).toString().padStart(2, "0") +
+      (fDate.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
-      newDate.getDate().toString().padStart(2, "0");
-  
+      fDate.getDate().toString().padStart(2, "0");
+    const formattedToDate =
+      tDate.getFullYear() +
+      "-" +
+      (tDate.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      tDate.getDate().toString().padStart(2, "0");
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -138,7 +151,8 @@ function FormReportByDist() {
           {
             districtId: districtId,
             marketId: marketId,
-            auctionDate: formattedDate,
+            fromDate: formattedFromDate,
+            toDate: formattedToDate,
           },
           {
             responseType: "blob", // Force to receive data in a Blob format
@@ -210,7 +224,7 @@ function FormReportByDist() {
                     <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
                         District
                       </Form.Label>
-                      <Col sm={4}>
+                      <Col sm={2}>
                       <div className="form-control-wrap">
                         <Form.Select
                         name="districtId"
@@ -229,16 +243,31 @@ function FormReportByDist() {
                             </div>
                             </Col>
 
-                      <Form.Label column sm={1}>
-                        Date
+                            <Form.Label column sm={1}>
+                        From Date
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
                         <div className="form-control-wrap">
                           <DatePicker
                             dateFormat="dd/MM/yyyy"
-                            selected={data.auctionDate}
-                            onChange={handleDateChange}
+                            selected={data.fromDate}
+                            onChange={handleFromDateChange}
+                            className="form-control"
+                            maxDate={new Date()}
+                          />
+                        </div>
+                      </Col>
+                      <Form.Label column sm={1}>
+                        To Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <DatePicker
+                            dateFormat="dd/MM/yyyy"
+                            selected={data.toDate}
+                            onChange={handleToDateChange}
                             className="form-control"
                             maxDate={new Date()}
                           />
