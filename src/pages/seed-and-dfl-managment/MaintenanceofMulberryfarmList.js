@@ -555,7 +555,7 @@ function MaintenanceofMulberryfarmList() {
       hide: "md",
     },
     {
-      name: "Date of Brushing",
+      name: "Brushing Date",
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
       sortable: true,
@@ -1024,11 +1024,19 @@ function MaintenanceofMulberryfarmList() {
                       Update
                     </Button>
                   </div>
-                  <div className="gap-col">
+                  {/* <div className="gap-col">
                     <Button type="button" variant="secondary" onClick={clear}>
                       Cancel
                     </Button>
-                  </div>
+                  </div> */}
+                  <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li>
                 </div>
               </Col>
             </Row>

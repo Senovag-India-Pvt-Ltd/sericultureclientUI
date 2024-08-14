@@ -42,10 +42,27 @@ function PreparationofeggsDFLs() {
 
   
   let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+  
+    // Update the data state for the input field
+    setData((prevData) => {
+      // Calculate DFLs obtained if numberOfPairs or numberOfRejection is updated
+      let dflsObtained = prevData.dflsObtained;
+      if (name === "numberOfPairs" || name === "numberOfRejection") {
+        const numberOfPairs = name === "numberOfPairs" ? parseInt(value) : parseInt(prevData.numberOfPairs);
+        const numberOfRejection = name === "numberOfRejection" ? parseInt(value) : parseInt(prevData.numberOfRejection);
+        dflsObtained = numberOfPairs - numberOfRejection;
+      }
+  
+      return { ...prevData, [name]: value, dflsObtained };
+    });
   };
 
   const handleDateChange = (date, type) => {
@@ -603,6 +620,7 @@ function PreparationofeggsDFLs() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="DFLs obtained"
+                                  readOnly
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">

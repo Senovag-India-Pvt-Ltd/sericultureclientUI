@@ -444,11 +444,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Name of the Government Seed Farm/Farmer"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Name of the Government Seed Farm/Farmer is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

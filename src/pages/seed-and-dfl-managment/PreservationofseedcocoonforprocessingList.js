@@ -265,7 +265,7 @@ function PreservationofseedcocoonforprocessingList() {
       ),
       sortable: false,
       hide: "md",
-      // grow: 3,
+      grow: 2,
     },
 
     {

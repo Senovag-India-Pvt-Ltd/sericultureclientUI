@@ -416,7 +416,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                           name="lotNumber"
                           value={data.lotNumber}
                           onChange={handleInputs}
-                          onBlur={() => handleInputs}
+                          // onBlur={() => handleInputs}
                           // required
                         >
                           <option value="">Select Lot Number</option>
@@ -426,9 +426,9 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                             </option>
                           ))): ""}
                         </Form.Select>
-                        <Form.Control.Feedback type="invalid">
+                        {/* <Form.Control.Feedback type="invalid">
                         Lot Number is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                       </div>
                     </Col>
                   </Form.Group>

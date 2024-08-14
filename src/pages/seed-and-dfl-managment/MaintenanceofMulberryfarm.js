@@ -396,11 +396,19 @@ function MaintenanceofMulberryfarm() {
                   Save
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
                 </Button>
-              </li>
+              </li> */}
+              <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li>
             </ul>
           </div>
           {/* </Row> */}
