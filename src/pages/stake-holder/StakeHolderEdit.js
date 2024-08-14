@@ -14,6 +14,7 @@ import api from "../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function StakeHolderEdit() {
   const { id } = useParams();
@@ -634,6 +635,201 @@ function StakeHolderEdit() {
   //   }
   // };
 
+  const [searchValidated, setSearchValidated] = useState(false);
+  const [disable, setDisable] = useState(false);
+
+  // const search = (event) => {
+  //   setData({
+  //     farmerNumber: "",
+  //     fruitsId: "",
+  //     firstName: "",
+  //     middleName: "",
+  //     lastName: "",
+  //     dob: null,
+  //     genderId: "",
+  //     casteId: "",
+  //     differentlyAbled: "",
+  //     email: "",
+  //     mobileNumber: "",
+  //     aadhaarNumber: "",
+  //     epicNumber: "",
+  //     rationCardNumber: "",
+  //     totalLandHolding: "",
+  //     passbookNumber: "",
+  //     landCategoryId: "",
+  //     educationId: "",
+  //     representativeId: "",
+  //     khazaneRecipientId: "",
+  //     photoPath: "",
+  //     farmerTypeId: "",
+  //     minority: "",
+  //     rdNumber: "",
+  //     casteStatus: "",
+  //     genderStatus: "",
+  //     fatherNameKan: "",
+  //     fatherName: "",
+  //     nameKan: "",
+  //     tscMasterId: "",
+  //   });
+
+  //   setFamilyMembersList([]);
+  //   setFarmerLandList([]);
+  //   setFarmerAddressList([]);
+  //   setBank({
+  //     accountImagePath: "",
+  //     farmerId: "",
+  //     farmerBankName: "",
+  //     farmerBankAccountNumber: "",
+  //     farmerBankBranchName: "",
+  //     farmerBankIfscCode: "",
+  //   });
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setSearchValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     } else {
+  //       setDisable(true);
+  //     }
+  //     api
+  //       .post(baseURL2 + `farmer/get-farmer-details-by-fruits-id-test`, data)
+  //       .then((response) => {
+  //         if (!response.data.content.isFruitService) {
+  //           const farmerId = response.data.content.farmerResponse.farmerId;
+  //           navigate(`/seriui/stake-holder-edit/${farmerId}`);
+  //         } else {
+  //           api
+  //             .post(
+  //               baseURLFarmer +
+  //                 `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+  //               { fruitsId: data.fruitsId }
+  //               // {
+  //               //   headers: _header,
+  //               // }
+  //             )
+  //             .then((result) => {
+  //               if (!result.data.content.error) {
+  //                 setData((prev) => ({
+  //                   ...prev,
+  //                   ...result.data.content.farmerResponse,
+  //                 }));
+  //                 setFarmerAddressList((prev) => [
+  //                   ...prev,
+  //                   ...result.data.content.farmerAddressList,
+  //                 ]);
+
+  //                 const modified =
+  //                   result.data.content.farmerLandDetailsDTOList.map(
+  //                     (detail) => {
+  //                       if (detail.stateId === 0) {
+  //                         detail.stateId = null;
+  //                       }
+  //                       if (detail.districtId === 0) {
+  //                         detail.districtId = null;
+  //                       }
+  //                       if (detail.talukId === 0) {
+  //                         detail.talukId = null;
+  //                       }
+  //                       if (detail.hobliId === 0) {
+  //                         detail.hobliId = null;
+  //                       }
+  //                       if (detail.villageId === 0) {
+  //                         detail.villageId = null;
+  //                       }
+  //                       return detail;
+  //                     }
+  //                   );
+  //                 // console.log(modified);FF
+
+  //                 setFarmerLandList((prev) => [...prev, ...modified]);
+  //               } else {
+  //                 searchError(result.data.content.error_description);
+  //               }
+  //             })
+  //             .catch((error) => {});
+  //         }
+  //       })
+  //       .catch((error) => {});
+  //   }
+  // };
+
+  const search = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setSearchValidated(true);
+    } else {
+      if (data.fruitsId.length !== 16) {
+        return;
+      }
+      setDisableSearch(true);
+      // api
+        // .post(`${baseURL2}farmer/get-farmer-details-by-fruits-id-test`, { fruitsId: data.fruitsId })
+        // .then((response) => {
+        //   // if (!response.data.content.isFruitService) {
+        //   //   const farmerId = response.data.content.farmerResponse.farmerId;
+        //   //   navigate(`/seriui/stake-holder-edit/${farmerId}`);
+        //   // } else {
+        api
+              .post(`${baseURLFarmer}farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`, { fruitsId: data.fruitsId })
+            //  "http://13.200.62.144:8000/farmer-registration/v1/farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number", 
+            //   { fruitsId: data.fruitsId }
+            // )
+              .then((result) => {
+                if (!result.data.content.error) {
+                  setData((prev) => ({
+                    ...prev,
+                    ...result.data.content.farmerResponse,
+                  }));
+                  setFarmerAddressList((prev) => [
+                    ...prev,
+                    ...result.data.content.farmerAddressList,
+                  ]);
+
+                  const modified = result.data.content.farmerLandDetailsDTOList.map((detail) => {
+                    return {
+                      ...detail,
+                      stateId: detail.stateId === 0 ? null : detail.stateId,
+                      districtId: detail.districtId === 0 ? null : detail.districtId,
+                      talukId: detail.talukId === 0 ? null : detail.talukId,
+                      hobliId: detail.hobliId === 0 ? null : detail.hobliId,
+                      villageId: detail.villageId === 0 ? null : detail.villageId,
+                    };
+                  });
+
+                  setFarmerLandList((prev) => [...prev, ...modified]);
+                } else {
+                  searchError(result.data.content.error_description);
+                }
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          }
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     })
+    //     .finally(() => {
+    //       setDisableSearch(false);
+    //     });
+    // }
+  };
+
+
+  const searchError = (message) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Data not Found!!!",
+      text: message,
+    });
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -793,23 +989,51 @@ function StakeHolderEdit() {
       });
   };
 
+  // const getIdList = () => {
+  //   // setLoading(true);
+  //   api
+  //     .get(baseURL2 + `farmer/get/${id}`)
+  //     .then((response) => {
+  //       setData(response.data.content);
+
+  //       // setLoading(false);
+  //       if (response.data.content.photoPath) {
+  //         getFile(response.data.content.photoPath);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       // const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       // editError(message);
+  //       // setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  //   getFarmerAddressDetailsList();
+  //   getFLDetailsList();
+  //   getFMDetailsList();
+  //   getBankDetails();
+  // }, [id]);
+  const [disableSearch, setDisableSearch] = useState(true);
   const getIdList = () => {
-    // setLoading(true);
     api
       .get(baseURL2 + `farmer/get/${id}`)
       .then((response) => {
         setData(response.data.content);
-
-        // setLoading(false);
         if (response.data.content.photoPath) {
           getFile(response.data.content.photoPath);
         }
+        // Check condition to enable or disable search button
+        if (!response.data.content.isOtherStateFarmer && response.data.content.fruitsId === null) {
+          setDisableSearch(false);
+        } else {
+          setDisableSearch(true); 
+        }
       })
       .catch((err) => {
-        // const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        // editError(message);
-        // setLoading(false);
       });
   };
 
@@ -1649,8 +1873,9 @@ function StakeHolderEdit() {
 
       <Block className="mt-n4">
         {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          <Row className="g-1">
+        <Form noValidate validated={searchValidated} onSubmit={search}>
+        {/* <Form noValidate validated={validated} onSubmit={postData}> */}
+          {/* <Row className="g-1"> */}
             <Card>
               <Card.Body>
                 <Row className="g-gs">
@@ -1676,20 +1901,24 @@ function StakeHolderEdit() {
                         </Form.Control.Feedback>
                       </Col>
                       <Col sm={2}>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          // onClick={display}
-                        >
-                          {t("search")}
-                        </Button>
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        disabled={disableSearch}
+                        // onClick={display}
+                      >
+                        {t("search")}
+                      </Button>
                       </Col>
                     </Form.Group>
                   </Col>
                 </Row>
               </Card.Body>
             </Card>
+            </Form>
 
+          <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
                 <Card.Header style={{ fontWeight: "bold" }}>

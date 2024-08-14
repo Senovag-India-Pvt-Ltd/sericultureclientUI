@@ -103,6 +103,11 @@ function FarmerWithoutFruitsList() {
     // navigate("/seriui/state");
   };
 
+  const handleUpdate = (_id) => {
+    navigate(`/seriui/stake-holder-edit/${_id}`);
+    // navigate("/seriui/state");
+  };
+
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -216,14 +221,14 @@ function FarmerWithoutFruitsList() {
           >
             Edit
           </Button>
-          {/* <Button
-            variant="danger"
+          <Button
+            variant="primary"
             size="sm"
-            onClick={() => deleteConfirm(row.farmerId)}
+            onClick={() => handleUpdate(row.farmerId)}
             className="ms-2"
           >
-            Delete
-          </Button> */}
+            Update Fruits Id
+          </Button>
         </div>
       ),
       sortable: false,
