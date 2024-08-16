@@ -428,7 +428,7 @@ function Menu() {
     Admin_Report_DTR_Blank_Report: false,
     Admin_Report_DTR: false,
     Admin_Report_Unit: false,
-    Admin_District_Wise_Monthly_Report: false,
+    Admin_Report_District_Wise_Monthly_Report: false,
     Admin_Report_Pending: false,
     Admin_Report_Bidding_Report: false,
     Admin_Report_Bidding_Reeler_Report: false,
@@ -3041,7 +3041,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.Admin_District_Wise_Monthly_Report ? (
+                  {showMenu.Admin_Report_District_Wise_Monthly_Report ? (
                     <MenuItem>
                       <MenuItemLink
                         text="District Wise Monthly Report"
