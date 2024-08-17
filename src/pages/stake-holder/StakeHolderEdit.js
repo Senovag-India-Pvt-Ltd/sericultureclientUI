@@ -1017,6 +1017,7 @@ function StakeHolderEdit() {
   //   getBankDetails();
   // }, [id]);
   const [disableSearch, setDisableSearch] = useState(true);
+  const [editFruits,setEditFruits] = useState(true);
   const getIdList = () => {
     api
       .get(baseURL2 + `farmer/get/${id}`)
@@ -1028,6 +1029,7 @@ function StakeHolderEdit() {
         // Check condition to enable or disable search button
         if (!response.data.content.isOtherStateFarmer && response.data.content.fruitsId === null) {
           setDisableSearch(false);
+          setEditFruits(false)
         } else {
           setDisableSearch(true); 
         }
@@ -1894,6 +1896,7 @@ function StakeHolderEdit() {
                           type="text"
                           maxLength="16"
                           placeholder={t("Enter FRUITS ID")}
+                          readOnly ={editFruits}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
