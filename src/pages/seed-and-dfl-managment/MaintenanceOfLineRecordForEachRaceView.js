@@ -121,10 +121,10 @@ function MaintenanceOfLineRecordForEachRaceView() {
                         </td>
                         <td>{lineRecord.raceName}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Fruits ID:</td>
-                        <td>{lineRecord.fruitsId}</td>
-                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td>{lineRecord.noOfDfls}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                         Farmer Name:
@@ -154,7 +154,7 @@ function MaintenanceOfLineRecordForEachRaceView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Average Weight:
+                        Single Cocoon Weight in Grams:
                         </td>
                         <td>{lineRecord.averageWeight}</td>
                       </tr>

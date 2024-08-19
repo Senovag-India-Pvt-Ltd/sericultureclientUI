@@ -30,6 +30,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
       marketMasterId: "",
       noOfCocoonsSelected: "",
       averageWeight: "",
+      userType: "femaleLine",
+      userTypeId: "",
+      noOfDfls: ""
     });
   
     const [validated, setValidated] = useState(false);
@@ -86,6 +89,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                 marketMasterId: "",
                 noOfCocoonsSelected: "",
                 averageWeight: "",
+                userType: "femaleLine",
+                userTypeId: "",
+                noOfDfls: ""
               });
               setValidated(false);
             }
@@ -111,6 +117,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         marketMasterId: "",
         noOfCocoonsSelected: "",
         averageWeight: "",
+        userType: "femaleLine",
+        userTypeId: "",
+        noOfDfls: ""
       });
     };
   
@@ -326,42 +335,46 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        {/* <Form noValidate validated={searchValidated} onSubmit={search}>
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Form.Group as={Row} className="form-group" controlId="fid">
-                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                      FRUITS ID<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={4}>
-                      <Form.Control
-                        type="fruitsId"
-                        name="fruitsId"
-                        value={data.fruitsId}
-                        onChange={handleInputs}
-                        placeholder="Enter FRUITS ID"
-                        required
-                        maxLength="16"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
-                      </Form.Control.Feedback>
-                    </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary">
-                        Search
-                      </Button>
-                    </Col>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Form> */}
+      <Block className="mt-n4">
+      <Card>
+          <Card.Body>
+            <Row lg="12" className="g-gs">
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="femaleLine">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="femaleLine"
+                      checked={data.userType === "femaleLine"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="femaleLine">
+                    Female Line
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="maleLine">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="userType"
+                      value="maleLine"
+                      checked={data.userType === "maleLine"}
+                      onChange={handleInputs}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="maleLine">
+                    Male line
+                  </Form.Label>
+                </Form.Group>
+              </Col> 
+            </Row>
+          </Card.Body>
+        </Card>
+       
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
@@ -594,7 +607,28 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       </Form.Group>
                     </Col>
 
-                    
+                    <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Number Of DFLs<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="noOfDfls"
+                                  value={data.noOfDfls}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter  Number Of DFLs"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Number Of DFLs is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
 
                           <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
@@ -621,7 +655,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Average Weight<span className="text-danger">*</span>
+                              Single Cocoon Weight in Grams<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -630,11 +664,11 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                   value={data.averageWeight}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Average Weight"
+                                  placeholder="Enter Single Cocoon Weight in Grams"
                                   required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                  Average Weight is required
+                                  Single Cocoon Weight in Grams is required
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>

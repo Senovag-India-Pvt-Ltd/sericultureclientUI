@@ -74,6 +74,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                 marketMasterId: "",
                 noOfCocoonsSelected: "",
                 averageWeight: "",
+                noOfDfls: ""
               });
               setValidated(false);
           }
@@ -98,7 +99,8 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
         pupaTestDetails: "",
         marketMasterId: "",
         noOfCocoonsSelected: "",
-        averageWeight: "", 
+        averageWeight: "",
+        noOfDfls: "" 
     });
   }
 
@@ -510,6 +512,30 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                       </Form.Group>
                     </Col>
 
+
+                    <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                              Number Of DFLs<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="noOfDfls"
+                                  value={data.noOfDfls}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter  Number Of DFLs"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Number Of DFLs is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+
                     
 
                           <Col lg="4">
@@ -537,7 +563,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                Average Weight<span className="text-danger">*</span>
+                              Single Cocoon Weight in Grams<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -546,11 +572,11 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                                   value={data.averageWeight}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Average Weight"
+                                  placeholder="Enter Single Cocoon Weight in Grams"
                                   required
                                   />
                                   <Form.Control.Feedback type="invalid">
-                                  Average Weight is required
+                                  Single Cocoon Weight in Grams is required
                                   </Form.Control.Feedback>
                               </div>
                             </Form.Group>

@@ -313,18 +313,7 @@ function MaintenanceofScreeningBatchRecordsList() {
     // navigate("/seriui/training Schedule");
   };
 
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
-  };
-
-  const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
-  };
-
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
-
+  
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -436,14 +425,14 @@ function MaintenanceofScreeningBatchRecordsList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             className="ms-2"
             onClick={() => deleteConfirm(row.id)}
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
@@ -559,13 +548,58 @@ function MaintenanceofScreeningBatchRecordsList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "Selected Bed as per the Mean Performance",
+    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
+    //   cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Selected Bed as per the Mean Performance",
+    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
+    //   cell: (row) => (
+    //     <span>
+    //       {row.selectedBedAsPerTheMeanPerformance === "1"
+    //         ? "Bed 1"
+    //         : row.selectedBedAsPerTheMeanPerformance === "2"
+    //         ? "Bed 2"
+    //         : row.selectedBedAsPerTheMeanPerformance === "3"
+    //         ? "Bed 3"
+    //         : row.selectedBedAsPerTheMeanPerformance === "4"
+    //         ? "Bed 4"
+    //         : row.selectedBedAsPerTheMeanPerformance === "5"
+    //         ? "Bed 5"
+    //         : "Other"}
+    //     </span>
+    //   ),
+    //   sortable: true,
+    //   hide: "md",
+    // },   
     {
       name: "Selected Bed as per the Mean Performance",
       selector: (row) => row.selectedBedAsPerTheMeanPerformance,
-      cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
+      cell: (row) => {
+        const value = row.selectedBedAsPerTheMeanPerformance;
+        return (
+          <span>
+            {value === "1" || value === 1
+              ? "Bed 1"
+              : value === "2" || value === 2
+              ? "Bed 2"
+              : value === "3" || value === 3
+              ? "Bed 3"
+              : value === "4" || value === 4
+              ? "Bed 4"
+              : value === "5" || value === 5
+              ? "Bed 5"
+              : "Other"}
+          </span>
+        );
+      },
       sortable: true,
       hide: "md",
-    },
+    },    
     {
       name: "Crop Failure Details",
       selector: (row) => row.cropFailureDetails,
@@ -573,165 +607,9 @@ function MaintenanceofScreeningBatchRecordsList() {
       sortable: true,
       hide: "md",
     },
-
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <AiOutlineInfoCircle // Use the information icon instead of Button
-    //         size={20}
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => getLogsList(row.id, row.plotNumber)}
-    //       />
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
   ];
 
-  const MaintenanceofmulberryGardenLogsDataColumns = [
-    {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Area Under Each Variety",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Date",
-      selector: (row) => row.fymApplicationDate,
-      cell: (row) => <span>{row.fymApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Date",
-      selector: (row) => row.irrigationDate,
-      cell: (row) => <span>{row.irrigationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Date",
-      selector: (row) => row.brushingDate,
-      cell: (row) => <span>{row.brushingDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Status",
-      selector: (row) => row.fertilizerApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fertilizerApplicationStatus === 0
-            ? "Pending"
-            : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Application Status",
-      selector: (row) => row.fymApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fymApplicationStatus === 0
-            ? "Pending"
-            : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Status",
-      selector: (row) => row.irrigationStatus,
-      cell: (row) => (
-        <span>
-          {row.irrigationStatus === 0
-            ? "Pending"
-            : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Status",
-      selector: (row) => row.brushingStatus,
-      cell: (row) => (
-        <span>
-          {row.brushingStatus === 0
-            ? "Pending"
-            : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-  ];
-
+  
   return (
     <Layout title="Maintenance of screening batch records List">
       <Block.Head>
@@ -866,7 +744,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   value={bedDetails.bed2 || ""}
                                   onChange={handleBedInputs}
                                   type="text"
-                                  placeholder="Bed 1"
+                                  placeholder="Bed 2"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -1188,7 +1066,7 @@ function MaintenanceofScreeningBatchRecordsList() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                                ERR<span className="text-danger">*</span>
+                                ERR
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -1198,11 +1076,11 @@ function MaintenanceofScreeningBatchRecordsList() {
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="ERR"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   ERR is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>

@@ -378,7 +378,7 @@ function DispatchofCocoonstoP4Grainage() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          Screening Batch No<span className="text-danger">*</span>
+                          Screening Batch No
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -388,11 +388,11 @@ function DispatchofCocoonstoP4Grainage() {
                             onChange={handleInputs}
                             type="text"
                             placeholder=" Enter Screening Batch No"
-                            required
+                            // required
                           />
-                          <Form.Control.Feedback type="invalid">
+                          {/* <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
-                          </Form.Control.Feedback>
+                          </Form.Control.Feedback> */}
                         </div>
                       </Form.Group>
                     </Col>

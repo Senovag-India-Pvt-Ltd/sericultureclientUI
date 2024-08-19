@@ -415,7 +415,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cocoonsProducedAtEachScreening">
-                                Total Number of Cocoons Produced
+                                Total Number of Cocoons Produced at
                                 Screening
                                 <span className="text-danger">*</span>
                               </Form.Label>
@@ -426,12 +426,12 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   value={data.cocoonsProducedAtEachScreening}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Total Number of Cocoons Produced
+                                  placeholder="Enter Total Number of Cocoons Produced at
                                   Screening"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  Total Number of Cocoons Produced 
+                                  Total Number of Cocoons Produced at
                                   Screening is required
                                 </Form.Control.Feedback>
                               </div>
@@ -481,7 +481,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                               </div>
                             </Form.Group>
                           </Col>
-                          <Col lg="4">
+                          {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="selectedBedAsPerTheMeanPerformance">
                                 Selected Bed as per the Mean Performance
@@ -505,7 +505,39 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              Selected Bed as per the Mean Performance
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="selectedBedAsPerTheMeanPerformance"
+                                  value={data.selectedBedAsPerTheMeanPerformance}
+                                  onChange={handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.selectedBedAsPerTheMeanPerformance === undefined ||
+                                    data.selectedBedAsPerTheMeanPerformance === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Selected Bed as per the Mean Performance
+                                  </option>
+                                  <option value="1">Bed 1</option>
+                                  <option value="2">Bed 2</option>
+                                  <option value="3">Bed 3</option>
+                                  <option value="4">Bed 4</option>
+                                  <option value="5">Bed 5</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                Selected Bed as per the Mean Performance is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>  
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cropFailureDetails">

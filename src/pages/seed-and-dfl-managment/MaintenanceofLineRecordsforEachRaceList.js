@@ -199,13 +199,13 @@ function MaintenanceofLineRecordsforEachRaceList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Fruits ID",
-    //   selector: (row) => row.fruitsId,
-    //   cell: (row) => <span>{row.fruitsId}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Number Of DFLs",
+      selector: (row) => row.noOfDfls,
+      cell: (row) => <span>{row.noOfDfls}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerName,
@@ -249,7 +249,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
       hide: "md",
     },
     {
-      name: "Average Weight",
+      name: "Single Cocoon Weight in Grams",
       selector: (row) => row.averageWeight,
       cell: (row) => <span>{row.averageWeight}</span>,
       sortable: true,
