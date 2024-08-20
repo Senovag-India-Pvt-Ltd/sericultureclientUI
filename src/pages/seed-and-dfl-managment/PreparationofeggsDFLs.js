@@ -38,6 +38,14 @@ function PreparationofeggsDFLs() {
     lineNameId: "",
     raceId: "",
     parentLotNumber: "",
+    selectedCocoon: "",
+    rejectedCocoon: "",
+    numberOfPairsSelectedCocoons:"",
+    numberOfPairsRejectedCocoons: "",
+    eggRecoveryPercentageselectedCocoons:"",
+    eggRecoveryPercentagerRejectedCocoons: "",
+    eggSheetSerialNos:"",
+    remainingDFLs:"",
   });
 
   
@@ -123,6 +131,14 @@ function PreparationofeggsDFLs() {
       lineNameId: "",
       raceId: "",
       parentLotNumber: "",
+      selectedCocoon: "",
+      rejectedCocoon: "",
+      numberOfPairsSelectedCocoons:"",
+      numberOfPairsRejectedCocoons: "",
+      eggRecoveryPercentageselectedCocoons:"",
+      eggRecoveryPercentagerRejectedCocoons: "",
+      eggSheetSerialNos:"",
+      remainingDFLs:"",
     });
     setValidated(false);
   };
@@ -389,8 +405,8 @@ function PreparationofeggsDFLs() {
                         </Col>
                       </Form.Group>
                     </Col>
-                        <Col lg="4">
 
+                      <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Line Details/year<span className="text-danger">*</span>
@@ -562,6 +578,94 @@ function PreparationofeggsDFLs() {
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="selectedCocoon">
+                              Selected Cocoon's in Nos
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="selectedCocoon"
+                                  name="selectedCocoon"
+                                  value={data.selectedCocoon}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Selected Cocoon's in Nos"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Selected Cocoon's in Nos is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rejectedCocoon">
+                              Rejected Cocoon's in Nos
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rejectedCocoon"
+                                  name="rejectedCocoon"
+                                  value={data.rejectedCocoon}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Rejected Cocoon's in Nos"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Rejected Cocoon's in Nos is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfPairs">
+                              No of Pairs (%) (Selected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="numberOfPairsSelectedCocoons"
+                                  name="numberOfPairsSelectedCocoons"
+                                  value={data.numberOfPairsSelectedCocoons}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="No of Pairs (%) (Selected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                No of Pairs (%) (Selected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfPairs">
+                              No of Pairs (%) (Rejected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="numberOfPairsRejectedCocoons"
+                                  name="numberOfPairsRejectedCocoons"
+                                  value={data.numberOfPairsRejectedCocoons}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="No of Pairs (%) (Rejected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                No of Pairs (%) (Rejected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
                                 Number of pairs
                                 <span className="text-danger">*</span>
@@ -633,6 +737,51 @@ function PreparationofeggsDFLs() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="eggRecoveryPercentage">
+                              Err %(Selected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="eggRecoveryPercentageselectedCocoons"
+                                  name="eggRecoveryPercentageselectedCocoons"
+                                  value={data.eggRecoveryPercentageselectedCocoons}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Err %(Selected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Err %(Selected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggRecoveryPercentage">
+                              Err %(Rejected Cocoon's)
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="eggRecoveryPercentagerRejectedCocoons"
+                                  name="eggRecoveryPercentagerRejectedCocoons"
+                                  value={data.eggRecoveryPercentagerRejectedCocoons }
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Err %(Rejected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Err %(Rejected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggRecoveryPercentage">
                                 Egg Recovery %
                                 <span className="text-danger">*</span>
                               </Form.Label>
@@ -653,28 +802,51 @@ function PreparationofeggsDFLs() {
                             </Form.Group>
                           </Col>
 
-                          {/* <Col lg="4">
+                          <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="testResults">
-                                Test results
-                                <span className="text-danger">*</span>
+                                Egg Sheet Serial Nos 
+                                {/* <span className="text-danger">*</span> */}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="testResults"
-                                  name="testResults"
-                                  value={data.testResults}
+                                  id="eggSheetSerialNos"
+                                  name="eggSheetSerialNos"
+                                  value={data.eggSheetSerialNos}
                                   onChange={handleInputs}
-                                  type="text"
-                                  placeholder="Test results"
-                                  required
+                                  type="number"
+                                  placeholder="Egg Sheet Serial Nos "
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Test results is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="testResults">
+                                Remaining DFLs 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="remainingDFLs"
+                                  name="remainingDFLs"
+                                  value={data.remainingDFLs}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Remaining DFLs"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Test results is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">

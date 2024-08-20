@@ -70,6 +70,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
                 ratePerKg: "",
                 farmId: "",
                 marketMasterId: "",
+                parentLotNumber: "",
             });
             setValidated(false);
           }
@@ -101,6 +102,7 @@ function PreservationOfSeedCocoonForProcessingEdit() {
         ratePerKg: "",
         farmId: "",
         marketMasterId: "",
+        parentLotNumber: "",
     });
   };
 
@@ -185,6 +187,24 @@ const getLineNameLotList = () => {
 
 useEffect(() => {
   getLineNameLotList();
+}, []);
+
+// to get Lot
+const [lotParentListData, setParentLotListData] = useState([]);
+
+const getParentLotList = () => {
+  const response = api
+    .get(baseURLSeedDfl + `PreservationOfSeed/get-all-parent-lot-number-list`)
+    .then((response) => {
+      setLotListData(response.data);
+    })
+    .catch((err) => {
+      setLotListData([]);
+    });
+};
+
+useEffect(() => {
+  getParentLotList();
 }, []);
 
   // to get Lot
@@ -324,6 +344,35 @@ useEffect(() => {
                       Lot Number is required
                       </Form.Control.Feedback>
                     </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Parent Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="parentLotNumber"
+                          value={data.parentLotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.parentLotNumber}>
+                              {list.parentLotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Parent Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
                   </Form.Group>
                 </Col>
 

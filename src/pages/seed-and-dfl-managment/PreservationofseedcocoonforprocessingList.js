@@ -276,6 +276,13 @@ function PreservationofseedcocoonforprocessingList() {
       hide: "md",
     },
     {
+      name: "Parent Lot Number",
+      selector: (row) => row.parentLotNumber,
+      cell: (row) => <span>{row.parentLotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Name Of Supplier",
       selector: (row) => row.nameOfSupplier,
       cell: (row) => <span>{row.nameOfSupplier}</span>,

@@ -40,6 +40,7 @@ function ApplicationFormEdit() {
     financialYearMasterId: "",
     periodFrom: new Date(),
     periodTo: new Date(),
+    dbtFarmerLandDetailsRequestList: [],
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -87,14 +88,114 @@ function ApplicationFormEdit() {
 
   const [farmerId, setFarmerId] = useState(0);
 
+  // const getIdList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLDBT + `service/get-join/${id}`)
+  //     .then((response) => {
+  //       // setData(response.data.content);
+  //       const datas = response.data.content;
+  //       // console.log("hellohello", response.data.content);
+  //       setData((prev) => ({
+  //         ...prev,
+  //         scSchemeDetailsId: datas.schemeId,
+  //         scSubSchemeDetailsId: datas.subSchemeId,
+  //         scComponentId: datas.componentId,
+  //         scCategoryId: datas.categoryId,
+  //         scHeadAccountId: datas.headOfAccountId,
+  //         financialYearMasterId: datas.financialYearMasterId,
+  //         schemeAmount: datas.schemeAmount,
+  //         sanctionNumber: datas.sanctionNo,
+  //         scSubSchemeType: datas.componentType,
+  //         periodFrom: new Date("2023-04-01"),
+  //         periodTo: new Date("2024-03-31"),
+  //         // periodFrom: datas.periodFrom,
+  //         // periodTo: datas.periodTo,
+  //         // scSubSchemeType:datas.  Need to get from api
+  //       }));
+
+  //       setFarmerId(datas.farmerId);
+
+  //       api
+  //         .get(
+  //           baseURLFarmer +
+  //             `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               village:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].villageName,
+  //               talukName:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].talukName,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+
+  //       api
+  //         .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               farmerName: response.data.content.firstName,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  // }, [id]);
+
   const getIdList = () => {
     setLoading(true);
     const response = api
       .get(baseURLDBT + `service/get-join/${id}`)
       .then((response) => {
-        // setData(response.data.content);
         const datas = response.data.content;
-        // console.log("hellohello", response.data.content);
         setData((prev) => ({
           ...prev,
           scSchemeDetailsId: datas.schemeId,
@@ -108,47 +209,28 @@ function ApplicationFormEdit() {
           scSubSchemeType: datas.componentType,
           periodFrom: new Date("2023-04-01"),
           periodTo: new Date("2024-03-31"),
-          // periodFrom: datas.periodFrom,
-          // periodTo: datas.periodTo,
-          // scSubSchemeType:datas.  Need to get from api
         }));
-
+  
         setFarmerId(datas.farmerId);
-
+  
         api
-          .get(
-            baseURLFarmer +
-              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
-          )
+          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
               setFarmerDetails((prev) => ({
                 ...prev,
-                village:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].villageName,
-                talukName:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].talukName,
+                village: response.data.content.farmerAddress && response.data.content.farmerAddress[0].villageName,
+                talukName: response.data.content.farmerAddress && response.data.content.farmerAddress[0].talukName,
               }));
               setValidated(false);
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
-
+  
         api
           .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
@@ -163,31 +245,56 @@ function ApplicationFormEdit() {
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
+  
+          api
+          .get(baseURLFarmer + `farmer-land-details/get-by-farmer-id-join/${datas.farmerId}`)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              const landDetails = response.data.content.farmerLandDetails || [];
+              console.log("Fetched land details:", landDetails); // Log the fetched data
+              setLandDetailsList(landDetails); // Set land details list
 
+              const areaDetails = landDetails.reduce((acc, detail) => {
+                acc[detail.farmerLandDetailsId] = {
+                  acre: detail.acre || "",
+                  gunta: detail.gunta || "",
+                  fgunta: detail.fgunta || ""
+                };
+                return acc; 
+              }, {});
+              setDevelopedArea(areaDetails);
+            }
+            setLoading(false);
+          })
+          .catch((err) => {
+            handleError(err);
+            setLoading(false);
+          });
         setLoading(false);
       })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        // editError(message);
         setLoading(false);
       });
   };
-
+  
   useEffect(() => {
     getIdList();
   }, [id]);
+  
+  const handleError = (err) => {
+    if (err.response && err.response.data && err.response.data.validationErrors) {
+      if (Object.keys(err.response.data.validationErrors).length > 0) {
+        saveError(err.response.data.validationErrors);
+      }
+    }
+  };
+  
 
   console.log("changes", data);
 
@@ -669,10 +776,11 @@ function ApplicationFormEdit() {
         financialYearMasterId: data.financialYearMasterId,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
+        // dbtFarmerLandDetailsRequestList: data.dbtFarmerLandDetailsRequestList,
       };
 
       if (data.equordev === "land") {
-        sendPost.applicationFormLandDetailRequestList = [
+        sendPost.editApplicationFormLandDetailRequestList = [
           {
             unitTypeMasterId: developedLand.unitType,
             landDeveloped: developedLand.landDeveloped,
@@ -782,7 +890,7 @@ function ApplicationFormEdit() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       //   text: `Receipt Number ${message}`,
     });
   };
@@ -2021,7 +2129,7 @@ function ApplicationFormEdit() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Save
+                      Update
                     </Button>
                   </li>
                   <li>
@@ -2035,77 +2143,7 @@ function ApplicationFormEdit() {
           </Form>
         </Block>
       </Row>
-      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>File Upload</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {docListData.map(({ documentId, documentName }) => (
-            <div key={documentId}>
-              <Row className="d-flex justify-content-center align-items-center">
-                <Col lg="2">
-                  <Form.Group className="form-group mt-1">
-                    <Form.Label htmlFor="trUploadPath">
-                      {documentName}
-                    </Form.Label>
-                  </Form.Group>
-                </Col>
-                <Col lg="4">
-                  <Form.Group className="form-group mt-1">
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id={`attImage${documentId}`}
-                       
-                        onChange={(e) => handleAttachFileChange(e, documentId)}
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4" style={{ position: "relative" }}>
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {documentAttachments[documentId] && (
-                      <div style={{ position: "relative" }}>
-                        <img
-                          style={{ height: "150px", width: "150px" }}
-                          src={URL.createObjectURL(
-                            documentAttachments[documentId]
-                          )}
-                        />
-                        <button
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            right: 0,
-                            background: "transparent",
-                            border: "none",
-                            color: "black",
-                            fontSize: "24px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleRemoveImage(documentId)}
-                        >
-                          &times;
-                        </button>
-                      </div>
-                    )}
-                  </Form.Group>
-                </Col>
-                <Col lg="2">
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={() => handleAttachFileUpload(documentId)}
-                  >
-                    Upload
-                  </Button>
-                </Col>
-              </Row>
-            </div>
-          ))}
-        </Modal.Body>
-      </Modal> */}
+     
     </Layout>
   );
 }
