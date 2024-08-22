@@ -117,7 +117,7 @@ function MaintenanceOfPiercedCocoonsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Quantity in Number & Kgs:
+                        Quantity in Kgs:
                         </td>
                         <td>{piercedCocoons.quantityInNumberAndKgs}</td>
                       </tr>

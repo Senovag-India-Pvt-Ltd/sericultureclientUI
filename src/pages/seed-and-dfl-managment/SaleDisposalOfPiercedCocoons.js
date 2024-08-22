@@ -208,7 +208,7 @@ function SaleDisposalOfPiercedCocoons() {
               <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                    Lot Number<span className="text-danger">*</span>
+                    Lot Numbers<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">

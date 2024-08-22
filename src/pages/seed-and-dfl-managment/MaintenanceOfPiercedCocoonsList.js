@@ -202,7 +202,7 @@ function MaintenanceOfPiercedCocoonsList() {
       hide: "md",
     },
     {
-        name: "Quantity in Number & Kgs",
+        name: "Quantity in Kgs",
         selector: (row) => row.quantityInNumberAndKgs,
         cell: (row) => <span>{row.quantityInNumberAndKgs}</span>,
         sortable: true,

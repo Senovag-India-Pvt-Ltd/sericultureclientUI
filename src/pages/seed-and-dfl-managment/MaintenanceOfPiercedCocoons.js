@@ -194,7 +194,7 @@ function MaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
-                    Lot Number<span className="text-danger">*</span>
+                    Lot Numbers<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -227,7 +227,7 @@ function MaintenanceOfPiercedCocoons() {
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="invoiceDetails">
-                    Quantity in Number & Kgs<span className="text-danger">*</span>
+                    Quantity in  Kgs<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -236,11 +236,11 @@ function MaintenanceOfPiercedCocoons() {
                         value={data.quantityInNumberAndKgs}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Quantity in Number & Kgs"
+                        placeholder="Enter Quantity in Kgs"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      Quantity in Number & Kgs is required
+                      Quantity in Kgs is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
