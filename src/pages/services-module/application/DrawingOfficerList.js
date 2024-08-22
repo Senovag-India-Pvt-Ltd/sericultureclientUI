@@ -902,22 +902,22 @@ function DrawingOfficerList() {
     //   hide: "md",
     // //   grow: 2,
     // },
-    {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="checkbox"
-          name="selectedLand"
-          value={row.scApplicationFormId}
-          checked={applicationIds.includes(row.scApplicationFormId)}
-          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
-    },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={row.scApplicationFormId}
+    //       checked={applicationIds.includes(row.scApplicationFormId)}
+    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
