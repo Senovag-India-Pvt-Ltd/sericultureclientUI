@@ -264,7 +264,8 @@ useEffect(() => {
                           <option value="">Select Scheme Quota Type</option>
                           <option value="State">State</option>
                           <option value="Central">Central</option>
-                          
+                          <option value="Central-State Mandatory">Central-State Mandatory</option>
+                          <option value="State Top Up">State Top Up</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                         Scheme Quota Type is required
