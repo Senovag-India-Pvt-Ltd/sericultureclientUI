@@ -197,6 +197,7 @@ function Menu() {
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
     Services_Reject_List: false,
+    Services_DBT_Pushed_List: false,
     Services_Success_List: false,
     Services_Dbt_Application: false,
     Services_Drawing_Officer_List: false,
@@ -1071,6 +1072,14 @@ function Menu() {
                 <MenuItemLink
                   text="Report Success List"
                   to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_DBT_Pushed_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="DBT Pushed List"
+                  to="/seriui/dbt-pushed-list"
                 />
               </MenuItem>
             ) : null}
