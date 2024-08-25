@@ -846,6 +846,7 @@ import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEd
 import DistrictAndTalukWiseMonthlyReport from "../pages/reports-admin/DistrictAndTalukWiseMonthlyReport";
 import DistrictWiseReelerCountList from "../pages/reports-admin/DistrictWiseReelerCountList";
 import ReelerCountList from "../pages/reports-admin/ReelerCountList";
+import PullBack from "../pages/services-module/application/PullBack";
 // Admin and Reports
 
 function Router() {
@@ -1166,6 +1167,7 @@ function Router() {
               element={<ApplicationDashboard />}
             />
             <Route path="dbt-application" element={<DbtApplication />} />
+            <Route path="pull-back" element={<PullBack />} />
             <Route
               path="all-application-list"
               element={<AllApplicationList />}
