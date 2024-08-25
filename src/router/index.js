@@ -846,11 +846,8 @@ import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEd
 import DistrictAndTalukWiseMonthlyReport from "../pages/reports-admin/DistrictAndTalukWiseMonthlyReport";
 import DistrictWiseReelerCountList from "../pages/reports-admin/DistrictWiseReelerCountList";
 import ReelerCountList from "../pages/reports-admin/ReelerCountList";
-<<<<<<< HEAD
 import PullBack from "../pages/services-module/application/PullBack";
-=======
 import DbtPushedList from "../pages/services-module/application/DbtPushedList";
->>>>>>> ef60f5a13fd0ae53cae5a21121125a3a9d433b6d
 // Admin and Reports
 
 function Router() {
