@@ -102,6 +102,24 @@ function ReportRejectList() {
 
   // console.log(searchData);
 
+  // to get Rejected Reason
+  const [rejectedReasonListData,setRejectedReasonListData] = useState([]);
+
+  const getRejectedReasonList = () =>{
+    api
+    .get(baseURLDBT + `rejection-list/get-all-rejection-list`)
+    .then((response) => {
+      setRejectedReasonListData(response.data.content.rejectionList);
+    })
+    .catch((err) => {
+      setRejectedReasonListData([]);
+    });
+  }
+
+  useEffect(() => {
+    getRejectedReasonList();
+  }, []);
+
   // to get Financial Year
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -1325,24 +1343,60 @@ function ReportRejectList() {
                       <option value="0">All</option>
                       <option value="1">Sanction No.</option>
                       <option value="2">FruitsId</option>
+                      <option value="3">Rejected Reason</option>
                     </Form.Select>
                   </div>
                 </Col>
-
+            
+              {(Number(searchData.type) === 3)?(
+                 <Col sm={2} lg={2}>
+                 <Form.Group className="form-group ">
+                   <div className="form-control-wrap">
+                     <Form.Select
+                       name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                     >
+                       <option value="">Select Rejected Reason</option>
+                       {rejectedReasonListData && rejectedReasonListData.map((list) => (
+                         <option
+                           key={list.rejectionListId}
+                           value={list.rejectionListId}
+                         >
+                           {list.rejectionListName}
+                         </option>
+                       ))}
+                     </Form.Select>
+                     <Form.Control.Feedback type="invalid">
+                       Rejected List is required
+                     </Form.Control.Feedback>
+                   </div>
+                 </Form.Group>
+               </Col>
+              ):(
                 <Col sm={2} lg={2}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    type="text"
-                    placeholder="Search"
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Field Value is Required
-                  </Form.Control.Feedback>
-                </Col>
+                <Form.Control
+                  id="fruitsId"
+                  name="text"
+                  value={searchData.text}
+                  onChange={handleInputsSearch}
+                  type="text"
+                  placeholder="Search"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Field Value is Required
+                </Form.Control.Feedback>
+              </Col>
+              )}
+                
 
                 <Form.Label column sm={1}>
                   District
