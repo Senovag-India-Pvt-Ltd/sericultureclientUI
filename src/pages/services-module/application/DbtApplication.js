@@ -17,6 +17,8 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLFarmerServer =
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function DbtApplication() {
@@ -544,6 +546,103 @@ function DbtApplication() {
 
   const [disabled, setDisabled] = useState(false);
 
+  // const postData = (event) => {
+  //   setDisabled(true);
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     const transformedData = Object.keys(developedArea).map((id) => ({
+  //       // landDeveloped: developedLand.landDeveloped,
+  //       landDetailId: parseInt(id),
+  //       ...developedArea[id],
+  //     }));
+  //     const sendPost = {
+  //       farmerId: data.farmerId,
+  //       headOfAccountId: data.scHeadAccountId,
+  //       schemeId: data.scSchemeDetailsId,
+  //       subSchemeId: data.scSubSchemeDetailsId,
+  //       componentType: data.scSubSchemeType,
+  //       componentTypeName: "",
+  //       sanctionAmount: data.sanctionAmount,
+  //       schemeAmount: data.schemeAmount,
+  //       sanctionNo: data.sanctionNumber,
+  //       devAcre: developedLand.acre,
+  //       devGunta: developedLand.gunta,
+  //       devFgunta: developedLand.fgunta,
+  //       categoryId: data.scCategoryId,
+  //       // landDetailId: landData.landId,
+  //       landDetailId: landDetailsIds[0],
+  //       talukId: landData.talukId,
+  //       newFarmer: true,
+  //       expectedAmount: data.expectedAmount,
+  //       financialYearMasterId: data.financialYearMasterId,
+  //       periodFrom: data.periodFrom,
+  //       periodTo: data.periodTo,
+  //       beneficiaryId: data.beneficiaryId,
+  //       componentId: data.scComponentId,
+  //       // ...transformedData[0],
+  //     };
+
+  //     if (data.equordev === "land") {
+  //       sendPost.applicationFormLandDetailRequestList = [
+  //         {
+  //           unitTypeMasterId: developedLand.unitType,
+  //           landDeveloped: 0,
+  //           ...transformedData[0],
+  //         },
+  //       ];
+  //     } else if (data.equordev === "equipment") {
+  //       sendPost.applicationFormLineItemRequestList = [
+  //         {
+  //           unitTypeMasterId: equipment.unitType,
+  //           lineItemComment: equipment.description,
+  //           cost: equipment.price,
+  //           vendorId: equipment.vendorId,
+  //         },
+  //       ];
+  //     }
+
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     }
+  //     api
+  //       .post(
+  //         baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
+  //         sendPost
+  //       )
+  //       .then((response) => {
+  //         if (response.data.errorCode === -1) {
+  //           saveError(response.data.errorMessages[0]);
+  //           setDisabled(false);
+  //         } else {
+  //           saveSuccess();
+  //           setDisabled(false);
+  //           setApplicationId(response.data.content.applicationDocumentId);
+  //           clear();
+  //           setValidated(false);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (
+  //           err.response &&
+  //           err.response &&
+  //           err.response.data &&
+  //           err.response.data.validationErrors
+  //         ) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             saveError(err.response.data.validationErrors);
+  //           }
+  //         }
+  //         setDisabled(false);
+  //       });
+  //     setValidated(true);
+  //   }
+  // };
+
   const postData = (event) => {
     setDisabled(true);
     const form = event.currentTarget;
@@ -553,50 +652,98 @@ function DbtApplication() {
       setValidated(true);
     } else {
       event.preventDefault();
+
+      // Validate farmer details against land details
+    const farmerDetailsMatch = landDetailsList.every((landDetail) => {
+      return (
+        farmerDetails.village === landDetail.villageName &&
+        farmerDetails.taluk === landDetail.talukName
+        // farmerDetails.farmerName === data.farmerName
+      );
+    });
+
+    if (!farmerDetailsMatch) {
+      saveError("Farmer details do not match with the land details.");
+      setDisabled(false);
+      return;
+    }
+
       const transformedData = Object.keys(developedArea).map((id) => ({
         // landDeveloped: developedLand.landDeveloped,
-        landDetailId: parseInt(id),
+        // landDetailId: parseInt(id),
         ...developedArea[id],
       }));
       const sendPost = {
-        farmerId: data.farmerId,
+      //   farmerId: data.farmerId,
+      //   headOfAccountId: data.scHeadAccountId,
+      //   schemeId: data.scSchemeDetailsId,
+      //   subSchemeId: data.scSubSchemeDetailsId,
+      //   componentType: data.scSubSchemeType,
+      //   componentTypeName: "",
+      //   sanctionAmount: data.sanctionAmount,
+      //   schemeAmount: data.schemeAmount,
+      //   sanctionNo: data.sanctionNumber,
+      //   devAcre: developedLand.acre,
+      //   devGunta: developedLand.gunta,
+      //   devFgunta: developedLand.fgunta,
+      //   categoryId: data.scCategoryId,
+      //   // landDetailId: landData.landId,
+      //   landDetailId: landDetailsIds[0],
+      //   talukId: landData.talukId,
+      //   newFarmer: true,
+      //   expectedAmount: data.expectedAmount,
+      //   financialYearMasterId: data.financialYearMasterId,
+      //   periodFrom: data.periodFrom,
+      //   periodTo: data.periodTo,
+      //   beneficiaryId: data.beneficiaryId,
+      //   componentId: data.scComponentId,
+      //   // ...transformedData[0],
+      // };
+      farmerId: data.farmerId,
+        payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
-        componentType: data.scSubSchemeType,
-        componentTypeName: "",
-        sanctionAmount: data.sanctionAmount,
-        schemeAmount: data.schemeAmount,
-        sanctionNo: data.sanctionNumber,
-        devAcre: developedLand.acre,
-        devGunta: developedLand.gunta,
-        devFgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
-        // landDetailId: landData.landId,
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        expectedAmount: data.expectedAmount,
+        componentId:data.scComponentId,
+        // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
+        devAcre: 0,
+        devGunta: 0,
+        devFGunta: 0,
+        schemeAmount: data.schemeAmount,
+        sanctionNumber: data.sanctionNumber,
+        initialAmount: data.expectedAmount,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
-        beneficiaryId: data.beneficiaryId,
-        componentId: data.scComponentId,
-        // ...transformedData[0],
       };
 
       if (data.equordev === "land") {
-        sendPost.applicationFormLandDetailRequestList = [
-          {
-            unitTypeMasterId: developedLand.unitType,
-            landDeveloped: 0,
-            ...transformedData[0],
-          },
-        ];
+      //   sendPost.applicationFormLandDetailRequestList = [
+      //     {
+      //       unitTypeMasterId: developedLand.unitType,
+      //       landDeveloped: 0,
+      //       ...transformedData[0],
+      //     },
+      //   ];
+      // } else if (data.equordev === "equipment") {
+      //   sendPost.applicationFormLineItemRequestList = [
+      //     {
+      //       unitTypeMasterId: equipment.unitType,
+      //       lineItemComment: equipment.description,
+      //       cost: equipment.price,
+      //       vendorId: equipment.vendorId,
+      //     },
+      //   ];
+      // }
+      sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
-            unitTypeMasterId: equipment.unitType,
+            // unitTypeMasterId: equipment.unitType,
             lineItemComment: equipment.description,
             cost: equipment.price,
             vendorId: equipment.vendorId,
@@ -640,6 +787,7 @@ function DbtApplication() {
       setValidated(true);
     }
   };
+
 
   const styles = {
     ctstyle: {
@@ -940,6 +1088,80 @@ function DbtApplication() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  // const search = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setSearchValidated(true);
+  //   } else {
+  //     event.preventDefault();
+  //     if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
+  //       return;
+  //     }
+  //     api
+  //       .post(baseURLRegistration + `farmer/get-farmer-details`, {
+  //         fruitsId: data.fruitsId,
+  //       })
+  //       .then((response) => {
+  //         console.log(response);
+  //         if (!response.data.content.error) {
+  //           if (response.data.content.farmerResponse) {
+  //             setData((prev) => ({
+  //               ...prev,
+  //               farmerId: response.data.content.farmerResponse.farmerId,
+  //             }));
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               farmerName: response.data.content.farmerResponse.firstName,
+  //               hobli:
+  //                 response.data.content.farmerAddressDTOList &&
+  //                 response.data.content.farmerAddressDTOList.length > 0
+  //                   ? response.data.content.farmerAddressDTOList[0].hobliName
+  //                   : "",
+  //               village:
+  //                 response.data.content.farmerAddressDTOList &&
+  //                 response.data.content.farmerAddressDTOList.length > 0
+  //                   ? response.data.content.farmerAddressDTOList[0].villageName
+  //                   : "",
+  //             }));
+  //             setShowFarmerDetails(true);
+  //           }
+  //           if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+  //             setLandDetailsList(
+  //               response.data.content.farmerLandDetailsDTOList
+  //             );
+  //           }
+  //           if (
+  //             response.data.content.farmerAddressDTOList &&
+  //             response.data.content.farmerAddressDTOList.length > 0
+  //           ) {
+  //             setLandData((prev) => ({
+  //               ...prev,
+  //               talukId:
+  //                 response.data.content.farmerAddressDTOList[0].talukId || 0,
+  //             }));
+  //           }
+  //         } else {
+  //           saveError(response.data.content.error_description);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (
+  //           err.response &&
+  //           err.response &&
+  //           err.response.data &&
+  //           err.response.data.validationErrors
+  //         ) {
+  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //             saveError(err.response.data.validationErrors);
+  //           }
+  //         }
+  //       });
+  //   }
+  // };
+
+  
   const search = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -979,11 +1201,31 @@ function DbtApplication() {
               }));
               setShowFarmerDetails(true);
             }
-            if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-              setLandDetailsList(
-                response.data.content.farmerLandDetailsDTOList
-              );
-            }
+            // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+            //   setLandDetailsList(
+            //     response.data.content.farmerLandDetailsDTOList
+            //   );
+            // }
+
+            api
+              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+                fruitsId: data.fruitsId,
+              })
+              .then((response) => {
+                console.log(
+                  "landdetails",
+                  response.data.content.farmerLandDetailsDTOList
+                );
+                if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+                  setLandDetailsList(
+                    response.data.content.farmerLandDetailsDTOList
+                  );
+                }
+              })
+              .catch((err) => {
+                setLandDetailsList([]);
+              });
+
             if (
               response.data.content.farmerAddressDTOList &&
               response.data.content.farmerAddressDTOList.length > 0
@@ -1133,7 +1375,7 @@ function DbtApplication() {
       //     placeholder="Edit FGunta"
       //   />
       // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },

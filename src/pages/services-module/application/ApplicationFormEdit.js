@@ -87,14 +87,115 @@ function ApplicationFormEdit() {
 
   const [farmerId, setFarmerId] = useState(0);
 
+  // const getIdList = () => {
+  //   setLoading(true);
+  //   const response = api
+  //     .get(baseURLDBT + `service/get-join/${id}`)
+  //     .then((response) => {
+  //       // setData(response.data.content);
+  //       const datas = response.data.content;
+  //       // console.log("hellohello", response.data.content);
+  //       setData((prev) => ({
+  //         ...prev,
+  //         scSchemeDetailsId: datas.schemeId,
+  //         scSubSchemeDetailsId: datas.subSchemeId,
+  //         scComponentId: datas.componentId,
+  //         scCategoryId: datas.categoryId,
+  //         scHeadAccountId: datas.headOfAccountId,
+  //         financialYearMasterId: datas.financialYearMasterId,
+  //         schemeAmount: datas.schemeAmount,
+  //         sanctionNumber: datas.sanctionNo,
+  //         scSubSchemeType: datas.componentType,
+  //         periodFrom: new Date("2023-04-01"),
+  //         periodTo: new Date("2024-03-31"),
+  //         // periodFrom: datas.periodFrom,
+  //         // periodTo: datas.periodTo,
+  //         // scSubSchemeType:datas.  Need to get from api
+  //       }));
+
+  //       setFarmerId(datas.farmerId);
+
+  //       api
+  //         .get(
+  //           baseURLFarmer +
+  //             `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+  //         )
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               village:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].villageName,
+  //               talukName:
+  //                 response.data.content.farmerAddress &&
+  //                 response.data.content.farmerAddress[0].talukName,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+
+  //       api
+  //         .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+  //         .then((response) => {
+  //           if (response.data.errorCode === -1) {
+  //             saveError(response.data.message);
+  //           } else {
+  //             setFarmerDetails((prev) => ({
+  //               ...prev,
+  //               farmerName: response.data.content.firstName,
+  //             }));
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       const message = err.response.data.errorMessages[0].message[0].message;
+  //       setData({});
+  //       // editError(message);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getIdList();
+  // }, [id]);
+
+  
   const getIdList = () => {
     setLoading(true);
     const response = api
       .get(baseURLDBT + `service/get-join/${id}`)
       .then((response) => {
-        // setData(response.data.content);
         const datas = response.data.content;
-        // console.log("hellohello", response.data.content);
         setData((prev) => ({
           ...prev,
           scSchemeDetailsId: datas.schemeId,
@@ -108,47 +209,28 @@ function ApplicationFormEdit() {
           scSubSchemeType: datas.componentType,
           periodFrom: new Date("2023-04-01"),
           periodTo: new Date("2024-03-31"),
-          // periodFrom: datas.periodFrom,
-          // periodTo: datas.periodTo,
-          // scSubSchemeType:datas.  Need to get from api
         }));
-
+  
         setFarmerId(datas.farmerId);
-
+  
         api
-          .get(
-            baseURLFarmer +
-              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
-          )
+          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
               setFarmerDetails((prev) => ({
                 ...prev,
-                village:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].villageName,
-                talukName:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].talukName,
+                village: response.data.content.farmerAddress && response.data.content.farmerAddress[0].villageName,
+                talukName: response.data.content.farmerAddress && response.data.content.farmerAddress[0].talukName,
               }));
               setValidated(false);
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
-
+  
         api
           .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
           .then((response) => {
@@ -163,31 +245,57 @@ function ApplicationFormEdit() {
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
+  
+          api
+          .get(baseURLFarmer + `farmer-land-details/get-by-farmer-id-join/${datas.farmerId}`)
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              const landDetails = response.data.content.farmerLandDetails || [];
+              console.log("Fetched land details:", landDetails); // Log the fetched data
+              setLandDetailsList(landDetails); // Set land details list
 
+              const areaDetails = landDetails.reduce((acc, detail) => {
+                acc[detail.farmerLandDetailsId] = {
+                  acre: detail.acre || "",
+                  gunta: detail.gunta || "",
+                  fgunta: detail.fgunta || ""
+                };
+                return acc; 
+              }, {});
+              setDevelopedArea(areaDetails);
+            }
+            setLoading(false);
+          })
+          .catch((err) => {
+            handleError(err);
+            setLoading(false);
+          });
         setLoading(false);
       })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        // editError(message);
         setLoading(false);
       });
   };
-
+  
   useEffect(() => {
     getIdList();
   }, [id]);
+  
+  const handleError = (err) => {
+    if (err.response && err.response.data && err.response.data.validationErrors) {
+      if (Object.keys(err.response.data.validationErrors).length > 0) {
+        saveError(err.response.data.validationErrors);
+      }
+    }
+  };
+  
+
 
   console.log("changes", data);
 
@@ -639,6 +747,11 @@ function ApplicationFormEdit() {
   };
 
   const postData = (event) => {
+    const transformedData = Object.keys(developedArea).map((id) => ({
+      // landDeveloped: developedLand.landDeveloped,
+      // landDetailId: parseInt(id),
+      ...developedArea[id],
+    }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -648,36 +761,36 @@ function ApplicationFormEdit() {
       event.preventDefault();
       const sendPost = {
         id: id,
-        farmerId: farmerId,
+        farmerId: data.farmerId,
+        payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
-        componentType: data.scSubSchemeType,
-        componentTypeName: "",
-        sanctionAmount: data.sanctionAmount,
-        schemeAmount: data.schemeAmount,
-        sanctionNo: data.sanctionNumber,
-        devAcre: developedLand.acre,
-        devGunta: developedLand.gunta,
-        devFgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
-        componentId: data.scComponentId,
-        landDetailId: landData.landId,
+        landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        expectedAmount: data.expectedAmount,
+        componentId:data.scComponentId,
+        // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
+        devAcre: 0,
+        devGunta: 0,
+        devFGunta: 0,
+        schemeAmount: data.schemeAmount,
+        sanctionNumber: data.sanctionNumber,
+        initialAmount: data.expectedAmount,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
       };
 
       if (data.equordev === "land") {
-        sendPost.applicationFormLandDetailRequestList = [
-          {
-            unitTypeMasterId: developedLand.unitType,
-            landDeveloped: developedLand.landDeveloped,
-          },
-        ];
+        // sendPost.applicationFormLandDetailRequestList = [
+        //   {
+        //     unitTypeMasterId: developedLand.unitType,
+        //     landDeveloped: developedLand.landDeveloped,
+        //   },
+        // ];
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
@@ -782,7 +895,7 @@ function ApplicationFormEdit() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated successfully",
       //   text: `Receipt Number ${message}`,
     });
   };
@@ -2021,7 +2134,7 @@ function ApplicationFormEdit() {
                   <li>
                     {/* <Button type="button" variant="primary" onClick={postData}> */}
                     <Button type="submit" variant="primary">
-                      Save
+                      Update
                     </Button>
                   </li>
                   <li>

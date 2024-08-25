@@ -918,6 +918,23 @@ function DrawingOfficerList() {
     //   // allowOverflow: true,
     //   button: true,
     // },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={row.scApplicationFormId}
+    //       checked={applicationIds.includes(row.scApplicationFormId)}
+    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
+
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -1474,11 +1491,11 @@ function DrawingOfficerList() {
         >
           <div className="gap-col mt-1">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
+              {/* <li>
                 <Button type="submit" variant="primary" onClick={postData}>
                   Push All
                 </Button>
-              </li>
+              </li> */}
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel

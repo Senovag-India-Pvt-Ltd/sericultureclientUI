@@ -681,8 +681,7 @@ function ServiceApplicationEdit() {
         periodTo: data.periodTo,
       };
 
-      if (data.equordev === "land") {
-        sendPost.applicationFormLandDetailRequestList = [
+      if (data.equordev === "land") { sendPost.dbtFarmerLandDetailsRequestList = [
           {
             unitTypeMasterId: developedLand.unitType,
             landDeveloped: developedLand.landDeveloped,
