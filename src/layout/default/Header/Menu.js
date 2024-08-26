@@ -196,12 +196,8 @@ function Menu() {
     Services: false,
     Services_Service_Application: false,
     Services_Service_Dashboard: false,
-    Services_Reject_List: false,
-    Services_DBT_Pushed_List: false,
-    Services_Success_List: false,
     Services_Dbt_Application: false,
-    Services_Drawing_Officer_List: false,
-    Services_Tsc_Officer_List: false,
+    
     // Services_Track_Mulberry_Status: false,
     // Services_Supply_of_Disinfection: false,
     // Services_Apply_Incentives: false,
@@ -215,6 +211,11 @@ function Menu() {
     DBT_Subsidy_Sanction: false,
     DBT_Subsidy_Drawing: false,
     DBT_Subsidy_Counter_Signing: false,
+    DBT_Reject_List: false,
+    DBT_DBT_Pushed_List: false,
+    DBT_Success_List: false,
+    DBT_Drawing_Officer_List: false,
+    DBT_Tsc_Officer_List: false,
 
     Market: false,
     Market_Bidding: false,
@@ -1059,30 +1060,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Reject_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Report Rejection List"
-                  to="/seriui/report-reject-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.Services_Success_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Report Success List"
-                  to="/seriui/report-success-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.Services_DBT_Pushed_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="DBT Pushed List"
-                  to="/seriui/dbt-pushed-list"
-                />
-              </MenuItem>
-            ) : null}
+            
             {showMenu.Services_Dbt_Application ? (
               <MenuItem>
                 <MenuItemLink
@@ -1091,38 +1069,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Services_Drawing_Officer_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="Drawing Officer List"
-                  to="/seriui/drawing-officer-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.Services_Drawing_Officer_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="All Scheme Drawing Officer List"
-                  to="/seriui/all-scheme-drawing-officer-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.Services_Tsc_Officer_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="TSC Officer List"
-                  to="/seriui/tsc-officer-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.Services_Tsc_Officer_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text="All Scheme TSC Officer List"
-                  to="/seriui/all-scheme-tsc-officer-list"
-                />
-              </MenuItem>
-            ) : null}
+            
             {/* {showMenu.Services_Track_the_DFL_procurement ? (
               <MenuItem>
                 <MenuItemLink
@@ -1232,6 +1179,62 @@ function Menu() {
                 <MenuItemLink
                   text="Subsidy Counter Signing"
                   to="/seriui/subsidy-counter-sign"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Reject_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Rejection List"
+                  to="/seriui/report-reject-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Success_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Report Success List"
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_DBT_Pushed_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="DBT Pushed List"
+                  to="/seriui/dbt-pushed-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="Drawing Officer List"
+                  to="/seriui/drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Drawing_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme Drawing Officer List"
+                  to="/seriui/all-scheme-drawing-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Tsc_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="TSC Officer List"
+                  to="/seriui/tsc-officer-list"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.DBT_Tsc_Officer_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text="All Scheme TSC Officer List"
+                  to="/seriui/all-scheme-tsc-officer-list"
                 />
               </MenuItem>
             ) : null}
