@@ -867,74 +867,7 @@ function DrawingOfficerList() {
   };
 
   const ApplicationDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     //   Button style
-    //     <div className="text-start w-100">
-    //       {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleView(row.marketMasterId)}
-    //       >
-    //         View
-    //       </Button>
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         className="ms-2"
-    //         onClick={() => handleEdit(row.marketMasterId)}
-    //       >
-    //         Edit
-    //       </Button>
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.marketMasterId)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // //   grow: 2,
-    // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   // ignoreRowClick: true,
-    //   // allowOverflow: true,
-    //   button: true,
-    // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   // ignoreRowClick: true,
-    //   // allowOverflow: true,
-    //   button: true,
-    // },
-
+   
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -942,27 +875,13 @@ function DrawingOfficerList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Application Status",
-    //   selector: (row) => row.applicationStatus,
-    //   cell: (row) => <span>{row.applicationStatus}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Sanction Number",
       selector: (row) => row.sanctionNumber,
@@ -971,9 +890,16 @@ function DrawingOfficerList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: ".District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -984,20 +910,7 @@ function DrawingOfficerList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Village",
       selector: (row) => row.villageName,

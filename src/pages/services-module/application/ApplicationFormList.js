@@ -338,6 +338,13 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Sanction No.",
       selector: (row) => row.sanctionNumber,
       cell: (row) => <span>{row.sanctionNumber}</span>,
@@ -352,7 +359,7 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
@@ -366,9 +373,25 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
       name: "Taluk",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
+    {
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },

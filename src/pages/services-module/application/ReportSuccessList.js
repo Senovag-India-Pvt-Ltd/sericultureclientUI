@@ -396,6 +396,49 @@ function ReportSuccessList() {
     getList();
   }, [page]);
 
+
+  const exportCsv = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/reject-list-report`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+            status: "ACKNOWLEDGEMENT FAILED",
+          },
+          responseType: 'blob',
+          headers: {
+            accept: "text/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `dbt_status_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+}; 
+
+  
+
   // console.log(allApplicationIds);
 
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
@@ -808,6 +851,13 @@ function ReportSuccessList() {
       hide: "md",
     },
     {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Sanction Number",
       selector: (row) => row.sanctionNumber,
       cell: (row) => <span>{row.sanctionNumber}</span>,
@@ -815,7 +865,7 @@ function ReportSuccessList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
@@ -843,13 +893,7 @@ function ReportSuccessList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+   
 
     // {
     //   name: "State",
@@ -859,20 +903,19 @@ function ReportSuccessList() {
     //   hide: "md",
     // },
     {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Taluk",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -1214,11 +1257,109 @@ function ReportSuccessList() {
                       onChange={handleInputsSearch}
                     >
                       <option value="0">All</option>
-                      <option value="1">Sanction No.</option>
+                      {/* <option value="1">Sanction No.</option> */}
                       <option value="2">FruitsId</option>
+                      {/* <option value="3">Rejected Reason</option> */}
+                      <option value="4">Beneficiary Id</option>
+                      <option value="5">Financial Year</option>
+                      <option value="6">Component</option>
+                      <option value="7">Component Type</option>
                     </Form.Select>
                   </div>
                 </Col>
+
+                {(Number(searchData.type) === 5 )? (
+                  <Col sm={2} lg={2}>
+                  <Form.Group className="form-group">
+                           
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="text"
+                                value={searchData.text}
+                                onChange={handleInputsSearch}
+                                onBlur={() => handleInputsSearch}
+                                // multiple
+                                required
+                                isInvalid={
+                                  //  searchData.text === undefined ||
+                                  searchData.text === "0"
+                                }
+                              >
+                                <option value="">Select Year</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.financialYearMasterId}
+                                    value={list.financialYearMasterId}
+                                  >
+                                    {list.financialYear}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            
+                            </div>
+                          </Form.Group>
+                        </Col>
+            ) : Number(searchData.type) === 6 ? (
+              <Col sm={2} lg={2}>
+                <Form.Group className="form-group">
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="text"
+                            value={searchData.text}
+                            onChange={handleInputsSearch}
+                            onBlur={() => handleInputsSearch}
+                            // multiple
+                            required
+                            isInvalid={
+                            //  searchData.text === undefined ||
+                              searchData.text === "0"
+                            }
+                          >
+                            <option value="">Select Component</option>
+                            {scComponentListData.map((list) => (
+                              <option
+                                key={list.scComponentId}
+                                value={list.scComponentId}
+                              >
+                                {list.scComponentName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          
+                        </div>
+                      </Form.Group>
+                    </Col>
+            ) : Number(searchData.type) === 7 ? (
+              <Col sm={2} lg={2}>
+              <Form.Group className="form-group">     
+                <div className="form-control-wrap">
+                  <Form.Select
+                   name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                  >
+                    <option value="">Select Component Type</option>
+                    {scSubSchemeDetailsListData &&
+                      scSubSchemeDetailsListData.map((list, i) => (
+                        <option 
+                        key={list.scSubSchemeDetailsId}
+                          value={list.scSubSchemeDetailsId}>
+                          {list.subSchemeName}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  
+                </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
 
                 <Col sm={2} lg={2}>
                   <Form.Control
@@ -1234,6 +1375,7 @@ function ReportSuccessList() {
                     Field Value is Required
                   </Form.Control.Feedback>
                 </Col>
+              )}
 
                 <Form.Label column sm={1}>
                   District
@@ -1282,6 +1424,11 @@ function ReportSuccessList() {
                     Search
                   </Button>
                 </Col>
+                <Col sm={1}>
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                Export
+              </Button>
+            </Col>
               </Form.Group>
             </Col>
           </Row>
