@@ -1,8 +1,8 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -12,25 +12,115 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function ReportSuccessList() {
+function DrawingOfficerSchemeList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
-  const countPerPage = 500;
+  const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+  };
 
   const [addressDetails, setAddressDetails] = useState({
     districtId: 0,
     talukId: 0,
   });
+
+  const [searchData, setSearchData] = useState({
+    text: "",
+    type: 0,
+  });
+
+  // Search
+  const search = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/getApplicationForTscForDbtPush`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+            pageNumber: page,
+            pageSize: countPerPage,
+          },
+        }
+      )
+      .then((response) => {
+        setListData(response.data.content);
+      })
+      .catch((err) => {
+        setListData([]);
+      });
+  };
+
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        if (response.data.content.district) {
+          setDistrictListData(response.data.content.district);
+        }
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.taluk) {
+          setTalukListData(response.data.content.taluk);
+        } else {
+          setTalukListData([]);
+        }
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (addressDetails.districtId) {
+      getTalukList(addressDetails.districtId);
+    }
+  }, [addressDetails.districtId]);
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -95,90 +185,6 @@ function ReportSuccessList() {
     periodTo: new Date(),
   });
 
-  // To get District
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getDistrictList = () => {
-    api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    getDistrictList();
-  }, []);
-
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        } else {
-          setTalukListData([]);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
-  useEffect(() => {
-    if (addressDetails.districtId) {
-      getTalukList(addressDetails.districtId);
-    }
-  }, [addressDetails.districtId]);
-
-  const handleInputsaddress = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setAddressDetails({ ...addressDetails, [name]: value });
-  };
-
-  const handleInputsSearch = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setSearchData({ ...searchData, [name]: value });
-  };
-
-   // Search
-   const search = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/getDbtStatusByList`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS",
-          },
-        }
-      )
-      .then((response) => {
-        setListData(response.data.content);
-      })
-      .catch((err) => {
-        setListData([]);
-      });
-  };
-
   // console.log(searchData);
 
   // to get Financial Year
@@ -233,6 +239,25 @@ function ReportSuccessList() {
 
       setLoading(true);
 
+      // api
+      //   .post(
+      //     baseURLDBT + `service/getDrawingOfficerList`,
+      //     {},
+      //     { params: searchData }
+      //   )
+      //   .then((response) => {
+      //     setListData(response.data.content);
+      //     const scApplicationFormIds = response.data.content.map(
+      //       (item) => item.scApplicationFormId
+      //     );
+      //     setAllApplicationIds(scApplicationFormIds);
+      //     setLoading(false);
+      //   })
+      //   .catch((err) => {
+      //     setListData({});
+      //     setLoading(false);
+      //   });
+
       api
         .post(
           baseURLDBT + `service/getDrawingOfficerList`,
@@ -241,10 +266,10 @@ function ReportSuccessList() {
         )
         .then((response) => {
           setListData(response.data.content);
-          const scApplicationFormIds = response.data.content.map(
-            (item) => item.scApplicationFormId
+          const applicationWorkFlowIds = response.data.content.map(
+            (item) => item.applicationWorkFlowId
           );
-          setAllApplicationIds(scApplicationFormIds);
+          setAllApplicationIds(applicationWorkFlowIds);
           setLoading(false);
         })
         .catch((err) => {
@@ -267,6 +292,41 @@ function ReportSuccessList() {
 
   console.log(applicationIds);
 
+  const [viewDetailsData, setViewDetailsData] = useState({});
+  const viewDetails = (_id) => {
+    handleShowModal();
+    api
+      .get(baseURLDBT + `service/get-join/${_id}`)
+      .then((response) => {
+        setViewDetailsData(response.data.content);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        setViewDetailsData({});
+        setLoading(false);
+      });
+  };
+
+  const rejectDetails = (_id) => {
+    api
+      .post(
+        baseURLDBT + `service/updateApplicationFormAsRejectedByChecker`,
+        {},
+        { params: { docId: _id } }
+      )
+      .then((response) => {
+        // setViewDetailsData(response.data.content);
+        getList();
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        // setViewDetailsData({});
+        setLoading(false);
+      });
+  };
+
   const handleCheckboxChange = (_id) => {
     if (applicationIds.includes(_id)) {
       const dataList = [...applicationIds];
@@ -277,20 +337,32 @@ function ReportSuccessList() {
     }
   };
 
+  const [disabledIds, setDisabledIds] = useState([]);
+  // const [showDisable, setShowDisable] = useState(false);
   const handlePush = (id) => {
+    if (listData && listData.length > 0) {
+      listData.forEach((list) => {
+        if (list.applicationWorkFlowId === id) {
+          setDisabledIds((prevState) => [...prevState, id]);
+        }
+      });
+    }
     const pushdata = {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: 1,
+      paymentMode: "P",
+      pushType: "P",
     };
     api
-      .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
-        pushdata
-      )
+      .post(baseURLDBT + `applicationTransaction/pushToFruits`, pushdata)
       .then((response) => {
         if (response.data.content.errorCode) {
           saveError(response.data.content.error_description);
+          setDisabledIds((prevDisabledIds) =>
+            prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+          );
+          // disabledIds.filter((item)=>item !== id);
+          // setShowDisable(false);
         } else {
           saveSuccess();
           getList();
@@ -298,6 +370,10 @@ function ReportSuccessList() {
       })
       .catch((err) => {
         saveError(err.response.data.validationErrors);
+        setDisabledIds((prevDisabledIds) =>
+          prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
+        );
+        // setShowDisable(false);
       });
     setValidated(true);
   };
@@ -326,7 +402,8 @@ function ReportSuccessList() {
   const postData = (event) => {
     const post = {
       applicationList: applicationIds,
-      paymentMode: 1,
+      paymentMode: "P",
+      pushType: "P",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -337,10 +414,7 @@ function ReportSuccessList() {
     } else {
       event.preventDefault();
       api
-        .post(
-          baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
-          post
-        )
+        .post(baseURLDBT + `applicationTransaction/pushToFruits`, post)
         .then((response) => {
           if (response.data.content.errorCode) {
             saveError(response.data.content.error_description);
@@ -364,26 +438,53 @@ function ReportSuccessList() {
     // setAllApplicationIds([]);
   };
 
+  // const getList = () => {
+  //   setLoading(true);
+  //   api
+  //     .post(
+  //       baseURLDBT + `service/getDrawingOfficerList`,
+  //       {},
+  //       { params: { type: 0 } }
+  //     )
+  //     .then((response) => {
+  //       setListData(response.data.content);
+  //       const scApplicationFormIds = response.data.content.map(
+  //         (item) => item.scApplicationFormId
+  //       );
+  //       setAllApplicationIds(scApplicationFormIds);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getList();
+  // }, [page]);
+
   const getList = () => {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getDbtStatusByList`,
+        baseURLDBT + `service/getApplicationForTscForDbtPush`,
         {},
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT SUCCESS",
+            pageNumber: page,
+            pageSize: countPerPage,
           },
         }
       )
       .then((response) => {
         setListData(response.data.content);
-        const scApplicationFormIds = response.data.content.map(
-          (item) => item.scApplicationFormId
+        const applicationWorkFlowIds = response.data.content.map(
+          (item) => item.applicationWorkFlowId
         );
-        setAllApplicationIds(scApplicationFormIds);
+        setAllApplicationIds(applicationWorkFlowIds);
         setLoading(false);
       })
       .catch((err) => {
@@ -395,49 +496,6 @@ function ReportSuccessList() {
   useEffect(() => {
     getList();
   }, [page]);
-
-
-  const exportCsv = (e) => {
-    api
-      .post(
-        baseURLDBT + `service/reject-list-report`,
-        {},
-        {
-          params: {
-            districtId: addressDetails.districtId,
-            talukId: addressDetails.talukId,
-            userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
-            type: searchData.type,
-            displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT FAILED",
-          },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `dbt_status_report.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(link.href);
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: "warning",
-          title: "No record found!!!",
-        });
-      });
-}; 
-
-  
 
   // console.log(allApplicationIds);
 
@@ -607,12 +665,12 @@ function ReportSuccessList() {
     });
   };
 
-  const [searchData, setSearchData] = useState({
-    year1: "",
-    year2: "",
-    type: 1,
-    searchText: "",
-  });
+  // const [searchData, setSearchData] = useState({
+  //   year1: "",
+  //   year2: "",
+  //   type: 1,
+  //   searchText: "",
+  // });
 
   console.log(searchData);
 
@@ -629,6 +687,18 @@ function ReportSuccessList() {
       const [fromDate, toDate] = year.split("-");
       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
     }
+  };
+
+  const handleInputsaddress = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setAddressDetails({ ...addressDetails, [name]: value });
+  };
+
+  const handleInputsSearch = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setSearchData({ ...searchData, [name]: value });
   };
 
   const handleSearchInputs = (e) => {
@@ -671,7 +741,7 @@ function ReportSuccessList() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Pushed successfully",
       text: message,
     });
   };
@@ -684,7 +754,7 @@ function ReportSuccessList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: "Attempt was not successful",
       html: errorMessage,
     });
   };
@@ -739,20 +809,25 @@ function ReportSuccessList() {
   //   };
 
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
+        minHeight: "30px", // adjust this value to your desired row height
       },
     },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-      },
-    },
+    // header: {
+    //   style: {
+    //     minHeight: "56px",
+    //   },
+    // },
+    // headRow: {
+    //   style: {
+    //     borderTopStyle: "solid",
+    //     borderTopWidth: "1px",
+    //     // borderTop:"none",
+    //     // borderTopColor: defaultThemes.default.divider.default,
+    //     borderColor: "black",
+    //   },
+    // },
     headCells: {
       style: {
         // '&:not(:last-of-type)': {
@@ -769,9 +844,11 @@ function ReportSuccessList() {
       style: {
         // '&:not(:last-of-type)': {
         borderStyle: "solid",
-        // borderRightWidth: "3px",
         borderWidth: "1px",
-        padding: "10px",
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
         // borderColor: defaultThemes.default.divider.default,
         borderColor: "black",
         // },
@@ -815,67 +892,26 @@ function ReportSuccessList() {
     //   hide: "md",
     // //   grow: 2,
     // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   button: true,
-    // },
     {
-      name: "Sl.No.",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row,i) => <span>{i+1}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Application Id",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row) => <span>{row.scApplicationFormId}</span>,
-      sortable: true,
-      hide: "md",
+      name: "Select",
+      selector: "select",
+      cell: (row) => (
+        <input
+          type="checkbox"
+          name="selectedLand"
+          value={row.applicationWorkFlowId}
+          checked={applicationIds.includes(row.applicationWorkFlowId)}
+          onChange={() => handleCheckboxChange(row.applicationWorkFlowId)}
+        />
+      ),
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      button: true,
     },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Sanction Number",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Subsidy Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Beneficiary Id",
-      selector: (row) => row.beneficiaryId,
-      cell: (row) => <span>{row.beneficiaryId}</span>,
       sortable: true,
       hide: "md",
     },
@@ -893,19 +929,24 @@ function ReportSuccessList() {
     //   sortable: true,
     //   hide: "md",
     // },
-   
-
     // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
+    //   name: "Application Status",
+    //   selector: (row) => row.applicationStatus,
+    //   cell: (row) => <span>{row.applicationStatus}</span>,
     //   sortable: true,
     //   hide: "md",
     // },
     {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
+      name: "Sanction Number",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Actual Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -916,6 +957,20 @@ function ReportSuccessList() {
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: "State",
+    //   selector: (row) => row.stateName,
+    //   cell: (row) => <span>{row.stateName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    {
+      name: "Hobli",
+      selector: (row) => row.hobliName,
+      cell: (row) => <span>{row.hobliName}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -923,21 +978,36 @@ function ReportSuccessList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     <text style={{ color: "green", fontWeight: "bold" }}>Successfull</text>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-      name: "Application Status",
-      selector: (row) => row.applicationStatus,
+      name: "Action",
       cell: (row) => (
-        <span style={{ color: "green", fontWeight: "bold" }}>
-          {row.applicationStatus}
-        </span>
+        <>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => viewDetails(row.applicationWorkFlowId)}
+            className="ms-1"
+          >
+            view
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => rejectDetails(row.applicationWorkFlowId)}
+            className="ms-1"
+          >
+            Reject
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handlePush(row.pushToFruits)}
+            className="ms-1"
+            disabled={disabledIds.includes(row.pushToFruits)}
+          >
+            Push
+          </Button>
+        </>
       ),
       sortable: true,
       hide: "md",
@@ -945,14 +1015,14 @@ function ReportSuccessList() {
   ];
 
   return (
-    <Layout title="Report Success List">
+    <Layout title="All Scheme Drawing Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Report Success List</Block.Title>
+            <Block.Title tag="h2">All Scheme Drawing Officer List</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
+          <Block.HeadContent>
+            {/* <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/service-application"
@@ -971,8 +1041,8 @@ function ReportSuccessList() {
                   <span>New Application</span>
                 </Link>
               </li>
-            </ul>
-          </Block.HeadContent> */}
+            </ul> */}
+          </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
@@ -1029,6 +1099,7 @@ function ReportSuccessList() {
                             value={data.scSubSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
+                            // multiple
                             required
                             isInvalid={
                               data.scSubSchemeDetailsId === undefined ||
@@ -1051,6 +1122,7 @@ function ReportSuccessList() {
                         </div>
                       </Form.Group>
                     </Col>
+
                     <Col lg="4">
                       <Form.Group className="form-group mt-n3">
                         <Form.Label htmlFor="sordfl">
@@ -1063,7 +1135,6 @@ function ReportSuccessList() {
                             value={data.scSchemeDetailsId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scSchemeDetailsId === undefined ||
@@ -1099,7 +1170,6 @@ function ReportSuccessList() {
                             value={data.scHeadAccountId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            // multiple
                             required
                             isInvalid={
                               data.scHeadAccountId === undefined ||
@@ -1243,7 +1313,45 @@ function ReportSuccessList() {
           </Card>
         </Form> */}
         <Card className="mt-1">
-        <Row className="m-2">
+          {/* <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  Search By
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="searchBy"
+                      value={data.searchBy}
+                      onChange={handleInputs}
+                    >
+                     
+                      <option value="marketMasterName">Market</option>
+                      <option value="marketTypeMasterName">Market Type</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={3}>
+                  <Form.Control
+                    id="marketMasterId"
+                    name="text"
+                    value={data.text}
+                    onChange={handleInputs}
+                    type="text"
+                    placeholder="Search"
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row> */}
+          <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -1257,109 +1365,11 @@ function ReportSuccessList() {
                       onChange={handleInputsSearch}
                     >
                       <option value="0">All</option>
-                      {/* <option value="1">Sanction No.</option> */}
+                      <option value="1">Sanction No.</option>
                       <option value="2">FruitsId</option>
-                      {/* <option value="3">Rejected Reason</option> */}
-                      <option value="4">Beneficiary Id</option>
-                      <option value="5">Financial Year</option>
-                      <option value="6">Component</option>
-                      <option value="7">Component Type</option>
                     </Form.Select>
                   </div>
                 </Col>
-
-                {(Number(searchData.type) === 5 )? (
-                  <Col sm={2} lg={2}>
-                  <Form.Group className="form-group">
-                           
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="text"
-                                value={searchData.text}
-                                onChange={handleInputsSearch}
-                                onBlur={() => handleInputsSearch}
-                                // multiple
-                                required
-                                isInvalid={
-                                  //  searchData.text === undefined ||
-                                  searchData.text === "0"
-                                }
-                              >
-                                <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                            
-                            </div>
-                          </Form.Group>
-                        </Col>
-            ) : Number(searchData.type) === 6 ? (
-              <Col sm={2} lg={2}>
-                <Form.Group className="form-group">
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="text"
-                            value={searchData.text}
-                            onChange={handleInputsSearch}
-                            onBlur={() => handleInputsSearch}
-                            // multiple
-                            required
-                            isInvalid={
-                            //  searchData.text === undefined ||
-                              searchData.text === "0"
-                            }
-                          >
-                            <option value="">Select Component</option>
-                            {scComponentListData.map((list) => (
-                              <option
-                                key={list.scComponentId}
-                                value={list.scComponentId}
-                              >
-                                {list.scComponentName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          
-                        </div>
-                      </Form.Group>
-                    </Col>
-            ) : Number(searchData.type) === 7 ? (
-              <Col sm={2} lg={2}>
-              <Form.Group className="form-group">     
-                <div className="form-control-wrap">
-                  <Form.Select
-                   name="text"
-                       value={searchData.text}
-                       onChange={handleInputsSearch}
-                       onBlur={() => handleInputsSearch}
-                       // multiple
-                       required
-                       isInvalid={
-                        //  searchData.text === undefined ||
-                         searchData.text === "0"
-                       }
-                  >
-                    <option value="">Select Component Type</option>
-                    {scSubSchemeDetailsListData &&
-                      scSubSchemeDetailsListData.map((list, i) => (
-                        <option 
-                        key={list.scSubSchemeDetailsId}
-                          value={list.scSubSchemeDetailsId}>
-                          {list.subSchemeName}
-                        </option>
-                      ))}
-                  </Form.Select>
-                  
-                </div>
-                    </Form.Group>
-                  </Col>
-                ) : (
 
                 <Col sm={2} lg={2}>
                   <Form.Control
@@ -1375,7 +1385,6 @@ function ReportSuccessList() {
                     Field Value is Required
                   </Form.Control.Feedback>
                 </Col>
-              )}
 
                 <Form.Label column sm={1}>
                   District
@@ -1424,11 +1433,6 @@ function ReportSuccessList() {
                     Search
                   </Button>
                 </Col>
-                <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                Export
-              </Button>
-            </Col>
               </Form.Group>
             </Col>
           </Row>
@@ -1438,21 +1442,21 @@ function ReportSuccessList() {
             columns={ApplicationDataColumns}
             data={listData}
             highlightOnHover
-            // pagination
-            // paginationServer
-            // paginationTotalRows={totalRows}
-            // paginationPerPage={countPerPage}
-            // paginationComponentOptions={{
-            //   noRowsPerPage: true,
-            // }}
-            // onChangePage={(page) => setPage(page - 1)}
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
           />
         </Card>
 
-        {/* <Form
+        <Form
           noValidate
           validated={validated}
           onSubmit={postData}
@@ -1462,10 +1466,9 @@ function ReportSuccessList() {
             <ul className="d-flex align-items-center justify-content-center gap g-3">
               <li>
                 <Button type="submit" variant="primary" onClick={postData}>
-                  Save
+                  Push All
                 </Button>
               </li>
-              .
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
@@ -1473,8 +1476,85 @@ function ReportSuccessList() {
               </li>
             </ul>
           </div>
-        </Form> */}
+          {/* <Row className="d-flex justify-content-center mt-2">
+            <Col sm={2}>
+              <Button type="submit" variant="primary">
+                Save
+              </Button>
+            </Col>
+          </Row> */}
+        </Form>
       </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>View</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+              Loading...
+            </h1>
+          ) : (
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                    <tr>
+                      <td style={styles.ctstyle}>Scheme Name:</td>
+                      <td>{viewDetailsData.schemeName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                      <td>{viewDetailsData.subSchemeName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Head of Account:</td>
+                      <td>{viewDetailsData.scHeadAccountName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Application Status:</td>
+                      <td>{viewDetailsData.applicationStatus}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Initial Amount:</td>
+                      <td>{viewDetailsData.initialAmount}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Beneficiary Id:</td>
+                      <td>{viewDetailsData.beneficiaryId}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Financial Year:</td>
+                      <td>{viewDetailsData.financialYear}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Category Name:</td>
+                      <td>{viewDetailsData.categoryName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Component Name:</td>
+                      <td>{viewDetailsData.scComponentName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Remarks:</td>
+                      <td>{viewDetailsData.remarks}</td>
+                    </tr>
+                    {/* <tr>
+                      <td style={styles.ctstyle}> State Name in Kannada:</td>
+                      <td>{viewDetailsData.stateNameInKannada}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Initial Amount:</td>
+                      <td>{viewDetailsData.stateNameInKannada}</td>
+                    </tr> */}
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+          )}
+        </Modal.Body>
+      </Modal>
 
       {/* <Block className="">
         <Row className="g-3 ">
@@ -1539,4 +1619,4 @@ function ReportSuccessList() {
   );
 }
 
-export default ReportSuccessList;
+export default DrawingOfficerSchemeList;

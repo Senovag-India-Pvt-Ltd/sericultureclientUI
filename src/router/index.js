@@ -803,8 +803,8 @@ import DepartmentList from "../pages/masters/department/DepartmentList";
 import DepartmentEdit from "../pages/masters/department/EditDepartment";
 import DepartmentView from "../pages/masters/department/DepartmentView";
 import ApplicationDashboard from "../pages/services-module/application/ApplicationDashboard";
-import DashboardList from "../pages/services-module/application/DashboardList";
-import DrawingOfficerList from "../pages/services-module/application/DrawingOfficerList";
+import DashboardList from "../pages/direct-benefit-transfer/DashboardList";
+import DrawingOfficerList from "../pages/direct-benefit-transfer/DrawingOfficerList";
 import DbtApplication from "../pages/services-module/application/DbtApplication";
 import MapComponentAndHoaList from "../pages/masters/map-component-hoa/MapComponentAndHoaList";
 import UserHierarchyMapping from "../pages/masters/user-hierarchy-mapping/UserHierarchyMapping";
@@ -812,20 +812,20 @@ import RejectReasonWorkFlowMaster from "../pages/masters/reject-reason-workflow/
 import RejectReasonWorkFlowList from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowList";
 import RejectReasonWorkFlowView from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowView";
 import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/RejectReasonWorkFlowEdit";
-import ApplicationFormList from "../pages/services-module/application/ApplicationFormList";
-import ReportSuccessList from "../pages/services-module/application/ReportSuccessList";
-import ReportRejectList from "../pages/services-module/application/ReportRejectList";
+import ApplicationFormList from "../pages/direct-benefit-transfer/ApplicationFormList";
+import ReportSuccessList from "../pages/direct-benefit-transfer/ReportSuccessList";
+import ReportRejectList from "../pages/direct-benefit-transfer/ReportRejectList";
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
-import TscOfficerList from "../pages/services-module/application/TscOfficerList";
+import TscOfficerList from "../pages/direct-benefit-transfer/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
-import DrawingOfficerSchemeList from "../pages/services-module/application/DrawingOfficerSchemeList";
-import TscOfficerSchemeList from "../pages/services-module/application/TscOfficerSchemeList";
+import DrawingOfficerSchemeList from "../pages/direct-benefit-transfer/DrawingOfficerSchemeList";
+import TscOfficerSchemeList from "../pages/direct-benefit-transfer/TscOfficerSchemeList";
 import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeedMarket";
 import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
-import AllApplicationList from "../pages/services-module/application/AllApplicationList";
+import AllApplicationList from "../pages/direct-benefit-transfer/AllApplicationList";
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
-import DistrictWiseFarmerCountList from "../pages/services-module/application/DistrictWiseFarmerCountList";
+import DistrictWiseFarmerCountList from "../pages/direct-benefit-transfer/DistrictWiseFarmerCountList";
 import ReadyForPaymentForSeedMarket from "../pages/market-and-auction/ReadyForPaymentForSeedMarket";
 import FarmerRegistrationList from "../pages/stake-holder/FarmerRegistrationList";
 import DirectFruitsDetails from "../pages/stake-holder/DirectFruitsDetails";
@@ -846,8 +846,8 @@ import FarmerWithoutFruitsEdit from "../pages/stake-holder/FarmerWithoutFruitsEd
 import DistrictAndTalukWiseMonthlyReport from "../pages/reports-admin/DistrictAndTalukWiseMonthlyReport";
 import DistrictWiseReelerCountList from "../pages/reports-admin/DistrictWiseReelerCountList";
 import ReelerCountList from "../pages/reports-admin/ReelerCountList";
-import PullBack from "../pages/services-module/application/PullBack";
-import DbtPushedList from "../pages/services-module/application/DbtPushedList";
+import PullBack from "../pages/direct-benefit-transfer/PullBack";
+import DbtPushedList from "../pages/direct-benefit-transfer/DbtPushedList";
 // Admin and Reports
 
 function Router() {

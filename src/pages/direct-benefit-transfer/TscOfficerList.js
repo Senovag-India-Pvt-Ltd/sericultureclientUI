@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -12,14 +12,14 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function TscOfficerSchemeList() {
+function TscOfficerList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -340,7 +340,7 @@ function TscOfficerSchemeList() {
   };
 
   const [disabledIds, setDisabledIds] = useState([]);
-  const handlePush = (id) => {
+  const handlePush = (id,bid,fid) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
         if (list.scApplicationFormId === id) {
@@ -366,7 +366,7 @@ function TscOfficerSchemeList() {
             prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
           );
         } else {
-          saveSuccess();
+          pushedSuccess(bid,fid);
           getList();
         }
       })
@@ -736,6 +736,15 @@ function TscOfficerSchemeList() {
       text: message,
     });
   };
+
+  const pushedSuccess = (b,f) => {
+    Swal.fire({
+      icon: "success",
+      title: "Pushed successfully",
+      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    });
+  };
+
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -906,24 +915,45 @@ function TscOfficerSchemeList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Sanction Number",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Subsidy Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Application Status",
       selector: (row) => row.applicationStatus,
       cell: (row) => <span>{row.applicationStatus}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: ".District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -934,20 +964,8 @@ function TscOfficerSchemeList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
+    
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -979,7 +997,7 @@ function TscOfficerSchemeList() {
             variant="primary"
             size="sm"
             className="ms-1"
-            onClick={() => handlePush(row.scApplicationFormId)}
+            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push
@@ -992,11 +1010,11 @@ function TscOfficerSchemeList() {
   ];
 
   return (
-    <Layout title="All Scheme TSC Officer List">
+    <Layout title="TSC Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">All Scheme TSC Officer List</Block.Title>
+            <Block.Title tag="h2">TSC Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1588,4 +1606,4 @@ function TscOfficerSchemeList() {
   );
 }
 
-export default TscOfficerSchemeList;
+export default TscOfficerList;
