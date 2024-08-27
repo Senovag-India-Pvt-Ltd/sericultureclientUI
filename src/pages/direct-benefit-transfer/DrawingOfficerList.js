@@ -75,6 +75,45 @@ function DrawingOfficerList() {
       });
   };
 
+  const exportCsv = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/subsidy-sanctioned-dbt-push-list-report`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+          },
+          responseType: 'blob',
+          headers: {
+            accept: "text/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `dbt_subsidy_sanctioned_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+}; 
+
   const [districtListData, setDistrictListData] = useState([]);
 
   const getDistrictList = () => {
@@ -120,49 +159,7 @@ function DrawingOfficerList() {
     }
   }, [addressDetails.districtId]);
 
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
-
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
-
-  // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
-  const [landData, setLandData] = useState({
-    landId: "",
-    talukId: "",
-  });
+  
 
   const [data, setData] = useState({
     financialYearMasterId: "",
@@ -277,12 +274,7 @@ function DrawingOfficerList() {
     }
   };
 
-  const handleRadioChange = (_id, tId) => {
-    if (!tId) {
-      tId = 0;
-    }
-    setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
-  };
+ 
 
   const [applicationIds, setApplicationIds] = useState([]);
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
@@ -818,56 +810,94 @@ function DrawingOfficerList() {
   //     },
   //   };
 
+  // const customStyles = {
+  //   rows: {
+  //     style: {
+  //       minHeight: "30px", // adjust this value to your desired row height
+  //     },
+  //   },
+  //   // header: {
+  //   //   style: {
+  //   //     minHeight: "56px",
+  //   //   },
+  //   // },
+  //   // headRow: {
+  //   //   style: {
+  //   //     borderTopStyle: "solid",
+  //   //     borderTopWidth: "1px",
+  //   //     // borderTop:"none",
+  //   //     // borderTopColor: defaultThemes.default.divider.default,
+  //   //     borderColor: "black",
+  //   //   },
+  //   // },
+  //   headCells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       backgroundColor: "#1e67a8",
+  //       color: "#fff",
+  //       borderStyle: "solid",
+  //       bordertWidth: "1px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  //   cells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       borderStyle: "solid",
+  //       borderWidth: "1px",
+  //       paddingTop: "3px",
+  //       paddingBottom: "3px",
+  //       paddingLeft: "8px",
+  //       paddingRight: "8px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  // };
+
   const customStyles = {
     rows: {
       style: {
-        minHeight: "30px", // adjust this value to your desired row height
+        minHeight: "30px", // Row height
       },
     },
-    // header: {
-    //   style: {
-    //     minHeight: "56px",
-    //   },
-    // },
-    // headRow: {
-    //   style: {
-    //     borderTopStyle: "solid",
-    //     borderTopWidth: "1px",
-    //     // borderTop:"none",
-    //     // borderTopColor: defaultThemes.default.divider.default,
-    //     borderColor: "black",
-    //   },
-    // },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        backgroundColor: "#1e67a8", // Header background color
+        color: "#fff", // Header text color
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Header cell border color
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Data cell border color
         paddingTop: "3px",
         paddingBottom: "3px",
         paddingLeft: "8px",
         paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
       },
     },
   };
+  
 
   const ApplicationDataColumns = [
-   
+    {
+      name: "Sl.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      width: "80px",
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -897,7 +927,14 @@ function DrawingOfficerList() {
       hide: "md",
     },
     {
-      name: ".District",
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "District",
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
@@ -951,6 +988,7 @@ function DrawingOfficerList() {
       ),
       sortable: true,
       hide: "md",
+      grow:2,
     },
   ];
 
@@ -1305,11 +1343,110 @@ function DrawingOfficerList() {
                       onChange={handleInputsSearch}
                     >
                       <option value="0">All</option>
-                      <option value="1">Sanction No.</option>
+                      {/* <option value="1">Sanction No.</option> */}
                       <option value="2">FruitsId</option>
+                      {/* <option value="3">Rejected Reason</option> */}
+                      <option value="4">Beneficiary Id</option>
+                      <option value="5">Financial Year</option>
+                      <option value="6">Component</option>
+                      <option value="7">Component Type</option>
                     </Form.Select>
                   </div>
                 </Col>
+
+                {(Number(searchData.type) === 5 )? (
+                  <Col sm={2} lg={2}>
+                  <Form.Group className="form-group">
+                           
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="text"
+                                value={searchData.text}
+                                onChange={handleInputsSearch}
+                                onBlur={() => handleInputsSearch}
+                                // multiple
+                                required
+                                isInvalid={
+                                  //  searchData.text === undefined ||
+                                  searchData.text === "0"
+                                }
+                              >
+                                <option value="">Select Year</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.financialYearMasterId}
+                                    value={list.financialYearMasterId}
+                                  >
+                                    {list.financialYear}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            
+                            </div>
+                          </Form.Group>
+                        </Col>
+            ) : Number(searchData.type) === 6 ? (
+              <Col sm={2} lg={2}>
+                <Form.Group className="form-group">
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="text"
+                            value={searchData.text}
+                            onChange={handleInputsSearch}
+                            onBlur={() => handleInputsSearch}
+                            // multiple
+                            required
+                            isInvalid={
+                            //  searchData.text === undefined ||
+                              searchData.text === "0"
+                            }
+                          >
+                            <option value="">Select Component</option>
+                            {scComponentListData.map((list) => (
+                              <option
+                                key={list.scComponentId}
+                                value={list.scComponentId}
+                              >
+                                {list.scComponentName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          
+                        </div>
+                      </Form.Group>
+                    </Col>
+            ) : Number(searchData.type) === 7 ? (
+              <Col sm={2} lg={2}>
+              <Form.Group className="form-group">     
+                <div className="form-control-wrap">
+                  <Form.Select
+                   name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                  >
+                    <option value="">Select Component Type</option>
+                    {scSubSchemeDetailsListData &&
+                      scSubSchemeDetailsListData.map((list, i) => (
+                        <option 
+                        key={list.scSubSchemeDetailsId}
+                          value={list.scSubSchemeDetailsId}>
+                          {list.subSchemeName}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  
+                </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
+
 
                 <Col sm={2} lg={2}>
                   <Form.Control
@@ -1325,6 +1462,7 @@ function DrawingOfficerList() {
                     Field Value is Required
                   </Form.Control.Feedback>
                 </Col>
+              )}
 
                 <Form.Label column sm={1}>
                   District
@@ -1373,6 +1511,11 @@ function DrawingOfficerList() {
                     Search
                   </Button>
                 </Col>
+                <Col sm={1}>
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                Export
+              </Button>
+            </Col>
               </Form.Group>
             </Col>
           </Row>
