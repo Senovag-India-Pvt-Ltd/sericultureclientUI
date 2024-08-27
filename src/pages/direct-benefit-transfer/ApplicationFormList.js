@@ -323,13 +323,14 @@ function ApplicationFormList() {
     //   // allowOverflow: true,
     //   button: true,
     // },
-    // {
-    //     name: "Arn Number",
-    //     selector: (row) => row.arn,
-    //     cell: (row) => <span>{row.arn}</span>,
-    //     sortable: true,
-    //     hide: "md",
-    //   },
+    {
+      name: "Sl.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      width: "80px",
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -482,6 +483,7 @@ function ApplicationFormList() {
                       <option value="0">All</option>
                       <option value="1">Sanction No.</option>
                       <option value="2">FruitsId</option>
+                      <option value="3">Beneficiary Id</option>
                     </Form.Select>
                   </div>
                 </Col>
