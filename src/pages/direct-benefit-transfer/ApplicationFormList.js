@@ -125,7 +125,7 @@ function ApplicationFormList() {
       .post(
         baseURLDBT + `service/getSubmittedRecordsForMaker`,
         {},
-        { params: data }
+        { params: {userMasterId: localStorage.getItem("userMasterId"), },}
       )
       .then((response) => {
         setListData(response.data.content);
