@@ -30,6 +30,7 @@ function DbtPushedList() {
   const [addressDetails, setAddressDetails] = useState({
     districtId: 0,
     talukId: 0,
+    financialYearMasterId:0,
   });
 
   // const [data, setData] = useState({
@@ -115,6 +116,24 @@ function DbtPushedList() {
   useEffect(() => {
     getDistrictList();
   }, []);
+  // to get Status 
+  const [statusListData,setStatusListData] = useState([]);
+
+  const getStatusList = () =>{
+    api
+    .get(baseURLDBT + `scApplicationForm/getDbtTscStatusByList`)
+    .then((response) => {
+      setStatusListData(response.data.content.scApplicationForm);
+    })
+    .catch((err) => {
+      setStatusListData([]);
+    });
+  }
+
+  useEffect(() => {
+    getStatusList();
+  }, []);
+
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -157,17 +176,21 @@ function DbtPushedList() {
    const search = (e) => {
     api
       .post(
-        baseURLDBT + `service/getDbtStatusByList`,
+        baseURLDBT + `service/getDbtTscStatusByList`,
         {},
         {
           params: {
             districtId: addressDetails.districtId,
             talukId: addressDetails.talukId,
+            financialYearMasterId: addressDetails.financialYearMasterId,
             userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            status: "DBT PUSHED",
+            // status:
+            // status: "DBT PUSHED",
+            // status: "REJECTED BY ADS",
+
           },
         }
       )
@@ -368,13 +391,16 @@ function DbtPushedList() {
     setLoading(true);
     api
       .post(
-        baseURLDBT + `service/getDbtStatusByList`,
+        baseURLDBT + `service/getDbtTscStatusByList`,
         {},
         {
           params: {
             userMasterId: localStorage.getItem("userMasterId"),
             displayAllRecords: true,
-            status: "DBT PUSHED",
+            // status: "DBT PUSHED",
+            // status: "REJECTED BY ADS",
+
+
           },
         }
       )
@@ -790,6 +816,13 @@ function DbtPushedList() {
       name: "Sl.No.",
       selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Financial Year",
+      selector: (row) => row.financialYear,
+      cell: (row) => <span>{row.financialYear}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1216,9 +1249,52 @@ function DbtPushedList() {
                       <option value="0">All</option>
                       <option value="1">Sanction No.</option>
                       <option value="2">FruitsId</option>
+                      <option value="3">Application Status</option>
+
                     </Form.Select>
                   </div>
                 </Col>
+                {(Number(searchData.type) === 3)?(
+                 <Col sm={2} lg={2}>
+                 <Form.Group className="form-group ">
+                   <div className="form-control-wrap">
+                     <Form.Select
+                       name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       >
+                         <option value="0">All</option>
+                      {/* //  <option value="1">Sanction No.</option>  */}
+                       <option value="DBT PUSHED">DBT PUSHED</option>
+                      <option value="REJECTED BY ADS">REJECTED BY ADS</option>
+                      <option value="3">ACKNOWLEDGEMENT FAILED</option>
+                      <option value="4">ACKNOWLEDGEMENT SUCCESS</option>
+                      <option value="5">SUBSIDY SANCTIONED</option> 
+                     
+                       {/* // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                     >
+                       <option value="">Select Status</option>
+                       {statusListData && statusListData.map((list) => (
+                         <option
+                           key={list.statusList}
+                           value={list.statusList}
+                         >
+                           {list.statusList}
+                         </option>
+                       ))} */}
+                     </Form.Select>
+                     <Form.Control.Feedback type="invalid">
+                       Status is required
+                     </Form.Control.Feedback>
+                   </div>
+                 </Form.Group>
+               </Col> ):(
 
                 <Col sm={2} lg={2}>
                   <Form.Control
@@ -1233,7 +1309,7 @@ function DbtPushedList() {
                   <Form.Control.Feedback type="invalid">
                     Field Value is Required
                   </Form.Control.Feedback>
-                </Col>
+                </Col>)}
 
                 <Form.Label column sm={1}>
                   District
@@ -1271,6 +1347,27 @@ function DbtPushedList() {
                       {talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+                
+                <Form.Label column sm={2}>
+                  Financial Year
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={addressDetails.financialYearMasterId}
+                      onChange={handleInputsaddress}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Financial Year</option>
+                      {financialyearListData.map((list) => (
+                        <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
+                          {list.financialYear}
                         </option>
                       ))}
                     </Form.Select>
