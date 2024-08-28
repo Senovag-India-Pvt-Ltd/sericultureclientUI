@@ -33,50 +33,7 @@ function DbtPushedList() {
     financialYearMasterId:0,
   });
 
-  // const [data, setData] = useState({
-  //   userMasterId: "",
-  // });
-
-  // const handleInputs = (e) => {
-  //   // debugger;
-  //   let { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
-
-  // Search
-  //   const search = (e) => {
-  //     let joinColumn;
-  //     if (data.searchBy === "marketMasterName") {
-  //       joinColumn = "marketMaster.marketMasterName";
-  //     }
-  //     if (data.searchBy === "marketTypeMasterName") {
-  //       joinColumn = "marketTypeMaster.marketTypeMasterName";
-  //     }
-  //     // console.log(joinColumn);
-  //     api
-  //       .post(baseURL + `marketMaster/search`, {
-  //         searchText: data.text,
-  //         joinColumn: joinColumn,
-  //       })
-  //       .then((response) => {
-  //         setListData(response.data.content.marketMaster);
-
-  //         // if (response.data.content.error) {
-  //         //   // saveError();
-  //         // } else {
-  //         //   console.log(response);
-  //         //   // saveSuccess();
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // saveError();
-  //       });
-  //   };
-  const [landData, setLandData] = useState({
-    landId: "",
-    talukId: "",
-  });
-
+  
   const [data, setData] = useState({
     financialYearMasterId: "",
     scHeadAccountId: "",
@@ -86,11 +43,7 @@ function DbtPushedList() {
     scComponentId: "",
   });
 
-  const [farmer, setFarmer] = useState({
-    text: "",
-    select: "mobileNumber",
-  });
-
+ 
   const [period, setPeriod] = useState({
     periodFrom: new Date(),
     periodTo: new Date(),
@@ -116,24 +69,7 @@ function DbtPushedList() {
   useEffect(() => {
     getDistrictList();
   }, []);
-  // to get Status 
-  const [statusListData,setStatusListData] = useState([]);
-
-  const getStatusList = () =>{
-    api
-    .get(baseURLDBT + `scApplicationForm/getDbtTscStatusByList`)
-    .then((response) => {
-      setStatusListData(response.data.content.scApplicationForm);
-    })
-    .catch((err) => {
-      setStatusListData([]);
-    });
-  }
-
-  useEffect(() => {
-    getStatusList();
-  }, []);
-
+ 
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -222,67 +158,7 @@ function DbtPushedList() {
     getFinancialYearList();
   }, []);
 
-  const [validatedDisplay, setValidatedDisplay] = useState(false);
-
-  const display = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidatedDisplay(true);
-    } else {
-      event.preventDefault();
-
-      // const { text, select } = farmer;
-      // let sendData;
-
-      // if (select === "mobileNumber") {
-      //   sendData = {
-      //     mobileNumber: text,
-      //   };
-      // }
-      // if (select === "fruitsId") {
-      //   sendData = {
-      //     fruitsId: text,
-      //   };
-      // }
-      // if (select === "farmerNumber") {
-      //   sendData = {
-      //     farmerNumber: text,
-      //   };
-      // }
-
-      const { year1, year2, type, searchText } = searchData;
-
-      setLoading(true);
-
-      api
-        .post(
-          baseURLDBT + `service/getDrawingOfficerList`,
-          {},
-          { params: searchData }
-        )
-        .then((response) => {
-          setListData(response.data.content);
-          const scApplicationFormIds = response.data.content.map(
-            (item) => item.scApplicationFormId
-          );
-          setAllApplicationIds(scApplicationFormIds);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setListData({});
-          setLoading(false);
-        });
-    }
-  };
-
-  const handleRadioChange = (_id, tId) => {
-    if (!tId) {
-      tId = 0;
-    }
-    setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
-  };
+  
 
   const [applicationIds, setApplicationIds] = useState([]);
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
@@ -290,41 +166,8 @@ function DbtPushedList() {
 
   console.log(applicationIds);
 
-  const handleCheckboxChange = (_id) => {
-    if (applicationIds.includes(_id)) {
-      const dataList = [...applicationIds];
-      const newDataList = dataList.filter((data) => data !== _id);
-      setApplicationIds(newDataList);
-    } else {
-      setApplicationIds((prev) => [...prev, _id]);
-    }
-  };
-
-  const handlePush = (id) => {
-    const pushdata = {
-      applicationList: [id],
-      userMasterId: localStorage.getItem("userMasterId"),
-      paymentMode: 1,
-    };
-    api
-      .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
-        pushdata
-      )
-      .then((response) => {
-        if (response.data.content.errorCode) {
-          saveError(response.data.content.error_description);
-        } else {
-          saveSuccess();
-          getList();
-        }
-      })
-      .catch((err) => {
-        saveError(err.response.data.validationErrors);
-      });
-    setValidated(true);
-  };
-
+  
+ 
   const handleFromDateChange = (date) => {
     setPeriod((prev) => ({ ...prev, periodFrom: date }));
   };
@@ -345,48 +188,7 @@ function DbtPushedList() {
   }, [allApplicationIds, applicationIds]);
 
   //   console.log("Unselected",unselectedApplicationIds);
-  const [validated, setValidated] = useState(false);
-  const postData = (event) => {
-    const post = {
-      applicationList: applicationIds,
-      paymentMode: 1,
-      userMasterId: localStorage.getItem("userMasterId"),
-    };
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      api
-        .post(
-          baseURLDBT + `applicationTransaction/saveApplicationTransaction`,
-          post
-        )
-        .then((response) => {
-          if (response.data.content.errorCode) {
-            saveError(response.data.content.error_description);
-          } else {
-            saveSuccess();
-            getList();
-          }
-        })
-        .catch((err) => {
-          saveError(err.response.data.validationErrors);
-        });
-      setValidated(true);
-    }
-  };
-
-  const clear = () => {
-    // e.preventDefault();
-    // window.location.reload();
-    // setAllApplicationIds([]);
-    // setUnselectedApplicationIds([]);
-    // setAllApplicationIds([]);
-  };
-
+ 
   const getList = () => {
     setLoading(true);
     api
@@ -421,6 +223,46 @@ function DbtPushedList() {
   useEffect(() => {
     getList();
   }, [page]);
+
+  const exportCsv = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/dbt-pushed-list-report`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+          },
+          responseType: 'blob',
+          headers: {
+            accept: "text/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `dbt_pushed_status_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+}; 
+
 
   // console.log(allApplicationIds);
 
@@ -591,10 +433,8 @@ function DbtPushedList() {
   };
 
   const [searchData, setSearchData] = useState({
-    year1: "",
-    year2: "",
-    type: 1,
-    searchText: "",
+    text: "",
+    type: 0,
   });
 
   console.log(searchData);
@@ -614,16 +454,7 @@ function DbtPushedList() {
     }
   };
 
-  const handleSearchInputs = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (e.target.name === "type") {
-      setSearchData({ ...searchData, [name]: value, searchText: "" });
-    } else {
-      setSearchData({ ...searchData, [name]: value });
-    }
-  };
-
+  
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
@@ -721,46 +552,76 @@ function DbtPushedList() {
   //     },
   //   };
 
+  // const customStyles = {
+  //   header: {
+  //     style: {
+  //       minHeight: "56px",
+  //     },
+  //   },
+  //   headRow: {
+  //     style: {
+  //       borderTopStyle: "solid",
+  //       borderTopWidth: "1px",
+  //       // borderTop:"none",
+  //       // borderTopColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //     },
+  //   },
+  //   headCells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       backgroundColor: "#1e67a8",
+  //       color: "#fff",
+  //       borderStyle: "solid",
+  //       bordertWidth: "1px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  //   cells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       borderStyle: "solid",
+  //       // borderRightWidth: "3px",
+  //       borderWidth: "1px",
+  //       padding: "10px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  // };
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
-      },
-    },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
+        minHeight: "30px", // Row height
       },
     },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        backgroundColor: "#1e67a8", // Header background color
+        color: "#fff", // Header text color
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Header cell border color
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        // borderRightWidth: "3px",
-        borderWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Data cell border color
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
   };
+  
 
   const ApplicationDataColumns = [
     // {
@@ -817,6 +678,7 @@ function DbtPushedList() {
       selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
+      width: "80px",
       hide: "md",
     },
     {
@@ -826,17 +688,18 @@ function DbtPushedList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Application Id",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row) => <span>{row.scApplicationFormId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
@@ -848,7 +711,7 @@ function DbtPushedList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
@@ -876,13 +739,7 @@ function DbtPushedList() {
     //   sortable: true,
     //   hide: "md",
     // },
-    {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+   
 
     // {
     //   name: "State",
@@ -892,20 +749,21 @@ function DbtPushedList() {
     //   hide: "md",
     // },
     {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
       name: "Taluk",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
+   
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -941,297 +799,12 @@ function DbtPushedList() {
           <Block.HeadContent>
             <Block.Title tag="h2">DBT Pushed List</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/service-application"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>New Application</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
+          
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form noValidate validated={validatedDisplay} onSubmit={display}>
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg={12}>
-                  <Row className="g-gs">
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n2">
-                        <Form.Label>
-                          Financial Year
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="financialYearMasterId"
-                            value={data.financialYearMasterId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.financialYearMasterId === undefined ||
-                              data.financialYearMasterId === "0"
-                            }
-                          >
-                            <option value="">Select Year</option>
-                            {financialyearListData.map((list) => (
-                              <option
-                                key={list.financialYearMasterId}
-                                value={list.financialYearMasterId}
-                              >
-                                {list.financialYear}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Financial Year is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n2">
-                        <Form.Label>
-                          Component Type
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSubSchemeDetailsId"
-                            value={data.scSubSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            required
-                            isInvalid={
-                              data.scSubSchemeDetailsId === undefined ||
-                              data.scSubSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Component Type</option>
-                            {scSubSchemeDetailsListData.map((list) => (
-                              <option
-                                key={list.scSubSchemeDetailsId}
-                                value={list.scSubSchemeDetailsId}
-                              >
-                                {list.subSchemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Component Type is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Scheme
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scSchemeDetailsId"
-                            value={data.scSchemeDetailsId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.scSchemeDetailsId === undefined ||
-                              data.scSchemeDetailsId === "0"
-                            }
-                          >
-                            <option value="">Select Scheme Names</option>
-                            {scSchemeDetailsListData.map((list) => (
-                              <option
-                                key={list.scSchemeDetailsId}
-                                value={list.scSchemeDetailsId}
-                              >
-                                {list.schemeName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Scheme is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Head of Account
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scHeadAccountId"
-                            value={data.scHeadAccountId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            // multiple
-                            required
-                            isInvalid={
-                              data.scHeadAccountId === undefined ||
-                              data.scHeadAccountId === "0"
-                            }
-                          >
-                            <option value="">Select Head of Account</option>
-                            {scHeadAccountListData.map((list) => (
-                              <option
-                                key={list.scHeadAccountId}
-                                value={list.scHeadAccountId}
-                              >
-                                {list.scHeadAccountName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Head of Account is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Category
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scCategoryId"
-                            value={data.scCategoryId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            isInvalid={
-                              data.scCategoryId === undefined ||
-                              data.scCategoryId === "0"
-                            }
-                          >
-                            <option value="">Select Category</option>
-                            {scCategoryListData.map((list) => (
-                              <option
-                                key={list.scCategoryId}
-                                value={list.scCategoryId}
-                              >
-                                {list.codeNumber}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Category is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sordfl">
-                          Component
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="scComponentId"
-                            value={data.scComponentId}
-                            onChange={handleInputs}
-                            onBlur={() => handleInputs}
-                            isInvalid={
-                              data.scComponentId === undefined ||
-                              data.scComponentId === "0"
-                            }
-                          >
-                            <option value="">Select Component</option>
-                            {scComponentListData.map((list) => (
-                              <option
-                                key={list.scComponentId}
-                                value={list.scComponentId}
-                              >
-                                {list.scComponentName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            Component is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="schemeAmount">
-                          Scheme Amount
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="schemeAmount"
-                            type="text"
-                            name="schemeAmount"
-                            value={data.schemeAmount}
-                            onChange={handleInputs}
-                            placeholder="Enter Scheme Amount"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Scheme Amount is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
-                      <Form.Group className="form-group mt-n3">
-                        <Form.Label htmlFor="sanctionNumber">
-                          Sanction Number
-                          <span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="sanctionNumber"
-                            type="text"
-                            name="sanctionNumber"
-                            value={data.sanctionNumber}
-                            onChange={handleInputs}
-                            placeholder="Enter Sanction Number"
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Sanction Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Form> */}
+       
         <Card className="mt-1">
         <Row className="m-2">
             <Col>
@@ -1245,15 +818,18 @@ function DbtPushedList() {
                       name="type"
                       value={searchData.type}
                       onChange={handleInputsSearch}
+                      style={{ width: "100%", marginLeft: "-14%" }}
                     >
                       <option value="0">All</option>
-                      <option value="1">Sanction No.</option>
-                      <option value="2">FruitsId</option>
+                      <option value="1">Fruits Id</option>
+                      <option value="2">Beneficiary Id</option>
                       <option value="3">Application Status</option>
-
+                      <option value="4">Component</option>
+                      <option value="5">Component Type</option>
                     </Form.Select>
                   </div>
                 </Col>
+
                 {(Number(searchData.type) === 3)?(
                  <Col sm={2} lg={2}>
                  <Form.Group className="form-group ">
@@ -1264,13 +840,13 @@ function DbtPushedList() {
                        onChange={handleInputsSearch}
                        onBlur={() => handleInputsSearch}
                        >
-                         <option value="0">All</option>
-                      {/* //  <option value="1">Sanction No.</option>  */}
+                         {/* <option value="0">All</option> */}
+                      <option value=" ">Select Status</option> 
                        <option value="DBT PUSHED">DBT PUSHED</option>
                       <option value="REJECTED BY ADS">REJECTED BY ADS</option>
-                      <option value="3">ACKNOWLEDGEMENT FAILED</option>
-                      <option value="4">ACKNOWLEDGEMENT SUCCESS</option>
-                      <option value="5">SUBSIDY SANCTIONED</option> 
+                      <option value="ACKNOWLEDGEMENT FAILED">ACKNOWLEDGEMENT FAILED</option>
+                      <option value="ACKNOWLEDGEMENT SUCCESS">ACKNOWLEDGEMENT SUCCESS</option>
+                      <option value="SUBSIDY SANCTIONED">"SUBSIDY SANCTIONED"</option> 
                      
                        {/* // multiple
                        required
@@ -1289,12 +865,73 @@ function DbtPushedList() {
                          </option>
                        ))} */}
                      </Form.Select>
-                     <Form.Control.Feedback type="invalid">
+                     {/* <Form.Control.Feedback type="invalid">
                        Status is required
-                     </Form.Control.Feedback>
+                     </Form.Control.Feedback> */}
                    </div>
                  </Form.Group>
-               </Col> ):(
+               </Col> 
+               ) : Number(searchData.type) === 4 ? (
+              <Col sm={2} lg={2}>
+                <Form.Group className="form-group">
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="text"
+                            value={searchData.text}
+                            onChange={handleInputsSearch}
+                            onBlur={() => handleInputsSearch}
+                            // multiple
+                            required
+                            isInvalid={
+                            //  searchData.text === undefined ||
+                              searchData.text === "0"
+                            }
+                          >
+                            <option value="">Select Component</option>
+                            {scComponentListData.map((list) => (
+                              <option
+                                key={list.scComponentId}
+                                value={list.scComponentId}
+                              >
+                                {list.scComponentName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          
+                        </div>
+                      </Form.Group>
+                    </Col>
+            ) : Number(searchData.type) === 5 ? (
+              <Col sm={2} lg={2}>
+              <Form.Group className="form-group">     
+                <div className="form-control-wrap">
+                  <Form.Select
+                   name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                  >
+                    <option value="">Select Component Type</option>
+                    {scSubSchemeDetailsListData &&
+                      scSubSchemeDetailsListData.map((list, i) => (
+                        <option 
+                        key={list.scSubSchemeDetailsId}
+                          value={list.scSubSchemeDetailsId}>
+                          {list.subSchemeName}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  
+                </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
 
                 <Col sm={2} lg={2}>
                   <Form.Control
@@ -1310,7 +947,14 @@ function DbtPushedList() {
                     Field Value is Required
                   </Form.Control.Feedback>
                 </Col>)}
+                </Form.Group>
+                </Col>               
+          </Row>
 
+
+          <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
                   District
                 </Form.Label>
@@ -1320,7 +964,7 @@ function DbtPushedList() {
                       name="districtId"
                       value={addressDetails.districtId}
                       onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
+                      style={{ width: "100%", marginLeft: "-14%" }}
                     >
                       <option value="0">Select District</option>
                       {districtListData.map((list) => (
@@ -1333,7 +977,7 @@ function DbtPushedList() {
                 </Col>
 
                 <Form.Label column sm={1}>
-                  Taluk
+                  Taluk 
                 </Form.Label>
                 <Col sm={2}>
                   <div className="form-control-wrap">
@@ -1341,7 +985,8 @@ function DbtPushedList() {
                       name="talukId"
                       value={addressDetails.talukId}
                       onChange={handleInputsaddress}
-                      style={{ marginLeft: "-14%" }}
+                      // style={{ marginLeft: "-14%" }}
+                      style={{ width: "100%", marginLeft: "-14%" }}
                     >
                       <option value="0">Select Taluk</option>
                       {talukListData.map((list) => (
@@ -1353,10 +998,10 @@ function DbtPushedList() {
                   </div>
                 </Col>
                 
-                <Form.Label column sm={2}>
+                <Form.Label column sm={1}>
                   Financial Year
                 </Form.Label>
-                <Col sm={2}>
+                <Col sm={2  }>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="financialYearMasterId"
@@ -1373,15 +1018,22 @@ function DbtPushedList() {
                     </Form.Select>
                   </div>
                 </Col>
+               
 
                 <Col sm={1}>
                   <Button type="button" variant="primary" onClick={search}>
                     Search
                   </Button>
                 </Col>
-              </Form.Group>
+                <Col sm={1}>
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                Export
+              </Button>
+            </Col>
+            </Form.Group>
             </Col>
           </Row>
+
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
@@ -1401,90 +1053,7 @@ function DbtPushedList() {
             customStyles={customStyles}
           />
         </Card>
-
-        {/* <Form
-          noValidate
-          validated={validated}
-          onSubmit={postData}
-          className="mt-1"
-        >
-          <div className="gap-col mt-1">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                <Button type="submit" variant="primary" onClick={postData}>
-                  Save
-                </Button>
-              </li>
-              .
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-        </Form> */}
-      </Block>
-
-      {/* <Block className="">
-        <Row className="g-3 ">
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs ">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Form>
-        </Row>
-      </Block> */}
+      </Block>   
     </Layout>
   );
 }
