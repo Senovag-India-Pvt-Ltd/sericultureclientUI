@@ -410,7 +410,7 @@ function ReportSuccessList() {
             text: searchData.text,
             type: searchData.type,
             displayAllRecords: true,
-            status: "ACKNOWLEDGEMENT FAILED",
+            status: "ACKNOWLEDGEMENT SUCCESS",
           },
           responseType: 'blob',
           headers: {
@@ -738,46 +738,76 @@ function ReportSuccessList() {
   //     },
   //   };
 
+  // const customStyles = {
+  //   header: {
+  //     style: {
+  //       minHeight: "56px",
+  //     },
+  //   },
+  //   headRow: {
+  //     style: {
+  //       borderTopStyle: "solid",
+  //       borderTopWidth: "1px",
+  //       // borderTop:"none",
+  //       // borderTopColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //     },
+  //   },
+  //   headCells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       backgroundColor: "#1e67a8",
+  //       color: "#fff",
+  //       borderStyle: "solid",
+  //       bordertWidth: "1px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  //   cells: {
+  //     style: {
+  //       // '&:not(:last-of-type)': {
+  //       borderStyle: "solid",
+  //       // borderRightWidth: "3px",
+  //       borderWidth: "1px",
+  //       padding: "10px",
+  //       // borderColor: defaultThemes.default.divider.default,
+  //       borderColor: "black",
+  //       // },
+  //     },
+  //   },
+  // };
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
-      },
-    },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
+        minHeight: "30px", // Row height
       },
     },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        backgroundColor: "#1e67a8", // Header background color
+        color: "#fff", // Header text color
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Header cell border color
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        // borderRightWidth: "3px",
-        borderWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Data cell border color
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
   };
+  
 
   const ApplicationDataColumns = [
     // {
@@ -834,15 +864,16 @@ function ReportSuccessList() {
       selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
+      width: "80px",
       hide: "md",
     },
-    {
-      name: "Application Id",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row) => <span>{row.scApplicationFormId}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Application Id",
+    //   selector: (row) => row.scApplicationFormId,
+    //   cell: (row) => <span>{row.scApplicationFormId}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
