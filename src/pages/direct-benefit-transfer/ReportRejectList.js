@@ -1601,11 +1601,11 @@ function ReportRejectList() {
         >
           <div className="gap-col mt-1">
             <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
+              {/* <li>
                 <Button type="submit" variant="primary" onClick={postData}>
                   Re-Push All
                 </Button>
-              </li>
+              </li> */}
               .
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
