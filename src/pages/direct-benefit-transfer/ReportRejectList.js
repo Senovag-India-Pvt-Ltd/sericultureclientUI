@@ -804,46 +804,35 @@ function ReportRejectList() {
   //   };
 
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
-      },
-    },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
+        minHeight: "30px", // Row height
       },
     },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        backgroundColor: "#1e67a8", // Header background color
+        color: "#fff", // Header text color
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Header cell border color
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        // borderRightWidth: "3px",
-        borderWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Data cell border color
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
   };
+  
 
   const ApplicationDataColumns = [
     // {
@@ -902,6 +891,7 @@ function ReportRejectList() {
       // selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
+      width: "80px",
       hide: "md",
     },
     {
@@ -947,14 +937,7 @@ function ReportRejectList() {
       hide: "md",
     },
 
-    
-    {
-      name: "Application Status",
-      selector: (row) => row.applicationStatus,
-      cell: (row) => <span>{row.applicationStatus}</span>,
-      sortable: true,
-      hide: "md",
-    },
+
     {
       name: "District",
       selector: (row) => row.districtName,
@@ -975,6 +958,17 @@ function ReportRejectList() {
       name: "Village",
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => (
+        <span style={{ color: "red", fontWeight: "bold" }}>
+          {row.applicationStatus}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
