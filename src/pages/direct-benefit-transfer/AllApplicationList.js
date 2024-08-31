@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -11,8 +11,8 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
-import ViewAllApplication from "../application-component/ViewAllApplication";
+import api from "../../services/auth/api";
+import ViewAllApplication from "../services-module/application-component/ViewAllApplication";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;

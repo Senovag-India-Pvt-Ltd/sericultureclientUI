@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -11,7 +11,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -125,7 +125,7 @@ function ApplicationFormList() {
       .post(
         baseURLDBT + `service/getSubmittedRecordsForMaker`,
         {},
-        { params: data }
+        { params: {userMasterId: localStorage.getItem("userMasterId"), },}
       )
       .then((response) => {
         setListData(response.data.content);
@@ -323,17 +323,25 @@ function ApplicationFormList() {
     //   // allowOverflow: true,
     //   button: true,
     // },
-    // {
-    //     name: "Arn Number",
-    //     selector: (row) => row.arn,
-    //     cell: (row) => <span>{row.arn}</span>,
-    //     sortable: true,
-    //     hide: "md",
-    //   },
+    {
+      name: "Sl.No.",
+      selector: (row) => row.scApplicationFormId,
+      cell: (row,i) => <span>{i+1}</span>,
+      sortable: true,
+      width: "80px",
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
@@ -352,7 +360,7 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
@@ -366,9 +374,25 @@ function ApplicationFormList() {
       hide: "md",
     },
     {
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
       name: "Taluk",
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
+    {
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -459,6 +483,7 @@ function ApplicationFormList() {
                       <option value="0">All</option>
                       <option value="1">Sanction No.</option>
                       <option value="2">FruitsId</option>
+                      <option value="3">Beneficiary Id</option>
                     </Form.Select>
                   </div>
                 </Col>

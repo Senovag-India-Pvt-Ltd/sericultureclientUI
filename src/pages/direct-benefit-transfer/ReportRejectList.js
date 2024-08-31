@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -12,7 +12,7 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -397,6 +397,47 @@ function ReportRejectList() {
     setApplicationIds([]);
   };
 
+  const exportCsv = (e) => {
+    api
+      .post(
+        baseURLDBT + `service/reject-list-report`,
+        {},
+        {
+          params: {
+            districtId: addressDetails.districtId,
+            talukId: addressDetails.talukId,
+            userMasterId: localStorage.getItem("userMasterId"),
+            text: searchData.text,
+            type: searchData.type,
+            displayAllRecords: true,
+            status: "ACKNOWLEDGEMENT FAILED",
+          },
+          responseType: 'blob',
+          headers: {
+            accept: "text/csv",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `dbt_status_report.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: "No record found!!!",
+        });
+      });
+}; 
+
+
   // Search
   const search = (e) => {
     api
@@ -763,46 +804,35 @@ function ReportRejectList() {
   //   };
 
   const customStyles = {
-    header: {
+    rows: {
       style: {
-        minHeight: "56px",
-      },
-    },
-    headRow: {
-      style: {
-        borderTopStyle: "solid",
-        borderTopWidth: "1px",
-        // borderTop:"none",
-        // borderTopColor: defaultThemes.default.divider.default,
-        borderColor: "black",
+        minHeight: "30px", // Row height
       },
     },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        backgroundColor: "#1e67a8", // Header background color
+        color: "#fff", // Header text color
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Header cell border color
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        // borderRightWidth: "3px",
-        borderWidth: "1px",
-        padding: "10px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderStyle: "solid", 
+        borderWidth: "1px", 
+        borderColor: "black", // Data cell border color
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
       },
     },
   };
+  
 
   const ApplicationDataColumns = [
     // {
@@ -840,27 +870,28 @@ function ReportRejectList() {
     //   hide: "md",
     // //   grow: 2,
     // },
-    // {
-    //   name: "Select",
-    //   selector: "select",
-    //   cell: (row) => (
-    //     <input
-    //       type="checkbox"
-    //       name="selectedLand"
-    //       value={row.scApplicationFormId}
-    //       checked={applicationIds.includes(row.scApplicationFormId)}
-    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-    //     />
-    //   ),
-    //   // ignoreRowClick: true,
-    //   // allowOverflow: true,
-    //   button: true,
-    // },
+    {
+      name: "Select",
+      selector: "select",
+      cell: (row) => (
+        <input
+          type="checkbox"
+          name="selectedLand"
+          value={row.scApplicationFormId}
+          checked={applicationIds.includes(row.scApplicationFormId)}
+          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+        />
+      ),
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      button: true,
+    },
     {
       name: "SL.No.",
       // selector: (row) => row.scApplicationFormId,
       cell: (row,i) => <span>{i+1}</span>,
       sortable: true,
+      width: "80px",
       hide: "md",
     },
     {
@@ -878,6 +909,13 @@ function ReportRejectList() {
       hide: "md",
     },
     {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Sanction Number",
       selector: (row) => row.sanctionNumber,
       cell: (row) => <span>{row.sanctionNumber}</span>,
@@ -885,7 +923,7 @@ function ReportRejectList() {
       hide: "md",
     },
     {
-      name: "Actual Amount",
+      name: "Subsidy Amount",
       selector: (row) => row.actualAmount,
       cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
@@ -898,34 +936,15 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
+
+
     {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Application Status",
-      selector: (row) => row.applicationStatus,
-      cell: (row) => <span>{row.applicationStatus}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Taluk",
       selector: (row) => row.talukName,
@@ -933,18 +952,23 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Hobli",
-      selector: (row) => row.hobliName,
-      cell: (row) => <span>{row.hobliName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    
 
     {
       name: "Village",
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => (
+        <span style={{ color: "red", fontWeight: "bold" }}>
+          {row.applicationStatus}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
@@ -1341,9 +1365,13 @@ function ReportRejectList() {
                       onChange={handleInputsSearch}
                     >
                       <option value="0">All</option>
-                      <option value="1">Sanction No.</option>
+                      {/* <option value="1">Sanction No.</option> */}
                       <option value="2">FruitsId</option>
                       <option value="3">Rejected Reason</option>
+                      <option value="4">Beneficiary Id</option>
+                      <option value="5">Financial Year</option>
+                      <option value="6">Component</option>
+                      <option value="7">Component Type</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -1380,7 +1408,99 @@ function ReportRejectList() {
                    </div>
                  </Form.Group>
                </Col>
-              ):(
+              ) : Number(searchData.type) === 5 ? (
+                  <Col sm={2} lg={2}>
+                  <Form.Group className="form-group">
+                           
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="text"
+                                value={searchData.text}
+                                onChange={handleInputsSearch}
+                                onBlur={() => handleInputsSearch}
+                                // multiple
+                                required
+                                isInvalid={
+                                  //  searchData.text === undefined ||
+                                  searchData.text === "0"
+                                }
+                              >
+                                <option value="">Select Year</option>
+                                {financialyearListData.map((list) => (
+                                  <option
+                                    key={list.financialYearMasterId}
+                                    value={list.financialYearMasterId}
+                                  >
+                                    {list.financialYear}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            
+                            </div>
+                          </Form.Group>
+                        </Col>
+) : Number(searchData.type) === 6 ? (
+  <Col sm={2} lg={2}>
+    <Form.Group className="form-group">
+            <div className="form-control-wrap">
+              <Form.Select
+                name="text"
+                value={searchData.text}
+                onChange={handleInputsSearch}
+                onBlur={() => handleInputsSearch}
+                // multiple
+                required
+                isInvalid={
+                //  searchData.text === undefined ||
+                  searchData.text === "0"
+                }
+              >
+                <option value="">Select Component</option>
+                {scComponentListData.map((list) => (
+                  <option
+                    key={list.scComponentId}
+                    value={list.scComponentId}
+                  >
+                    {list.scComponentName}
+                  </option>
+                ))}
+              </Form.Select>
+              
+            </div>
+          </Form.Group>
+        </Col>
+) : Number(searchData.type) === 7 ? (
+  <Col sm={2} lg={2}>
+  <Form.Group className="form-group">     
+                <div className="form-control-wrap">
+                  <Form.Select
+                   name="text"
+                       value={searchData.text}
+                       onChange={handleInputsSearch}
+                       onBlur={() => handleInputsSearch}
+                       // multiple
+                       required
+                       isInvalid={
+                        //  searchData.text === undefined ||
+                         searchData.text === "0"
+                       }
+                  >
+                    <option value="">Select Component Type</option>
+                    {scSubSchemeDetailsListData &&
+                      scSubSchemeDetailsListData.map((list, i) => (
+                        <option 
+                        key={list.scSubSchemeDetailsId}
+                          value={list.scSubSchemeDetailsId}>
+                          {list.subSchemeName}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  
+                </div>
+                    </Form.Group>
+                  </Col>
+                ) : (
+                
                 <Col sm={2} lg={2}>
                 <Form.Control
                   id="fruitsId"
@@ -1445,6 +1565,11 @@ function ReportRejectList() {
                     Search
                   </Button>
                 </Col>
+                <Col sm={1}>
+              <Button type="button" variant="primary" onClick={exportCsv}>
+                Export
+              </Button>
+            </Col>
               </Form.Group>
             </Col>
           </Row>
@@ -1481,6 +1606,7 @@ function ReportRejectList() {
                   Re-Push All
                 </Button>
               </li> */}
+              .
               <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel

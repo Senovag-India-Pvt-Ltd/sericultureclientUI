@@ -1,8 +1,8 @@
 import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
@@ -12,14 +12,14 @@ import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function TscOfficerList() {
+function TscOfficerSchemeList() {
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 500;
@@ -340,7 +340,7 @@ function TscOfficerList() {
   };
 
   const [disabledIds, setDisabledIds] = useState([]);
-  const handlePush = (id,bid,fid) => {
+  const handlePush = (id) => {
     if (listData && listData.length > 0) {
       listData.forEach((list) => {
         if (list.scApplicationFormId === id) {
@@ -366,7 +366,7 @@ function TscOfficerList() {
             prevDisabledIds.filter((prevDisabledId) => prevDisabledId !== id)
           );
         } else {
-          pushedSuccess(bid,fid);
+          saveSuccess();
           getList();
         }
       })
@@ -736,15 +736,6 @@ function TscOfficerList() {
       text: message,
     });
   };
-
-  const pushedSuccess = (b,f) => {
-    Swal.fire({
-      icon: "success",
-      title: "Pushed successfully",
-      text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
-    });
-  };
-
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -988,7 +979,7 @@ function TscOfficerList() {
             variant="primary"
             size="sm"
             className="ms-1"
-            onClick={() => handlePush(row.scApplicationFormId,row.beneficiaryId,row.fruitsId)}
+            onClick={() => handlePush(row.scApplicationFormId)}
             disabled={disabledIds.includes(row.scApplicationFormId)}
           >
             Push
@@ -1001,11 +992,11 @@ function TscOfficerList() {
   ];
 
   return (
-    <Layout title="TSC Officer List">
+    <Layout title="All Scheme TSC Officer List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">TSC Officer List</Block.Title>
+            <Block.Title tag="h2">All Scheme TSC Officer List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             {/* <ul className="d-flex">
@@ -1597,4 +1588,4 @@ function TscOfficerList() {
   );
 }
 
-export default TscOfficerList;
+export default TscOfficerSchemeList;

@@ -1,18 +1,18 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
-import { Icon, Select } from "../../../components";
+import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 
-import api from "../../../../src/services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;

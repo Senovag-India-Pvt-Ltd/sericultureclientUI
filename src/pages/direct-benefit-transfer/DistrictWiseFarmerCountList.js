@@ -1,16 +1,16 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
-import Layout from "../../../layout/default";
-import Block from "../../../components/Block/Block";
-import { Icon } from "../../../components";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import api from "../../../../src/services/auth/api";
+import api from "../../services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
