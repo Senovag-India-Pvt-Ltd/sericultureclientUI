@@ -258,6 +258,13 @@ function NewTraderLicenseList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Silk Type",
+      selector: (row) => row.silkType,
+      cell: (row) => <span>{row.silkType}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
