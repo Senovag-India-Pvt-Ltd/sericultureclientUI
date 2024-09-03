@@ -300,6 +300,13 @@ function ReelerLicenseList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "User Name",
+      selector: (row) => row.username,
+      cell: (row) => <span>{row.username}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

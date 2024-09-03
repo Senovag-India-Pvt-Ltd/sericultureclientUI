@@ -74,6 +74,7 @@ function TransferReelerLicense() {
     licenseRenewalDate: "",
     transferReelerId: "",
     reelerNumber: "",
+    username:"",
   });
 
   const isExpiryDate = !!data.licenseExpiryDate;
@@ -216,6 +217,7 @@ function TransferReelerLicense() {
       licenseRenewalDate: "",
       transferReelerId: "",
       reelerNumber: "",
+      username:"",
     })
     setExistingReelerName("");
     setLicenseTransfer({
@@ -281,6 +283,45 @@ function TransferReelerLicense() {
     });
   };
 
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = (_id) => {
+    const response = api
+      .get(baseURL + `userMaster/get-by-tsc-master-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.userMaster) {
+          setUserListData(response.data.content.userMaster);
+        }
+      })
+      .catch((err) => {
+        setUserListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.tscMasterId) {
+      getUserList(data.tscMasterId);
+    }
+  }, [data.tscMasterId]);
+
+// to get tsc
+const [tscListData, setTscListData] = useState([]);
+
+const getTscList = () => {
+  const response = api
+    .get(baseURL + `tscMaster/get-all`)
+    .then((response) => {
+      setTscListData(response.data.content.tscMaster);
+    })
+    .catch((err) => {
+      setTscListData([]);
+    });
+};
+
+useEffect(() => {
+  getTscList();
+}, []);
   // to get Caste
   const [casteListData, setCasteListData] = useState([]);
 
@@ -678,7 +719,38 @@ function TransferReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group">
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          TSC<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="tscMasterId"
+                            value={data.tscMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.tscMasterId === undefined || data.tscMasterId === "0"
+                            }
+                          >
+                            <option value="">Select TSC</option>
+                            {tscListData && tscListData.map((list) => (
+                              <option
+                                key={list.tscMasterId}
+                                value={list.tscMasterId}
+                              >
+                                {list.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            TSC is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>Assign To Inspect</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -691,6 +763,37 @@ function TransferReelerLicense() {
                             <option value="2">TSC(R)</option>
                             <option value="3">PCT</option>
                           </Form.Select>
+                        </div>
+                      </Form.Group> */}
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                        Assign To Inspect<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select Assign To Inspect</option>
+                            {userListData && userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Assign To Inspect is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                       {/* <Form.Group className="form-group">
