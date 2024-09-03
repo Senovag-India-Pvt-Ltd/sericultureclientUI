@@ -52,10 +52,13 @@ function OtherStateFarmerEdit() {
 
   const [farmerAddress, setFarmerAddress] = useState({
     stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
+    // districtId: "",
+    // talukId: "",
+    // hobliId: "",
+    // villageId: "",
+    taluk:"",
+    village:"",
+    district:"",
     addressText: "",
     pincode: "",
     defaultAddress: true,
@@ -110,6 +113,9 @@ function OtherStateFarmerEdit() {
       fatherNameKan: "",
       fatherName: "",
       nameKan: "",
+      taluk:"",
+      village:"",
+      district:"",
     });
     setBank({
       accountImagePath: "",
@@ -121,10 +127,13 @@ function OtherStateFarmerEdit() {
     });
     setFarmerAddress({
       stateId: "",
-      districtId: "",
-      talukId: "",
-      hobliId: "",
-      villageId: "",
+      // districtId: "",
+      // talukId: "",
+      // hobliId: "",
+      // villageId: "",
+      taluk:"",
+      village:"",
+      district:"",
       addressText: "",
       pincode: "",
       defaultAddress: true,
@@ -1026,11 +1035,10 @@ function OtherStateFarmerEdit() {
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label>
                           District
-                          {/* <span className="text-danger">*</span> */}
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1059,15 +1067,35 @@ function OtherStateFarmerEdit() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             District Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+                      <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="district">
+                          {t("district")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="district"
+                            name="district"
+                            value={farmerAddress.district}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_district")}
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            district Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      </Col>
+                      {/* <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk
-                          {/* <span className="text-danger">*</span> */}
+                          Ta
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1095,15 +1123,35 @@ function OtherStateFarmerEdit() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Taluk Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+                      <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="taluk">
+                          {t("taluk")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="taluk"
+                            name="taluk"
+                            value={farmerAddress.taluk}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_taluk")}
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Taluk Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label>
                           Hobli
-                          {/* <span className="text-danger">*</span> */}
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1131,15 +1179,36 @@ function OtherStateFarmerEdit() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Hobli Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+                                           
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="village">
+                          {t("village")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="village"
+                            name="village"
+                            value={farmerAddress.village}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_village")}
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Village Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
                           Village
-                          {/* <span className="text-danger">*</span> */}
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1163,10 +1232,10 @@ function OtherStateFarmerEdit() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Village Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
                         </div>
-                      </Form.Group>
-
+                      </Form.Group> */}
+                    <Col lg="6">
                       <Form.Group className="form-group mt-2">
                         <Form.Label htmlFor="address">
                           {t("address")}

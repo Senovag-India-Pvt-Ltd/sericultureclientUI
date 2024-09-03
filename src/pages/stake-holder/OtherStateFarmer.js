@@ -49,6 +49,9 @@ function OtherStateFarmer() {
     fatherName: "",
     nameKan: "",
     farmerNumber: "",
+    village:"",
+    district:"",
+    taluk:"",
   });
 
   const [isOtherState, setIsOtherState] = useState(true);
@@ -86,6 +89,9 @@ function OtherStateFarmer() {
       fatherNameKan: "",
       fatherName: "",
       nameKan: "",
+      village:"",
+      district:"",
+      taluk:"",
     });
     setFarmerAddressList([]);
     setBank({
@@ -154,10 +160,13 @@ function OtherStateFarmer() {
   const [farmerAddressList, setFarmerAddressList] = useState([]);
   const [farmerAddress, setFarmerAddress] = useState({
     stateId: "",
-    districtId: "",
-    talukId: "",
-    hobliId: "",
-    villageId: "",
+    // districtId: "",
+    // talukId: "",
+    // hobliId: "",
+    // villageId: "",
+    village:"",
+    district:"",
+    taluk:"",
     addressText: "",
     pincode: "",
     defaultAddress: true,
@@ -244,6 +253,9 @@ function OtherStateFarmer() {
       fatherNameKan: "",
       fatherName: "",
       nameKan: "",
+      village:"",
+      district:"",
+      taluk:"",
     });
     setBank({
       accountImagePath: "",
@@ -255,10 +267,13 @@ function OtherStateFarmer() {
     });
     setFarmerAddress({
       stateId: "",
-      districtId: "",
-      talukId: "",
-      hobliId: "",
-      villageId: "",
+      // districtId: "",
+      // talukId: "",
+      // hobliId: "",
+      // villageId: "",
+      village:"",
+      taluk:"",
+      district:"",
       addressText: "",
       pincode: "",
       defaultAddress: true,
@@ -1779,47 +1794,31 @@ function OtherStateFarmer() {
                       </Form.Group>
                     </Col>
                     <Col lg="6">
-                      <Form.Group className="form-group">
-                        <Form.Label>
-                          District
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="district">
+                          {t("district")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
-                          <Form.Select
-                            name="districtId"
-                            value={`${farmerAddress.districtId}_${farmerAddress.districtName}`}
-                            onChange={handleDistrictOption}
-                            onBlur={() => handleDistrictOption}
+                          <Form.Control
+                            id="district"
+                            name="district"
+                            value={farmerAddress.district}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_district")}
                             // required
-                            // isInvalid={
-                            //   farmerAddress.districtId === undefined ||
-                            //   farmerAddress.districtId === "0"
-                            // }
-                          >
-                            <option value="">Select District</option>
-                            {addressdistrictListData &&
-                            addressdistrictListData.length
-                              ? addressdistrictListData.map((list) => (
-                                  <option
-                                    key={list.districtId}
-                                    value={`${list.districtId}_${list.districtName}`}
-                                  >
-                                    {list.districtName}
-                                  </option>
-                                ))
-                              : ""}
-                          </Form.Select>
+                          />
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                            district Name is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      </Col>
+                      {/* <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk
-                          {/* <span className="text-danger">*</span> */}
+                          Ta
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1847,15 +1846,35 @@ function OtherStateFarmer() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Taluk Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+                      <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="taluk">
+                          {t("taluk")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="taluk"
+                            name="taluk"
+                            value={farmerAddress.taluk}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_taluk")}
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Taluk Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label>
                           Hobli
-                          {/* <span className="text-danger">*</span> */}
+                          {/* <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1883,15 +1902,70 @@ function OtherStateFarmer() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Hobli Name is required
-                          </Form.Control.Feedback> */}
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="village">
+                          {t("village")}
+                          {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="village"
+                            name="village"
+                            value={farmerAddress.village}
+                            onChange={handleFarmerAddressInputs}
+                            type="text"
+                            placeholder={t("enter_village")}
+                            // required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Village Name is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
-                    <Col lg="6">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
+                        <Form.Label>
+                          Hobli
+                           <span className="text-danger">*</span> 
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="hobliId"
+                            value={`${farmerAddress.hobliId}_${farmerAddress.hobliName}`}
+                            onChange={handleHobliOption}
+                            onBlur={() => handleHobliOption}
+                            // required
+                            // isInvalid={
+                            //   farmerAddress.hobliId === undefined ||
+                            //   farmerAddress.hobliId === "0"
+                            // }
+                          >
+                            <option value="">Select Hobli</option>
+                            {addressHobliListData && addressHobliListData.length
+                              ? addressHobliListData.map((list) => (
+                                  <option
+                                    key={list.hobliId}
+                                    value={`${list.hobliId}_${list.hobliName}`}
+                                  >
+                                    {list.hobliName}
+                                  </option>
+                                ))
+                              : ""}
+                          </Form.Select>
+                          {/* <Form.Control.Feedback type="invalid">
+                            Hobli Name is required
+                          </Form.Control.Feedback> 
+                        </div>
+                      </Form.Group> */}
+        
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
                           Village
-                          {/* <span className="text-danger">*</span> */}
+                           <span className="text-danger">*</span> 
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1920,10 +1994,10 @@ function OtherStateFarmer() {
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                             Village Name is required
-                          </Form.Control.Feedback> */}
-                        </div>
-                      </Form.Group>
-
+                          </Form.Control.Feedback> 
+                        </div> 
+                      </Form.Group>*/}
+                    <Col lg="6">
                       <Form.Group className="form-group mt-2">
                         <Form.Label htmlFor="address">
                           {t("address")}
