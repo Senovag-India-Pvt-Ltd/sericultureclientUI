@@ -255,6 +255,42 @@ function MaintenanceofLineRecordsforEachRaceList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Farmer Name (Male Cocoon)",
+      selector: (row) => row.farmerNameMale,
+      cell: (row) => <span>{row.farmerNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lot Number (Male Cocoon)",
+      selector: (row) => row.lotNumberMale,
+      cell: (row) => <span>{row.lotNumberMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+    {
+      name: "Market (Male Cocoon)",
+      selector: (row) => row.marketMasterNameMale,
+      cell: (row) => <span>{row.marketMasterNameMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "No Of Cocoons Selected (Male Cocoon)",
+      selector: (row) => row.noOfCocoonsSelectedMale,
+      cell: (row) => <span>{row.noOfCocoonsSelectedMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Single Cocoon Weight in Grams (Male Cocoon)",
+      selector: (row) => row.averageWeightMale,
+      cell: (row) => <span>{row.averageWeightMale}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

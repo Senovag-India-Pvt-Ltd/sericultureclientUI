@@ -33,14 +33,14 @@ function PreparationofeggsDFLsEdit() {
     lineNameId: "",
     raceId: "",
     parentLotNumber: "",
-    selectedCocoon: "",
-    rejectedCocoon: "",
-    numberOfPairsSelectedCocoons:"",
-    numberOfPairsRejectedCocoons: "",
-    eggRecoveryPercentageselectedCocoons:"",
-    eggRecoveryPercentagerRejectedCocoons: "",
+    selectedCocoonsNo: "",
+    rejectedCocoonsNo: "",
+    errPerSelectedCocoonsNo:"",
+    errPerRejectedCocoonsNo: "",
+    pairNoSelectedCocoonsNo:"",
+    pairNoRejectedCocoonsNo: "",
     eggSheetSerialNos:"",
-    remainingDFLs:"",
+    remainingDfls :"",
   });
   const [loading, setLoading] = useState(false);
 
@@ -72,6 +72,12 @@ function PreparationofeggsDFLsEdit() {
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
+  };
+
+  const [selectedLotType, setSelectedLotType] = useState("newLot");
+
+  const handleLotTypeChange = (event) => {
+    setSelectedLotType(event.target.value);
   };
 
   const isDateOfMothEmergence = !!data.dateOfMothEmergence;
@@ -126,17 +132,17 @@ function PreparationofeggsDFLsEdit() {
       lineNameId: "",
       raceId: "",
       parentLotNumber: "",
-      selectedCocoon: "",
-      rejectedCocoon: "",
-      numberOfPairsSelectedCocoons:"",
-      numberOfPairsRejectedCocoons: "",
-      eggRecoveryPercentageselectedCocoons:"",
-      eggRecoveryPercentagerRejectedCocoons: "",
+      selectedCocoonsNo: "",
+      rejectedCocoonsNo: "",
+      errPerSelectedCocoonsNo:"",
+      errPerRejectedCocoonsNo: "",
+      pairNoSelectedCocoonsNo:"",
+      pairNoRejectedCocoonsNo: "",
       eggSheetSerialNos:"",
-      remainingDFLs:"",
+      remainingDfls :"",
     });
     setValidated(false);
-    getIdList();
+    // getIdList();
   };
 
   //   to get data from api
@@ -320,6 +326,46 @@ function PreparationofeggsDFLsEdit() {
 
      
       <Block className="mt-n4">
+      <Card>
+          <Card.Body>
+            <Row lg="12" className="g-gs">
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="farm">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="lotType"
+                      // label="New Lot"
+                      value="newLot"
+                      checked={selectedLotType === "newLot"}
+                      onChange={handleLotTypeChange}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="farm">
+                    New Lot
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+              
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="crc">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="lotType"
+                      value="presentLot"
+                      checked={selectedLotType === "presentLot"}
+                      onChange={handleLotTypeChange}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="crc">
+                    Present Lot
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -367,10 +413,11 @@ function PreparationofeggsDFLsEdit() {
                   </Form.Group>
                 </Col> */}
 
-                <Col lg="4">
+                {selectedLotType === "presentLot" && (
+            <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                     Lot Number
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -394,7 +441,39 @@ function PreparationofeggsDFLsEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> 
+                    )}
+
+                    {selectedLotType === "newLot" && (
+                      <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Cocoon Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="parentLotNumber"
+                          value={data.parentLotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.parentLotNumber}>
+                              {list.parentLotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col> 
+                    )}
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -611,9 +690,9 @@ function PreparationofeggsDFLsEdit() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="selectedCocoon"
-                                  name="selectedCocoon"
-                                  value={data.selectedCocoon}
+                                  id="selectedCocoonsNo"
+                                  name="selectedCocoonsNo"
+                                  value={data.selectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Selected Cocoon's in Nos"
@@ -634,8 +713,8 @@ function PreparationofeggsDFLsEdit() {
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="rejectedCocoon"
-                                  name="rejectedCocoon"
-                                  value={data.rejectedCocoon}
+                                  name="rejectedCocoonsNo"
+                                  value={data.rejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Rejected Cocoon's in Nos"
@@ -655,9 +734,9 @@ function PreparationofeggsDFLsEdit() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="numberOfPairsSelectedCocoons"
-                                  name="numberOfPairsSelectedCocoons"
-                                  value={data.numberOfPairsSelectedCocoons}
+                                  id="pairNoSelectedCocoonsNo"
+                                  name="pairNoSelectedCocoonsNo"
+                                  value={data.pairNoSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="No of Pairs (%) (Selected Cocoon's)"
@@ -677,9 +756,9 @@ function PreparationofeggsDFLsEdit() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="numberOfPairsRejectedCocoons"
-                                  name="numberOfPairsRejectedCocoons"
-                                  value={data.numberOfPairsRejectedCocoons}
+                                  id="pairNoRejectedCocoonsNo"
+                                  name="pairNoRejectedCocoonsNo"
+                                  value={data.pairNoRejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="No of Pairs (%) (Rejected Cocoon's)"
@@ -769,9 +848,9 @@ function PreparationofeggsDFLsEdit() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="eggRecoveryPercentageselectedCocoons"
-                                  name="eggRecoveryPercentageselectedCocoons"
-                                  value={data.eggRecoveryPercentageselectedCocoons}
+                                  id="errPerSelectedCocoonsNo"
+                                  name="errPerSelectedCocoonsNo"
+                                  value={data.errPerSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Err %(Selected Cocoon's)"
@@ -792,9 +871,9 @@ function PreparationofeggsDFLsEdit() {
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="eggRecoveryPercentagerRejectedCocoons"
-                                  name="eggRecoveryPercentagerRejectedCocoons"
-                                  value={data.eggRecoveryPercentagerRejectedCocoons }
+                                  id="errPerRejectedCocoonsNo"
+                                  name="errPerRejectedCocoonsNo"
+                                  value={data.errPerRejectedCocoonsNo }
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="Err %(Rejected Cocoon's)"
@@ -826,6 +905,29 @@ function PreparationofeggsDFLsEdit() {
                                 <Form.Control.Feedback type="invalid">
                                   Egg Recovery % is required
                                 </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="testResults">
+                                Remaining DFLs 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="remainingDFLs"
+                                  name="remainingDfls"
+                                  value={data.remainingDfls}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Remaining DFLs"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Test results is required
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -930,9 +1032,17 @@ function PreparationofeggsDFLsEdit() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Cancel
+                          Clear
                         </Button>
                       </li>
+                {/* <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li> */}
                     </ul>
                   </div>
                 </Col>

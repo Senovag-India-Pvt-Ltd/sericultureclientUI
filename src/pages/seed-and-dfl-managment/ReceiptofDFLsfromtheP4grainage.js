@@ -214,6 +214,11 @@ function ReceiptofDFLsfromtheP4grainage() {
     },
   };
 
+  const handleEdit = (_id) => {
+    navigate(`/seriui/Receipt-of-DFLs-from-the-P4-grainage-edit/${_id}`);
+    // navigate("/seriui/training Schedule");
+  };
+
   const ReceiptofDFLsfromtheP4grainageDataColumns = [
     // {
     //   name: "Action",
@@ -252,6 +257,13 @@ function ReceiptofDFLsfromtheP4grainage() {
       name: "Hatching Date",
       selector: (row) => row.hatchingDate,
       cell: (row) => <span>{row.hatchingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Grainage",
+      selector: (row) => row.grainageMasterName,
+      cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },

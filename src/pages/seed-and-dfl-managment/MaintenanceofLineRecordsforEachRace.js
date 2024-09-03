@@ -30,9 +30,13 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
       marketMasterId: "",
       noOfCocoonsSelected: "",
       averageWeight: "",
-      userType: "femaleLine",
-      userTypeId: "",
-      noOfDfls: ""
+      numberOfDfls: "",
+      numberOfDflsMale: "",
+      lotNumberMale: "",
+      farmerNameMale: "",
+      marketMasterIdMale: "",
+      noOfCocoonsSelectedMale: "",
+      averageWeightMale: "",
     });
   
     const [validated, setValidated] = useState(false);
@@ -89,9 +93,13 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                 marketMasterId: "",
                 noOfCocoonsSelected: "",
                 averageWeight: "",
-                userType: "femaleLine",
-                userTypeId: "",
-                noOfDfls: ""
+                numberOfDfls: "",
+                numberOfDflsMale: "",
+                lotNumberMale: "",
+                farmerNameMale: "",
+                marketMasterIdMale: "",
+                noOfCocoonsSelectedMale: "",
+                averageWeightMale: "",
               });
               setValidated(false);
             }
@@ -117,9 +125,13 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         marketMasterId: "",
         noOfCocoonsSelected: "",
         averageWeight: "",
-        userType: "femaleLine",
-        userTypeId: "",
-        noOfDfls: ""
+        numberOfDfls: "",
+        numberOfDflsMale: "",
+        lotNumberMale: "",
+        farmerNameMale: "",
+        marketMasterIdMale: "",
+        noOfCocoonsSelectedMale: "",
+        averageWeightMale: "",
       });
     };
   
@@ -335,51 +347,12 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
-      <Card>
-          <Card.Body>
-            <Row lg="12" className="g-gs">
-              <Col lg="1">
-                <Form.Group as={Row} className="form-group" controlId="femaleLine">
-                  <Col sm={1}>
-                    <Form.Check
-                      type="radio"
-                      name="userType"
-                      value="femaleLine"
-                      checked={data.userType === "femaleLine"}
-                      onChange={handleInputs}
-                    />
-                  </Col>
-                  <Form.Label column sm={9} className="mt-n2" id="femaleLine">
-                    Female Line
-                  </Form.Label>
-                </Form.Group>
-              </Col>
-              <Col lg="1">
-                <Form.Group as={Row} className="form-group" controlId="maleLine">
-                  <Col sm={1}>
-                    <Form.Check
-                      type="radio"
-                      name="userType"
-                      value="maleLine"
-                      checked={data.userType === "maleLine"}
-                      onChange={handleInputs}
-                    />
-                  </Col>
-                  <Form.Label column sm={9} className="mt-n2" id="maleLine">
-                    Male line
-                  </Form.Label>
-                </Form.Group>
-              </Col> 
-            </Row>
-          </Card.Body>
-        </Card>
-       
+      <Block className="mt-n4"> 
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>Maintenance of Line records for each race</Card.Header>
+                <Card.Header>Maintenance of Line records for each Female race</Card.Header>
                 <Card.Body>
                         <Row className="g-gs">
 
@@ -502,7 +475,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     </Col> */}
 
                           
-                  <Col lg="4">
+                  {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -529,9 +502,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> 
+                </Col>  */}
 
-                {/* <Col lg="4">
+                <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -551,7 +524,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col> */}
+                          </Col>
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
@@ -615,8 +588,8 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               <div className="form-control-wrap">
                                 <Form.Control
                                   id="sordfl"
-                                  name="noOfDfls"
-                                  value={data.noOfDfls}
+                                  name="numberOfDfls"
+                                  value={data.numberOfDfls}
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Enter  Number Of DFLs"
@@ -697,6 +670,309 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                               </div>
                             </Form.Group>
                           </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                </Block>
+
+                <Block className="mt-3">
+              <Card>
+                <Card.Header>Maintenance of Line records for each Male race</Card.Header>
+                <Card.Body>
+                        <Row className="g-gs">
+
+                        <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Farmer’s name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="farmerName"
+                            name="farmerNameMale"
+                            value={data.farmerNameMale}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder="Enter Farmer’s name"
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            Farmer Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                        {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Line Name<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lineNameId"
+                              value={data.lineNameId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Line Name</option>
+                              {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
+                                <option
+                                  key={list.lineNameId}
+                                  value={list.lineNameId}
+                                >
+                                  {list.lineName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Line Name is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col> */}
+
+                    {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Race<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="raceId"
+                              value={data.raceId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Race</option>
+                              {raceListData.map((list) => (
+                                <option
+                                  key={list.raceMasterId}
+                                  value={list.raceMasterId}
+                                >
+                                  {list.raceMasterName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Race is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col> */}
+
+                    {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Generation Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="generationNumberId"
+                              value={data.generationNumberId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Generation Number</option>
+                              {generationListData && generationListData.length?(generationListData.map((list) => (
+                                <option
+                                  key={list.generationNumberId}
+                                  value={list.generationNumberId}
+                                >
+                                  {list.generationNumber}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Generation Number is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col> */}
+
+                          
+                  {/* <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="lotNumber"
+                          value={data.lotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.lotNumber}>
+                              {list.lotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>  */}
+
+                <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                              Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumberMale"
+                                  value={data.lotNumberMale}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                        {/* <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Pupa Test Details<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="pupaTestDetails"
+                                  value={data.pupaTestDetails}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Pupa Test Details"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Pupa Test Details is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col> */}
+
+                      <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Market<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="marketMasterIdMale"
+                              value={data.marketMasterIdMale}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Market</option>
+                              {marketListData && marketListData.length?(marketListData.map((list) => (
+                                <option
+                                  key={list.marketMasterId}
+                                  value={list.marketMasterId}
+                                >
+                                  {list.marketMasterName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Market is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Number Of DFLs<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="numberOfDflsMale"
+                                  value={data.numberOfDflsMale}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter  Number Of DFLs"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Number Of DFLs is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+
+                          <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                No. of cocoons selected<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="noOfCocoonsSelectedMale"
+                                  value={data.noOfCocoonsSelectedMale}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Enter No. of cocoons selected"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                No. of cocoons is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                              Single Cocoon Weight in Grams<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="averageWeightMale"
+                                  value={data.averageWeightMale}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Enter Single Cocoon Weight in Grams"
+                                  required
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                  Single Cocoon Weight in Grams is required
+                                  </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          
                         </Row>
                       </Card.Body>
                     </Card>

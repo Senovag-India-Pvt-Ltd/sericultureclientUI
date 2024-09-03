@@ -1,11 +1,12 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link,useParams} from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { Icon, Select } from "../../components";
@@ -17,6 +18,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function MaintenanceofMulberryfarmList() {
+  // const { id } = useParams();
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
   const [listAlertData, setListAlertData] = useState({});
@@ -32,6 +34,7 @@ function MaintenanceofMulberryfarmList() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+ 
   const getList = () => {
     setLoading(true);
 
@@ -77,9 +80,37 @@ function MaintenanceofMulberryfarmList() {
     fymApplicationStatus: "0",
     irrigationStatus: "0",
     brushingStatus: "0",
+    foliarSpray1Status: "0",
+    foliarSpray2Status: "0"
   });
 
+  const handleDateChange = (date, type) => {
+    setUpdateAllDate({ ...updateAllDate, [type]: date });
+  };
+
+
+  const [updateAllDate, setUpdateAllDate] = useState({
+    id: "",
+    fertilizerApplicationDate: "",
+    fymApplicationDate: "",
+    irrigationDate: "",
+    brushingDate: "",
+    foliarSpray1: "",
+    foliarSpray2: ""
+  });
+
+  const dateFormat = (newDate)=>{
+    return newDate.getFullYear() +
+    "-" +
+    (newDate.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    newDate.getDate().toString().padStart(2, "0");
+  }
+      
+
   const [validatedPruningDateEdit, setValidatedPruningDateEdit] = useState(false);
+
+  const [validatedAllDateEdit, setValidatedAllDateEdit] = useState(false);
 
   const [showModal1, setShowModal1] = useState(false);
 
@@ -90,6 +121,11 @@ function MaintenanceofMulberryfarmList() {
 
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
+
+  const [showModal3, setShowModal3] = useState(false);
+
+  const handleShowModal3 = () => setShowModal3(true);
+  const handleCloseModal3 = () => setShowModal3(false);
 
   const getAlertList = () => {
     setLoading(true);
@@ -113,63 +149,6 @@ function MaintenanceofMulberryfarmList() {
   useEffect(() => {
     getAlertList();
   }, []);
-//   const getAlertList = () => {
-//     setLoading(true);
-
-//     api.get(baseURLSeedDfl + `MulberryFarm/get-alerts-list`)
-//         .then((response) => {
-//             const today = new Date();
-//             today.setHours(0, 0, 0, 0); // Ensure today's date is set to midnight
-
-//             const alertsToShow = response.data.filter((alert) => {
-//                 const pruningDate = new Date(alert.pruningDate);
-
-//                 // Calculate the relevant dates based on pruning date
-//                 const fertilizerApplicationDate = new Date(pruningDate);
-//                 fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15);
-//                 fertilizerApplicationDate.setHours(0, 0, 0, 0); // Set time to midnight
-                
-//                 const fymApplicationDate = new Date(pruningDate);
-//                 fymApplicationDate.setDate(fymApplicationDate.getDate() + 5);
-//                 fymApplicationDate.setHours(0, 0, 0, 0); // Set time to midnight
-
-//                 const irrigationDate = new Date(pruningDate);
-//                 irrigationDate.setDate(irrigationDate.getDate() + 12);
-//                 irrigationDate.setHours(0, 0, 0, 0); // Set time to midnight
-
-//                 const brushingDate = new Date(pruningDate);
-//                 brushingDate.setDate(brushingDate.getDate() + 45);
-//                 brushingDate.setHours(0, 0, 0, 0); // Set time to midnight
-
-//                 // Check if any application date is today and status is pending
-//                 return (
-//                     (alert.fertilizerApplicationStatus === "0" && fertilizerApplicationDate.getTime() === today.getTime()) ||
-//                     (alert.fymApplicationStatus === "0" && fymApplicationDate.getTime() === today.getTime()) ||
-//                     (alert.irrigationStatus === "0" && irrigationDate.getTime() === today.getTime()) ||
-//                     (alert.brushingStatus === "0" && brushingDate.getTime() === today.getTime())
-//                 );
-//             });
-
-//             setListAlertData(alertsToShow);
-//             setLoading(false);
-
-//             // Show the alert modal if there are any relevant alerts
-//             if (alertsToShow.length > 0) {
-//                 setShowModal1(true);
-//             } else {
-//                 setShowModal1(false);
-//             }
-//         })
-//         .catch((err) => {
-//             setLoading(false);
-//         });
-// };
-
-// useEffect(() => {
-//     getAlertList();
-// }, []);
-
-
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -195,9 +174,62 @@ function MaintenanceofMulberryfarmList() {
     }
   };
 
+  const updateAllDates = (event) => {
+    const form = event.currentTarget;
+    
+    // Generate the formatted date
+    // const newDate = new Date();
+    // const formattedDate =
+    //   newDate.getFullYear() +
+    //   "-" +
+    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
+    //   "-" +
+    //   newDate.getDate().toString().padStart(2, "0");
+  
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedAllDateEdit(true);
+    } else {
+      event.preventDefault();
+      
+      // Update the state with the formatted date for all date fields
+      const updatedDatePayload = {
+        ...updateAllDate,
+        fertilizerApplicationDate: dateFormat(updateAllDate.fertilizerApplicationDate),
+        fymApplicationDate: dateFormat(updateAllDate.fymApplicationDate),
+        irrigationDate: dateFormat(updateAllDate.irrigationDate),
+        brushingDate: dateFormat(updateAllDate.brushingDate),
+        foliarSpray1: dateFormat(updateAllDate.foliarSpray1),
+        foliarSpray2: dateFormat(updateAllDate.foliarSpray2),
+      };
+  
+      api
+        .post(baseURLSeedDfl + `MulberryFarm/update-task-dates`, updatedDatePayload)
+        .then((response) => {
+          updateSuccess(response.data.message);
+          // getAlertList();
+        })
+        .catch((err) => {
+          if (err.response.data.validationErrors) {
+            updateError(err.response.data.validationErrors);
+          }
+        });
+  
+      setValidatedAllDateEdit(true);
+      handleCloseModal3();
+    }
+  };
+  
+
   const handlePruningInputs = (e) => {
     const { name, value } = e.target;
     setPruningDate({ ...pruningDate, [name]: value });
+  };
+
+  const handleAllDateInputs = (e) => {
+    const { name, value } = e.target;
+    setUpdateAllDate({ ...updateAllDate, [name]: value });
   };
 
   const navigate = useNavigate();
@@ -232,45 +264,7 @@ function MaintenanceofMulberryfarmList() {
     });
   };
 
-  // const handleStatusEdit = (row) => {
-  //   setShowModal2(true);
-  //   setPruningDate({
-  //     id: row.id,
-  //     fertilizerApplicationStatus: row.fertilizerApplicationStatus,
-  //     fymApplicationStatus: row.fymApplicationStatus,
-  //     irrigationStatus: row.irrigationStatus,
-  //     brushingStatus: row.brushingStatus,
-  //   });
   
-    // Calculate enabled dates based on pruning date
-    // const pruningDate = new Date(row.pruningDate);
-    // const fertilizerApplicationDate = new Date(pruningDate);
-    // fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15); // Assuming 15 days after pruning for fertilizer application
-    // const fymApplicationDate = new Date(pruningDate);
-    // fymApplicationDate.setDate(fymApplicationDate.getDate() + 5); // Assuming 5 days after pruning for fym application
-    // const irrigationDate = new Date(pruningDate);
-    // irrigationDate.setDate(irrigationDate.getDate() + 10); // Assuming 10 days after pruning for irrigation
-    // const brushingDate = new Date(pruningDate);
-    // brushingDate.setDate(brushingDate.getDate() + 45); // Assuming 45 days after pruning for brushing
-  
-    // setDates({
-    //   fertilizerApplicationDate: fertilizerApplicationDate,
-    //   fymApplicationDate: fymApplicationDate,
-    //   irrigationDate: irrigationDate,
-    //   brushingDate: brushingDate,
-    // });
-  // };
-
-  // const isTodayOrFutureDate = (date) => {
-  //   const today = new Date();
-  //   return date >= today;
-  // };
-  // const isTodayOrFutureDate = (date) => {
-  //   const today = new Date();
-  //   const yesterday = new Date();
-  //   yesterday.setDate(today.getDate() - 1);
-  //   return date <= yesterday;
-  // };
   const isTodayOrFutureDate = (date) => {
     if (!date) {
         return false; // Return false if date is null or undefined
@@ -289,6 +283,15 @@ function MaintenanceofMulberryfarmList() {
     brushingDate: null,
   });
 
+  const [allDates, setAllDates] = useState({
+    fertilizerApplicationDate: "",
+    fymApplicationDate: "",
+    irrigationDate: "",
+    brushingDate: "",
+    foliarSpray1: "",
+    foliarSpray2: "",
+  });
+
   const handleStatusEdit = (row) => {
     setShowModal2(true);
     setPruningDate({
@@ -297,6 +300,8 @@ function MaintenanceofMulberryfarmList() {
       fymApplicationStatus: row.fymApplicationStatus,
       irrigationStatus: row.irrigationStatus,
       brushingStatus: row.brushingStatus,
+      foliarSpray1Status: row.foliarSpray1Status,
+      foliarSpray2Status: row.foliarSpray2Status,
     }); 
 
     const pruningDate = new Date(row.pruningDate);
@@ -314,17 +319,32 @@ function MaintenanceofMulberryfarmList() {
       fymApplicationDate: fymApplicationDate,
       irrigationDate: irrigationDate,
       brushingDate: brushingDate,
+      // foliarSpray1:foliarSpray1,
+      // foliarSpray2:foliarSpray2,
+
     });
   };
-//   const validDates = {
-//     fertilizerApplicationDate: isTodayOrFutureDate(fertilizerApplicationDate) ? fertilizerApplicationDate : null,
-//     fymApplicationDate: isTodayOrFutureDate(fymApplicationDate) ? fymApplicationDate : null,
-//     irrigationDate: isTodayOrFutureDate(irrigationDate) ? irrigationDate : null,
-//     brushingDate: isTodayOrFutureDate(brushingDate) ? brushingDate : null,
-//   };
 
-//   setDates(validDates);
+//   const handleUpdateAllDates = (row) => {
+//     setShowModal3(true);
+
+    
+//     setUpdateAllDate({
+//       id: row.id,
+//       fertilizerApplicationDate: row.fertilizerApplicationDate,
+//       fymApplicationDate: row.fymApplicationDate,
+//       irrigationDate: row.irrigationDate,
+//       brushingDate: row.brushingDate,
+//       foliarSpray1: row.foliarSpray1,
+//       foliarSpray2: row.foliarSpray2,
+//     });
 // };
+const [id, setId] = useState(null);
+
+const handleUpdateAllDates = (row) => {
+  setId(row.id); // Set the ID when the button is clicked
+  setShowModal3(true); // Show the modal
+};
 
 
   const handleView = (_id) => {
@@ -340,7 +360,28 @@ function MaintenanceofMulberryfarmList() {
     navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-update/${_id}`);
   };
 
+  const getIdList = () => {
+    setLoading(true);
+    api
+      .get(baseURLSeedDfl + `MulberryFarm/get-info-by-id/${id}`)
+      .then((response) => {
+        setUpdateAllDate(response.data); // Set the data in updateAllDate state
+        setLoading(false);
+      })
+      .catch((err) => {
+        setUpdateAllDate({});
+        setLoading(false);
+      });
+  };
   
+  // Fetch the data whenever the id changes
+  useEffect(() => {
+    if (id) {
+      getIdList();
+    }
+  }, [id]);
+  
+
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -458,7 +499,15 @@ function MaintenanceofMulberryfarmList() {
             className="ms-2"
             onClick={() => handleUpdate(row.id)}
           >
-            Update
+            Update Pruning Date
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleUpdateAllDates(row)}
+          >
+            Update Dates
           </Button>
           {/* <Button
             variant="primary"
@@ -480,7 +529,7 @@ function MaintenanceofMulberryfarmList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      grow: 4,
     },
 
     {
@@ -558,6 +607,20 @@ function MaintenanceofMulberryfarmList() {
       name: "Brushing Date",
       selector: (row) => row.brushingDate,
       cell: (row) => <span>{row.brushingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 1 Date",
+      selector: (row) => row.foliarSpray1,
+      cell: (row) => <span>{row.foliarSpray1}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 2 Date",
+      selector: (row) => row.foliarSpray2,
+      cell: (row) => <span>{row.foliarSpray2}</span>,
       sortable: true,
       hide: "md",
     },
@@ -670,6 +733,36 @@ function MaintenanceofMulberryfarmList() {
           {row.brushingStatus === 0
             ? "Pending"
             : row.brushingStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 1 Status",
+      selector: (row) => row.foliarSpray1Status,
+      cell: (row) => (
+        <span>
+          {row.foliarSpray1Status === 0
+            ? "Pending"
+            : row.foliarSpray1Status === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 2 Status",
+      selector: (row) => row.foliarSpray1Status,
+      cell: (row) => (
+        <span>
+          {row.foliarSpray2Status === 0
+            ? "Pending"
+            : row.foliarSpray2Status === 1
             ? "Completed"
             : "Other"}
         </span>
@@ -799,6 +892,40 @@ function MaintenanceofMulberryfarmList() {
             : row.brushingStatus === 1
             ? "Completed"
             : row.brushingStatus === 2
+            ? "Activity Not Required"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 1 Status",
+      selector: (row) => row.foliarSpray1Status,
+      cell: (row) => (
+        <span>
+          {row.foliarSpray1Status === 0
+            ? "Pending"
+            : row.foliarSpray1Status === 1
+            ? "Completed"
+            : row.foliarSpray1Status === 2
+            ? "Activity Not Required"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Foliar Spray 2 Status",
+      selector: (row) => row.foliarSpray2Status,
+      cell: (row) => (
+        <span>
+          {row.foliarSpray2Status === 0
+            ? "Pending"
+            : row.foliarSpray2Status === 1
+            ? "Completed"
+            : row.foliarSpray2Status === 2
             ? "Activity Not Required"
             : "Other"}
         </span>
@@ -1016,6 +1143,44 @@ function MaintenanceofMulberryfarmList() {
                 </Form.Group>
               </Col>
 
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Foliar Spray 1 Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="foliarSpray1Status"
+                      value={pruningDate.foliarSpray1Status}
+                      onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.foliarSpray1Status)}
+                    >
+                      <option value="">Select Foliar Spray 1 Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Foliar Spray 2 Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="foliarSpray2Status"
+                      value={pruningDate.foliarSpray2Status}
+                      onChange={handlePruningInputs}
+                      // disabled={!isTodayOrFutureDate(dates.foliarSpray2Status)}
+                    >
+                      <option value="">Select Foliar Spray 2 Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
@@ -1037,6 +1202,195 @@ function MaintenanceofMulberryfarmList() {
                    Cancel
                   </Link>
                 </li>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Update Dates</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedAllDateEdit}
+            onSubmit={updateAllDates}
+          >
+            <Row className="g-5 px-5">
+            <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Brushing Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.brushingDate ? new Date(updateAllDate.brushingDate) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "brushingDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Irrigation Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.irrigationDate ? new Date(updateAllDate.irrigationDate) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "irrigationDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      FYM Application Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.fymApplicationDate ? new Date(updateAllDate.fymApplicationDate) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "fymApplicationDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Fertilizer Application Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.fertilizerApplicationDate ? new Date(updateAllDate.fertilizerApplicationDate) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "fertilizerApplicationDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Foilar Spray 1
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.foliarSpray1 ? new Date(updateAllDate.foliarSpray1) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "foliarSpray1")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                    Foilar Spray 2
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={updateAllDate.foliarSpray2 ? new Date(updateAllDate.foliarSpray2) : null}
+                        onChange={(date) =>
+                          handleDateChange(date, "foliarSpray2")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="success">
+                      Update Dates
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </div> */}
+                  {/* <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li> */}
                 </div>
               </Col>
             </Row>
