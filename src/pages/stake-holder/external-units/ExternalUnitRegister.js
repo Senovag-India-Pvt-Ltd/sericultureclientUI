@@ -21,6 +21,7 @@ function ExternalUnitRegister() {
     externalUnitNumber: "",
     organisationName: "",
     raceMasterId: "",
+    capacity: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -58,6 +59,7 @@ function ExternalUnitRegister() {
             externalUnitNumber: "",
             organisationName: "",
             raceMasterId: "",
+            capacity: "",
           });
           setValidated(false);
           }
@@ -80,6 +82,7 @@ function ExternalUnitRegister() {
       externalUnitNumber: "",
       organisationName: "",
       raceMasterId: "",
+      capacity: "",
     });
   };
 
@@ -303,7 +306,7 @@ function ExternalUnitRegister() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="licenseNumber">
-                        License Number
+                        License/Registration Number
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -316,6 +319,23 @@ function ExternalUnitRegister() {
                         />
                       </div>
                     </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="capacity">
+                       Capacity Of Production/Annum
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="capacity"
+                          name="capacity"
+                          value={data.capacity}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Capacity"
+                        />
+                      </div>
+                    </Form.Group>
+                    
                   </Col>
                 </Row>
               </Card.Body>

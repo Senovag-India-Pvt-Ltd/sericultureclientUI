@@ -274,6 +274,13 @@ function ExternalUnitRegisterList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Capacity Of Production/Annum",
+      selector: (row) => row.capacity,
+      cell: (row) => <span>{row.capacity}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

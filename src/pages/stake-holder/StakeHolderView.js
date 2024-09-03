@@ -438,6 +438,18 @@ function StakeHolderViewPage() {
                             <td>{farmerAddressDetails.addressText}</td>
                           </tr>
                           <tr>
+                            <td style={styles.ctstyle}>District Name:</td>
+                            <td>{farmerAddressDetails.district}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Taluk Name:</td>
+                            <td>{farmerAddressDetails.taluk}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}> Village Name</td>
+                            <td>{farmerAddressDetails.village}</td>
+                          </tr>
+                          {/* <tr>
                             <td style={styles.ctstyle}> Village:</td>
                             <td>{farmerAddressDetails.villageName}</td>
                           </tr>
@@ -448,7 +460,7 @@ function StakeHolderViewPage() {
                           <tr>
                             <td style={styles.ctstyle}> District:</td>
                             <td>{farmerAddressDetails.districtName}</td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <td style={styles.ctstyle}> State:</td>
                             <td>{farmerAddressDetails.stateName}</td>

@@ -46,9 +46,13 @@ function DbtApplication() {
 
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
+    districtName:"",
+    talukName:"",
     hobli: "",
     village: "",
   });
+
+  const [disable, setDisable] = useState(false);
 
   const [showFarmerDetails, setShowFarmerDetails] = useState(false);
 
@@ -934,6 +938,8 @@ function DbtApplication() {
     setLandDetailsList([]);
     setShowFarmerDetails(false);
     setDisabled(false);
+    setDisable(false);
+    getFinancialDefaultDetails();
   };
 
   const saveSuccess = () => {
@@ -1172,6 +1178,8 @@ function DbtApplication() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
+      }else{
+        setDisable(true);
       }
       api
         .post(baseURLRegistration + `farmer/get-farmer-details`, {
@@ -1188,6 +1196,14 @@ function DbtApplication() {
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.farmerResponse.firstName,
+                districtName: response.data.content.farmerAddressDTOList &&
+                response.data.content.farmerAddressDTOList.length > 0
+                  ? response.data.content.farmerAddressDTOList[0].districtName
+                  : "",
+                  talukName: response.data.content.farmerAddressDTOList &&
+                response.data.content.farmerAddressDTOList.length > 0
+                  ? response.data.content.farmerAddressDTOList[0].talukName
+                  : "",
                 hobli:
                   response.data.content.farmerAddressDTOList &&
                   response.data.content.farmerAddressDTOList.length > 0
@@ -1645,13 +1661,18 @@ function DbtApplication() {
                     </Form.Label>
                     <Col sm={4}>
                       <Form.Control
-                        type="fruitsId"
+                        type="text"
                         name="fruitsId"
                         value={data.fruitsId}
                         onChange={handleInputs}
                         placeholder="Enter FRUITS ID"
                         required
                         maxLength="16"
+                        readOnly={disable}
+                        // isInvalid={
+                        //   data.fruitsId === undefined ||
+                        //   data.fruitsId === "0"
+                        // }
                       />
                       <Form.Control.Feedback type="invalid">
                         Fruits ID Should Contain 16 digits
@@ -1660,6 +1681,11 @@ function DbtApplication() {
                     <Col sm={2}>
                       <Button type="submit" variant="primary">
                         Search
+                      </Button>
+                    </Col>
+                    <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
                       </Button>
                     </Col>
                   </Form.Group>
@@ -1677,6 +1703,10 @@ function DbtApplication() {
                         <tr>
                           <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
+                          <td style={styles.ctstyle}> District:</td>
+                          <td>{farmerDetails.districtName}</td>
+                          <td style={styles.ctstyle}> Taluk:</td>
+                          <td>{farmerDetails.talukName}</td>
                           <td style={styles.ctstyle}> Hobli :</td>
                           <td>{farmerDetails.hobli}</td>
                           <td style={styles.ctstyle}> Village:</td>

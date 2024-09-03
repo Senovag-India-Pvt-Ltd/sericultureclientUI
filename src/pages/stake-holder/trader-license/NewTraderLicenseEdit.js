@@ -68,7 +68,8 @@ function NewTraderLicenseEdit() {
             licenseChallanNumber: "",
             godownDetails: "",
             silkExchangeMahajar: "",
-            licenseNumberSequence: "", 
+            licenseNumberSequence: "",
+            silkType: "", 
           });
           setValidated(false);
         }
@@ -109,7 +110,8 @@ function NewTraderLicenseEdit() {
       licenseChallanNumber: "",
       godownDetails: "",
       silkExchangeMahajar: "",
-      licenseNumberSequence: "", 
+      licenseNumberSequence: "",
+      silkType: "", 
     });
   };
 
@@ -414,7 +416,22 @@ function NewTraderLicenseEdit() {
                           />
                         </div>
                       </Form.Group>
-                    </Col>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>Silk Type</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="silkType"
+                            value={data.silkType}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select Silk Type</option>
+                            <option value="Raw Silk">Raw Silk</option>
+                            <option value="Twisted">Twisted</option>
+                            <option value="Dupion">Dupion</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                  </Col>
 
                     <Col lg="6">
                       {/* <Form.Group className="form-group">
