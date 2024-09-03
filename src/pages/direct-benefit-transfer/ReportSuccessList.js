@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Row, Col, Form,Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -559,9 +559,7 @@ function ReportSuccessList() {
   // }, []);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/market-view/${_id}`);
-  };
+ 
 
   const handleEdit = (_id) => {
     navigate(`/seriui/market-edit/${_id}`);
@@ -667,6 +665,39 @@ function ReportSuccessList() {
   useEffect(() => {
     getFinancialDefaultDetails();
   }, []);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const [viewDetailsData, setViewDetailsData] = useState({
+    applicationDetails: [],
+    landDetails: []
+  });
+
+  const handleView = (_id) => {
+    api
+      .post(baseURLDBT + `service/viewApplicationDetails`, {
+        applicationFormId: _id,
+      })
+      .then((response) => {
+        const content = response.data.content[0];
+        
+        if (content.applicationDetailsResponses.length <= 0) {
+          saveError("No Details Found!!!");
+        } else {
+          handleShowModal();
+          setViewDetailsData({
+            applicationDetails: content.applicationDetailsResponses,
+            landDetails: content.landDetailsResponses
+          });
+        }
+      })
+      .catch((err) => {
+        // saveError(err.response.data.validationErrors);
+      });
+  };
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -807,6 +838,15 @@ function ReportSuccessList() {
       },
     },
   };
+
+  const styles = {
+    ctstyle: {
+      backgroundColor: "rgb(248, 248, 249, 1)",
+      color: "rgb(0, 0, 0)",
+      width: "50%",
+    },
+  };
+
   
 
   const ApplicationDataColumns = [
@@ -972,6 +1012,24 @@ function ReportSuccessList() {
       ),
       sortable: true,
       hide: "md",
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleView(row.scApplicationFormId)}
+            className="ms-1"
+          >
+            View
+          </Button>   
+        </>
+      ),
+      sortable: true,
+      hide: "md",
+      // grow: 2,
     },
   ];
 
@@ -1566,6 +1624,166 @@ function ReportSuccessList() {
           </Form>
         </Row>
       </Block> */}
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>View Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {loading ? (
+      <h1 className="d-flex justify-content-center align-items-center">
+        Loading...
+      </h1>
+    ) : (
+      <Row className="g-gs">
+        <Block className="mt-3">
+          {/* Scheme Details Card */}
+          <Card>
+            <Card.Header style={{ fontWeight: "bold" }}>
+              Scheme Details
+            </Card.Header>
+            <Card.Body>
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                    {viewDetailsData.applicationDetails.map((detail, index) => (
+                      <React.Fragment key={index}>
+                        <tr>
+                          <td style={styles.ctstyle}>Fruits Id:</td>
+                          <td>{detail.fruitsId}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Farmer Name:</td>
+                          <td>{detail.farmerFirstName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Sanction No:</td>
+                          <td>{detail.sanctionNo}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Scheme Name:</td>
+                          <td>{detail.schemeName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                          <td>{detail.subSchemeName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Component:</td>
+                          <td>{detail.scComponentName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Sub Component:</td>
+                          <td>{detail.categoryName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Scheme Amount:</td>
+                          <td>{detail.schemeAmount}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Period From:</td>
+                          <td>{detail.periodFrom}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Period To:</td>
+                          <td>{detail.periodTo}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>District Name:</td>
+                          <td>{detail.districtName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Taluk Name:</td>
+                          <td>{detail.talukName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Village Name:</td>
+                          <td>{detail.villageName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Application Status:</td>
+                          <td>{detail.applicationStatus}</td>
+                        </tr>
+                      </React.Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </Col>
+            </Card.Body>
+          </Card>
+
+          {/* RTC Details Card */}
+          <Card className="mt-3">
+            <Card.Header style={{ fontWeight: "bold" }}>
+              RTC Details
+            </Card.Header>
+            <Card.Body>
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                    {viewDetailsData.landDetails.map((landDetail, index) => (
+                      <React.Fragment key={index}>
+                        <tr>
+                          <td style={styles.ctstyle}>Survey Number:</td>
+                          <td>{landDetail.surveyNumber}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>District Name:</td>
+                          <td>{landDetail.districtName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Taluk Name:</td>
+                          <td>{landDetail.talukName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Village Name:</td>
+                          <td>{landDetail.villageName}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Acre:</td>
+                          <td>{landDetail.devAcre}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>F Gunta:</td>
+                          <td>{landDetail.devFGunta}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Gunta:</td>
+                          <td>{landDetail.devGunta}</td>
+                        </tr>
+                        <tr> 
+                          <td style={styles.ctstyle}>Hissa:</td>
+                          <td>{landDetail.hissa}</td>
+                        </tr>
+                        <tr> 
+                          <td style={styles.ctstyle}>Land Code:</td>
+                          <td>{landDetail.landCode}</td>
+                        </tr>
+                        <tr> 
+                          <td style={styles.ctstyle}>Main Owner No:</td>
+                          <td>{landDetail.mainOwnerNo}</td>
+                        </tr>
+                        <tr> 
+                          <td style={styles.ctstyle}>Owner Name:</td>
+                          <td>{landDetail.ownerName}</td>
+                        </tr>
+                        <tr> 
+                          <td style={styles.ctstyle}>Sur Noc:</td>
+                          <td>{landDetail.surNoc}</td>
+                        </tr>
+                        {/* Add more fields as needed */}
+                      </React.Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </Col>
+            </Card.Body>
+          </Card>
+        </Block>
+      </Row>
+    )}
+  </Modal.Body>
+</Modal> 
     </Layout>
   );
 }
