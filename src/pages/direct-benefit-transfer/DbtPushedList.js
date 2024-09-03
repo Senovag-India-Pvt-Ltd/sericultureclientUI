@@ -1243,6 +1243,18 @@ function DbtPushedList() {
                           <td style={styles.ctstyle}>Gunta:</td>
                           <td>{landDetail.devGunta}</td>
                         </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Developed Area Acre:</td>
+                          <td>{landDetail.acre}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                          <td>{landDetail.fGunta}</td>
+                        </tr>
+                        <tr>
+                          <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                          <td>{landDetail.gunta}</td>
+                        </tr>
                         <tr> 
                           <td style={styles.ctstyle}>Hissa:</td>
                           <td>{landDetail.hissa}</td>
