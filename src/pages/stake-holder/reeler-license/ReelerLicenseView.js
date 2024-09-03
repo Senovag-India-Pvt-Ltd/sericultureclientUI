@@ -264,6 +264,10 @@ function ReelerLicenseView() {
                       <td>{Reeler.recipientId}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> Assign To Inspect:</td>
+                      <td>{Reeler.username}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}>
                         {" "}
                         Representative Name and Address:
