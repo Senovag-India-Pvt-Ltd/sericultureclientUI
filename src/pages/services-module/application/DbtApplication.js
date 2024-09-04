@@ -18,7 +18,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLFarmerServer =
-  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function DbtApplication() {
@@ -46,10 +46,11 @@ function DbtApplication() {
 
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
-    districtName:"",
-    talukName:"",
+    districtName: "",
+    talukName: "",
     hobli: "",
     village: "",
+    address: "",
   });
 
   const [disable, setDisable] = useState(false);
@@ -154,8 +155,10 @@ function DbtApplication() {
   const [developedArea, setDevelopedArea] = useState([]);
 
   console.log(landDetailsIds);
+  console.log(developedArea);
 
-  const handleCheckboxChange = (farmerLandDetailsId) => {
+  const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
+    console.log(selectedData);
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
       // for single Select
@@ -166,17 +169,20 @@ function DbtApplication() {
       //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
+        console.log("Need to check", prevData);
         if (isAlreadySelected) {
+          console.log("inside if");
           const { [farmerLandDetailsId]: _, ...rest } = prevData;
           return rest;
         } else {
           // If selected, add to developedArea
           return {
-            ...prevData,
+            // ...prevData,
             [farmerLandDetailsId]: {
-              acre: prevData[farmerLandDetailsId]?.acre || "0",
-              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+              ...selectedData,
+              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+              devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
             },
           };
         }
@@ -397,22 +403,22 @@ function DbtApplication() {
   }, []);
 
   // to get uploadable documents
-  const [docListData, setDocListData] = useState([]);
+  // const [docListData, setDocListData] = useState([]);
 
-  const getDocList = () => {
-    api
-      .post(baseURLDBT + `service/getApplicableDocumentList`)
-      .then((response) => {
-        setDocListData(response.data.content);
-      })
-      .catch((err) => {
-        setDocListData([]);
-      });
-  };
+  // const getDocList = () => {
+  //   api
+  //     .post(baseURLDBT + `service/getApplicableDocumentList`)
+  //     .then((response) => {
+  //       setDocListData(response.data.content);
+  //     })
+  //     .catch((err) => {
+  //       setDocListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getDocList();
-  }, []);
+  // useEffect(() => {
+  //   getDocList();
+  // }, []);
 
   // to get scheme-Quota-details
   const [schemeQuotaDetailsListData, setSchemeQuotaDetailsListData] = useState(
@@ -658,92 +664,109 @@ function DbtApplication() {
       event.preventDefault();
 
       // Validate farmer details against land details
-    const farmerDetailsMatch = landDetailsList.every((landDetail) => {
-      return (
-        farmerDetails.village === landDetail.villageName &&
-        farmerDetails.taluk === landDetail.talukName
-        // farmerDetails.farmerName === data.farmerName
-      );
-    });
+      // const farmerDetailsMatch = landDetailsList.every((landDetail) => {
+      //   return (
+      //     farmerDetails.village === landDetail.villageName &&
+      //     farmerDetails.taluk === landDetail.talukName
+      //     // farmerDetails.farmerName === data.farmerName
+      //   );
+      // });
 
-    if (!farmerDetailsMatch) {
-      saveError("Farmer details do not match with the land details.");
-      setDisabled(false);
-      return;
-    }
+      // if (!farmerDetailsMatch) {
+      //   saveError("Farmer details do not match with the land details.");
+      //   setDisabled(false);
+      //   return;
+      // }
 
-      const transformedData = Object.keys(developedArea).map((id) => ({
-        // landDeveloped: developedLand.landDeveloped,
-        // landDetailId: parseInt(id),
-        ...developedArea[id],
-      }));
+      const transformedData = Object.keys(developedArea).map((id) => { 
+        console.log("developed Area",developedArea)
+        console.log("this is ID",id);
+        return {
+          // landDeveloped: developedLand.landDeveloped,
+          // landDetailId: parseInt(id),
+
+          ...developedArea[id],
+        }
+
+      } 
+      // ({
+      //   // landDeveloped: developedLand.landDeveloped,
+      //   // landDetailId: parseInt(id),
+      //   ...developedArea[id],
+      // })
+    );
       const sendPost = {
-      //   farmerId: data.farmerId,
-      //   headOfAccountId: data.scHeadAccountId,
-      //   schemeId: data.scSchemeDetailsId,
-      //   subSchemeId: data.scSubSchemeDetailsId,
-      //   componentType: data.scSubSchemeType,
-      //   componentTypeName: "",
-      //   sanctionAmount: data.sanctionAmount,
-      //   schemeAmount: data.schemeAmount,
-      //   sanctionNo: data.sanctionNumber,
-      //   devAcre: developedLand.acre,
-      //   devGunta: developedLand.gunta,
-      //   devFgunta: developedLand.fgunta,
-      //   categoryId: data.scCategoryId,
-      //   // landDetailId: landData.landId,
-      //   landDetailId: landDetailsIds[0],
-      //   talukId: landData.talukId,
-      //   newFarmer: true,
-      //   expectedAmount: data.expectedAmount,
-      //   financialYearMasterId: data.financialYearMasterId,
-      //   periodFrom: data.periodFrom,
-      //   periodTo: data.periodTo,
-      //   beneficiaryId: data.beneficiaryId,
-      //   componentId: data.scComponentId,
-      //   // ...transformedData[0],
-      // };
-      farmerId: data.farmerId,
+        //   farmerId: data.farmerId,
+        //   headOfAccountId: data.scHeadAccountId,
+        //   schemeId: data.scSchemeDetailsId,
+        //   subSchemeId: data.scSubSchemeDetailsId,
+        //   componentType: data.scSubSchemeType,
+        //   componentTypeName: "",
+        //   sanctionAmount: data.sanctionAmount,
+        //   schemeAmount: data.schemeAmount,
+        //   sanctionNo: data.sanctionNumber,
+        //   devAcre: developedLand.acre,
+        //   devGunta: developedLand.gunta,
+        //   devFgunta: developedLand.fgunta,
+        //   categoryId: data.scCategoryId,
+        //   // landDetailId: landData.landId,
+        //   landDetailId: landDetailsIds[0],
+        //   talukId: landData.talukId,
+        //   newFarmer: true,
+        //   expectedAmount: data.expectedAmount,
+        //   financialYearMasterId: data.financialYearMasterId,
+        //   periodFrom: data.periodFrom,
+        //   periodTo: data.periodTo,
+        //   beneficiaryId: data.beneficiaryId,
+        //   componentId: data.scComponentId,
+        //   // ...transformedData[0],
+        // };
+        fruitsId:data.fruitsId,
+        farmerId: data.farmerId,
         payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
+        // subSchemeId: data.scSubSchemeType,
         subSchemeId: data.scSubSchemeDetailsId,
         categoryId: data.scCategoryId,
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        componentId:data.scComponentId,
+        componentId: data.scComponentId,
+        // componentType: data.scSubSchemeDetailsId,
+        componentType: data.scSubSchemeType,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
         devGunta: 0,
         devFGunta: 0,
         schemeAmount: data.schemeAmount,
-        sanctionNumber: data.sanctionNumber,
+        sanctionNo: data.sanctionNumber,
         initialAmount: data.expectedAmount,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
       };
 
       if (data.equordev === "land") {
-      //   sendPost.applicationFormLandDetailRequestList = [
-      //     {
-      //       unitTypeMasterId: developedLand.unitType,
-      //       landDeveloped: 0,
-      //       ...transformedData[0],
-      //     },
-      //   ];
-      // } else if (data.equordev === "equipment") {
-      //   sendPost.applicationFormLineItemRequestList = [
-      //     {
-      //       unitTypeMasterId: equipment.unitType,
-      //       lineItemComment: equipment.description,
-      //       cost: equipment.price,
-      //       vendorId: equipment.vendorId,
-      //     },
-      //   ];
-      // }
-      sendPost.dbtFarmerLandDetailsRequestList = transformedData;
+        //   sendPost.applicationFormLandDetailRequestList = [
+        //     {
+        //       unitTypeMasterId: developedLand.unitType,
+        //       landDeveloped: 0,
+        //       ...transformedData[0],
+        //     },
+        //   ];
+        // } else if (data.equordev === "equipment") {
+        //   sendPost.applicationFormLineItemRequestList = [
+        //     {
+        //       unitTypeMasterId: equipment.unitType,
+        //       lineItemComment: equipment.description,
+        //       cost: equipment.price,
+        //       vendorId: equipment.vendorId,
+        //     },
+        //   ];
+        // }
+        console.log("transferData",transformedData);
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
@@ -767,7 +790,12 @@ function DbtApplication() {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
             setDisabled(false);
-          } else {
+          }
+          else if(response.data.content && response.data.content.error ) {
+            saveError(response.data.content.error_description);
+            setDisabled(false);
+          }
+           else {
             saveSuccess();
             setDisabled(false);
             setApplicationId(response.data.content.applicationDocumentId);
@@ -791,7 +819,6 @@ function DbtApplication() {
       setValidated(true);
     }
   };
-
 
   const styles = {
     ctstyle: {
@@ -1167,7 +1194,6 @@ function DbtApplication() {
   //   }
   // };
 
-  
   const search = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -1178,102 +1204,153 @@ function DbtApplication() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
-      }else{
+      } else {
         setDisable(true);
       }
+      // api
+      //   .post(baseURLRegistration + `farmer/get-farmer-details`, {
+      //     fruitsId: data.fruitsId,
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //     if (!response.data.content.error) {
+      //       if (response.data.content.farmerResponse) {
+      //         setData((prev) => ({
+      //           ...prev,
+      //           farmerId: response.data.content.farmerResponse.farmerId,
+      //         }));
+      //         setFarmerDetails((prev) => ({
+      //           ...prev,
+      //           farmerName: response.data.content.farmerResponse.firstName,
+      //           districtName:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].districtName
+      //               : "",
+      //           talukName:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].talukName
+      //               : "",
+      //           hobli:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].hobliName
+      //               : "",
+      //           village:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].villageName
+      //               : "",
+      //         }));
+      //         setShowFarmerDetails(true);
+      //       }
+      //       // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+      //       //   setLandDetailsList(
+      //       //     response.data.content.farmerLandDetailsDTOList
+      //       //   );
+      //       // }
+
+      //       api
+      //         .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+      //           fruitsId: data.fruitsId,
+      //         })
+      //         .then((response) => {
+      //           console.log("landdetails", response.data);
+      //           if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+      //             setLandDetailsList(
+      //               response.data.content.farmerLandDetailsDTOList
+      //             );
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           setLandDetailsList([]);
+      //         });
+
+      //       if (
+      //         response.data.content.farmerAddressDTOList &&
+      //         response.data.content.farmerAddressDTOList.length > 0
+      //       ) {
+      //         setLandData((prev) => ({
+      //           ...prev,
+      //           talukId:
+      //             response.data.content.farmerAddressDTOList[0].talukId || 0,
+      //         }));
+      //       }
+      //     } else {
+      //       saveError(response.data.content.error_description);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     if (
+      //       err.response &&
+      //       err.response &&
+      //       err.response.data &&
+      //       err.response.data.validationErrors
+      //     ) {
+      //       if (Object.keys(err.response.data.validationErrors).length > 0) {
+      //         saveError(err.response.data.validationErrors);
+      //       }
+      //     }
+      //   });
+
       api
-        .post(baseURLRegistration + `farmer/get-farmer-details`, {
+        .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
           fruitsId: data.fruitsId,
         })
         .then((response) => {
-          console.log(response);
-          if (!response.data.content.error) {
-            if (response.data.content.farmerResponse) {
-              setData((prev) => ({
-                ...prev,
-                farmerId: response.data.content.farmerResponse.farmerId,
-              }));
+          if (response.data.content.farmerResponse) {
+            setData((prev) => ({
+              ...prev,
+              farmerId: response.data.content.farmerResponse.farmerId,
+            }));
+            setFarmerDetails((prev) => ({
+              ...prev,
+              farmerName: response.data.content.farmerResponse.firstName,
+              // districtName:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].districtName
+              //     : "",
+              // talukName:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].talukName
+              //     : "",
+              // hobli:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].hobliName
+              //     : "",
+              // village:
+              //   response.data.content.farmerAddressDTOList &&
+              //   response.data.content.farmerAddressDTOList.length > 0
+              //     ? response.data.content.farmerAddressDTOList[0].villageName
+              //     : "",
+            }));
+            if (response.data.content.farmerAddressDTOList.length > 0) {
               setFarmerDetails((prev) => ({
                 ...prev,
-                farmerName: response.data.content.farmerResponse.firstName,
-                districtName: response.data.content.farmerAddressDTOList &&
-                response.data.content.farmerAddressDTOList.length > 0
-                  ? response.data.content.farmerAddressDTOList[0].districtName
-                  : "",
-                  talukName: response.data.content.farmerAddressDTOList &&
-                response.data.content.farmerAddressDTOList.length > 0
-                  ? response.data.content.farmerAddressDTOList[0].talukName
-                  : "",
-                hobli:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].hobliName
-                    : "",
-                village:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].villageName
-                    : "",
-              }));
-              setShowFarmerDetails(true);
-            }
-            // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-            //   setLandDetailsList(
-            //     response.data.content.farmerLandDetailsDTOList
-            //   );
-            // }
-
-            api
-              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-                fruitsId: data.fruitsId,
-              })
-              .then((response) => {
-                console.log(
-                  "landdetails",
-                  response.data.content.farmerLandDetailsDTOList
-                );
-                if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-                  setLandDetailsList(
-                    response.data.content.farmerLandDetailsDTOList
-                  );
-                }
-              })
-              .catch((err) => {
-                setLandDetailsList([]);
-              });
-
-            if (
-              response.data.content.farmerAddressDTOList &&
-              response.data.content.farmerAddressDTOList.length > 0
-            ) {
-              setLandData((prev) => ({
-                ...prev,
-                talukId:
-                  response.data.content.farmerAddressDTOList[0].talukId || 0,
+                address:
+                  response.data.content.farmerAddressDTOList[0].addressText,
               }));
             }
-          } else {
-            saveError(response.data.content.error_description);
+            setShowFarmerDetails(true);
+          }
+          console.log("landdetails", response.data);
+          if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+            setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
           }
         })
         .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
+          setLandDetailsList([]);
         });
     }
   };
 
-  const handleInlineDevelopedLandChange = (e, row) => {
+  const handleInlineDevelopedLandChange = (e, row, i) => {
     const { name, value } = e.target;
-    const farmerLandDetailsId = row.farmerLandDetailsId;
+    const farmerLandDetailsId = i;
 
     setDevelopedArea((prevData) => ({
       ...prevData,
@@ -1288,13 +1365,13 @@ function DbtApplication() {
     {
       name: "Select",
       selector: "select",
-      cell: (row) => (
+      cell: (row, i) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.farmerLandDetailsId}
-          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
-          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+          value={i}
+          checked={landDetailsIds.includes(i)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1399,29 +1476,29 @@ function DbtApplication() {
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
       // selector: (row) => row.acre,
-      cell: (row) => (
+      cell: (row, i) => (
         <>
           <Form.Control
-            name="acre"
+            name="devAcre"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devAcre || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="Acre"
             className="m-1"
           />
           <Form.Control
-            name="gunta"
+            name="devGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="Gunta"
             className="m-1"
           />
           <Form.Control
-            name="fgunta"
+            name="devFGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devFGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="FGunta"
             className="m-1"
           />
@@ -1697,20 +1774,22 @@ function DbtApplication() {
                 //     <Card.Header>Farmer Personal Info</Card.Header>
                 //     <Card.Body>
                 <Row className="g-gs mt-1">
-                  <Col lg="12">
+                  <Col lg="8">
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
                           <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> District:</td>
+                          <td style={styles.ctstyle}> Addres:</td>
+                          <td>{farmerDetails.address}</td>
+                          {/* <td style={styles.ctstyle}> District:</td>
                           <td>{farmerDetails.districtName}</td>
                           <td style={styles.ctstyle}> Taluk:</td>
                           <td>{farmerDetails.talukName}</td>
                           <td style={styles.ctstyle}> Hobli :</td>
                           <td>{farmerDetails.hobli}</td>
                           <td style={styles.ctstyle}> Village:</td>
-                          <td>{farmerDetails.village}</td>
+                          <td>{farmerDetails.village}</td> */}
                         </tr>
                       </tbody>
                     </table>
