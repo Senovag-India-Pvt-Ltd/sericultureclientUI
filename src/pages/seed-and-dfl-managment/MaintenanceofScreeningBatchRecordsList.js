@@ -452,7 +452,7 @@ function MaintenanceofScreeningBatchRecordsList() {
     },
 
     {
-      name: "Total number of cocoons produced at each generation",
+      name: "Total number of cocoons produced",
       selector: (row) => row.cocoonsProducedAtEachGeneration,
       cell: (row) => <span>{row.cocoonsProducedAtEachGeneration}</span>,
       sortable: true,

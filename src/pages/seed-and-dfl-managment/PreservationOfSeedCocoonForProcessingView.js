@@ -103,6 +103,14 @@ function PreservationOfSeedCocoonForProcessingView() {
                         <td>{seedCocoon.lotNumber}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Market:</td>
+                        <td>{seedCocoon.marketMasterName}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Farm:</td>
+                        <td>{seedCocoon.farmName}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Race:</td>
                         <td>{seedCocoon.raceName}</td>
                       </tr>

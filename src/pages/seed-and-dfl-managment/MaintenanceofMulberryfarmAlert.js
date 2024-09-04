@@ -396,7 +396,7 @@ function MaintenanceofMulberryfarmAlert() {
                       </option>
                       <option value="0">Pending</option>
                       <option value="1">Completed</option>
-                      {/* <option value="3">Other</option> */}
+                      <option value="2">Activity Not Required</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -415,7 +415,7 @@ function MaintenanceofMulberryfarmAlert() {
                       <option value="">Select FYM Status</option>
                       <option value="0">Pending</option>
                       <option value="1">Completed</option>
-                      {/* <option value="3">Other</option> */}
+                      <option value="2">Activity Not Required</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -435,7 +435,7 @@ function MaintenanceofMulberryfarmAlert() {
                       <option value="">Select Irrigation Status</option>
                       <option value="0">Pending</option>
                       <option value="1">Completed</option>
-                      {/* <option value="3">Other</option> */}
+                      <option value="2">Activity Not Required</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -454,7 +454,7 @@ function MaintenanceofMulberryfarmAlert() {
                       <option value="">Select Brushing Status</option>
                       <option value="0">Pending</option>
                       <option value="1">Completed</option>
-                      {/* <option value="3">Other</option> */}
+                      <option value="2">Activity Not Required</option>
                     </Form.Select>
                   </div>
                 </Form.Group>

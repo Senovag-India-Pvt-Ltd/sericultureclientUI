@@ -405,7 +405,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
 
                           
 
-                {/* <Col lg="4">
+                <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                       Lot Number
@@ -432,9 +432,9 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -454,7 +454,7 @@ function MaintenanceOfLineRecordsForEachRaceEdit() {
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">

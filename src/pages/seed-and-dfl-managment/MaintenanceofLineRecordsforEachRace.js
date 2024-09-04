@@ -489,7 +489,6 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                     </Col> */}
 
                           
-{/* 
                   <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
@@ -517,9 +516,9 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                       </div>
                     </Col>
                   </Form.Group>
-                </Col> */}
+                </Col> 
 
-                <Col lg="4">
+                {/* <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
                               <Form.Label htmlFor="sordfl">
                                 Lot Number<span className="text-danger">*</span>
@@ -539,7 +538,7 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
-                          </Col>
+                          </Col> */}
 
                         <Col lg="4">
                             <Form.Group className="form-group  mt-n4">
