@@ -35,6 +35,7 @@ function Preservationofseedcocoonforprocessing() {
     ratePerKg: "",
     farmId: "",
     marketMasterId: "",
+    parentLotNumber: "",
   });
 
   let name, value;
@@ -87,7 +88,8 @@ function Preservationofseedcocoonforprocessing() {
               invoiceDate: "",
               ratePerKg: "",
               farmId: "",
-              marketMasterId: "",          
+              marketMasterId: "", 
+              parentLotNumber: "",         
             });
             // setReceiptUpload("")
             // document.getElementById("viewReceipt").value = "";
@@ -119,9 +121,29 @@ function Preservationofseedcocoonforprocessing() {
       invoiceDate: "",
       ratePerKg: "",
       farmId: "",
-      marketMasterId: "",  
+      marketMasterId: "",
+      parentLotNumber: "",  
     })
   }
+
+  // to get Lot
+  const [lotParentListData, setParentLotListData] = useState([]);
+
+  const getParentLotList = () => {
+    const response = api
+      .get(baseURLSeedDfl + `PreservationOfSeed/get-all-parent-lot-number-list`)
+      .then((response) => {
+        setLotListData(response.data);
+      })
+      .catch((err) => {
+        setLotListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getParentLotList();
+  }, []);
+
 
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
@@ -340,6 +362,35 @@ useEffect(() => {
                 </Col>
 
                 <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Parent Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="parentLotNumber"
+                          value={data.parentLotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.parentLotNumber}>
+                              {list.parentLotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Parent Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
                             Farm<span className="text-danger">*</span>
@@ -456,11 +507,11 @@ useEffect(() => {
                         onChange={handleInputs}
                         type="text"
                         placeholder="Enter Name of the Government Seed Farm/Farmer"
-                        required
+                        // required
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                       Name of the Government Seed Farm/Farmer is required
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </div>
                   </Form.Group>
                 </Col>

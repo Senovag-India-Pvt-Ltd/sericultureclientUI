@@ -31,6 +31,7 @@ function RearingofDFLsforthe8Lines() {
     spunOnDate: "",
     wormTestDatesAndResults: "",
     cropFailureDetails: "",
+    hatchingDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -78,6 +79,7 @@ function RearingofDFLsforthe8Lines() {
               spunOnDate: "",
               wormTestDatesAndResults: "",
               cropFailureDetails: "",
+              hatchingDate: "",
             });
             setValidated(false);
           }
@@ -107,6 +109,7 @@ function RearingofDFLsforthe8Lines() {
       spunOnDate: "",
       wormTestDatesAndResults: "",
       cropFailureDetails: "",
+      hatchingDate: "",
     });
   };
 
@@ -543,7 +546,30 @@ function RearingofDFLsforthe8Lines() {
                               </div>
                             </Form.Group>
                           </Col>
-                         
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Hatching date<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.hatchingDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "hatchingDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>  
+                            </Form.Group>
+                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>

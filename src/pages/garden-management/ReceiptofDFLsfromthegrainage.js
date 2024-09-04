@@ -2,237 +2,397 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
-
+import { createTheme } from "react-data-table-component";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-
+import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import api from "../../../src/services/auth/api";
+import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
-const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
-
+const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReceiptofDFLsfromthegrainage() {
-  const [data, setData] = useState({
-    raceOfDfls: "",
-    laidOnDate: "",
-    grainage: "",
-    lotNumber: "",
-    numberOfDFLsReceived: "",
-    dflsRecDate: "",
-    invoiceDetails: "",
-    generationDetails: "",
-    viewReceipt: "",
-  });
-
-  const [validated, setValidated] = useState(false);
-
-  let name, value;
-  const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-    setData({ ...data, [name]: value });
-  };
-  // const handleDateChange = (newDate) => {
-  //   setData({ ...data, applicationDate: newDate });
-  // };
-
+  const [listData, setListData] = useState({});
+  const [listLogsData, setListLogsData] = useState({});
+  const [page, setPage] = useState(0);
+  const countPerPage = 5;
+  const [totalRows, setTotalRows] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
-  const postData = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      event.preventDefault();
-      // event.stopPropagation();
-      api
-        .post(baseURL2 + `Receipt/add-info`, data)
-        .then((response) => {
-          if (response.data.receiptOfDflsId) {
-            const receiptId = response.data.receiptOfDflsId;
-            handleReceiptUpload(receiptId);
-          }
-          if (response.data.error) {
-            saveError(response.data.message);
-          } else {
-            saveSuccess();
-            setData({
-              raceOfDfls: "",
-              laidOnDate: "",
-              grainage: "",
-              lotNumber: "",
-              numberOfDFLsReceived: "",
-              dflsRecDate: "",
-              invoiceDetails: "",
-              generationDetails: "",
-              viewReceipt: "",
-            });
-            setReceiptUpload("")
-document.getElementById("viewReceipt").value = "";
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
-          }
-        });
-      setValidated(true);
-    }
-  };
+  const [showModal, setShowModal] = useState(true);
 
-  const clear = () => {
-    setData({
-      raceOfDfls: "",
-      laidOnDate: "",
-      grainage: "",
-      lotNumber: "",
-      numberOfDFLsReceived: "",
-      dflsRecDate: "",
-      invoiceDetails: "",
-      generationDetails: "",
-      viewReceipt: "",
-    });
-    setReceiptUpload("")
-    document.getElementById("viewReceipt").value = "";
-  };
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
+  const getReceiptList = () => {
+    setLoading(true);
 
-  // to get Race
-  const [raceListData, setRaceListData] = useState([]);
-
-  const getRaceList = () => {
     const response = api
-      .get(baseURL + `raceMaster/get-all`)
+      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-info`)
       .then((response) => {
-        setRaceListData(response.data.content.raceMaster);
+        // console.log(response.data)
+        setListLogsData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
       })
       .catch((err) => {
-        setRaceListData([]);
+        // setListData({});
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    getRaceList();
+    getReceiptList();
   }, []);
 
-  // to get Grainage
-  const [grainageListData, setGrainageListData] = useState([]);
+  // const handleDateChange = (date, type) => {
+  //   setData({ ...data, [type]: date });
+  // };
 
-  const getGrainageList = () => {
+  const getList = () => {
+    setLoading(true);
     const response = api
-      .get(baseURL + `grainageMaster/get-all`)
+      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-alert-data`)
       .then((response) => {
-        setGrainageListData(response.data.content.grainageMaster);
-      })
-      .catch((err) => {
-        setGrainageListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getGrainageList();
-  }, []);
-
-  // to get Grainage
-  const [generationListData, setGenerationListData] = useState([]);
-
-  const getGenerationList = () => {
-    const response = api
-      .get(baseURL + `generationNumberMaster/get-all`)
-      .then((response) => {
-        setGenerationListData(response.data.content.generationNumberMaster);
-      })
-      .catch((err) => {
-        setGenerationListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getGenerationList();
-  }, []);
-
- 
-
-  // Display Image
-  const [receiptUpload, setReceiptUpload] = useState("");
- 
-  const handleUploadChange = (e) => {
-    const file = e.target.files[0];
-    setReceiptUpload(file);
-    setData((prev) => ({ ...prev, viewReceipt: file.name }));
-  };
-
-  // Upload Image to S3 Bucket
-  const handleReceiptUpload = async (receiptid) => {
-    const parameters = `receiptOfDflsId=${receiptid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", receiptUpload);
-
-      const response = await api.post(
-        baseURL2 + `Receipt/upload-reciept?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        // console.log(response.data)
+        setListData(response.data);
+        // setTotalRows(response.data.content.totalItems);
+        setLoading(false);
+        if (response.data.length > 0) {
+          setShowModal(true);
+        } else {
+          setShowModal(false);
         }
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
+      })
+      .catch((err) => {
+        // setListData({});
+        setLoading(false);
+      });
   };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   const navigate = useNavigate();
-  const saveSuccess = (message) => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      text: message,
-    });
-  };
-  const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
+ 
+  const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
-      html: errorMessage,
+      title: "Reject attempt was not successful",
+      text: "Something went wrong!",
     });
   };
 
+  const deleteConfirm = (_sodId, status) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Reject permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Reject it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/accept-reject-dfls/${_sodId}/${status}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Rejected",
+              "You successfully rejected this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not rejected", "info");
+      }
+    });
+  };
+
+  const acceptError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Accept attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const acceptConfirm = (_sodId, status) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will Accept!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Accept it!",
+    }).then((result) => {
+      if (result.value) {
+        console.log("hello");
+        const response = api
+          .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/accept-reject-dfls/${_sodId}/${status}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            getList();
+            Swal.fire(
+              "Accepted",
+              "You successfully Accepted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            acceptError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not accepted", "info");
+      }
+    });
+  };
+
+
+
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#004b8e",
+        secondary: "#2aa198",
+      },
+      background: {
+        default: "#fff",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#d3d3d3",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.02)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "light"
+  );
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "45px", // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#1e67a8",
+        color: "#fff",
+        fontSize: "14px",
+        paddingLeft: "8px", // override the cell padding for head cells
+        paddingRight: "8px",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+      },
+    },
+  };
+
+  const ReceiptofDFLsfromtheP4grainageDataColumns = [
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     <div className="text-start w-100">
+    //       <Button
+    //         variant="primary"
+    //         size="sm"
+    //         onClick={() => handleEdit(row.id)}
+    //       >
+    //         Edit
+    //       </Button>
+         
+    //       <Button
+    //         variant="danger"
+    //         size="sm"
+    //         onClick={() => deleteConfirm(row.id)}
+    //         className="ms-2"
+    //       >
+    //         Delete
+    //       </Button>
+    //     </div>
+    //   ),
+    //   sortable: false,
+    //   hide: "md",
+    //   // grow: 3,
+    // },
+    {
+      name: "Laid On Date",
+      selector: (row) => row.laidOnDate,
+      cell: (row) => <span>{row.laidOnDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Line Name",
+      selector: (row) => row.lineName,
+      cell: (row) => <span>{row.lineName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Number",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Date",
+      selector: (row) => row.invoiceDate,
+      cell: (row) => <span>{row.invoiceDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "No Of DFLs Received",
+      selector: (row) => row.numberOfDflsReleased,
+      cell: (row) => <span>{row.numberOfDflsReleased}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Generation Number",
+      selector: (row) => row.generationNumber,
+      cell: (row) => <span>{row.generationNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+  const ReceiptofDFLsfromtheP4grainageGardenDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        //   Button style
+        <div className="text-start w-100">
+          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => acceptConfirm(row.sodId, 1)}
+          >
+            Accept
+          </Button>
+         
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.sodId, 2)}
+            className="ms-2"
+          >
+            Reject
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      // grow: 3,
+    },
+
+    {
+      name: "Lot Number",
+      selector: (row) => row.lotNumber,
+      cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Grainage",
+      selector: (row) => row.grainageMasterName,
+      cell: (row) => <span>{row.grainageMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Number",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Date",
+      selector: (row) => row.invoiceDate,
+      cell: (row) => <span>{row.invoiceDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "No Of DFLs Received",
+      selector: (row) => row.numberOfDflsDisposed,
+      cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Accepted or not",
+      selector: (row) => row.isAccepted,
+      cell: (row) => (
+        <span>
+          {row.isAccepted === 0
+            ? "Pending"
+            : row.isAccepted === 1
+            ? "Accepted"
+            : row.isAccepted === 2
+            ? "Rejected"
+            : "Unknown"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+  ];
+
+
+  
   return (
-    <Layout title="Receipt of DFLs from the grainage">
+    <Layout title="Receipt of DFLs from the P4 grainage">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Receipt of DFLs from the grainage
+              Receipt of DFLs from the P4 grainage
             </Block.Title>
+           
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link
-                  to="/seriui/receipt-of-dfls-list"
+                {/* <Link
+                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -241,12 +401,12 @@ document.getElementById("viewReceipt").value = "";
               </li>
               <li>
                 <Link
-                  to="/seriui/receipt-of-dfls-list"
+                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
                   <span>Go to List</span>
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </Block.HeadContent>
@@ -254,279 +414,199 @@ document.getElementById("viewReceipt").value = "";
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form action="#"> */}
-        <Form noValidate validated={validated} onSubmit={postData}>
-          {/* <Row className="g-3 "> */}
-          <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Receipt Of DFLs From The Grainage
-            </Card.Header>
-            <Card.Body>
-              {/* <h3>Farmers Details</h3> */}
-              <Row className="g-gs">
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Race<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="raceOfDfls"
-                          value={data.raceOfDfls}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Race</option>
-                          {raceListData.map((list) => (
-                            <option
-                              key={list.raceMasterId}
-                              value={list.raceMasterId}
-                            >
-                              {list.raceMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Race is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Grainage<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="grainage"
-                          value={data.grainage}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Grainage</option>
-                          {grainageListData.map((list) => (
-                            <option
-                              key={list.grainageMasterId}
-                              value={list.grainageMasterId}
-                            >
-                              {list.grainageMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Grainage is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="plotNumber">
-                      Lot Number<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="lotNumber"
-                        name="lotNumber"
-                        value={data.lotNumber}
-                        onChange={handleInputs}
-                        maxLength="12"
-                        type="text"
-                        placeholder="Enter Lot Number"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="numberOfDFLsReceived">
-                      Number Of DFLs received
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="numberOfDFLsReceived"
-                        name="numberOfDFLsReceived"
-                        value={data.numberOfDFLsReceived}
-                        onChange={handleInputs}
-                        maxLength="4"
-                        type="text"
-                        placeholder="Enter Number Of DFLs received"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Number Of DFLs is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="invoiceDetails">
-                      Invoice No<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        id="invoiceDetails"
-                        name="invoiceDetails"
-                        value={data.invoiceDetails}
-                        onChange={handleInputs}
-                        type="text"
-                        placeholder="Enter Invoice No"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Invoice Details is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Generation Details<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="generationDetails"
-                          value={data.generationDetails}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Generation Details</option>
-                          {generationListData.map((list) => (
-                            <option
-                              key={list.generationNumberId}
-                              value={list.generationNumberId}
-                            >
-                              {list.generationNumber}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          Generation Details is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="2">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      Laid On Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <DatePicker
-                        selected={data.laidOnDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "laidOnDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="2">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="sordfl">
-                      DFLs received Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <DatePicker
-                        selected={data.dflsRecDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "dflsRecDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-
-                <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="fileUploadPath">
-                      Upload Receipt(png/jpg/pdf)(Max:2mb)
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="viewReceipt"
-                        name="viewReceipt"
-                        // value={data.photoPath}
-                        onChange={handleUploadChange}
-                      />
-                    </div>
-                  </Form.Group>
-
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {receiptUpload ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(receiptUpload)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-
-          <div className="gap-col">
-            <ul className="d-flex align-items-center justify-content-center gap g-3">
-              <li>
-                {/* <Button type="button" variant="primary" onClick={postData}> */}
-                <Button type="submit" variant="primary">
-                  Save
-                </Button>
-              </li>
-              <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                  Cancel
-                </Button>
-              </li>
-            </ul>
-          </div>
-          {/* </Row> */}
-        </Form>
+        <Card>
+          <DataTable
+            // title="New Trader License List"
+            tableClassName="data-table-head-light table-responsive"
+            columns={ReceiptofDFLsfromtheP4grainageDataColumns}
+            data={listLogsData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </Card>
       </Block>
+
+      {/* <Block className="mt-4">
+        <Form noValidate validated={validated} onSubmit={postData}>
+          <Row className="g-3 ">
+            <div>
+              <Row className="g-gs">
+                <Col lg="12">
+                  <Block>
+                    <Card>
+                      <Card.Header>
+                        Receipt of DFLs from the P4 grainage{" "}
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Lot  Number"
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Laid on Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  maxDate={new Date()}
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Line Number/Year
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Line Number/Year"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Number of DFLs received
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  type="text"
+                                  placeholder="Number of DFLs received"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="sordfl">
+                                Invoice no. and Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.pruningDate}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "pruningDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  maxDate={new Date()}
+                                  dropdownMode="select"
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                    
+                    <div className="gap-col">
+                      <ul className="mt-1 d-flex align-items-center justify-content-center gap g-3">
+                        <li>
+                          <Button type="submit" variant="primary">
+                            Save
+                          </Button>
+                        </li>
+                        <li>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={clear}
+                          >
+                            Cancel
+                          </Button>
+                        </li>
+                      </ul>
+                    </div>
+                  </Block>
+                </Col>
+               
+              </Row>
+            </div>
+          </Row>
+        </Form>
+      </Block> */}
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Alerts Window</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={ReceiptofDFLsfromtheP4grainageGardenDataColumns}
+                data={listData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
+
 export default ReceiptofDFLsfromthegrainage;

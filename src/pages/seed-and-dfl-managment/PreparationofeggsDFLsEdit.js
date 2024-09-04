@@ -33,20 +33,51 @@ function PreparationofeggsDFLsEdit() {
     lineNameId: "",
     raceId: "",
     parentLotNumber: "",
+    selectedCocoonsNo: "",
+    rejectedCocoonsNo: "",
+    errPerSelectedCocoonsNo:"",
+    errPerRejectedCocoonsNo: "",
+    pairNoSelectedCocoonsNo:"",
+    pairNoRejectedCocoonsNo: "",
+    eggSheetSerialNos:"",
+    remainingDfls :"",
   });
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
   let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+  
+    // Update the data state for the input field
+    setData((prevData) => {
+      // Calculate DFLs obtained if numberOfPairs or numberOfRejection is updated
+      let dflsObtained = prevData.dflsObtained;
+      if (name === "numberOfPairs" || name === "numberOfRejection") {
+        const numberOfPairs = name === "numberOfPairs" ? parseInt(value) : parseInt(prevData.numberOfPairs);
+        const numberOfRejection = name === "numberOfRejection" ? parseInt(value) : parseInt(prevData.numberOfRejection);
+        dflsObtained = numberOfPairs - numberOfRejection;
+      }
+  
+      return { ...prevData, [name]: value, dflsObtained };
+    });
   };
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
+  };
+
+  const [selectedLotType, setSelectedLotType] = useState("newLot");
+
+  const handleLotTypeChange = (event) => {
+    setSelectedLotType(event.target.value);
   };
 
   const isDateOfMothEmergence = !!data.dateOfMothEmergence;
@@ -101,9 +132,17 @@ function PreparationofeggsDFLsEdit() {
       lineNameId: "",
       raceId: "",
       parentLotNumber: "",
+      selectedCocoonsNo: "",
+      rejectedCocoonsNo: "",
+      errPerSelectedCocoonsNo:"",
+      errPerRejectedCocoonsNo: "",
+      pairNoSelectedCocoonsNo:"",
+      pairNoRejectedCocoonsNo: "",
+      eggSheetSerialNos:"",
+      remainingDfls :"",
     });
     setValidated(false);
-    getIdList();
+    // getIdList();
   };
 
   //   to get data from api
@@ -287,6 +326,46 @@ function PreparationofeggsDFLsEdit() {
 
      
       <Block className="mt-n4">
+      <Card>
+          <Card.Body>
+            <Row lg="12" className="g-gs">
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="farm">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="lotType"
+                      // label="New Lot"
+                      value="newLot"
+                      checked={selectedLotType === "newLot"}
+                      onChange={handleLotTypeChange}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="farm">
+                    New Lot
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+              
+              <Col lg="1">
+                <Form.Group as={Row} className="form-group" controlId="crc">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="radio"
+                      name="lotType"
+                      value="presentLot"
+                      checked={selectedLotType === "presentLot"}
+                      onChange={handleLotTypeChange}
+                    />
+                  </Col>
+                  <Form.Label column sm={9} className="mt-n2" id="crc">
+                    Present Lot
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <div>
@@ -334,10 +413,11 @@ function PreparationofeggsDFLsEdit() {
                   </Form.Group>
                 </Col> */}
 
-                <Col lg="4">
+                {selectedLotType === "presentLot" && (
+            <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Lot Number
+                     Lot Number
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -361,7 +441,39 @@ function PreparationofeggsDFLsEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> 
+                    )}
+
+                    {selectedLotType === "newLot" && (
+                      <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                     Cocoon Lot Number
+                    </Form.Label>
+                    <Col>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="parentLotNumber"
+                          value={data.parentLotNumber}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // required
+                        >
+                          <option value="">Select Lot Number</option>
+                          {lotListData && lotListData.length?(lotListData.map((list) => (
+                            <option key={list.id} value={list.parentLotNumber}>
+                              {list.parentLotNumber}
+                            </option>
+                          ))): ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  </Form.Group>
+                </Col> 
+                    )}
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -394,8 +506,7 @@ function PreparationofeggsDFLsEdit() {
                       </Form.Group>
                     </Col>
                     
-                        <Col lg="4">
-
+                    <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Line Details/year<span className="text-danger">*</span>
@@ -462,7 +573,7 @@ function PreparationofeggsDFLsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfCocoonsCB">
-                              Number of Cocoons in Kg
+                              Cocoon's Purchased (in Kg's / Nos)
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -472,11 +583,11 @@ function PreparationofeggsDFLsEdit() {
                                   value={data.numberOfCocoonsCB}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="Enter Number of Cocoons in Kg"
+                                  placeholder="Enter Cocoon's Purchased (in Kg's / Nos)"
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                Number of Cocoons in Kg is required
+                                Cocoon's Purchased (in Kg's / Nos) is required
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>
@@ -574,6 +685,94 @@ function PreparationofeggsDFLsEdit() {
 
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="selectedCocoon">
+                              Selected Cocoon's in Nos
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="selectedCocoonsNo"
+                                  name="selectedCocoonsNo"
+                                  value={data.selectedCocoonsNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Selected Cocoon's in Nos"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Selected Cocoon's in Nos is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rejectedCocoon">
+                              Rejected Cocoon's in Nos
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rejectedCocoon"
+                                  name="rejectedCocoonsNo"
+                                  value={data.rejectedCocoonsNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Rejected Cocoon's in Nos"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Rejected Cocoon's in Nos is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfPairs">
+                              No of Pairs (%) (Selected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="pairNoSelectedCocoonsNo"
+                                  name="pairNoSelectedCocoonsNo"
+                                  value={data.pairNoSelectedCocoonsNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="No of Pairs (%) (Selected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                No of Pairs (%) (Selected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfPairs">
+                              No of Pairs (%) (Rejected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="pairNoRejectedCocoonsNo"
+                                  name="pairNoRejectedCocoonsNo"
+                                  value={data.pairNoRejectedCocoonsNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="No of Pairs (%) (Rejected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                No of Pairs (%) (Rejected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
                                 Number of pairs
                                 <span className="text-danger">*</span>
@@ -632,11 +831,57 @@ function PreparationofeggsDFLsEdit() {
                                   onChange={handleInputs}
                                   type="number"
                                   placeholder="DFLs obtained"
+                                  readOnly
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
                                   DFLs obtained is required
                                 </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggRecoveryPercentage">
+                              Err %(Selected Cocoon's)
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="errPerSelectedCocoonsNo"
+                                  name="errPerSelectedCocoonsNo"
+                                  value={data.errPerSelectedCocoonsNo}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Err %(Selected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Err %(Selected Cocoon's) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="eggRecoveryPercentage">
+                              Err %(Rejected Cocoon's)
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="errPerRejectedCocoonsNo"
+                                  name="errPerRejectedCocoonsNo"
+                                  value={data.errPerRejectedCocoonsNo }
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Err %(Rejected Cocoon's)"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Err %(Rejected Cocoon's) is required
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -660,6 +905,29 @@ function PreparationofeggsDFLsEdit() {
                                 <Form.Control.Feedback type="invalid">
                                   Egg Recovery % is required
                                 </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="testResults">
+                                Remaining DFLs 
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="remainingDFLs"
+                                  name="remainingDfls"
+                                  value={data.remainingDfls}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder="Remaining DFLs"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Test results is required
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -764,9 +1032,17 @@ function PreparationofeggsDFLsEdit() {
                           variant="secondary"
                           onClick={clear}
                         >
-                          Cancel
+                          Clear
                         </Button>
                       </li>
+                {/* <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li> */}
                     </ul>
                   </div>
                 </Col>

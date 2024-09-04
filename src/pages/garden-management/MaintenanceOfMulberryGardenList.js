@@ -18,6 +18,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 function MaintenanceOfMulberryGardenList() {
   const [listData, setListData] = useState({});
   const [listLogsData, setListLogsData] = useState({});
+  const [listAlertData, setListAlertData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
@@ -69,6 +70,148 @@ function MaintenanceOfMulberryGardenList() {
       });
   };
 
+  const [pruningDate, setPruningDate] = useState({
+    id: "",
+    fertilizerApplicationStatus: "0",
+    fymApplicationStatus: "0",
+    irrigationStatus: "0",
+    brushingStatus: "0",
+  });
+
+  const [validatedPruningDateEdit, setValidatedPruningDateEdit] = useState(false);
+
+  const [showModal1, setShowModal1] = useState(false);
+
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal1 = () => setShowModal1(false);
+
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+  const getAlertList = () => {
+    setLoading(true);
+
+    api
+      .get(baseURL2 + `Mulberry-garden/get-alerts-list`)
+      .then((response) => {
+        setListAlertData(response.data);
+        setLoading(false);
+        if (response.data.length > 0) {
+          setShowModal1(true);
+        } else {
+          setShowModal1(false);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getAlertList();
+  }, []);
+
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidatedPruningDateEdit(true);
+    } else {
+      event.preventDefault();
+      api
+        .post([baseURL2] + `Mulberry-garden/update-task-status`, pruningDate)
+        .then((response) => {
+          updateSuccess(response.data.message);
+          getAlertList();
+        })
+        .catch((err) => {
+          if (err.response.data.validationErrors) {
+            updateError(err.response.data.validationErrors);
+          }
+        });
+      setValidatedPruningDateEdit(true);
+      handleCloseModal2();
+    }
+  };
+
+  const handlePruningInputs = (e) => {
+    const { name, value } = e.target;
+    setPruningDate({ ...pruningDate, [name]: value });
+  };
+
+  const isTodayOrFutureDate = (date) => {
+    if (!date) {
+        return false; // Return false if date is null or undefined
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    return date <= today;
+};
+
+
+  const [dates, setDates] = useState({
+    fertilizerApplicationDate: null,
+    fymApplicationDate: null,
+    irrigationDate: null,
+    brushingDate: null,
+  });
+
+  const handleStatusEdit = (row) => {
+    setShowModal2(true);
+    setPruningDate({
+      id: row.id,
+      fertilizerApplicationStatus: row.fertilizerApplicationStatus,
+      fymApplicationStatus: row.fymApplicationStatus,
+      irrigationStatus: row.irrigationStatus,
+      brushingStatus: row.brushingStatus,
+    }); 
+
+    const pruningDate = new Date(row.pruningDate);
+    const fertilizerApplicationDate = new Date(pruningDate);
+    fertilizerApplicationDate.setDate(fertilizerApplicationDate.getDate() + 15);
+    const fymApplicationDate = new Date(pruningDate);
+    fymApplicationDate.setDate(fymApplicationDate.getDate() + 5);
+    const irrigationDate = new Date(pruningDate);
+    irrigationDate.setDate(irrigationDate.getDate() + 12);
+    const brushingDate = new Date(pruningDate);
+    brushingDate.setDate(brushingDate.getDate() + 45);
+
+    setDates({
+      fertilizerApplicationDate: fertilizerApplicationDate,
+      fymApplicationDate: fymApplicationDate,
+      irrigationDate: irrigationDate,
+      brushingDate: brushingDate,
+    });
+  };
+
+  // const navigate = useNavigate();
+  const updateSuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Saved successfully",
+      text: message,
+    });
+  };
+
+  const updateError = (message) => {
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Attempt was not successful",
+      html: errorMessage,
+    });
+  };
+
+
   const navigate = useNavigate();
   const handleView = (_id) => {
     navigate(`/seriui/maintenance-of-mulberry-garden-view/${_id}`);
@@ -83,14 +226,11 @@ function MaintenanceOfMulberryGardenList() {
     navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
   };
 
-  const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
-  };
+  // const handleAlert = (_id) => {
+  //   navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
+  // };
 
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
-
+  
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -210,14 +350,7 @@ function MaintenanceOfMulberryGardenList() {
           >
             Update
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleAlert(row.id)}
-          >
-            Alert
-          </Button>
+          
           {/* <Button
             variant="danger"
             size="sm"
@@ -261,29 +394,34 @@ function MaintenanceOfMulberryGardenList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+    {
+      name: "Fertilizer Application Date",
+      selector: (row) => row.fertilizerApplicationDate,
+      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "FYM (Farm Yard Manure) application date",
+      selector: (row) => row.fymApplicationDate,
+      cell: (row) => <span>{row.fymApplicationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Irrigation Date",
+      selector: (row) => row.irrigationDate,
+      cell: (row) => <span>{row.irrigationDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Brushing Date",
+      selector: (row) => row.brushingDate,
+      cell: (row) => <span>{row.brushingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Activity Logs",
       cell: (row) => (
@@ -299,6 +437,100 @@ function MaintenanceOfMulberryGardenList() {
       hide: "md",
     },
   ];
+
+  const MulberryGardenDataColumns = [
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="text-start w-100">
+          <Button
+            variant="primary"
+            size="sm"
+            className="ms-2"
+            onClick={() => handleStatusEdit(row)}
+          >
+            Edit
+          </Button>
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+    {
+      name: "Plot Number",
+      selector: (row) => row.plotNumber,
+      cell: (row) => <span>{row.plotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Pruning Date",
+      selector: (row) => row.pruningDate,
+      cell: (row) => <span>{row.pruningDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Fertilizer Application Status",
+      selector: (row) => row.fertilizerApplicationStatus,
+      cell: (row) => (
+        <span>
+          {row.fertilizerApplicationStatus === 0
+            ? "Pending"
+            : row.fertilizerApplicationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "FYM Application Status",
+      selector: (row) => row.fymApplicationStatus,
+      cell: (row) => (
+        <span>
+          {row.fymApplicationStatus === 0
+            ? "Pending"
+            : row.fymApplicationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Irrigation Status",
+      selector: (row) => row.irrigationStatus,
+      cell: (row) => (
+        <span>
+          {row.irrigationStatus === 0
+            ? "Pending"
+            : row.irrigationStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Brushing Status",
+      selector: (row) => row.brushingStatus,
+      cell: (row) => (
+        <span>
+          {row.brushingStatus === 0
+            ? "Pending"
+            : row.brushingStatus === 1
+            ? "Completed"
+            : "Other"}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+  ]; 
 
   const MaintenanceofmulberryGardenLogsDataColumns = [
     {
@@ -366,6 +598,8 @@ function MaintenanceOfMulberryGardenList() {
             ? "Pending"
             : row.fertilizerApplicationStatus === 1
             ? "Completed"
+            : row.fertilizerApplicationStatus === 2
+            ? "Activity Not Required"
             : "Other"}
         </span>
       ),
@@ -381,6 +615,8 @@ function MaintenanceOfMulberryGardenList() {
             ? "Pending"
             : row.fymApplicationStatus === 1
             ? "Completed"
+            : row.fymApplicationStatus === 2
+            ? "Activity Not Required"
             : "Other"}
         </span>
       ),
@@ -396,6 +632,8 @@ function MaintenanceOfMulberryGardenList() {
             ? "Pending"
             : row.irrigationStatus === 1
             ? "Completed"
+            : row.irrigationStatus === 2
+            ? "Activity Not Required"
             : "Other"}
         </span>
       ),
@@ -411,6 +649,8 @@ function MaintenanceOfMulberryGardenList() {
             ? "Pending"
             : row.brushingStatus === 1
             ? "Completed"
+            : row.brushingStatus === 2
+            ? "Activity Not Required"
             : "Other"}
         </span>
       ),
@@ -418,6 +658,7 @@ function MaintenanceOfMulberryGardenList() {
       hide: "md",
     },
   ];
+  
 
   return (
     <Layout title="Maintenance Of Mulberry Garden List">
@@ -505,7 +746,156 @@ function MaintenanceOfMulberryGardenList() {
           </Block>
         </Modal.Body>
       </Modal>
-    </Layout>
+
+      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Update Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={MulberryGardenDataColumns}
+                data={listAlertData}
+                highlightOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </Card>
+          </Block>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Update Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedPruningDateEdit}
+            onSubmit={postData}
+          >
+            <Row className="g-5 px-5">
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Fertilizer Application Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="fertilizerApplicationStatus"
+                      value={pruningDate.fertilizerApplicationStatus}
+                      onChange={handlePruningInputs}
+                      disabled={!isTodayOrFutureDate(dates.fertilizerApplicationDate)}
+                    >
+                      <option value="">
+                        Select Fertilizer Application Status
+                      </option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Farm Yard Manure Application Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="fymApplicationStatus"
+                      value={pruningDate.fymApplicationStatus}
+                      onChange={handlePruningInputs}
+                      disabled={!isTodayOrFutureDate(dates.fymApplicationDate)}
+                    >
+                      <option value="">Select FYM Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Irrigation Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="irrigationStatus"
+                      value={pruningDate.irrigationStatus}
+                      onChange={handlePruningInputs}
+                      disabled={!isTodayOrFutureDate(dates.irrigationDate)}
+                      
+                    >
+                      <option value="">Select Irrigation Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>Brushing Status</Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="brushingStatus"
+                      value={pruningDate.brushingStatus}
+                      onChange={handlePruningInputs}
+                      disabled={!isTodayOrFutureDate(dates.brushingDate)}
+                    >
+                      <option value="">Select Brushing Status</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Completed</option>
+                      <option value="2">Activity Not Required</option>
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-center gap g-2">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="success">
+                      Update
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
+                    <Button type="button" variant="secondary" onClick={clear}>
+                      Cancel
+                    </Button>
+                  </div> */}
+                  <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </Layout> 
   );
 }
 

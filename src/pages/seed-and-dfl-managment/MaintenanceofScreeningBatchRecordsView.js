@@ -149,14 +149,45 @@ function MaintenanceofScreeningBatchRecordsView() {
                         <td style={styles.ctstyle}>Chawki Percentage:</td>
                         <td>{maintenanceScreen.chawkiPercentage}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td style={styles.ctstyle}>
                           Selected Bed as per the Mean Performance:
                         </td>
                         <td>
                           {maintenanceScreen.selectedBedAsPerTheMeanPerformance}
                         </td>
-                      </tr>
+                      </tr> */}
+                      <tr>
+                      <td style={styles.ctstyle}>
+                        Selected Bed as per the Mean Performance:
+                      </td>
+                        {/* <td>
+                          {maintenanceScreen.selectedBedAsPerTheMeanPerformance === "1"
+                            ? "Bed 1"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "2"
+                            ? "Bed 2"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "3"
+                            ? "Bed 3"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "4"
+                            ? "Bed 4"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "5"
+                            ? "Bed 5"
+                            : "Other"}
+                        </td> */}
+                        <td>
+                      {String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "1"
+                        ? "Bed 1"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "2"
+                        ? "Bed 2"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "3"
+                        ? "Bed 3"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "4"
+                        ? "Bed 4"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "5"
+                        ? "Bed 5"
+                        : "Other"}
+                    </td>
+                    </tr> 
                       <tr>
                         <td style={styles.ctstyle}>Crop Failure Details:</td>
                         <td>{maintenanceScreen.cropFailureDetails}</td>

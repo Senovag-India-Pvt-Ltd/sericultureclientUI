@@ -203,19 +203,19 @@ function SaleDisposalofDFLseggsList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
     },
 
     {
@@ -257,6 +257,13 @@ function SaleDisposalofDFLseggsList() {
       name: "Expected Date of Hatching",
       selector: (row) => row.expectedDateOfHatching,
       cell: (row) => <span>{row.expectedDateOfHatching}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Number",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
       sortable: true,
       hide: "md",
     },

@@ -265,13 +265,20 @@ function PreservationofseedcocoonforprocessingList() {
       ),
       sortable: false,
       hide: "md",
-      // grow: 3,
+      grow: 2,
     },
 
     {
       name: "Lot Number",
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Parent Lot Number",
+      selector: (row) => row.parentLotNumber,
+      cell: (row) => <span>{row.parentLotNumber}</span>,
       sortable: true,
       hide: "md",
     },

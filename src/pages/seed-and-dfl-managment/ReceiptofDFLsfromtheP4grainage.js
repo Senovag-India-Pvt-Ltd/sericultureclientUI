@@ -82,23 +82,7 @@ function ReceiptofDFLsfromtheP4grainage() {
   }, []);
 
   const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-view/${_id}`);
-  };
-
-  const handleEdit = (_id) => {
-    navigate(`/seriui/Receipt-of-DFLs-from-the-P4-grainage-edit/${_id}`);
-    // navigate("/seriui/training Schedule");
-  };
-
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-update/${_id}`);
-  };
-
-  const handleAlert = (_id) => {
-    navigate(`/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-alert`);
-  };
-
+ 
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -230,6 +214,11 @@ function ReceiptofDFLsfromtheP4grainage() {
     },
   };
 
+  const handleEdit = (_id) => {
+    navigate(`/seriui/Receipt-of-DFLs-from-the-P4-grainage-edit/${_id}`);
+    // navigate("/seriui/training Schedule");
+  };
+
   const ReceiptofDFLsfromtheP4grainageDataColumns = [
     // {
     //   name: "Action",
@@ -261,6 +250,20 @@ function ReceiptofDFLsfromtheP4grainage() {
       name: "Laid On Date",
       selector: (row) => row.laidOnDate,
       cell: (row) => <span>{row.laidOnDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Hatching Date",
+      selector: (row) => row.hatchingDate,
+      cell: (row) => <span>{row.hatchingDate}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Grainage",
+      selector: (row) => row.grainageMasterName,
+      cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
