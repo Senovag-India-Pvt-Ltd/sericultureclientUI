@@ -200,6 +200,8 @@ function NewReelerLicense() {
       reelerNumber: "",
       reelerTypeMasterId: "",
       transferReelerId: "0",
+      username:"",
+
     });
     setSearchValidated(false);
   };
@@ -267,6 +269,8 @@ function NewReelerLicense() {
     reelerNumber: "",
     reelerTypeMasterId: "",
     transferReelerId: "0",
+    username:"",
+
   });
 
   const [searchValidated, setSearchValidated] = useState(false);
@@ -522,8 +526,16 @@ function NewReelerLicense() {
         })
         .catch((err) => {
           // setData({});
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+              return
+            }
           }
         });
       setValidated(true);
@@ -548,6 +560,47 @@ function NewReelerLicense() {
     getTscList();
   }, []);
 
+  // // to get User
+  // const [userListData, setUserListData] = useState([]);
+
+  // const getUserList = () => {
+  //   const response = api
+  //     .get(baseURL2 + `userMaster/get-all`)
+  //     .then((response) => {
+  //       setUserListData(response.data.content.userMaster);
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
+
+  // to get taluk
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = (_id) => {
+    const response = api
+      .get(baseURL2 + `userMaster/get-by-tsc-master-id/${_id}`)
+      .then((response) => {
+        if (response.data.content.userMaster) {
+          setUserListData(response.data.content.userMaster);
+        }
+      })
+      .catch((err) => {
+        setUserListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.tscMasterId) {
+      getUserList(data.tscMasterId);
+    }
+  }, [data.tscMasterId]);
+  
   // to get Caste
   const [casteListData, setCasteListData] = useState([]);
 
@@ -740,23 +793,7 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
-  // to get TSC
-  const [chawkiListData, setChawkiListData] = useState([]);
-
-  const getChawkiList = () => {
-    const response = api
-      .get(baseURL2 + `tscMaster/get-all`)
-      .then((response) => {
-        setChawkiListData(response.data.content.tscMaster);
-      })
-      .catch((err) => {
-        setChawkiListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getChawkiList();
-  }, []);
+  
 
   // Display Image
   const [mahajar, setMahajar] = useState("");
@@ -1107,21 +1144,7 @@ function NewReelerLicense() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>Assign To Inspect</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="assignToInspectId"
-                            value={data.assignToInspectId}
-                            onChange={handleInputs}
-                          >
-                            <option value="">Select TSC</option>
-                            <option value="1">TSC(G)</option>
-                            <option value="2">TSC(R)</option>
-                            <option value="3">PCT</option>
-                          </Form.Select>
-                        </div>
-                      </Form.Group>
+                      
                       
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
@@ -1150,6 +1173,53 @@ function NewReelerLicense() {
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             TSC is required
+                          </Form.Control.Feedback>
+                        </div>        
+                      </Form.Group>
+
+                      {/* <Form.Group className="form-group mt-3">
+                        <Form.Label>Assign To Inspect</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                          >
+                            <option value="">Select TSC</option>
+                            <option value="1">TSC(G)</option>
+                            <option value="2">TSC(R)</option>
+                            <option value="3">PCT</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group> */}
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                        Assign To Inspect<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="assignToInspectId"
+                            value={data.assignToInspectId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.assignToInspectId === undefined || data.assignToInspectId === "0"
+                            }
+                          >
+                            <option value="">Select Assign To Inspect</option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Assign To Inspect is required
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -51,6 +51,7 @@ function ExternalUnitRegisterEdit() {
             externalUnitNumber: "",
             organisationName: "",
             raceMasterId: "",
+            capacity:"",
           });
           setValidated(false);
           }
@@ -74,6 +75,7 @@ function ExternalUnitRegisterEdit() {
       externalUnitNumber: "",
       organisationName: "",
       raceMasterId: "",
+      capacity:"",
     });
   };
 
@@ -343,20 +345,36 @@ function ExternalUnitRegisterEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="licenseNumber">
-                          License Number
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="licenseNumber"
-                            name="licenseNumber"
-                            value={data.licenseNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter License Number"
-                          />
-                        </div>
-                      </Form.Group>
+                      <Form.Label htmlFor="licenseNumber">
+                        License/Registration Number
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="licenseNumber"
+                          name="licenseNumber"
+                          value={data.licenseNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter License Number"
+                        />
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="capacity">
+                       Capacity Of Production/Annum
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="capacity"
+                          name="capacity"
+                          value={data.capacity}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Capacity"
+                        />
+                      </div>
+                    </Form.Group>
                     </Col>
                   </Row>
                 )}

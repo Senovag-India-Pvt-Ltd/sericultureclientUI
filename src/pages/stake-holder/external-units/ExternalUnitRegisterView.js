@@ -126,6 +126,10 @@ function ExternalUnitRegisterView() {
                         <td style={styles.ctstyle}>Race:</td>
                         <td>{ExternalUnitRegister.raceMasterName}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Capacity Of Production/Annum:</td>
+                        <td>{ExternalUnitRegister.capacity}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

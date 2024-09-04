@@ -164,6 +164,10 @@ function NewTraderLicenseView() {
                         <td style={styles.ctstyle}>Silk Exchange Mahajar:</td>
                         <td>{NewTraderLicense.silkExchangeMahajar}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Silk Type:</td>
+                        <td>{NewTraderLicense.silkType}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>
