@@ -111,6 +111,10 @@ function FarmView() {
                         <td style={styles.ctstyle}>User Name:</td>
                         <td>{Farm.username}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Is BSF:</td>
+                        <td>{Farm.isBsf}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

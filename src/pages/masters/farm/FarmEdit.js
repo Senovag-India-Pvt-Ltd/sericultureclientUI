@@ -32,7 +32,7 @@ function FarmEdit() {
       farmName: data.farmName,
       farmNameInKannada: data.farmNameInKannada,
       userMasterId:data.userMasterId,
-
+      isBsf:data.isBsf,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -52,6 +52,7 @@ function FarmEdit() {
                 farmName: "",
                 farmNameInKannada: "",
                 userMasterId:"",
+                isBsf:"",
             });
             setValidated(false);
           }
@@ -77,6 +78,7 @@ function FarmEdit() {
         farmName: "",
         farmNameInKannada: "",
         userMasterId:"",
+        isBsf:"",
     });
   };
 
@@ -268,6 +270,33 @@ function FarmEdit() {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                      Is BSF<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="isBsf"
+                          value={data.isBsf}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.isBsf === undefined || data.isBsf === "0"
+                          }
+                        >
+                          <option value="">Select </option> 
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          This Field required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

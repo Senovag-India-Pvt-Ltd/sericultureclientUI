@@ -242,6 +242,13 @@ function FarmList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Is BSF",
+      selector: (row) => row.isBsf,
+      cell: (row) => <span>{row.isBsf}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
