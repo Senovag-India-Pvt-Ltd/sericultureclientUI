@@ -17,9 +17,15 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SupplyofCocoonstoGrainage() {
   const [data, setData] = useState({
-    lotNumberId: "",
+    grainageUserMasterId: "",
+    lineYear: "",
+    sourceMasterId: "",
+    screeningBatchNo: "",
+    generationNumberId: "",
+    spunOnDate: "",
+    lotNumber: "",
     numberOfCocoonsDispatched: "",
-    grainageId: "",
+    dateOfSupply: "",
     dispatchDate: "",
   });
 
@@ -67,9 +73,15 @@ function SupplyofCocoonstoGrainage() {
           } else {
             saveSuccess();
             setData({
-              lotNumberId: "",
+              grainageUserMasterId: "",
+              lineYear: "",
+              sourceMasterId: "",
+              screeningBatchNo: "",
+              generationNumberId: "",
+              spunOnDate: "",
+              lotNumber: "",
               numberOfCocoonsDispatched: "",
-              grainageId: "",
+              dateOfSupply: "",
               dispatchDate: "",
             });
             setValidated(false);
@@ -86,17 +98,23 @@ function SupplyofCocoonstoGrainage() {
 
   const clear = () => {
     setData({
-      lotNumberId: "",
+      grainageUserMasterId: "",
+      lineYear: "",
+      sourceMasterId: "",
+      screeningBatchNo: "",
+      generationNumberId: "",
+      spunOnDate: "",
+      lotNumber: "",
       numberOfCocoonsDispatched: "",
-      grainageId: "",
+      dateOfSupply: "",
       dispatchDate: "",
     });
-    setLot({
-      lotNumber: "",
-      raceName: "",
-      generationDetails: "",
-      laidOnDate: "",
-    });
+    // setLot({
+    //   lotNumber: "",
+    //   raceName: "",
+    //   generationDetails: "",
+    //   laidOnDate: "",
+    // });
   };
 
   const [lot ,setLot] = useState({
@@ -154,6 +172,98 @@ function SupplyofCocoonstoGrainage() {
   useEffect(() => {
     getGrainageList();
   }, []);
+
+  // // to get Lot
+  // const [lotListData, setLotListData] = useState([]);
+
+  // const getLotList = () => {
+  //   const response = api
+  //     .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-all-lot-number-list`)
+  //     .then((response) => {
+  //       setLotListData(response.data);
+  //     })
+  //     .catch((err) => {
+  //       setLotListData([]);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getLotList();
+  // }, []);
+
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
+
+  const getRaceList = () => {
+    const response = api
+      .get(baseURL2 + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRaceList();
+  }, []);
+
+ 
+
+   // to get Source
+   const [sourceListData, setSourceListData] = useState([]);
+
+   const getSourceList = () => {
+     const response = api
+       .get(baseURL2 + `sourceMaster/get-all`)
+       .then((response) => {
+         setSourceListData(response.data.content.sourceMaster);
+       })
+       .catch((err) => {
+        setSourceListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getSourceList();
+   }, []);
+
+   // to get Generation Number
+   const [generationListData, setGenerationListData] = useState([]);
+
+   const getGenerationList = () => {
+     const response = api
+       .get(baseURL2 + `generationNumberMaster/get-all`)
+       .then((response) => {
+         setGenerationListData(response.data.content.generationNumberMaster);
+       })
+       .catch((err) => {
+        setGenerationListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getGenerationList();
+   }, []);
+
+   // to get Line Year
+   const [lineYearListData, setLineYearListData] = useState([]);
+
+   const getLineYearList = () => {
+     const response = api
+       .get(baseURL2 + `lineNameMaster/get-all`)
+       .then((response) => {
+         setLineYearListData(response.data.content.lineNameMaster);
+       })
+       .catch((err) => {
+        setLineYearListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getLineYearList();
+   }, []);
 
   const navigate = useNavigate();
   const saveSuccess = (message) => {
@@ -224,165 +334,285 @@ function SupplyofCocoonstoGrainage() {
                 <Row className="g-gs">
 
                 <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Lot Number<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="lotNumberId"
-                          value={data.lotNumberId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Lot Number</option>
-                          {lotNumberListData.map((list) => (
-                            <option key={list.id} value={list.id}>
-                              {list.lotNumber}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                        Lot Number is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Form.Group>
-                </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Race of Cocoons</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="raceName"
-                          name="raceName"
-                          value={lot.raceName}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Race of Cocoons"
-                          readOnly
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="generationDetails">
-                        Generation details
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="generationDetails"
-                          name="generationDetails"
-                          value={lot.generationDetails}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Generation details"
-                          readOnly
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Laid On Date
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="laidOnDate"
-                          name="laidOnDate"
-                          value={lot.laidOnDate}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Laid On Date"
-                          readOnly
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">
-                        Number of Cocoons Dispatched(Kg/Grams)<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="numberOfCocoonsDispatched"
-                          name="numberOfCocoonsDispatched"
-                          value={data.numberOfCocoonsDispatched}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Number of Cocoons Dispatched(Kg/Grams)"
-                          required
-                        />
-                         <Form.Control.Feedback type="invalid">
-                         Number of Cocoons Dispatched is required
-                      </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-
-                  <Col lg="4">
-                  <Form.Group className="form-group mt-n4">
-                    <Form.Label>
-                      Grainage<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="grainageId"
-                          value={data.grainageId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                        >
-                          <option value="">Select Grainage</option>
-                          {grainageListData.map((list) => (
-                            <option
-                              key={list.grainageMasterId}
-                              value={list.grainageMasterId}
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Grainage<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="grainageUserMasterId"
+                              value={data.grainageUserMasterId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
                             >
-                              {list.grainageMasterName}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                         Grainage is required
-                      </Form.Control.Feedback>
-                      </div>
+                              <option value="">Select Grainage</option>
+                              {grainageListData && grainageListData.length?(grainageListData.map((list) => (
+                                <option
+                                  key={list.userMasterId}
+                                  value={list.userMasterId}
+                                >
+                                  {list.grainageMasterName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Grainage is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
                     </Col>
-                  </Form.Group>
-                </Col>
 
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Line Details/year<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="lineYear"
+                              value={data.lineYear}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Line Details</option>
+                              {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
+                                <option
+                                  key={list.lineNameId}
+                                  value={list.lineNameId}
+                                >
+                                  {list.lineName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Line Details is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
 
-                  <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
-                      <Form.Label htmlFor="sordfl">Dispatch Date<span className="text-danger">*</span></Form.Label>
-                      <div className="form-control-wrap">
-                        <DatePicker
-                          selected={data.dispatchDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "dispatchDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col>
+                    {/* <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Source<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="sourceMasterId"
+                              value={data.sourceMasterId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Source</option>
+                              {sourceListData && sourceListData.length?(sourceListData.map((list) => (
+                                <option
+                                  key={list.sourceMasterId}
+                                  value={list.sourceMasterId}
+                                >
+                                  {list.sourceMasterName}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Source is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col> */}
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Screening Batch No
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="screeningBatchNo"
+                            name="screeningBatchNo"
+                            value={data.screeningBatchNo}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder=" Enter Screening Batch No"
+                            // required
+                          />
+                          {/* <Form.Control.Feedback type="invalid">
+                          Screening Batch No is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Generation Number<span className="text-danger">*</span>
+                        </Form.Label>
+                        <Col>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="generationNumberId"
+                              value={data.generationNumberId}
+                              onChange={handleInputs}
+                              onBlur={() => handleInputs}
+                              required
+                            >
+                              <option value="">Select Generation Number</option>
+                              {generationListData && generationListData.length?(generationListData.map((list) => (
+                                <option
+                                  key={list.generationNumberId}
+                                  value={list.generationNumberId}
+                                >
+                                  {list.generationNumber}
+                                </option>
+                              ))):""}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              Generation Number is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Col>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          Lot Number
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="lotNumber"
+                            name="lotNumber"
+                            value={data.lotNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder=" Enter Lot Number"
+                            // required
+                          />
+                          {/* <Form.Control.Feedback type="invalid">
+                          Screening Batch No is required
+                          </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+                {/* <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumber"
+                                  value={data.lotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col> */}
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Number of Cocoons Dispatched
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                id="numberOfCocoonsDispatched"
+                                name="numberOfCocoonsDispatched"
+                                value={data.numberOfCocoonsDispatched}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder="Enter Number of Cocoons Dispatched"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Spun on Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.spunOnDate ? new Date(data.spunOnDate) : null}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "spunOnDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4 ">
+                              <Form.Label> Date of Supply</Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.dateOfSupply ? new Date(data.dateOfSupply) : null}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dateOfSupply")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Dispatch Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={data.dispatchDate ? new Date(data.dispatchDate) : null}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "dispatchDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
                 </Row>
               </Card.Body>
             </Card>

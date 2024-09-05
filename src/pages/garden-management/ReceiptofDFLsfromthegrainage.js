@@ -13,8 +13,8 @@ import api from "../../services/auth/api";
 import DatePicker from "react-datepicker";
 import { Icon } from "../../components";
 
-const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
-const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReceiptofDFLsfromthegrainage() {
   const [listData, setListData] = useState({});
@@ -35,7 +35,7 @@ function ReceiptofDFLsfromthegrainage() {
     setLoading(true);
 
     const response = api
-      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-info`)
+      .get(baseURL2 + `Receipt/get-info`)
       .then((response) => {
         // console.log(response.data)
         setListLogsData(response.data);
@@ -59,7 +59,7 @@ function ReceiptofDFLsfromthegrainage() {
   const getList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/get-alert-data`)
+      .get(baseURL2 + `Receipt/get-alert-data`)
       .then((response) => {
         // console.log(response.data)
         setListData(response.data);
@@ -102,7 +102,7 @@ function ReceiptofDFLsfromthegrainage() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/accept-reject-dfls/${_sodId}/${status}`)
+          .get(baseURL2 + `Receipt/accept-reject-dfls/${_sodId}/${status}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -142,7 +142,7 @@ function ReceiptofDFLsfromthegrainage() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .get(baseURLSeedDfl + `ReceiptOfDflsFromP4GrainageLinesController/accept-reject-dfls/${_sodId}/${status}`)
+          .get(baseURL2 + `Receipt/accept-reject-dfls/${_sodId}/${status}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -214,33 +214,39 @@ function ReceiptofDFLsfromthegrainage() {
     },
   };
 
+  const handleEdit = (_id) => {
+    navigate(`/seriui/receipt-of-dfls-edit/${_id}`);
+    // navigate("/seriui/training Schedule");
+  };
+
+
   const ReceiptofDFLsfromtheP4grainageDataColumns = [
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     <div className="text-start w-100">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleEdit(row.id)}
-    //       >
-    //         Edit
-    //       </Button>
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="text-start w-100">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleEdit(row.id)}
+          >
+            Edit
+          </Button>
          
-    //       <Button
-    //         variant="danger"
-    //         size="sm"
-    //         onClick={() => deleteConfirm(row.id)}
-    //         className="ms-2"
-    //       >
-    //         Delete
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    //   // grow: 3,
-    // },
+          {/* <Button
+            variant="danger"
+            size="sm"
+            onClick={() => deleteConfirm(row.id)}
+            className="ms-2"
+          >
+            Delete
+          </Button> */}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+      // grow: 3,
+    },
     {
       name: "Laid On Date",
       selector: (row) => row.laidOnDate,
@@ -379,12 +385,12 @@ function ReceiptofDFLsfromthegrainage() {
 
   
   return (
-    <Layout title="Receipt of DFLs from the P4 grainage">
+    <Layout title="Receipt Of DFLs">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              Receipt of DFLs from the P4 grainage
+            Receipt Of DFLs
             </Block.Title>
            
           </Block.HeadContent>
