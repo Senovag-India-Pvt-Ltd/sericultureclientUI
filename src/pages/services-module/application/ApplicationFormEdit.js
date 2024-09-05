@@ -189,7 +189,7 @@ function ApplicationFormEdit() {
   //   getIdList();
   // }, [id]);
 
-  
+  console.log("data.scSubSchemeDetailsId",data.scSubSchemeDetailsId)
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -765,19 +765,21 @@ function ApplicationFormEdit() {
         payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
+        // subSchemeId: data.scSubSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
         categoryId: data.scCategoryId,
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
         componentId:data.scComponentId,
+        componentType: data.scSubSchemeType,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         devAcre: 0,
         devGunta: 0,
         devFGunta: 0,
         schemeAmount: data.schemeAmount,
-        sanctionNumber: data.sanctionNumber,
+        sanctionNo: data.sanctionNumber,
         initialAmount: data.expectedAmount,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
