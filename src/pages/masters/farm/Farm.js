@@ -17,6 +17,7 @@ function Farm() {
     farmName: "",
     farmNameInKannada: "",
     userMasterId:"",
+    isBsf:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -48,6 +49,7 @@ function Farm() {
                 farmName: "",
                 farmNameInKannada: "",
                 userMasterId:"",
+                isBsf:"",
             });
             setValidated(false);
           }
@@ -73,6 +75,7 @@ function Farm() {
         farmName: "",
         farmNameInKannada: "",
         userMasterId:"",
+        isBsf:"",
     });
   };
 
@@ -229,6 +232,38 @@ function Farm() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           User name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Is BSF<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="isBsf"
+                          value={data.isBsf}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.isBsf === undefined || data.isBsf === "0"
+                          }
+                        >
+                          <option value="">Select</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          {/* {userListData.map((list) => (
+                            <option key={list.userMasterId} value={list.userMasterId}>
+                              {list.username}
+                            </option>
+                          ))} */}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          This Field required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
