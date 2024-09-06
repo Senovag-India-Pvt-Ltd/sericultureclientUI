@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form,Modal } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -30,10 +30,9 @@ function DbtPushedList() {
   const [addressDetails, setAddressDetails] = useState({
     districtId: 0,
     talukId: 0,
-    financialYearMasterId:0,
+    financialYearMasterId: 0,
   });
 
-  
   const [data, setData] = useState({
     financialYearMasterId: "",
     scHeadAccountId: "",
@@ -43,7 +42,6 @@ function DbtPushedList() {
     scComponentId: "",
   });
 
- 
   const [period, setPeriod] = useState({
     periodFrom: new Date(),
     periodTo: new Date(),
@@ -69,7 +67,6 @@ function DbtPushedList() {
   useEffect(() => {
     getDistrictList();
   }, []);
- 
 
   // to get taluk
   const [talukListData, setTalukListData] = useState([]);
@@ -108,8 +105,8 @@ function DbtPushedList() {
     setSearchData({ ...searchData, [name]: value });
   };
 
-   // Search
-   const search = (e) => {
+  // Search
+  const search = (e) => {
     api
       .post(
         baseURLDBT + `service/getDbtTscStatusByList`,
@@ -126,7 +123,6 @@ function DbtPushedList() {
             // status:
             // status: "DBT PUSHED",
             // status: "REJECTED BY ADS",
-
           },
         }
       )
@@ -158,16 +154,12 @@ function DbtPushedList() {
     getFinancialYearList();
   }, []);
 
-  
-
   const [applicationIds, setApplicationIds] = useState([]);
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
   const [allApplicationIds, setAllApplicationIds] = useState([]);
 
   console.log(applicationIds);
 
-  
- 
   const handleFromDateChange = (date) => {
     setPeriod((prev) => ({ ...prev, periodFrom: date }));
   };
@@ -188,7 +180,7 @@ function DbtPushedList() {
   }, [allApplicationIds, applicationIds]);
 
   //   console.log("Unselected",unselectedApplicationIds);
- 
+
   const getList = () => {
     setLoading(true);
     api
@@ -201,8 +193,6 @@ function DbtPushedList() {
             displayAllRecords: true,
             // status: "DBT PUSHED",
             // status: "REJECTED BY ADS",
-
-
           },
         }
       )
@@ -238,7 +228,7 @@ function DbtPushedList() {
             type: searchData.type,
             displayAllRecords: true,
           },
-          responseType: 'blob',
+          responseType: "blob",
           headers: {
             accept: "text/csv",
             "Content-Type": "application/json",
@@ -261,8 +251,7 @@ function DbtPushedList() {
           title: "No record found!!!",
         });
       });
-}; 
-
+  };
 
   // console.log(allApplicationIds);
 
@@ -454,7 +443,6 @@ function DbtPushedList() {
     }
   };
 
-  
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
@@ -610,8 +598,8 @@ function DbtPushedList() {
       style: {
         backgroundColor: "#1e67a8", // Header background color
         color: "#fff", // Header text color
-        borderStyle: "solid", 
-        borderWidth: "1px", 
+        borderStyle: "solid",
+        borderWidth: "1px",
         borderColor: "black", // Header cell border color
         paddingLeft: "8px",
         paddingRight: "8px",
@@ -619,8 +607,8 @@ function DbtPushedList() {
     },
     cells: {
       style: {
-        borderStyle: "solid", 
-        borderWidth: "1px", 
+        borderStyle: "solid",
+        borderWidth: "1px",
         borderColor: "black", // Data cell border color
         paddingTop: "3px",
         paddingBottom: "3px",
@@ -630,7 +618,6 @@ function DbtPushedList() {
     },
   };
 
-
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
@@ -638,7 +625,7 @@ function DbtPushedList() {
 
   const [viewDetailsData, setViewDetailsData] = useState({
     applicationDetails: [],
-    landDetails: []
+    landDetails: [],
   });
 
   const handleView = (_id) => {
@@ -648,14 +635,14 @@ function DbtPushedList() {
       })
       .then((response) => {
         const content = response.data.content[0];
-        
+
         if (content.applicationDetailsResponses.length <= 0) {
           saveError("No Details Found!!!");
         } else {
           handleShowModal();
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
-            landDetails: content.landDetailsResponses
+            landDetails: content.landDetailsResponses,
           });
         }
       })
@@ -663,8 +650,6 @@ function DbtPushedList() {
         // saveError(err.response.data.validationErrors);
       });
   };
-
-  
 
   const ApplicationDataColumns = [
     // {
@@ -719,7 +704,7 @@ function DbtPushedList() {
     {
       name: "Sl.No.",
       selector: (row) => row.scApplicationFormId,
-      cell: (row,i) => <span>{i+1}</span>,
+      cell: (row, i) => <span>{i + 1}</span>,
       sortable: true,
       width: "80px",
       hide: "md",
@@ -731,7 +716,7 @@ function DbtPushedList() {
       sortable: true,
       hide: "md",
     },
-    
+
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -782,7 +767,6 @@ function DbtPushedList() {
     //   sortable: true,
     //   hide: "md",
     // },
-   
 
     // {
     //   name: "State",
@@ -806,7 +790,7 @@ function DbtPushedList() {
       sortable: true,
       hide: "md",
     },
-   
+
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -845,7 +829,7 @@ function DbtPushedList() {
             className="ms-1"
           >
             View
-          </Button>   
+          </Button>
         </>
       ),
       sortable: true,
@@ -861,20 +845,41 @@ function DbtPushedList() {
           <Block.HeadContent>
             <Block.Title tag="h2">DBT Pushed List</Block.Title>
           </Block.HeadContent>
-          
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-       
         <Card className="mt-1">
-        <Row className="m-2">
-            <Col>
+          <Row className="m-2">
+            <Col sm={12}>
               <Form.Group as={Row} className="form-group" id="fid">
+              <Form.Label column sm={1}>
+                  Financial Year
+                </Form.Label>
+                <Col sm={1}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={addressDetails.financialYearMasterId}
+                      onChange={handleInputsaddress}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Financial Year</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
                 <Form.Label column sm={1}>
                   Search By
                 </Form.Label>
-                <Col sm={2}>
+                <Col sm={1}>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="type"
@@ -892,25 +897,33 @@ function DbtPushedList() {
                   </div>
                 </Col>
 
-                {(Number(searchData.type) === 3)?(
-                 <Col sm={2} lg={2}>
-                 <Form.Group className="form-group ">
-                   <div className="form-control-wrap">
-                     <Form.Select
-                       name="text"
-                       value={searchData.text}
-                       onChange={handleInputsSearch}
-                       onBlur={() => handleInputsSearch}
-                       >
-                         {/* <option value="0">All</option> */}
-                      <option value=" ">Select Status</option> 
-                       <option value="DBT PUSHED">DBT PUSHED</option>
-                      <option value="REJECTED BY ADS">REJECTED BY ADS</option>
-                      <option value="ACKNOWLEDGEMENT FAILED">ACKNOWLEDGEMENT FAILED</option>
-                      <option value="ACKNOWLEDGEMENT SUCCESS">ACKNOWLEDGEMENT SUCCESS</option>
-                      <option value="SUBSIDY SANCTIONED">"SUBSIDY SANCTIONED"</option> 
-                     
-                       {/* // multiple
+                {Number(searchData.type) === 3 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group ">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                        >
+                          {/* <option value="0">All</option> */}
+                          <option value=" ">Select Status</option>
+                          <option value="DBT PUSHED">DBT PUSHED</option>
+                          <option value="REJECTED BY ADS">
+                            REJECTED BY ADS
+                          </option>
+                          <option value="ACKNOWLEDGEMENT FAILED">
+                            ACKNOWLEDGEMENT FAILED
+                          </option>
+                          <option value="ACKNOWLEDGEMENT SUCCESS">
+                            ACKNOWLEDGEMENT SUCCESS
+                          </option>
+                          <option value="SUBSIDY SANCTIONED">
+                            "SUBSIDY SANCTIONED"
+                          </option>
+
+                          {/* // multiple
                        required
                        isInvalid={
                         //  searchData.text === undefined ||
@@ -926,95 +939,226 @@ function DbtPushedList() {
                            {list.statusList}
                          </option>
                        ))} */}
-                     </Form.Select>
-                     {/* <Form.Control.Feedback type="invalid">
+                        </Form.Select>
+                        {/* <Form.Control.Feedback type="invalid">
                        Status is required
                      </Form.Control.Feedback> */}
-                   </div>
-                 </Form.Group>
-               </Col> 
-               ) : Number(searchData.type) === 4 ? (
-              <Col sm={2} lg={2}>
-                <Form.Group className="form-group">
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="text"
-                            value={searchData.text}
-                            onChange={handleInputsSearch}
-                            onBlur={() => handleInputsSearch}
-                            // multiple
-                            required
-                            isInvalid={
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : Number(searchData.type) === 4 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
                             //  searchData.text === undefined ||
-                              searchData.text === "0"
-                            }
-                          >
-                            <option value="">Select Component</option>
-                            {scComponentListData.map((list) => (
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Component</option>
+                          {scComponentListData.map((list) => (
+                            <option
+                              key={list.scComponentId}
+                              value={list.scComponentId}
+                            >
+                              {list.scComponentName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : Number(searchData.type) === 5 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
+                            //  searchData.text === undefined ||
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Component Type</option>
+                          {scSubSchemeDetailsListData &&
+                            scSubSchemeDetailsListData.map((list, i) => (
                               <option
-                                key={list.scComponentId}
-                                value={list.scComponentId}
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
                               >
-                                {list.scComponentName}
+                                {list.subSchemeName}
                               </option>
                             ))}
-                          </Form.Select>
-                          
-                        </div>
-                      </Form.Group>
-                    </Col>
-            ) : Number(searchData.type) === 5 ? (
-              <Col sm={2} lg={2}>
-              <Form.Group className="form-group">     
-                <div className="form-control-wrap">
-                  <Form.Select
-                   name="text"
-                       value={searchData.text}
-                       onChange={handleInputsSearch}
-                       onBlur={() => handleInputsSearch}
-                       // multiple
-                       required
-                       isInvalid={
-                        //  searchData.text === undefined ||
-                         searchData.text === "0"
-                       }
-                  >
-                    <option value="">Select Component Type</option>
-                    {scSubSchemeDetailsListData &&
-                      scSubSchemeDetailsListData.map((list, i) => (
-                        <option 
-                        key={list.scSubSchemeDetailsId}
-                          value={list.scSubSchemeDetailsId}>
-                          {list.subSchemeName}
-                        </option>
-                      ))}
-                  </Form.Select>
-                  
-                </div>
+                        </Form.Select>
+                      </div>
                     </Form.Group>
                   </Col>
                 ) : (
+                  <Col sm={2} lg={2}>
+                    <Form.Control
+                      id="fruitsId"
+                      name="text"
+                      value={searchData.text}
+                      onChange={handleInputsSearch}
+                      type="text"
+                      placeholder="Search"
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Field Value is Required
+                    </Form.Control.Feedback>
+                  </Col>
+                )}
+                <Form.Label column sm={1}>
+                  District
+                </Form.Label>
+                <Col sm={1}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="districtId"
+                      value={addressDetails.districtId}
+                      onChange={handleInputsaddress}
+                      style={{ width: "100%", marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select District</option>
+                      {districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+                <Form.Label column sm={1}>
+                  Taluk
+                </Form.Label>
+                <Col sm={1}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="talukId"
+                      value={addressDetails.talukId}
+                      onChange={handleInputsaddress}
+                      // style={{ marginLeft: "-14%" }}
+                      style={{ width: "100%", marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Taluk</option>
+                      {talukListData.map((list) => (
+                        <option key={list.talukId} value={list.talukId}>
+                          {list.talukName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={exportCsv}>
+                    Export
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
 
-                <Col sm={2} lg={2}>
-                  <Form.Control
-                    id="fruitsId"
-                    name="text"
-                    value={searchData.text}
-                    onChange={handleInputsSearch}
-                    type="text"
-                    placeholder="Search"
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Field Value is Required
-                  </Form.Control.Feedback>
-                </Col>)}
-                </Form.Group>
-                </Col>               
+            {/* <Col sm={6}>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  District
+                </Form.Label>
+                <Col sm={1}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="districtId"
+                      value={addressDetails.districtId}
+                      onChange={handleInputsaddress}
+                      style={{ width: "100%", marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select District</option>
+                      {districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Form.Label column sm={1}>
+                  Taluk
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="talukId"
+                      value={addressDetails.talukId}
+                      onChange={handleInputsaddress}
+                      // style={{ marginLeft: "-14%" }}
+                      style={{ width: "100%", marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Taluk</option>
+                      {talukListData.map((list) => (
+                        <option key={list.talukId} value={list.talukId}>
+                          {list.talukName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Form.Label column sm={1}>
+                  Financial Year
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={addressDetails.financialYearMasterId}
+                      onChange={handleInputsaddress}
+                      style={{ marginLeft: "-14%" }}
+                    >
+                      <option value="0">Select Financial Year</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    Search
+                  </Button>
+                </Col>
+                <Col sm={1}>
+                  <Button type="button" variant="primary" onClick={exportCsv}>
+                    Export
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col> */}
           </Row>
 
-
-          <Row className="m-2">
+          {/* <Row className="m-2">
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
@@ -1094,7 +1238,7 @@ function DbtPushedList() {
             </Col>
             </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
           <DataTable
             //  title="Market List"
@@ -1115,181 +1259,195 @@ function DbtPushedList() {
             customStyles={customStyles}
           />
         </Card>
-      </Block>  
+      </Block>
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {loading ? (
-      <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
-      </h1>
-    ) : (
-      <Row className="g-gs">
-        <Block className="mt-3">
-          {/* Scheme Details Card */}
-          <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              Scheme Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.applicationDetails.map((detail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Fruits Id:</td>
-                          <td>{detail.fruitsId}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Farmer Name:</td>
-                          <td>{detail.farmerFirstName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sanction No:</td>
-                          <td>{detail.sanctionNo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Name:</td>
-                          <td>{detail.schemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                          <td>{detail.subSchemeName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Component:</td>
-                          <td>{detail.scComponentName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Sub Component:</td>
-                          <td>{detail.categoryName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Scheme Amount:</td>
-                          <td>{detail.schemeAmount}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period From:</td>
-                          <td>{detail.periodFrom}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Period To:</td>
-                          <td>{detail.periodTo}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{detail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{detail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{detail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Application Status:</td>
-                          <td>{detail.applicationStatus}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
+        <Modal.Header closeButton>
+          <Modal.Title>View Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+              Loading...
+            </h1>
+          ) : (
+            <Row className="g-gs">
+              <Block className="mt-3">
+                {/* Scheme Details Card */}
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    Scheme Details
+                  </Card.Header>
+                  <Card.Body>
+                    <Col lg="12">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          {viewDetailsData.applicationDetails.map(
+                            (detail, index) => (
+                              <React.Fragment key={index}>
+                                <tr>
+                                  <td style={styles.ctstyle}>Fruits Id:</td>
+                                  <td>{detail.fruitsId}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Farmer Name:</td>
+                                  <td>{detail.farmerFirstName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Sanction No:</td>
+                                  <td>{detail.sanctionNo}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Scheme Name:</td>
+                                  <td>{detail.schemeName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Sub Scheme Name:
+                                  </td>
+                                  <td>{detail.subSchemeName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Component:</td>
+                                  <td>{detail.scComponentName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Sub Component:</td>
+                                  <td>{detail.categoryName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Scheme Amount:</td>
+                                  <td>{detail.schemeAmount}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Period From:</td>
+                                  <td>{detail.periodFrom}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Period To:</td>
+                                  <td>{detail.periodTo}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>District Name:</td>
+                                  <td>{detail.districtName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Taluk Name:</td>
+                                  <td>{detail.talukName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Village Name:</td>
+                                  <td>{detail.villageName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Application Status:
+                                  </td>
+                                  <td>{detail.applicationStatus}</td>
+                                </tr>
+                              </React.Fragment>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Card.Body>
+                </Card>
 
-          {/* RTC Details Card */}
-          <Card className="mt-3">
-            <Card.Header style={{ fontWeight: "bold" }}>
-              RTC Details
-            </Card.Header>
-            <Card.Body>
-              <Col lg="12">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {viewDetailsData.landDetails.map((landDetail, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <td style={styles.ctstyle}>Survey Number:</td>
-                          <td>{landDetail.surveyNumber}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>District Name:</td>
-                          <td>{landDetail.districtName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Taluk Name:</td>
-                          <td>{landDetail.talukName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Village Name:</td>
-                          <td>{landDetail.villageName}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Acre:</td>
-                          <td>{landDetail.devAcre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>F Gunta:</td>
-                          <td>{landDetail.devFGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Gunta:</td>
-                          <td>{landDetail.devGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Acre:</td>
-                          <td>{landDetail.acre}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area F Gunta:</td>
-                          <td>{landDetail.fGunta}</td>
-                        </tr>
-                        <tr>
-                          <td style={styles.ctstyle}>Developed Area Gunta:</td>
-                          <td>{landDetail.gunta}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Hissa:</td>
-                          <td>{landDetail.hissa}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Land Code:</td>
-                          <td>{landDetail.landCode}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Main Owner No:</td>
-                          <td>{landDetail.mainOwnerNo}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Owner Name:</td>
-                          <td>{landDetail.ownerName}</td>
-                        </tr>
-                        <tr> 
-                          <td style={styles.ctstyle}>Sur Noc:</td>
-                          <td>{landDetail.surNoc}</td>
-                        </tr>
-                        {/* Add more fields as needed */}
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </Col>
-            </Card.Body>
-          </Card>
-        </Block>
-      </Row>
-    )}
-  </Modal.Body>
-</Modal> 
+                {/* RTC Details Card */}
+                <Card className="mt-3">
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    RTC Details
+                  </Card.Header>
+                  <Card.Body>
+                    <Col lg="12">
+                      <table className="table small table-bordered">
+                        <tbody>
+                          {viewDetailsData.landDetails.map(
+                            (landDetail, index) => (
+                              <React.Fragment key={index}>
+                                <tr>
+                                  <td style={styles.ctstyle}>Survey Number:</td>
+                                  <td>{landDetail.surveyNumber}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>District Name:</td>
+                                  <td>{landDetail.districtName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Taluk Name:</td>
+                                  <td>{landDetail.talukName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Village Name:</td>
+                                  <td>{landDetail.villageName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Acre:</td>
+                                  <td>{landDetail.devAcre}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>F Gunta:</td>
+                                  <td>{landDetail.devFGunta}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Gunta:</td>
+                                  <td>{landDetail.devGunta}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Developed Area Acre:
+                                  </td>
+                                  <td>{landDetail.acre}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Developed Area F Gunta:
+                                  </td>
+                                  <td>{landDetail.fGunta}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>
+                                    Developed Area Gunta:
+                                  </td>
+                                  <td>{landDetail.gunta}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Hissa:</td>
+                                  <td>{landDetail.hissa}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Land Code:</td>
+                                  <td>{landDetail.landCode}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Main Owner No:</td>
+                                  <td>{landDetail.mainOwnerNo}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Owner Name:</td>
+                                  <td>{landDetail.ownerName}</td>
+                                </tr>
+                                <tr>
+                                  <td style={styles.ctstyle}>Sur Noc:</td>
+                                  <td>{landDetail.surNoc}</td>
+                                </tr>
+                                {/* Add more fields as needed */}
+                              </React.Fragment>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Card.Body>
+                </Card>
+              </Block>
+            </Row>
+          )}
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }
 
-export default  DbtPushedList;
+export default DbtPushedList;
