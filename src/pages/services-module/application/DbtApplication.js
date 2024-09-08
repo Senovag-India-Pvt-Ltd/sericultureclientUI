@@ -972,6 +972,7 @@ function DbtApplication() {
     setDisable(false);
     setDevelopedArea([]);
     getFinancialDefaultDetails();
+    setLandDetailsIds([]);
   };
 
   const saveSuccess = () => {
