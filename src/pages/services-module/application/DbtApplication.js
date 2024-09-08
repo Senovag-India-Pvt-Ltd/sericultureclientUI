@@ -678,23 +678,29 @@ function DbtApplication() {
       //   return;
       // }
 
-      const transformedData = Object.keys(developedArea).map((id) => { 
-        console.log("developed Area",developedArea)
-        console.log("this is ID",id);
-        return {
-          // landDeveloped: developedLand.landDeveloped,
-          // landDetailId: parseInt(id),
+      if (data.with === "withLand" && landDetailsList.length == 0) {
+        saveError("Farmer does not have a land details");
+        setDisabled(false);
+        return;
+      }
 
-          ...developedArea[id],
+      const transformedData = Object.keys(developedArea).map(
+        (id) => {
+          console.log("developed Area", developedArea);
+          console.log("this is ID", id);
+          return {
+            // landDeveloped: developedLand.landDeveloped,
+            // landDetailId: parseInt(id),
+
+            ...developedArea[id],
+          };
         }
-
-      } 
-      // ({
-      //   // landDeveloped: developedLand.landDeveloped,
-      //   // landDetailId: parseInt(id),
-      //   ...developedArea[id],
-      // })
-    );
+        // ({
+        //   // landDeveloped: developedLand.landDeveloped,
+        //   // landDetailId: parseInt(id),
+        //   ...developedArea[id],
+        // })
+      );
       const sendPost = {
         //   farmerId: data.farmerId,
         //   headOfAccountId: data.scHeadAccountId,
@@ -721,7 +727,7 @@ function DbtApplication() {
         //   componentId: data.scComponentId,
         //   // ...transformedData[0],
         // };
-        fruitsId:data.fruitsId,
+        fruitsId: data.fruitsId,
         farmerId: data.farmerId,
         payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
@@ -765,7 +771,7 @@ function DbtApplication() {
         //     },
         //   ];
         // }
-        console.log("transferData",transformedData);
+        console.log("transferData", transformedData);
         sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
@@ -790,12 +796,10 @@ function DbtApplication() {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
             setDisabled(false);
-          }
-          else if(response.data.content && response.data.content.error ) {
+          } else if (response.data.content && response.data.content.error) {
             saveError(response.data.content.error_description);
             setDisabled(false);
-          }
-           else {
+          } else {
             saveSuccess();
             setDisabled(false);
             setApplicationId(response.data.content.applicationDocumentId);
@@ -966,6 +970,7 @@ function DbtApplication() {
     setShowFarmerDetails(false);
     setDisabled(false);
     setDisable(false);
+    setDevelopedArea([]);
     getFinancialDefaultDetails();
   };
 
