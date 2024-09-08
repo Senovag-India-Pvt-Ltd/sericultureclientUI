@@ -848,6 +848,7 @@ import DistrictWiseReelerCountList from "../pages/reports-admin/DistrictWiseReel
 import ReelerCountList from "../pages/reports-admin/ReelerCountList";
 import PullBack from "../pages/direct-benefit-transfer/PullBack";
 import DbtPushedList from "../pages/direct-benefit-transfer/DbtPushedList";
+import Query from "../pages/stake-holder/external-units/Query";
 // Admin and Reports
 
 function Router() {
@@ -1121,6 +1122,8 @@ function Router() {
             <Route path="trainer-page-list" element={<TrainerPageList />} />
             <Route path="trainer-page-view/:id" element={<TrainerPageView />} />
 
+            <Route path="query-test" element={<Query/>} />
+            
             <Route
               path="training-deputation-tracker"
               element={<TrainingDeputationTracker />}
