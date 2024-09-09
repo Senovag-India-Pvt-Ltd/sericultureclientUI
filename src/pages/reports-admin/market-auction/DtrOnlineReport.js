@@ -487,6 +487,15 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
+                            Cocoon Age
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
                             Bid Amount
                           </th>
                           <th
@@ -570,6 +579,15 @@ function DtrOnlineReport() {
                           >
                             Auction Date
                           </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Race Name
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -579,6 +597,7 @@ function DtrOnlineReport() {
                             <td>{list.allottedLotId}</td>
                             <td>{list.farmerFirstName}</td>
                             <td>{list.weight}</td>
+                            <td>{list.cocoonAge}</td>
                             <td>{list.bidAmount}</td>
                             <td>{list.lotSoldOutAmount}</td>
                             <td>{parseFloat(list.farmerAmount.toFixed(2))}</td>
@@ -595,6 +614,7 @@ function DtrOnlineReport() {
                             <td>{list.ifscCode}</td>
                             <td>{list.accountNumber}</td>
                             <td>{list.auctionDate}</td>
+                            <td>{list.raceName}</td>
                           </tr>
                         ))}
                         <tr>
@@ -602,6 +622,7 @@ function DtrOnlineReport() {
                           <td></td>
                           <td></td>
                           <td>Wt: {listDetails.totalWeight}</td>
+                          <td></td>
                           <td></td>
                           <td>Amt: {listDetails.totallotSoldOutAmount}</td>
                           {/* <td></td> */}
@@ -618,6 +639,7 @@ function DtrOnlineReport() {
                           <td>
                             R Amt: {listDetails.totalReelerAmount.toFixed(2)}
                           </td>
+                          <td></td>
                           <td></td>
                           <td></td>
                           <td></td>
