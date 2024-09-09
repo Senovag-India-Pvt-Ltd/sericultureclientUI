@@ -15,7 +15,15 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function MaintenanceOfMulberryGardenEdit() {
   const { id } = useParams();
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    plotNumber: "",
+    variety: "",
+    areaUnderEachVariety: "",
+    pruningDate: "",
+    soilTypeId: "",
+    mulberrySpacing: "",
+    plantationDate: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const [validated, setValidated] = useState(false);
@@ -57,13 +65,11 @@ function MaintenanceOfMulberryGardenEdit() {
             setData({
               plotNumber: "",
               variety: "",
-              varietyId: "",
               areaUnderEachVariety: "",
               pruningDate: "",
-              fertilizerApplicationDate: "",
-              fymApplicationDate: "",
-              irrigationDate: "",
-              brushingDate: "",
+              soilTypeId: "",
+              mulberrySpacing: "",
+              plantationDate: "",
             });
             setValidated(false);
           }
@@ -79,14 +85,12 @@ function MaintenanceOfMulberryGardenEdit() {
   const clear = () => {
     setData({
       plotNumber: "",
-      variety: "",
-      varietyId: "",
-      areaUnderEachVariety: "",
-      pruningDate: "",
-      fertilizerApplicationDate: "",
-      fymApplicationDate: "",
-      irrigationDate: "",
-      brushingDate: "",
+              variety: "",
+              areaUnderEachVariety: "",
+              pruningDate: "",
+              soilTypeId: "",
+              mulberrySpacing: "",
+              plantationDate: "",
     });
   };
 
@@ -125,10 +129,25 @@ function MaintenanceOfMulberryGardenEdit() {
       });
   };
 
-  useEffect(() => {
-    getVarietyList();
-  }, []);
+   // to get Soil Type
+   const [soilTypeListData, setSoilTypeListData] = useState([]);
 
+   const getSoilTypeList = () => {
+     const response = api
+       .get(baseURL + `soilType/get-all`)
+       .then((response) => {
+         setSoilTypeListData(response.data.content.soilType);
+       })
+       .catch((err) => {
+         setSoilTypeListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getVarietyList();
+     getSoilTypeList();
+   }, []);
+ 
 
   const navigate = useNavigate();
 
@@ -215,89 +234,145 @@ function MaintenanceOfMulberryGardenEdit() {
                   </h1>
                 ) : (
                   <Row className="g-gs">
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="plotNumber">
-                          Plot Number<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="plotNumber"
-                            name="plotNumber"
-                            value={data.plotNumber}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder="Enter Plot Number"
-                            required
-                          />
-                           <Form.Control.Feedback type="invalid">
-                            Plot Number is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="4">
+                  <Col lg="4">
                     <Form.Group className="form-group">
-                    <Form.Label>
-                      Mulberry Variety<span className="text-danger">*</span>
-                    </Form.Label>
-                    <div className="form-control-wrap">
-                      <Form.Select
-                        name="varietyId"
-                        value={data.varietyId}
-                        onChange={handleInputs}
-                        onBlur={() => handleInputs} 
-                        // multiple
-                        required
-                        isInvalid={data.variety === undefined || data.variety === "0"} 
-                      >
-                        <option value="">Select Mulberry Variety</option>
-                        {varietyListData.map((list) => (
-                          <option
-                            key={list.mulberryVarietyId}
-                            value={list.mulberryVarietyId}
-                          >
-                            {list.mulberryVarietyName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Mulberry Variety is required
-                      </Form.Control.Feedback>
-                    </div>
-                  </Form.Group>
+                      <Form.Label htmlFor="plotNumber">
+                        Plot Number<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="plotNumber"
+                          name="plotNumber"
+                          value={data.plotNumber}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Plot Number"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Plot Number is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
                   </Col>
 
-                    <Col lg="4">
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="areaUnderEachVariety">
-                         Area(In Hectares)
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="areaUnderEachVariety"
-                            name="areaUnderEachVariety"
-                            value={data.areaUnderEachVariety}
-                            onChange={handleInputs}
-                            maxLength="4"
-                            type="text"
-                            placeholder="Enter Area(In Hectares)"
-                          />
-                        </div>
-                      </Form.Group>
-                    </Col>
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Mulberry Variety<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="varietyId"
+                          value={data.varietyId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            data.variety === undefined || data.variety === "0"
+                          }
+                        >
+                          <option value="">Select Mulberry Variety</option>
+                          {varietyListData.map((list) => (
+                            <option
+                              key={list.mulberryVarietyId}
+                              value={list.mulberryVarietyId}
+                            >
+                              {list.mulberryVarietyName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Mulberry Variety is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
 
-                    <Col lg="2">
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="areaUnderEachVariety">
+                        Area(In Acres)
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="areaUnderEachVariety"
+                          name="areaUnderEachVariety"
+                          value={data.areaUnderEachVariety}
+                          onChange={handleInputs}
+                          maxLength="4"
+                          type="text"
+                          placeholder="Enter Area(In Hectares)"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Soil Type<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="soilTypeId"
+                          value={data.soilTypeId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          // multiple
+                          required
+                          isInvalid={
+                            data.variety === undefined || data.variety === "0"
+                          }
+                        >
+                          <option value="">Select Soil Type</option>
+                          {soilTypeListData.map((list) => (
+                            <option
+                              key={list.soilTypeId}
+                              value={list.soilTypeId}
+                            >
+                              {list.soilTypeName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Soil Type is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="mulberrySpacing">
+                        Mulberry Spacing
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="mulberrySpacing"
+                          name="mulberrySpacing"
+                          value={data.mulberrySpacing}
+                          onChange={handleInputs}
+                          maxLength="4"
+                          type="text"
+                          placeholder="Enter Mulberry Spacing"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="sordfl">
-                      Pruning Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
+                        Pruning Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
-                        {isDataPruningSet && (
+                        {/* {isDataPruningSet && ( */}
                           <DatePicker
-                            selected={new Date(data.pruningDate)}
+                            // selected={new Date(data.pruningDate) || null}
+                            selected={data.pruningDate ? new Date(data.pruningDate) : null}
                             onChange={(date) =>
                               handleDateChange(date, "pruningDate")
                             }
@@ -306,108 +381,42 @@ function MaintenanceOfMulberryGardenEdit() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
                             className="form-control"
                             required
                           />
-                        )}
+                        {/* )} */}
                       </div>
-                      </Form.Group>
-                    </Col>
+                    </Form.Group>
+                  </Col>
 
-                    {/* <Form.Label column sm={2}>
-                      Fertilizer Application Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Plantation Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
-                        {isDataFertilizerSet && (
+                        {/* {isDataPlantationSet && ( */}
                           <DatePicker
-                            selected={new Date(data.fertilizerApplicationDate)}
+                            // selected={new Date(data.plantationDate) || null}
+                            selected={data.plantationDate ? new Date(data.plantationDate) : null}
                             onChange={(date) =>
-                              handleDateChange(
-                                date,
-                                "fertilizerApplicationDate"
-                              )
+                              handleDateChange(date, "plantationDate")
                             }
                             peekNextMonth
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
                             className="form-control"
+                            required
                           />
-                        )}
+                        {/* )} */}
                       </div>
-                    </Col>
-                    
-
-                    <Form.Label column sm={2}>
-                      Farm Yard Manure Application Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataFymSet && (
-                          <DatePicker
-                            selected={new Date(data.fymApplicationDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "fymApplicationDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col>
-
-                    <Form.Label column sm={2}>
-                      Irrigation Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataIrrigationSet && (
-                          <DatePicker
-                            selected={new Date(data.irrigationDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "irrigationDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col>
-                    <Form.Label column sm={2}>
-                      Brushing Date
-                      <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Col sm={2}>
-                      <div className="form-control-wrap">
-                        {isDataBrushingSet && (
-                          <DatePicker
-                            selected={new Date(data.brushingDate)}
-                            onChange={(date) =>
-                              handleDateChange(date, "brushingDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        )}
-                      </div>
-                    </Col> */}
+                    </Form.Group>
+                  </Col>
                   </Row>
                 )}
               </Card.Body>

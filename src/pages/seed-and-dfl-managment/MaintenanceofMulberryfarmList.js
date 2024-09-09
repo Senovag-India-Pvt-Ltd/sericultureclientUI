@@ -624,13 +624,13 @@ const handleUpdateAllDates = (row) => {
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Remarks",
-      selector: (row) => row.remarks,
-      cell: (row) => <span>{row.remarks}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: "Remarks",
+    //   selector: (row) => row.remarks,
+    //   cell: (row) => <span>{row.remarks}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
 
     {
       name: "Activity Logs",

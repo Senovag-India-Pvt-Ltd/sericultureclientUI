@@ -20,7 +20,7 @@ function MaintenanceofMulberryfarmEdit() {
     plotNumber: "",
     variety: "",
     areaUnderEachVariety: "",
-    pruningDate: null,
+    pruningDate: "",
     soilTypeId: "",
     mulberrySpacing: "",
     plantationDate: "",
