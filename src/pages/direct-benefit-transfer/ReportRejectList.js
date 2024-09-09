@@ -73,11 +73,8 @@ function ReportRejectList() {
 
   const [data, setData] = useState({
     financialYearMasterId: "",
-    scHeadAccountId: "",
-    scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    scCategoryId: "",
-    scComponentId: "",
+    year1: "",
+    year2: ""
   });
 
   const [farmer, setFarmer] = useState({
@@ -190,10 +187,27 @@ function ReportRejectList() {
     setAddressDetails({ ...addressDetails, [name]: value });
   };
 
+  // const handleInputsSearch = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setSearchData({ ...searchData, [name]: value });
+  // };
   const handleInputsSearch = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setSearchData({ ...searchData, [name]: value });
+    const { name, value } = e.target;
+    
+    // If type is 4, set the financial year ID in searchData
+    if (value == 4) {
+      setSearchData((prev) => ({
+        ...prev,
+        [name]: value,
+        text: data.financialYearMasterId, // Use the fetched financialYearMasterId
+      }));
+    } else {
+      setSearchData((prev) => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   // const [viewDetailsData, setViewDetailsData] = useState({});
@@ -494,6 +508,32 @@ function ReportRejectList() {
       });
   };
 
+     // Fetch default financial year details
+const getFinancialDefaultDetails = () => {
+  api
+    .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+    .then((response) => {
+      const year = response.data.content.financialYear;
+      const [fromDate, toDate] = year.split("-");
+      setData({
+        financialYearMasterId: response.data.content.financialYearMasterId,
+        year1: fromDate,
+        year2: toDate
+      });
+      setSearchData((prev) => ({
+        ...prev,
+        text: response.data.content.financialYearMasterId // Pre-fill text with financial year
+      }));
+    })
+    .catch((err) => {
+      setData({
+        financialYearMasterId: "",
+        year1: "",
+        year2: ""
+      });
+    });
+};
+
   const getList = () => {
     setLoading(true);
     api
@@ -523,6 +563,7 @@ function ReportRejectList() {
   };
 
   useEffect(() => {
+    getFinancialDefaultDetails();
     getList();
   }, [page]);
 
@@ -703,9 +744,9 @@ function ReportRejectList() {
   };
 
   const [searchData, setSearchData] = useState({
-    year1: "",
-    year2: "",
-    type: 1,
+    // year1: "",
+    // year2: "",
+    type: 5,
     searchText: "",
   });
 
@@ -736,32 +777,11 @@ function ReportRejectList() {
     }
   };
 
-  // Get Default Financial Year
 
-  const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        const year = response.data.content.financialYear;
-        const [fromDate, toDate] = year.split("-");
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-        setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-        setSearchData((prev) => ({ ...prev, year1: "", year2: "" }));
-      });
-  };
 
-  useEffect(() => {
-    getFinancialDefaultDetails();
-  }, []);
+  // useEffect(() => {
+  //   getFinancialDefaultDetails();
+  // }, []);
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -925,37 +945,9 @@ function ReportRejectList() {
       hide: "md",
     },
     {
-      name: "Application Id",
-      selector: (row) => row.scApplicationFormId,
-      cell: (row) => <span>{row.scApplicationFormId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Farmer Name",
-      selector: (row) => row.farmerFirstName,
-      cell: (row) => <span>{row.farmerFirstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Sanction Number",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Subsidy Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -966,8 +958,13 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-
-
+    {
+      name: "Farmer Name",
+      selector: (row) => row.farmerFirstName,
+      cell: (row) => <span>{row.farmerFirstName}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "District",
       selector: (row) => row.districtName,
@@ -982,8 +979,6 @@ function ReportRejectList() {
       sortable: true,
       hide: "md",
     },
-    
-
     {
       name: "Village",
       selector: (row) => row.villageName,
@@ -992,6 +987,37 @@ function ReportRejectList() {
       hide: "md",
     },
     {
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  
+    {
+      name: "Sanction No",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Subsidy Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+   
+    {
       name: "Application Status",
       selector: (row) => row.applicationStatus,
       cell: (row) => (
@@ -999,6 +1025,13 @@ function ReportRejectList() {
           {row.applicationStatus}
         </span>
       ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Remarks",
+      selector: (row) => row.remarks,
+      cell: (row) => <span>{row.remarks}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1394,7 +1427,7 @@ function ReportRejectList() {
                       value={searchData.type}
                       onChange={handleInputsSearch}
                     >
-                      <option value="0">All</option>
+                      {/* <option value="0">All</option> */}
                       {/* <option value="1">Sanction No.</option> */}
                       <option value="2">FruitsId</option>
                       <option value="3">Rejected Reason</option>
@@ -1603,6 +1636,11 @@ function ReportRejectList() {
               </Form.Group>
             </Col>
           </Row>
+          </Card>
+          </Block>
+
+          <Block className='mt-3'>
+          <Card>
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
@@ -1622,6 +1660,7 @@ function ReportRejectList() {
             customStyles={customStyles}
           />
         </Card>
+        
 
         <Form
           noValidate
