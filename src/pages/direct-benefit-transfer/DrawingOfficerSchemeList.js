@@ -1436,6 +1436,11 @@ function DrawingOfficerSchemeList() {
               </Form.Group>
             </Col>
           </Row>
+          </Card>
+          </Block>
+
+          <Block className='mt-3'>
+          <Card>
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"

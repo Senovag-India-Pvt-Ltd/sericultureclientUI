@@ -160,10 +160,27 @@ function TscOfficerList() {
     setAddressDetails({ ...addressDetails, [name]: value });
   };
 
+  // const handleInputsSearch = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setSearchData({ ...searchData, [name]: value });
+  // };
   const handleInputsSearch = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setSearchData({ ...searchData, [name]: value });
+    const { name, value } = e.target;
+    
+    // If type is 4, set the financial year ID in searchData
+    if (value == 4) {
+      setSearchData((prev) => ({
+        ...prev,
+        [name]: value,
+        text: data.financialYearMasterId, // Use the fetched financialYearMasterId
+      }));
+    } else {
+      setSearchData((prev) => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const [districtId, setDistrictId] = useState(0);
@@ -210,17 +227,11 @@ function TscOfficerList() {
 
   const [data, setData] = useState({
     financialYearMasterId: "",
-    scHeadAccountId: "",
-    scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    scCategoryId: "",
-    scComponentId: "",
+    year1: "",
+    year2: ""
   });
 
-  const [farmer, setFarmer] = useState({
-    text: "",
-    select: "mobileNumber",
-  });
+  
 
   const [period, setPeriod] = useState({
     periodFrom: new Date(),
@@ -247,86 +258,7 @@ function TscOfficerList() {
     getFinancialYearList();
   }, []);
 
-  const [validatedDisplay, setValidatedDisplay] = useState(false);
-
-  const display = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidatedDisplay(true);
-    } else {
-      event.preventDefault();
-
-      // const { text, select } = farmer;
-      // let sendData;
-
-      // if (select === "mobileNumber") {
-      //   sendData = {
-      //     mobileNumber: text,
-      //   };
-      // }
-      // if (select === "fruitsId") {
-      //   sendData = {
-      //     fruitsId: text,
-      //   };
-      // }
-      // if (select === "farmerNumber") {
-      //   sendData = {
-      //     farmerNumber: text,
-      //   };
-      // }
-
-      const { year1, year2, type, searchText } = searchData;
-
-      setLoading(true);
-
-      // api
-      //   .post(
-      //     baseURLDBT + `service/getDrawingOfficerList`,
-      //     {},
-      //     { params: searchData }
-      //   )
-      //   .then((response) => {
-      //     setListData(response.data.content);
-      //     const scApplicationFormIds = response.data.content.map(
-      //       (item) => item.scApplicationFormId
-      //     );
-      //     setAllApplicationIds(scApplicationFormIds);
-      //     setLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     setListData({});
-      //     setLoading(false);
-      //   });
-
-      api
-        .post(
-          baseURLDBT + `service/getDrawingOfficerList`,
-          {},
-          { params: searchData }
-        )
-        .then((response) => {
-          setListData(response.data.content);
-          const scApplicationFormIds = response.data.content.map(
-            (item) => item.scApplicationFormId
-          );
-          setAllApplicationIds(scApplicationFormIds);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setListData({});
-          setLoading(false);
-        });
-    }
-  };
-
-  const handleRadioChange = (_id, tId) => {
-    if (!tId) {
-      tId = 0;
-    }
-    setLandData((prev) => ({ ...prev, landId: _id, talukId: tId }));
-  };
+  
 
   const [applicationIds, setApplicationIds] = useState([]);
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
@@ -536,6 +468,33 @@ function TscOfficerList() {
   //   getList();
   // }, [page]);
 
+      // Fetch default financial year details
+const getFinancialDefaultDetails = () => {
+  api
+    .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+    .then((response) => {
+      const year = response.data.content.financialYear;
+      const [fromDate, toDate] = year.split("-");
+      setData({
+        financialYearMasterId: response.data.content.financialYearMasterId,
+        year1: fromDate,
+        year2: toDate
+      });
+      setSearchData((prev) => ({
+        ...prev,
+        text: response.data.content.financialYearMasterId // Pre-fill text with financial year
+      }));
+    })
+    .catch((err) => {
+      setData({
+        financialYearMasterId: "",
+        year1: "",
+        year2: ""
+      });
+    });
+};
+
+
   const getList = () => {
     setLoading(true);
     api
@@ -567,6 +526,7 @@ function TscOfficerList() {
   };
 
   useEffect(() => {
+    getFinancialDefaultDetails();
     getList();
   }, [page]);
 
@@ -738,7 +698,7 @@ function TscOfficerList() {
 
   const [searchData, setSearchData] = useState({
     text: "",
-    type: 0,
+    type: 5,
   });
 
   console.log(searchData);
@@ -770,30 +730,30 @@ function TscOfficerList() {
 
   // Get Default Financial Year
 
-  const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        const year = response.data.content.financialYear;
-        const [fromDate, toDate] = year.split("-");
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-        setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-        setSearchData((prev) => ({ ...prev, year1: "", year2: "" }));
-      });
-  };
+  // const getFinancialDefaultDetails = () => {
+  //   api
+  //     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+  //     .then((response) => {
+  //       const year = response.data.content.financialYear;
+  //       const [fromDate, toDate] = year.split("-");
+  //       setData((prev) => ({
+  //         ...prev,
+  //         financialYearMasterId: response.data.content.financialYearMasterId,
+  //       }));
+  //       setSearchData((prev) => ({ ...prev, year1: fromDate, year2: toDate }));
+  //     })
+  //     .catch((err) => {
+  //       setData((prev) => ({
+  //         ...prev,
+  //         financialYearMasterId: "",
+  //       }));
+  //       setSearchData((prev) => ({ ...prev, year1: "", year2: "" }));
+  //     });
+  // };
 
-  useEffect(() => {
-    getFinancialDefaultDetails();
-  }, []);
+  // useEffect(() => {
+  //   getFinancialDefaultDetails();
+  // }, []);
 
   const saveSuccess = (message) => {
     Swal.fire({
@@ -1014,30 +974,9 @@ function TscOfficerList() {
       hide: "md",
     },
     {
-      name: "Farmer Name",
-      selector: (row) => row.farmerFirstName,
-      cell: (row) => <span>{row.farmerFirstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Sanction Number",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Subsidy Amount",
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1049,9 +988,9 @@ function TscOfficerList() {
       hide: "md",
     },
     {
-      name: "Application Status",
-      selector: (row) => row.applicationStatus,
-      cell: (row) => <span>{row.applicationStatus}</span>,
+      name: "Farmer Name",
+      selector: (row) => row.farmerFirstName,
+      cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1070,11 +1009,58 @@ function TscOfficerList() {
       hide: "md",
     },
     
-    
+
     {
       name: "Village",
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  
+    {
+      name: "Sanction No",
+      selector: (row) => row.sanctionNumber,
+      cell: (row) => <span>{row.sanctionNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Subsidy Amount",
+      selector: (row) => row.actualAmount,
+      cell: (row) => <span>{row.actualAmount}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Application Status",
+      selector: (row) => row.applicationStatus,
+      cell: (row) => (
+        <span style={{ color: "green", fontWeight: "bold" }}>
+          {row.applicationStatus}
+        </span>
+      ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Remarks",
+      selector: (row) => row.remarks,
+      cell: (row) => <span>{row.remarks}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1465,7 +1451,7 @@ function TscOfficerList() {
                       value={searchData.type}
                       onChange={handleInputsSearch}
                     >
-                      <option value="0">All</option>
+                      {/* <option value="0">All</option> */}
                       {/* <option value="1">Sanction No.</option> */}
                       <option value="2">FruitsId</option>
                       {/* <option value="3">Rejected Reason</option> */}
@@ -1508,6 +1494,7 @@ function TscOfficerList() {
                             </div>
                           </Form.Group>
                         </Col>
+                        
             ) : Number(searchData.type) === 6 ? (
               <Col sm={2} lg={2}>
                 <Form.Group className="form-group">

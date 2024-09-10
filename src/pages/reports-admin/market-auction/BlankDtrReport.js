@@ -540,6 +540,15 @@ function BlankDtrReport() {
                             }}
                             // colSpan="2"
                           >
+                             Cocoon Age
+                          </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
                             Bid Amount
                           </th>
                           <th
@@ -623,6 +632,15 @@ function BlankDtrReport() {
                           >
                             Auction Date
                           </th>
+                          <th
+                            style={{
+                              backgroundColor: "#0f6cbe",
+                              color: "#fff",
+                            }}
+                            // colSpan="2"
+                          >
+                            Race Name
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -632,6 +650,7 @@ function BlankDtrReport() {
                             <td>{list.allottedLotId}</td>
                             <td>{list.farmerFirstName}</td>
                             <td>{list.weight}</td>
+                            <td>{list.cocoonAge}</td>
                             <td>{list.bidAmount}</td>
                             <td>{list.lotSoldOutAmount}</td>
                             <td>{parseFloat(list.farmerAmount.toFixed(2))}</td>
@@ -648,6 +667,8 @@ function BlankDtrReport() {
                             <td>{list.ifscCode}</td>
                             <td>{list.accountNumber}</td>
                             <td>{list.auctionDate}</td>
+                            <td>{list.raceName}</td>
+
                           </tr>
                         ))}
                         <tr>
@@ -656,12 +677,16 @@ function BlankDtrReport() {
                           <td></td>
                           <td>Wt: {listDetails.totalWeight}</td>
                           <td></td>
-                          <td>Amt: {listDetails.totallotSoldOutAmount}</td>
+                          <td></td>
+                          {/* <td>Amt: {listDetails.totallotSoldOutAmount}</td> */}
+                          <td>Amt: {Math.round(listDetails.totallotSoldOutAmount)}</td>
                           {/* <td></td> */}
-                          <td>
+                          {/* <td>
                             F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
-                          </td>
-                          <td>
+                          </td> */}
+                          <td>F Amt: {Math.round(listDetails.totalFarmerAmount)}</td>
+
+                          {/* <td>
                             MF:{" "}
                             {(
                               listDetails.totalFarmerMarketFee +
@@ -669,8 +694,13 @@ function BlankDtrReport() {
                             ).toFixed(2)}
                           </td>
                           <td>
-                            R Amt: {listDetails.totalReelerAmount.toFixed(2)}
-                          </td>
+                            R Amt: {listDetails.totalReelerAmount.toFixed(2)} 
+                          </td>*/}
+                          <td>MF: {Math.round(listDetails.totalFarmerMarketFee + listDetails.totalReelerMarketFee)}</td>
+<td>
+  {/* R Amt: {listDetails.totalReelerAmount.toFixed(2)} */}
+    R Amt: {Math.round(listDetails.totalReelerAmount)}</td>
+                          <td></td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -684,7 +714,7 @@ function BlankDtrReport() {
                                 fontWeight: "bold",
                                 background: "rgb(251 255 248)",
                               }}
-                              colSpan="14"
+                              colSpan="18"
                             >
                               <div>
                                 Total Lots:{" "}
@@ -704,7 +734,7 @@ function BlankDtrReport() {
                                   {listDetails.notTransactedLots}
                                 </span>
                               </div>
-                              <div>
+                              {/* <div>
                                 Total Amount:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.totallotSoldOutAmount}
@@ -736,7 +766,32 @@ function BlankDtrReport() {
                                     listDetails.totalReelerAmount.toFixed(2)
                                   )}
                                 </span>
-                              </div>
+                              </div> */}
+                              <div>
+  Total Amount:{" "}
+  <span style={{ color: "green" }}>
+    {Math.round(listDetails.totallotSoldOutAmount)}
+  </span>
+</div>
+<div>
+  Farmers Cheque Amount:{" "}
+  <span style={{ color: "green" }}>
+    {Math.round(listDetails.totalFarmerAmount)}
+  </span>
+</div>
+<div>
+  Market Fee Amount:{" "}
+  <span style={{ color: "green" }}>
+    {Math.round(listDetails.totalReelerMarketFee + listDetails.totalFarmerMarketFee)}
+  </span>
+</div>
+<div>
+  Reeler Transaction Amount:{" "}
+  <span style={{ color: "green" }}>
+    {Math.round(listDetails.totalReelerAmount)}
+  </span>
+</div>
+
                               <div>
                                 Max Bid:Rs{" "}
                                 <span style={{ color: "green" }}>

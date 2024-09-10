@@ -710,13 +710,19 @@ function DbtPushedList() {
       hide: "md",
     },
     {
-      name: "Financial Year",
-      selector: (row) => row.financialYear,
-      cell: (row) => <span>{row.financialYear}</span>,
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
-
+    {
+      name: "Beneficiary Id",
+      selector: (row) => row.beneficiaryId,
+      cell: (row) => <span>{row.beneficiaryId}</span>,
+      sortable: true,
+      hide: "md",
+    },
     {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
@@ -725,12 +731,43 @@ function DbtPushedList() {
       hide: "md",
     },
     {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
+      name: "District",
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Taluk",
+      selector: (row) => row.talukName,
+      cell: (row) => <span>{row.talukName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
+
+    {
+      name: "Village",
+      selector: (row) => row.villageName,
+      cell: (row) => <span>{row.villageName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component Type",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => <span>{row.subSchemeName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Component",
+      selector: (row) => row.scComponentName,
+      cell: (row) => <span>{row.scComponentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+  
     {
       name: "Sanction Number",
       selector: (row) => row.sanctionNumber,
@@ -745,67 +782,6 @@ function DbtPushedList() {
       sortable: true,
       hide: "md",
     },
-
-    {
-      name: "Beneficiary Id",
-      selector: (row) => row.beneficiaryId,
-      cell: (row) => <span>{row.beneficiaryId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Market Name in Kannada",
-    //   selector: (row) => row.marketNameInKannada,
-    //   cell: (row) => <span>{row.marketNameInKannada}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Market Address",
-    //   selector: (row) => row.marketMasterAddress,
-    //   cell: (row) => <span>{row.marketMasterAddress}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-
-    // {
-    //   name: "State",
-    //   selector: (row) => row.stateName,
-    //   cell: (row) => <span>{row.stateName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Village",
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // {
-    //   name: "Action",
-    //   cell: (row) => (
-    //     <text style={{ color: "green", fontWeight: "bold" }}>Successfull</text>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Application Status",
       selector: (row) => row.applicationStatus,
@@ -814,6 +790,13 @@ function DbtPushedList() {
           {row.applicationStatus}
         </span>
       ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Remarks",
+      selector: (row) => row.remarks,
+      cell: (row) => <span>{row.remarks}</span>,
       sortable: true,
       hide: "md",
     },
