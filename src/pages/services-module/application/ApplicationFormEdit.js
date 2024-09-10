@@ -17,6 +17,8 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLFarmerServer =
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ApplicationFormEdit() {
@@ -83,6 +85,7 @@ function ApplicationFormEdit() {
     hobli: "",
     village: "",
     talukName: "",
+    fid: "",
   });
 
   const [farmerId, setFarmerId] = useState(0);
@@ -189,7 +192,8 @@ function ApplicationFormEdit() {
   //   getIdList();
   // }, [id]);
 
-  console.log("data.scSubSchemeDetailsId",data.scSubSchemeDetailsId)
+  console.log("data.scSubSchemeDetailsId", data.scSubSchemeDetailsId);
+  console.log("FarmerDetails master", farmerDetails);
   const getIdList = () => {
     setLoading(true);
     const response = api
@@ -210,19 +214,27 @@ function ApplicationFormEdit() {
           periodFrom: new Date("2023-04-01"),
           periodTo: new Date("2024-03-31"),
         }));
-  
+
         setFarmerId(datas.farmerId);
-  
+
         api
-          .get(baseURLFarmer + `farmer-address/get-by-farmer-id-join/${datas.farmerId}`)
+          .get(
+            baseURLRegistration +
+              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
+              // console.log("Fruits ID",response.data.content.fruitsId);
               setFarmerDetails((prev) => ({
                 ...prev,
-                village: response.data.content.farmerAddress && response.data.content.farmerAddress[0].villageName,
-                talukName: response.data.content.farmerAddress && response.data.content.farmerAddress[0].talukName,
+                village:
+                  response.data.content.farmerAddress &&
+                  response.data.content.farmerAddress[0].villageName,
+                talukName:
+                  response.data.content.farmerAddress &&
+                  response.data.content.farmerAddress[0].talukName,
               }));
               setValidated(false);
             }
@@ -230,9 +242,12 @@ function ApplicationFormEdit() {
           .catch((err) => {
             handleError(err);
           });
-  
+
         api
-          .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+          .get(
+            baseURLRegistration +
+              `farmer/get-by-farmer-id-join/${datas.farmerId}`
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
@@ -240,6 +255,7 @@ function ApplicationFormEdit() {
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.firstName,
+                fid: response.data.content.fruitsId,
               }));
               setValidated(false);
             }
@@ -247,26 +263,20 @@ function ApplicationFormEdit() {
           .catch((err) => {
             handleError(err);
           });
-  
-          api
-          .get(baseURLFarmer + `farmer-land-details/get-by-farmer-id-join/${datas.farmerId}`)
+
+        api
+          .get(
+            baseURLDBT +
+              `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
-              const landDetails = response.data.content.farmerLandDetails || [];
-              console.log("Fetched land details:", landDetails); // Log the fetched data
-              setLandDetailsList(landDetails); // Set land details list
-
-              const areaDetails = landDetails.reduce((acc, detail) => {
-                acc[detail.farmerLandDetailsId] = {
-                  acre: detail.acre || "",
-                  gunta: detail.gunta || "",
-                  fgunta: detail.fgunta || ""
-                };
-                return acc; 
-              }, {});
-              setDevelopedArea(areaDetails);
+              const landDetails =
+                response.data.content.dbtFarmerLandDetails || [];
+              console.log("Fetched land details:", landDetails);
+              setSavedLandDetailsList(landDetails);
             }
             setLoading(false);
           })
@@ -274,6 +284,54 @@ function ApplicationFormEdit() {
             handleError(err);
             setLoading(false);
           });
+
+        // api
+        // .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+        //   fruitsId: farmerDetails.fid,
+        // })
+        // .then((response) => {
+
+        //   console.log("landdetails", response.data);
+        //   if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+        //     setLandDetailsList(
+        //       response.data.content.farmerLandDetailsDTOList
+        //     );
+        //   }
+        // })
+        // .catch((err) => {
+        //   setLandDetailsList([]);
+        // });
+
+        // api
+        //   .get(
+        //     baseURLRegistration +
+        //       `farmer-land-details/get-by-farmer-id-join/${datas.farmerId}`
+        //   )
+        //   .then((response) => {
+        //     if (response.data.errorCode === -1) {
+        //       saveError(response.data.message);
+        //     } else {
+        //       const landDetails = response.data.content.farmerLandDetails || [];
+        //       console.log("Fetched land details:", landDetails); // Log the fetched data
+        //       setLandDetailsList(landDetails); // Set land details list
+
+        //       const areaDetails = landDetails.reduce((acc, detail) => {
+        //         acc[detail.farmerLandDetailsId] = {
+        //           acre: detail.acre || "",
+        //           gunta: detail.gunta || "",
+        //           fgunta: detail.fgunta || "",
+        //         };
+        //         return acc;
+        //       }, {});
+        //       setDevelopedArea(areaDetails);
+        //     }
+        //     setLoading(false);
+        //   })
+        //   .catch((err) => {
+        //     handleError(err);
+        //     setLoading(false);
+        //   });
+
         setLoading(false);
       })
       .catch((err) => {
@@ -282,20 +340,42 @@ function ApplicationFormEdit() {
         setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     getIdList();
   }, [id]);
-  
+
+  const getDirectData = () => {
+    api
+      .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+        fruitsId: farmerDetails.fid,
+      })
+      .then((response) => {
+        console.log("landdetails", response.data);
+        if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+        }
+      })
+      .catch((err) => {
+        setLandDetailsList([]);
+      });
+  };
+
+  useEffect(() => {
+    getDirectData();
+  }, [farmerDetails.fid]);
+
   const handleError = (err) => {
-    if (err.response && err.response.data && err.response.data.validationErrors) {
+    if (
+      err.response &&
+      err.response.data &&
+      err.response.data.validationErrors
+    ) {
       if (Object.keys(err.response.data.validationErrors).length > 0) {
         saveError(err.response.data.validationErrors);
       }
     }
   };
-  
-
 
   console.log("changes", data);
 
@@ -352,22 +432,25 @@ function ApplicationFormEdit() {
     setData({ ...data, [type]: date });
   };
 
-  console.log("hehehehehe", data);
-
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [landDetailsList, setLandDetailsList] = useState([]);
+
+  const [savedLandDetailsList, setSavedLandDetailsList] = useState([]);
 
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
   const [developedArea, setDevelopedArea] = useState([]);
 
-  const handleCheckboxChange = (farmerLandDetailsId) => {
+  const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-      const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== farmerLandDetailsId)
-        : [...prevIds, farmerLandDetailsId];
+      // For Single Select
+      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+      // For Multiple Select
+      // const newIds = isAlreadySelected
+      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+      //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
@@ -376,11 +459,12 @@ function ApplicationFormEdit() {
         } else {
           // If selected, add to developedArea
           return {
-            ...prevData,
+            // ...prevData,
             [farmerLandDetailsId]: {
-              acre: prevData[farmerLandDetailsId]?.acre || "0",
-              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+              ...selectedData,
+              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+              devGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
+              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
             },
           };
         }
@@ -493,8 +577,6 @@ function ApplicationFormEdit() {
   useEffect(() => {
     getFinancialDefaultDetails();
   }, []);
-
-  console.log(data);
 
   // to get head of account by sc-scheme-details
   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
@@ -771,7 +853,7 @@ function ApplicationFormEdit() {
         landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
-        componentId:data.scComponentId,
+        componentId: data.scComponentId,
         componentType: data.scSubSchemeType,
         // expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
@@ -892,6 +974,12 @@ function ApplicationFormEdit() {
       payToVendor: false,
     });
     setDocumentAttachments({});
+    setSavedLandDetailsList([]);
+    setLandDetailsList([]);
+    setDevelopedArea([]);
+    setLandDetailsIds([]);
+    getIdList();
+    getDirectData();
   };
 
   const saveSuccess = () => {
@@ -1099,9 +1187,9 @@ function ApplicationFormEdit() {
     }
   };
 
-  const handleInlineDevelopedLandChange = (e, row) => {
+  const handleInlineDevelopedLandChange = (e, row,i) => {
     const { name, value } = e.target;
-    const farmerLandDetailsId = row.farmerLandDetailsId;
+    const farmerLandDetailsId =i;
 
     setDevelopedArea((prevData) => ({
       ...prevData,
@@ -1116,13 +1204,13 @@ function ApplicationFormEdit() {
     {
       name: "Select",
       selector: "select",
-      cell: (row) => (
+      cell: (row, i) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.farmerLandDetailsId}
-          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
-          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+          value={i}
+          checked={landDetailsIds.includes(i)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1227,29 +1315,29 @@ function ApplicationFormEdit() {
     {
       name: "Developed Area (Acre/Gunta/FGunta)",
       // selector: (row) => row.acre,
-      cell: (row) => (
+      cell: (row, i) => (
         <>
           <Form.Control
-            name="acre"
+            name="devAcre"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devAcre || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="Acre"
             className="m-1"
           />
           <Form.Control
-            name="gunta"
+            name="devGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="Gunta"
             className="m-1"
           />
           <Form.Control
-            name="fgunta"
+            name="devFGunta"
             type="text"
-            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+            value={developedArea[i]?.devFGunta || ""}
+            onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
             placeholder="FGunta"
             className="m-1"
           />
@@ -1263,22 +1351,22 @@ function ApplicationFormEdit() {
   ];
 
   const LandDetailsColumns = [
-    {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="radio"
-          name="selectedLand"
-          value={row.farmerLandDetailsId}
-          // checked={selectedLandId === row.id}
-          onChange={() => handleRadioChange(row.farmerLandDetailsId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
-    },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name="selectedLand"
+    //       value={row.farmerLandDetailsId}
+    //       // checked={selectedLandId === row.id}
+    //       onChange={() => handleRadioChange(row.farmerLandDetailsId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
     {
       name: "District",
       selector: (row) => row.districtName,
@@ -1370,6 +1458,57 @@ function ApplicationFormEdit() {
       //   />
       // ),
       cell: (row) => <span>{row.gunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DevAcre",
+      selector: (row) => row.devAcre,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.acre}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Acre"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devAcre}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DevGunta",
+      selector: (row) => row.devGunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.gunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Gunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devGunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DevFGunta",
+      selector: (row) => row.devFGunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.fgunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit FGunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devFGunta}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1509,6 +1648,8 @@ function ApplicationFormEdit() {
                           <tr>
                             <td style={styles.ctstyle}> Farmer Name:</td>
                             <td>{farmerDetails.farmerName}</td>
+                            <td style={styles.ctstyle}> FID:</td>
+                            <td>{farmerDetails.fid}</td>
                             <td style={styles.ctstyle}> Taluk :</td>
                             <td>{farmerDetails.talukName}</td>
                             <td style={styles.ctstyle}> Village:</td>
@@ -1998,6 +2139,35 @@ function ApplicationFormEdit() {
                 </Block>
               </Col>
 
+              <Block className="mt-3">
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    Saved Land Details
+                  </Card.Header>
+                  <Card.Body>
+                    <Row>
+                      <DataTable
+                        tableClassName="data-table-head-light table-responsive"
+                        columns={LandDetailsColumns}
+                        data={savedLandDetailsList}
+                        highlightOnHover
+                        // pagination
+                        // paginationServer
+                        // paginationTotalRows={totalRows}
+                        // paginationPerPage={countPerPage}
+                        // paginationComponentOptions={{
+                        //   noRowsPerPage: true,
+                        // }}
+                        // onChangePage={(page) => setPage(page - 1)}
+                        progressPending={loading}
+                        theme="solarized"
+                        customStyles={customStyles}
+                      />
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Block>
+
               {/* <Block className="mt-3">
                 <Card>
                   <Card.Header style={{ fontWeight: "bold" }}>
@@ -2047,9 +2217,9 @@ function ApplicationFormEdit() {
                 <>
                   <Block className="mt-3">
                     <Card>
-                      {/* <Card.Header style={{ fontWeight: "bold" }}>
-                        RTC Details
-                      </Card.Header> */}
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        Edit Land Details
+                      </Card.Header>
                       <Card.Body>
                         <Row>
                           <DataTable
