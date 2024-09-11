@@ -1,4 +1,12 @@
-import { Card, Button, Row, Col, Form, Modal,Accordion} from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Row,
+  Col,
+  Form,
+  Modal,
+  Accordion,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -247,7 +255,8 @@ function ReportRejectList() {
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
             landDetails: content.landDetailsResponses,
-            applicationTransactionDetails: content.applicationTransactionResponses
+            applicationTransactionDetails:
+              content.applicationTransactionResponses,
           });
         }
       })
@@ -566,27 +575,57 @@ function ReportRejectList() {
     getList();
   }, [page]);
 
-  const pullBack = () => {
+  const pullBack = async (categoryId, componentId, bid) => {
     const sendPullBackData = {
       deptCode: "4",
-      user: "test",
-      password: "",
+      user: "Sericulture",
+      password: "S#e24ri",
       schemeID: "85",
       componentTypeID: "85",
-      componentID: "86",
-      subComponentID: "3",
+      componentID: "",
+      subComponentID: "",
       dbtScheme: "85",
       dBTPaymentUpdates: [
         {
-          beneficiaryID: 20240614141937385,
+          beneficiaryID: bid,
           periodFrom: "01/04/2023",
           periodTo: "31/03/2024",
         },
       ],
     };
-    axios
+
+    await api
+      .get(baseURLMasterData + `scCategory/get/${categoryId}`)
+      .then((response) => {
+        if (response.data.content) {
+          sendPullBackData.subComponentID = response.data.content.dbtCode;
+        } else {
+          saveError("Not able to get category DBT Code");
+        }
+      })
+      .catch((err) => {
+        // setScCategoryListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+        saveError(
+          "Category Id is empty, Please edit and update with category(Sub Component)"
+        );
+      });
+
+    await api
+      .get(baseURLMasterData + `scComponent/get/${componentId}`)
+      .then((response) => {
+        sendPullBackData.componentID = response.data.content.dbtCode;
+      })
+      .catch((err) => {
+        // setScComponentListData([]);
+        saveError(
+          "Component Id is empty, Please edit and update with Component"
+        );
+      });
+
+    await axios
       .post(
-        `http://13.234.206.115:5000/Dbtoperations/GetDBTFailurePaymentStatus`,
+        `http://13.234.206.115:5000/Dbtoperations/GetDBTFailurePaymentUpdate`,
         sendPullBackData,
         {
           headers: {
@@ -597,9 +636,15 @@ function ReportRejectList() {
       )
       .then((response) => {
         console.log("Working Fine", response);
+        if (response.data.data.length > 0) {
+          saveSuccess(response.data.message.processingStatus,"Pulled Back");
+        } else {
+          saveError(response.data.message.processingStatus,"Pulled Back");
+        }
       })
       .catch((err) => {
         console.log("Not Working Fine", err);
+        saveError("Sorry, Unable to pull back.","Pulled Back")
       });
   };
 
@@ -754,9 +799,6 @@ function ReportRejectList() {
     },
   };
 
-
-
-
   const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -826,14 +868,14 @@ function ReportRejectList() {
   //   getFinancialDefaultDetails();
   // }, []);
 
-  const saveSuccess = (message) => {
+  const saveSuccess = (message, task = "Saved") => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: `${task} successfully`,
       text: message,
     });
   };
-  const saveError = (message) => {
+  const saveError = (message,task ="Save") => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -842,7 +884,7 @@ function ReportRejectList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: `${task} attempt was not successful`,
       html: errorMessage,
     });
   };
@@ -925,7 +967,6 @@ function ReportRejectList() {
       },
     },
   };
-  
 
   const ApplicationDataColumns = [
     // {
@@ -1102,7 +1143,9 @@ function ReportRejectList() {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => pullBack()}
+              onClick={() =>
+                pullBack(row.categoryId, row.componentId, row.beneficiaryId)
+              }
               // disabled={disabledIds.includes(row.scApplicationFormId)}
               className="ms-1"
             >
@@ -1912,8 +1955,7 @@ function ReportRejectList() {
   </Modal.Body>
 </Modal> */}
 
-
-{/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
   <Modal.Header closeButton>
     <Modal.Title>View Details</Modal.Title>
   </Modal.Header>
@@ -2115,223 +2157,331 @@ function ReportRejectList() {
   </Modal.Body>
 </Modal> */}
 
-
-<Modal show={showModal} onHide={handleCloseModal} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {loading ? (
-      <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
-      </h1>
-    ) : (
-      <Accordion defaultActiveKey="0">
-        {/* Application Details Accordion */}
-        <Accordion.Item eventKey="0">
-          <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Application Details</Accordion.Header>
-          <Accordion.Body>
-            <table className="table small table-bordered">
-              <tbody>
-                <tr>
-                  <td style={styles.ctstyle}>Fruits Id:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Farmer Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Sanction No:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.sanctionNo || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.subSchemeName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Component:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.scComponentName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Scheme Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.schemeName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Sub Component:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.categoryName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Scheme Amount:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Period From:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.periodFrom || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Period To:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.periodTo || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>District Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.districtName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Taluk Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.talukName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Village Name:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.villageName || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Application Status:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style={styles.ctstyle}>Remarks:</td>
-                  <td>{viewDetailsData?.applicationDetails?.[0]?.remarks || 'N/A'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Accordion.Body>
-        </Accordion.Item>
-
-        {/* Land Details Accordion */}
-        {viewDetailsData?.landDetails?.length > 0 ? (
-          viewDetailsData.landDetails.map((landDetail, index) => (
-            <Accordion.Item eventKey={index + 1} key={index}>
-              <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Land Details</Accordion.Header>
-              <Accordion.Body>
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}>Survey Number:</td>
-                      <td>{landDetail.surveyNumber || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>District Name:</td>
-                      <td>{landDetail.districtName || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Taluk Name:</td>
-                      <td>{landDetail.talukName || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Village Name:</td>
-                      <td>{landDetail.villageName || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Acre:</td>
-                      <td>{landDetail.acre || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>F Gunta:</td>
-                      <td>{landDetail.fGunta || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Gunta:</td>
-                      <td>{landDetail.gunta || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Developed Area Acre:</td>
-                      <td>{landDetail.devAcre || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Developed Area F Gunta:</td>
-                      <td>{landDetail.devFGunta || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Developed Area Gunta:</td>
-                      <td>{landDetail.devGunta || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Hissa:</td>
-                      <td>{landDetail.hissa || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Land Code:</td>
-                      <td>{landDetail.landCode || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Main Owner No:</td>
-                      <td>{landDetail.mainOwnerNo || 'N/A'}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>Owner Name:</td>
-                      <td>{landDetail.ownerName || 'N/A'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))
-        ) : (
-          <Accordion.Item eventKey="land">
-            <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2" >Land Details</Accordion.Header>
-            <Accordion.Body>No Land Details Available</Accordion.Body>
-          </Accordion.Item>
-        )}
-
-        <Accordion.Item eventKey="transaction">
-  <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Application Transaction Details</Accordion.Header>
-  <Accordion.Body>
-    <div style={{ overflowX: 'auto' }}>
-      <table className="table small table-bordered" style={{ maxWidth: '100%', tableLayout: 'fixed' }}>
-        <thead style={styles.headerStyle}>
-          <tr>
-            <th style={{ width: '10%' }}>Fruits Id</th>
-            <th style={{ width: '10%' }}>Beneficiary Id</th>
-            <th style={{ width: '10%' }}>Scheme Amount</th>
-            <th style={{ width: '10%' }}>Sanction No</th>
-            <th style={{ width: '10%' }}>Financial Year</th>
-            <th style={{ width: '10%' }}>Payment Mode</th>
-            <th style={{ width: '10%' }}>File Name</th>
-            <th style={{ width: '10%' }}>DBT Push Type</th>
-            <th style={{ width: '10%' }}>Status</th>
-            <th style={{ width: '10%' }}>Remarks</th>
-          </tr>
-        </thead>
-        <tbody>
-          {viewDetailsData?.applicationTransactionDetails?.length > 0 ? (
-            viewDetailsData.applicationTransactionDetails.map((transaction, index) => (
-              <tr key={index}>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.fruitsId || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.beneficiaryId || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.schemeAmount || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.sanctionNo || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.financialYear || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.paymentMode || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.fileName || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.dbtPushType || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.status || 'N/A'}</td>
-                <td style={{ wordBreak: 'break-word' }}>{transaction.remarks || 'N/A'}</td>
-              </tr>
-            ))
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>View Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {loading ? (
+            <h1 className="d-flex justify-content-center align-items-center">
+              Loading...
+            </h1>
           ) : (
-            <tr>
-              <td colSpan="10" className="text-center">No Transaction Details Available</td>
-            </tr>
+            <Accordion defaultActiveKey="0">
+              {/* Application Details Accordion */}
+              <Accordion.Item eventKey="0">
+                <Accordion.Header
+                  style={{
+                    backgroundColor: "#0F6CBE",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  className="mb-2"
+                >
+                  Application Details
+                </Accordion.Header>
+                <Accordion.Body>
+                  <table className="table small table-bordered">
+                    <tbody>
+                      <tr>
+                        <td style={styles.ctstyle}>Fruits Id:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]?.fruitsId ||
+                            "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Farmer Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.farmerFirstName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sanction No:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.sanctionNo || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.subSchemeName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Component:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.scComponentName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Scheme Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.schemeName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Sub Component:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.categoryName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Scheme Amount:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.schemeAmount || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Period From:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.periodFrom || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Period To:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]?.periodTo ||
+                            "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>District Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.districtName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Taluk Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.talukName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Village Name:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.villageName || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Application Status:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]
+                            ?.applicationStatus || "N/A"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Remarks:</td>
+                        <td>
+                          {viewDetailsData?.applicationDetails?.[0]?.remarks ||
+                            "N/A"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Accordion.Body>
+              </Accordion.Item>
+
+              {/* Land Details Accordion */}
+              {viewDetailsData?.landDetails?.length > 0 ? (
+                viewDetailsData.landDetails.map((landDetail, index) => (
+                  <Accordion.Item eventKey={index + 1} key={index}>
+                    <Accordion.Header
+                      style={{
+                        backgroundColor: "#0F6CBE",
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                      className="mb-2"
+                    >
+                      Land Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <table className="table small table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style={styles.ctstyle}>Survey Number:</td>
+                            <td>{landDetail.surveyNumber || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>District Name:</td>
+                            <td>{landDetail.districtName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Taluk Name:</td>
+                            <td>{landDetail.talukName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Village Name:</td>
+                            <td>{landDetail.villageName || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Acre:</td>
+                            <td>{landDetail.acre || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>F Gunta:</td>
+                            <td>{landDetail.fGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Gunta:</td>
+                            <td>{landDetail.gunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Developed Area Acre:</td>
+                            <td>{landDetail.devAcre || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              Developed Area F Gunta:
+                            </td>
+                            <td>{landDetail.devFGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>
+                              Developed Area Gunta:
+                            </td>
+                            <td>{landDetail.devGunta || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Hissa:</td>
+                            <td>{landDetail.hissa || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Land Code:</td>
+                            <td>{landDetail.landCode || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Main Owner No:</td>
+                            <td>{landDetail.mainOwnerNo || "N/A"}</td>
+                          </tr>
+                          <tr>
+                            <td style={styles.ctstyle}>Owner Name:</td>
+                            <td>{landDetail.ownerName || "N/A"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))
+              ) : (
+                <Accordion.Item eventKey="land">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    className="mb-2"
+                  >
+                    Land Details
+                  </Accordion.Header>
+                  <Accordion.Body>No Land Details Available</Accordion.Body>
+                </Accordion.Item>
+              )}
+
+              <Accordion.Item eventKey="transaction">
+                <Accordion.Header
+                  style={{
+                    backgroundColor: "#0F6CBE",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  className="mb-2"
+                >
+                  Application Transaction Details
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div style={{ overflowX: "auto" }}>
+                    <table
+                      className="table small table-bordered"
+                      style={{ maxWidth: "100%", tableLayout: "fixed" }}
+                    >
+                      <thead style={styles.headerStyle}>
+                        <tr>
+                          <th style={{ width: "10%" }}>Fruits Id</th>
+                          <th style={{ width: "10%" }}>Beneficiary Id</th>
+                          <th style={{ width: "10%" }}>Scheme Amount</th>
+                          <th style={{ width: "10%" }}>Sanction No</th>
+                          <th style={{ width: "10%" }}>Financial Year</th>
+                          <th style={{ width: "10%" }}>Payment Mode</th>
+                          <th style={{ width: "10%" }}>File Name</th>
+                          <th style={{ width: "10%" }}>DBT Push Type</th>
+                          <th style={{ width: "10%" }}>Status</th>
+                          <th style={{ width: "10%" }}>Remarks</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {viewDetailsData?.applicationTransactionDetails
+                          ?.length > 0 ? (
+                          viewDetailsData.applicationTransactionDetails.map(
+                            (transaction, index) => (
+                              <tr key={index}>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.fruitsId || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.beneficiaryId || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.schemeAmount || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.sanctionNo || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.financialYear || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.paymentMode || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.fileName || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.dbtPushType || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.status || "N/A"}
+                                </td>
+                                <td style={{ wordBreak: "break-word" }}>
+                                  {transaction.remarks || "N/A"}
+                                </td>
+                              </tr>
+                            )
+                          )
+                        ) : (
+                          <tr>
+                            <td colSpan="10" className="text-center">
+                              No Transaction Details Available
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           )}
-        </tbody>
-      </table>
-    </div>
-  </Accordion.Body>
-</Accordion.Item>
-      </Accordion>
-    )}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Layout>
   );
 }
