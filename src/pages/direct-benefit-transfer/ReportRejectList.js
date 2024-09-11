@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, Form, Modal } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Modal,Accordion} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -228,7 +228,8 @@ function ReportRejectList() {
 
   const [viewDetailsData, setViewDetailsData] = useState({
     applicationDetails: [],
-    landDetails: []
+    landDetails: [],
+    applicationTransactionDetails: [],
   });
 
   const handleView = (_id) => {
@@ -245,7 +246,8 @@ function ReportRejectList() {
           handleShowModal();
           setViewDetailsData({
             applicationDetails: content.applicationDetailsResponses,
-            landDetails: content.landDetailsResponses
+            landDetails: content.landDetailsResponses,
+            applicationTransactionDetails: content.applicationTransactionResponses
           });
         }
       })
@@ -440,7 +442,7 @@ function ReportRejectList() {
     // setAllApplicationIds([]);
     setApplicationIds([]);
   };
-
+  
   const exportCsv = (e) => {
     api
       .post(
@@ -710,7 +712,16 @@ const getFinancialDefaultDetails = () => {
       color: "rgb(0, 0, 0)",
       width: "50%",
     },
+    headerStyle: {
+      backgroundColor: "#0f6cbe",
+      color: "white",
+      borderTopLeftRadius: "8px",
+      borderTopRightRadius: "8px",
+    },
   };
+
+  
+  
 
   const deleteConfirm = (_id) => {
     Swal.fire({
@@ -1693,7 +1704,7 @@ const getFinancialDefaultDetails = () => {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
   <Modal.Header closeButton>
     <Modal.Title>View Details</Modal.Title>
   </Modal.Header>
@@ -1705,7 +1716,6 @@ const getFinancialDefaultDetails = () => {
     ) : (
       <Row className="g-gs">
         <Block className="mt-3">
-          {/* Scheme Details Card */}
           <Card>
             <Card.Header style={{ fontWeight: "bold" }}>
               Scheme Details
@@ -1780,7 +1790,6 @@ const getFinancialDefaultDetails = () => {
             </Card.Body>
           </Card>
 
-          {/* RTC Details Card */}
           <Card className="mt-3">
             <Card.Header style={{ fontWeight: "bold" }}>
               RTC Details
@@ -1851,7 +1860,6 @@ const getFinancialDefaultDetails = () => {
                           <td style={styles.ctstyle}>Sur Noc:</td>
                           <td>{landDetail.surNoc}</td>
                         </tr>
-                        {/* Add more fields as needed */}
                       </React.Fragment>
                     ))}
                   </tbody>
@@ -1863,132 +1871,428 @@ const getFinancialDefaultDetails = () => {
       </Row>
     )}
   </Modal.Body>
-</Modal>
+</Modal> */}
 
 
+{/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>View Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {loading ? (
+      <h1 className="d-flex justify-content-center align-items-center">
+        Loading...
+      </h1>
+    ) : (
+      <Row className="g-gs">
+        <Block className="mt-3">
+          <Row>
+            <Col lg="6">
+              <Card>
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Scheme Details
+                </Card.Header>
+                <Card.Body>
+                  <table className="table small table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Fruits Id</th>
+                        <th>Farmer Name</th>
+                        <th>Sanction No</th>
+                        <th>Scheme Name</th>
+                        <th>Sub Scheme Name</th>
+                        <th>Component</th>
+                        <th>Sub Component</th>
+                        <th>Scheme Amount</th>
+                        <th>Period From</th>
+                        <th>Period To</th>
+                        <th>District Name</th>
+                        <th>Taluk Name</th>
+                        <th>Village Name</th>
+                        <th>Application Status</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {viewDetailsData?.applicationDetails?.length > 0 ? (
+                        viewDetailsData.applicationDetails.map((detail, index) => (
+                          <tr key={index}>
+                            <td>{detail.fruitsId}</td>
+                            <td>{detail.farmerFirstName}</td>
+                            <td>{detail.sanctionNo}</td>
+                            <td>{detail.schemeName}</td>
+                            <td>{detail.subSchemeName}</td>
+                            <td>{detail.scComponentName}</td>
+                            <td>{detail.categoryName}</td>
+                            <td>{detail.schemeAmount}</td>
+                            <td>{detail.periodFrom}</td>
+                            <td>{detail.periodTo}</td>
+                            <td>{detail.districtName}</td>
+                            <td>{detail.talukName}</td>
+                            <td>{detail.villageName}</td>
+                            <td>{detail.applicationStatus}</td>
+                            <td>{detail.remarks}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="14">No Application Details Available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </Card.Body>
+              </Card>
+            </Col>
 
-      {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>View</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {loading ? (
-            <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
-            </h1>
-          ) : (
-            <Row className="g-gs">
-              <Col lg="12">
+            <Col lg="6">
+              <Card className="mt-3">
+                <Card.Header style={{ fontWeight: "bold" }}>RTC Details</Card.Header>
+                <Card.Body>
+                  <table className="table small table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Survey Number</th>
+                        <th>District Name</th>
+                        <th>Taluk Name</th>
+                        <th>Village Name</th>
+                        <th>Acre</th>
+                        <th>F Gunta</th>
+                        <th>Gunta</th>
+                        <th>Developed Area Acre</th>
+                        <th>Developed Area F Gunta</th>
+                        <th>Developed Area Gunta</th>
+                        <th>Hissa</th>
+                        <th>Land Code</th>
+                        <th>Main Owner No</th>
+                        <th>Owner Name</th>
+                        <th>Sur Noc</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {viewDetailsData?.landDetails?.length > 0 ? (
+                        viewDetailsData.landDetails.map((landDetail, index) => (
+                          <tr key={index}>
+                            <td>{landDetail.surveyNumber}</td>
+                            <td>{landDetail.districtName}</td>
+                            <td>{landDetail.talukName}</td>
+                            <td>{landDetail.villageName}</td>
+                            <td>{landDetail.devAcre}</td>
+                            <td>{landDetail.devFGunta}</td>
+                            <td>{landDetail.devGunta}</td>
+                            <td>{landDetail.acre}</td>
+                            <td>{landDetail.fGunta}</td>
+                            <td>{landDetail.gunta}</td>
+                            <td>{landDetail.hissa}</td>
+                            <td>{landDetail.landCode}</td>
+                            <td>{landDetail.mainOwnerNo}</td>
+                            <td>{landDetail.ownerName}</td>
+                            <td>{landDetail.surNoc}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="14">No Land Details Available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col lg="12">
+              <Card className="mt-3">
+                <Card.Header style={{ fontWeight: "bold" }}>
+                  Application Transaction Details
+                </Card.Header>
+                <Card.Body>
+                  <table className="table small table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Fruits Id</th>
+                        <th>Beneficiary Id</th>
+                        <th>Sub Scheme Name</th>
+                        <th>Component Name</th>
+                        <th>Period From</th>
+                        <th>Period To</th>
+                        <th>Scheme Amount</th>
+                        <th>Sanction No</th>
+                        <th>Financial Year</th>
+                        <th>Payment Mode</th>
+                        <th>File Name</th>
+                        <th>DBT Push Type</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {viewDetailsData?.applicationTransactionDetails?.length > 0 ? (
+                        viewDetailsData.applicationTransactionDetails.map(
+                          (transaction, index) => (
+                            <tr key={index}>
+                              <td>{transaction.scApplicationTransactionId}</td>
+                              <td>{transaction.deptCode}</td>
+                              <td>{transaction.fruitsId}</td>
+                              <td>{transaction.beneficiaryId}</td>
+                              <td>{transaction.applCode}</td>
+                              <td>{transaction.subSchemeName}</td>
+                              <td>{transaction.scComponentName}</td>
+                              <td>{transaction.periodFrom}</td>
+                              <td>{transaction.periodTo}</td>
+                              <td>{transaction.ddoCode}</td>
+                              <td>{transaction.schemeAmount}</td>
+                              <td>{transaction.sanctionNo}</td>
+                              <td>{transaction.financialYear}</td>
+                              <td>{transaction.paymentMode}</td>
+                              <td>{transaction.agencyCode}</td>
+                              <td>{transaction.agencyBankAccountNo}</td>
+                              <td>{transaction.agencyIfscCode}</td>
+                              <td>{transaction.agencyDistrictCode}</td>
+                              <td>{transaction.agencyTalukCode}</td>
+                              <td>{transaction.fileName}</td>
+                              <td>{transaction.dbtPushType}</td>
+                              <td>{transaction.applicationStatus}</td>
+                              <td>{transaction.remarks}</td>
+                            </tr>
+                          )
+                        )
+                      ) : (
+                        <tr>
+                          <td colSpan="14">No Transaction Details Available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Block>
+      </Row>
+    )}
+  </Modal.Body>
+</Modal> */}
+
+
+<Modal show={showModal} onHide={handleCloseModal} size="xl">
+  <Modal.Header closeButton>
+    <Modal.Title>View Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {loading ? (
+      <h1 className="d-flex justify-content-center align-items-center">
+        Loading...
+      </h1>
+    ) : (
+      <Accordion defaultActiveKey="0">
+        {/* Application Details Accordion */}
+        <Accordion.Item eventKey="0">
+          <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
+                        className="mb-2">Application Details</Accordion.Header>
+          <Accordion.Body>
+            <table className="table small table-bordered">
+              <tbody>
+                <tr>
+                  <td style={styles.ctstyle}>Fruits Id:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Farmer Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Sanction No:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.sanctionNo || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.subSchemeName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Component:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.scComponentName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Scheme Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.schemeName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Sub Component:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.categoryName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Scheme Amount:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Period From:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.periodFrom || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Period To:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.periodTo || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>District Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.districtName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Taluk Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.talukName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Village Name:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.villageName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Application Status:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>Remarks:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.remarks || 'N/A'}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        {/* Land Details Accordion */}
+        {viewDetailsData?.landDetails?.length > 0 ? (
+          viewDetailsData.landDetails.map((landDetail, index) => (
+            <Accordion.Item eventKey={index + 1} key={index}>
+              <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
+                        className="mb-2">Land Details</Accordion.Header>
+              <Accordion.Body>
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>Scheme Name:</td>
-                      <td>{viewDetailsData.schemeName}</td>
+                      <td style={styles.ctstyle}>Survey Number:</td>
+                      <td>{landDetail.surveyNumber || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Sub Scheme Name:</td>
-                      <td>{viewDetailsData.subSchemeName}</td>
+                      <td style={styles.ctstyle}>District Name:</td>
+                      <td>{landDetail.districtName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Head of Account:</td>
-                      <td>{viewDetailsData.scHeadAccountName}</td>
+                      <td style={styles.ctstyle}>Taluk Name:</td>
+                      <td>{landDetail.talukName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Application Status:</td>
-                      <td>{viewDetailsData.applicationStatus}</td>
+                      <td style={styles.ctstyle}>Village Name:</td>
+                      <td>{landDetail.villageName || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Initial Amount:</td>
-                      <td>{viewDetailsData.initialAmount}</td>
+                      <td style={styles.ctstyle}>Acre:</td>
+                      <td>{landDetail.acre || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Beneficiary Id:</td>
-                      <td>{viewDetailsData.beneficiaryId}</td>
+                      <td style={styles.ctstyle}>F Gunta:</td>
+                      <td>{landDetail.fGunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Financial Year:</td>
-                      <td>{viewDetailsData.financialYear}</td>
+                      <td style={styles.ctstyle}>Gunta:</td>
+                      <td>{landDetail.gunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Category Name:</td>
-                      <td>{viewDetailsData.categoryName}</td>
+                      <td style={styles.ctstyle}>Developed Area Acre:</td>
+                      <td>{landDetail.devAcre || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Component Name:</td>
-                      <td>{viewDetailsData.scComponentName}</td>
+                      <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                      <td>{landDetail.devFGunta || 'N/A'}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Remarks:</td>
-                      <td>{viewDetailsData.remarks}</td>
+                      <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                      <td>{landDetail.devGunta || 'N/A'}</td>
                     </tr>
-                   
+                    <tr>
+                      <td style={styles.ctstyle}>Hissa:</td>
+                      <td>{landDetail.hissa || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Land Code:</td>
+                      <td>{landDetail.landCode || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Main Owner No:</td>
+                      <td>{landDetail.mainOwnerNo || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Owner Name:</td>
+                      <td>{landDetail.ownerName || 'N/A'}</td>
+                    </tr>
                   </tbody>
                 </table>
-              </Col>
-            </Row>
-          )}
-        </Modal.Body>
-      </Modal> */}
+              </Accordion.Body>
+            </Accordion.Item>
+          ))
+        ) : (
+          <Accordion.Item eventKey="land">
+            <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
+                        className="mb-2" >Land Details</Accordion.Header>
+            <Accordion.Body>No Land Details Available</Accordion.Body>
+          </Accordion.Item>
+        )}
 
-      {/* <Block className="">
-        <Row className="g-3 ">
-          <Form noValidate validated={validated} onSubmit={postData}>
-            <Card>
-              <Card.Body>
-                <Row className="g-gs ">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label>
-                        User<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="userMasterId"
-                          value={data.userMasterId}
-                          onChange={handleInputs}
-                          onBlur={() => handleInputs}
-                          required
-                          isInvalid={
-                            data.userMasterId === undefined ||
-                            data.userMasterId === "0"
-                          }
-                        >
-                          <option value="">Select User</option>
-                          {userListData.map((list) => (
-                            <option
-                              key={list.userMasterId}
-                              value={list.userMasterId}
-                            >
-                              {list.username}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                          User name is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  <Button type="submit" variant="primary">
-                    Save
-                  </Button>
-                </li>
-                <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    Cancel
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </Form>
-        </Row>
-      </Block> */}
+        <Accordion.Item eventKey="transaction">
+  <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
+                        className="mb-2">Application Transaction Details</Accordion.Header>
+  <Accordion.Body>
+    <div style={{ overflowX: 'auto' }}>
+      <table className="table small table-bordered" style={{ maxWidth: '100%', tableLayout: 'fixed' }}>
+        <thead style={styles.headerStyle}>
+          <tr>
+            <th style={{ width: '10%' }}>Fruits Id</th>
+            <th style={{ width: '10%' }}>Beneficiary Id</th>
+            <th style={{ width: '10%' }}>Scheme Amount</th>
+            <th style={{ width: '10%' }}>Sanction No</th>
+            <th style={{ width: '10%' }}>Financial Year</th>
+            <th style={{ width: '10%' }}>Payment Mode</th>
+            <th style={{ width: '10%' }}>File Name</th>
+            <th style={{ width: '10%' }}>DBT Push Type</th>
+            <th style={{ width: '10%' }}>Status</th>
+            <th style={{ width: '10%' }}>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {viewDetailsData?.applicationTransactionDetails?.length > 0 ? (
+            viewDetailsData.applicationTransactionDetails.map((transaction, index) => (
+              <tr key={index}>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.fruitsId || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.beneficiaryId || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.schemeAmount || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.sanctionNo || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.financialYear || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.paymentMode || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.fileName || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.dbtPushType || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.status || 'N/A'}</td>
+                <td style={{ wordBreak: 'break-word' }}>{transaction.remarks || 'N/A'}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="10" className="text-center">No Transaction Details Available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </Accordion.Body>
+</Accordion.Item>
+      </Accordion>
+    )}
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseModal}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
     </Layout>
   );
 }
