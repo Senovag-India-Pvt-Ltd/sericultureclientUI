@@ -52,6 +52,7 @@ function Market() {
     bidAmountFlag: false,
     divisionMasterId:"",
     paymentMode: "",
+    cocoonAge: "",
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -142,6 +143,7 @@ function Market() {
               bidAmountFlag: false,
               divisionMasterId:"",
               paymentMode: "",
+              cocoonAge: "",
             });
             setValidated(false);
           }
@@ -200,6 +202,7 @@ function Market() {
       bidAmountFlag: false,
       divisionMasterId:"",
       paymentMode: "",
+      cocoonAge: "",
     });
   };
 
@@ -1193,6 +1196,26 @@ function Market() {
                         />
                         <Form.Control.Feedback type="invalid">
                           Radius is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="cocoonAge">
+                        Cocoon Age<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="cocoonAge"
+                          name="cocoonAge"
+                          value={data.cocoonAge}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder="Enter Cocoon Age"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Cocoon Age is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

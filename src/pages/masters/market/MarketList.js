@@ -282,6 +282,13 @@ function MarketList() {
       hide: "md",
     },
     {
+      name: "Cocoon Age",
+      selector: (row) => row.cocoonAge,
+      cell: (row) => <span>{row.cocoonAge}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Market Type",
       selector: (row) => row.marketTypeMasterName,
       cell: (row) => <span>{row.marketTypeMasterName}</span>,

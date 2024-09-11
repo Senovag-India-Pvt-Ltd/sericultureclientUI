@@ -222,6 +222,10 @@ function MarketView() {
                       <td>{MarketMaster.name}</td>
                     </tr>
                     <tr>
+                      <td style={styles.ctstyle}> Cocoon Age:</td>
+                      <td>{MarketMaster.cocoonAge}</td>
+                    </tr>
+                    <tr>
                       <td style={styles.ctstyle}> Snorkel Request Path:</td>
                       <td>{MarketMaster.snorkelRequestPath}</td>
                     </tr>
