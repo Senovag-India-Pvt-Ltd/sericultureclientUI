@@ -74,7 +74,7 @@ function ReportRejectList() {
   const [data, setData] = useState({
     financialYearMasterId: "",
     year1: "",
-    year2: ""
+    year2: "",
   });
 
   const [farmer, setFarmer] = useState({
@@ -100,18 +100,18 @@ function ReportRejectList() {
   // console.log(searchData);
 
   // to get Rejected Reason
-  const [rejectedReasonListData,setRejectedReasonListData] = useState([]);
+  const [rejectedReasonListData, setRejectedReasonListData] = useState([]);
 
-  const getRejectedReasonList = () =>{
+  const getRejectedReasonList = () => {
     api
-    .get(baseURLDBT + `rejection-list/get-all-rejection-list`)
-    .then((response) => {
-      setRejectedReasonListData(response.data.content.rejectionList);
-    })
-    .catch((err) => {
-      setRejectedReasonListData([]);
-    });
-  }
+      .get(baseURLDBT + `rejection-list/get-all-rejection-list`)
+      .then((response) => {
+        setRejectedReasonListData(response.data.content.rejectionList);
+      })
+      .catch((err) => {
+        setRejectedReasonListData([]);
+      });
+  };
 
   useEffect(() => {
     getRejectedReasonList();
@@ -194,7 +194,7 @@ function ReportRejectList() {
   // };
   const handleInputsSearch = (e) => {
     const { name, value } = e.target;
-    
+
     // If type is 4, set the financial year ID in searchData
     if (value == 4) {
       setSearchData((prev) => ({
@@ -205,7 +205,7 @@ function ReportRejectList() {
     } else {
       setSearchData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -239,7 +239,7 @@ function ReportRejectList() {
       })
       .then((response) => {
         const content = response.data.content[0];
-        
+
         if (content.applicationDetailsResponses.length <= 0) {
           saveError("No Details Found!!!");
         } else {
@@ -255,8 +255,6 @@ function ReportRejectList() {
         // saveError(err.response.data.validationErrors);
       });
   };
-
-  
 
   const editDetails = (_id) => {
     navigate(`/seriui/application-form-edit/${_id}`);
@@ -352,7 +350,7 @@ function ReportRejectList() {
       applicationList: [id],
       userMasterId: localStorage.getItem("userMasterId"),
       paymentMode: "P",
-      pushType:"R"
+      pushType: "R",
     };
     api
       .post(
@@ -404,7 +402,7 @@ function ReportRejectList() {
     const post = {
       applicationList: applicationIds,
       paymentMode: "P",
-      pushType:"R",
+      pushType: "R",
       userMasterId: localStorage.getItem("userMasterId"),
     };
     const form = event.currentTarget;
@@ -442,7 +440,7 @@ function ReportRejectList() {
     // setAllApplicationIds([]);
     setApplicationIds([]);
   };
-  
+
   const exportCsv = (e) => {
     api
       .post(
@@ -458,7 +456,7 @@ function ReportRejectList() {
             displayAllRecords: true,
             status: "ACKNOWLEDGEMENT FAILED",
           },
-          responseType: 'blob',
+          responseType: "blob",
           headers: {
             accept: "text/csv",
             "Content-Type": "application/json",
@@ -481,8 +479,7 @@ function ReportRejectList() {
           title: "No record found!!!",
         });
       });
-}; 
-
+  };
 
   // Search
   const search = (e) => {
@@ -510,31 +507,31 @@ function ReportRejectList() {
       });
   };
 
-     // Fetch default financial year details
-const getFinancialDefaultDetails = () => {
-  api
-    .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-    .then((response) => {
-      const year = response.data.content.financialYear;
-      const [fromDate, toDate] = year.split("-");
-      setData({
-        financialYearMasterId: response.data.content.financialYearMasterId,
-        year1: fromDate,
-        year2: toDate
+  // Fetch default financial year details
+  const getFinancialDefaultDetails = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        const year = response.data.content.financialYear;
+        const [fromDate, toDate] = year.split("-");
+        setData({
+          financialYearMasterId: response.data.content.financialYearMasterId,
+          year1: fromDate,
+          year2: toDate,
+        });
+        setSearchData((prev) => ({
+          ...prev,
+          text: response.data.content.financialYearMasterId, // Pre-fill text with financial year
+        }));
+      })
+      .catch((err) => {
+        setData({
+          financialYearMasterId: "",
+          year1: "",
+          year2: "",
+        });
       });
-      setSearchData((prev) => ({
-        ...prev,
-        text: response.data.content.financialYearMasterId // Pre-fill text with financial year
-      }));
-    })
-    .catch((err) => {
-      setData({
-        financialYearMasterId: "",
-        year1: "",
-        year2: ""
-      });
-    });
-};
+  };
 
   const getList = () => {
     setLoading(true);
@@ -568,6 +565,43 @@ const getFinancialDefaultDetails = () => {
     getFinancialDefaultDetails();
     getList();
   }, [page]);
+
+  const pullBack = () => {
+    const sendPullBackData = {
+      deptCode: "4",
+      user: "test",
+      password: "",
+      schemeID: "85",
+      componentTypeID: "85",
+      componentID: "86",
+      subComponentID: "3",
+      dbtScheme: "85",
+      dBTPaymentUpdates: [
+        {
+          beneficiaryID: 20240614141937385,
+          periodFrom: "01/04/2023",
+          periodTo: "31/03/2024",
+        },
+      ],
+    };
+    axios
+      .post(
+        `http://13.234.206.115:5000/Dbtoperations/GetDBTFailurePaymentStatus`,
+        sendPullBackData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Working Fine", response);
+      })
+      .catch((err) => {
+        console.log("Not Working Fine", err);
+      });
+  };
 
   // console.log(allApplicationIds);
 
@@ -720,8 +754,8 @@ const getFinancialDefaultDetails = () => {
     },
   };
 
-  
-  
+
+
 
   const deleteConfirm = (_id) => {
     Swal.fire({
@@ -787,8 +821,6 @@ const getFinancialDefaultDetails = () => {
       setSearchData({ ...searchData, [name]: value });
     }
   };
-
-
 
   // useEffect(() => {
   //   getFinancialDefaultDetails();
@@ -874,8 +906,8 @@ const getFinancialDefaultDetails = () => {
       style: {
         backgroundColor: "#1e67a8", // Header background color
         color: "#fff", // Header text color
-        borderStyle: "solid", 
-        borderWidth: "1px", 
+        borderStyle: "solid",
+        borderWidth: "1px",
         borderColor: "black", // Header cell border color
         paddingLeft: "8px",
         paddingRight: "8px",
@@ -883,8 +915,8 @@ const getFinancialDefaultDetails = () => {
     },
     cells: {
       style: {
-        borderStyle: "solid", 
-        borderWidth: "1px", 
+        borderStyle: "solid",
+        borderWidth: "1px",
         borderColor: "black", // Data cell border color
         paddingTop: "3px",
         paddingBottom: "3px",
@@ -931,26 +963,26 @@ const getFinancialDefaultDetails = () => {
     //   hide: "md",
     // //   grow: 2,
     // },
-    {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="checkbox"
-          name="selectedLand"
-          value={row.scApplicationFormId}
-          checked={applicationIds.includes(row.scApplicationFormId)}
-          onChange={() => handleCheckboxChange(row.scApplicationFormId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
-    },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="checkbox"
+    //       name="selectedLand"
+    //       value={row.scApplicationFormId}
+    //       checked={applicationIds.includes(row.scApplicationFormId)}
+    //       onChange={() => handleCheckboxChange(row.scApplicationFormId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
     {
       name: "SL.No.",
       // selector: (row) => row.scApplicationFormId,
-      cell: (row,i) => <span>{i+1}</span>,
+      cell: (row, i) => <span>{i + 1}</span>,
       sortable: true,
       width: "80px",
       hide: "md",
@@ -1011,7 +1043,7 @@ const getFinancialDefaultDetails = () => {
       sortable: true,
       hide: "md",
     },
-  
+
     {
       name: "Sanction No",
       selector: (row) => row.sanctionNumber,
@@ -1027,7 +1059,6 @@ const getFinancialDefaultDetails = () => {
       hide: "md",
     },
 
-   
     {
       name: "Application Status",
       selector: (row) => row.applicationStatus,
@@ -1066,15 +1097,28 @@ const getFinancialDefaultDetails = () => {
           >
             Edit
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handlePush(row.scApplicationFormId)}
-            disabled={disabledIds.includes(row.scApplicationFormId)}
-            className="ms-1"
-          >
-            Re-Push
-          </Button>
+          {console.log(row.dbtStatus)}
+          {row.dbtStatus == 0 ? (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => pullBack()}
+              // disabled={disabledIds.includes(row.scApplicationFormId)}
+              className="ms-1"
+            >
+              Pull Back
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handlePush(row.scApplicationFormId)}
+              disabled={disabledIds.includes(row.scApplicationFormId)}
+              className="ms-1"
+            >
+              Re-Push
+            </Button>
+          )}
         </>
       ),
       sortable: true,
@@ -1449,148 +1493,144 @@ const getFinancialDefaultDetails = () => {
                     </Form.Select>
                   </div>
                 </Col>
-            
-              {(Number(searchData.type) === 3)?(
-                 <Col sm={2} lg={2}>
-                 <Form.Group className="form-group ">
-                   <div className="form-control-wrap">
-                     <Form.Select
-                       name="text"
-                       value={searchData.text}
-                       onChange={handleInputsSearch}
-                       onBlur={() => handleInputsSearch}
-                       // multiple
-                       required
-                       isInvalid={
-                        //  searchData.text === undefined ||
-                         searchData.text === "0"
-                       }
-                     >
-                       <option value="">Select Rejected Reason</option>
-                       {rejectedReasonListData && rejectedReasonListData.map((list) => (
-                         <option
-                           key={list.rejectionListId}
-                           value={list.rejectionListId}
-                         >
-                           {list.rejectionListName}
-                         </option>
-                       ))}
-                     </Form.Select>
-                     <Form.Control.Feedback type="invalid">
-                       Rejected List is required
-                     </Form.Control.Feedback>
-                   </div>
-                 </Form.Group>
-               </Col>
-              ) : Number(searchData.type) === 5 ? (
+
+                {Number(searchData.type) === 3 ? (
                   <Col sm={2} lg={2}>
-                  <Form.Group className="form-group">
-                           
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="text"
-                                value={searchData.text}
-                                onChange={handleInputsSearch}
-                                onBlur={() => handleInputsSearch}
-                                // multiple
-                                required
-                                isInvalid={
-                                  //  searchData.text === undefined ||
-                                  searchData.text === "0"
-                                }
+                    <Form.Group className="form-group ">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
+                            //  searchData.text === undefined ||
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Rejected Reason</option>
+                          {rejectedReasonListData &&
+                            rejectedReasonListData.map((list) => (
+                              <option
+                                key={list.rejectionListId}
+                                value={list.rejectionListId}
                               >
-                                <option value="">Select Year</option>
-                                {financialyearListData.map((list) => (
-                                  <option
-                                    key={list.financialYearMasterId}
-                                    value={list.financialYearMasterId}
-                                  >
-                                    {list.financialYear}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                            
-                            </div>
-                          </Form.Group>
-                        </Col>
-) : Number(searchData.type) === 6 ? (
-  <Col sm={2} lg={2}>
-    <Form.Group className="form-group">
-            <div className="form-control-wrap">
-              <Form.Select
-                name="text"
-                value={searchData.text}
-                onChange={handleInputsSearch}
-                onBlur={() => handleInputsSearch}
-                // multiple
-                required
-                isInvalid={
-                //  searchData.text === undefined ||
-                  searchData.text === "0"
-                }
-              >
-                <option value="">Select Component</option>
-                {scComponentListData.map((list) => (
-                  <option
-                    key={list.scComponentId}
-                    value={list.scComponentId}
-                  >
-                    {list.scComponentName}
-                  </option>
-                ))}
-              </Form.Select>
-              
-            </div>
-          </Form.Group>
-        </Col>
-) : Number(searchData.type) === 7 ? (
-  <Col sm={2} lg={2}>
-  <Form.Group className="form-group">     
-                <div className="form-control-wrap">
-                  <Form.Select
-                   name="text"
-                       value={searchData.text}
-                       onChange={handleInputsSearch}
-                       onBlur={() => handleInputsSearch}
-                       // multiple
-                       required
-                       isInvalid={
-                        //  searchData.text === undefined ||
-                         searchData.text === "0"
-                       }
-                  >
-                    <option value="">Select Component Type</option>
-                    {scSubSchemeDetailsListData &&
-                      scSubSchemeDetailsListData.map((list, i) => (
-                        <option 
-                        key={list.scSubSchemeDetailsId}
-                          value={list.scSubSchemeDetailsId}>
-                          {list.subSchemeName}
-                        </option>
-                      ))}
-                  </Form.Select>
-                  
-                </div>
+                                {list.rejectionListName}
+                              </option>
+                            ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Rejected List is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : Number(searchData.type) === 5 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
+                            //  searchData.text === undefined ||
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Year</option>
+                          {financialyearListData.map((list) => (
+                            <option
+                              key={list.financialYearMasterId}
+                              value={list.financialYearMasterId}
+                            >
+                              {list.financialYear}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : Number(searchData.type) === 6 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
+                            //  searchData.text === undefined ||
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Component</option>
+                          {scComponentListData.map((list) => (
+                            <option
+                              key={list.scComponentId}
+                              value={list.scComponentId}
+                            >
+                              {list.scComponentName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ) : Number(searchData.type) === 7 ? (
+                  <Col sm={2} lg={2}>
+                    <Form.Group className="form-group">
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="text"
+                          value={searchData.text}
+                          onChange={handleInputsSearch}
+                          onBlur={() => handleInputsSearch}
+                          // multiple
+                          required
+                          isInvalid={
+                            //  searchData.text === undefined ||
+                            searchData.text === "0"
+                          }
+                        >
+                          <option value="">Select Component Type</option>
+                          {scSubSchemeDetailsListData &&
+                            scSubSchemeDetailsListData.map((list, i) => (
+                              <option
+                                key={list.scSubSchemeDetailsId}
+                                value={list.scSubSchemeDetailsId}
+                              >
+                                {list.subSchemeName}
+                              </option>
+                            ))}
+                        </Form.Select>
+                      </div>
                     </Form.Group>
                   </Col>
                 ) : (
-                
-                <Col sm={2} lg={2}>
-                <Form.Control
-                  id="fruitsId"
-                  name="text"
-                  value={searchData.text}
-                  onChange={handleInputsSearch}
-                  type="text"
-                  placeholder="Search"
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Field Value is Required
-                </Form.Control.Feedback>
-              </Col>
-              )}
-                
+                  <Col sm={2} lg={2}>
+                    <Form.Control
+                      id="fruitsId"
+                      name="text"
+                      value={searchData.text}
+                      onChange={handleInputsSearch}
+                      type="text"
+                      placeholder="Search"
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Field Value is Required
+                    </Form.Control.Feedback>
+                  </Col>
+                )}
 
                 <Form.Label column sm={1}>
                   District
@@ -1640,18 +1680,18 @@ const getFinancialDefaultDetails = () => {
                   </Button>
                 </Col>
                 <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                Export
-              </Button>
-            </Col>
+                  <Button type="button" variant="primary" onClick={exportCsv}>
+                    Export
+                  </Button>
+                </Col>
               </Form.Group>
             </Col>
           </Row>
-          </Card>
-          </Block>
+        </Card>
+      </Block>
 
-          <Block className='mt-3'>
-          <Card>
+      <Block className="mt-3">
+        <Card>
           <DataTable
             //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
@@ -1671,7 +1711,6 @@ const getFinancialDefaultDetails = () => {
             customStyles={customStyles}
           />
         </Card>
-        
 
         <Form
           noValidate
@@ -1840,23 +1879,23 @@ const getFinancialDefaultDetails = () => {
                           <td style={styles.ctstyle}>Developed Area Gunta:</td>
                           <td>{landDetail.gunta}</td>
                         </tr>
-                        <tr> 
+                        <tr>
                           <td style={styles.ctstyle}>Hissa:</td>
                           <td>{landDetail.hissa}</td>
                         </tr>
-                        <tr> 
+                        <tr>
                           <td style={styles.ctstyle}>Land Code:</td>
                           <td>{landDetail.landCode}</td>
                         </tr>
-                        <tr> 
+                        <tr>
                           <td style={styles.ctstyle}>Main Owner No:</td>
                           <td>{landDetail.mainOwnerNo}</td>
                         </tr>
-                        <tr> 
+                        <tr>
                           <td style={styles.ctstyle}>Owner Name:</td>
                           <td>{landDetail.ownerName}</td>
                         </tr>
-                        <tr> 
+                        <tr>
                           <td style={styles.ctstyle}>Sur Noc:</td>
                           <td>{landDetail.surNoc}</td>
                         </tr>
