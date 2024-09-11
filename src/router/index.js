@@ -1388,7 +1388,7 @@ function Router() {
             />
 
             <Route
-              path="Maintenance-of-eggs-at-cold-storage"
+              path="maintenance-of-eggs-at-cold-storage"
               element={<Maintenanceofeggsatcoldstorage />}
             />
 

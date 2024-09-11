@@ -26,7 +26,7 @@ function Remittance() {
     billNumber: "",
     bankChallanNumber: "",
     bankChallanUpload: "",
-    ktc25AndDate: "",
+    rtc25: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -71,7 +71,8 @@ function Remittance() {
               billNumber: "",
               bankChallanNumber: "",
               bankChallanUpload: "",
-              ktc25AndDate: "",
+              rtc25: "",
+              date: "",
             });
             // setReceiptUpload("")
             // document.getElementById("viewReceipt").value = "";
@@ -96,7 +97,8 @@ function Remittance() {
       billNumber: "",
       bankChallanNumber: "",
       bankChallanUpload: "",
-      ktc25AndDate: "",
+      rtc25: "",
+      date: "",
     });
     // setReceiptUpload("")
     // document.getElementById("viewReceipt").value = "";
@@ -173,6 +175,11 @@ function Remittance() {
     }
   };
 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+
   const navigate = useNavigate();
   const saveSuccess = (message) => {
     Swal.fire({
@@ -240,7 +247,7 @@ function Remittance() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-              {/* <Col lg="4">
+              <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -261,9 +268,9 @@ function Remittance() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -293,7 +300,7 @@ function Remittance() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
                 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
@@ -398,20 +405,20 @@ function Remittance() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="invoiceDetails">
-                      KTC 25 <span className="text-danger">*</span>
+                      RTC 25 <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
-                        id="ktc25AndDate"
-                        name="ktc25AndDate"
-                        value={data.ktc25AndDate}
+                        id="rtc25"
+                        name="rtc25"
+                        value={data.rtc25}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter KTC 25"
+                        placeholder="Enter RTC 25"
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                      KTC 25 is required
+                      RTC 25 is required
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -443,33 +450,30 @@ function Remittance() {
 
                
 
-                {/* <Col lg="4">
+                <Col lg="2">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="fileUploadPath">
-                      Upload Bank Challan(png/jpg/pdf)(Max:2mb)
+                    <Form.Label htmlFor="sordfl">
+                      Date
+                      <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
-                      <Form.Control
-                        type="file"
-                        id="viewReceipt"
-                        name="viewReceipt"
-                        // value={data.photoPath}
-                        onChange={handleUploadChange}
+                      <DatePicker
+                        selected={data.date}
+                        onChange={(date) =>
+                          handleDateChange(date, "date")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
                       />
                     </div>
                   </Form.Group>
-
-                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {receiptUpload ? (
-                      <img
-                        style={{ height: "100px", width: "100px" }}
-                        src={URL.createObjectURL(receiptUpload)}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </Form.Group>
-                </Col> */}
+                </Col>
               </Row>
             </Card.Body>
           </Card>

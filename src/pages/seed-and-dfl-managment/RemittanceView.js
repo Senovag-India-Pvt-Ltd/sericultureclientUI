@@ -174,8 +174,12 @@ const getUploadReceipt = async (file) => {
                         <td>{remittance.bankChallanNumber}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>KTC 25:</td>
-                        <td>{remittance.ktc25AndDate}</td>
+                        <td style={styles.ctstyle}>RTC 25:</td>
+                        <td>{remittance.rtc25}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Date:</td>
+                        <td>{remittance.date}</td>
                       </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}> Uploaded Receipt:</td>

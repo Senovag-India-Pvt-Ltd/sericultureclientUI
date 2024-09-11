@@ -519,6 +519,37 @@ function MaintenanceofScreeningBatchRecordsList() {
       hide: "md",
     },
     {
+      name: "Selected Bed as per the Mean Performance",
+      selector: (row) => row.selectedBedAsPerTheMeanPerformance,
+      cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    // {
+    //   name: "Selected Bed as per the Mean Performance",
+    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
+    //   cell: (row) => {
+    //     const value = row.selectedBedAsPerTheMeanPerformance;
+    //     return (
+    //       <span>
+    //         {value === "1" || value === 1
+    //           ? "Bed 1"
+    //           : value === "2" || value === 2
+    //           ? "Bed 2"
+    //           : value === "3" || value === 3
+    //           ? "Bed 3"
+    //           : value === "4" || value === 4
+    //           ? "Bed 4"
+    //           : value === "5" || value === 5
+    //           ? "Bed 5"
+    //           : "Other"}
+    //       </span>
+    //     );
+    //   },
+    //   sortable: true,
+    //   hide: "md",
+    // },    
+    {
       name: "Worms Weight in grams of 10 Larvae on on 5th Instar 5th Day (Bedwise)",
       cell: (row) => (
         <Button
@@ -548,58 +579,8 @@ function MaintenanceofScreeningBatchRecordsList() {
       sortable: true,
       hide: "md",
     },
-    // {
-    //   name: "Selected Bed as per the Mean Performance",
-    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
-    //   cell: (row) => <span>{row.selectedBedAsPerTheMeanPerformance}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Selected Bed as per the Mean Performance",
-    //   selector: (row) => row.selectedBedAsPerTheMeanPerformance,
-    //   cell: (row) => (
-    //     <span>
-    //       {row.selectedBedAsPerTheMeanPerformance === "1"
-    //         ? "Bed 1"
-    //         : row.selectedBedAsPerTheMeanPerformance === "2"
-    //         ? "Bed 2"
-    //         : row.selectedBedAsPerTheMeanPerformance === "3"
-    //         ? "Bed 3"
-    //         : row.selectedBedAsPerTheMeanPerformance === "4"
-    //         ? "Bed 4"
-    //         : row.selectedBedAsPerTheMeanPerformance === "5"
-    //         ? "Bed 5"
-    //         : "Other"}
-    //     </span>
-    //   ),
-    //   sortable: true,
-    //   hide: "md",
-    // },   
-    {
-      name: "Selected Bed as per the Mean Performance",
-      selector: (row) => row.selectedBedAsPerTheMeanPerformance,
-      cell: (row) => {
-        const value = row.selectedBedAsPerTheMeanPerformance;
-        return (
-          <span>
-            {value === "1" || value === 1
-              ? "Bed 1"
-              : value === "2" || value === 2
-              ? "Bed 2"
-              : value === "3" || value === 3
-              ? "Bed 3"
-              : value === "4" || value === 4
-              ? "Bed 4"
-              : value === "5" || value === 5
-              ? "Bed 5"
-              : "Other"}
-          </span>
-        );
-      },
-      sortable: true,
-      hide: "md",
-    },    
+   
+    
     {
       name: "Crop Failure Details",
       selector: (row) => row.cropFailureDetails,

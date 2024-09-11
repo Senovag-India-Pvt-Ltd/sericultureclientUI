@@ -168,7 +168,7 @@ function MaintenanceOfPiercedCocoons() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                {/* <Col lg="6" >
+                <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -179,7 +179,7 @@ function MaintenanceOfPiercedCocoons() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -189,9 +189,9 @@ function MaintenanceOfPiercedCocoons() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -221,7 +221,7 @@ function MaintenanceOfPiercedCocoons() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                
                 <Col lg="6">

@@ -1572,7 +1572,7 @@ function Menu() {
                     <MenuItem>
                       <MenuItemLink
                         text="Maintenance of eggs at cold storage"
-                        to="/seriui/Maintenance-of-eggs-at-cold-storage"
+                        to="/seriui/maintenance-of-eggs-at-cold-storage"
                       />
                     </MenuItem>
                   ) : null}

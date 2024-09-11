@@ -178,7 +178,7 @@ function Maintenanceofeggsatcoldstorage() {
                       </Card.Header>
                       <Card.Body>
                         <Row className="g-gs">
-                          {/* <Col lg="4">
+                          <Col lg="4">
                           <Form.Group className="form-group mt-n4 ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -189,7 +189,7 @@ function Maintenanceofeggsatcoldstorage() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -199,9 +199,9 @@ function Maintenanceofeggsatcoldstorage() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>           
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -231,7 +231,7 @@ function Maintenanceofeggsatcoldstorage() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
