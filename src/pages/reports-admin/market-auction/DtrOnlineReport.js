@@ -444,14 +444,14 @@ function DtrOnlineReport() {
                     >
                       <thead>
                         <tr>
-                          <th
+                        <th
                             style={{
                               backgroundColor: "#0f6cbe",
                               color: "#fff",
                             }}
                             // colSpan="2"
                           >
-                            SL.No
+                            ಕ್ರಮ ಸಂಖ್ಯೆ
                           </th>
                           <th
                             style={{
@@ -460,7 +460,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Lot No
+                            ಲಾಟ್ ಸಂಖ್ಯೆ
                           </th>
                           <th
                             style={{
@@ -469,7 +469,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Farmer Details
+                            ರೈತರ ವಿವರಗಳು
                           </th>
                           <th
                             style={{
@@ -478,7 +478,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Weight
+                            ತೂಕ
                           </th>
                           <th
                             style={{
@@ -487,7 +487,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Cocoon Age
+                            ಗೂಡಿನ  ವಯಸ್ಸು 
                           </th>
                           <th
                             style={{
@@ -496,7 +496,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Bid Amount
+                            ಬಿಡ್ ಮೊತ್ತ
                           </th>
                           <th
                             style={{
@@ -505,7 +505,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Amount
+                            ಮೊತ್ತ
                           </th>
                           <th
                             style={{
@@ -514,7 +514,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Farmer Amount
+                            ರೈತರ ಮೊತ್ತ
                           </th>
                           <th
                             style={{
@@ -523,7 +523,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Market Fee
+                          ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ
                           </th>
                           <th
                             style={{
@@ -532,7 +532,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler Amount
+                            ಖರೀದಿದಾರರ ಮೊತ್ತ 
                           </th>
                           <th
                             style={{
@@ -541,7 +541,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Reeler
+                            ಖರೀದಿದಾರರ ವಿವರಗಳು
                           </th>
                           <th
                             style={{
@@ -550,7 +550,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Bank
+                           ಬ್ಯಾಂಕ್ ವಿವರಗಳು
                           </th>
                           <th
                             style={{
@@ -559,7 +559,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            IFSC
+                            ಐ ಎಫ್‌ ಎಸ್‌ ಸಿ
                           </th>
                           <th
                             style={{
@@ -568,7 +568,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Account No
+                            ಖಾತೆ ಸಂಖ್ಯೆ
                           </th>
                           <th
                             style={{
@@ -577,7 +577,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Auction Date
+                            ಹರಾಜು ದಿನಾಂಕ
                           </th>
                           <th
                             style={{
@@ -586,7 +586,7 @@ function DtrOnlineReport() {
                             }}
                             // colSpan="2"
                           >
-                            Race Name
+                            ತಳಿ
                           </th>
                         </tr>
                       </thead>
@@ -622,14 +622,16 @@ function DtrOnlineReport() {
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td>Wt: {listDetails.totalWeight}</td>
+                          <td>ತೂಕ: {listDetails.totalWeight}</td>
                           <td></td>
                           <td></td>
                           {/* <td>Amt: {listDetails.totallotSoldOutAmount}</td> */}
-                          <td>Amt: {Math.round(listDetails.totallotSoldOutAmount)}</td>
+                          <td>ಮೊತ್ತ: {Math.round(listDetails.totallotSoldOutAmount)}</td>
                           {/* <td></td> */}
-                          {/* <td>F Amt: {listDetails.totalFarmerAmount.toFixed(2)}</td> */}
-                          <td>F Amt: {Math.round(listDetails.totalFarmerAmount)}</td>
+                          {/* <td>
+                            F Amt: {listDetails.totalFarmerAmount.toFixed(2)}
+                          </td> */}
+                          <td> ರೈತರ ಮೊತ್ತ: {Math.round(listDetails.totalFarmerAmount)}</td>
 
                           {/* <td>
                             MF:{" "}
@@ -637,14 +639,14 @@ function DtrOnlineReport() {
                               listDetails.totalFarmerMarketFee +
                               listDetails.totalReelerMarketFee
                             ).toFixed(2)}
-                          </td> */}
-                          <td>MF: {Math.round(listDetails.totalFarmerMarketFee + listDetails.totalReelerMarketFee)}</td>
-
-                          <td>
-                            {/* R Amt: {listDetails.totalReelerAmount.toFixed(2)} */}
-                              R Amt: {Math.round(listDetails.totalReelerAmount)}
-
                           </td>
+                          <td>
+                            R Amt: {listDetails.totalReelerAmount.toFixed(2)} 
+                          </td>*/}
+                          <td>ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ: {Math.round(listDetails.totalFarmerMarketFee + listDetails.totalReelerMarketFee)}</td>
+<td>
+  {/* R Amt: {listDetails.totalReelerAmount.toFixed(2)} */}
+  ಖರೀದಿದಾರರ ಮೊತ್ತ: {Math.round(listDetails.totalReelerAmount)}</td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -662,21 +664,27 @@ function DtrOnlineReport() {
                               colSpan="18"
                             >
                               <div>
-                                Total Lots:{" "}
+                              ಒಟ್ಟು ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.totalLots}
                                 </span>
                               </div>
                               <div>
-                                Total Lots Transacted:{" "}
+                              ಒಟ್ಟು ವಹಿವಾಟಾಗಿರುವ  ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.paymentSuccessLots}
                                 </span>
                               </div>
                               <div>
-                                Total Lots Not Transacted:{" "}
+                              ವಹಿವಾಟಾಗದ ಲಾಟ್‌ಗಳು:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.notTransactedLots}
+                                </span>
+                              </div>
+                              <div>
+                              ಒಟ್ಟು ತೂಕ:{" "}
+                                <span style={{ color: "green" }}>
+                                  {listDetails.totalWeight}
                                 </span>
                               </div>
                               {/* <div>
@@ -713,44 +721,44 @@ function DtrOnlineReport() {
                                 </span>
                               </div> */}
                               <div>
-  Total Amount:{" "}
+                              ಒಟ್ಟು ಮೊತ್ತ:{" "}
   <span style={{ color: "green" }}>
     {Math.round(listDetails.totallotSoldOutAmount)}
   </span>
 </div>
 <div>
-  Farmers Cheque Amount:{" "}
+ರೈತರ ಚೆಕ್ ಮೊತ್ತ:{" "}
   <span style={{ color: "green" }}>
     {Math.round(listDetails.totalFarmerAmount)}
   </span>
 </div>
 <div>
-  Market Fee Amount:{" "}
+ಮಾರುಕಟ್ಟೆ ಶುಲ್ಕ:{" "}
   <span style={{ color: "green" }}>
     {Math.round(listDetails.totalReelerMarketFee + listDetails.totalFarmerMarketFee)}
   </span>
 </div>
 <div>
-  Reeler Transaction Amount:{" "}
+ರೀಲರ್ ವ್ಯವಹಾರ ಮೊತ್ತ:{" "}
   <span style={{ color: "green" }}>
     {Math.round(listDetails.totalReelerAmount)}
   </span>
 </div>
 
                               <div>
-                                Max Bid:Rs{" "}
+                              ಗರಿಷ್ಠ ಮೊತ್ತ:{" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.maxAmount}
                                 </span>
                               </div>
                               <div>
-                                Min Bid:Rs{" "}
+                              ಕನಿಷ್ಠ ಮೊತ್ತ: {" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.minAmount}
                                 </span>
                               </div>
                               <div>
-                                Average Bid:Rs{" "}
+                              ಸರಾಸರಿ ಮೊತ್ತ: {" "}
                                 <span style={{ color: "green" }}>
                                   {listDetails.avgAmount}
                                 </span>
