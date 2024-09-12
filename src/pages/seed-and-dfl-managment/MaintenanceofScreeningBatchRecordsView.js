@@ -149,19 +149,15 @@ function MaintenanceofScreeningBatchRecordsView() {
                         <td style={styles.ctstyle}>Chawki Percentage:</td>
                         <td>{maintenanceScreen.chawkiPercentage}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>
-                          Selected Bed as per the Mean Performance:
-                        </td>
-                        <td>
-                          {maintenanceScreen.selectedBedAsPerTheMeanPerformance}
-                        </td>
-                      </tr> */}
                       <tr>
+                        <td style={styles.ctstyle}>Selected Bed as per the Mean Performance:</td>
+                        <td>{maintenanceScreen.selectedBedAsPerTheMeanPerformance}</td>
+                      </tr>
+                      {/* <tr>
                       <td style={styles.ctstyle}>
                         Selected Bed as per the Mean Performance:
                       </td>
-                        {/* <td>
+                        <td>
                           {maintenanceScreen.selectedBedAsPerTheMeanPerformance === "1"
                             ? "Bed 1"
                             : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "2"
@@ -173,7 +169,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                             : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "5"
                             ? "Bed 5"
                             : "Other"}
-                        </td> */}
+                        </td>
                         <td>
                       {String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "1"
                         ? "Bed 1"
@@ -187,7 +183,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                         ? "Bed 5"
                         : "Other"}
                     </td>
-                    </tr> 
+                    </tr>  */}
                       <tr>
                         <td style={styles.ctstyle}>Crop Failure Details:</td>
                         <td>{maintenanceScreen.cropFailureDetails}</td>

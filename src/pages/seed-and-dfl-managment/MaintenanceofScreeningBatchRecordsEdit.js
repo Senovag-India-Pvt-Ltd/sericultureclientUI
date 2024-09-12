@@ -99,7 +99,7 @@ function MaintenanceofScreeningBatchRecordsEdit() {
       cropFailureDetails: "",
     });
     setValidated(false);
-    getIdList();
+    // getIdList();
   };
 
   //   to get data from api
@@ -526,11 +526,11 @@ function MaintenanceofScreeningBatchRecordsEdit() {
                                   <option value="">
                                     Select Selected Bed as per the Mean Performance
                                   </option>
-                                  <option value="1">Bed 1</option>
-                                  <option value="2">Bed 2</option>
-                                  <option value="3">Bed 3</option>
-                                  <option value="4">Bed 4</option>
-                                  <option value="5">Bed 5</option>
+                                  <option value="Bed 1">Bed 1</option>
+                                  <option value="Bed 2">Bed 2</option>
+                                  <option value="Bed 3">Bed 3</option>
+                                  <option value="Bed 4">Bed 4</option>
+                                  <option value="Bed 5">Bed 5</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                 Selected Bed as per the Mean Performance is required

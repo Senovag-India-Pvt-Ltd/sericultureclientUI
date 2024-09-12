@@ -205,10 +205,10 @@ function SaleDisposalOfPiercedCocoons() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-              <Col lg="4">
+              {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                    Lot Numbers<span className="text-danger">*</span>
+                    Total Lots<span className="text-danger">*</span>
                     </Form.Label>
                     <Col>
                       <div className="form-control-wrap">
@@ -234,6 +234,29 @@ function SaleDisposalOfPiercedCocoons() {
                         </Form.Control.Feedback>
                       </div>
                     </Col>
+                  </Form.Group>
+                </Col> */}
+
+                <Col lg="4" >
+                  <Form.Group className="form-group mt-n4 ">
+                    <Form.Label htmlFor="plotNumber">
+                      Total Lots<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="lotNumber"
+                        name="lotNumber"
+                        value={data.lotNumber}
+                        onChange={handleInputs}
+                        // maxLength="12"
+                        type="text"
+                        placeholder="Enter Lot Number"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Lot Number is required
+                      </Form.Control.Feedback>
+                    </div>
                   </Form.Group>
                 </Col>
 

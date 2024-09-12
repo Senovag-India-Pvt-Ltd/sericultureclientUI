@@ -175,7 +175,7 @@ function MaintenanceOfEggLayingSheets() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                {/* <Col lg="6" >
+                <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -196,9 +196,9 @@ function MaintenanceOfEggLayingSheets() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
                       Lot Number
@@ -225,8 +225,7 @@ function MaintenanceOfEggLayingSheets() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
-
+                </Col> */}
 
                
                 <Col lg="6">

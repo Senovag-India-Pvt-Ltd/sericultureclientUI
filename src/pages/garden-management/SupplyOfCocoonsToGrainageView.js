@@ -96,39 +96,73 @@ function SupplyOfCocoonsToGrainageView() {
                 <Col lg="12">
                   <table className="table small table-bordered">
                     <tbody>
-                      <tr>
+                    <tr>
                         <td style={styles.ctstyle}>ID:</td>
                         <td>{supplyOfCoocons.id}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Lot Number:</td>
-                        <td>{supplyOfCoocons.lotNumber}</td>
+                        <td style={styles.ctstyle}>
+                          Grainage:
+                        </td>
+                        <td>{supplyOfCoocons.grainageMasterName}</td>
                       </tr>
+                      {/* <tr>
+                        <td style={styles.ctstyle}>Line Year:</td>
+                        <td>{dispatchCocoon.lineName}</td>
+                      </tr> */}
+                      {/* <tr>
+                        <td style={styles.ctstyle}>
+                        Source:
+                        </td>
+                        <td>{dispatchCocoon.sourceMasterName}</td>
+                      </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>Race Of Cocoons:</td>
-                        <td>{supplyOfCoocons.raceName}</td>
+                        <td style={styles.ctstyle}>
+                        Screening Batch No:
+                        </td>
+                        <td>{supplyOfCoocons.screeningBatchNo}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Spun On Date:
+                        Generation Number:
+                        </td>
+                        <td>{supplyOfCoocons.generationNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Spun On Date:
                         </td>
                         <td>{supplyOfCoocons.spunOnDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Number Of Cocoons Dispatched:</td>
+                        <td style={styles.ctstyle}>
+                        Lot Number:
+                        </td>
+                        <td>{supplyOfCoocons.lotNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Number Of Cocoons Dispatched:
+                        </td>
                         <td>{supplyOfCoocons.numberOfCocoonsDispatched}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Generation Details:</td>
-                        <td>{supplyOfCoocons.generationDetails}</td>
-                      </tr> */}
                       <tr>
-                        <td style={styles.ctstyle}>Dispatch Date:</td>
+                        <td style={styles.ctstyle}>
+                        Date Of Supply:
+                        </td>
+                        <td>{supplyOfCoocons.dateOfSupply}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Dispatch Date:
+                        </td>
                         <td>{supplyOfCoocons.dispatchDate}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Grainage:</td>
-                        <td>{supplyOfCoocons.grainageName}</td>
+                        <td style={styles.ctstyle}>
+                        Invoice No:
+                        </td>
+                        <td>{supplyOfCoocons.invoiceNo}</td>
                       </tr>
                     </tbody>
                   </table>

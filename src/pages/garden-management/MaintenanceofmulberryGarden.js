@@ -22,10 +22,9 @@ function MaintenanceofmulberryGarden() {
     variety: "",
     areaUnderEachVariety: "",
     pruningDate: "",
-    fertilizerApplicationDate: "",
-    fymApplicationDate: "",
-    irrigationDate: "",
-    brushingDate: "",
+    soilTypeId: "",
+    mulberrySpacing: "",
+    plantationDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -50,9 +49,19 @@ function MaintenanceofmulberryGarden() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const { pruningDate } = data;
+      const formattedDate =
+        pruningDate.getFullYear() +
+        "-" +
+        (pruningDate.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        pruningDate.getDate().toString().padStart(2, "0");
       // event.stopPropagation();
       api
-        .post(baseURL2 + `Mulberry-garden/add-info`, data)
+        .post(baseURL2 + `Mulberry-garden/add-info`, {
+          ...data,
+          pruningDate: formattedDate,
+        })
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
@@ -63,18 +72,24 @@ function MaintenanceofmulberryGarden() {
               variety: "",
               areaUnderEachVariety: "",
               pruningDate: "",
-              fertilizerApplicationDate: "",
-              fymApplicationDate: "",
-              irrigationDate: "",
-              brushingDate: "",
+              soilTypeId: "",
+              mulberrySpacing: "",
+              plantationDate: "",
             });
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
           }
+          
         });
       setValidated(true);
     }
@@ -86,10 +101,9 @@ function MaintenanceofmulberryGarden() {
       variety: "",
       areaUnderEachVariety: "",
       pruningDate: "",
-      fertilizerApplicationDate: "",
-      fymApplicationDate: "",
-      irrigationDate: "",
-      brushingDate: "",
+      soilTypeId: "",
+      mulberrySpacing: "",
+      plantationDate: "",
     });
   };
 
@@ -114,6 +128,25 @@ function MaintenanceofmulberryGarden() {
   useEffect(() => {
     getVarietyList();
   }, []);
+
+  // to get Soil Type
+  const [soilTypeListData, setSoilTypeListData] = useState([]);
+
+  const getSoilTypeList = () => {
+    const response = api
+      .get(baseURL2 + `soilType/get-all`)
+      .then((response) => {
+        setSoilTypeListData(response.data.content.soilType);
+      })
+      .catch((err) => {
+        setSoilTypeListData([]);
+      });
+  };
+
+useEffect(() => {
+  getSoilTypeList();
+  getVarietyList();
+}, []);
 
   const navigate = useNavigate();
   const saveSuccess = (message) => {
@@ -180,7 +213,7 @@ function MaintenanceofmulberryGarden() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                <Col lg="4">
+              <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="plotNumber">
                       Plot Number<span className="text-danger">*</span>
@@ -196,11 +229,10 @@ function MaintenanceofmulberryGarden() {
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                    Plot Number is required
-                  </Form.Control.Feedback>
+                        Plot Number is required
+                      </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                  
                 </Col>
 
                 <Col lg="4">
@@ -236,31 +268,11 @@ function MaintenanceofmulberryGarden() {
                     </div>
                   </Form.Group>
                 </Col>
-                {/* <Form.Group className="form-group">
-                      <Form.Label htmlFor="trDuration">
-                        Mulberry Variety<span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="variety"
-                          name="variety"
-                          value={data.variety}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Mulberry Variety"
-                          required
-                        />
-                      </div>
-                    </Form.Group>
-                    <Form.Control.Feedback type="invalid">
-                      Mulberry Variety is required
-                    </Form.Control.Feedback>
-                   */}
 
                 <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="areaUnderEachVariety">
-                      Area(In Hectares)
+                      Area(In Acres)
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -276,143 +288,105 @@ function MaintenanceofmulberryGarden() {
                   </Form.Group>
                 </Col>
 
-              <Col lg="2">
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">
-                  Pruning Date
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      selected={data.pruningDate}
-                      onChange={(date) => handleDateChange(date, "pruningDate")}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      className="form-control"
-                      required
-                    />
-                  </div>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      Soil Type<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="soilTypeId"
+                        value={data.soilTypeId}
+                        onChange={handleInputs}
+                        onBlur={() => handleInputs}
+                        // multiple
+                        required
+                        isInvalid={
+                          data.variety === undefined || data.variety === "0"
+                        }
+                      >
+                        <option value="">Select Soil Type</option>
+                        {soilTypeListData.map((list) => (
+                          <option key={list.soilTypeId} value={list.soilTypeId}>
+                            {list.soilTypeName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        Soil Type is required
+                      </Form.Control.Feedback>
+                    </div>
                   </Form.Group>
                 </Col>
-                {/* <Form.Label column sm={2}>
-                    Fertilizer Application Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="mulberrySpacing">
+                      Mulberry Spacing
+                    </Form.Label>
                     <div className="form-control-wrap">
-                      <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        />
-                      <DatePicker
-                        selected={data.fertilizerApplicationDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "fertilizerApplicationDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
+                      <Form.Control
+                        id="mulberrySpacing"
+                        name="mulberrySpacing"
+                        value={data.mulberrySpacing}
+                        onChange={handleInputs}
+                        maxLength="4"
+                        type="text"
+                        placeholder="Enter Mulberry Spacing"
                       />
                     </div>
-                  </Col>
                   </Form.Group>
-                  </Col>
+                </Col>
 
-                  <Form.Label column sm={2}>
-                    Farm Yard Manure Application Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Pruning Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        />
-                      <DatePicker
-                        selected={data.fymApplicationDate}
+                        selected={data.pruningDate ? new Date(data.pruningDate) : null}
                         onChange={(date) =>
-                          handleDateChange(date, "fymApplicationDate")
+                          handleDateChange(date, "pruningDate")
                         }
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
                         className="form-control"
+                        required
                       />
                     </div>
-                  </Col>
+                  </Form.Group>
+                </Col>
 
-                  <Form.Label column sm={2}>
-                    Irrigation Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Plantation Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
                     <div className="form-control-wrap">
                       <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        />
-                      <DatePicker
-                        selected={data.irrigationDate}
+                        selected={data.plantationDate ? new Date(data.plantationDate) : null}
                         onChange={(date) =>
-                          handleDateChange(date, "irrigationDate")
+                          handleDateChange(date, "plantationDate")
                         }
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown
                         dropdownMode="select"
                         dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
                         className="form-control"
+                        required
                       />
                     </div>
-                  </Col>
-                  <Form.Label column sm={2}>
-                    Brushing Date
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Col sm={2}>
-                    <div className="form-control-wrap">
-                      <DatePicker
-                          selected={data.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                        />
-                      <DatePicker
-                        selected={data.brushingDate}
-                        onChange={(date) =>
-                          handleDateChange(date, "brushingDate")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
-                    </div>
-                  </Col>
-
-                  <Col lg="4" className="mt-n1">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="plotNumber">Remarks</Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="remarks"
-                          name="remarks"
-                          value={data.remarks}
-                          onChange={handleInputs}
-                          type="text"
-                          placeholder="Enter Remarks"
-                        />
-                      </div>
-                    </Form.Group>
-                  </Col> */}
+                  </Form.Group>
+                </Col>
               </Row>
             </Card.Body>
           </Card>

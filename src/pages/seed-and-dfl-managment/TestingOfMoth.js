@@ -170,7 +170,7 @@ function TestingOfMoth() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                {/* <Col lg="4" >
+                <Col lg="4" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -181,7 +181,7 @@ function TestingOfMoth() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -191,9 +191,9 @@ function TestingOfMoth() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -223,7 +223,7 @@ function TestingOfMoth() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
 
                 {/* <Col lg="4">

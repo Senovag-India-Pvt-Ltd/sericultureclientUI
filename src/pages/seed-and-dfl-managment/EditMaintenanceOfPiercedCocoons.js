@@ -193,7 +193,7 @@ function EditMaintenanceOfPiercedCocoons() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                {/* <Col lg="6" >
+                <Col lg="6" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -204,7 +204,7 @@ function EditMaintenanceOfPiercedCocoons() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -214,9 +214,9 @@ function EditMaintenanceOfPiercedCocoons() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="6">
+                {/* <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
                     Lot Numbers<span className="text-danger">*</span>
@@ -246,7 +246,7 @@ function EditMaintenanceOfPiercedCocoons() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 
 

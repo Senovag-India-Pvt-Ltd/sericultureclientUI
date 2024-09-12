@@ -52,9 +52,11 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
           } else {
             updateSuccess();
             setData({
+                id: "",
                 laidOnDate: "",
                 generationNumberId: "",
                 lineNameId: "",
+                hatchingDate: "",
             });
             setValidated(false);
           }
@@ -77,9 +79,10 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
 
   const clear = () => {
     setData({
-        laidOnDate: "",
-        generationNumberId: "",
-        lineNameId: "",
+      laidOnDate: "",
+      generationNumberId: "",
+      lineNameId: "",
+      hatchingDate: "",
     });
   };
 
@@ -280,9 +283,9 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                                 Laid on Date
                               </Form.Label>
                               <div className="form-control-wrap">
-                              {isDataLaidDate && (
+                              {/* {isDataLaidDate && ( */}
                                 <DatePicker
-                                  selected={new Date(data.laidOnDate)}
+                                  selected={data.laidOnDate ? new Date(data.laidOnDate) : null}
                                   onChange={(date) =>
                                     handleDateChange(date, "laidOnDate")
                                   }
@@ -295,10 +298,36 @@ function ReceiptOfDFLsFromTheP4GrainageEdit() {
                                   className="form-control"
                                   required
                                 />
-                                )}
+                                {/* )} */}
                               </div>
                             </Form.Group>
-                          </Col>   
+                          </Col> 
+
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Hatching Date
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                              {/* {isDataLaidDate && ( */}
+                                <DatePicker
+                                  selected={data.hatchingDate ? new Date(data.hatchingDate) : null}
+                                  onChange={(date) =>
+                                    handleDateChange(date, "hatchingDate")
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                //   maxDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  required
+                                />
+                                {/* )} */}
+                              </div>
+                            </Form.Group>
+                          </Col>     
                 </Row>
               )}
             </Card.Body>
