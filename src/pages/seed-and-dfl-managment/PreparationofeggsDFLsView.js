@@ -150,6 +150,38 @@ function PreparationofeggsDFLsView() {
                         <td>{prepareEggs.eggRecoveryPercentage}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>Parent Lot Number:</td>
+                        <td>{prepareEggs.parentLotNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Selected Cocoon's in Nos:</td>
+                        <td>{prepareEggs.selectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Rejected Cocoon's in Nos:</td>
+                        <td>{prepareEggs.rejectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>No of Pairs (%) (Selected Cocoon's):</td>
+                        <td>{prepareEggs.pairNoSelectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>No of Pairs (%) (Rejected Cocoon's):</td>
+                        <td>{prepareEggs.pairNoRejectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Err %(Selected Cocoon's):</td>
+                        <td>{prepareEggs.errPerSelectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Err %(Rejected Cocoon's):</td>
+                        <td>{prepareEggs.errPerRejectedCocoonsNo}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Remaining DFLs :</td>
+                        <td>{prepareEggs.remainingDfls}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>Test results:</td>
                         <td>{prepareEggs.testResults}</td>
                       </tr>

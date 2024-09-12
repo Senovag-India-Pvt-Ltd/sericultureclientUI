@@ -45,11 +45,29 @@ function RegisteredSeedProducerNssoGrainages() {
   const [validated, setValidated] = useState(false);
 
   let name, value;
+  // const handleInputs = (e) => {
+  //   name = e.target.name;
+  //   value = e.target.value;
+  //   setData({ ...data, [name]: value });
+  // };
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+  
+    // Update the data state for the input field
+    setData((prevData) => {
+      // Calculate DFLs obtained if numberOfPairs or numberOfRejection is updated
+      let dflsObtained = prevData.dflsObtained;
+      if (name === "numberOfPairs" || name === "numberOfRejection") {
+        const numberOfPairs = name === "numberOfPairs" ? parseInt(value) : parseInt(prevData.numberOfPairs);
+        const numberOfRejection = name === "numberOfRejection" ? parseInt(value) : parseInt(prevData.numberOfRejection);
+        dflsObtained = numberOfPairs - numberOfRejection;
+      }
+  
+      return { ...prevData, [name]: value, dflsObtained };
+    });
   };
+
 
   const _header = {
     "Content-Type": "application/json",
@@ -119,6 +137,24 @@ function RegisteredSeedProducerNssoGrainages() {
     // setChallan("");
     // document.getElementById("challanUploadKey").value = "";
   };
+
+  // to get Market
+  const [marketListData, setMarketListData] = useState([]);
+
+  const getMarketList = () => {
+    const response = api
+      .get(baseURL + `marketMaster/get-all`)
+      .then((response) => {
+        setMarketListData(response.data.content.marketMaster);
+      })
+      .catch((err) => {
+        setMarketListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMarketList();
+  }, []);
 
   
 
@@ -233,7 +269,7 @@ function RegisteredSeedProducerNssoGrainages() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg="4">
+                    {/* <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
                           Source<span className="text-danger">*</span>
@@ -266,7 +302,42 @@ function RegisteredSeedProducerNssoGrainages() {
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
-                    </Col>
+                    </Col> */}
+                    <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                       Seed Cocoon Market<span className="text-danger">*</span>
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="sourceMasterId"
+                            value={data.sourceMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            required
+                            isInvalid={
+                              data.sourceMasterId === undefined ||
+                              data.sourceMasterId === "0"
+                            }
+                          >
+                            <option value="">Select Market</option>
+                            {marketListData.map((list) => (
+                              <option
+                                key={list.marketMasterId}
+                                value={list.marketMasterId}
+                              >
+                                {list.marketMasterName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Market is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
 
                     <Col lg="2">
                       <Form.Group className="form-group mt-n4">
@@ -400,6 +471,7 @@ function RegisteredSeedProducerNssoGrainages() {
                             value={data.dflsObtained}
                             onChange={handleInputs}
                             placeholder="Enter DFLs obtained"
+                            readOnly
                             required
                           />
                           <Form.Control.Feedback type="invalid">

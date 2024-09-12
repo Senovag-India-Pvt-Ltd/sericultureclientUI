@@ -20,9 +20,10 @@ function MaintenanceofMulberryfarmEdit() {
     plotNumber: "",
     variety: "",
     areaUnderEachVariety: "",
-    pruningDate: null,
+    pruningDate: "",
     soilTypeId: "",
     mulberrySpacing: "",
+    plantationDate: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +41,8 @@ function MaintenanceofMulberryfarmEdit() {
   };
 
   const isDataPruningSet = !!data.pruningDate;
+
+  const isDataPlantationSet = !!data.plantationDate;
 
   const postData = (event) => {
     const form = event.currentTarget;
@@ -68,6 +71,7 @@ function MaintenanceofMulberryfarmEdit() {
               pruningDate: "",
               soilTypeId: "",
               mulberrySpacing: "",
+              plantationDate: "",
             });
             setValidated(false);
           }
@@ -88,6 +92,7 @@ function MaintenanceofMulberryfarmEdit() {
       pruningDate: "",
       soilTypeId: "",
       mulberrySpacing: "",
+      plantationDate: "",
     });
     setValidated(false);
   };
@@ -366,9 +371,10 @@ function MaintenanceofMulberryfarmEdit() {
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
-                        {isDataPruningSet && (
+                        {/* {isDataPruningSet && ( */}
                           <DatePicker
-                            selected={new Date(data.pruningDate) || null}
+                            // selected={new Date(data.pruningDate) || null}
+                            selected={data.pruningDate ? new Date(data.pruningDate) : null}
                             onChange={(date) =>
                               handleDateChange(date, "pruningDate")
                             }
@@ -381,7 +387,35 @@ function MaintenanceofMulberryfarmEdit() {
                             className="form-control"
                             required
                           />
-                        )}
+                        {/* )} */}
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="sordfl">
+                        Plantation Date
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        {/* {isDataPlantationSet && ( */}
+                          <DatePicker
+                            // selected={new Date(data.plantationDate) || null}
+                            selected={data.plantationDate ? new Date(data.plantationDate) : null}
+                            onChange={(date) =>
+                              handleDateChange(date, "plantationDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            dateFormat="dd/MM/yyyy"
+                            // maxDate={new Date()}
+                            className="form-control"
+                            required
+                          />
+                        {/* )} */}
                       </div>
                     </Form.Group>
                   </Col>
@@ -398,11 +432,19 @@ function MaintenanceofMulberryfarmEdit() {
                   Update
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
                 </Button>
-              </li>
+              </li> */}
+              <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li>
             </ul>
           </div>
           {/* </Row> */}

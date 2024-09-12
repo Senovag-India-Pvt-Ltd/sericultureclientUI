@@ -67,7 +67,7 @@ function RaceMappingEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURL + `raceMarketMaster/get/${id}`)
+      .get(baseURL + `raceMarketMaster/get-join/${id}`)
       .then((response) => {
         setData(response.data.content);
         setLoading(false);
@@ -102,12 +102,36 @@ function RaceMappingEdit() {
     getMarketList();
   }, []);
 
+  // // to get Race
+  // const [raceListData, setRaceListData] = useState([]);
+
+  // const getRaceList = (_id) => {
+  //   const response = api
+  //     .get(baseURL + `raceMaster/get-by-market-master-id/${_id}`)
+  //     .then((response) => {
+  //       setRaceListData(response.data.content.raceMaster);
+  //       setLoading(false);
+  //       if (response.data.content.error) {
+  //         setRaceListData([]);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setRaceListData([]);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (data.marketMasterId) {
+  //     getRaceList(data.marketMasterId);
+  //   }
+  // }, [data.marketMasterId]);
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
 
-  const getRaceList = (_id) => {
+  const getRaceList = () => {
     const response = api
-      .get(baseURL + `raceMaster/get-by-market-master-id/${_id}`)
+      .get(baseURL + `raceMaster/get-all`)
       .then((response) => {
         setRaceListData(response.data.content.raceMaster);
         setLoading(false);
@@ -122,10 +146,10 @@ function RaceMappingEdit() {
   };
 
   useEffect(() => {
-    if (data.marketMasterId) {
-      getRaceList(data.marketMasterId);
-    }
-  }, [data.marketMasterId]);
+    // if (data.marketMasterId) {
+    getRaceList();
+    // }
+  }, []);
 
   const navigate = useNavigate();
 

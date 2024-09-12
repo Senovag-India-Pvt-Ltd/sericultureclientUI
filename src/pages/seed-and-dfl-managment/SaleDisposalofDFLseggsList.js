@@ -52,23 +52,7 @@ function SaleDisposalofDFLseggsList() {
     getList();
   }, []);
 
-  const getLogsList = (_id, plot) => {
-    setLoading(true);
-    setShowModal(true);
-
-    api
-      .get(baseURL2 + `Mulberry-garden/get-logs/${_id}/${plot}`)
-      .then((response) => {
-        // console.log(response.data)
-        setListLogsData(response.data);
-        // setTotalRows(response.data.content.totalItems);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        setLoading(false);
-      });
-  };
+  
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -80,18 +64,7 @@ function SaleDisposalofDFLseggsList() {
     // navigate("/seriui/training Schedule");
   };
 
-  const handleUpdate = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-update/${_id}`);
-  };
-
-  const handleAlert = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-alert/${_id}`);
-  };
-
-  const handleLogs = (_id) => {
-    navigate(`/seriui/maintenance-of-mulberry-garden-logs/${_id}`);
-  };
-
+ 
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -203,19 +176,26 @@ function SaleDisposalofDFLseggsList() {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id, row.plotNumber)}
             className="ms-2"
           >
             Delete
-          </Button>
+          </Button> */}
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      // grow: 2,
+    },
+    {
+      name: "Fruits Id",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId  }</span>,
+      sortable: true,
+      hide: "md",
     },
 
     {
@@ -260,164 +240,38 @@ function SaleDisposalofDFLseggsList() {
       sortable: true,
       hide: "md",
     },
-
-    // {
-    //   name: "Fertilizer Application Date",
-    //   selector: (row) => row.fertilizerApplicationDate,
-    //   cell: (row) => <span>{row.fymApplicationDate}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <Button
-    //         variant="primary"
-    //         size="sm"
-    //         onClick={() => handleLogs(row.id)}
-    //       >
-    //         Activity Logs
-    //       </Button>
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
-    // {
-    //   name: "Activity Logs",
-    //   cell: (row) => (
-    //     <div className="text-end">
-    //       <AiOutlineInfoCircle // Use the information icon instead of Button
-    //         size={20}
-    //         style={{ cursor: "pointer" }}
-    //         onClick={() => getLogsList(row.id, row.plotNumber)}
-    //       />
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   hide: "md",
-    // },
+    {
+      name: "No Of DFLS Disposed",
+      selector: (row) => row.numberOfDflsDisposed,
+      cell: (row) => <span>{row.numberOfDflsDisposed}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Name And Address Of the Farm",
+      selector: (row) => row.nameAndAddressOfTheFarm,
+      cell: (row) => <span>{row.nameAndAddressOfTheFarm}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Rate Per 100 Dfls Price",
+      selector: (row) => row.ratePer100DflsPrice,
+      cell: (row) => <span>{row.ratePer100DflsPrice}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Invoice Number",
+      selector: (row) => row.invoiceNumber,
+      cell: (row) => <span>{row.invoiceNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
   ];
 
-  const MaintenanceofmulberryGardenLogsDataColumns = [
-    {
-      name: "Plot Number",
-      selector: (row) => row.plotNumber,
-      cell: (row) => <span>{row.plotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Variety",
-      selector: (row) => row.variety,
-      cell: (row) => <span>{row.variety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Area Under Each Variety",
-      selector: (row) => row.areaUnderEachVariety,
-      cell: (row) => <span>{row.areaUnderEachVariety}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Pruning Date",
-      selector: (row) => row.pruningDate,
-      cell: (row) => <span>{row.pruningDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Date",
-      selector: (row) => row.fertilizerApplicationDate,
-      cell: (row) => <span>{row.fertilizerApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Date",
-      selector: (row) => row.fymApplicationDate,
-      cell: (row) => <span>{row.fymApplicationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Date",
-      selector: (row) => row.irrigationDate,
-      cell: (row) => <span>{row.irrigationDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Date",
-      selector: (row) => row.brushingDate,
-      cell: (row) => <span>{row.brushingDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fertilizer Application Status",
-      selector: (row) => row.fertilizerApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fertilizerApplicationStatus === 0
-            ? "Pending"
-            : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "FYM Application Status",
-      selector: (row) => row.fymApplicationStatus,
-      cell: (row) => (
-        <span>
-          {row.fymApplicationStatus === 0
-            ? "Pending"
-            : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Irrigation Status",
-      selector: (row) => row.irrigationStatus,
-      cell: (row) => (
-        <span>
-          {row.irrigationStatus === 0
-            ? "Pending"
-            : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Brushing Status",
-      selector: (row) => row.brushingStatus,
-      cell: (row) => (
-        <span>
-          {row.brushingStatus === 0
-            ? "Pending"
-            : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-  ];
+       
 
   return (
     <Layout title="Sale / Disposal of DFL's(eggs) List">
@@ -476,35 +330,7 @@ function SaleDisposalofDFLseggsList() {
         </Card>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>Activity Logs</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Block className="mt-2">
-            <Card>
-              <DataTable
-                // title="New Trader License List"
-                tableClassName="data-table-head-light table-responsive"
-                columns={MaintenanceofmulberryGardenLogsDataColumns}
-                data={listLogsData}
-                highlightOnHover
-                pagination
-                paginationServer
-                paginationTotalRows={totalRows}
-                paginationPerPage={countPerPage}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                onChangePage={(page) => setPage(page - 1)}
-                progressPending={loading}
-                theme="solarized"
-                customStyles={customStyles}
-              />
-            </Card>
-          </Block>
-        </Modal.Body>
-      </Modal>
+      
     </Layout>
   );
 }

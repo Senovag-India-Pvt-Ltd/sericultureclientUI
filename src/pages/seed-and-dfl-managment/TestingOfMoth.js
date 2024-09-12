@@ -170,7 +170,7 @@ function TestingOfMoth() {
             <Card.Body>
               {/* <h3>Farmers Details</h3> */}
               <Row className="g-gs">
-                {/* <Col lg="4" >
+                <Col lg="4" >
                   <Form.Group className="form-group ">
                     <Form.Label htmlFor="plotNumber">
                       Lot Number<span className="text-danger">*</span>
@@ -181,7 +181,7 @@ function TestingOfMoth() {
                         name="lotNumber"
                         value={data.lotNumber}
                         onChange={handleInputs}
-                        maxLength="12"
+                        // maxLength="12"
                         type="text"
                         placeholder="Enter Lot Number"
                         required
@@ -191,9 +191,9 @@ function TestingOfMoth() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col> */}
+                </Col>
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -223,10 +223,10 @@ function TestingOfMoth() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
 
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="numberOfDFLsReceived">
                       Pebrine Free Status Of Pupa & Moth
@@ -248,7 +248,37 @@ function TestingOfMoth() {
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
-                </Col>
+                </Col> */}
+
+                <Col lg="4">
+                            <Form.Group className="form-group">
+                              <Form.Label>
+                              Pebrine Free Status Of Pupa & Moth
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="pebrineFreeStatusOfPupaAndMoth"
+                                  value={data.pebrineFreeStatusOfPupaAndMoth}
+                                  onChange={handleInputs}
+                                  required
+                                  isInvalid={
+                                    data.pebrineFreeStatusOfPupaAndMoth === undefined ||
+                                    data.pebrineFreeStatusOfPupaAndMoth === "0"
+                                  }
+                                >
+                                  <option value="">
+                                    Select Pebrine Free Status Of Pupa & Moth
+                                  </option>
+                                  <option value="Diseased">Diseased</option>
+                                  <option value="Disease-Free">Disease-Free</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                Pebrine Free Status Of Pupa & Moth is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group">

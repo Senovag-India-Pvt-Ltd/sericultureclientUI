@@ -1,62 +1,55 @@
-import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../layout/default";
-import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
-import { useState, useEffect } from "react";
-// import axios from "axios";
-import Swal from "sweetalert2";
+import Layout from "../../../layout/default";
+import Block from "../../../components/Block/Block";
+import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { Icon, Select } from "../../components";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-import api from "../../../src/services/auth/api";
+import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import api from "../../../../src/services/auth/api";
 
-// const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-function MaintenanceofLineRecordsforEachRaceList() {
+function InspectionTypeList() {
   const [listData, setListData] = useState({});
-  const [listLogsData, setListLogsData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
   const _params = { params: { pageNumber: page, size: countPerPage } };
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const getList = () => {
     setLoading(true);
-
     const response = api
-      .get(baseURLSeedDfl + `LineRecord/get-info`)
+      .get(baseURL + `inspectionType/list`, _params)
       .then((response) => {
-        // console.log(response.data)
-        setListData(response.data);
-        // setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content.inspectionType);
+        setTotalRows(response.data.content.totalItems);
         setLoading(false);
       })
       .catch((err) => {
-        // setListData({});
+        setListData({});
         setLoading(false);
       });
   };
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [page]);
 
- 
   const navigate = useNavigate();
   const handleView = (_id) => {
-    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-view/${_id}`);
+    navigate(`/seriui/inspection-type-view/${_id}`);
   };
 
   const handleEdit = (_id) => {
-    navigate(`/seriui/Maintenance-of-Line-Records-for-Each-Race-edit/${_id}`);
-    // navigate("/seriui/training Schedule");
+    navigate(`/seriui/inspection-type-edit/${_id}`);
+    // navigate("/seriui/irrigation-source");
   };
-
 
   const deleteError = () => {
     Swal.fire({
@@ -75,9 +68,8 @@ function MaintenanceofLineRecordsforEachRaceList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `LineRecord/delete-info/${_id}`)
+          .delete(baseURL + `inspectionType/delete/${_id}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -147,7 +139,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
     },
   };
 
-  const LineRecordDataColumns = [
+  const IrrigationSourceDataColumns = [
     {
       name: "Action",
       cell: (row) => (
@@ -157,7 +149,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleView(row.id)}
+            onClick={() => handleView(row.inspectionTypeId)}
           >
             View
           </Button>
@@ -165,148 +157,65 @@ function MaintenanceofLineRecordsforEachRaceList() {
             variant="primary"
             size="sm"
             className="ms-2"
-            onClick={() => handleEdit(row.id)}
+            onClick={() => handleEdit(row.inspectionTypeId)}
           >
             Edit
           </Button>
-         
-          {/* <Button
+          <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.id, row.plotNumber)}
+            onClick={() => deleteConfirm(row.inspectionTypeId)}
             className="ms-2"
           >
             Delete
-          </Button> */}
+          </Button>
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
     },
-
     {
-      name: "Line Name",
-      selector: (row) => row.lineName,
-      cell: (row) => <span>{row.lineName}</span>,
+      name: "Inspection Type",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.name}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
-      selector: (row) => row.raceName,
-      cell: (row) => <span>{row.raceName}</span>,
+      name: "Inspection Type Name in Kannada",
+      selector: (row) => row.nameInKannada,
+      cell: (row) => <span>{row.nameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Number Of DFLs",
-      selector: (row) => row.noOfDfls,
-      cell: (row) => <span>{row.noOfDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Farmer Name",
-      selector: (row) => row.farmerName,
-      cell: (row) => <span>{row.farmerName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot Number",
-      selector: (row) => row.lotNumber,
-      cell: (row) => <span>{row.lotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Date Of Selection Cocoon",
-      selector: (row) => row.dateOfSelectionCocoon,
-      cell: (row) => <span>{row.dateOfSelectionCocoon}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Pupa Test Details",
-      selector: (row) => row.pupaTestDetails,
-      cell: (row) => <span>{row.pupaTestDetails}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Market",
-      selector: (row) => row.marketMasterName,
-      cell: (row) => <span>{row.marketMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "No Of Cocoons Selected",
-      selector: (row) => row.noOfCocoonsSelected,
-      cell: (row) => <span>{row.noOfCocoonsSelected}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Single Cocoon Weight in Grams",
-      selector: (row) => row.averageWeight,
-      cell: (row) => <span>{row.averageWeight}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Farmer Name (Male Cocoon)",
-      selector: (row) => row.farmerNameMale,
-      cell: (row) => <span>{row.farmerNameMale}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot Number (Male Cocoon)",
-      selector: (row) => row.lotNumberMale,
-      cell: (row) => <span>{row.lotNumberMale}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Market (Male Cocoon)",
-      selector: (row) => row.marketMasterNameMale,
-      cell: (row) => <span>{row.marketMasterNameMale}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "No Of Cocoons Selected (Male Cocoon)",
-      selector: (row) => row.noOfCocoonsSelectedMale,
-      cell: (row) => <span>{row.noOfCocoonsSelectedMale}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Single Cocoon Weight in Grams (Male Cocoon)",
-      selector: (row) => row.averageWeightMale,
-      cell: (row) => <span>{row.averageWeightMale}</span>,
-      sortable: true,
-      hide: "md",
-    },
+        name: "Value",
+        selector: (row) => row.value,
+        cell: (row) => <span>{row.value}</span>,
+        sortable: true,
+        hide: "md",
+      },
+      {
+        name: "Version",
+        selector: (row) => row.version,
+        cell: (row) => <span>{row.version}</span>,
+        sortable: true,
+        hide: "md",
+      },
   ];
 
   return (
-    <Layout title="Maintenance of Line records for each race List">
+    <Layout title="Inspection Type List">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              Maintenance of Line records for each race List
-            </Block.Title>
+            <Block.Title tag="h2"> Inspection Type List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                  to="/seriui/inspection-type"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
@@ -315,7 +224,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
               </li>
               <li>
                 <Link
-                  to="/seriui/Maintenance-of-Line-Records-for-Each-Race"
+                  to="/seriui/inspection-type"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
@@ -330,9 +239,8 @@ function MaintenanceofLineRecordsforEachRaceList() {
       <Block className="mt-n4">
         <Card>
           <DataTable
-            // title="New Trader License List"
             tableClassName="data-table-head-light table-responsive"
-            columns={LineRecordDataColumns}
+            columns={IrrigationSourceDataColumns}
             data={listData}
             highlightOnHover
             pagination
@@ -353,4 +261,4 @@ function MaintenanceofLineRecordsforEachRaceList() {
   );
 }
 
-export default MaintenanceofLineRecordsforEachRaceList;
+export default InspectionTypeList;

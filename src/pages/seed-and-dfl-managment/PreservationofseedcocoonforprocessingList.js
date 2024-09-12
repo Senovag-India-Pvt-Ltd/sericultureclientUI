@@ -116,7 +116,7 @@ function PreservationofseedcocoonforprocessingList() {
     });
   };
 
-  const deleteConfirm = (_id,status) => {
+  const deleteConfirm = (_id,status,senderType) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will Reject permanently!",
@@ -127,7 +127,7 @@ function PreservationofseedcocoonforprocessingList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .delete(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
+          .delete(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -156,7 +156,7 @@ function PreservationofseedcocoonforprocessingList() {
     });
   };
 
-  const acceptConfirm = (_id, status) => {
+  const acceptConfirm = (_id, status,senderType) => {
     Swal.fire({
       title: "Are you sure?",
       text: "It will Accept!",
@@ -167,7 +167,7 @@ function PreservationofseedcocoonforprocessingList() {
       if (result.value) {
         console.log("hello");
         const response = api
-          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}`)
+          .get(baseURLSeedDfl + `PreservationOfSeed/accept-reject-dfls/${_id}/${status}/${senderType}`)
           .then((response) => {
             // deleteConfirm(_id);
             getList();
@@ -265,13 +265,20 @@ function PreservationofseedcocoonforprocessingList() {
       ),
       sortable: false,
       hide: "md",
-      // grow: 3,
+      grow: 2,
     },
 
     {
       name: "Lot Number",
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Parent Lot Number",
+      selector: (row) => row.parentLotNumber,
+      cell: (row) => <span>{row.parentLotNumber}</span>,
       sortable: true,
       hide: "md",
     },
@@ -310,6 +317,9 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
+
+
+   
     // {
     //   name: "Accepted or not",
     //   selector: (row) => row.isAccepted,
@@ -334,9 +344,14 @@ function PreservationofseedcocoonforprocessingList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Sender Type",
+      selector: (row) => row.senderType,
+      cell: (row) => <span>{row.senderType}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
-
-
 
 
   const PreservationOfSeedCocoonForProcessingDataColumns = [
@@ -387,6 +402,20 @@ function PreservationofseedcocoonforprocessingList() {
       name: "Race ",
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Market",
+      selector: (row) => row.marketMasterName,
+      cell: (row) => <span>{row.marketMasterName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Farm",
+      selector: (row) => row.farmName,
+      cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },

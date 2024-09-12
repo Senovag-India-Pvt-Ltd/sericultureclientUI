@@ -121,10 +121,10 @@ function MaintenanceOfLineRecordForEachRaceView() {
                         </td>
                         <td>{lineRecord.raceName}</td>
                       </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Fruits ID:</td>
-                        <td>{lineRecord.fruitsId}</td>
-                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}>Number Of DFLs:</td>
+                        <td>{lineRecord.noOfDfls}</td>
+                      </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                         Farmer Name:
@@ -154,9 +154,42 @@ function MaintenanceOfLineRecordForEachRaceView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                        Average Weight:
+                        Single Cocoon Weight in Grams:
                         </td>
                         <td>{lineRecord.averageWeight}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Farmer Name (Male Cocoon):
+                        </td>
+                        <td>{lineRecord.farmerNameMale}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Lot Number (Male Cocoon):</td>
+                        <td>{lineRecord.lotNumberMale}</td>
+                      </tr>
+                      
+                      <tr>
+                        <td style={styles.ctstyle}>Market (Male Cocoon):</td>
+                        <td>{lineRecord.marketMasterNameMale}</td>
+                      </tr>
+                      {/* <tr>
+                        <td style={styles.ctstyle}>
+                          Lot Number:
+                        </td>
+                        <td>{lineRecord.lotNumber}</td>
+                      </tr> */}
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        No Of Cocoons Selected (Male Cocoon):
+                        </td>
+                        <td>{lineRecord.noOfCocoonsSelectedMale}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                        Single Cocoon Weight in Grams (Male Cocoon):
+                        </td>
+                        <td>{lineRecord.averageWeightMale}</td>
                       </tr>
                     </tbody>
                   </table>

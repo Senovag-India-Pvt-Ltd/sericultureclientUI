@@ -74,6 +74,54 @@ function RearingofDFLsforthe8LinesList() {
     wormsBrushed: 0,
   });
 
+  const [cocoonAssesmentDetailsBedWise, setCocoonAssesmentDetailsBedWise] = useState({
+    bed1Id: "",
+    bed1Name: "",
+    bed1WeightCacoons: "",
+    bed1WeightPupa: "",
+    bed1WeightShells: "",
+    bed1ShellPercentage: "",
+    bed1Err:"",
+    bed1CacoonsFormed: "",
+    bed1WormsBrushed: "",
+    bed2Id: "",
+    bed2Name: "",
+    bed2WeightCacoons: "",
+    bed2WeightPupa: "",
+    bed2WeightShells: "",
+    bed2ShellPercentage: "",
+    bed2Err:"",
+    bed2CacoonsFormed: "",
+    bed2WormsBrushed: "",
+    bed3Id: "",
+    bed3Name: "",
+    bed3WeightCacoons: "",
+    bed3WeightPupa: "",
+    bed3WeightShells: "",
+    bed3ShellPercentage: "",
+    bed3Err:"",
+    bed3CacoonsFormed: "",
+    bed3WormsBrushed: "",
+    bed4Id: "",
+    bed4Name: "",
+    bed4WeightCacoons: "",
+    bed4WeightPupa: "",
+    bed4WeightShells: "",
+    bed4ShellPercentage: "",
+    bed4Err:"",
+    bed4CacoonsFormed: "",
+    bed4WormsBrushed: "",
+    bed5Id: "",
+    bed5Name: "",
+    bed5WeightCacoons: "",
+    bed5WeightPupa: "",
+    bed5WeightShells: "",
+    bed5ShellPercentage: "",
+    bed5Err:"",
+    bed5CacoonsFormed: "",
+    bed5WormsBrushed: "",
+  });
+
   const clear = () => {
     setCocoonAssesmentDetails((prev) => ({
       ...prev,
@@ -92,7 +140,7 @@ function RearingofDFLsforthe8LinesList() {
   const handleInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    setCocoonAssesmentDetails({ ...cocoonAssesmentDetails, [name]: value });
+    setCocoonAssesmentDetailsBedWise({ ...cocoonAssesmentDetailsBedWise, [name]: value });
   };
 
   const postData = (event) => {
@@ -103,18 +151,29 @@ function RearingofDFLsforthe8LinesList() {
       setValidated(true);
     } else {
       event.preventDefault();
+      const sendPost = {
+        id: cocoonAssesmentDetailsBedWise.bed1Id,
+        bedName: cocoonAssesmentDetailsBedWise.bed1Name,
+        weightCacoons: cocoonAssesmentDetailsBedWise.bed1WeightCacoons,
+        weightPupa: cocoonAssesmentDetailsBedWise.bed1WeightPupa,
+        weightShells: cocoonAssesmentDetailsBedWise.bed1WeightShells,
+        shellPercentage:cocoonAssesmentDetailsBedWise.bed1ShellPercentage,
+        err: cocoonAssesmentDetailsBedWise.bed1Err,
+        cacoonsFormed: cocoonAssesmentDetailsBedWise.bed1CacoonsFormed,
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed1WormsBrushed, 
+      };
       api
         .post(
           baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
-          cocoonAssesmentDetails
+          sendPost
         )
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
           } else {
             saveSuccess(response.data.message);
-            clear();
-            handleCloseModal();
+            // clear();
+            // handleCloseModal();
           }
         })
         .catch((err) => {
@@ -132,13 +191,301 @@ function RearingofDFLsforthe8LinesList() {
     }
   };
 
-  const [viewDetailsData, setViewDetailsData] = useState({});
+  const postBed2Data = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const sendPost = {
+        id: cocoonAssesmentDetailsBedWise.bed2Id,
+        bedName: cocoonAssesmentDetailsBedWise.bed2Name,
+        weightCacoons: cocoonAssesmentDetailsBedWise.bed2WeightCacoons,
+        weightPupa: cocoonAssesmentDetailsBedWise.bed2WeightPupa,
+        weightShells: cocoonAssesmentDetailsBedWise.bed2WeightShells,
+        shellPercentage:cocoonAssesmentDetailsBedWise.bed2ShellPercentage,
+        err: cocoonAssesmentDetailsBedWise.bed2Err,
+        cacoonsFormed: cocoonAssesmentDetailsBedWise.bed2CacoonsFormed,
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed2WormsBrushed, 
+      };
+      api
+        .post(
+          baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const postBed3Data = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const sendPost = {
+        id: cocoonAssesmentDetailsBedWise.bed3Id,
+        bedName: cocoonAssesmentDetailsBedWise.bed3Name,
+        weightCacoons: cocoonAssesmentDetailsBedWise.bed3WeightCacoons,
+        weightPupa: cocoonAssesmentDetailsBedWise.bed3WeightPupa,
+        weightShells: cocoonAssesmentDetailsBedWise.bed3WeightShells,
+        shellPercentage:cocoonAssesmentDetailsBedWise.bed3ShellPercentage,
+        err: cocoonAssesmentDetailsBedWise.bed3Err,
+        cacoonsFormed: cocoonAssesmentDetailsBedWise.bed3CacoonsFormed,
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed3WormsBrushed, 
+      };
+      api
+        .post(
+          baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const postBed4Data = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const sendPost = {
+        id: cocoonAssesmentDetailsBedWise.bed4Id,
+        bedName: cocoonAssesmentDetailsBedWise.bed4Name,
+        weightCacoons: cocoonAssesmentDetailsBedWise.bed4WeightCacoons,
+        weightPupa: cocoonAssesmentDetailsBedWise.bed4WeightPupa,
+        weightShells: cocoonAssesmentDetailsBedWise.bed4WeightShells,
+        shellPercentage:cocoonAssesmentDetailsBedWise.bed4ShellPercentage,
+        err: cocoonAssesmentDetailsBedWise.bed4Err,
+        cacoonsFormed: cocoonAssesmentDetailsBedWise.bed4CacoonsFormed,
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed4WormsBrushed, 
+      };
+      api
+        .post(
+          baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const postBed5Data = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      const sendPost = {
+        id: cocoonAssesmentDetailsBedWise.bed5Id,
+        bedName: cocoonAssesmentDetailsBedWise.bed5Name,
+        weightCacoons: cocoonAssesmentDetailsBedWise.bed5WeightCacoons,
+        weightPupa: cocoonAssesmentDetailsBedWise.bed5WeightPupa,
+        weightShells: cocoonAssesmentDetailsBedWise.bed5WeightShells,
+        shellPercentage:cocoonAssesmentDetailsBedWise.bed5ShellPercentage,
+        err: cocoonAssesmentDetailsBedWise.bed5Err,
+        cacoonsFormed: cocoonAssesmentDetailsBedWise.bed5CacoonsFormed,
+        wormsBrushed: cocoonAssesmentDetailsBedWise.bed5WormsBrushed, 
+      };
+      api
+        .post(
+          baseURLSeedDfl + `8linesController/update-cacoon-assesment-data-by-id`,
+          sendPost
+        )
+        .then((response) => {
+          if (response.data.error) {
+            saveError(response.data.message);
+          } else {
+            saveSuccess(response.data.message);
+            // clear();
+            // handleCloseModal();
+          }
+        })
+        .catch((err) => {
+          if (
+            err.response &&
+            err.response.data &&
+            err.response.data.validationErrors
+          ) {
+            if (Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            }
+          }
+        });
+      setValidated(true);
+    }
+  };
+
+  const [viewDetailsData, setViewDetailsData] = useState({
+    bed1Id: "",
+    bed1Name: "",
+    bed1WeightCacoons: "",
+    bed1WeightPupa: "",
+    bed1WeightShells: "",
+    bed1ShellPercentage: "",
+    bed1Err:"",
+    bed1CacoonsFormed: "",
+    bed1WormsBrushed: "",
+    bed2Id: "",
+    bed2Name: "",
+    bed2WeightCacoons: "",
+    bed2WeightPupa: "",
+    bed2WeightShells: "",
+    bed2ShellPercentage: "",
+    bed2Err:"",
+    bed2CacoonsFormed: "",
+    bed2WormsBrushed: "",
+    bed3Id: "",
+    bed3Name: "",
+    bed3WeightCacoons: "",
+    bed3WeightPupa: "",
+    bed3WeightShells: "",
+    bed3ShellPercentage: "",
+    bed3Err:"",
+    bed3CacoonsFormed: "",
+    bed3WormsBrushed: "",
+    bed4Id: "",
+    bed4Name: "",
+    bed4WeightCacoons: "",
+    bed4WeightPupa: "",
+    bed4WeightShells: "",
+    bed4ShellPercentage: "",
+    bed4Err:"",
+    bed4CacoonsFormed: "",
+    bed4WormsBrushed: "",
+    bed5Id: "",
+    bed5Name: "",
+    bed5WeightCacoons: "",
+    bed5WeightPupa: "",
+    bed5WeightShells: "",
+    bed5ShellPercentage: "",
+    bed5Err:"",
+    bed5CacoonsFormed: "",
+    bed5WormsBrushed: "",
+  });
+
   const viewDetails = (_id) => {
     handleShowModal1();
     api
       .get(baseURLSeedDfl + `8linesController/get-cacoon-assesment-data-by-id/${_id}`)
       .then((response) => {
-        setViewDetailsData(response.data);
+        const data = response.data;
+        setViewDetailsData({
+          bed1Id: data[0]?.id || "",
+          bed1Name: data[0]?.bedName || "",
+          bed1WeightCacoons: data[0]?.weightCacoons || "",
+          bed1WeightPupa: data[0]?.weightPupa || "",
+          bed1WeightShells: data[0]?.weightShells || "",
+          bed1ShellPercentage: data[0]?.shellPercentage || "",
+          bed1Err: data[0]?.err || "",
+          bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
+          bed1WormsBrushed: data[0]?.wormsBrushed || "",
+          bed2Id: data[1]?.id || "",
+          bed2Name: data[1]?.bedName || "",
+          bed2WeightCacoons: data[1]?.weightCacoons || "",
+          bed2WeightPupa: data[1]?.weightPupa || "",
+          bed2WeightShells: data[1]?.weightShells || "",
+          bed2ShellPercentage: data[1]?.shellPercentage || "",
+          bed2Err: data[1]?.err || "",
+          bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
+          bed2WormsBrushed: data[1]?.wormsBrushed || "",
+          bed3Id: data[2]?.id || "",
+          bed3Name: data[2]?.bedName || "",
+          bed3WeightCacoons: data[2]?.weightCacoons || "",
+          bed3WeightPupa: data[2]?.weightPupa || "",
+          bed3WeightShells: data[2]?.weightShells || "",
+          bed3ShellPercentage: data[2]?.shellPercentage || "",
+          bed3Err: data[2]?.err || "",
+          bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
+          bed3WormsBrushed: data[2]?.wormsBrushed || "",
+          bed4Id: data[3]?.id || "",
+          bed4Name: data[3]?.bedName || "",
+          bed4WeightCacoons: data[3]?.weightCacoons || "",
+          bed4WeightPupa: data[3]?.weightPupa || "",
+          bed4WeightShells: data[3]?.weightShells || "",
+          bed4ShellPercentage: data[3]?.shellPercentage || "",
+          bed4Err: data[3]?.err || "",
+          bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
+          bed4WormsBrushed: data[3]?.wormsBrushed || "",
+          bed5Id: data[4]?.id || "",
+          bed5Name: data[4]?.bedName || "",
+          bed5WeightCacoons: data[4]?.weightCacoons || "",
+          bed5WeightPupa: data[4]?.weightPupa || "",
+          bed5WeightShells: data[4]?.weightShells || "",
+          bed5ShellPercentage: data[4]?.shellPercentage || "",
+          bed5Err: data[4]?.err || "",
+          bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
+          bed5WormsBrushed: data[4]?.wormsBrushed || "",
+        });
+  
+        // setViewDetailsData(response.data);
 
         setLoading(false);
       })
@@ -276,26 +623,94 @@ function RearingofDFLsforthe8LinesList() {
     return format(date, "dd/MM/yyyy");
   };
 
+  // const getCocoonList = (_id) => {
+  //   setLoading(true);
+  //   handleShowModal();
+
+  //   api
+  //     .get(
+  //       baseURLSeedDfl +
+  //         `8linesController/get-cacoon-assesment-data-by-id/${_id}`
+  //     )
+  //     .then((response) => {
+  //       // console.log(response.data)
+  //       setCocoonAssesmentDetails(response.data);
+  //       // setTotalRows(response.data.content.totalItems);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // setListData({});
+  //       setLoading(false);
+  //     });
+  // };
+
   const getCocoonList = (_id) => {
     setLoading(true);
     handleShowModal();
-
+  
     api
       .get(
-        baseURLSeedDfl +
-          `8linesController/get-cacoon-assesment-data-by-id/${_id}`
+        baseURLSeedDfl + `8linesController/get-cacoon-assesment-data-by-id/${_id}`
       )
       .then((response) => {
-        // console.log(response.data)
-        setCocoonAssesmentDetails(response.data);
-        // setTotalRows(response.data.content.totalItems);
+        const data = response.data;
+  
+        // Update the state for each bed based on the response
+        setCocoonAssesmentDetailsBedWise({
+          bed1Id: data[0]?.id || "",
+          bed1Name: data[0]?.bedName || "",
+          bed1WeightCacoons: data[0]?.weightCacoons || "",
+          bed1WeightPupa: data[0]?.weightPupa || "",
+          bed1WeightShells: data[0]?.weightShells || "",
+          bed1ShellPercentage: data[0]?.shellPercentage || "",
+          bed1Err: data[0]?.err || "",
+          bed1CacoonsFormed: data[0]?.cacoonsFormed || "",
+          bed1WormsBrushed: data[0]?.wormsBrushed || "",
+          bed2Id: data[1]?.id || "",
+          bed2Name: data[1]?.bedName || "",
+          bed2WeightCacoons: data[1]?.weightCacoons || "",
+          bed2WeightPupa: data[1]?.weightPupa || "",
+          bed2WeightShells: data[1]?.weightShells || "",
+          bed2ShellPercentage: data[1]?.shellPercentage || "",
+          bed2Err: data[1]?.err || "",
+          bed2CacoonsFormed: data[1]?.cacoonsFormed || "",
+          bed2WormsBrushed: data[1]?.wormsBrushed || "",
+          bed3Id: data[2]?.id || "",
+          bed3Name: data[2]?.bedName || "",
+          bed3WeightCacoons: data[2]?.weightCacoons || "",
+          bed3WeightPupa: data[2]?.weightPupa || "",
+          bed3WeightShells: data[2]?.weightShells || "",
+          bed3ShellPercentage: data[2]?.shellPercentage || "",
+          bed3Err: data[2]?.err || "",
+          bed3CacoonsFormed: data[2]?.cacoonsFormed || "",
+          bed3WormsBrushed: data[2]?.wormsBrushed || "",
+          bed4Id: data[3]?.id || "",
+          bed4Name: data[3]?.bedName || "",
+          bed4WeightCacoons: data[3]?.weightCacoons || "",
+          bed4WeightPupa: data[3]?.weightPupa || "",
+          bed4WeightShells: data[3]?.weightShells || "",
+          bed4ShellPercentage: data[3]?.shellPercentage || "",
+          bed4Err: data[3]?.err || "",
+          bed4CacoonsFormed: data[3]?.cacoonsFormed || "",
+          bed4WormsBrushed: data[3]?.wormsBrushed || "",
+          bed5Id: data[4]?.id || "",
+          bed5Name: data[4]?.bedName || "",
+          bed5WeightCacoons: data[4]?.weightCacoons || "",
+          bed5WeightPupa: data[4]?.weightPupa || "",
+          bed5WeightShells: data[4]?.weightShells || "",
+          bed5ShellPercentage: data[4]?.shellPercentage || "",
+          bed5Err: data[4]?.err || "",
+          bed5CacoonsFormed: data[4]?.cacoonsFormed || "",
+          bed5WormsBrushed: data[4]?.wormsBrushed || "",
+        });
+  
         setLoading(false);
       })
       .catch((err) => {
-        // setListData({});
         setLoading(false);
       });
   };
+  
 
   const RearingOfDFLSForThe8LinesDataColumns = [
     {
@@ -528,28 +943,58 @@ function RearingofDFLsforthe8LinesList() {
                   <Row className="g-gs">
                     <Col lg="12">
                       <Block>
+                      <Card>
+                      <Card.Header>
+                       Bed 1
+                      </Card.Header>
+                      <Card.Body>
                         <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Bed Name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed1Name"
+                                  name="bed1Name"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed1Name || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Bed Name"
+                                  readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightCacoons">
                                 Average Weight of 25 Cocoons
-                                <span className="text-danger">*</span>
+        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="weightCacoons"
-                                  name="weightCacoons"
+                                  id="bed1WeightCacoons"
+                                  name="bed1WeightCacoons"
                                   value={
-                                    cocoonAssesmentDetails.weightCacoons || ""
+                                    cocoonAssesmentDetailsBedWise.bed1WeightCacoons || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Average Weight of 25 Cocoons"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Average Weight of 25 Cocoons is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -557,23 +1002,23 @@ function RearingofDFLsforthe8LinesList() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
                                 Average Weight of 25 Pupa
-                                <span className="text-danger">*</span>
+        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="weightPupa"
-                                  name="weightPupa"
+                                  id="bed1WeightPupa"
+                                  name="bed1WeightPupa"
                                   value={
-                                    cocoonAssesmentDetails.weightPupa || ""
+                                    cocoonAssesmentDetailsBedWise.bed1WeightPupa || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Average Weight of 25 Pupa"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Average Weight of 25 Pupa is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -581,23 +1026,23 @@ function RearingofDFLsforthe8LinesList() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightShells">
                                 Average Weight of 25 Shells
-                                <span className="text-danger">*</span>
+        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="weightShells"
-                                  name="weightShells"
+                                  id="bed1WeightShells"
+                                  name="bed1WeightShells"
                                   value={
-                                    cocoonAssesmentDetails.weightShells || ""
+                                    cocoonAssesmentDetailsBedWise.bed1WeightShells || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Average Weight of 25 Shells"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Average Weight of 25 Shells is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -605,44 +1050,44 @@ function RearingofDFLsforthe8LinesList() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="shellPercentage">
                                 Shell Percentage
-                                <span className="text-danger">*</span>
+        
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="shellPercentage"
-                                  name="shellPercentage"
+                                  id="bed1ShellPercentage"
+                                  name="bed1ShellPercentage"
                                   value={
-                                    cocoonAssesmentDetails.shellPercentage || ""
+                                    cocoonAssesmentDetailsBedWise.bed1ShellPercentage || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="Shell Percentage"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   Shell Percentage is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="err">
-                                ERR<span className="text-danger">*</span>
+                              Err
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="err"
-                                  name="err"
-                                  value={cocoonAssesmentDetails.err || ""}
+                                  id="bed1Err"
+                                  name="bed1Err"
+                                  value={cocoonAssesmentDetailsBedWise.bed1Err || ""}
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="ERR"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   ERR is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -650,23 +1095,22 @@ function RearingofDFLsforthe8LinesList() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="cacoonsFormed">
                                 No of Cocoon's Formed
-                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="cacoonsFormed"
-                                  name="cacoonsFormed"
+                                  id="bed1CacoonsFormed"
+                                  name="bed1CacoonsFormed"
                                   value={
-                                    cocoonAssesmentDetails.cacoonsFormed || ""
+                                    cocoonAssesmentDetailsBedWise.bed1CacoonsFormed || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="No of Cocoon's Formed"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   No of Cocoon's Formed is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
@@ -674,49 +1118,983 @@ function RearingofDFLsforthe8LinesList() {
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="wormsBrushed">
                                 No of Worms Brushed
-                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
-                                  id="wormsBrushed"
-                                  name="wormsBrushed"
+                                  id="bed1WormsBrushed"
+                                  name="bed1WormsBrushed"
                                   value={
-                                    cocoonAssesmentDetails.wormsBrushed || ""
+                                    cocoonAssesmentDetailsBedWise.bed1WormsBrushed || ""
                                   }
                                   onChange={handleInputs}
                                   type="text"
                                   placeholder="No of Worms Brushed"
-                                  required
+                                  // required
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                {/* <Form.Control.Feedback type="invalid">
                                   No of Worms Brushed is required
-                                </Form.Control.Feedback>
+                                </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
                           </Col>
                         </Row>
-                        {/* </Card.Body>
-                    </Card> */}
-                      </Block>
-                      <div className="gap-col mt-2">
+                        <div className="gap-col mt-2">
                         <ul className="d-flex align-items-center justify-content-center gap g-3">
                           <li>
                             {/* <Button type="button" variant="primary" onClick={postData}> */}
                             <Button type="submit" variant="primary">
-                              Save
+                              Update
                             </Button>
                           </li>
                           <li>
-                            <Button
+                            {/* <Button
                               type="button"
                               variant="secondary"
                               onClick={clear}
                             >
                               Cancel
-                            </Button>
+                            </Button> */}
                           </li>
                         </ul>
                       </div>
+                        </Card.Body>
+                    </Card>
+                      </Block>
+                     
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postBed2Data}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                      <Card>
+                      <Card.Header>
+                       Bed 2
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Bed Name      
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2Name"
+                                  name="bed2Name"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2Name || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Bed Name"
+                                  readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Average Weight of 25 Cocoons
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2WeightCacoons"
+                                  name="bed2WeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2WeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Cocoons"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                Average Weight of 25 Pupa
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2WeightPupa"
+                                  name="bed2WeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2WeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Pupa"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                Average Weight of 25 Shells
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2WeightShells"
+                                  name="bed2WeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2WeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Shells"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                                Shell Percentage
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2ShellPercentage"
+                                  name="bed2ShellPercentage"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2ShellPercentage || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Shell Percentage"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              Err
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2Err"
+                                  name="bed2Err"
+                                  value={cocoonAssesmentDetailsBedWise.bed2Err || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="ERR"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="cacoonsFormed">
+                                No of Cocoon's Formed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2CacoonsFormed"
+                                  name="bed2CacoonsFormed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2CacoonsFormed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Cocoon's Formed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Cocoon's Formed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                No of Worms Brushed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed2WormsBrushed"
+                                  name="bed2WormsBrushed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed2WormsBrushed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Worms Brushed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                         
+                    <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Update
+                            </Button>
+                          </li>
+                          <li>
+                            {/* <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={clear}
+                            >
+                              Cancel
+                            </Button> */}
+                          </li>
+                        </ul>
+                      </div>
+                        </Card.Body>
+                    </Card>
+                   
+                      </Block>
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postBed3Data}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                      <Card>
+                      <Card.Header>
+                       Bed 3
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Bed Name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3Name"
+                                  name="bed3Name"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3Name || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Bed Name"
+                                  readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Average Weight of 25 Cocoons
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3WeightCacoons"
+                                  name="bed3WeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3WeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Cocoons"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                Average Weight of 25 Pupa
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3WeightPupa"
+                                  name="bed3WeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3WeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Pupa"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                Average Weight of 25 Shells
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3WeightShells"
+                                  name="bed3WeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3WeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Shells"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                                Shell Percentage        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3ShellPercentage"
+                                  name="bed3ShellPercentage"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3ShellPercentage || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Shell Percentage"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                                  Err
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3Err"
+                                  name="bed3Err"
+                                  value={cocoonAssesmentDetailsBedWise.bed3Err || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="ERR"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="cacoonsFormed">
+                                No of Cocoon's Formed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3CacoonsFormed"
+                                  name="bed3CacoonsFormed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3CacoonsFormed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Cocoon's Formed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Cocoon's Formed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="bed3WormsBrushed">
+                                No of Worms Brushed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed3WormsBrushed"
+                                  name="bed3WormsBrushed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed3WormsBrushed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Worms Brushed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Update
+                            </Button>
+                          </li>
+                          <li>
+                            {/* <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={clear}
+                            >
+                              Cancel
+                            </Button> */}
+                          </li>
+                        </ul>
+                      </div>
+                        </Card.Body>
+                    </Card>
+                      </Block>
+                     
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postBed4Data}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                      <Card>
+                      <Card.Header>
+                       Bed 4
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Bed Name       
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4Name"
+                                  name="bed4Name"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4Name || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Bed Name"
+                                  readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Average Weight of 25 Cocoons
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4WeightCacoons"
+                                  name="bed4WeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4WeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Cocoons"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                Average Weight of 25 Pupa
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4WeightPupa"
+                                  name="bed4WeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4WeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Pupa"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                Average Weight of 25 Shells
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4WeightShells"
+                                  name="bed4WeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4WeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Shells"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="shellPercentage">
+                                Shell Percentage
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4ShellPercentage"
+                                  name="bed4ShellPercentage"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4ShellPercentage || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Shell Percentage"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              Err
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4Err"
+                                  name="bed4Err"
+                                  value={cocoonAssesmentDetailsBedWise.bed4Err || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="ERR"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="cacoonsFormed">
+                                No of Cocoon's Formed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4CacoonsFormed"
+                                  name="bed4CacoonsFormed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4CacoonsFormed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Cocoon's Formed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Cocoon's Formed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                No of Worms Brushed
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed4WormsBrushed"
+                                  name="bed4WormsBrushed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed4WormsBrushed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Worms Brushed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Update
+                            </Button>
+                          </li>
+                          <li>
+                            {/* <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={clear}
+                            >
+                              Cancel
+                            </Button> */}
+                          </li>
+                        </ul>
+                      </div>
+                        </Card.Body>
+                    </Card>
+                      </Block>
+                      
+                    </Col>
+                  </Row>
+                </div>
+              </Row>
+            </Form>
+          </Block>
+
+          <Block className="mt-4">
+            <Form noValidate validated={validated} onSubmit={postBed5Data}>
+              <Row className="g-3 ">
+                <div>
+                  <Row className="g-gs">
+                    <Col lg="12">
+                      <Block>
+                      <Card>
+                      <Card.Header>
+                       Bed 5
+                      </Card.Header>
+                      <Card.Body>
+                        <Row className="g-gs">
+                        <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Bed Name
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5Name"
+                                  name="bed5Name"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5Name || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Bed Name"
+                                  readOnly
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Bed Name is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightCacoons">
+                                Average Weight of 25 Cocoons
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5WeightCacoons"
+                                  name="bed5WeightCacoons"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5WeightCacoons || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Cocoons"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Cocoons is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightPupa">
+                                Average Weight of 25 Pupa
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5WeightPupa"
+                                  name="bed5WeightPupa"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5WeightPupa || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Pupa"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Pupa is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="weightShells">
+                                Average Weight of 25 Shells
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5WeightShells"
+                                  name="bed5WeightShells"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5WeightShells || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Average Weight of 25 Shells"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Average Weight of 25 Shells is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="bed5ShellPercentage">
+                                Shell Percentage
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5ShellPercentage"
+                                  name="bed5ShellPercentage"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5ShellPercentage || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Shell Percentage"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Shell Percentage is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="err">
+                              Err
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5Err"
+                                  name="bed5Err"
+                                  value={cocoonAssesmentDetailsBedWise.bed5Err || ""}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="ERR"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  ERR is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="bed5CacoonsFormed">
+                                No of Cocoon's Formed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5CacoonsFormed"
+                                  name="bed5CacoonsFormed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5CacoonsFormed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Cocoon's Formed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Cocoon's Formed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="wormsBrushed">
+                                No of Worms Brushed
+        
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="bed5WormsBrushed"
+                                  name="bed5WormsBrushed"
+                                  value={
+                                    cocoonAssesmentDetailsBedWise.bed5WormsBrushed || ""
+                                  }
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="No of Worms Brushed"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  No of Worms Brushed is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <div className="gap-col mt-2">
+                        <ul className="d-flex align-items-center justify-content-center gap g-3">
+                          <li>
+                            {/* <Button type="button" variant="primary" onClick={postData}> */}
+                            <Button type="submit" variant="primary">
+                              Update
+                            </Button>
+                          </li>
+                          <li>
+                            {/* <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={clear}
+                            >
+                              Cancel
+                            </Button> */}
+                          </li>
+                        </ul>
+                      </div>
+                        </Card.Body>
+                    </Card>
+                    
+                      </Block>
+
+                      
                     </Col>
                   </Row>
                 </div>
@@ -736,58 +2114,252 @@ function RearingofDFLsforthe8LinesList() {
               Loading...
             </h1>
           ) : (
+            <>
+            <Card className="mt-3">
+            <Card.Header>
+              Bed 1
+            </Card.Header>
+            <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
                 <table className="table small table-bordered">
                   <tbody>
+                  <tr>
+                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td>{viewDetailsData.bed1Name}</td>
+                    </tr>
                     <tr>
                       <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
-                      <td>{viewDetailsData.weightCacoons}</td>
+                      <td>{viewDetailsData.bed1WeightCacoons}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
-                      <td>{viewDetailsData.weightPupa}</td>
+                      <td>{viewDetailsData.bed1WeightPupa}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
-                      <td>{viewDetailsData.weightShells}</td>
+                      <td>{viewDetailsData.bed1WeightShells}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>Shell Percentage</td>
-                      <td>{viewDetailsData.shellPercentage}</td>
+                      <td>{viewDetailsData.bed1ShellPercentage}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>ERR</td>
-                      <td>{viewDetailsData.err}</td>
+                      <td>{viewDetailsData.bed1Err}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>No of Worms Brushed:</td>
-                      <td>{viewDetailsData.wormsBrushed}</td>
+                      <td>{viewDetailsData.bed1CacoonsFormed}</td>
                     </tr>
                     <tr>
                       <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
-                      <td>{viewDetailsData.cacoonsFormed}</td>
+                      <td>{viewDetailsData.bed1WormsBrushed}</td>
                     </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}> Financial Year:</td>
-                      <td>{viewDetailsData.financialYear}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Category Name:</td>
-                      <td>{viewDetailsData.categoryName}</td>
-                    </tr> */}
-                    {/* <tr>
-                      <td style={styles.ctstyle}> State Name in Kannada:</td>
-                      <td>{viewDetailsData.stateNameInKannada}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> Initial Amount:</td>
-                      <td>{viewDetailsData.stateNameInKannada}</td>
-                    </tr> */}
+                    
                   </tbody>
                 </table>
               </Col>
             </Row>
+            </Card.Body>
+            </Card>
+
+            <Card className="mt-3">
+            <Card.Header>
+              Bed 2
+            </Card.Header>
+            <Card.Body>
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                  <tr>
+                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td>{viewDetailsData.bed2Name}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td>{viewDetailsData.bed2WeightCacoons}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td>{viewDetailsData.bed2WeightPupa}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td>{viewDetailsData.bed2WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td>{viewDetailsData.bed2ShellPercentage}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ERR</td>
+                      <td>{viewDetailsData.bed2Err}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td>{viewDetailsData.bed2WormsBrushed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td>{viewDetailsData.bed2CacoonsFormed}</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+            </Card.Body>
+            </Card>
+
+            <Card className="mt-3">
+            <Card.Header>
+              Bed 3
+            </Card.Header>
+            <Card.Body>
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                  <tr>
+                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td>{viewDetailsData.bed3Name}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td>{viewDetailsData.bed3WeightCacoons}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td>{viewDetailsData.bed3WeightPupa}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td>{viewDetailsData.bed3WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td>{viewDetailsData.bed3ShellPercentage}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ERR</td>
+                      <td>{viewDetailsData.bed3Err}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td>{viewDetailsData.bed3WormsBrushed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td>{viewDetailsData.bed3CacoonsFormed}</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+            </Card.Body>
+            </Card>
+
+            <Card className="mt-3">
+            <Card.Header>
+              Bed 4
+            </Card.Header>
+            <Card.Body>
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                  <tr>
+                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td>{viewDetailsData.bed4Name}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td>{viewDetailsData.bed4WeightCacoons}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td>{viewDetailsData.bed4WeightPupa}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td>{viewDetailsData.bed4WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td>{viewDetailsData.bed4ShellPercentage}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ERR</td>
+                      <td>{viewDetailsData.bed4Err}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td>{viewDetailsData.bed4WormsBrushed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td>{viewDetailsData.bed4CacoonsFormed}</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+            </Card.Body>
+            </Card>
+
+            <Card className="mt-3">
+            <Card.Header>
+              Bed 5
+            </Card.Header>
+            <Card.Body>
+            <Row className="g-gs">
+              <Col lg="12">
+                <table className="table small table-bordered">
+                  <tbody>
+                  <tr>
+                      <td style={styles.ctstyle}>Bed Name:</td>
+                      <td>{viewDetailsData.bed5Name}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Cocoons:</td>
+                      <td>{viewDetailsData.bed5WeightCacoons}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}> Average Weight of 25 Pupa:</td>
+                      <td>{viewDetailsData.bed5WeightPupa}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Average Weight of 25 Shells:</td>
+                      <td>{viewDetailsData.bed5WeightShells}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>Shell Percentage</td>
+                      <td>{viewDetailsData.bed5ShellPercentage}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>ERR</td>
+                      <td>{viewDetailsData.bed5Err}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Worms Brushed:</td>
+                      <td>{viewDetailsData.bed5WormsBrushed}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>No of Cocoon's Formed:</td>
+                      <td>{viewDetailsData.bed5CacoonsFormed}</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </Col>
+            </Row>
+            </Card.Body>
+            </Card>
+            </>
           )}
         </Modal.Body>
       </Modal>

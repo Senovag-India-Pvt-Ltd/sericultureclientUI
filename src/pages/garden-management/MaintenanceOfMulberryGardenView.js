@@ -128,6 +128,15 @@ function MaintenanceOfMulberryGardenView() {
                         <td style={styles.ctstyle}>Brushing Date:</td>
                         <td>{maintenanceGarden.brushingDate}</td>
                       </tr>
+
+                      <tr>
+                        <td style={styles.ctstyle}>Foliar Spray 1 Date:</td>
+                        <td>{maintenanceGarden.foliarSpray1}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>Foliar Spray 2 Date:</td>
+                        <td>{maintenanceGarden.foliarSpray2}</td>
+                      </tr>
                      
                     </tbody>
                   </table>

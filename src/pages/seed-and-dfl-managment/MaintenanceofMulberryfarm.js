@@ -21,6 +21,7 @@ function MaintenanceofMulberryfarm() {
     pruningDate: "",
     soilTypeId: "",
     mulberrySpacing: "",
+    plantationDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -70,6 +71,7 @@ function MaintenanceofMulberryfarm() {
               pruningDate: "",
               soilTypeId: "",
               mulberrySpacing: "",
+              plantationDate: "",
             });
             setValidated(false);
           }
@@ -99,6 +101,7 @@ function MaintenanceofMulberryfarm() {
       pruningDate: "",
       soilTypeId: "",
       mulberrySpacing: "",
+      plantationDate: "",
     });
     setValidated(false);
   };
@@ -356,6 +359,31 @@ function MaintenanceofMulberryfarm() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="2">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="sordfl">
+                      Plantation Date
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.plantationDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "plantationDate")
+                        }
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd/MM/yyyy"
+                        // maxDate={new Date()}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
               </Row>
             </Card.Body>
           </Card>
@@ -368,11 +396,19 @@ function MaintenanceofMulberryfarm() {
                   Save
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Button type="button" variant="secondary" onClick={clear}>
                   Cancel
                 </Button>
-              </li>
+              </li> */}
+              <li>
+                  <Link
+                    to="/seriui/Maintenance-of-mulberry-Garden-in-the-Farms-list"
+                    className="btn btn-secondary border-0"
+                  >
+                   Cancel
+                  </Link>
+                </li>
             </ul>
           </div>
           {/* </Row> */}

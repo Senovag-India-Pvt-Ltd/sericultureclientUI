@@ -203,7 +203,7 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                 </h1>
               ) : (
                 <Row className="g-gs">
-                <Col lg="4">
+                {/* <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
                     Lot Number<span className="text-danger">*</span>
@@ -233,7 +233,28 @@ function MaintenanceOfEggsAtColdStorageEdit() {
                       </div>
                     </Col>
                   </Form.Group>
-                </Col>
+                </Col> */}
+                <Col lg="4">
+                            <Form.Group className="form-group  mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Lot Number<span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="sordfl"
+                                  name="lotNumber"
+                                  value={data.lotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder="Enter Lot Number"
+                                  required
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                Lot Number is required
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
 
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">

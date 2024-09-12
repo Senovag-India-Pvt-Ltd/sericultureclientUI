@@ -23,6 +23,7 @@ function RearingOfDFLsForThe8LinesEdit() {
   const isDataLaidDate = !!data.laidOnDate;
   const isDataReleasedDate = !!data.releasedOn;
   const isDataSpunDate = !!data.spunOnDate;
+  const isDataHatchingDate = !!data.hatchingDate;
 
   let name, value;
   const handleInputs = (e) => {
@@ -65,6 +66,7 @@ function RearingOfDFLsForThe8LinesEdit() {
               spunOnDate: "",
               wormTestDatesAndResults: "",
               cropFailureDetails: "",
+              hatchingDate: "",
             });
             setValidated(false);
           }
@@ -95,6 +97,7 @@ function RearingOfDFLsForThe8LinesEdit() {
       wormTestDatesAndResults: "",
       cocoonAssessmentDetails: "",
       cropFailureDetails: "",
+      hatchingDate: "",
     });
   };
 
@@ -551,6 +554,32 @@ function RearingOfDFLsForThe8LinesEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                      <Col lg="2">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="sordfl">
+                                Hatching date<span className="text-danger">*</span>
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                  {isDataHatchingDate && (
+                                    <DatePicker
+                                      selected={new Date(data.hatchingDate)}
+                                      onChange={(date) =>
+                                        handleDateChange(date, "hatchingDate")
+                                      }
+                                      peekNextMonth
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      //   maxDate={new Date()}
+                                      dateFormat="dd/MM/yyyy"
+                                      className="form-control"
+                                      required
+                                    />
+                                  )}
+                                </div>
+                            </Form.Group>
+                          </Col>
                 </Row>
               )}
             </Card.Body>

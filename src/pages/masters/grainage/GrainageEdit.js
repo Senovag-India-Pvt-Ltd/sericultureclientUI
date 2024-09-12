@@ -31,6 +31,8 @@ function GrainageEdit() {
       grainageMasterId: id,
       grainageMasterName: data.grainageMasterName,
       grainageMasterNameInKannada: data.grainageMasterNameInKannada,
+      grainageType: data.grainageType,
+      grainageNameRepresentation: data.grainageNameRepresentation,
       userMasterId:data.userMasterId
     };
     const form = event.currentTarget;
@@ -77,6 +79,8 @@ function GrainageEdit() {
     setData({
         grainageMasterName: "",
         grainageMasterNameInKannada: "",
+        grainageType: "",
+        grainageNameRepresentation: "",
         userMasterId:"",
     });
   };

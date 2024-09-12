@@ -99,7 +99,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total number of cocoons produced at each generation:
+                          Total number of cocoons produced:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachGeneration}
@@ -135,7 +135,7 @@ function MaintenanceofScreeningBatchRecordsView() {
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
-                          Total No of Cocoons Produced at each Screening:
+                          Total No of Cocoons Produced Screening:
                         </td>
                         <td>
                           {maintenanceScreen.cocoonsProducedAtEachScreening}
@@ -150,13 +150,40 @@ function MaintenanceofScreeningBatchRecordsView() {
                         <td>{maintenanceScreen.chawkiPercentage}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>
-                          Selected Bed as per the Mean Performance:
+                        <td style={styles.ctstyle}>Selected Bed as per the Mean Performance:</td>
+                        <td>{maintenanceScreen.selectedBedAsPerTheMeanPerformance}</td>
+                      </tr>
+                      {/* <tr>
+                      <td style={styles.ctstyle}>
+                        Selected Bed as per the Mean Performance:
+                      </td>
+                        <td>
+                          {maintenanceScreen.selectedBedAsPerTheMeanPerformance === "1"
+                            ? "Bed 1"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "2"
+                            ? "Bed 2"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "3"
+                            ? "Bed 3"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "4"
+                            ? "Bed 4"
+                            : maintenanceScreen.selectedBedAsPerTheMeanPerformance === "5"
+                            ? "Bed 5"
+                            : "Other"}
                         </td>
                         <td>
-                          {maintenanceScreen.selectedBedAsPerTheMeanPerformance}
-                        </td>
-                      </tr>
+                      {String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "1"
+                        ? "Bed 1"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "2"
+                        ? "Bed 2"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "3"
+                        ? "Bed 3"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "4"
+                        ? "Bed 4"
+                        : String(maintenanceScreen.selectedBedAsPerTheMeanPerformance) === "5"
+                        ? "Bed 5"
+                        : "Other"}
+                    </td>
+                    </tr>  */}
                       <tr>
                         <td style={styles.ctstyle}>Crop Failure Details:</td>
                         <td>{maintenanceScreen.cropFailureDetails}</td>
