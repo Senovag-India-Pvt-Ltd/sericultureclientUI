@@ -134,7 +134,7 @@ function MaintenanceofmulberryGarden() {
 
   const getSoilTypeList = () => {
     const response = api
-      .get(baseURL2 + `soilType/get-all`)
+      .get(baseURL + `soilType/get-all`)
       .then((response) => {
         setSoilTypeListData(response.data.content.soilType);
       })
