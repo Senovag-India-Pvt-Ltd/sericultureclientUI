@@ -17,7 +17,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmerServer =
-  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
@@ -183,27 +183,62 @@ function ServiceApplication() {
   //   });
   // };
 
-  const handleCheckboxChange = (landId, row) => {
-    console.log("hello row", row);
+  // const handleCheckboxChange = (landId, row) => {
+  //   console.log("hello row", row);
+  //   setLandDetailsIds((prevIds) => {
+  //     const isAlreadySelected = prevIds.includes(landId);
+  //     const newIds = isAlreadySelected
+  //       ? prevIds.filter((id) => id !== landId)
+  //       : [...prevIds, landId];
+
+  //     setDevelopedArea((prevData) => {
+  //       if (isAlreadySelected) {
+  //         const { [landId]: _, ...rest } = prevData;
+  //         return rest;
+  //       } else {
+  //         // If selected, add to developedArea
+  //         return {
+  //           ...prevData,
+  //           [landId]: {
+  //             devAcre: prevData[landId]?.devAcre || "0",
+  //             devGunta: prevData[landId]?.devGunta || "0",
+  //             devFGunta: prevData[landId]?.devFGunta || "0",
+  //             ...row,
+  //           },
+  //         };
+  //       }
+  //     });
+
+  //     return newIds;
+  //   });
+  // };
+
+  const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
+    console.log(selectedData);
     setLandDetailsIds((prevIds) => {
-      const isAlreadySelected = prevIds.includes(landId);
-      const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== landId)
-        : [...prevIds, landId];
+      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      // for single Select
+      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+      // For Multiple Select
+      // const newIds = isAlreadySelected
+      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+      //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
+        console.log("Need to check", prevData);
         if (isAlreadySelected) {
-          const { [landId]: _, ...rest } = prevData;
+          console.log("inside if");
+          const { [farmerLandDetailsId]: _, ...rest } = prevData;
           return rest;
         } else {
           // If selected, add to developedArea
           return {
-            ...prevData,
-            [landId]: {
-              devAcre: prevData[landId]?.devAcre || "0",
-              devGunta: prevData[landId]?.devGunta || "0",
-              devFGunta: prevData[landId]?.devFGunta || "0",
-              ...row,
+            // ...prevData,
+            [farmerLandDetailsId]: {
+              ...selectedData,
+              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+              devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
             },
           };
         }
@@ -217,17 +252,46 @@ function ServiceApplication() {
 
   // console.log(documentAttachments);
 
-  // Upload Image to S3 Bucket
+  // // Upload Image to S3 Bucket
+  // const handleAttachFileUpload = async (documentId) => {
+  //   // const parameters = `applicationFormId =${data.applicationId}`;
+  //   const param = {
+  //     applicationFormId: applicationId,
+  //     documentTypeId: documentId,
+  //   };
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("multipartFile", documentAttachments[documentId]);
+
+  //     const response = await api.post(
+  //       baseURLDBT + `service/uploadDocument`,
+  //       formData,
+  //       {
+  //         params: param,
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     console.log("File upload response:", response.data);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //   }
+  // };
+  const [uploadStatus, setUploadStatus] = useState({});
+
+  
+
   const handleAttachFileUpload = async (documentId) => {
-    // const parameters = `applicationFormId =${data.applicationId}`;
     const param = {
       applicationFormId: applicationId,
       documentTypeId: documentId,
     };
+  
     try {
       const formData = new FormData();
       formData.append("multipartFile", documentAttachments[documentId]);
-
+  
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
         formData,
@@ -238,16 +302,52 @@ function ServiceApplication() {
           },
         }
       );
+  
       console.log("File upload response:", response.data);
+  
+      // Show SweetAlert success message after successful upload
+      // SweetAlert success function
+  Swal.fire({
+    icon: "success",
+    title: "File uploaded successfully",
+  });
+  // setIsUploaded(true);
+  // Update the upload status for this specific document
+  setUploadStatus((prevStatus) => ({
+    ...prevStatus,
+    [documentId]: true, // Mark this document as uploaded
+  }));
     } catch (error) {
       console.error("Error uploading file:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error uploading file. Please try again.",
+      });
     }
   };
 
+
+  
+
   const [showModal, setShowModal] = useState(false);
+  const [pendingPostData, setPendingPostData] = useState(null);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  // const handleShowModal = (post) => {
+  //   setPendingPostData(post); // Store post data in state
+  //   setShowModal(true);
+  // };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  //   if (pendingPostData) {
+  //     // Save application if there is pending post data
+  //     saveApplication(pendingPostData);
+  //     setPendingPostData(null); // Clear pending data after saving
+  //   }
+  // };
 
   const [showModalBreakUp, setShowModalBreakUp] = useState(false);
 
@@ -525,14 +625,26 @@ function ServiceApplication() {
 
   const getDocList = () => {
     api
-      .post(baseURLDBT + `service/getApplicableDocumentList`)
+      .get(baseURLMasterData + `documentMaster/get-all`)
       .then((response) => {
-        setDocListData(response.data.content);
+        setDocListData(response.data.content.documentMaster);
       })
       .catch((err) => {
         setDocListData([]);
       });
   };
+
+  // const getDocList = () => {
+  //   api
+  //     .post(baseURLDBT + `service/getApplicableDocumentList?subSchemeId=${data.scSubSchemeDetailsId}`)
+  //     .then((response) => {
+  //       setDocListData(response.data.content);
+  //     })
+  //     .catch((err) => {
+  //       setDocListData([]);
+  //     });
+  // };
+
 
   useEffect(() => {
     getDocList();
@@ -860,6 +972,50 @@ function ServiceApplication() {
     clear();
   };
 
+  // const uploadFileConfirm = (post) => {
+  //   Swal.fire({
+  //     title: "Do you want to Upload the Documents?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "Later",
+  //   }).then((result) => {
+  //     if (result.value) {
+  //    // User clicked 'Yes', show document upload modal
+  //    handleShowModal(post);
+  //   } else {
+  //     // User clicked 'Later', directly save the application
+  //     saveApplication(post);
+  //   }
+  //   });
+  // };
+  
+
+  // const saveApplication = (post) => {
+  //   api
+  //     .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //     .then((response) => {
+  //       if (response.data.errorCode === -1) {
+  //         saveError(response.data.message);
+  //       } else {
+  //                   // Show success message after saving
+  //          saveSuccess();
+  //         setApplicationId(response.data.content.applicationDocumentId);
+  //         setValidated(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (
+  //         err.response &&
+  //         err.response.data &&
+  //         err.response.data.validationErrors
+  //       ) {
+  //         saveError(err.response.data.validationErrors);
+  //       }
+  //     });
+  // };
+  
+
   const uploadFileConfirm = (post) => {
     Swal.fire({
       title: "Do you want to Upload the Documents?",
@@ -869,7 +1025,7 @@ function ServiceApplication() {
       confirmButtonText: "Yes",
       cancelButtonText: "Later",
     }).then((result) => {
-      if (result.value) {
+      if (result.value) { 
         api
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
@@ -994,6 +1150,8 @@ function ServiceApplication() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  const [disable, setDisable] = useState(false);
+
   const search = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -1004,88 +1162,96 @@ function ServiceApplication() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
-      }
-      api
-        .post(baseURLRegistration + `farmer/get-farmer-details`, {
-          fruitsId: data.fruitsId,
-        })
-        .then((response) => {
-          console.log(response);
-          if (!response.data.content.error) {
-            if (response.data.content.farmerResponse) {
-              setData((prev) => ({
-                ...prev,
-                farmerId: response.data.content.farmerResponse.farmerId,
-              }));
-              setFarmerDetails((prev) => ({
-                ...prev,
-                farmerName: response.data.content.farmerResponse.firstName,
-                hobli:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].hobliName
-                    : "",
-                village:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].villageName
-                    : "",
-              }));
-              setShowFarmerDetails(true);
-            }
-            // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-            //   setLandDetailsList(
-            //     response.data.content.farmerLandDetailsDTOList
-            //   );
-            // }
-
-            api
-              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-                fruitsId: data.fruitsId,
-              })
-              .then((response) => {
-                console.log(
-                  "landdetails",
-                  response.data.content.farmerLandDetailsDTOList
-                );
-                if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-                  setLandDetailsList(
-                    response.data.content.farmerLandDetailsDTOList
-                  );
-                }
-              })
-              .catch((err) => {
-                setLandDetailsList([]);
-              });
-
-            if (
-              response.data.content.farmerAddressDTOList &&
-              response.data.content.farmerAddressDTOList.length > 0
-            ) {
-              setLandData((prev) => ({
-                ...prev,
-                talukId:
-                  response.data.content.farmerAddressDTOList[0].talukId || 0,
-              }));
-            }
-          } else {
-            saveError(response.data.content.error_description);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
+      } else {
+      setDisable(true);
     }
-  };
+      // api
+      //   .post(baseURLRegistration + `farmer/get-farmer-details`, {
+      //     fruitsId: data.fruitsId,
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //     if (!response.data.content.error) {
+      //       if (response.data.content.farmerResponse) {
+      //         setData((prev) => ({
+      //           ...prev,
+      //           farmerId: response.data.content.farmerResponse.farmerId,
+      //         }));
+      //         setFarmerDetails((prev) => ({
+      //           ...prev,
+      //           farmerName: response.data.content.farmerResponse.firstName,
+      //           hobli:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].hobliName
+      //               : "",
+      //           village:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].villageName
+      //               : "",
+      //         }));
+      //         setShowFarmerDetails(true);
+      //       }
+      //       // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+      //       //   setLandDetailsList(
+      //       //     response.data.content.farmerLandDetailsDTOList
+      //       //   );
+      //       // }
+
+      api
+      .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+        fruitsId: data.fruitsId,
+      })
+      .then((response) => {
+        if (response.data.content.farmerResponse) {
+          setData((prev) => ({
+            ...prev,
+            farmerId: response.data.content.farmerResponse.farmerId,
+          }));
+          setFarmerDetails((prev) => ({
+            ...prev,
+            farmerName: response.data.content.farmerResponse.firstName,
+            // districtName:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].districtName
+            //     : "",
+            // talukName:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].talukName
+            //     : "",
+            // hobli:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].hobliName
+            //     : "",
+            // village:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].villageName
+            //     : "",
+          }));
+          if (response.data.content.farmerAddressDTOList.length > 0) {
+            setFarmerDetails((prev) => ({
+              ...prev,
+              address:
+                response.data.content.farmerAddressDTOList[0].addressText,
+            }));
+          }
+          setShowFarmerDetails(true);
+        }
+        console.log("landdetails", response.data);
+        if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+        }
+      })
+      .catch((err) => {
+        setLandDetailsList([]);
+      });
+  }
+};
 
   const LandDetailsColumns = [
     {
@@ -1327,7 +1493,7 @@ function ServiceApplication() {
       //     placeholder="Edit FGunta"
       //   />
       // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1483,6 +1649,11 @@ function ServiceApplication() {
                         Search
                       </Button>
                     </Col>
+                    {/* <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
+                      </Button>
+                    </Col> */}
                   </Form.Group>
                 </Col>
               </Row>
@@ -1496,12 +1667,10 @@ function ServiceApplication() {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                        <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Hobli :</td>
-                          <td>{farmerDetails.hobli}</td>
-                          <td style={styles.ctstyle}> Village:</td>
-                          <td>{farmerDetails.village}</td>
+                          <td style={styles.ctstyle}> Addres:</td>
+                          <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -2493,7 +2662,7 @@ function ServiceApplication() {
                                 </div>
                               </Form.Group>
                             </Col>
-                            <Col lg="4">
+                            {/* <Col lg="4">
                               <Form.Group as={Row} className="form-group mt-4">
                                 <Col sm={1}>
                                   <Form.Check
@@ -2509,7 +2678,7 @@ function ServiceApplication() {
                                   Pay to Vendor
                                 </Form.Label>
                               </Form.Group>
-                            </Col>
+                            </Col> */}
                           </Row>
                         </Card.Body>
                       </Card>
@@ -2544,13 +2713,13 @@ function ServiceApplication() {
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {docListData.map(({ documentId, documentName }) => (
-            <div key={documentId}>
+          {docListData.map(({ documentMasterId, documentMasterName }) => (
+            <div key={documentMasterId}>
               <Row className="d-flex justify-content-center align-items-center">
                 <Col lg="2">
                   <Form.Group className="form-group mt-1">
                     <Form.Label htmlFor="trUploadPath">
-                      {documentName}
+                      {documentMasterName}
                     </Form.Label>
                   </Form.Group>
                 </Col>
@@ -2560,10 +2729,10 @@ function ServiceApplication() {
                     <div className="form-control-wrap">
                       <Form.Control
                         type="file"
-                        id={`attImage${documentId}`}
+                        id={`attImage${documentMasterId}`}
                         // name="hdAttachFiles"
                         // value={data.photoPath}
-                        onChange={(e) => handleAttachFileChange(e, documentId)}
+                        onChange={(e) => handleAttachFileChange(e, documentMasterId)}
                       />
                     </div>
                   </Form.Group>
@@ -2571,12 +2740,12 @@ function ServiceApplication() {
 
                 <Col lg="4" style={{ position: "relative" }}>
                   <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {documentAttachments[documentId] && (
+                    {documentAttachments[documentMasterId] && (
                       <div style={{ position: "relative" }}>
                         <img
                           style={{ height: "150px", width: "150px" }}
                           src={URL.createObjectURL(
-                            documentAttachments[documentId]
+                            documentAttachments[documentMasterId]
                           )}
                         />
                         <button
@@ -2590,7 +2759,7 @@ function ServiceApplication() {
                             fontSize: "24px",
                             cursor: "pointer",
                           }}
-                          onClick={() => handleRemoveImage(documentId)}
+                          onClick={() => handleRemoveImage(documentMasterId)}
                         >
                           &times;
                         </button>
@@ -2598,15 +2767,33 @@ function ServiceApplication() {
                     )}
                   </Form.Group>
                 </Col>
-                <Col lg="2">
+                {/* <Col lg="2">
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={() => handleAttachFileUpload(documentId)}
+                    onClick={() => handleAttachFileUpload(documentMasterId)}
                   >
                     Upload
                   </Button>
-                </Col>
+                </Col> */}
+                <Col lg="2">
+                {/* <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => handleAttachFileUpload(documentMasterId)}
+                  disabled={isUploaded} // Disable button after upload
+                >
+                  {isUploaded ? "Uploaded" : "Upload"}
+                </Button> */}
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(documentMasterId)}
+                disabled={uploadStatus[documentMasterId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"} {/* Change text based on individual document status */}
+              </Button>
+              </Col>
               </Row>
             </div>
           ))}
