@@ -285,9 +285,17 @@ function ApplicationDashboard() {
       <Row className="g-gs d-flex justify-content-center">
         {dashboardList.map((dashboard, i) => (
           <Col xxl="3" key={i}>
-            <Card
+            {/* <Card
               className="h-100"
               style={{ ...styles, backgroundColor: rainbowColors[i] }}
+              onClick={() => goto(dashboard.stepName)}
+            > */}
+            <Card
+              className="h-100"
+              style={{
+                ...styles,
+                backgroundColor: rainbowColors[i % rainbowColors.length],
+              }}
               onClick={() => goto(dashboard.stepName)}
             >
               <Card.Body>

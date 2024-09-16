@@ -24,14 +24,23 @@ function EditScApprovalStage() {
     value = e.target.value;
     setData({ ...data, [name]: value });
   };
+
+  const handleCheckBox = (e) => {
+    const { name, value, checked } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (event) => {
     const datas = {
-        scApprovalStageId: id,
-        stageName: data.stageName,
-        stageNameInKannada: data.stageNameInKannada,
-      };
+      scApprovalStageId: id,
+      stageName: data.stageName,
+      stageNameInKannada: data.stageNameInKannada,
+    };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -47,8 +56,8 @@ function EditScApprovalStage() {
           } else {
             updateSuccess();
             setData({
-                stageName: "",
-                stageNameInKannada: "",
+              stageName: "",
+              stageNameInKannada: "",
             });
             setValidated(false);
           }
@@ -64,8 +73,8 @@ function EditScApprovalStage() {
 
   const clear = () => {
     setData({
-        stageName: "",
-        stageNameInKannada: "",
+      stageName: "",
+      stageNameInKannada: "",
     });
   };
 
@@ -111,7 +120,6 @@ function EditScApprovalStage() {
       html: errorMessage,
     });
   };
- 
 
   return (
     <Layout title="Edit Approval Stage">
@@ -156,53 +164,133 @@ function EditScApprovalStage() {
                     Loading...
                   </h1>
                 ) : (
-                  <Row className="g-gs">
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                      Approval Stage
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="stageName"
-                          type="text"
-                          value={data.stageName}
-                          onChange={handleInputs}
-                          placeholder="Enter Approval Stage"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Approval Stage is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  <>
+                    <Row className="g-gs">
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="title">
+                            Approval Stage
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="title"
+                              name="stageName"
+                              type="text"
+                              value={data.stageName}
+                              onChange={handleInputs}
+                              placeholder="Enter Approval Stage"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Approval Stage is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-                  <Col lg="6">
-                    <Form.Group className="form-group">
-                      <Form.Label htmlFor="title">
-                        Approval Stage Name in Kannada
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
-                          name="stageNameInKannada"
-                          type="text"
-                          value={data.stageNameInKannada}
-                          onChange={handleInputs}
-                          placeholder="Enter Approval Stage Name In Kannada"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        Approval Stage Name In Kannada is required
-                        </Form.Control.Feedback>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  </Row>
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="title">
+                            Approval Stage Name in Kannada
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="title"
+                              name="stageNameInKannada"
+                              type="text"
+                              value={data.stageNameInKannada}
+                              onChange={handleInputs}
+                              placeholder="Enter Approval Stage Name In Kannada"
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Approval Stage Name In Kannada is required
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="1">
+                        <Form.Group as={Row} className="form-group mt-4">
+                          <Col sm={1}>
+                            <Form.Check
+                              type="radio"
+                              name="workFlowType"
+                              value="INSPECTION"
+                              id="weighmentTripletGeneration"
+                              checked={data.workFlowType ==="INSPECTION"}
+                              onChange={handleCheckBox}
+                              // Optional: disable the checkbox in view mode
+                              // defaultChecked
+                            />
+                          </Col>
+                          <Form.Label column sm={8} className="mt-n2">
+                            Inspection
+                          </Form.Label>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="1">
+                        <Form.Group as={Row} className="form-group mt-4">
+                          <Col sm={1}>
+                            <Form.Check
+                              type="radio"
+                              name="workFlowType"
+                              value="WORKORDER"
+                              id="weighmentTripletGeneration"
+                              checked={data.workFlowType==="WORKORDER"}
+                              onChange={handleCheckBox}
+                              // Optional: disable the checkbox in view mode
+                              // defaultChecked
+                            />
+                          </Col>
+                          <Form.Label column sm={8} className="mt-n2">
+                            Work Order
+                          </Form.Label>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="1">
+                        <Form.Group as={Row} className="form-group mt-4">
+                          <Col sm={1}>
+                            <Form.Check
+                              type="radio"
+                              name="workFlowType"
+                              value="SANCTIONORDER"
+                              id="weighmentTripletGeneration"
+                              checked={data.workFlowType === "SANCTIONORDER"}
+                              onChange={handleCheckBox}
+                              // Optional: disable the checkbox in view mode
+                              // defaultChecked
+                            />
+                          </Col>
+                          <Form.Label column sm={8} className="mt-n2">
+                            Sanction Order
+                          </Form.Label>
+                        </Form.Group>
+                      </Col>
+                      <Col lg="1">
+                        <Form.Group as={Row} className="form-group mt-4">
+                          <Col sm={1}>
+                            <Form.Check
+                              type="radio"
+                              name="workFlowType"
+                              value="PUSHTODBT"
+                              id="weighmentTripletGeneration"
+                              checked={data.workFlowType === "PUSHTODBT"}
+                              onChange={handleCheckBox}
+                              // Optional: disable the checkbox in view mode
+                              // defaultChecked
+                            />
+                          </Col>
+                          <Form.Label column sm={8} className="mt-n2">
+                            Push to DBT
+                          </Form.Label>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </>
                 )}
               </Card.Body>
             </Card>
