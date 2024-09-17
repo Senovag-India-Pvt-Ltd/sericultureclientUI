@@ -40,6 +40,7 @@ function EditScApprovalStage() {
       scApprovalStageId: id,
       stageName: data.stageName,
       stageNameInKannada: data.stageNameInKannada,
+      workFlowType: data.workFlowType,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -221,7 +222,7 @@ function EditScApprovalStage() {
                               name="workFlowType"
                               value="INSPECTION"
                               id="weighmentTripletGeneration"
-                              checked={data.workFlowType ==="INSPECTION"}
+                              checked={data.workFlowType === "INSPECTION"}
                               onChange={handleCheckBox}
                               // Optional: disable the checkbox in view mode
                               // defaultChecked
@@ -240,7 +241,7 @@ function EditScApprovalStage() {
                               name="workFlowType"
                               value="WORKORDER"
                               id="weighmentTripletGeneration"
-                              checked={data.workFlowType==="WORKORDER"}
+                              checked={data.workFlowType === "WORKORDER"}
                               onChange={handleCheckBox}
                               // Optional: disable the checkbox in view mode
                               // defaultChecked
