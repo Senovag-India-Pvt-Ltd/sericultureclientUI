@@ -16,6 +16,7 @@ function ScApprovalStage() {
   const [data, setData] = useState({
     stageName: "",
     stageNameInKannada: "",
+    workFlowType:""
   });
 
   const [validated, setValidated] = useState(false);
@@ -44,8 +45,8 @@ function ScApprovalStage() {
           } else {
             saveSuccess();
             setData({
-                stageName: "",
-                stageNameInKannada: "",
+              stageName: "",
+              stageNameInKannada: "",
             });
             setValidated(false);
           }
@@ -61,10 +62,20 @@ function ScApprovalStage() {
 
   const clear = () => {
     setData({
-        stageName: "",
-        stageNameInKannada: "",
+      stageName: "",
+      stageNameInKannada: "",
     });
   };
+
+  const handleCheckBox = (e) =>{
+    const {name,value,checked} = e.target;
+    setData((prev)=>({
+      ...prev,
+      [name]:value
+    }))
+  }
+
+  console.log("see this",data);
 
   const navigate = useNavigate();
   const saveSuccess = () => {
@@ -132,7 +143,7 @@ function ScApprovalStage() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                      Approval Stage
+                        Approval Stage
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -146,7 +157,7 @@ function ScApprovalStage() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Approval Stage is required
+                          Approval Stage is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -169,9 +180,87 @@ function ScApprovalStage() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Approval Stage Name In Kannada is required
+                          Approval Stage Name In Kannada is required
                         </Form.Control.Feedback>
                       </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg="1">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="workFlowType"
+                          value="INSPECTION"
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Inspection
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="1">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="workFlowType"
+                          value="WORKORDER"
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Work Order
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="1">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="workFlowType"
+                          value="SANCTIONORDER"
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Sanction Order
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                  <Col lg="1">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="workFlowType"
+                          value="PUSHTODBT"
+                          id="weighmentTripletGeneration"
+                          // checked={data.weighmentTripletGeneration}
+                          onChange={handleCheckBox}
+                          // Optional: disable the checkbox in view mode
+                          // defaultChecked
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                        Push to DBT
+                      </Form.Label>
                     </Form.Group>
                   </Col>
                 </Row>
