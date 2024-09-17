@@ -31,15 +31,18 @@ function ServiceApplication() {
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
+    fruitsId: "",
     scCategoryId: "",
     scSubSchemeType: "",
     scVendorId: "",
     farmerId: "",
-    expectedAmount: "18000",
+    expectedAmount: "",
     financialYearMasterId: "",
     scComponentId: "",
     schemeAmount: "",
     sanctionNumber: "",
+    approvalStageId: "",
+    userMasterId: "",
     periodFrom: new Date("2023-04-01"),
     periodTo: new Date("2024-03-31"),
   });
@@ -317,6 +320,10 @@ function ServiceApplication() {
     ...prevStatus,
     [documentId]: true, // Mark this document as uploaded
   }));
+  // add acknowledgement API here
+  // Call the acknowledgment API after a successful response
+  // generateAcknowledgment(response.data.content.applicationDocumentId);
+
     } catch (error) {
       console.error("Error uploading file:", error);
       Swal.fire({
@@ -327,8 +334,6 @@ function ServiceApplication() {
     }
   };
 
-
-  
 
   const [showModal, setShowModal] = useState(false);
   const [pendingPostData, setPendingPostData] = useState(null);
@@ -620,6 +625,43 @@ function ServiceApplication() {
     getVendorList();
   }, []);
 
+   // to get User Master
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = () => {
+    const response = api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+   const [approvalListData, setApprovalListData] = useState([]);
+
+   const getApprovalList = () => {
+     const response = api
+       .get(baseURLMasterData + `scApprovalStage/get-all`)
+       .then((response) => {
+         setApprovalListData(response.data.content.scApprovalStage);
+       })
+       .catch((err) => {
+         setApprovalListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getApprovalList();
+   }, []);
+
+
+
   // to get uploadable documents
   const [docListData, setDocListData] = useState([]);
 
@@ -730,7 +772,10 @@ function ServiceApplication() {
     } else {
       event.preventDefault();
       const sendPost = {
+        approvalStageId: data.approvalStageId,
+        userMasterId: data.userMasterId,
         farmerId: data.farmerId,
+        fruitsId: data.fruitsId,
         payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
@@ -863,21 +908,13 @@ function ServiceApplication() {
 
   console.log(amountValue);
 
-  const generateBiddingSlip = async (applicationId) => {
-    // const newDate = new Date();
-    // const formattedDate =
-    //   newDate.getFullYear() +
-    //   "-" +
-    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
-    //   "-" +
-    //   newDate.getDate().toString().padStart(2, "0");
-
+  const generateAcknowledgment = async (applicationFormId) => {
+  
     try {
       const response = await api.post(
-        // baseURLReport + `getBlankSample`,
-        `http://localhost:8006/reports/marketreport/getBlankSample`,
+        baseURLReport + `getBlankSample`,
         {
-          applicationFormId: applicationId,
+          applicationFormId: applicationFormId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -888,16 +925,7 @@ function ServiceApplication() {
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
 
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      // const fileURL = URL.createObjectURL(file);
-      // const printWindow = window.open(fileURL);
-      // if (printWindow) {
-      //   printWindow.onload = () => {
-      //     printWindow.print();
-      //   };
-      // } else {
-      //   console.error("Failed to open the print window.");
-      // }
+     
     } catch (error) {
       // console.log("error", error);
     }
@@ -934,12 +962,15 @@ function ServiceApplication() {
       subinc: "subsidy",
       equordev: "land",
       scSchemeDetailsId: "",
+      fruitsId: "",
       scSubSchemeDetailsId: "",
       scHeadAccountId: "",
       scCategoryId: "",
       scComponentId: "",
       scVendorId: "",
       farmerId: "",
+      approvalStageId: "",
+      userMasterId: "",
       expectedAmount: "",
       financialYearMasterId: "",
       periodFrom: new Date("2023-04-01"),
@@ -967,7 +998,7 @@ function ServiceApplication() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: `Receipt Number ${message}`,
+      // text: `Generated ARN Number is ${arnNumber}`,
     });
     clear();
   };
@@ -1036,20 +1067,6 @@ function ServiceApplication() {
               setApplicationId(response.data.content.applicationDocumentId);
               handleShowModal();
 
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
               setValidated(false);
             }
           })
@@ -1077,23 +1094,13 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
+              // add acknowledgement API here
+
+        // Call the acknowledgment API after a successful response
+            generateAcknowledgment(response.data.content.applicationDocumentId);
+
               // generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
-
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
               setValidated(false);
             }
           })
@@ -2093,6 +2100,80 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
+                        <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Approval Stage
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="approvalStageId"
+                            value={data.approvalStageId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                            isInvalid={
+                              data.approvalStageId === undefined ||
+                              data.approvalStageId === "0"
+                            }
+                          >
+                            <option value="">Select Approval Stage</option>
+                            {approvalListData.map((list) => (
+                              <option
+                                key={list.scApprovalStageId}
+                                value={list.scApprovalStageId}
+                              >
+                                {list.stageName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                       User Master
+                       {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userMasterId"
+                            value={data.userMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                            isInvalid={
+                              data.userMasterId === undefined ||
+                              data.userMasterId === "0"
+                            }
+                          >
+                            <option value="">Select User</option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
@@ -2419,7 +2500,7 @@ function ServiceApplication() {
                             </Col>
                           )}
                         </Row>
-                        <Row className="mt-1">
+                        {/* <Row className="mt-1">
                           <Col>
                             <Button
                               type="button"
@@ -2430,7 +2511,7 @@ function ServiceApplication() {
                               Show Break up
                             </Button>
                           </Col>
-                        </Row>
+                        </Row> */}
                       </Card.Body>
                     </Card>
                   </Block>
@@ -2543,7 +2624,7 @@ function ServiceApplication() {
                         </Card.Body>
                       </Card>
                     </Block>
-                  ) : (
+                  ) : data.equordev === "equipment" ? (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -2683,8 +2764,9 @@ function ServiceApplication() {
                         </Card.Body>
                       </Card>
                     </Block>
+                  ) : null}
                   )}
-                </>
+                </> 
               ) : (
                 ""
               )}
