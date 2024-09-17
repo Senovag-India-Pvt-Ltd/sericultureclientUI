@@ -17,7 +17,7 @@ import api from "../../../../src/services/auth/api";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmerServer =
-  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
@@ -31,15 +31,18 @@ function ServiceApplication() {
     scSchemeDetailsId: "",
     scSubSchemeDetailsId: "",
     scHeadAccountId: "",
+    fruitsId: "",
     scCategoryId: "",
     scSubSchemeType: "",
     scVendorId: "",
     farmerId: "",
-    expectedAmount: "18000",
+    expectedAmount: "",
     financialYearMasterId: "",
     scComponentId: "",
     schemeAmount: "",
     sanctionNumber: "",
+    approvalStageId: "",
+    userMasterId: "",
     periodFrom: new Date("2023-04-01"),
     periodTo: new Date("2024-03-31"),
   });
@@ -183,27 +186,62 @@ function ServiceApplication() {
   //   });
   // };
 
-  const handleCheckboxChange = (landId, row) => {
-    console.log("hello row", row);
+  // const handleCheckboxChange = (landId, row) => {
+  //   console.log("hello row", row);
+  //   setLandDetailsIds((prevIds) => {
+  //     const isAlreadySelected = prevIds.includes(landId);
+  //     const newIds = isAlreadySelected
+  //       ? prevIds.filter((id) => id !== landId)
+  //       : [...prevIds, landId];
+
+  //     setDevelopedArea((prevData) => {
+  //       if (isAlreadySelected) {
+  //         const { [landId]: _, ...rest } = prevData;
+  //         return rest;
+  //       } else {
+  //         // If selected, add to developedArea
+  //         return {
+  //           ...prevData,
+  //           [landId]: {
+  //             devAcre: prevData[landId]?.devAcre || "0",
+  //             devGunta: prevData[landId]?.devGunta || "0",
+  //             devFGunta: prevData[landId]?.devFGunta || "0",
+  //             ...row,
+  //           },
+  //         };
+  //       }
+  //     });
+
+  //     return newIds;
+  //   });
+  // };
+
+  const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
+    console.log(selectedData);
     setLandDetailsIds((prevIds) => {
-      const isAlreadySelected = prevIds.includes(landId);
-      const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== landId)
-        : [...prevIds, landId];
+      const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+      // for single Select
+      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+      // For Multiple Select
+      // const newIds = isAlreadySelected
+      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+      //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
+        console.log("Need to check", prevData);
         if (isAlreadySelected) {
-          const { [landId]: _, ...rest } = prevData;
+          console.log("inside if");
+          const { [farmerLandDetailsId]: _, ...rest } = prevData;
           return rest;
         } else {
           // If selected, add to developedArea
           return {
-            ...prevData,
-            [landId]: {
-              devAcre: prevData[landId]?.devAcre || "0",
-              devGunta: prevData[landId]?.devGunta || "0",
-              devFGunta: prevData[landId]?.devFGunta || "0",
-              ...row,
+            // ...prevData,
+            [farmerLandDetailsId]: {
+              ...selectedData,
+              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+              devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
             },
           };
         }
@@ -217,17 +255,46 @@ function ServiceApplication() {
 
   // console.log(documentAttachments);
 
-  // Upload Image to S3 Bucket
+  // // Upload Image to S3 Bucket
+  // const handleAttachFileUpload = async (documentId) => {
+  //   // const parameters = `applicationFormId =${data.applicationId}`;
+  //   const param = {
+  //     applicationFormId: applicationId,
+  //     documentTypeId: documentId,
+  //   };
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("multipartFile", documentAttachments[documentId]);
+
+  //     const response = await api.post(
+  //       baseURLDBT + `service/uploadDocument`,
+  //       formData,
+  //       {
+  //         params: param,
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     console.log("File upload response:", response.data);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //   }
+  // };
+  const [uploadStatus, setUploadStatus] = useState({});
+
+  
+
   const handleAttachFileUpload = async (documentId) => {
-    // const parameters = `applicationFormId =${data.applicationId}`;
     const param = {
       applicationFormId: applicationId,
       documentTypeId: documentId,
     };
+  
     try {
       const formData = new FormData();
       formData.append("multipartFile", documentAttachments[documentId]);
-
+  
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
         formData,
@@ -238,16 +305,54 @@ function ServiceApplication() {
           },
         }
       );
+  
       console.log("File upload response:", response.data);
+  
+      // Show SweetAlert success message after successful upload
+      // SweetAlert success function
+  Swal.fire({
+    icon: "success",
+    title: "File uploaded successfully",
+  });
+  // setIsUploaded(true);
+  // Update the upload status for this specific document
+  setUploadStatus((prevStatus) => ({
+    ...prevStatus,
+    [documentId]: true, // Mark this document as uploaded
+  }));
+  // add acknowledgement API here
+  // Call the acknowledgment API after a successful response
+  // generateAcknowledgment(response.data.content.applicationDocumentId);
+
     } catch (error) {
       console.error("Error uploading file:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error uploading file. Please try again.",
+      });
     }
   };
 
+
   const [showModal, setShowModal] = useState(false);
+  const [pendingPostData, setPendingPostData] = useState(null);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  // const handleShowModal = (post) => {
+  //   setPendingPostData(post); // Store post data in state
+  //   setShowModal(true);
+  // };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  //   if (pendingPostData) {
+  //     // Save application if there is pending post data
+  //     saveApplication(pendingPostData);
+  //     setPendingPostData(null); // Clear pending data after saving
+  //   }
+  // };
 
   const [showModalBreakUp, setShowModalBreakUp] = useState(false);
 
@@ -520,19 +625,68 @@ function ServiceApplication() {
     getVendorList();
   }, []);
 
+   // to get User Master
+  const [userListData, setUserListData] = useState([]);
+
+  const getUserList = () => {
+    const response = api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster);
+      })
+      .catch((err) => {
+        setUserListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+   const [approvalListData, setApprovalListData] = useState([]);
+
+   const getApprovalList = () => {
+     const response = api
+       .get(baseURLMasterData + `scApprovalStage/get-all`)
+       .then((response) => {
+         setApprovalListData(response.data.content.scApprovalStage);
+       })
+       .catch((err) => {
+         setApprovalListData([]);
+       });
+   };
+ 
+   useEffect(() => {
+     getApprovalList();
+   }, []);
+
+
+
   // to get uploadable documents
   const [docListData, setDocListData] = useState([]);
 
   const getDocList = () => {
     api
-      .post(baseURLDBT + `service/getApplicableDocumentList`)
+      .get(baseURLMasterData + `documentMaster/get-all`)
       .then((response) => {
-        setDocListData(response.data.content);
+        setDocListData(response.data.content.documentMaster);
       })
       .catch((err) => {
         setDocListData([]);
       });
   };
+
+  // const getDocList = () => {
+  //   api
+  //     .post(baseURLDBT + `service/getApplicableDocumentList?subSchemeId=${data.scSubSchemeDetailsId}`)
+  //     .then((response) => {
+  //       setDocListData(response.data.content);
+  //     })
+  //     .catch((err) => {
+  //       setDocListData([]);
+  //     });
+  // };
+
 
   useEffect(() => {
     getDocList();
@@ -618,7 +772,10 @@ function ServiceApplication() {
     } else {
       event.preventDefault();
       const sendPost = {
+        approvalStageId: data.approvalStageId,
+        userMasterId: data.userMasterId,
         farmerId: data.farmerId,
+        fruitsId: data.fruitsId,
         payToVendor: equipment.payToVendor,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
@@ -751,21 +908,13 @@ function ServiceApplication() {
 
   console.log(amountValue);
 
-  const generateBiddingSlip = async (applicationId) => {
-    // const newDate = new Date();
-    // const formattedDate =
-    //   newDate.getFullYear() +
-    //   "-" +
-    //   (newDate.getMonth() + 1).toString().padStart(2, "0") +
-    //   "-" +
-    //   newDate.getDate().toString().padStart(2, "0");
-
+  const generateAcknowledgment = async (applicationFormId) => {
+  
     try {
       const response = await api.post(
-        // baseURLReport + `getBlankSample`,
-        `http://localhost:8006/reports/marketreport/getBlankSample`,
+        baseURLReport + `getBlankSample`,
         {
-          applicationFormId: applicationId,
+          applicationFormId: applicationFormId,
         },
         {
           responseType: "blob", //Force to receive data in a Blob Format
@@ -776,16 +925,7 @@ function ServiceApplication() {
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
 
-      // const file = new Blob([response.data], { type: "application/pdf" });
-      // const fileURL = URL.createObjectURL(file);
-      // const printWindow = window.open(fileURL);
-      // if (printWindow) {
-      //   printWindow.onload = () => {
-      //     printWindow.print();
-      //   };
-      // } else {
-      //   console.error("Failed to open the print window.");
-      // }
+     
     } catch (error) {
       // console.log("error", error);
     }
@@ -822,12 +962,15 @@ function ServiceApplication() {
       subinc: "subsidy",
       equordev: "land",
       scSchemeDetailsId: "",
+      fruitsId: "",
       scSubSchemeDetailsId: "",
       scHeadAccountId: "",
       scCategoryId: "",
       scComponentId: "",
       scVendorId: "",
       farmerId: "",
+      approvalStageId: "",
+      userMasterId: "",
       expectedAmount: "",
       financialYearMasterId: "",
       periodFrom: new Date("2023-04-01"),
@@ -855,10 +998,54 @@ function ServiceApplication() {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: `Receipt Number ${message}`,
+      // text: `Generated ARN Number is ${arnNumber}`,
     });
     clear();
   };
+
+  // const uploadFileConfirm = (post) => {
+  //   Swal.fire({
+  //     title: "Do you want to Upload the Documents?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "Later",
+  //   }).then((result) => {
+  //     if (result.value) {
+  //    // User clicked 'Yes', show document upload modal
+  //    handleShowModal(post);
+  //   } else {
+  //     // User clicked 'Later', directly save the application
+  //     saveApplication(post);
+  //   }
+  //   });
+  // };
+  
+
+  // const saveApplication = (post) => {
+  //   api
+  //     .post(baseURLDBT + `service/saveApplicationForm`, post)
+  //     .then((response) => {
+  //       if (response.data.errorCode === -1) {
+  //         saveError(response.data.message);
+  //       } else {
+  //                   // Show success message after saving
+  //          saveSuccess();
+  //         setApplicationId(response.data.content.applicationDocumentId);
+  //         setValidated(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (
+  //         err.response &&
+  //         err.response.data &&
+  //         err.response.data.validationErrors
+  //       ) {
+  //         saveError(err.response.data.validationErrors);
+  //       }
+  //     });
+  // };
+  
 
   const uploadFileConfirm = (post) => {
     Swal.fire({
@@ -869,7 +1056,7 @@ function ServiceApplication() {
       confirmButtonText: "Yes",
       cancelButtonText: "Later",
     }).then((result) => {
-      if (result.value) {
+      if (result.value) { 
         api
           .post(baseURLDBT + `service/saveApplicationForm`, post)
           .then((response) => {
@@ -880,20 +1067,6 @@ function ServiceApplication() {
               setApplicationId(response.data.content.applicationDocumentId);
               handleShowModal();
 
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
               setValidated(false);
             }
           })
@@ -921,23 +1094,13 @@ function ServiceApplication() {
             } else {
               saveSuccess();
               setApplicationId(response.data.content.applicationDocumentId);
+              // add acknowledgement API here
+
+        // Call the acknowledgment API after a successful response
+            generateAcknowledgment(response.data.content.applicationDocumentId);
+
               // generateBiddingSlip(response.data.content.applicationDocumentId);
               // handleShowModal();
-
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
               setValidated(false);
             }
           })
@@ -994,6 +1157,8 @@ function ServiceApplication() {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  const [disable, setDisable] = useState(false);
+
   const search = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -1004,88 +1169,96 @@ function ServiceApplication() {
       event.preventDefault();
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
-      }
-      api
-        .post(baseURLRegistration + `farmer/get-farmer-details`, {
-          fruitsId: data.fruitsId,
-        })
-        .then((response) => {
-          console.log(response);
-          if (!response.data.content.error) {
-            if (response.data.content.farmerResponse) {
-              setData((prev) => ({
-                ...prev,
-                farmerId: response.data.content.farmerResponse.farmerId,
-              }));
-              setFarmerDetails((prev) => ({
-                ...prev,
-                farmerName: response.data.content.farmerResponse.firstName,
-                hobli:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].hobliName
-                    : "",
-                village:
-                  response.data.content.farmerAddressDTOList &&
-                  response.data.content.farmerAddressDTOList.length > 0
-                    ? response.data.content.farmerAddressDTOList[0].villageName
-                    : "",
-              }));
-              setShowFarmerDetails(true);
-            }
-            // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-            //   setLandDetailsList(
-            //     response.data.content.farmerLandDetailsDTOList
-            //   );
-            // }
-
-            api
-              .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-                fruitsId: data.fruitsId,
-              })
-              .then((response) => {
-                console.log(
-                  "landdetails",
-                  response.data.content.farmerLandDetailsDTOList
-                );
-                if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-                  setLandDetailsList(
-                    response.data.content.farmerLandDetailsDTOList
-                  );
-                }
-              })
-              .catch((err) => {
-                setLandDetailsList([]);
-              });
-
-            if (
-              response.data.content.farmerAddressDTOList &&
-              response.data.content.farmerAddressDTOList.length > 0
-            ) {
-              setLandData((prev) => ({
-                ...prev,
-                talukId:
-                  response.data.content.farmerAddressDTOList[0].talukId || 0,
-              }));
-            }
-          } else {
-            saveError(response.data.content.error_description);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
+      } else {
+      setDisable(true);
     }
-  };
+      // api
+      //   .post(baseURLRegistration + `farmer/get-farmer-details`, {
+      //     fruitsId: data.fruitsId,
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //     if (!response.data.content.error) {
+      //       if (response.data.content.farmerResponse) {
+      //         setData((prev) => ({
+      //           ...prev,
+      //           farmerId: response.data.content.farmerResponse.farmerId,
+      //         }));
+      //         setFarmerDetails((prev) => ({
+      //           ...prev,
+      //           farmerName: response.data.content.farmerResponse.firstName,
+      //           hobli:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].hobliName
+      //               : "",
+      //           village:
+      //             response.data.content.farmerAddressDTOList &&
+      //             response.data.content.farmerAddressDTOList.length > 0
+      //               ? response.data.content.farmerAddressDTOList[0].villageName
+      //               : "",
+      //         }));
+      //         setShowFarmerDetails(true);
+      //       }
+      //       // if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+      //       //   setLandDetailsList(
+      //       //     response.data.content.farmerLandDetailsDTOList
+      //       //   );
+      //       // }
+
+      api
+      .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+        fruitsId: data.fruitsId,
+      })
+      .then((response) => {
+        if (response.data.content.farmerResponse) {
+          setData((prev) => ({
+            ...prev,
+            farmerId: response.data.content.farmerResponse.farmerId,
+          }));
+          setFarmerDetails((prev) => ({
+            ...prev,
+            farmerName: response.data.content.farmerResponse.firstName,
+            // districtName:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].districtName
+            //     : "",
+            // talukName:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].talukName
+            //     : "",
+            // hobli:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].hobliName
+            //     : "",
+            // village:
+            //   response.data.content.farmerAddressDTOList &&
+            //   response.data.content.farmerAddressDTOList.length > 0
+            //     ? response.data.content.farmerAddressDTOList[0].villageName
+            //     : "",
+          }));
+          if (response.data.content.farmerAddressDTOList.length > 0) {
+            setFarmerDetails((prev) => ({
+              ...prev,
+              address:
+                response.data.content.farmerAddressDTOList[0].addressText,
+            }));
+          }
+          setShowFarmerDetails(true);
+        }
+        console.log("landdetails", response.data);
+        if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+        }
+      })
+      .catch((err) => {
+        setLandDetailsList([]);
+      });
+  }
+};
 
   const LandDetailsColumns = [
     {
@@ -1327,7 +1500,7 @@ function ServiceApplication() {
       //     placeholder="Edit FGunta"
       //   />
       // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1483,6 +1656,11 @@ function ServiceApplication() {
                         Search
                       </Button>
                     </Col>
+                    {/* <Col sm={2}>
+                      <Button type="submit" variant="primary" onClick={clear}>
+                        Clear
+                      </Button>
+                    </Col> */}
                   </Form.Group>
                 </Col>
               </Row>
@@ -1496,12 +1674,10 @@ function ServiceApplication() {
                     <table className="table small table-bordered">
                       <tbody>
                         <tr>
-                          <td style={styles.ctstyle}> Farmer Name:</td>
+                        <td style={styles.ctstyle}> Farmer Name:</td>
                           <td>{farmerDetails.farmerName}</td>
-                          <td style={styles.ctstyle}> Hobli :</td>
-                          <td>{farmerDetails.hobli}</td>
-                          <td style={styles.ctstyle}> Village:</td>
-                          <td>{farmerDetails.village}</td>
+                          <td style={styles.ctstyle}> Addres:</td>
+                          <td>{farmerDetails.address}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -1924,6 +2100,80 @@ function ServiceApplication() {
                           </Form.Group>
                         </Col>
 
+                        <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        Approval Stage
+                        {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="approvalStageId"
+                            value={data.approvalStageId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                            isInvalid={
+                              data.approvalStageId === undefined ||
+                              data.approvalStageId === "0"
+                            }
+                          >
+                            <option value="">Select Approval Stage</option>
+                            {approvalListData.map((list) => (
+                              <option
+                                key={list.scApprovalStageId}
+                                value={list.scApprovalStageId}
+                              >
+                                {list.stageName}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                       User Master
+                       {/* <span className="text-danger">*</span> */}
+                      </Form.Label>
+                      <Col>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="userMasterId"
+                            value={data.userMasterId}
+                            onChange={handleInputs}
+                            onBlur={() => handleInputs}
+                            // required
+                            isInvalid={
+                              data.userMasterId === undefined ||
+                              data.userMasterId === "0"
+                            }
+                          >
+                            <option value="">Select User</option>
+                            {userListData.map((list) => (
+                              <option
+                                key={list.userMasterId}
+                                value={list.userMasterId}
+                              >
+                                {list.username}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            Approval Stage Name is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Col>
+                    </Form.Group>
+                  </Col>
+
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="schemeAmount">
@@ -2250,7 +2500,7 @@ function ServiceApplication() {
                             </Col>
                           )}
                         </Row>
-                        <Row className="mt-1">
+                        {/* <Row className="mt-1">
                           <Col>
                             <Button
                               type="button"
@@ -2261,7 +2511,7 @@ function ServiceApplication() {
                               Show Break up
                             </Button>
                           </Col>
-                        </Row>
+                        </Row> */}
                       </Card.Body>
                     </Card>
                   </Block>
@@ -2374,7 +2624,7 @@ function ServiceApplication() {
                         </Card.Body>
                       </Card>
                     </Block>
-                  ) : (
+                  ) : data.equordev === "equipment" ? (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -2493,7 +2743,7 @@ function ServiceApplication() {
                                 </div>
                               </Form.Group>
                             </Col>
-                            <Col lg="4">
+                            {/* <Col lg="4">
                               <Form.Group as={Row} className="form-group mt-4">
                                 <Col sm={1}>
                                   <Form.Check
@@ -2509,13 +2759,14 @@ function ServiceApplication() {
                                   Pay to Vendor
                                 </Form.Label>
                               </Form.Group>
-                            </Col>
+                            </Col> */}
                           </Row>
                         </Card.Body>
                       </Card>
                     </Block>
+                  ) : null}
                   )}
-                </>
+                </> 
               ) : (
                 ""
               )}
@@ -2544,13 +2795,13 @@ function ServiceApplication() {
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {docListData.map(({ documentId, documentName }) => (
-            <div key={documentId}>
+          {docListData.map(({ documentMasterId, documentMasterName }) => (
+            <div key={documentMasterId}>
               <Row className="d-flex justify-content-center align-items-center">
                 <Col lg="2">
                   <Form.Group className="form-group mt-1">
                     <Form.Label htmlFor="trUploadPath">
-                      {documentName}
+                      {documentMasterName}
                     </Form.Label>
                   </Form.Group>
                 </Col>
@@ -2560,10 +2811,10 @@ function ServiceApplication() {
                     <div className="form-control-wrap">
                       <Form.Control
                         type="file"
-                        id={`attImage${documentId}`}
+                        id={`attImage${documentMasterId}`}
                         // name="hdAttachFiles"
                         // value={data.photoPath}
-                        onChange={(e) => handleAttachFileChange(e, documentId)}
+                        onChange={(e) => handleAttachFileChange(e, documentMasterId)}
                       />
                     </div>
                   </Form.Group>
@@ -2571,12 +2822,12 @@ function ServiceApplication() {
 
                 <Col lg="4" style={{ position: "relative" }}>
                   <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                    {documentAttachments[documentId] && (
+                    {documentAttachments[documentMasterId] && (
                       <div style={{ position: "relative" }}>
                         <img
                           style={{ height: "150px", width: "150px" }}
                           src={URL.createObjectURL(
-                            documentAttachments[documentId]
+                            documentAttachments[documentMasterId]
                           )}
                         />
                         <button
@@ -2590,7 +2841,7 @@ function ServiceApplication() {
                             fontSize: "24px",
                             cursor: "pointer",
                           }}
-                          onClick={() => handleRemoveImage(documentId)}
+                          onClick={() => handleRemoveImage(documentMasterId)}
                         >
                           &times;
                         </button>
@@ -2598,15 +2849,33 @@ function ServiceApplication() {
                     )}
                   </Form.Group>
                 </Col>
-                <Col lg="2">
+                {/* <Col lg="2">
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={() => handleAttachFileUpload(documentId)}
+                    onClick={() => handleAttachFileUpload(documentMasterId)}
                   >
                     Upload
                   </Button>
-                </Col>
+                </Col> */}
+                <Col lg="2">
+                {/* <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => handleAttachFileUpload(documentMasterId)}
+                  disabled={isUploaded} // Disable button after upload
+                >
+                  {isUploaded ? "Uploaded" : "Upload"}
+                </Button> */}
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(documentMasterId)}
+                disabled={uploadStatus[documentMasterId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"} {/* Change text based on individual document status */}
+              </Button>
+              </Col>
               </Row>
             </div>
           ))}
