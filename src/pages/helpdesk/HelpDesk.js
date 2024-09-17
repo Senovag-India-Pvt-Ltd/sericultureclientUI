@@ -324,12 +324,25 @@ function HelpDesk() {
   const [attachFiles, setAttachFiles] = useState("");
   // const [photoFile,setPhotoFile] = useState("")
 
+  // const handleAttachFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setAttachFiles(file);
+  //   setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
+  //   // setPhotoFile(file);
+  // };
+
   const handleAttachFileChange = (e) => {
     const file = e.target.files[0];
-    setAttachFiles(file);
-    setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
-    // setPhotoFile(file);
+    if (file) {
+      setAttachFiles(file);
+      setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
+    } else {
+      // Handle the case when the file selection is canceled
+      setAttachFiles(null);
+      setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+    }
   };
+  
 
   // Upload Image to S3 Bucket
   const handleAttachFileUpload = async (hdTicketid) => {
@@ -702,7 +715,7 @@ function HelpDesk() {
                     </Form.Group>
                   </Col> */}
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="trUploadPath">
                         Attach Files
@@ -728,7 +741,68 @@ function HelpDesk() {
                         ""
                       )}
                     </Form.Group>
-                  </Col>
+                  </Col> */}
+
+<Col lg="4">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="trUploadPath">
+      Attach Files
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        type="file"
+        id="hdAttachFiles"
+        name="hdAttachFiles"
+        onChange={handleAttachFileChange} // File input handler remains the same
+      />
+    </div>
+  </Form.Group>
+
+  {/* Show preview and download option for the uploaded file */}
+  <Form.Group className="form-group mt-3 d-flex flex-column align-items-center">
+    {attachFiles && attachFiles.name ? (
+      <>
+        {attachFiles.type.startsWith('image/') || 
+          attachFiles.name.endsWith('.jpeg') || 
+          attachFiles.name.endsWith('.jpg') || 
+          attachFiles.name.endsWith('.png') ? ( // Check if the uploaded file is an image
+          <img
+            style={{ height: "300px", width: "auto", objectFit: "cover" }} // Larger size for image preview
+            src={URL.createObjectURL(attachFiles)}
+            alt="Uploaded Image"
+          />
+        ) : attachFiles.type === 'application/pdf' ? ( // Check if the uploaded file is a PDF
+          <embed
+            src={URL.createObjectURL(attachFiles)}
+            type="application/pdf"
+            width="300px" // Larger size for PDF preview
+            height="300px"
+          />
+        ) : attachFiles.name.endsWith('.docx') ? ( // Handle `.docx` files
+          <p>Preview not available for .docx files. File name: {attachFiles.name}</p>
+        ) : (
+          <p>Preview not available for this file type: {attachFiles.name}</p> // Fallback for unsupported file types
+        )}
+
+        {/* Download link for all file types */}
+        <a
+          href={URL.createObjectURL(attachFiles)}
+          download={attachFiles.name}
+          className="btn btn-primary mt-3"
+        >
+          Download {attachFiles.name}
+        </a>
+      </>
+    ) : (
+      <p>No file selected or file was canceled.</p>
+    )}
+  </Form.Group>
+</Col>
+
+
+
+
+
 
                   <div className="gap-col">
                     <ul className="d-flex align-items-start justify-content-start gap g-3">
