@@ -16,7 +16,8 @@ import api from "../../../../src/services/auth/api";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
-const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
+const baseURLFarmerServer =
+  process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function ServiceApplicationEdit() {
@@ -90,11 +91,92 @@ function ServiceApplicationEdit() {
     // setPhotoFile(file);
   };
 
+     
+    
+      const handleEditDocument = async (documentPath) => {
+        await getDocumentFile(documentPath);
+        handleShowModal();
+      };
+
+      const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
+
+      const handleDocumentClick = async (documentPath) => {
+        setCurrentDocumentPath(documentPath);
+        await getDocumentFile(documentPath);
+      };
+      
+        // To get Photo from S3 Bucket
+        const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
+      
+        const getDocumentFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.get(
+              baseURLDBT + `service/downLoadFile?${parameters}`,
+              {
+                responseType: "arraybuffer",
+              }
+            );
+            const blob = new Blob([response.data]);
+            const url = URL.createObjectURL(blob);
+            setSelectedDocumentFile(url);
+          } catch (error) {
+            console.error("Error fetching file:", error);
+          }
+        };
+
+        const downloadFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.get(
+              baseURLDBT + `service/downLoadFile?${parameters}`,
+              {
+                responseType: "arraybuffer",
+              }
+            );
+            const blob = new Blob([response.data]);
+            const url = URL.createObjectURL(blob);
+      
+            const fileExtension = file.split(".").pop();
+      
+            const link = document.createElement("a");
+            link.href = url;
+      
+            const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+      
+            link.download = modifiedFileName;
+      
+            document.body.appendChild(link);
+            link.click();
+      
+            document.body.removeChild(link);
+          } catch (error) {
+            console.error("Error fetching file:", error);
+          }
+        };
+
+        const deleteFile = async (file) => {
+          const parameters = `fileName=${file}`;
+          try {
+            const response = await api.delete(
+              baseURLDBT + `service/delete?${parameters}`
+            );
+            if (response.status === 200) {
+              console.log("File deleted successfully");
+              // Optionally, you can refresh the file list or update the UI
+            }
+          } catch (error) {
+            console.error("Error deleting file:", error);
+          }
+        };
+        
+
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
     hobli: "",
     village: "",
     talukName: "",
+    fid: "",
   });
 
   const [farmerId, setFarmerId] = useState(0);
@@ -104,9 +186,7 @@ function ServiceApplicationEdit() {
     const response = api
       .get(baseURLDBT + `service/get-join/${id}`)
       .then((response) => {
-        // setData(response.data.content);
         const datas = response.data.content;
-        // console.log("hellohello", response.data.content);
         setData((prev) => ({
           ...prev,
           scSchemeDetailsId: datas.schemeId,
@@ -114,26 +194,26 @@ function ServiceApplicationEdit() {
           scComponentId: datas.componentId,
           scCategoryId: datas.categoryId,
           scHeadAccountId: datas.headOfAccountId,
-          // financialYearMasterId: datas.financialYearMasterId,
-          // schemeAmount: datas.schemeAmount,
-          // sanctionNumber: datas.sanctionNo,
+          financialYearMasterId: datas.financialYearMasterId,
+          schemeAmount: datas.schemeAmount,
+          sanctionNumber: datas.sanctionNo,
           scSubSchemeType: datas.componentType,
-        //   periodFrom: datas.periodFrom,
-        //   periodTo: datas.periodTo,
-          // scSubSchemeType:datas.  Need to get from api
+          periodFrom: new Date("2023-04-01"),
+          periodTo: new Date("2024-03-31"),
         }));
 
         setFarmerId(datas.farmerId);
 
         api
           .get(
-            baseURLFarmer +
+            baseURLRegistration +
               `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
           )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
             } else {
+              // console.log("Fruits ID",response.data.content.fruitsId);
               setFarmerDetails((prev) => ({
                 ...prev,
                 village:
@@ -147,20 +227,14 @@ function ServiceApplicationEdit() {
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
 
         api
-          .get(baseURLFarmer + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+          .get(
+            baseURLRegistration +
+              `farmer/get-by-farmer-id-join/${datas.farmerId}`
+          )
           .then((response) => {
             if (response.data.errorCode === -1) {
               saveError(response.data.message);
@@ -168,36 +242,86 @@ function ServiceApplicationEdit() {
               setFarmerDetails((prev) => ({
                 ...prev,
                 farmerName: response.data.content.firstName,
+                fid: response.data.content.fruitsId,
               }));
               setValidated(false);
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
+            handleError(err);
           });
 
-        setLoading(false);
-      })
+        api
+          .get(
+            baseURLDBT +
+              `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
+          )
+          .then((response) => {
+            if (response.data.errorCode === -1) {
+              saveError(response.data.message);
+            } else {
+              const landDetails =
+                response.data.content.dbtFarmerLandDetails || [];
+              console.log("Fetched land details:", landDetails);
+              setSavedLandDetailsList(landDetails);
+            }
+            setLoading(false);
+          })
+          .catch((err) => {
+            handleError(err);
+            setLoading(false);
+          });
+
+       // Call handleView with applicationFormId
+      handleView(id); // Ensure applicationFormId exists in datas
+      
+      setLoading(false);
+    })
       .catch((err) => {
         const message = err.response.data.errorMessages[0].message[0].message;
         setData({});
-        // editError(message);
         setLoading(false);
-      });
+      }); 
   };
 
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  const getDirectData = () => {
+    api
+      .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+        fruitsId: farmerDetails.fid,
+      })
+      .then((response) => {
+        console.log("landdetails", response.data);
+        if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+        }
+      })
+      .catch((err) => {
+        setLandDetailsList([]);
+      });
+  };
+
+  useEffect(() => {
+    getDirectData();
+  }, [farmerDetails.fid]);
+
+  const handleError = (err) => {
+    if (
+      err.response &&
+      err.response.data &&
+      err.response.data.validationErrors
+    ) {
+      if (Object.keys(err.response.data.validationErrors).length > 0) {
+        saveError(err.response.data.validationErrors);
+      }
+    }
+  };
+
+  const [savedLandDetailsList, setSavedLandDetailsList] = useState([]);
+ 
 
   console.log("changes", data);
 
@@ -211,17 +335,16 @@ function ServiceApplicationEdit() {
 
   // console.log(documentAttachments);
 
-  // Upload Image to S3 Bucket
   const handleAttachFileUpload = async (documentId) => {
-    // const parameters = `applicationFormId =${data.applicationId}`;
     const param = {
-      applicationFormId: applicationId,
+      applicationFormId: id,
       documentTypeId: documentId,
     };
+  
     try {
       const formData = new FormData();
       formData.append("multipartFile", documentAttachments[documentId]);
-
+  
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
         formData,
@@ -232,15 +355,42 @@ function ServiceApplicationEdit() {
           },
         }
       );
+  
       console.log("File upload response:", response.data);
+  
+     
+  Swal.fire({
+    icon: "success",
+    title: "File uploaded successfully",
+  });
+ 
+  setUploadStatus((prevStatus) => ({
+    ...prevStatus,
+    [documentId]: true, // Mark this document as uploaded
+  }));
     } catch (error) {
       console.error("Error uploading file:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error uploading file. Please try again.",
+      });
     }
   };
+const[applicationFormId ,setApplicationFormId] = useState ("");
 
   const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = (applicationFormId) => {
+    // Check if the applicationFormId is valid
+    if (applicationFormId) {
+      setApplicationId(applicationFormId);  // Set applicationId if passed from the button click
+    }
+    setShowModal(true);  // Open the modal
+  };
+  
+  
+  
+  // const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   const handleCheckBox = (e) => {
@@ -264,12 +414,43 @@ function ServiceApplicationEdit() {
 
   const [developedArea, setDevelopedArea] = useState([]);
 
-  const handleCheckboxChange = (farmerLandDetailsId) => {
+  // const handleCheckboxChange = (farmerLandDetailsId) => {
+  //   setLandDetailsIds((prevIds) => {
+  //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
+  //     const newIds = isAlreadySelected
+  //       ? prevIds.filter((id) => id !== farmerLandDetailsId)
+  //       : [...prevIds, farmerLandDetailsId];
+
+  //     setDevelopedArea((prevData) => {
+  //       if (isAlreadySelected) {
+  //         const { [farmerLandDetailsId]: _, ...rest } = prevData;
+  //         return rest;
+  //       } else {
+  //         // If selected, add to developedArea
+  //         return {
+  //           ...prevData,
+  //           [farmerLandDetailsId]: {
+  //             acre: prevData[farmerLandDetailsId]?.acre || "0",
+  //             gunta: prevData[farmerLandDetailsId]?.gunta || "0",
+  //             fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+  //           },
+  //         };
+  //       }
+  //     });
+
+  //     return newIds;
+  //   });
+  // };
+
+  const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-      const newIds = isAlreadySelected
-        ? prevIds.filter((id) => id !== farmerLandDetailsId)
-        : [...prevIds, farmerLandDetailsId];
+      // For Single Select
+      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
+      // For Multiple Select
+      // const newIds = isAlreadySelected
+      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
+      //   : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
@@ -278,11 +459,12 @@ function ServiceApplicationEdit() {
         } else {
           // If selected, add to developedArea
           return {
-            ...prevData,
+            // ...prevData,
             [farmerLandDetailsId]: {
-              acre: prevData[farmerLandDetailsId]?.acre || "0",
-              gunta: prevData[farmerLandDetailsId]?.gunta || "0",
-              fgunta: prevData[farmerLandDetailsId]?.fgunta || "0",
+              ...selectedData,
+              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+              devGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
+              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
             },
           };
         }
@@ -373,6 +555,36 @@ function ServiceApplicationEdit() {
   //   getSubSchemeList();
   // }, []);
 
+  const [viewDetailsData, setViewDetailsData] = useState({
+    // applicationDetails: [],
+    // landDetails: [],
+    // applicationTransactionDetails: [],
+    documentsResponses: [],
+  });
+
+  const handleView = (_id) => {
+    api
+      .post(baseURLDBT + `service/viewServiceApplicationDetails`, {
+        applicationFormId: _id,
+      })
+      .then((response) => {
+        const content = response.data.content[0];
+        
+        // if (content.applicationDetailsResponses.length <= 0) {
+        //   saveError("No Details Found!!!");
+        // } else {
+          // Update state with document responses and other details if needed
+          setViewDetailsData(content.documentsResponses);
+          
+          // Fetch the ID list based on applicationFormId
+          // getIdList(_id);
+        // }
+      })
+      .catch((err) => {
+        // Handle error if needed
+      });
+  };
+  
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
@@ -649,6 +861,11 @@ function ServiceApplicationEdit() {
   };
 
   const postData = (event) => {
+    const transformedData = Object.keys(developedArea).map((id) => ({
+      // landDeveloped: developedLand.landDeveloped,
+      // landDetailId: parseInt(id),
+      ...developedArea[id],
+    }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -672,21 +889,26 @@ function ServiceApplicationEdit() {
         fgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
         componentId: data.scComponentId,
-        landDetailId: landData.landId,
+        landDetailId: landDetailsIds[0],
         talukId: landData.talukId,
         newFarmer: true,
         expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
+        devAcre: 0,
+        devGunta: 0,
+        devFGunta: 0,
       };
 
-      if (data.equordev === "land") { sendPost.dbtFarmerLandDetailsRequestList = [
-          {
-            unitTypeMasterId: developedLand.unitType,
-            landDeveloped: developedLand.landDeveloped,
-          },
-        ];
+      if (data.equordev === "land") {
+        // sendPost.applicationFormLandDetailRequestList = [
+        //   {
+        //     unitTypeMasterId: developedLand.unitType,
+        //     landDeveloped: developedLand.landDeveloped,
+        //   },
+        // ];
+        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
       } else if (data.equordev === "equipment") {
         sendPost.applicationFormLineItemRequestList = [
           {
@@ -710,6 +932,7 @@ function ServiceApplicationEdit() {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
+            
             getIdList();
             setValidated(false);
           }
@@ -755,28 +978,71 @@ function ServiceApplicationEdit() {
     },
   };
 
+  // const clear = () => {
+  //   setData({
+  //   with: "withLand",
+  //   subinc: "subsidy",
+  //   equordev: "land",
+  //   scSchemeDetailsId: "",
+  //   scSubSchemeDetailsId: "",
+  //   scHeadAccountId: "",
+  //   scCategoryId: "",
+  //   scSubSchemeType: "",
+  //   scVendorId: "",
+  //   farmerId: "",
+  //   expectedAmount: "",
+  //   financialYearMasterId: "",
+  //   scComponentId: "",
+  //   schemeAmount: "",
+  //   sanctionNumber: "",
+  //   });
+  //   setDevelopedLand({
+  //     landDeveloped: "",
+  //     unitType: "",
+  //   });
+  //   setEquipment({
+  //     unitType: "",
+  //     description: "",
+  //     price: "",
+  //     vendorId: "",
+  //     payToVendor: false,
+  //   });
+  //   setDocumentAttachments({});
+  //   setSavedLandDetailsList([]);
+  //   setLandDetailsList([]);
+  //   setDevelopedArea([]);
+  //   setLandDetailsIds([]);
+  //   getIdList();
+  //   getDirectData();
+  // };
+
   const clear = () => {
+    // Resetting all data and states
     setData({
-    with: "withLand",
-    subinc: "subsidy",
-    equordev: "land",
-    scSchemeDetailsId: "",
-    scSubSchemeDetailsId: "",
-    scHeadAccountId: "",
-    scCategoryId: "",
-    scSubSchemeType: "",
-    scVendorId: "",
-    farmerId: "",
-    expectedAmount: "",
-    financialYearMasterId: "",
-    scComponentId: "",
-    schemeAmount: "",
-    sanctionNumber: "",
+      with: "withLand",
+      subinc: "subsidy",
+      equordev: "land",
+      scSchemeDetailsId: "",
+      scSubSchemeDetailsId: "",
+      scHeadAccountId: "",
+      scCategoryId: "",
+      scSubSchemeType: "",
+      scVendorId: "",
+      farmerId: "",
+      expectedAmount: "",
+      financialYearMasterId: "",
+      scComponentId: "",
+      schemeAmount: "",
+      sanctionNumber: "",
     });
+  
+    // Clear developed land details
     setDevelopedLand({
       landDeveloped: "",
       unitType: "",
     });
+  
+    // Clear equipment-related fields
     setEquipment({
       unitType: "",
       description: "",
@@ -784,16 +1050,50 @@ function ServiceApplicationEdit() {
       vendorId: "",
       payToVendor: false,
     });
+  
+    // Clear document attachments
     setDocumentAttachments({});
+  
+    // Clear saved and editable land details
+    setSavedLandDetailsList([]);
+    setLandDetailsList([]);
+  
+    // Clear developed area data
+    setDevelopedArea([]);
+  
+    // Clear land detail IDs
+    setLandDetailsIds([]);
+  
+    // Fetch new IDs and other related data again after clearing
+    getIdList();
+    getDirectData();
   };
+  
 
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: "Updated Successfully",
       //   text: `Receipt Number ${message}`,
     });
+    clear();
   };
+
+  const [uploadStatus, setUploadStatus] = useState({});
+
+  const handleApiResponse = (response) => {
+    const newApplicationId = response.data.content.applicationDocumentId;
+    setApplicationId(newApplicationId);
+};
+
+// useEffect(() => {
+//   // Assuming you have a function fetchData that makes the API call
+//   postData().then(response => {
+//       handleApiResponse(response);
+//   }).catch(error => {
+//       console.error("Error fetching data:", error);
+//   });
+// }, []);
 
   const [applicationId, setApplicationId] = useState("");
 
@@ -992,9 +1292,13 @@ function ServiceApplicationEdit() {
     }
   };
 
-  const handleInlineDevelopedLandChange = (e, row) => {
+  // const handleInlineDevelopedLandChange = (e, row) => {
+  //   const { name, value } = e.target;
+  //   const farmerLandDetailsId = row.farmerLandDetailsId;
+
+  const handleInlineDevelopedLandChange = (e, row,i) => {
     const { name, value } = e.target;
-    const farmerLandDetailsId = row.farmerLandDetailsId;
+    const farmerLandDetailsId =i;
 
     setDevelopedArea((prevData) => ({
       ...prevData,
@@ -1007,15 +1311,25 @@ function ServiceApplicationEdit() {
 
   const LandDetailsForDevColumns = [
     {
+      // name: "Select",
+      // selector: "select",
+      // cell: (row) => (
+      //   <input
+      //     type="checkbox"
+      //     name="selectedLand"
+      //     value={row.farmerLandDetailsId}
+      //     checked={landDetailsIds.includes(row.farmerLandDetailsId)}
+      //     onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+      //   />
       name: "Select",
       selector: "select",
-      cell: (row) => (
+      cell: (row, i) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={row.farmerLandDetailsId}
-          checked={landDetailsIds.includes(row.farmerLandDetailsId)}
-          onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
+          value={i}
+          checked={landDetailsIds.includes(i)}
+          onChange={() => handleCheckboxChange(i, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1117,61 +1431,98 @@ function ServiceApplicationEdit() {
       hide: "md",
     },
 
-    {
-      name: "Developed Area (Acre/Gunta/FGunta)",
-      // selector: (row) => row.acre,
-      cell: (row) => (
-        <>
-          <Form.Control
-            name="acre"
-            type="text"
-            value={developedArea[row.farmerLandDetailsId]?.acre || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
-            placeholder="Acre"
-            className="m-1"
-          />
-          <Form.Control
-            name="gunta"
-            type="text"
-            value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
-            placeholder="Gunta"
-            className="m-1"
-          />
-          <Form.Control
-            name="fgunta"
-            type="text"
-            value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
-            onChange={(e) => handleInlineDevelopedLandChange(e, row)}
-            placeholder="FGunta"
-            className="m-1"
-          />
-        </>
-      ),
-      // cell: (row) => <span>{row.acre}</span>,
-      sortable: true,
-      hide: "md",
-      grow: 3,
-    },
-  ];
+  //   {
+  //     name: "Developed Area (Acre/Gunta/FGunta)",
+  //     // selector: (row) => row.acre,
+  //     cell: (row) => (
+  //       <>
+  //         <Form.Control
+  //           name="acre"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.acre || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="Acre"
+  //           className="m-1"
+  //         />
+  //         <Form.Control
+  //           name="gunta"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.gunta || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="Gunta"
+  //           className="m-1"
+  //         />
+  //         <Form.Control
+  //           name="fgunta"
+  //           type="text"
+  //           value={developedArea[row.farmerLandDetailsId]?.fgunta || ""}
+  //           onChange={(e) => handleInlineDevelopedLandChange(e, row)}
+  //           placeholder="FGunta"
+  //           className="m-1"
+  //         />
+  //       </>
+  //     ),
+  //     // cell: (row) => <span>{row.acre}</span>,
+  //     sortable: true,
+  //     hide: "md",
+  //     grow: 3,
+  //   },
+  // ];
+  {
+    name: "Developed Area (Acre/Gunta/FGunta)",
+    // selector: (row) => row.acre,
+    cell: (row, i) => (
+      <>
+        <Form.Control
+          name="devAcre"
+          type="text"
+          value={developedArea[i]?.devAcre || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="Acre"
+          className="m-1"
+        />
+        <Form.Control
+          name="devGunta"
+          type="text"
+          value={developedArea[i]?.devGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="Gunta"
+          className="m-1"
+        />
+        <Form.Control
+          name="devFGunta"
+          type="text"
+          value={developedArea[i]?.devFGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          placeholder="FGunta"
+          className="m-1"
+        />
+      </>
+    ),
+    // cell: (row) => <span>{row.acre}</span>,
+    sortable: true,
+    hide: "md",
+    grow: 3,
+  },
+];
 
   const LandDetailsColumns = [
-    {
-      name: "Select",
-      selector: "select",
-      cell: (row) => (
-        <input
-          type="radio"
-          name="selectedLand"
-          value={row.farmerLandDetailsId}
-          // checked={selectedLandId === row.id}
-          onChange={() => handleRadioChange(row.farmerLandDetailsId)}
-        />
-      ),
-      // ignoreRowClick: true,
-      // allowOverflow: true,
-      button: true,
-    },
+    // {
+    //   name: "Select",
+    //   selector: "select",
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name="selectedLand"
+    //       value={row.farmerLandDetailsId}
+    //       // checked={selectedLandId === row.id}
+    //       onChange={() => handleRadioChange(row.farmerLandDetailsId)}
+    //     />
+    //   ),
+    //   // ignoreRowClick: true,
+    //   // allowOverflow: true,
+    //   button: true,
+    // },
     {
       name: "District",
       selector: (row) => row.districtName,  
@@ -1262,10 +1613,63 @@ function ServiceApplicationEdit() {
       //     placeholder="Edit FGunta"
       //   />
       // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },
+
+    {
+      name: "DevAcre",
+      selector: (row) => row.devAcre,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.acre}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Acre"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devAcre}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DevGunta",
+      selector: (row) => row.devGunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.gunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit Gunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devGunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DevFGunta",
+      selector: (row) => row.devFGunta,
+      // cell: (row) => (
+      //   <Form.Control
+      //     // id="farmerName"
+      //     // name="farmerName"
+      //     type="text"
+      //     value={row.fgunta}
+      //     // onChange={handleInputs}
+      //     placeholder="Edit FGunta"
+      //   />
+      // ),
+      cell: (row) => <span>{row.devFGunta}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    
     // {
     //   name: "Action",
     //   cell: (row) => (
@@ -1286,6 +1690,138 @@ function ServiceApplicationEdit() {
     //   hide: "md",
     // },
   ];
+
+   // to get uploadable documents
+   const [docListData, setDocListData] = useState([]);
+
+   const getDocList = () => {
+     api
+       .get(baseURLMasterData + `documentMaster/get-all`)
+       .then((response) => {
+         setDocListData(response.data.content.documentMaster);
+       })
+       .catch((err) => {
+         setDocListData([]);
+       });
+   };
+
+   useEffect(() => {
+    getDocList();
+  }, []);
+
+  const deleteError = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete attempt was not successful",
+      text: "Something went wrong!",
+    });
+  };
+
+  const deleteConfirm = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "It will delete permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        const response = api
+          .delete(baseURLDBT + `service/delete/${id}`)
+          .then((response) => {
+            // deleteConfirm(_id);
+            handleView();
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
+          })
+          .catch((err) => {
+            deleteError();
+          });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+      } else {
+        console.log(result.value);
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
+      }
+    });
+  };
+
+  const DocumentsUploaded = [
+    
+    {
+      name: "Document Name",
+      selector: (row) => row.documentName,  
+      cell: (row) => <span>{row.documentName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "Document Path",
+      selector: (row) => row.documentPath,
+      cell: (row) => <span>{row.documentPath}</span>,
+      sortable: true,
+      hide: "md",
+    },
+
+    {
+      name: "Documents",
+      selector: (row) => row.documentPath,
+      cell: (row) => (
+        <div>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => handleDocumentClick(row.documentPath)}
+          >
+            View Document
+          </Button>
+          {currentDocumentPath === row.documentPath && selectedDocumentFile && (
+            <>
+              <img
+                style={{ height: "100px", width: "100px" }}
+                src={selectedDocumentFile}
+                alt="Selected File"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                className="ms-2"
+                onClick={() => downloadFile(row.documentPath)}
+              >
+                Download Selected File
+              </Button>
+            </>
+          )}
+        </div>
+      ),
+      sortable: false,
+      hide: "md",
+    },
+        
+    {
+      name: "Action",
+      // selector: (row) => row.documentPath,
+      cell: (row) => (
+        <div className="text-start w-100">
+       
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => deleteConfirm(row.id)}
+          className="ms-2"
+        >
+          Delete
+        </Button>
+      </div>
+    ),
+    sortable: false,
+    hide: "md",
+  },
+    
+  ];
+
 
   createTheme(
     "solarized",
@@ -1347,7 +1883,7 @@ function ServiceApplicationEdit() {
             <ul className="d-flex">
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/all-application-list"
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="arrow-long-left" />
@@ -1356,7 +1892,7 @@ function ServiceApplicationEdit() {
               </li>
               <li>
                 <Link
-                  to="/seriui/application-selection"
+                  to="/seriui/all-application-list"
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="arrow-long-left" />
@@ -1402,6 +1938,8 @@ function ServiceApplicationEdit() {
                           <tr>
                             <td style={styles.ctstyle}> Farmer Name:</td>
                             <td>{farmerDetails.farmerName}</td>
+                            <td style={styles.ctstyle}> FID:</td>
+                            <td>{farmerDetails.fid}</td>
                             <td style={styles.ctstyle}> Taluk :</td>
                             <td>{farmerDetails.talukName}</td>
                             <td style={styles.ctstyle}> Village:</td>
@@ -1533,6 +2071,7 @@ function ServiceApplicationEdit() {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
+                                disabled
                                 isInvalid={
                                   data.financialYearMasterId === undefined ||
                                   data.financialYearMasterId === "0"
@@ -1575,14 +2114,18 @@ function ServiceApplicationEdit() {
                                 }
                               >
                                 <option value="">Select Scheme Names</option>
-                                {scSchemeDetailsListData.map((list) => (
+                                {scSchemeDetailsListData && scSchemeDetailsListData.length > 0 ? (
+                                  scSchemeDetailsListData.map((list) => (
                                   <option
                                     key={list.scSchemeDetailsId}
                                     value={list.scSchemeDetailsId}
                                   >
                                     {list.schemeName}
                                   </option>
-                                ))}
+                                ))
+                              ) : (
+                                <></> 
+                              )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Scheme is required
@@ -1611,12 +2154,15 @@ function ServiceApplicationEdit() {
                                 }
                               >
                                 <option value="">Select Component Type</option>
-                                {scSubSchemeDetailsListData &&
+                                {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length > 0 ? (
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
                                       {list.subSchemeName}
                                     </option>
-                                  ))}
+                                  ))
+                              ) : (
+                                <></> 
+                              )} 
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 Component Type is required
@@ -1624,7 +2170,7 @@ function ServiceApplicationEdit() {
                             </div>
                           </Form.Group>
                         </Col>
-                        <Col lg="6">
+                        {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               Scheme Type
@@ -1658,7 +2204,7 @@ function ServiceApplicationEdit() {
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -1768,28 +2314,28 @@ function ServiceApplicationEdit() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg="6">
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="sanctionAmount">
-                              Sanction Amount
+                              Scheme Amount
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
-                                id="sanctionAmount"
+                                id="schemeAmount"
                                 type="text"
-                                name="sanctionAmount"
-                                value={data.sanctionAmount}
+                                name="schemeAmount"
+                                value={data.schemeAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Sanction Amount"
+                                placeholder="Enter Scheme Amount"
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                Sanction Amount is required
+                              Scheme Amount is required
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
-                        </Col> */}
+                        </Col>
 
                         {/* <Col lg="6">
                           <Form.Group className="form-group mt-n3">
@@ -1845,7 +2391,7 @@ function ServiceApplicationEdit() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={new Date(data.periodFrom)}
+                                selected={data.periodFrom ? new Date(data.periodFrom) : null}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodFrom")
                                 }
@@ -1856,6 +2402,7 @@ function ServiceApplicationEdit() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>
@@ -1868,7 +2415,7 @@ function ServiceApplicationEdit() {
                             </Form.Label>
                             <div className="form-control-wrap">
                               <DatePicker
-                                selected={new Date(data.periodTo)}
+                                selected={data.periodTo ? new Date(data.periodTo):null}
                                 onChange={(date) =>
                                   handleDateChange(date, "periodTo")
                                 }
@@ -1879,6 +2426,7 @@ function ServiceApplicationEdit() {
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
+                                readOnly
                               />
                             </div>
                           </Form.Group>
@@ -1888,6 +2436,35 @@ function ServiceApplicationEdit() {
                   </Card>
                 </Block>
               </Col>
+
+              <Block className="mt-3">
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    Saved Land Details
+                  </Card.Header>
+                  <Card.Body>
+                    <Row>
+                      <DataTable
+                        tableClassName="data-table-head-light table-responsive"
+                        columns={LandDetailsColumns}
+                        data={savedLandDetailsList}
+                        highlightOnHover
+                        // pagination
+                        // paginationServer
+                        // paginationTotalRows={totalRows}
+                        // paginationPerPage={countPerPage}
+                        // paginationComponentOptions={{
+                        //   noRowsPerPage: true,
+                        // }}
+                        // onChangePage={(page) => setPage(page - 1)}
+                        progressPending={loading}
+                        theme="solarized"
+                        customStyles={customStyles}
+                      />
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Block>
 
               {/* <Block className="mt-3">
                 <Card>
@@ -1942,6 +2519,9 @@ function ServiceApplicationEdit() {
                         RTC Details
                       </Card.Header> */}
                       <Card.Body>
+                      <Card.Header style={{ fontWeight: "bold" }}>
+                        Edit Land Details
+                      </Card.Header>
                         <Row>
                           <DataTable
                             tableClassName="data-table-head-light table-responsive"
@@ -2017,6 +2597,54 @@ function ServiceApplicationEdit() {
                       </Row> */}
                     </Card>
                   </Block>
+
+                  <Block className="mt-3">
+                <Card>
+                  <Card.Header style={{ fontWeight: "bold" }}>
+                    Documents
+                  </Card.Header>
+                  <Card.Body>
+                    <Row>
+                      <DataTable
+                        tableClassName="data-table-head-light table-responsive"
+                        columns={DocumentsUploaded}
+                        data={viewDetailsData}
+                        highlightOnHover
+                        // pagination
+                        // paginationServer
+                        // paginationTotalRows={totalRows}
+                        // paginationPerPage={countPerPage}
+                        // paginationComponentOptions={{
+                        //   noRowsPerPage: true,
+                        // }}
+                        // onChangePage={(page) => setPage(page - 1)}
+                        progressPending={loading}
+                        theme="solarized"
+                        customStyles={customStyles}
+                      />
+                    </Row>
+                    <div className="gap-col">
+                <ul className="d-flex align-items-center justify-content-center gap g-3">
+                  <li>
+                    {/* <Button type="button" variant="primary" onClick={postData}> */}
+                    {/* <Button type="submit" variant="primary"onClick={handleShowModal}>
+                      Upload Documents
+                    </Button> */}
+                    <Button
+                    variant="secondary"
+                    size="sm"
+                    className="ms-2"
+                    onClick={() => handleShowModal(applicationId)}
+                  >
+                    Upload Documents
+                  </Button>
+                  </li>
+                  
+                </ul>
+              </div>
+                  </Card.Body>
+                </Card>
+              </Block>
                 </>
               ) : (
                 ""
@@ -2041,6 +2669,83 @@ function ServiceApplicationEdit() {
           </Form>
         </Block>
       </Row>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit /Upload Documents</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {docListData.map(({ documentMasterId, documentMasterName }) => (
+            <div key={documentMasterId}>
+              <Row className="d-flex justify-content-center align-items-center">
+                <Col lg="2">
+                  <Form.Group className="form-group mt-1">
+                    <Form.Label htmlFor="trUploadPath">
+                      {documentMasterName}
+                    </Form.Label>
+                  </Form.Group>
+                </Col>
+                <Col lg="4">
+                  <Form.Group className="form-group mt-1">
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        type="file"
+                        id={`attImage${documentMasterId}`}
+                        onChange={(e) => handleAttachFileChange(e, documentMasterId)}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4" style={{ position: "relative" }}>
+                  <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                    {documentAttachments[documentMasterId] && (
+                      <div style={{ position: "relative" }}>
+                        <img
+                          style={{ height: "150px", width: "150px" }}
+                          src={URL.createObjectURL(
+                            documentAttachments[documentMasterId]
+                          )}
+                        />
+                        <button
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            background: "transparent",
+                            border: "none",
+                            color: "black",
+                            fontSize: "24px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleRemoveImage(documentMasterId)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
+               
+                <Col lg="2">
+              
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(documentMasterId)}
+                disabled={uploadStatus[documentMasterId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"}
+              </Button>
+              </Col>
+              </Row>
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
+
+    
+
       {/* <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>

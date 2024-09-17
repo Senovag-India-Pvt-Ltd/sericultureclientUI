@@ -98,6 +98,7 @@ function ScProgramApprovalMapping() {
   const handleCloseModal2 = () => setShowModal2(false);
   const [data, setData] = useState({
     version: "",
+    action:"",
     status: "",
     subSchemeId: "",
     stepId: "",
@@ -126,6 +127,7 @@ function ScProgramApprovalMapping() {
       const sendPost = {
         version: data.version,
         status: "Active",
+        action: data.action,
         stepId: data.stepId,
         scApprovalStageId: data.scApprovalStageId,
         subSchemeId: data.subSchemeId,
@@ -551,6 +553,23 @@ function ScProgramApprovalMapping() {
                           value={data.version}
                           onChange={handleInputs}
                           placeholder="Enter Version"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="program">Action</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="action"
+                          name="action"
+                          as="textarea"
+                          rows={4}
+                          value={data.action}
+                          onChange={handleInputs}
+                          placeholder="Enter Action"
                         />
                       </div>
                     </Form.Group>
