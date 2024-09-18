@@ -44,7 +44,7 @@ function AllApplicationList() {
 
   const [searchData, setSearchData] = useState({
     userMasterId: localStorage.getItem("userMasterId"),
-    text: "",
+    searchText: "",
     type: 4,
     pageNumber: page,
     pageSize: countPerPage,
@@ -70,49 +70,49 @@ function AllApplicationList() {
     getFinancialYearList();
   }, []);
 
-  // const handleInputsSearch = (e) => {
-  //   const { name, value } = e.target;
-    
-  //   // If type is 4, set the financial year ID in searchData
-  //   if (value == 4) {
-  //     setSearchData((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //       text: data.financialYearMasterId, // Use the fetched financialYearMasterId
-  //     }));
-  //   } else {
-  //     setSearchData((prev) => ({
-  //       ...prev,
-  //       [name]: value
-  //     }));
-  //   }
-  // };
   const handleInputsSearch = (e) => {
     const { name, value } = e.target;
-  
-    // Check if type is 4 (for financial year)
-    if (name === "type" && value == 4) {
-      // Reset the text to ensure correct financial year is selected later
+    
+    // If type is 4, set the financial year ID in searchData
+    if (value == 4) {
       setSearchData((prev) => ({
         ...prev,
         [name]: value,
-        text: "" // Reset text for a new financial year selection
-      }));
-    } else if (name === "type" && value !== 4) {
-      // If not financial year, just set the type and reset the text
-      setSearchData((prev) => ({
-        ...prev,
-        [name]: value,
-        text: "" // Reset text if the type is not 4
+        searchText: data.financialYearMasterId, // Use the fetched financialYearMasterId
       }));
     } else {
-      // Set the value for other inputs, like the 'text' field
       setSearchData((prev) => ({
         ...prev,
         [name]: value
       }));
     }
   };
+  // const handleInputsSearch = (e) => {
+  //   const { name, value } = e.target;
+  
+  //   // Check if type is 4 (for financial year)
+  //   if (name === "type" && value == 4) {
+  //     // Reset the text to ensure correct financial year is selected later
+  //     setSearchData((prev) => ({
+  //       ...prev,
+  //       [name]: value,
+  //       text: "" // Reset text for a new financial year selection
+  //     }));
+  //   } else if (name === "type" && value !== 4) {
+  //     // If not financial year, just set the type and reset the text
+  //     setSearchData((prev) => ({
+  //       ...prev,
+  //       [name]: value,
+  //       text: "" // Reset text if the type is not 4
+  //     }));
+  //   } else {
+  //     // Set the value for other inputs, like the 'text' field
+  //     setSearchData((prev) => ({
+  //       ...prev,
+  //       [name]: value
+  //     }));
+  //   }
+  // };
   
   let name, value;
   const handleInputs = (e) => {
@@ -206,7 +206,7 @@ function AllApplicationList() {
       { 
         params:{
           userMasterId: localStorage.getItem("userMasterId"),
-            text: searchData.text,
+            searchText: searchData.searchText,
             type: searchData.type,
             pageNumber: searchData.pageNumber,
             pageSize:searchData.pageSize,
@@ -234,7 +234,7 @@ function AllApplicationList() {
         });
         setSearchData((prev) => ({
           ...prev,
-          text: response.data.content.financialYearMasterId // Pre-fill text with financial year
+          searchText: response.data.content.financialYearMasterId // Pre-fill text with financial year
         }));
       })
       .catch((err) => {
@@ -560,16 +560,18 @@ function AllApplicationList() {
     getComponentList();
   }, []);
 
-  // to get sc-sub-scheme-details by sc-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
-  const getSubSchemeList = (_id) => {
-    api
-      .get(baseURLDBT + `master/cost/get-by-scheme-id/${_id}`)
+
+  const getSubSchemeList = () => {
+    const response = api
+      .get(baseURLMasterData + `scSubSchemeDetails/get-all`)
       .then((response) => {
-        if (response.data.content.unitCost) {
-          setScSubSchemeDetailsListData(response.data.content.unitCost);
+        if (response.data.content.scSubSchemeDetails) {
+          setScSubSchemeDetailsListData(
+            response.data.content.scSubSchemeDetails
+          );
         }
       })
       .catch((err) => {
@@ -579,10 +581,8 @@ function AllApplicationList() {
   };
 
   useEffect(() => {
-    if (scheme.scheme) {
-      getSubSchemeList(scheme.scheme);
-    }
-  }, [scheme.scheme]);
+    getSubSchemeList();
+  }, []);
 
   console.log("select scheme", scheme);
 
@@ -782,6 +782,7 @@ function AllApplicationList() {
       selector: (row,i) => row.serialNumber,
       cell: (row, i) => <span>{row.serialNumber}</span>,
       sortable: true,
+      width: "80px",
       hide: "md",
     },
     {
@@ -802,6 +803,13 @@ function AllApplicationList() {
       name: "Farmer Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "ARN Number",
+      selector: (row) => row.arn,
+      cell: (row) => <span>{row.arn}</span>,
       sortable: true,
       hide: "md",
     },
@@ -828,15 +836,15 @@ function AllApplicationList() {
     },
     {
       name: "Component",
-      selector: (row) => row.scComponentName,
-      cell: (row) => <span>{row.scComponentName}</span>,
+      selector: (row) => row.componentName,
+      cell: (row) => <span>{row.componentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
       name: "Sanction No.",
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
+      selector: (row) => row.sanctionNo,
+      cell: (row) => <span>{row.sanctionNo}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1021,15 +1029,15 @@ function AllApplicationList() {
                            
                             <div className="form-control-wrap">
                               <Form.Select
-                                name="text"
-                                value={searchData.text}
+                                name="searchText"
+                                value={searchData.searchText}
                                 onChange={handleInputsSearch}
                                 onBlur={() => handleInputsSearch}
                                 // multiple
                                 required
                                 isInvalid={
                                   //  searchData.text === undefined ||
-                                  searchData.text === "0"
+                                  searchData.searchText === "0"
                                 }
                               >
                                 <option value="">Select Year</option>
@@ -1051,15 +1059,15 @@ function AllApplicationList() {
                 <Form.Group className="form-group">
                         <div className="form-control-wrap">
                           <Form.Select
-                            name="text"
-                            value={searchData.text}
+                            name="searchText"
+                            value={searchData.searchText}
                             onChange={handleInputsSearch}
                             onBlur={() => handleInputsSearch}
                             // multiple
                             required
                             isInvalid={
                             //  searchData.text === undefined ||
-                              searchData.text === "0"
+                              searchData.searchText === "0"
                             }
                           >
                             <option value="">Select Component</option>
@@ -1081,15 +1089,15 @@ function AllApplicationList() {
               <Form.Group className="form-group">     
                 <div className="form-control-wrap">
                   <Form.Select
-                   name="text"
-                       value={searchData.text}
+                   name="searchText"
+                       value={searchData.searchText}
                        onChange={handleInputsSearch}
                        onBlur={() => handleInputsSearch}
                        // multiple
                        required
                        isInvalid={
                         //  searchData.text === undefined ||
-                         searchData.text === "0"
+                         searchData.searchText === "0"
                        }
                   >
                     <option value="">Select Component Type</option>
@@ -1111,10 +1119,10 @@ function AllApplicationList() {
                 <Col sm={2} lg={2}>
                   <Form.Control
                     id="fruitsId"
-                    name="text"
-                    value={searchData.text}
+                    name="searchText"
+                    value={searchData.searchText}
                     onChange={handleInputsSearch}
-                    type="text"
+                    type="searchText"
                     placeholder="Search"
                     required
                   />
@@ -1207,6 +1215,10 @@ function AllApplicationList() {
                 <tr>
                   <td style={styles.ctstyle}>Farmer Name:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td style={styles.ctstyle}>ARN Number:</td>
+                  <td>{viewDetailsData?.applicationDetails?.[0]?.arn || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td style={styles.ctstyle}>Sanction No:</td>
