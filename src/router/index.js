@@ -853,6 +853,7 @@ import InspectionType from "../pages/masters/inspection-type/InspectionType";
 import InspectionTypeList from "../pages/masters/inspection-type/InspectionTypeList";
 import InspectionTypeView from "../pages/masters/inspection-type/InspectionTypeView";
 import InspectionTypeEdit from "../pages/masters/inspection-type/InspectionTypeEdit";
+import DashboardReportList from "../pages/services-module/application-component/DashboardReportList";
 // Admin and Reports
 
 function Router() {
@@ -1175,6 +1176,7 @@ function Router() {
               element={<ApplicationDashboard />}
             />
             <Route path="dbt-application" element={<DbtApplication />} />
+            <Route path="dashboard-report-list/:id" element={<DashboardReportList />} />
             <Route path="pull-back" element={<PullBack />} />
             <Route
               path="all-application-list"

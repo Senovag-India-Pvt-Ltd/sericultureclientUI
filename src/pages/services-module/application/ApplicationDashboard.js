@@ -234,7 +234,7 @@ function ApplicationDashboard() {
 
   const goto = (name) => {
     if (name === "Pre Inspection") {
-      navigate(`/seriui/application-dashboard-list/1`);
+      navigate(`/seriui/dashboard-report-list/1`);
     } else if (name === "Work Order Issue") {
       navigate(`/seriui/application-dashboard-list/2`);
     } else if (name === "Work Order Complete") {

@@ -187,7 +187,7 @@ function ScApprovalStage() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg="1">
+                  <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
@@ -206,7 +206,7 @@ function ScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
-                  <Col lg="1">
+                  <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
@@ -225,7 +225,7 @@ function ScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
-                  <Col lg="1">
+                  <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check
@@ -244,7 +244,7 @@ function ScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
-                  <Col lg="1">
+                  <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">
                       <Col sm={1}>
                         <Form.Check

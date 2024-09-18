@@ -2672,7 +2672,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit /Upload Documents</Modal.Title>
+          <Modal.Title>Upload Documents</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {docListData.map(({ documentMasterId, documentMasterName }) => (
