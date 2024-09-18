@@ -718,13 +718,14 @@ function DashboardReportList() {
 
             <Block className="mt-3">
               <Card className="mt-3" style={{ border: "none", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
-                <Card.Body className="d-flex justify-content-center">
+                <Card.Body >
                   <Button
                     variant="secondary"
                     size="sm"
                     className="ms-2"
                     onClick={handleShowModal1}
-                  >
+                    style={{ padding: "10px 20px", fontSize: "16px" }}
+                  > 
                     Upload Documents
                   </Button>
                 </Card.Body>

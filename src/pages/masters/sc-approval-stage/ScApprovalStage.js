@@ -16,7 +16,8 @@ function ScApprovalStage() {
   const [data, setData] = useState({
     stageName: "",
     stageNameInKannada: "",
-    workFlowType:""
+    workFlowType:"",
+    action:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -47,6 +48,8 @@ function ScApprovalStage() {
             setData({
               stageName: "",
               stageNameInKannada: "",
+              workFlowType:"",
+              action:"",
             });
             setValidated(false);
           }
@@ -64,6 +67,8 @@ function ScApprovalStage() {
     setData({
       stageName: "",
       stageNameInKannada: "",
+      workFlowType:"",
+      action:"",
     });
   };
 
@@ -182,6 +187,23 @@ function ScApprovalStage() {
                         <Form.Control.Feedback type="invalid">
                           Approval Stage Name In Kannada is required
                         </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="program">Action</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="action"
+                          name="action"
+                          as="textarea"
+                          rows={4}
+                          value={data.action}
+                          onChange={handleInputs}
+                          placeholder="Enter Action"
+                        />
                       </div>
                     </Form.Group>
                   </Col>

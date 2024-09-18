@@ -190,6 +190,13 @@ function ScApprovalStageList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: "Action",
+      selector: (row) => row.action,
+      cell: (row) => <span>{row.action}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (
