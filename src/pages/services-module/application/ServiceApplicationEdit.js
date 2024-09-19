@@ -335,6 +335,72 @@ function ServiceApplicationEdit() {
 
   // console.log(documentAttachments);
 
+  // const handleAttachFileUpload = async (documentId) => {
+  //   const param = {
+  //     applicationFormId: id,
+  //     documentTypeId: documentId,
+  //   };
+  
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("multipartFile", documentAttachments[documentId]);
+  
+  //     const response = await api.post(
+  //       baseURLDBT + `service/uploadDocument`,
+  //       formData,
+  //       {
+  //         params: param,
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  
+  //     console.log("File upload response:", response.data);
+  
+     
+  // Swal.fire({
+  //   icon: "success",
+  //   title: "File uploaded successfully",
+  // });
+ 
+  // setUploadStatus((prevStatus) => ({
+  //   ...prevStatus,
+  //   [documentId]: true, // Mark this document as uploaded
+  // }));
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Error uploading file. Please try again.",
+  //     });
+  //   }
+  // };
+
+  const [uploadDocuments, setUploadDocuments] = useState({
+    applicationFormId: "",
+    documentTypeId: "",
+    documentPath: "",
+  });
+  const handleDocumentInputs = (e) => {
+    let { name, value } = e.target;
+    // setUploadDocuments({ ...uploadDocuments, [name]: value });
+    setUploadDocuments(prev=>({...prev,  [name]: value }));
+  };
+
+  //Display Document
+   const [document, setDocument] = useState("");
+
+   const handleDocumentChange = (e) => {
+     const file = e.target.files[0];
+     setDocument(file);
+     setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
+    //  setPhotoFile(file);
+   };
+
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
+
   const handleAttachFileUpload = async (documentId) => {
     const param = {
       applicationFormId: id,
@@ -343,7 +409,8 @@ function ServiceApplicationEdit() {
   
     try {
       const formData = new FormData();
-      formData.append("multipartFile", documentAttachments[documentId]);
+      // formData.append("multipartFile", documentAttachments[documentId]);
+      formData.append("multipartFile", document);
   
       const response = await api.post(
         baseURLDBT + `service/uploadDocument`,
@@ -358,16 +425,38 @@ function ServiceApplicationEdit() {
   
       console.log("File upload response:", response.data);
   
-     
+      // Show SweetAlert success message after successful upload
+      // SweetAlert success function
   Swal.fire({
     icon: "success",
     title: "File uploaded successfully",
   });
- 
+  // setIsUploaded(true);
+  // Update the upload status for this specific document
   setUploadStatus((prevStatus) => ({
     ...prevStatus,
     [documentId]: true, // Mark this document as uploaded
   }));
+   // Add the uploaded document to the list of uploaded documents
+  //  setUploadedDocuments((prevDocs) => [
+  //   ...prevDocs,
+  //   {
+  //     documentId,
+  //     documentName: document.name,
+  //   },
+  // ]);
+  // Modify the setUploadedDocuments to include documentMasterName
+setUploadedDocuments((prevDocs) => [
+  ...prevDocs,
+  {
+    documentId,
+    documentName: document.name,
+    documentMasterName: docListData.find(
+      (list) => list.documentMasterId === documentId
+    )?.documentMasterName, // Find and store the documentMasterName
+    documentFile: document, // Store the file itself for image preview
+  },
+]);
     } catch (error) {
       console.error("Error uploading file:", error);
       Swal.fire({
@@ -1081,128 +1170,9 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
   const [uploadStatus, setUploadStatus] = useState({});
 
-  const handleApiResponse = (response) => {
-    const newApplicationId = response.data.content.applicationDocumentId;
-    setApplicationId(newApplicationId);
-};
-
-// useEffect(() => {
-//   // Assuming you have a function fetchData that makes the API call
-//   postData().then(response => {
-//       handleApiResponse(response);
-//   }).catch(error => {
-//       console.error("Error fetching data:", error);
-//   });
-// }, []);
-
   const [applicationId, setApplicationId] = useState("");
 
-  const uploadFileConfirm = (post) => {
-    Swal.fire({
-      title: "Do you want to Upload the Documents?",
-      // text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Later",
-    }).then((result) => {
-      if (result.value) {
-        api
-          .post(
-            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
-            post
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              //   saveSuccess();
-              setApplicationId(response.data.content.applicationDocumentId);
-              handleShowModal();
-
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-        setValidated(true);
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        api
-          .post(
-            baseURLDBT + `service/saveDirectSubsidySanctionedApplicationForm`,
-            post
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              // saveSuccess(response.data.receiptNo);
-              saveSuccess();
-              setApplicationId(response.data.content.applicationDocumentId);
-              clear();
-              // handleShowModal();
-              // setData({
-              //   fruitsId: "",
-              //   farmerName: "",
-              //   mulberryVarietyId: "",
-              //   area: "",
-              //   dateOfPlanting: "",
-              //   nurserySaleDetails: "",
-              //   quantity: "",
-              //   date: "",
-              //   rate: "",
-              //   saplingAge: "",
-              //   remittanceDetails: "",
-              //   challanUploadKey: "",
-              // });
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            if (
-              err.response &&
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
-            }
-          });
-        setValidated(true);
-        // clear();
-        // Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
+  
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
@@ -2675,7 +2645,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           <Modal.Title>Upload Documents</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {docListData.map(({ documentMasterId, documentMasterName }) => (
+          {/* {docListData.map(({ documentMasterId, documentMasterName }) => (
             <div key={documentMasterId}>
               <Row className="d-flex justify-content-center align-items-center">
                 <Col lg="2">
@@ -2740,7 +2710,114 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
               </Col>
               </Row>
             </div>
-          ))}
+          ))} */}
+          <Block className="mt-3">
+              <Row>
+                <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label><strong>Documents</strong></Form.Label>
+                        <Form.Select
+                          name="documentTypeId"
+                          value={uploadDocuments.documentTypeId}
+                          onChange={handleDocumentInputs}
+                        >
+                          <option value="">Choose Document Type</option>
+                          {docListData.map((list) => (
+                            <option
+                              key={list.documentMasterId}
+                              value={list.documentMasterId}
+                            >
+                              {list.documentMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
+                <Form.Group className="form-group">
+                        <Form.Label htmlFor="accountImagePath">
+                          Upload Documents(PDF/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="documentPath"
+                            name="documentPath"
+                            // value={data.photoPath}
+                            onChange={handleDocumentChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {document ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(document)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                      </Col>
+              </Row>
+
+              {/* {uploadedDocuments.length > 0 && (
+    <div className="mt-3">
+      <h5>Uploaded Documents</h5>
+      <ul>
+        {uploadedDocuments.map((doc, index) => (
+          <li key={index}>
+            Document Type: {doc.documentId} - {doc.documentName}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )} */}
+
+  {uploadedDocuments.length > 0 && (
+  <div className="mt-3">
+    <h5>Uploaded Documents</h5>
+    <ul>
+      {uploadedDocuments.map((doc, index) => (
+        <li key={index} className="d-flex align-items-center">
+          {/* Show the image if it's available */}
+          {doc.documentFile && (
+            <img
+              src={URL.createObjectURL(doc.documentFile)}
+              alt={doc.documentName}
+              style={{ height: "100px", width: "100px", marginRight: "10px" }}
+            />
+          )}
+          {/* Show the document master name */}
+          {/* <span>Document Type: {doc.documentMasterName }</span> */}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+            </Block>
+
+            {/* <Col lg="12"> */}
+            <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="submit" variant="success">
+                  Upload Documents
+                </Button> */}
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
+                disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
+              </Button>
+                </li>
+        </ul>
+      </div>
         </Modal.Body>
       </Modal>
 

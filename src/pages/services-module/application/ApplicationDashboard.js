@@ -232,22 +232,23 @@ function ApplicationDashboard() {
   //     },
   //   ];
 
-  const goto = (name) => {
-    if (name === "Pre Inspection") {
-      navigate(`/seriui/dashboard-report-list/1`);
-    } else if (name === "Work Order Issue") {
-      navigate(`/seriui/application-dashboard-list/2`);
-    } else if (name === "Work Order Complete") {
-      navigate(`/seriui/application-dashboard-list/3`);
-    } else if (name === "Inspection") {
-      navigate(`/seriui/application-dashboard-list/4`);
-    } else if (name === "Sanction Order Generation") {
-      navigate(`/seriui/application-dashboard-list/5`);
-    } else if (name === "Sanction Order Verification") {
-      navigate(`/seriui/application-dashboard-list/6`);
-    } else {
-      navigate(`/seriui/application-dashboard-list/7`);
-    }
+  const goto = (id) => {
+    // if (name === "Pre Inspection") {
+    //   navigate(`/seriui/dashboard-report-list/1`);
+    // } else if (name === "Work Order Issue") {
+    //   navigate(`/seriui/application-dashboard-list/2`);
+    // } else if (name === "Work Order Complete") {
+    //   navigate(`/seriui/application-dashboard-list/3`);
+    // } else if (name === "Inspection") {
+    //   navigate(`/seriui/application-dashboard-list/4`);
+    // } else if (name === "Sanction Order Generation") {
+    //   navigate(`/seriui/application-dashboard-list/5`);
+    // } else if (name === "Sanction Order Verification") {
+    //   navigate(`/seriui/application-dashboard-list/6`);
+    // } else {
+    //   navigate(`/seriui/application-dashboard-list/7`);
+    // }
+    navigate(`/seriui/dashboard-report-list/${id}`)
   };
 
   return (
@@ -296,7 +297,7 @@ function ApplicationDashboard() {
                 ...styles,
                 backgroundColor: rainbowColors[i % rainbowColors.length],
               }}
-              onClick={() => goto(dashboard.stepName)}
+              onClick={() => goto(dashboard.approvalStageId)}
             >
               <Card.Body>
                 <div className="d-flex justify-content-center text-center">
