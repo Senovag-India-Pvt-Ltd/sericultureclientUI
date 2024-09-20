@@ -103,6 +103,12 @@ function ScApprovalStageView() {
                         </td>
                         <td>{scApproval.stageNameInKannada}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>
+                          Action:
+                        </td>
+                        <td>{scApproval.action}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

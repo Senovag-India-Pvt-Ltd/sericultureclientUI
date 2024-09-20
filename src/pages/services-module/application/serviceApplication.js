@@ -111,35 +111,7 @@ function ServiceApplication() {
 
   console.log("new dev data", developedArea);
 
-  // Display Image
-  const [documentAttachments, setDocumentAttachments] = useState({});
-  const handleAttachFileChange = (e, documentId) => {
-    if (e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setDocumentAttachments((prevState) => ({
-        ...prevState,
-        [documentId]: file,
-      }));
-    } else {
-      setDocumentAttachments((prevState) => ({
-        ...prevState,
-        [documentId]: null,
-      }));
-      // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-      // document.getElementById("hdAttachFiles").value = "";
-    }
-    // setPhotoFile(file);
-  };
 
-  console.log("showdevplease", developedArea);
-
-  const handleRemoveImage = (documentId) => {
-    const updatedDocument = { ...documentAttachments };
-    delete updatedDocument[documentId];
-    setDocumentAttachments(updatedDocument);
-    document.getElementById(`attImage${documentId}`).value = "";
-    // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
-  };
 
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
@@ -281,59 +253,9 @@ function ServiceApplication() {
   //     console.error("Error uploading file:", error);
   //   }
   // };
-  const [uploadStatus, setUploadStatus] = useState({});
+
 
   
-
-  const handleAttachFileUpload = async (documentId) => {
-    const param = {
-      applicationFormId: applicationId,
-      documentTypeId: documentId,
-    };
-  
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", documentAttachments[documentId]);
-  
-      const response = await api.post(
-        baseURLDBT + `service/uploadDocument`,
-        formData,
-        {
-          params: param,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-  
-      console.log("File upload response:", response.data);
-  
-      // Show SweetAlert success message after successful upload
-      // SweetAlert success function
-  Swal.fire({
-    icon: "success",
-    title: "File uploaded successfully",
-  });
-  // setIsUploaded(true);
-  // Update the upload status for this specific document
-  setUploadStatus((prevStatus) => ({
-    ...prevStatus,
-    [documentId]: true, // Mark this document as uploaded
-  }));
-  // add acknowledgement API here
-  // Call the acknowledgment API after a successful response
-  // generateAcknowledgment(response.data.content.applicationDocumentId);
-
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Error uploading file. Please try again.",
-      });
-    }
-  };
-
 
   const [showModal, setShowModal] = useState(false);
   const [pendingPostData, setPendingPostData] = useState(null);
@@ -675,6 +597,8 @@ function ServiceApplication() {
         setDocListData([]);
       });
   };
+
+  console.log("where",docListData);
 
   // const getDocList = () => {
   //   api
@@ -1592,6 +1516,157 @@ function ServiceApplication() {
       },
     },
   };
+
+    // Display Image
+    const [documentAttachments, setDocumentAttachments] = useState({});
+    const handleAttachFileChange = (e, documentId) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        setDocumentAttachments((prevState) => ({
+          ...prevState,
+          [documentId]: file,
+        }));
+      } else {
+        setDocumentAttachments((prevState) => ({
+          ...prevState,
+          [documentId]: null,
+        }));
+        // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+        // document.getElementById("hdAttachFiles").value = "";
+      }
+      // setPhotoFile(file);
+    };
+  
+    console.log("showdevplease", developedArea);
+  
+    const handleRemoveImage = (documentId) => {
+      const updatedDocument = { ...documentAttachments };
+      delete updatedDocument[documentId];
+      setDocumentAttachments(updatedDocument);
+      document.getElementById(`attImage${documentId}`).value = "";
+      // setData((prev) => ({ ...prev, hdAttachFiles: "" }));
+    };
+
+    const [uploadedDocuments, setUploadedDocuments] = useState([]);
+
+  const [uploadStatus, setUploadStatus] = useState({});
+
+  const handleAttachFileUpload = async (documentId) => {
+    const param = {
+      applicationFormId: applicationId,
+      documentTypeId: documentId,
+    };
+  
+    try {
+      const formData = new FormData();
+      // formData.append("multipartFile", documentAttachments[documentId]);
+      formData.append("multipartFile", document);
+  
+      const response = await api.post(
+        baseURLDBT + `service/uploadDocument`,
+        formData,
+        {
+          params: param,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      console.log("File upload response:", response.data);
+  
+      // Show SweetAlert success message after successful upload
+      // SweetAlert success function
+  Swal.fire({
+    icon: "success",
+    title: "File uploaded successfully",
+  });
+  // setIsUploaded(true);
+  // Update the upload status for this specific document
+  setUploadStatus((prevStatus) => ({
+    ...prevStatus,
+    [documentId]: true, // Mark this document as uploaded
+  }));
+   // Add the uploaded document to the list of uploaded documents
+  //  setUploadedDocuments((prevDocs) => [
+  //   ...prevDocs,
+  //   {
+  //     documentId,
+  //     documentName: document.name,
+  //   },
+  // ]);
+  // Modify the setUploadedDocuments to include documentMasterName
+setUploadedDocuments((prevDocs) => [
+  ...prevDocs,
+  {
+    documentId,
+    documentName: document.name,
+    documentMasterName: docListData.find(
+      (list) => list.documentMasterId === documentId
+    )?.documentMasterName, // Find and store the documentMasterName
+    documentFile: document, // Store the file itself for image preview
+  },
+]);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error uploading file. Please try again.",
+      });
+    }
+  };
+
+
+  const [uploadDocuments, setUploadDocuments] = useState({
+    applicationFormId: "",
+    documentTypeId: "",
+    documentPath: "",
+  });
+
+  const handleDocumentInputs = (e) => {
+    let { name, value } = e.target;
+    // setUploadDocuments({ ...uploadDocuments, [name]: value });
+    setUploadDocuments(prev=>({...prev,  [name]: value }));
+  };
+
+   //Display Document
+   const [document, setDocument] = useState("");
+
+   const handleDocumentChange = (e) => {
+     const file = e.target.files[0];
+     setDocument(file);
+     setUploadDocuments((prev) => ({ ...prev, documentPath: file.name }));
+    //  setPhotoFile(file);
+   };
+  //  console.log("nodappa",document);
+  //  console.log("nodappa2",uploadDocuments);
+
+ 
+   // Upload Image to S3 Bucket
+  //  const handleFileDocumentUpload = async (scApplicationFormDocumentDetailId) => {
+  //    const parameters = `farmerBankAccountId=${scApplicationFormDocumentDetailId}`;
+  //    try {
+  //      const formData = new FormData();
+  //      formData.append("multipartFile", document);
+ 
+  //      const response = await api.post(
+  //        baseURLDBT + `farmer-bank-account/upload-photo?${parameters}`,
+  //        formData,
+  //        {
+  //          headers: {
+  //            "Content-Type": "multipart/form-data",
+  //          },
+  //        }
+  //      );
+  //      console.log("File upload response:", response.data);
+  //    } catch (error) {
+  //      console.error("Error uploading file:", error);
+  //    }
+  //  };
+
+
+   
 
   return (
     <Layout title="Application Form">
@@ -2795,7 +2870,7 @@ function ServiceApplication() {
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {docListData.map(({ documentMasterId, documentMasterName }) => (
+          {/* {docListData.map(({ documentMasterId, documentMasterName }) => (
             <div key={documentMasterId}>
               <Row className="d-flex justify-content-center align-items-center">
                 <Col lg="2">
@@ -2807,7 +2882,6 @@ function ServiceApplication() {
                 </Col>
                 <Col lg="4">
                   <Form.Group className="form-group mt-1">
-                    {/* <Form.Label htmlFor="trUploadPath">Attach Files</Form.Label> */}
                     <div className="form-control-wrap">
                       <Form.Control
                         type="file"
@@ -2849,7 +2923,7 @@ function ServiceApplication() {
                     )}
                   </Form.Group>
                 </Col>
-                {/* <Col lg="2">
+                <Col lg="2">
                   <Button
                     type="button"
                     variant="primary"
@@ -2857,35 +2931,142 @@ function ServiceApplication() {
                   >
                     Upload
                   </Button>
-                </Col> */}
+                </Col>
                 <Col lg="2">
-                {/* <Button
+                <Button
                   type="button"
                   variant="primary"
                   onClick={() => handleAttachFileUpload(documentMasterId)}
                   disabled={isUploaded} // Disable button after upload
                 >
                   {isUploaded ? "Uploaded" : "Upload"}
-                </Button> */}
+                </Button>
                 <Button
                 type="button"
                 variant="primary"
                 onClick={() => handleAttachFileUpload(documentMasterId)}
                 disabled={uploadStatus[documentMasterId]} // Disable button if this document is uploaded
               >
-                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"} {/* Change text based on individual document status */}
+                {uploadStatus[documentMasterId] ? "Uploaded" : "Upload"}
               </Button>
               </Col>
               </Row>
             </div>
-          ))}
+          ))} */}
+          <Block className="mt-3">
+              <Row>
+                <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label><strong>Documents</strong></Form.Label>
+                        <Form.Select
+                          name="documentTypeId"
+                          value={uploadDocuments.documentTypeId}
+                          onChange={handleDocumentInputs}
+                        >
+                          <option value="">Choose Document Type</option>
+                          {docListData.map((list) => (
+                            <option
+                              key={list.documentMasterId}
+                              value={list.documentMasterId}
+                            >
+                              {list.documentMasterName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+
+                <Col lg="6">
+                <Form.Group className="form-group">
+                        <Form.Label htmlFor="accountImagePath">
+                          Upload Documents(PDF/jpg/png)(Max:2mb)
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            type="file"
+                            id="documentPath"
+                            name="documentPath"
+                            // value={data.photoPath}
+                            onChange={handleDocumentChange}
+                          />
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+                        {document ? (
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={URL.createObjectURL(document)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Form.Group>
+                      </Col>
+              </Row>
+
+              {/* {uploadedDocuments.length > 0 && (
+    <div className="mt-3">
+      <h5>Uploaded Documents</h5>
+      <ul>
+        {uploadedDocuments.map((doc, index) => (
+          <li key={index}>
+            Document Type: {doc.documentId} - {doc.documentName}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )} */}
+
+  {uploadedDocuments.length > 0 && (
+  <div className="mt-3">
+    <h5>Uploaded Documents</h5>
+    <ul>
+      {uploadedDocuments.map((doc, index) => (
+        <li key={index} className="d-flex align-items-center">
+          {/* Show the image if it's available */}
+          {doc.documentFile && (
+            <img
+              src={URL.createObjectURL(doc.documentFile)}
+              alt={doc.documentName}
+              style={{ height: "100px", width: "100px", marginRight: "10px" }}
+            />
+          )}
+          {/* Show the document master name */}
+          {/* <span>Document Type: {doc.documentMasterName }</span> */}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+            </Block>
+
+            {/* <Col lg="12"> */}
+            <div className="gap-col mt-1">
+            <ul className="d-flex align-items-center justify-content-center gap g-3">
+              <li>
+                {/* <Button type="submit" variant="success">
+                  Upload Documents
+                </Button> */}
+                <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
+                disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
+              >
+                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
+              </Button>
+                </li>
+        </ul>
+      </div>
         </Modal.Body>
       </Modal>
 
       <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>Break Up</Modal.Title>
-        </Modal.Header>
+        </Modal.Header> 
         <Modal.Body></Modal.Body>
       </Modal>
     </Layout>

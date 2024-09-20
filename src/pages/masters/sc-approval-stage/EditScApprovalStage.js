@@ -41,6 +41,7 @@ function EditScApprovalStage() {
       stageName: data.stageName,
       stageNameInKannada: data.stageNameInKannada,
       workFlowType: data.workFlowType,
+      action: data.action,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -59,6 +60,8 @@ function EditScApprovalStage() {
             setData({
               stageName: "",
               stageNameInKannada: "",
+              workFlowType: "",
+              action: "",
             });
             setValidated(false);
           }
@@ -76,6 +79,8 @@ function EditScApprovalStage() {
     setData({
       stageName: "",
       stageNameInKannada: "",
+      workFlowType: "",
+      action: "",
     });
   };
 
@@ -212,6 +217,22 @@ function EditScApprovalStage() {
                           </div>
                         </Form.Group>
                       </Col>
+                      <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="program">Action</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="action"
+                          name="action"
+                          as="textarea"
+                          rows={4}
+                          value={data.action}
+                          onChange={handleInputs}
+                          placeholder="Enter Action"
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
                     </Row>
                     <Row>
                       <Col lg="1">
