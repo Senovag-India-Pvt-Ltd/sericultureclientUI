@@ -28,6 +28,7 @@ function User() {
     phoneNumber: "",
     workingInstitutionId: "",
     ddoCode: "",
+    tscMasterId:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -77,6 +78,7 @@ function User() {
               phoneNumber: "",
               workingInstitutionId: "",
               ddoCode: "",
+              tscMasterId:"",
             });
             setValidated(false);
           }
@@ -114,6 +116,7 @@ function User() {
       phoneNumber: "",
       workingInstitutionId: "",
       ddoCode: "",
+      tscMasterId:"",
     });
   };
 
@@ -207,6 +210,24 @@ function User() {
 
   useEffect(() => {
     getList();
+  }, []);
+
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
   }, []);
 
   // to get district
@@ -613,6 +634,37 @@ function User() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           Working Institution Name is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        Tsc  <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="tscMasterId"
+                          value={data.tscMasterId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.tscMasterId === undefined || data.tscMasterId === "0"
+                          }
+                        >
+                          <option value="">Select Tsc</option>
+                          {tscListData.map((list) => (
+                            <option key={list.tscMasterId} value={list.tscMasterId}>
+                              {list.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Tsc Name is required
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

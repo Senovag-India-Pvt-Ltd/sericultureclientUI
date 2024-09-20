@@ -259,6 +259,13 @@ function UsersList() {
       hide: "md",
     },
     {
+      name: "Tsc Name",
+      selector: (row) => row.name,
+      cell: (row) => <span>{row.tscName}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "DDO Code",
       selector: (row) => row.ddoCode,
       cell: (row) => <span>{row.ddoCode}</span>,
