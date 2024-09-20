@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import DatePicker from "react-datepicker";
 import axios from "axios";
 import api from "../../../services/auth/api";
 
@@ -45,6 +46,10 @@ function DashboardReportList() {
     reason: "",
   });
 
+  const handleDateChange = (date, type) => {
+    setPushToDBTData({ ...data, [type]: date });
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   // const handleShowModal = () => setShowModal(true);
@@ -64,13 +69,16 @@ function DashboardReportList() {
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
 
-  const handleRejectInputs = (e) => {
-    let { name, value } = e.target;
-    setRejectReason({ ...rejectReason, [name]: value });
-  };
+ 
   const handleInputs = (e) => {
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
+  };
+
+
+  const handlePushToDBTInputs = (e) => {
+    let { name, value } = e.target;
+    setPushToDBTData({ ...data, [name]: value });
   };
 
   const getList = () => {
@@ -256,6 +264,11 @@ function DashboardReportList() {
         });
       setValidated(true);
     }
+  };
+
+  const handleRejectInputs = (e) => {
+    let { name, value } = e.target;
+    setInspectionData({ ...inspectionData, [name]: value });
   };
 
   const [inspectionData, setInspectionData] = useState({
@@ -572,6 +585,13 @@ function DashboardReportList() {
       borderTopRightRadius: "8px",
     },
   };
+
+  const [pushToDBTData, setPushToDBTData] = useState({
+    paymentTo: "",
+    paymentMethod: "",
+    dateOfPayment: "",
+    referenceNo: "",
+  });
 
   const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
 
@@ -1026,7 +1046,7 @@ function DashboardReportList() {
                                     <strong>Reject Reason</strong>
                                   </Form.Label>
                                   <Form.Select
-                                    name="rejectReasonWorkFlowMasterId"
+                                    name="rejectReasonWorkflowMasterId"
                                     value={
                                       inspectionData.rejectReasonWorkflowMasterId
                                     }
@@ -1058,7 +1078,7 @@ function DashboardReportList() {
                                     type="text"
                                     name="comment"
                                     value={inspectionData.comment}
-                                    onChange={handleInputs}
+                                    onChange={handleRejectInputs}
                                     placeholder="Enter Description"
                                   />
                                 </Form.Group>
@@ -1284,9 +1304,170 @@ function DashboardReportList() {
                   </Accordion.Body>
                 </Accordion.Item>
                   )}
+
+                  {actionFarmerData.length > 0 &&
+                  actionFarmerData[0].workFlowType === "PUSHTODBT" && (
+                <Accordion.Item eventKey="transaction">
+                  <Accordion.Header
+                    style={{
+                      backgroundColor: "#0F6CBE",
+                      color: "white",
+                      fontWeight: "bold",
+                      padding: "3px",
+                      borderRadius: "5px",
+                    }}
+                    className="mb-3"
+                  >
+                    Push To DBT
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <Block className="mt-3">
+                      <Row>
+                      <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              Payment To
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="paymentTo"
+                                  value={pushToDBTData.paymentTo}
+                                  onChange={handlePushToDBTInputs}
+                                  // required
+                                  // isInvalid={
+                                  //   data.testResults === undefined ||
+                                  //   data.testResults === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select Payment To
+                                  </option>
+                                  <option value="Farmer">Farmer</option>
+                                  <option value="Vendor">Vendor</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Test Results is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                              Payment Method
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="paymentMethod"
+                                  value={pushToDBTData.paymentMethod}
+                                  onChange={handlePushToDBTInputs}
+                                  // required
+                                  // isInvalid={
+                                  //   data.testResults === undefined ||
+                                  //   data.testResults === "0"
+                                  // }
+                                >
+                                  <option value="">
+                                    Select Payment Method
+                                  </option>
+                                  <option value="CASH">CASH</option>
+                                  <option value="DBT">DBT</option>
+                                  <option value="CASH">CASH</option>
+                                  <option value="CHEQUE">CHEQUE</option>
+                                  <option value="ONLINE">ONLINE</option>
+                                </Form.Select>
+                                {/* <Form.Control.Feedback type="invalid">
+                                Test Results is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                         
+
+                          {["CASH", "CHEQUE", "ONLINE"].includes(pushToDBTData.paymentMethod) && (
+                            <>
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="numberOfCocoonsCB">
+                              Reference No
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="referenceNo"
+                                  name="referenceNo"
+                                  value={pushToDBTData.referenceNo}
+                                  onChange={handlePushToDBTInputs}
+                                  type="text"
+                                  placeholder="Enter Reference No "
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                Cocoon's Purchased (in Kg's / Nos) is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="6">
+                            <Form.Group className="form-group">
+                              <Form.Label htmlFor="dateOfMothEmergence">
+                                Date Of Payment
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker
+                                  selected={pushToDBTData.dateOfPayment}
+                                  onChange={(date) =>
+                                    handleDateChange(
+                                      date,
+                                      "dateOfMothEmergence"
+                                    )
+                                  }
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  // minDate={new Date()}
+                                  dateFormat="dd/MM/yyyy"
+                                  className="form-control"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  Date of moth emergence is required
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          </>
+                          )}
+                      </Row>
+                    </Block>
+
+                    {/* <Col lg="12"> */}
+                    <div className="gap-col mt-1">
+                      <ul className="d-flex align-items-center justify-content-center gap g-3">
+                        <li>
+                        <div className="d-flex justify-content-center gap-2">
+                          <Button type="submit" variant="success">
+                            Submit
+                          </Button>
+                        </div>
+                        </li>
+                      </ul>
+                    </div>
+                    {/* </Col> */}
+                  </Accordion.Body>
+                </Accordion.Item>
+                  )}
               </Accordion>
             </>
           )}
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>

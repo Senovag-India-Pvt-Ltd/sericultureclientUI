@@ -184,7 +184,7 @@ function ServiceApplicationEdit() {
   const getIdList = () => {
     setLoading(true);
     const response = api
-      .get(baseURLDBT + `service/get-join/${id}`)
+      .get(baseURLDBT + `service/get-application-form-service-join/${id}`)
       .then((response) => {
         const datas = response.data.content;
         setData((prev) => ({
