@@ -989,6 +989,9 @@ function ServiceApplication() {
             } else {
               // saveSuccess(response.data.receiptNo);
               setApplicationId(response.data.content.applicationDocumentId);
+              clear();
+              // Call the acknowledgment API after a successful response
+            generateAcknowledgment(response.data.content.applicationDocumentId);
               handleShowModal();
 
               setValidated(false);
@@ -1581,6 +1584,7 @@ function ServiceApplication() {
     icon: "success",
     title: "File uploaded successfully",
   });
+  
   // setIsUploaded(true);
   // Update the upload status for this specific document
   setUploadStatus((prevStatus) => ({
@@ -2369,7 +2373,7 @@ setUploadedDocuments((prevDocs) => [
                 </Card>
               </Block> */}
 
-              <Card className="mt-1">
+              {/* <Card className="mt-1">
                 <Row className="ms-1 mt-2">
                   <Col lg="2">
                     <Form.Group
@@ -2411,15 +2415,36 @@ setUploadedDocuments((prevDocs) => [
                       </Form.Label>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="2">
+                    <Form.Group
+                      as={Row}
+                      className="form-group"
+                      controlId="land"
+                    >
+                      <Col sm={1}>
+                        <Form.Check
+                          type="radio"
+                          name="equordev"
+                          value="land"
+                          checked={data.equordev === "land"}
+                          onChange={handleInputs}
+                        />
+                      </Col>
+                      <Form.Label column sm={9} className="mt-n2" id="land">
+                        Land Wise
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Card>
-              {data.with === "withLand" && landDetailsList.length > 0 ? (
+              
+              {/* {data.with === "withLand" && landDetailsList.length > 0 ? ( */}
+              {/* {data.equordev === "land" && data.with === "withLand" && landDetailsList.length > 0 ? (
                 <>
                   <Block className="mt-3">
                     <Card>
-                      {/* <Card.Header style={{ fontWeight: "bold" }}>
-                        RTC Details
-                      </Card.Header> */}
+                
                       <Card.Body>
                         <Row>
                           <DataTable
@@ -2441,62 +2466,10 @@ setUploadedDocuments((prevDocs) => [
                           />
                         </Row>
                       </Card.Body>
-
-                      {/* <Row className="ms-1">
-                        <Col lg="2">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="land"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="equordev"
-                                value="land"
-                                checked={data.equordev === "land"}
-                                onChange={handleInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="land"
-                            >
-                              Developed Area
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="2">
-                          <Form.Group
-                            as={Row}
-                            className="form-group"
-                            controlId="equip"
-                          >
-                            <Col sm={1}>
-                              <Form.Check
-                                type="radio"
-                                name="equordev"
-                                value="equipment"
-                                checked={data.equordev === "equipment"}
-                                onChange={handleInputs}
-                              />
-                            </Col>
-                            <Form.Label
-                              column
-                              sm={9}
-                              className="mt-n2"
-                              id="equip"
-                            >
-                              Equipment Purchase
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row> */}
                     </Card>
                   </Block>
-
+                  
+                 
                   <Block className="mt-3">
                     <Card>
                       <Card.Header style={{ fontWeight: "bold" }}>
@@ -2575,18 +2548,7 @@ setUploadedDocuments((prevDocs) => [
                             </Col>
                           )}
                         </Row>
-                        {/* <Row className="mt-1">
-                          <Col>
-                            <Button
-                              type="button"
-                              variant="secondary"
-                              size="sm"
-                              onClick={handleShowModalBreakUp}
-                            >
-                              Show Break up
-                            </Button>
-                          </Col>
-                        </Row> */}
+                        
                       </Card.Body>
                     </Card>
                   </Block>
@@ -2599,38 +2561,7 @@ setUploadedDocuments((prevDocs) => [
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
-                            {/* <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Unit Type
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="unitType"
-                                    value={developedLand.unitType}
-                                    onChange={handleDevelopedLandInputs}
-                                    onBlur={() => handleDevelopedLandInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      developedLand.unitType === undefined ||
-                                      developedLand.unitType === "0"
-                                    }
-                                  >
-                                    <option value="">Select Unit Type</option>
-                                    {unitTypeList.map((list) => (
-                                      <option key={list.id} value={list.id}>
-                                        {list.measurementUnit}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Unit Type is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col> */}
+                           
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label htmlFor="landDeveloped">
@@ -2653,48 +2584,7 @@ setUploadedDocuments((prevDocs) => [
                                 </div>
                               </Form.Group>
                             </Col>
-                            {/* <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="gunta">
-                                  Gunta<span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="gunta"
-                                    type="text"
-                                    name="gunta"
-                                    value={developedLand.gunta}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter Gunta"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    Gunta is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col>
-                            <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label htmlFor="fgunta">
-                                  FGunta<span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="fgunta"
-                                    type="text"
-                                    name="fgunta"
-                                    value={developedLand.fgunta}
-                                    onChange={handleDevelopedLandInputs}
-                                    placeholder="Enter FGunta"
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    FGunta is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col> */}
+                           
                           </Row>
                         </Card.Body>
                       </Card>
@@ -2707,38 +2597,7 @@ setUploadedDocuments((prevDocs) => [
                         </Card.Header>
                         <Card.Body>
                           <Row className="g-gs">
-                            {/* <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
-                                <Form.Label>
-                                  Unit Type
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select
-                                    name="unitType"
-                                    value={equipment.unitType}
-                                    onChange={handleEquipmentInputs}
-                                    onBlur={() => handleEquipmentInputs}
-                                    // multiple
-                                    // required
-                                    isInvalid={
-                                      equipment.unitType === undefined ||
-                                      equipment.unitType === "0"
-                                    }
-                                  >
-                                    <option value="">Select Unit Type</option>
-                                    {unitTypeList.map((list) => (
-                                      <option key={list.id} value={list.id}>
-                                        {list.measurementUnit}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">
-                                    Unit Type is required
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
-                            </Col> */}
+                           
                             <Col lg="4">
                               <Form.Group className="form-group mt-n3">
                                 <Form.Label>
@@ -2818,23 +2677,7 @@ setUploadedDocuments((prevDocs) => [
                                 </div>
                               </Form.Group>
                             </Col>
-                            {/* <Col lg="4">
-                              <Form.Group as={Row} className="form-group mt-4">
-                                <Col sm={1}>
-                                  <Form.Check
-                                    type="checkbox"
-                                    id="payToVendor"
-                                    checked={equipment.payToVendor}
-                                    onChange={handleCheckBox}
-                                    // Optional: disable the checkbox in view mode
-                                    // defaultChecked
-                                  />
-                                </Col>
-                                <Form.Label column sm={11} className="mt-n2">
-                                  Pay to Vendor
-                                </Form.Label>
-                              </Form.Group>
-                            </Col> */}
+                           
                           </Row>
                         </Card.Body>
                       </Card>
@@ -2844,7 +2687,249 @@ setUploadedDocuments((prevDocs) => [
                 </> 
               ) : (
                 ""
-              )}
+              )} */} 
+
+   <Card className="mt-1">
+  <Row className="ms-1 mt-2">
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="land">
+        <Col sm={1}>
+          <Form.Check
+            type="radio"
+            name="equordev"
+            value="constructedArea"
+            checked={data.equordev === "constructedArea"}
+            onChange={handleInputs}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2" id="land">
+          Constructed Area
+        </Form.Label>
+      </Form.Group>
+    </Col>
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="equip">
+        <Col sm={1}>
+          <Form.Check
+            type="radio"
+            name="equordev"
+            value="equipment"
+            checked={data.equordev === "equipment"}
+            onChange={handleInputs}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2" id="equip">
+          Equipment Purchase
+        </Form.Label>
+      </Form.Group>
+    </Col>
+    <Col lg="2">
+      <Form.Group as={Row} className="form-group" controlId="land">
+        <Col sm={1}>
+          <Form.Check
+            type="radio"
+            name="equordev"
+            value="land"
+            checked={data.equordev === "land"}
+            onChange={handleInputs}
+          />
+        </Col>
+        <Form.Label column sm={9} className="mt-n2" id="land">
+          Land Wise
+        </Form.Label>
+      </Form.Group>
+    </Col>
+  </Row>
+</Card>
+
+{/* Common Sanction Amount Section */}
+<Block className="mt-3">
+  <Card>
+    <Card.Header style={{ fontWeight: "bold" }}>
+      Sanction Amount
+    </Card.Header>
+    <Card.Body>
+      <Row className="g-gs">
+        <Col lg="4">
+          <Form.Group className="form-group mt-n3">
+            <Form.Label htmlFor="landDeveloped">
+              Unit Price
+              <span className="text-danger">*</span>
+            </Form.Label>
+            <div className="form-control-wrap">
+              <Form.Control
+                id="landDeveloped"
+                type="text"
+                name="unitPrice"
+                value={amountValue.unitPrice}
+                onChange={handleDevelopedLandInputs}
+                placeholder="Enter Unit Price"
+                readOnly
+              />
+              <Form.Control.Feedback type="invalid">
+                Unit Price is required
+              </Form.Control.Feedback>
+            </div>
+          </Form.Group>
+        </Col>
+        <Col lg="4">
+          <Form.Group className="form-group mt-n3">
+            <Form.Label htmlFor="expectedAmount">
+              Subsidy Amount
+              <span className="text-danger">*</span>
+            </Form.Label>
+            <div className="form-control-wrap">
+              <Form.Control
+                id="expectedAmount"
+                type="text"
+                name="expectedAmount"
+                value={data.expectedAmount}
+                onChange={handleInputs}
+                placeholder="Enter Expected Amount"
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Subsidy Amount is required
+              </Form.Control.Feedback>
+            </div>
+          </Form.Group>
+        </Col>
+      </Row>
+    </Card.Body>
+  </Card>
+</Block>
+
+{/* Conditional Section Rendering */}
+{data.equordev === "constructedArea" && (
+  <Block className="mt-3">
+    <Card>
+      <Card.Header style={{ fontWeight: "bold" }}>
+        Constructed Area
+      </Card.Header>
+      <Card.Body>
+        <Row className="g-gs">
+          <Col lg="4">
+            <Form.Group className="form-group mt-n3">
+              <Form.Label htmlFor="landDeveloped">
+                Unit
+                <span className="text-danger">*</span>
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Control
+                  id="landDeveloped"
+                  type="text"
+                  name="landDeveloped"
+                  value={developedLand.landDeveloped}
+                  onChange={handleDevelopedLandInputs}
+                  placeholder="Enter Unit"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Unit Quantity is required
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  </Block>
+)}
+
+{data.equordev === "equipment" && (
+  <Block className="mt-3">
+    <Card>
+      <Card.Header style={{ fontWeight: "bold" }}>
+        Equipment Purchase
+      </Card.Header>
+      <Card.Body>
+        <Row className="g-gs">
+          <Col lg="4">
+            <Form.Group className="form-group mt-n3">
+              <Form.Label>
+                Vendor Name
+                <span className="text-danger">*</span>
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="vendorId"
+                  value={equipment.vendorId}
+                  onChange={handleEquipmentInputs}
+                  required
+                  isInvalid={
+                    equipment.vendorId === undefined ||
+                    equipment.vendorId === "0"
+                  }
+                >
+                  <option value="">Select Vendor Name</option>
+                  {scVendorListData.map((list) => (
+                    <option
+                      key={list.scVendorId}
+                      value={list.scVendorId}
+                    >
+                      {list.name}
+                    </option>
+                  ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Vendor Name is required
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+          <Col lg="4">
+            <Form.Group className="form-group mt-n3">
+              <Form.Label htmlFor="description">
+                Description
+                <span className="text-danger">*</span>
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Control
+                  id="description"
+                  type="text"
+                  name="description"
+                  value={equipment.description}
+                  onChange={handleEquipmentInputs}
+                  placeholder="Enter Description"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Description is required
+                </Form.Control.Feedback>
+              </div>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  </Block>
+)}
+
+{data.equordev === "land" && data.with === "withLand" && landDetailsList.length > 0 && (
+  <Block className="mt-3">
+    <Card>
+      <Card.Header style={{ fontWeight: "bold" }}>
+        Land Wise
+      </Card.Header>
+      <Card.Body>
+        {/* Display land-related details like the DataTable here */}
+        <Row>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={LandDetailsForDevColumns}
+            data={landDetailsList}
+            highlightOnHover
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </Row>
+      </Card.Body>
+    </Card>
+  </Block>
+)}
+
+
 
               <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-center gap g-3">
@@ -2865,6 +2950,7 @@ setUploadedDocuments((prevDocs) => [
           </Form>
         </Block>
       </Row>
+      
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>
