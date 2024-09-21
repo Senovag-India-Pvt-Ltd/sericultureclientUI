@@ -2142,7 +2142,7 @@ setUploadedDocuments((prevDocs) => [
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
-                                readOnly
+                                // readOnly
                                 required
                               />
                             </div>
@@ -2169,7 +2169,7 @@ setUploadedDocuments((prevDocs) => [
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
-                                readOnly
+                                // readOnly
                               />
                             </div>
                           </Form.Group>

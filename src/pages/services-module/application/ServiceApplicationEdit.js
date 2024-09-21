@@ -2372,7 +2372,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
-                                readOnly
+                                // readOnly
                               />
                             </div>
                           </Form.Group>
@@ -2396,7 +2396,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 dateFormat="dd/MM/yyyy"
                                 className="form-control"
                                 required
-                                readOnly
+                                // readOnly
                               />
                             </div>
                           </Form.Group>
