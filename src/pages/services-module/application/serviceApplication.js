@@ -686,7 +686,7 @@ function ServiceApplication() {
     const transformedData = Object.keys(developedArea).map((id) => ({
       // landDeveloped: developedLand.landDeveloped,
       // landDetailId: parseInt(id),
-      ...developedArea[id],
+      ...developedArea[id],    
     }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -719,6 +719,8 @@ function ServiceApplication() {
         initialAmount: data.expectedAmount,
         periodFrom: data.periodFrom,
         periodTo: data.periodTo,
+        vendorId: equipment.vendorId,
+        description: equipment.description,
       };
 
       if (data.equordev === "land") {
