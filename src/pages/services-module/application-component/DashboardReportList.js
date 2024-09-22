@@ -1168,15 +1168,15 @@ const modalStyles = {
                     </Accordion.Header>
                     <Accordion.Body>
                       <Block className="mt-n3">
-                        <Card
+                        {/* <Card
                           className="mt-3"
                           style={{
                             border: "none",
                             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                           }}
-                        >
+                        > */}
                           <Card.Body>
-                            <table
+                            <table 
                               className="table small table-bordered"
                               style={{ width: "100%" }}
                             >
@@ -1197,7 +1197,7 @@ const modalStyles = {
                               </tbody>
                             </table>
                           </Card.Body>
-                        </Card>
+                        {/* </Card> */}
                       </Block>
 
                       <Block className="mt-3">
