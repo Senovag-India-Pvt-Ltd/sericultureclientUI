@@ -535,6 +535,60 @@ function ServiceApplication() {
   //   }
   // }, [data.scHeadAccountId]);
 
+  const [id, setId] = useState(localStorage.getItem("userMasterId"));
+
+  const [districtId, setDistrictId] = useState(null);
+  const [talukId, setTalukId] = useState(null);
+  const [userFromDistrictData, setUserFromDistrictData] = useState(
+    []
+  );
+
+    //  to get data from api
+   const getIdList = () => {
+    setLoading(true);
+    const response = api
+      .get(baseURLMasterData + `userMaster/get-join/${id}`)
+      .then((response) => {
+        setData(response.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        const message = err.response.data.errorMessages[0].message[0].message;
+        setData({});
+        // editError(message);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getIdList();
+  }, [id]);
+
+ 
+
+  const getUserFromDistrictList = (subSchemeId,approvalStageId,districtId,talukId) => {
+    api
+      .post(baseURLDBT + `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`)
+      .then((response) => {
+        if (response.data.content) {
+          setUserFromDistrictData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setUserFromDistrictData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (id) {
+      getIdList();
+    }
+  }, [id]);
+  
+
+ 
+
   const getCategoryList = () => {
     api
       .get(baseURLMasterData + `scCategory/get-all`)
@@ -572,22 +626,22 @@ function ServiceApplication() {
   }, []);
 
    // to get User Master
-  const [userListData, setUserListData] = useState([]);
+  // const [userListData, setUserListData] = useState([]);
 
-  const getUserList = () => {
-    const response = api
-      .get(baseURLMasterData + `userMaster/get-all`)
-      .then((response) => {
-        setUserListData(response.data.content.userMaster);
-      })
-      .catch((err) => {
-        setUserListData([]);
-      });
-  };
+  // const getUserList = () => {
+  //   const response = api
+  //     .get(baseURLMasterData + `userMaster/get-all`)
+  //     .then((response) => {
+  //       setUserListData(response.data.content.userMaster);
+  //     })
+  //     .catch((err) => {
+  //       setUserListData([]);
+  //     });
+  // };
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
 
    const [approvalListData, setApprovalListData] = useState([]);
 
@@ -745,6 +799,7 @@ function ServiceApplication() {
         periodTo: data.periodTo,
         vendorId: equipment.vendorId,
         description: equipment.description,
+        loggedInUserId:localStorage.getItem("userMasterId")
       };
 
       if (data.equordev === "land") {
@@ -2262,7 +2317,7 @@ setUploadedDocuments((prevDocs) => [
                             }
                           >
                             <option value="">Select User</option>
-                            {userListData.map((list) => (
+                            {userFromDistrictData.map((list) => (
                               <option
                                 key={list.userMasterId}
                                 value={list.userMasterId}
