@@ -778,7 +778,7 @@ function ServiceApplication() {
       event.preventDefault();
       const sendPost = {
         approvalStageId: data.approvalStageId,
-        userMasterId: data.userMasterId,
+        userMasterId: data.userId,
         farmerId: data.farmerId,
         fruitsId: data.fruitsId,
         payToVendor: equipment.payToVendor,
@@ -975,7 +975,7 @@ function ServiceApplication() {
       scVendorId: "",
       farmerId: "",
       approvalStageId: "",
-      userMasterId: "",
+      userId: "",
       expectedAmount: "",
       financialYearMasterId: "",
       periodFrom: new Date("2023-04-01"),
